@@ -11,6 +11,9 @@
       location = "container:"
       name = "Plugins">
       <FileRef
+         location = "group:Plugins/InterfaceBuilder/InterfaceBuilder/InterfaceBuilder.xcodeproj">
+      </FileRef>
+      <FileRef
          location = "group:Plugins/CodeEditor/CodeEditor/CodeEditor.xcodeproj">
       </FileRef>
       <FileRef

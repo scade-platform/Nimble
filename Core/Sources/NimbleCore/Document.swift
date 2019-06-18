@@ -10,11 +10,20 @@ import AppKit
 
 public protocol Document where Self: NSDocument {
   var contentViewController: NSViewController? { get }
+  
+  static func canOpen(_ file: File) -> Bool
+  
+  static func isDefault(for file: File) -> Bool
 }
+
 
 public extension Document {
   init(_ file: File) throws {
     try self.init(contentsOf: file.path.url, ofType: file.uti)
+  }
+  
+  static func isDefault(for file: File) -> Bool {
+    return false
   }
 }
 
@@ -22,15 +31,29 @@ public extension Document {
 public class DocumentManager {
   private let openedDocumentsCapacity: Int = 10
   
-  private var documentClasses: [String: AnyClass] = [:]
+  private var documentClasses: [AnyClass] = []
   
   private var openedDocuments: [File: Document] = [:]
   private var openedDocumentsQueue: [Document] = []
   
   public static let shared: DocumentManager = DocumentManager()
   
-  public func registerDocumentClass<T: Document>(ofType typeName: String, _ docClass: T.Type) {
-    documentClasses[typeName] = docClass
+  public func registerDocumentClass<T: Document>(_ docClass: T.Type) {
+    documentClasses.append(docClass)
+  }
+  
+  public func selectDocumentClass(for file: File) -> Document.Type? {
+    var docClass: Document.Type? = nil
+    for dc in documentClasses {
+      let _dc = dc as! Document.Type
+      if _dc.canOpen(file) {
+        docClass = _dc
+      }
+      if _dc.isDefault(for: file) {
+        break
+      }
+    }
+    return docClass
   }
   
   public func open(file: File) throws -> Document? {
@@ -42,21 +65,35 @@ public class DocumentManager {
       openedDocumentsQueue.removeFirst()
     }
     
-    guard let docClass = documentClasses[file.uti] else { return nil }
-    
-    let doc = try (docClass as! Document.Type).init(file)
+    guard let docClass = selectDocumentClass(for: file) else {return nil}
+    let doc = try docClass.init(file)
     
     openedDocuments[file] = doc
     openedDocumentsQueue.append(doc)
     
     return doc
   }
+  
+  
 }
 
 
 public extension File {
   var uti: String {
-    return "public.text"
+    if let resourceValues = try? path.url.resourceValues(forKeys: [.typeIdentifierKey]),
+      let uti = resourceValues.typeIdentifier {
+        return uti
+    }
+    return ""
+  }
+  
+  var mime: String {
+    guard let mime = UTTypeCopyPreferredTagWithClass(uti as CFString, kUTTagClassMIMEType) else { return "" }
+    return mime.takeRetainedValue() as String
+  }
+  
+  func typeIdentifierConforms(to: String) -> Bool {
+    return UTTypeConformsTo(uti as CFString , to as CFString)
   }
   
   func open() throws -> Document? {

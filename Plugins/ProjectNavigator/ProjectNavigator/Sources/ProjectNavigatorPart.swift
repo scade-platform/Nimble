@@ -90,7 +90,7 @@ extension ProjectOutlineDataSource: NSOutlineViewDataSource {
     
     switch item {
     case let folder as Folder:
-      return folder.content.count
+      return !folder.path.isSymlink ? folder.content.count : 0
       
     case let project as Project:
       return project.folders.count

@@ -21,6 +21,10 @@ public final class SourceCodeDocument: NSDocument, Document {
   
   public var contentViewController: NSViewController? { return editorController }
   
+  public class func canOpen(_ file: File) -> Bool {
+    return true // file.typeIdentifierConforms(to: "public.text")
+  }
+  
   public override func read(from data: Data, ofType typeName: String) throws {
     content = String(bytes: data, encoding: .utf8)!
   }

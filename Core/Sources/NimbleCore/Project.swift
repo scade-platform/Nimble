@@ -8,7 +8,7 @@
 
 
 public class Project {
-  public var folders: [Folder] = [Folder(path: Path.home/"Projects/scade")]
+  public var folders: [Folder] = [Folder(path: Path.home)]
 }
 
 

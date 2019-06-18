@@ -16,7 +16,7 @@ public final class CodeEditor: Module {
 
 open class CodeEditorPlugin: Plugin {
   required public init() {
-    DocumentManager.shared.registerDocumentClass(ofType: "public.text", SourceCodeDocument.self)
+    DocumentManager.shared.registerDocumentClass(SourceCodeDocument.self)
   }
   
   public func activate(workbench: Workbench) {
