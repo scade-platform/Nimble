@@ -40,6 +40,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4252B48A22B8DE3800CFFA3A /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				4252B48822B8D49200CFFA3A /* SFMono-Medium.otf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		4252B48B22B8DE4A00CFFA3A /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				4252B48222B8C20E00CFFA3A /* NSTextView+LineNumber.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		D7D2D58022B1B48C0017B45D = {
 			isa = PBXGroup;
 			children = (
@@ -69,9 +85,9 @@
 		D7D2D59222B1B52D0017B45D /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				4252B48822B8D49200CFFA3A /* SFMono-Medium.otf */,
+				4252B48A22B8DE3800CFFA3A /* Fonts */,
+				4252B48B22B8DE4A00CFFA3A /* Extension */,
 				D7D2D59322B1B59E0017B45D /* CodeEditor.swift */,
-				4252B48222B8C20E00CFFA3A /* NSTextView+LineNumber.swift */,
 				D7D2D59A22B1B9C80017B45D /* CodeEditorController.swift */,
 				D7D2D59B22B1B9C80017B45D /* CodeEditorController.xib */,
 				D7D2D5A222B28F020017B45D /* SourceCodeDocument.swift */,

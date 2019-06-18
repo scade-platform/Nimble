@@ -21,6 +21,12 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.lineSpacing = 2.0
+    textView?.defaultParagraphStyle = paragraphStyle
+    
+    let font = NSFont.init(name: "SFMono-Medium", size: 12.0) ?? NSFont.systemFont(ofSize: 12.0)
+    textView?.font = font
     textView?.setUpLineNumberView()
     loadContent()
   }

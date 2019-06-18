@@ -59,8 +59,6 @@ class LineNumberRulerView: NSRulerView {
         
         clientView = textView
         ruleThickness = 40
-        
-       // needsDisplay = true
     }
     
     required init(coder: NSCoder) {
