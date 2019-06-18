@@ -40,7 +40,6 @@
 		D7CBF7D2222878F40088715C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D7CBF7D5222878F40088715C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D7CBF7D7222878F40088715C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D7CBF7D8222878F40088715C /* Nimble.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Nimble.entitlements; sourceTree = "<group>"; };
 		D7CBF7DD222878F40088715C /* NimbleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NimbleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleWorkbench.swift; sourceTree = "<group>"; };
 		D7CBF8B2222928300088715C /* StudioCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = StudioCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,7 +100,6 @@
 				D7CBF7D2222878F40088715C /* Assets.xcassets */,
 				D7CBF7D4222878F40088715C /* Main.storyboard */,
 				D7CBF7D7222878F40088715C /* Info.plist */,
-				D7CBF7D8222878F40088715C /* Nimble.entitlements */,
 			);
 			path = Nimble;
 			sourceTree = "<group>";
