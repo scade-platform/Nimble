@@ -20,6 +20,8 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    textView?.setUpLineNumberView()
     loadContent()
   }
   

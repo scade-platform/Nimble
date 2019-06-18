@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4252B48322B8C20E00CFFA3A /* NSTextView+LineNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B48222B8C20E00CFFA3A /* NSTextView+LineNumber.swift */; };
+		4252B48922B8D6FD00CFFA3A /* SFMono-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4252B48822B8D49200CFFA3A /* SFMono-Medium.otf */; };
 		D7D2D59422B1B59E0017B45D /* CodeEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D59322B1B59E0017B45D /* CodeEditor.swift */; };
 		D7D2D59722B1B5AD0017B45D /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D2D59622B1B5AD0017B45D /* NimbleCore.framework */; };
 		D7D2D59C22B1B9C80017B45D /* CodeEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D59A22B1B9C80017B45D /* CodeEditorController.swift */; };
@@ -15,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4252B48222B8C20E00CFFA3A /* NSTextView+LineNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTextView+LineNumber.swift"; sourceTree = "<group>"; };
+		4252B48822B8D49200CFFA3A /* SFMono-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Medium.otf"; sourceTree = "<group>"; };
 		D7D2D58922B1B48C0017B45D /* CodeEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7D2D58C22B1B48C0017B45D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7D2D59322B1B59E0017B45D /* CodeEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditor.swift; sourceTree = "<group>"; };
@@ -65,7 +69,9 @@
 		D7D2D59222B1B52D0017B45D /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				4252B48822B8D49200CFFA3A /* SFMono-Medium.otf */,
 				D7D2D59322B1B59E0017B45D /* CodeEditor.swift */,
+				4252B48222B8C20E00CFFA3A /* NSTextView+LineNumber.swift */,
 				D7D2D59A22B1B9C80017B45D /* CodeEditorController.swift */,
 				D7D2D59B22B1B9C80017B45D /* CodeEditorController.xib */,
 				D7D2D5A222B28F020017B45D /* SourceCodeDocument.swift */,
@@ -138,6 +144,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4252B48922B8D6FD00CFFA3A /* SFMono-Medium.otf in Resources */,
 				D7D2D59D22B1B9C80017B45D /* CodeEditorController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -152,6 +159,7 @@
 				D7D2D59422B1B59E0017B45D /* CodeEditor.swift in Sources */,
 				D7D2D5A322B28F020017B45D /* SourceCodeDocument.swift in Sources */,
 				D7D2D59C22B1B9C80017B45D /* CodeEditorController.swift in Sources */,
+				4252B48322B8C20E00CFFA3A /* NSTextView+LineNumber.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
