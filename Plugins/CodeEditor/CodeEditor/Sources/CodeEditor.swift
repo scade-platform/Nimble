@@ -17,6 +17,8 @@ public final class CodeEditor: Module {
 open class CodeEditorPlugin: Plugin {
   required public init() {
     DocumentManager.shared.registerDocumentClass(SourceCodeDocument.self)
+    ThemeManager.shared.loadDefaultDarkTheme()
+    SyntaxManager.shared.loadSwiftSyntax()
   }
   
   public func activate(workbench: Workbench) {

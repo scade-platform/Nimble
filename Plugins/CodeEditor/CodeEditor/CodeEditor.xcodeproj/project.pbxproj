@@ -9,6 +9,27 @@
 /* Begin PBXBuildFile section */
 		4252B48322B8C20E00CFFA3A /* NSTextView+LineNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B48222B8C20E00CFFA3A /* NSTextView+LineNumber.swift */; };
 		4252B48922B8D6FD00CFFA3A /* SFMono-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4252B48822B8D49200CFFA3A /* SFMono-Medium.otf */; };
+		4252B49B22BA4A5200CFFA3A /* SyntaxManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B49A22BA4A5200CFFA3A /* SyntaxManager.swift */; };
+		4252B49D22BA4BEC00CFFA3A /* SyntaxStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B49C22BA4BEC00CFFA3A /* SyntaxStyle.swift */; };
+		4252B4A022BA4C3C00CFFA3A /* SyntaxDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B49F22BA4C3C00CFFA3A /* SyntaxDictionary.swift */; };
+		4252B4A322BA4C9D00CFFA3A /* Pair.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B4A222BA4C9D00CFFA3A /* Pair.swift */; };
+		4252B4A622BA4CFE00CFFA3A /* String+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B4A522BA4CFD00CFFA3A /* String+Additions.swift */; };
+		4252B4A822BA4D4100CFFA3A /* HighlightExtractors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B4A722BA4D4100CFFA3A /* HighlightExtractors.swift */; };
+		4252B4AA22BA4D4800CFFA3A /* OutlineExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B4A922BA4D4800CFFA3A /* OutlineExtractor.swift */; };
+		4252B4AC22BA4D8400CFFA3A /* OutlineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B4AB22BA4D8400CFFA3A /* OutlineItem.swift */; };
+		4252B4AE22BA4E4600CFFA3A /* NSRegularExpression+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B4AD22BA4E4600CFFA3A /* NSRegularExpression+Additions.swift */; };
+		4252B4B022BA4EA400CFFA3A /* String+Counting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B4AF22BA4EA400CFFA3A /* String+Counting.swift */; };
+		4252B4B222BA4EE400CFFA3A /* String+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B4B122BA4EE400CFFA3A /* String+Constants.swift */; };
+		4252B4B422BA4F2800CFFA3A /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B4B322BA4F2800CFFA3A /* Collection.swift */; };
+		4252B4B622BA4F9100CFFA3A /* NSString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B4B522BA4F9100CFFA3A /* NSString.swift */; };
+		428C0F1522BA9A21002142BD /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1422BA9A21002142BD /* Theme.swift */; };
+		428C0F1722BA9BCD002142BD /* Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1622BA9BCD002142BD /* Metadata.swift */; };
+		428C0F1922BA9CA3002142BD /* ColorKeywordMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1822BA9CA3002142BD /* ColorKeywordMap.swift */; };
+		428C0F1C22BA9CAA002142BD /* NSColor+ColorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1A22BA9CAA002142BD /* NSColor+ColorCode.swift */; };
+		428C0F1D22BA9CAA002142BD /* NSColor+HSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1B22BA9CAA002142BD /* NSColor+HSL.swift */; };
+		428C0F1F22BA9CE7002142BD /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1E22BA9CE7002142BD /* ThemeManager.swift */; };
+		428C0F2122BA9EFE002142BD /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 428C0F2022BA9EFE002142BD /* Themes */; };
+		42D37E5A22BA7E0400A5DDA1 /* Syntaxes in Resources */ = {isa = PBXBuildFile; fileRef = 42D37E5922BA7E0400A5DDA1 /* Syntaxes */; };
 		D7D2D59422B1B59E0017B45D /* CodeEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D59322B1B59E0017B45D /* CodeEditor.swift */; };
 		D7D2D59722B1B5AD0017B45D /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D2D59622B1B5AD0017B45D /* NimbleCore.framework */; };
 		D7D2D59C22B1B9C80017B45D /* CodeEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D59A22B1B9C80017B45D /* CodeEditorController.swift */; };
@@ -19,6 +40,27 @@
 /* Begin PBXFileReference section */
 		4252B48222B8C20E00CFFA3A /* NSTextView+LineNumber.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTextView+LineNumber.swift"; sourceTree = "<group>"; };
 		4252B48822B8D49200CFFA3A /* SFMono-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Medium.otf"; sourceTree = "<group>"; };
+		4252B49A22BA4A5200CFFA3A /* SyntaxManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxManager.swift; sourceTree = "<group>"; };
+		4252B49C22BA4BEC00CFFA3A /* SyntaxStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyntaxStyle.swift; sourceTree = "<group>"; };
+		4252B49F22BA4C3C00CFFA3A /* SyntaxDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyntaxDictionary.swift; sourceTree = "<group>"; };
+		4252B4A222BA4C9D00CFFA3A /* Pair.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pair.swift; sourceTree = "<group>"; };
+		4252B4A522BA4CFD00CFFA3A /* String+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Additions.swift"; sourceTree = "<group>"; };
+		4252B4A722BA4D4100CFFA3A /* HighlightExtractors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HighlightExtractors.swift; sourceTree = "<group>"; };
+		4252B4A922BA4D4800CFFA3A /* OutlineExtractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutlineExtractor.swift; sourceTree = "<group>"; };
+		4252B4AB22BA4D8400CFFA3A /* OutlineItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutlineItem.swift; sourceTree = "<group>"; };
+		4252B4AD22BA4E4600CFFA3A /* NSRegularExpression+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Additions.swift"; sourceTree = "<group>"; };
+		4252B4AF22BA4EA400CFFA3A /* String+Counting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Counting.swift"; sourceTree = "<group>"; };
+		4252B4B122BA4EE400CFFA3A /* String+Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Constants.swift"; sourceTree = "<group>"; };
+		4252B4B322BA4F2800CFFA3A /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
+		4252B4B522BA4F9100CFFA3A /* NSString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSString.swift; sourceTree = "<group>"; };
+		428C0F1422BA9A21002142BD /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		428C0F1622BA9BCD002142BD /* Metadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Metadata.swift; sourceTree = "<group>"; };
+		428C0F1822BA9CA3002142BD /* ColorKeywordMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorKeywordMap.swift; sourceTree = "<group>"; };
+		428C0F1A22BA9CAA002142BD /* NSColor+ColorCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSColor+ColorCode.swift"; sourceTree = "<group>"; };
+		428C0F1B22BA9CAA002142BD /* NSColor+HSL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSColor+HSL.swift"; sourceTree = "<group>"; };
+		428C0F1E22BA9CE7002142BD /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		428C0F2022BA9EFE002142BD /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Themes; sourceTree = "<group>"; };
+		42D37E5922BA7E0400A5DDA1 /* Syntaxes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Syntaxes; sourceTree = "<group>"; };
 		D7D2D58922B1B48C0017B45D /* CodeEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7D2D58C22B1B48C0017B45D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7D2D59322B1B59E0017B45D /* CodeEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditor.swift; sourceTree = "<group>"; };
@@ -56,10 +98,70 @@
 			path = Extension;
 			sourceTree = "<group>";
 		};
+		4252B49722BA48E100CFFA3A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				428C0F2022BA9EFE002142BD /* Themes */,
+				42D37E5922BA7E0400A5DDA1 /* Syntaxes */,
+				4252B48A22B8DE3800CFFA3A /* Fonts */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		4252B49922BA492C00CFFA3A /* Syntax */ = {
+			isa = PBXGroup;
+			children = (
+				4252B49A22BA4A5200CFFA3A /* SyntaxManager.swift */,
+				4252B4A422BA4CEC00CFFA3A /* Extesnsion */,
+				4252B4A122BA4C7F00CFFA3A /* Model */,
+				4252B4AB22BA4D8400CFFA3A /* OutlineItem.swift */,
+				4252B4A922BA4D4800CFFA3A /* OutlineExtractor.swift */,
+				4252B4A722BA4D4100CFFA3A /* HighlightExtractors.swift */,
+				4252B49C22BA4BEC00CFFA3A /* SyntaxStyle.swift */,
+				4252B49F22BA4C3C00CFFA3A /* SyntaxDictionary.swift */,
+			);
+			path = Syntax;
+			sourceTree = "<group>";
+		};
+		4252B4A122BA4C7F00CFFA3A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4252B4A222BA4C9D00CFFA3A /* Pair.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		4252B4A422BA4CEC00CFFA3A /* Extesnsion */ = {
+			isa = PBXGroup;
+			children = (
+				4252B4A522BA4CFD00CFFA3A /* String+Additions.swift */,
+				4252B4B522BA4F9100CFFA3A /* NSString.swift */,
+				4252B4B322BA4F2800CFFA3A /* Collection.swift */,
+				4252B4B122BA4EE400CFFA3A /* String+Constants.swift */,
+				4252B4AF22BA4EA400CFFA3A /* String+Counting.swift */,
+				4252B4AD22BA4E4600CFFA3A /* NSRegularExpression+Additions.swift */,
+			);
+			path = Extesnsion;
+			sourceTree = "<group>";
+		};
+		428C0F1322BA99FB002142BD /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				428C0F1E22BA9CE7002142BD /* ThemeManager.swift */,
+				428C0F1422BA9A21002142BD /* Theme.swift */,
+				428C0F1622BA9BCD002142BD /* Metadata.swift */,
+				428C0F1A22BA9CAA002142BD /* NSColor+ColorCode.swift */,
+				428C0F1B22BA9CAA002142BD /* NSColor+HSL.swift */,
+				428C0F1822BA9CA3002142BD /* ColorKeywordMap.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
 		D7D2D58022B1B48C0017B45D = {
 			isa = PBXGroup;
 			children = (
 				D7D2D59222B1B52D0017B45D /* Sources */,
+				4252B49722BA48E100CFFA3A /* Resources */,
 				D7D2D58B22B1B48C0017B45D /* CodeEditor */,
 				D7D2D58A22B1B48C0017B45D /* Products */,
 				D7D2D59522B1B5AD0017B45D /* Frameworks */,
@@ -85,12 +187,13 @@
 		D7D2D59222B1B52D0017B45D /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				4252B48A22B8DE3800CFFA3A /* Fonts */,
 				4252B48B22B8DE4A00CFFA3A /* Extension */,
 				D7D2D59322B1B59E0017B45D /* CodeEditor.swift */,
 				D7D2D59A22B1B9C80017B45D /* CodeEditorController.swift */,
 				D7D2D59B22B1B9C80017B45D /* CodeEditorController.xib */,
 				D7D2D5A222B28F020017B45D /* SourceCodeDocument.swift */,
+				428C0F1322BA99FB002142BD /* Theme */,
+				4252B49922BA492C00CFFA3A /* Syntax */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -160,7 +263,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				428C0F2122BA9EFE002142BD /* Themes in Resources */,
 				4252B48922B8D6FD00CFFA3A /* SFMono-Medium.otf in Resources */,
+				42D37E5A22BA7E0400A5DDA1 /* Syntaxes in Resources */,
 				D7D2D59D22B1B9C80017B45D /* CodeEditorController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -172,10 +277,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				428C0F1F22BA9CE7002142BD /* ThemeManager.swift in Sources */,
 				D7D2D59422B1B59E0017B45D /* CodeEditor.swift in Sources */,
+				4252B4A322BA4C9D00CFFA3A /* Pair.swift in Sources */,
+				4252B4A022BA4C3C00CFFA3A /* SyntaxDictionary.swift in Sources */,
 				D7D2D5A322B28F020017B45D /* SourceCodeDocument.swift in Sources */,
+				4252B4AE22BA4E4600CFFA3A /* NSRegularExpression+Additions.swift in Sources */,
+				4252B4B622BA4F9100CFFA3A /* NSString.swift in Sources */,
+				4252B49D22BA4BEC00CFFA3A /* SyntaxStyle.swift in Sources */,
+				4252B4A822BA4D4100CFFA3A /* HighlightExtractors.swift in Sources */,
+				4252B4B422BA4F2800CFFA3A /* Collection.swift in Sources */,
+				428C0F1522BA9A21002142BD /* Theme.swift in Sources */,
+				4252B4A622BA4CFE00CFFA3A /* String+Additions.swift in Sources */,
+				4252B4AC22BA4D8400CFFA3A /* OutlineItem.swift in Sources */,
+				428C0F1722BA9BCD002142BD /* Metadata.swift in Sources */,
+				4252B4AA22BA4D4800CFFA3A /* OutlineExtractor.swift in Sources */,
+				428C0F1D22BA9CAA002142BD /* NSColor+HSL.swift in Sources */,
+				428C0F1922BA9CA3002142BD /* ColorKeywordMap.swift in Sources */,
 				D7D2D59C22B1B9C80017B45D /* CodeEditorController.swift in Sources */,
+				4252B4B022BA4EA400CFFA3A /* String+Counting.swift in Sources */,
+				4252B49B22BA4A5200CFFA3A /* SyntaxManager.swift in Sources */,
+				428C0F1C22BA9CAA002142BD /* NSColor+ColorCode.swift in Sources */,
 				4252B48322B8C20E00CFFA3A /* NSTextView+LineNumber.swift in Sources */,
+				4252B4B222BA4EE400CFFA3A /* String+Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,6 +423,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = CodeEditor/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -321,6 +449,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = CodeEditor/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = (
