@@ -12,7 +12,160 @@
 		D7CD750722B8CCF5004C437B /* PageDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CD750622B8CCF5004C437B /* PageDocument.swift */; };
 		D7CD750A22B8CDCC004C437B /* InterfaceBuilderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CD750822B8CDCC004C437B /* InterfaceBuilderController.swift */; };
 		D7CD750B22B8CDCC004C437B /* InterfaceBuilderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7CD750922B8CDCC004C437B /* InterfaceBuilderController.xib */; };
+		E451B0E022B8E5BD006185B7 /* ScadeKit.framework/ScadeKit in Frameworks */ = {isa = PBXBuildFile; fileRef = E451B0D722B8E5A7006185B7 /* ScadeKit.framework/ScadeKit */; };
+		E451B18A22B91A4E006185B7 /* PageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E451B18922B91A4E006185B7 /* PageView.mm */; };
+		E451B25C22B92061006185B7 /* libphoenix.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E451B0BD22B8E5A7006185B7 /* libphoenix.dylib */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		E451B0B622B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F950A331D041446D882B66D2;
+			remoteInfo = scroller;
+		};
+		E451B0B822B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = DC9BB3DA65FA453DBD6DBB01;
+			remoteInfo = easyloggingpp;
+		};
+		E451B0BA22B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 04C1DC9FD5B941808C3B066F;
+			remoteInfo = ffi;
+		};
+		E451B0BC22B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F5F2B26B5EF246C486694C3F;
+			remoteInfo = phoenix;
+		};
+		E451B0BE22B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 80E0CA76A03E45F1B5E4B64F;
+			remoteInfo = PhoenixSimulator;
+		};
+		E451B0C022B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6FB04887FCC44C2BB39A21C4;
+			remoteInfo = scadesdk;
+		};
+		E451B0C222B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0C34A7E4919148B7A96C70E1;
+			remoteInfo = emf;
+		};
+		E451B0C422B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = E50E1C81D0094EB5B80AB32A;
+			remoteInfo = utils;
+		};
+		E451B0C622B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A5BB192016AD4B80A693B3A6;
+			remoteInfo = network;
+		};
+		E451B0C822B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8E4CB434C48646E2AE510BCA;
+			remoteInfo = data;
+		};
+		E451B0CA22B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 49C63DCA042E452997C9DA12;
+			remoteInfo = graphics;
+		};
+		E451B0CC22B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 785C211484B7443C92E264D2;
+			remoteInfo = svg;
+		};
+		E451B0CE22B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = C6D41F7BCC74473CB65F0D1B;
+			remoteInfo = ui;
+		};
+		E451B0D022B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 1C17D15D011D498F9C31679A;
+			remoteInfo = lattice;
+		};
+		E451B0D222B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D5D5D1C66D154464B8C8B26A;
+			remoteInfo = platform;
+		};
+		E451B0D422B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3E8CD4AA882443709B573DFF;
+			remoteInfo = "emf-cxx";
+		};
+		E451B0D622B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 101D05F34B274CC0BB5CAB48;
+			remoteInfo = ScadeKit;
+		};
+		E451B0D822B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0BDBA59A1BF742CEB274BB73;
+			remoteInfo = json;
+		};
+		E451B0DA22B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A3B9232E0CD349A7B865B349;
+			remoteInfo = expat;
+		};
+		E451B0DC22B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 43C37B8E8DAB46228F3BD287;
+			remoteInfo = rhea;
+		};
+		E451B0DE22B8E5A7006185B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 62D12B0E5D224082993097F6;
+			remoteInfo = tinyspline;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		D7CD74F722B8CC24004C437B /* InterfaceBuilder.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InterfaceBuilder.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -22,6 +175,10 @@
 		D7CD750622B8CCF5004C437B /* PageDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDocument.swift; sourceTree = "<group>"; };
 		D7CD750822B8CDCC004C437B /* InterfaceBuilderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceBuilderController.swift; sourceTree = "<group>"; };
 		D7CD750922B8CDCC004C437B /* InterfaceBuilderController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InterfaceBuilderController.xib; sourceTree = "<group>"; };
+		E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ScadeSDK.xcodeproj; path = "../../../../build/ScadeSDK-Xcode/ScadeSDK.xcodeproj"; sourceTree = "<group>"; };
+		E451B18722B91A4E006185B7 /* InterfaceBuilderBridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InterfaceBuilderBridging.h; sourceTree = "<group>"; };
+		E451B18822B91A4E006185B7 /* PageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageView.h; sourceTree = "<group>"; };
+		E451B18922B91A4E006185B7 /* PageView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PageView.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,6 +186,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E451B25C22B92061006185B7 /* libphoenix.dylib in Frameworks */,
+				E451B0E022B8E5BD006185B7 /* ScadeKit.framework/ScadeKit in Frameworks */,
 				D7CD750522B8CC6F004C437B /* NimbleCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -39,6 +198,7 @@
 		D7CD74EE22B8CC24004C437B = {
 			isa = PBXGroup;
 			children = (
+				E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */,
 				D7CD750022B8CC37004C437B /* Sources */,
 				D7CD74F922B8CC24004C437B /* InterfaceBuilder */,
 				D7CD74F822B8CC24004C437B /* Products */,
@@ -65,6 +225,7 @@
 		D7CD750022B8CC37004C437B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				E451B16622B919D3006185B7 /* ScadeKit */,
 				D7CD750122B8CC5B004C437B /* InterfaceBuilder.swift */,
 				D7CD750622B8CCF5004C437B /* PageDocument.swift */,
 				D7CD750822B8CDCC004C437B /* InterfaceBuilderController.swift */,
@@ -79,6 +240,44 @@
 				D7CD750422B8CC6F004C437B /* NimbleCore.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E451B09422B8E5A6006185B7 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E451B0B722B8E5A7006185B7 /* libscroller.a */,
+				E451B0B922B8E5A7006185B7 /* libeasyloggingpp.a */,
+				E451B0BB22B8E5A7006185B7 /* libffi.a */,
+				E451B0BD22B8E5A7006185B7 /* libphoenix.dylib */,
+				E451B0BF22B8E5A7006185B7 /* PhoenixSimulator */,
+				E451B0C122B8E5A7006185B7 /* libscadesdk.a */,
+				E451B0C322B8E5A7006185B7 /* libemf.a */,
+				E451B0C522B8E5A7006185B7 /* libutils.a */,
+				E451B0C722B8E5A7006185B7 /* libnetwork.a */,
+				E451B0C922B8E5A7006185B7 /* libdata.a */,
+				E451B0CB22B8E5A7006185B7 /* libgraphics.a */,
+				E451B0CD22B8E5A7006185B7 /* libsvg.a */,
+				E451B0CF22B8E5A7006185B7 /* libui.a */,
+				E451B0D122B8E5A7006185B7 /* liblattice.a */,
+				E451B0D322B8E5A7006185B7 /* libplatform.a */,
+				E451B0D522B8E5A7006185B7 /* libemf-cxx.a */,
+				E451B0D722B8E5A7006185B7 /* ScadeKit.framework/ScadeKit */,
+				E451B0D922B8E5A7006185B7 /* libjson.a */,
+				E451B0DB22B8E5A7006185B7 /* libexpat.a */,
+				E451B0DD22B8E5A7006185B7 /* librhea.a */,
+				E451B0DF22B8E5A7006185B7 /* libtinyspline.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E451B16622B919D3006185B7 /* ScadeKit */ = {
+			isa = PBXGroup;
+			children = (
+				E451B18822B91A4E006185B7 /* PageView.h */,
+				E451B18922B91A4E006185B7 /* PageView.mm */,
+				E451B18722B91A4E006185B7 /* InterfaceBuilderBridging.h */,
+			);
+			path = ScadeKit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -126,12 +325,170 @@
 			mainGroup = D7CD74EE22B8CC24004C437B;
 			productRefGroup = D7CD74F822B8CC24004C437B /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = E451B09422B8E5A6006185B7 /* Products */;
+					ProjectRef = E451B09322B8E5A6006185B7 /* ScadeSDK.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				D7CD74F622B8CC24004C437B /* InterfaceBuilder */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		E451B0B722B8E5A7006185B7 /* libscroller.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libscroller.a;
+			remoteRef = E451B0B622B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0B922B8E5A7006185B7 /* libeasyloggingpp.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libeasyloggingpp.a;
+			remoteRef = E451B0B822B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0BB22B8E5A7006185B7 /* libffi.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libffi.a;
+			remoteRef = E451B0BA22B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0BD22B8E5A7006185B7 /* libphoenix.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			path = libphoenix.dylib;
+			remoteRef = E451B0BC22B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0BF22B8E5A7006185B7 /* PhoenixSimulator */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			name = PhoenixSimulator;
+			path = PhoenixSimulator.app;
+			remoteRef = E451B0BE22B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0C122B8E5A7006185B7 /* libscadesdk.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libscadesdk.a;
+			remoteRef = E451B0C022B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0C322B8E5A7006185B7 /* libemf.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libemf.a;
+			remoteRef = E451B0C222B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0C522B8E5A7006185B7 /* libutils.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libutils.a;
+			remoteRef = E451B0C422B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0C722B8E5A7006185B7 /* libnetwork.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libnetwork.a;
+			remoteRef = E451B0C622B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0C922B8E5A7006185B7 /* libdata.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libdata.a;
+			remoteRef = E451B0C822B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0CB22B8E5A7006185B7 /* libgraphics.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libgraphics.a;
+			remoteRef = E451B0CA22B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0CD22B8E5A7006185B7 /* libsvg.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libsvg.a;
+			remoteRef = E451B0CC22B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0CF22B8E5A7006185B7 /* libui.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libui.a;
+			remoteRef = E451B0CE22B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0D122B8E5A7006185B7 /* liblattice.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = liblattice.a;
+			remoteRef = E451B0D022B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0D322B8E5A7006185B7 /* libplatform.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libplatform.a;
+			remoteRef = E451B0D222B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0D522B8E5A7006185B7 /* libemf-cxx.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libemf-cxx.a";
+			remoteRef = E451B0D422B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0D722B8E5A7006185B7 /* ScadeKit.framework/ScadeKit */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			name = ScadeKit.framework/ScadeKit;
+			path = ScadeKit.framework;
+			remoteRef = E451B0D622B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0D922B8E5A7006185B7 /* libjson.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libjson.a;
+			remoteRef = E451B0D822B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0DB22B8E5A7006185B7 /* libexpat.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libexpat.a;
+			remoteRef = E451B0DA22B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0DD22B8E5A7006185B7 /* librhea.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = librhea.a;
+			remoteRef = E451B0DC22B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E451B0DF22B8E5A7006185B7 /* libtinyspline.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libtinyspline.a;
+			remoteRef = E451B0DE22B8E5A7006185B7 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D7CD74F522B8CC24004C437B /* Resources */ = {
@@ -152,6 +509,7 @@
 				D7CD750A22B8CDCC004C437B /* InterfaceBuilderController.swift in Sources */,
 				D7CD750222B8CC5B004C437B /* InterfaceBuilder.swift in Sources */,
 				D7CD750722B8CCF5004C437B /* PageDocument.swift in Sources */,
+				E451B18A22B91A4E006185B7 /* PageView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,16 +633,25 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "../../../../build/ScadeSDK-Xcode/lib/macos/";
+				GCC_PREPROCESSOR_DEFINITIONS = PHOENIX_USE_QUARTZ_RENDER;
+				HEADER_SEARCH_PATHS = ../../../../Phoenix/src;
 				INFOPLIST_FILE = InterfaceBuilder/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
+					"/Users/shem/workspace/scade/build/ScadeSDK-Xcode/lib/macos",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"'-std=gnu++1z'",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.InterfaceBuilder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = Sources/ScadeKit/InterfaceBuilderBridging.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = plugin;
@@ -297,16 +664,25 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "../../../../build/ScadeSDK-Xcode/lib/macos/";
+				GCC_PREPROCESSOR_DEFINITIONS = PHOENIX_USE_QUARTZ_RENDER;
+				HEADER_SEARCH_PATHS = ../../../../Phoenix/src;
 				INFOPLIST_FILE = InterfaceBuilder/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
+					"/Users/shem/workspace/scade/build/ScadeSDK-Xcode/lib/macos",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"$(OTHER_CFLAGS)",
+					"'-std=gnu++1z'",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.InterfaceBuilder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = Sources/ScadeKit/InterfaceBuilderBridging.h;
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = plugin;
 			};

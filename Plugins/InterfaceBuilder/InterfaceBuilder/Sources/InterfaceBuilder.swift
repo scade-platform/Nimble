@@ -7,6 +7,7 @@
 //
 
 import NimbleCore
+import ScadeKit
 
 
 public final class InterfaceBuilder: Module {
@@ -17,6 +18,7 @@ public final class InterfaceBuilder: Module {
 open class InterfaceBuilderPlugin: Plugin {
   required public init() {
     DocumentManager.shared.registerDocumentClass(PageDocument.self)
+    SCDRuntime.loadMetaModel()
   }
   
   public func activate(workbench: Workbench) {

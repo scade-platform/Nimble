@@ -10,20 +10,39 @@ import Cocoa
 
 class InterfaceBuilderController: NSViewController {
   @IBOutlet
-  weak var pageView: NSView? = nil
+  weak var pageView: PageView? = nil
   
   weak var doc: PageDocument? = nil {
     didSet {
-      loadPage()
+      //loadPage()
     }
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    loadPage()
+
+    if let svgSize = doc?.getSvgSize() {
+      if let view = pageView {
+        for c in view.constraints {
+          switch c.identifier {
+          case .some("width"):
+            c.constant = svgSize.width
+            
+          case .some("height"):
+            c.constant = svgSize.height
+            
+          default:
+            break
+          }
+        }
+        view.phoenixView.frame.size = svgSize
+      }
+      Swift.print("set frame: \(svgSize)")
+      loadPage()
+    }
   }
   
   private func loadPage() {
-    print("Hello World")
+    doc?.render()
   }
 }

@@ -28,10 +28,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D7CBF8CE222ACD770088715C"
-               BuildableName = "ProjectNavigator.plugin"
-               BlueprintName = "ProjectNavigator"
-               ReferencedContainer = "container:../Plugins/ProjectNavigator/ProjectNavigator/ProjectNavigator.xcodeproj">
+               BlueprintIdentifier = "D7CD74F622B8CC24004C437B"
+               BuildableName = "InterfaceBuilder.plugin"
+               BlueprintName = "InterfaceBuilder"
+               ReferencedContainer = "container:../Plugins/InterfaceBuilder/InterfaceBuilder/InterfaceBuilder.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -103,6 +103,12 @@
             ReferencedContainer = "container:Nimble.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "~/Downloads/skype/RenderSVG/src/"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
