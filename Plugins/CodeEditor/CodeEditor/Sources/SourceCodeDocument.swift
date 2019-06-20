@@ -11,7 +11,20 @@ import NimbleCore
 
 
 public final class SourceCodeDocument: NSDocument, Document {
-  var content: String = ""
+    var content: String = "" {
+        didSet {
+            let string = content.replacingLineEndings(with: .lf)
+            textStorage.replaceCharacters(in: textStorage.range, with: string)
+        }
+    }
+    
+    let textStorage = NSTextStorage()
+    let syntaxParser: SyntaxParser
+    
+    override init() {
+        let style = SyntaxManager.shared.style ?? SyntaxStyle()
+        syntaxParser = SyntaxParser(textStorage: textStorage, style: style)
+    }
   
   private lazy var editorController: CodeEditorController = {
     let controller = CodeEditorController.loadFromNib()

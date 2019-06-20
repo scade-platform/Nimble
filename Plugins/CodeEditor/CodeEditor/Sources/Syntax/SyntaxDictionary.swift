@@ -19,10 +19,10 @@ enum SyntaxType: String, CaseIterable {
     case characters
     case comments
     
-//    var localizedName: String {
-//        
-//        return self.rawValue.localized
-//    }
+    var name: String {
+        
+        return self.rawValue
+    }
     
 }
 

@@ -34,6 +34,34 @@
                ReferencedContainer = "container:../Plugins/ProjectNavigator/ProjectNavigator/ProjectNavigator.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D7D2D58822B1B48C0017B45D"
+               BuildableName = "CodeEditor.plugin"
+               BlueprintName = "CodeEditor"
+               ReferencedContainer = "container:../Plugins/CodeEditor/CodeEditor/CodeEditor.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D7CD74F622B8CC24004C437B"
+               BuildableName = "InterfaceBuilder.plugin"
+               BlueprintName = "InterfaceBuilder"
+               ReferencedContainer = "container:../Plugins/InterfaceBuilder/InterfaceBuilder/InterfaceBuilder.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

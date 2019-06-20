@@ -29,6 +29,24 @@
 		428C0F1D22BA9CAA002142BD /* NSColor+HSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1B22BA9CAA002142BD /* NSColor+HSL.swift */; };
 		428C0F1F22BA9CE7002142BD /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1E22BA9CE7002142BD /* ThemeManager.swift */; };
 		428C0F2122BA9EFE002142BD /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 428C0F2022BA9EFE002142BD /* Themes */; };
+		428C0F2722BBB830002142BD /* NSTextView+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F2622BBB830002142BD /* NSTextView+Theme.swift */; };
+		428C0F2922BBBA3B002142BD /* SyntaxParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F2822BBBA3B002142BD /* SyntaxParser.swift */; };
+		428C0F2B22BBBCF6002142BD /* Debouncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F2A22BBBCF5002142BD /* Debouncer.swift */; };
+		428C0F2D22BBBEEB002142BD /* NSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F2C22BBBEEB002142BD /* NSAttributedString.swift */; };
+		428C0F2F22BBBF3C002142BD /* OutlineParseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F2E22BBBF3C002142BD /* OutlineParseOperation.swift */; };
+		428C0F3122BBC0A0002142BD /* NSTextView+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F3022BBC09F002142BD /* NSTextView+Layout.swift */; };
+		428C0F3322BBC0E0002142BD /* NSLayoutManager+Range.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F3222BBC0E0002142BD /* NSLayoutManager+Range.swift */; };
+		428C0F3522BBC19B002142BD /* SyntaxHighlightParseOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F3422BBC19B002142BD /* SyntaxHighlightParseOperation.swift */; };
+		428C0F3722BBC1D7002142BD /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F3622BBC1D7002142BD /* Atomic.swift */; };
+		428C0F3922BBC309002142BD /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F3822BBC309002142BD /* Geometry.swift */; };
+		428C0F3B22BBC35A002142BD /* Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F3A22BBC359002142BD /* Comparable.swift */; };
+		428C0F3D22BBC388002142BD /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F3C22BBC388002142BD /* OrderedSet.swift */; };
+		428C0F3F22BBCA63002142BD /* LineEnding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F3E22BBCA63002142BD /* LineEnding.swift */; };
+		42A56DF722BBD1A600983A9B /* LayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A56DF622BBD1A500983A9B /* LayoutManager.swift */; };
+		42A56DF922BBD1DB00983A9B /* NSFont+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A56DF822BBD1DB00983A9B /* NSFont+Size.swift */; };
+		42A56DFB22BBD25D00983A9B /* Invisible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A56DFA22BBD25D00983A9B /* Invisible.swift */; };
+		42A56DFD22BBD28500983A9B /* DefaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A56DFC22BBD28500983A9B /* DefaultKey.swift */; };
+		42A56DFF22BBD82100983A9B /* TextContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A56DFE22BBD82100983A9B /* TextContainer.swift */; };
 		42D37E5A22BA7E0400A5DDA1 /* Syntaxes in Resources */ = {isa = PBXBuildFile; fileRef = 42D37E5922BA7E0400A5DDA1 /* Syntaxes */; };
 		D7D2D59422B1B59E0017B45D /* CodeEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D59322B1B59E0017B45D /* CodeEditor.swift */; };
 		D7D2D59722B1B5AD0017B45D /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D2D59622B1B5AD0017B45D /* NimbleCore.framework */; };
@@ -60,6 +78,24 @@
 		428C0F1B22BA9CAA002142BD /* NSColor+HSL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSColor+HSL.swift"; sourceTree = "<group>"; };
 		428C0F1E22BA9CE7002142BD /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		428C0F2022BA9EFE002142BD /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Themes; sourceTree = "<group>"; };
+		428C0F2622BBB830002142BD /* NSTextView+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSTextView+Theme.swift"; sourceTree = "<group>"; };
+		428C0F2822BBBA3B002142BD /* SyntaxParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyntaxParser.swift; sourceTree = "<group>"; };
+		428C0F2A22BBBCF5002142BD /* Debouncer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Debouncer.swift; sourceTree = "<group>"; };
+		428C0F2C22BBBEEB002142BD /* NSAttributedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSAttributedString.swift; sourceTree = "<group>"; };
+		428C0F2E22BBBF3C002142BD /* OutlineParseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutlineParseOperation.swift; sourceTree = "<group>"; };
+		428C0F3022BBC09F002142BD /* NSTextView+Layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSTextView+Layout.swift"; sourceTree = "<group>"; };
+		428C0F3222BBC0E0002142BD /* NSLayoutManager+Range.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSLayoutManager+Range.swift"; sourceTree = "<group>"; };
+		428C0F3422BBC19B002142BD /* SyntaxHighlightParseOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyntaxHighlightParseOperation.swift; sourceTree = "<group>"; };
+		428C0F3622BBC1D7002142BD /* Atomic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
+		428C0F3822BBC309002142BD /* Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
+		428C0F3A22BBC359002142BD /* Comparable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Comparable.swift; sourceTree = "<group>"; };
+		428C0F3C22BBC388002142BD /* OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderedSet.swift; sourceTree = "<group>"; };
+		428C0F3E22BBCA63002142BD /* LineEnding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineEnding.swift; sourceTree = "<group>"; };
+		42A56DF622BBD1A500983A9B /* LayoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutManager.swift; sourceTree = "<group>"; };
+		42A56DF822BBD1DB00983A9B /* NSFont+Size.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSFont+Size.swift"; sourceTree = "<group>"; };
+		42A56DFA22BBD25D00983A9B /* Invisible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Invisible.swift; sourceTree = "<group>"; };
+		42A56DFC22BBD28500983A9B /* DefaultKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultKey.swift; sourceTree = "<group>"; };
+		42A56DFE22BBD82100983A9B /* TextContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextContainer.swift; sourceTree = "<group>"; };
 		42D37E5922BA7E0400A5DDA1 /* Syntaxes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Syntaxes; sourceTree = "<group>"; };
 		D7D2D58922B1B48C0017B45D /* CodeEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7D2D58C22B1B48C0017B45D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -94,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				4252B48222B8C20E00CFFA3A /* NSTextView+LineNumber.swift */,
+				428C0F2622BBB830002142BD /* NSTextView+Theme.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -112,13 +149,18 @@
 			isa = PBXGroup;
 			children = (
 				4252B49A22BA4A5200CFFA3A /* SyntaxManager.swift */,
+				42A56DF622BBD1A500983A9B /* LayoutManager.swift */,
 				4252B4A422BA4CEC00CFFA3A /* Extesnsion */,
 				4252B4A122BA4C7F00CFFA3A /* Model */,
 				4252B4AB22BA4D8400CFFA3A /* OutlineItem.swift */,
+				428C0F3422BBC19B002142BD /* SyntaxHighlightParseOperation.swift */,
 				4252B4A922BA4D4800CFFA3A /* OutlineExtractor.swift */,
 				4252B4A722BA4D4100CFFA3A /* HighlightExtractors.swift */,
 				4252B49C22BA4BEC00CFFA3A /* SyntaxStyle.swift */,
 				4252B49F22BA4C3C00CFFA3A /* SyntaxDictionary.swift */,
+				428C0F2822BBBA3B002142BD /* SyntaxParser.swift */,
+				428C0F2A22BBBCF5002142BD /* Debouncer.swift */,
+				428C0F2E22BBBF3C002142BD /* OutlineParseOperation.swift */,
 			);
 			path = Syntax;
 			sourceTree = "<group>";
@@ -127,6 +169,12 @@
 			isa = PBXGroup;
 			children = (
 				4252B4A222BA4C9D00CFFA3A /* Pair.swift */,
+				428C0F3C22BBC388002142BD /* OrderedSet.swift */,
+				42A56DFE22BBD82100983A9B /* TextContainer.swift */,
+				428C0F3622BBC1D7002142BD /* Atomic.swift */,
+				428C0F3E22BBCA63002142BD /* LineEnding.swift */,
+				42A56DFC22BBD28500983A9B /* DefaultKey.swift */,
+				42A56DFA22BBD25D00983A9B /* Invisible.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -135,11 +183,17 @@
 			isa = PBXGroup;
 			children = (
 				4252B4A522BA4CFD00CFFA3A /* String+Additions.swift */,
+				42A56DF822BBD1DB00983A9B /* NSFont+Size.swift */,
+				428C0F2C22BBBEEB002142BD /* NSAttributedString.swift */,
 				4252B4B522BA4F9100CFFA3A /* NSString.swift */,
 				4252B4B322BA4F2800CFFA3A /* Collection.swift */,
 				4252B4B122BA4EE400CFFA3A /* String+Constants.swift */,
 				4252B4AF22BA4EA400CFFA3A /* String+Counting.swift */,
+				428C0F3A22BBC359002142BD /* Comparable.swift */,
 				4252B4AD22BA4E4600CFFA3A /* NSRegularExpression+Additions.swift */,
+				428C0F3022BBC09F002142BD /* NSTextView+Layout.swift */,
+				428C0F3222BBC0E0002142BD /* NSLayoutManager+Range.swift */,
+				428C0F3822BBC309002142BD /* Geometry.swift */,
 			);
 			path = Extesnsion;
 			sourceTree = "<group>";
@@ -277,29 +331,47 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				428C0F2722BBB830002142BD /* NSTextView+Theme.swift in Sources */,
 				428C0F1F22BA9CE7002142BD /* ThemeManager.swift in Sources */,
+				428C0F3522BBC19B002142BD /* SyntaxHighlightParseOperation.swift in Sources */,
+				428C0F3122BBC0A0002142BD /* NSTextView+Layout.swift in Sources */,
+				428C0F3722BBC1D7002142BD /* Atomic.swift in Sources */,
 				D7D2D59422B1B59E0017B45D /* CodeEditor.swift in Sources */,
+				42A56DF922BBD1DB00983A9B /* NSFont+Size.swift in Sources */,
 				4252B4A322BA4C9D00CFFA3A /* Pair.swift in Sources */,
 				4252B4A022BA4C3C00CFFA3A /* SyntaxDictionary.swift in Sources */,
+				42A56DFD22BBD28500983A9B /* DefaultKey.swift in Sources */,
 				D7D2D5A322B28F020017B45D /* SourceCodeDocument.swift in Sources */,
+				428C0F2F22BBBF3C002142BD /* OutlineParseOperation.swift in Sources */,
+				42A56DFB22BBD25D00983A9B /* Invisible.swift in Sources */,
 				4252B4AE22BA4E4600CFFA3A /* NSRegularExpression+Additions.swift in Sources */,
+				42A56DF722BBD1A600983A9B /* LayoutManager.swift in Sources */,
+				428C0F3B22BBC35A002142BD /* Comparable.swift in Sources */,
 				4252B4B622BA4F9100CFFA3A /* NSString.swift in Sources */,
 				4252B49D22BA4BEC00CFFA3A /* SyntaxStyle.swift in Sources */,
 				4252B4A822BA4D4100CFFA3A /* HighlightExtractors.swift in Sources */,
 				4252B4B422BA4F2800CFFA3A /* Collection.swift in Sources */,
 				428C0F1522BA9A21002142BD /* Theme.swift in Sources */,
 				4252B4A622BA4CFE00CFFA3A /* String+Additions.swift in Sources */,
+				428C0F2D22BBBEEB002142BD /* NSAttributedString.swift in Sources */,
 				4252B4AC22BA4D8400CFFA3A /* OutlineItem.swift in Sources */,
 				428C0F1722BA9BCD002142BD /* Metadata.swift in Sources */,
 				4252B4AA22BA4D4800CFFA3A /* OutlineExtractor.swift in Sources */,
+				428C0F2922BBBA3B002142BD /* SyntaxParser.swift in Sources */,
 				428C0F1D22BA9CAA002142BD /* NSColor+HSL.swift in Sources */,
 				428C0F1922BA9CA3002142BD /* ColorKeywordMap.swift in Sources */,
 				D7D2D59C22B1B9C80017B45D /* CodeEditorController.swift in Sources */,
+				428C0F3922BBC309002142BD /* Geometry.swift in Sources */,
 				4252B4B022BA4EA400CFFA3A /* String+Counting.swift in Sources */,
+				428C0F3F22BBCA63002142BD /* LineEnding.swift in Sources */,
+				428C0F3322BBC0E0002142BD /* NSLayoutManager+Range.swift in Sources */,
+				428C0F3D22BBC388002142BD /* OrderedSet.swift in Sources */,
 				4252B49B22BA4A5200CFFA3A /* SyntaxManager.swift in Sources */,
 				428C0F1C22BA9CAA002142BD /* NSColor+ColorCode.swift in Sources */,
+				428C0F2B22BBBCF6002142BD /* Debouncer.swift in Sources */,
 				4252B48322B8C20E00CFFA3A /* NSTextView+LineNumber.swift in Sources */,
 				4252B4B222BA4EE400CFFA3A /* String+Constants.swift in Sources */,
+				42A56DFF22BBD82100983A9B /* TextContainer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
