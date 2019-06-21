@@ -25,6 +25,7 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
         return
     }
     
+    //subscribe to type text changes
     NotificationCenter.default.addObserver(self, selector: #selector(textDidChange), name: NSText.didChangeNotification, object: textView)
     
     setupTextView(textView: textView)
