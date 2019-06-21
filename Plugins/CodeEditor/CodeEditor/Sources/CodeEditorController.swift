@@ -25,10 +25,12 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
         return
     }
     
+    NotificationCenter.default.addObserver(self, selector: #selector(textDidChange), name: NSText.didChangeNotification, object: textView)
+    
     setupTextView(textView: textView)
     loadContent()
     }
-  
+    
   private func loadContent() {
     guard let textView = textView,
         let layoutManager = textView.layoutManager,
@@ -59,6 +61,7 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
         if let theme = ThemeManager.shared.theme {
             textView.applyTheme(theme: theme)
         }
+
 
         // setup layoutManager and textContainer
         let textContainer = TextContainer()
@@ -102,5 +105,9 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
         
      
        // layoutManager.usesAntialias = defaults[.shouldAntialias]
+    }
+    
+    @objc private func textDidChange(notification: NSNotification) {
+        _ = doc?.syntaxParser.highlightAll()
     }
  }
