@@ -23,7 +23,6 @@
 		4252B4B422BA4F2800CFFA3A /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B4B322BA4F2800CFFA3A /* Collection.swift */; };
 		4252B4B622BA4F9100CFFA3A /* NSString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B4B522BA4F9100CFFA3A /* NSString.swift */; };
 		428C0F1522BA9A21002142BD /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1422BA9A21002142BD /* Theme.swift */; };
-		428C0F1722BA9BCD002142BD /* Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1622BA9BCD002142BD /* Metadata.swift */; };
 		428C0F1922BA9CA3002142BD /* ColorKeywordMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1822BA9CA3002142BD /* ColorKeywordMap.swift */; };
 		428C0F1C22BA9CAA002142BD /* NSColor+ColorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1A22BA9CAA002142BD /* NSColor+ColorCode.swift */; };
 		428C0F1D22BA9CAA002142BD /* NSColor+HSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1B22BA9CAA002142BD /* NSColor+HSL.swift */; };
@@ -72,7 +71,6 @@
 		4252B4B322BA4F2800CFFA3A /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		4252B4B522BA4F9100CFFA3A /* NSString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSString.swift; sourceTree = "<group>"; };
 		428C0F1422BA9A21002142BD /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
-		428C0F1622BA9BCD002142BD /* Metadata.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Metadata.swift; sourceTree = "<group>"; };
 		428C0F1822BA9CA3002142BD /* ColorKeywordMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorKeywordMap.swift; sourceTree = "<group>"; };
 		428C0F1A22BA9CAA002142BD /* NSColor+ColorCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSColor+ColorCode.swift"; sourceTree = "<group>"; };
 		428C0F1B22BA9CAA002142BD /* NSColor+HSL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSColor+HSL.swift"; sourceTree = "<group>"; };
@@ -203,7 +201,6 @@
 			children = (
 				428C0F1E22BA9CE7002142BD /* ThemeManager.swift */,
 				428C0F1422BA9A21002142BD /* Theme.swift */,
-				428C0F1622BA9BCD002142BD /* Metadata.swift */,
 				428C0F1A22BA9CAA002142BD /* NSColor+ColorCode.swift */,
 				428C0F1B22BA9CAA002142BD /* NSColor+HSL.swift */,
 				428C0F1822BA9CA3002142BD /* ColorKeywordMap.swift */,
@@ -355,7 +352,6 @@
 				4252B4A622BA4CFE00CFFA3A /* String+Additions.swift in Sources */,
 				428C0F2D22BBBEEB002142BD /* NSAttributedString.swift in Sources */,
 				4252B4AC22BA4D8400CFFA3A /* OutlineItem.swift in Sources */,
-				428C0F1722BA9BCD002142BD /* Metadata.swift in Sources */,
 				4252B4AA22BA4D4800CFFA3A /* OutlineExtractor.swift in Sources */,
 				428C0F2922BBBA3B002142BD /* SyntaxParser.swift in Sources */,
 				428C0F1D22BA9CAA002142BD /* NSColor+HSL.swift in Sources */,

@@ -319,7 +319,6 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
     
     /// apply invisible settings
     private func applyDefaultInvisiblesSetting() {
-        print("applyDefaultInvisiblesSetting")
 //        let defaults = UserDefaults.standard
 //        // `showsInvisibles` will be set from EditorTextView or PrintTextView
 //        self.showsSpace = defaults[.showInvisibleSpace]

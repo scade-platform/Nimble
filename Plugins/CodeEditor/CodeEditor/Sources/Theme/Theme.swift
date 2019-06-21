@@ -43,8 +43,6 @@ struct Theme: Equatable, Codable {
         case strings
         case characters
         case comments
-        
-        case metadata
     }
     
     
@@ -73,8 +71,6 @@ struct Theme: Equatable, Codable {
     var characters: Style
     var comments: Style
     
-    var metadata: Metadata?
-    
     // MARK: -
     // MARK: Lifecycle
     
@@ -91,6 +87,14 @@ struct Theme: Equatable, Codable {
     
     
     // MARK: Public Methods
+    
+    var font: NSFont {
+        return NSFont.init(name: "SFMono-Medium", size: 12.0) ?? NSFont.systemFont(ofSize: 12.0)
+    }
+    
+    var lineSpacing: CGFloat {
+        return 10.0
+    }
     
     /// Is background color dark?
     var isDarkTheme: Bool {

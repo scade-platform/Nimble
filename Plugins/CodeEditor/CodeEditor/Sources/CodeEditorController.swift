@@ -17,7 +17,7 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
   
   @IBOutlet
   weak var textView: NSTextView? = nil
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -35,10 +35,23 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
         let doc = doc else {
         return
     }
+   
+    //update textStorage of textView.layoutManager
+    layoutManager.replaceTextStorage(doc.textStorage)
 
-        doc.syntaxParser.textStorage.addLayoutManager(layoutManager)
-       _ = doc.syntaxParser.highlightAll()
-        textView.setUpLineNumberView()
+    //setup line count
+    textView.setUpLineNumberView()
+    
+    //setup text color & font from Theme
+    if let textStorage = textView.textStorage, let theme = ThemeManager.shared.theme  {
+        for layoutManager in textStorage.layoutManagers {
+            layoutManager.firstTextView?.font = theme.font
+            layoutManager.firstTextView?.textColor = theme.text.color
+        }
+    }
+    
+    //highlight syntax
+      _ = doc.syntaxParser.highlightAll()
     }
 
  
@@ -46,15 +59,7 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
         if let theme = ThemeManager.shared.theme {
             textView.applyTheme(theme: theme)
         }
-        
-        let font = NSFont.init(name: "SFMono-Medium", size: 12.0) ?? NSFont.systemFont(ofSize: 12.0)
-        textView.font = font
-        textView.setUpLineNumberView()
-        
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 2.0
-        textView.defaultParagraphStyle = paragraphStyle
-        
+
         // setup layoutManager and textContainer
         let textContainer = TextContainer()
      //   textContainer.isHangingIndentEnabled = defaults[.enablesHangingIndent]
@@ -62,6 +67,10 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
         textView.replaceTextContainer(textContainer)
         
         let layoutManager = LayoutManager()
+        
+        // set font
+      //  layoutManager.textFont = font
+        
         textView.textContainer!.replaceLayoutManager(layoutManager)
         textView.layoutManager?.allowsNonContiguousLayout = true
         
@@ -91,8 +100,7 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
 //        self.isAutomaticLinkDetectionEnabled = defaults[.autoLinkDetection]
 //        self.isContinuousSpellCheckingEnabled = defaults[.checkSpellingAsType]
         
-        // set font
-        layoutManager.textFont = font
+     
        // layoutManager.usesAntialias = defaults[.shouldAntialias]
     }
  }

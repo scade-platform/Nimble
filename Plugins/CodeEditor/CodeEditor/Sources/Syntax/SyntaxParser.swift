@@ -343,7 +343,9 @@ extension SyntaxParser {
             }
             
             for type in SyntaxType.allCases {
-                guard let ranges = highlights[type], !ranges.isEmpty else { continue }
+                guard let ranges = highlights[type], !ranges.isEmpty else {
+                    continue
+                }
                 
                 if let color = theme.style(for: type)?.color {
                     for range in ranges {

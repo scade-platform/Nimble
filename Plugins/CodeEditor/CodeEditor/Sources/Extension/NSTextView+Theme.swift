@@ -20,9 +20,13 @@ extension NSTextView {
         
         //(self.window as? DocumentWindow)?.contentBackgroundColor = theme.background.color
         
+//        let paragraphStyle = NSMutableParagraphStyle()
+//        paragraphStyle.lineSpacing = theme.lineSpacing
+//        self.defaultParagraphStyle = paragraphStyle
+        
         self.backgroundColor = theme.background.color
         self.enclosingScrollView?.backgroundColor = theme.background.color
-        self.textColor = theme.text.color
+      //  self.textColor = NSColor.re //theme.text.color
         //self.lineHighLightColor = theme.lineHighlight.color
         //self.insertionPointColor = theme.insertionPoint.color.withAlphaComponent(self.cursorType == .block ? 0.5 : 1)
         self.selectedTextAttributes = [.backgroundColor: theme.selection.usesSystemSetting ? .selectedTextBackgroundColor : theme.selection.color]
