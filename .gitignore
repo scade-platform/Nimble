@@ -2,3 +2,6 @@
 .build
 Package.resolved
 xcuserdata
+
+# Emacs Backup Files #
+*~

@@ -15,6 +15,7 @@
 		E451B0E022B8E5BD006185B7 /* ScadeKit.framework/ScadeKit in Frameworks */ = {isa = PBXBuildFile; fileRef = E451B0D722B8E5A7006185B7 /* ScadeKit.framework/ScadeKit */; };
 		E451B18A22B91A4E006185B7 /* PageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E451B18922B91A4E006185B7 /* PageView.mm */; };
 		E451B25C22B92061006185B7 /* libphoenix.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E451B0BD22B8E5A7006185B7 /* libphoenix.dylib */; };
+		E451B2FE22C0E919006185B7 /* WidgetVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2DD22C0E919006185B7 /* WidgetVisitor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -179,6 +180,7 @@
 		E451B18722B91A4E006185B7 /* InterfaceBuilderBridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InterfaceBuilderBridging.h; sourceTree = "<group>"; };
 		E451B18822B91A4E006185B7 /* PageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageView.h; sourceTree = "<group>"; };
 		E451B18922B91A4E006185B7 /* PageView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PageView.mm; sourceTree = "<group>"; };
+		E451B2DD22C0E919006185B7 /* WidgetVisitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetVisitor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -226,6 +228,7 @@
 			isa = PBXGroup;
 			children = (
 				E451B16622B919D3006185B7 /* ScadeKit */,
+				E451B2DD22C0E919006185B7 /* WidgetVisitor.swift */,
 				D7CD750122B8CC5B004C437B /* InterfaceBuilder.swift */,
 				D7CD750622B8CCF5004C437B /* PageDocument.swift */,
 				D7CD750822B8CDCC004C437B /* InterfaceBuilderController.swift */,
@@ -509,6 +512,7 @@
 				D7CD750A22B8CDCC004C437B /* InterfaceBuilderController.swift in Sources */,
 				D7CD750222B8CC5B004C437B /* InterfaceBuilder.swift in Sources */,
 				D7CD750722B8CCF5004C437B /* PageDocument.swift in Sources */,
+				E451B2FE22C0E919006185B7 /* WidgetVisitor.swift in Sources */,
 				E451B18A22B91A4E006185B7 /* PageView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

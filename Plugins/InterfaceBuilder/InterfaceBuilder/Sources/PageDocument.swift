@@ -1,19 +1,11 @@
-//
-//  PageDocument.swift
-//  InterfaceBuilder
-//
-//  Created by Grigory Markin on 18.06.19.
-//  Copyright © 2019 SCADE. All rights reserved.
-//
-
 import AppKit
 import NimbleCore
 import ScadeKit
 
-
 public final class PageDocument: NSDocument, Document {
-  private var svgRoot: SCDSvgBox?
-  private var svgSize: CGSize?
+  public var svgRoot: SCDSvgBox?
+  public var svgSize: CGSize?
+  public var page: SCDWidgetsPage?
   
   private lazy var builderController: InterfaceBuilderController = {
     let controller = InterfaceBuilderController.loadFromNib()
@@ -41,6 +33,7 @@ public final class PageDocument: NSDocument, Document {
     if !resourceContents.isEmpty {
       svgRoot = resourceContents[resourceContents.count - 1] as? SCDSvgBox
       if let page = resourceContents[0] as? SCDWidgetsPage {
+        self.page = page
         var width = page.size.width
         var height = page.size.height
         let minSize = page.minArea
@@ -55,21 +48,5 @@ public final class PageDocument: NSDocument, Document {
   
   public override func data(ofType typeName: String) throws -> Data {
     return "".data(using: .utf8)!
-  }
-  
-  public func render() {
-    if let svg = svgRoot {
-      let size = getSvgSize()
-      svg.width = SCDSvgUnit(value: Float(size.width))
-      svg.height = SCDSvgUnit(value: Float(size.height))
-      SCDRuntime.renderSvg(svg, x: 0, y: 0, size:size);
-    }
-  }
-
-  public func getSvgSize() -> CGSize {
-    guard let res = svgSize else {
-      return CGSize(width: 0, height: 0)
-    }
-    return res
   }
 }
