@@ -9,43 +9,43 @@
     "color" : "#808080"
   },
   "background" : {
-    "color" : "#292a2f"
+    "color" : "#1f1f24"
   },
   "lineHighlight" : {
-    "color" : "#d7f3b8"
+    "color" : "#24252b"
   },
   "selection" : {
     "color" : "#a7caff",
     "usesSystemSetting" : true
   },
   "keywords" : {
-    "color" : "#ff7ab3"
+    "color" : "#fb60a2"
   },
   "commands" : {
     "color" : "#683821"
   },
   "types" : {
-    "color" : "#89d1a7"
+    "color" : "#75b492"
   },
   "attributes" : {
-    "color" : "#ff7ab3"
+    "color" : "#fb60a2"
   },
   "variables" : {
     "color" : "#6b6b79"
   },
   "values" : {
-    "color" : "#ff7ab3"
+    "color" : "#fb60a2"
   },
   "numbers" : {
-    "color" : "#a79df7"
+    "color" : "#9586f5"
   },
   "strings" : {
-    "color" : "#ff8170"
+    "color" : "#fd695d"
   },
   "characters" : {
-    "color" : "#a79df7"
+    "color" : "#9586f5"
   },
   "comments" : {
-    "color" : "#7f8c98"
+    "color" : "#6c7886"
   }
 }

@@ -20,6 +20,9 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+    if let theme = ThemeManager.shared.theme {
+        view.setValue(theme.background.color, forKey: "backgroundColor")
+    }
     
     guard let textView = textView else {
         return
