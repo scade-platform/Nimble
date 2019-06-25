@@ -13,8 +13,17 @@ final class TextContainer: NSTextContainer {
     
     // MARK: Public Properties
     
-    var isHangingIndentEnabled = false { didSet { self.invalidateLayout() } }
-    var hangingIndentWidth = 0 { didSet { self.invalidateLayout() } }
+    var isHangingIndentEnabled = false {
+        didSet {
+            self.invalidateLayout()
+        }
+    }
+    
+    var hangingIndentWidth = 0 {
+        didSet {
+            self.invalidateLayout()
+        }
+    }
     
     
     
@@ -36,8 +45,9 @@ final class TextContainer: NSTextContainer {
         guard
             self.isHangingIndentEnabled,
             let layoutManager = self.layoutManager as? LayoutManager,
-            let storage = layoutManager.textStorage
-            else { return rect }
+            let storage = layoutManager.textStorage else {
+                return rect
+        }
         
         let string = storage.string as NSString
         let lineRange = string.lineRange(for: NSRange(characterIndex..<characterIndex))

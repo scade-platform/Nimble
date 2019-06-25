@@ -92,8 +92,12 @@ struct Theme: Equatable, Codable {
         return NSFont.init(name: "SFMono-Medium", size: 12.0) ?? NSFont.systemFont(ofSize: 12.0)
     }
     
-    var lineSpacing: CGFloat {
-        return 10.0
+    var lineHeight: CGFloat {
+        return 1.2
+    }
+    
+    var tabWidth: Int {
+        return 4
     }
     
     /// Is background color dark?

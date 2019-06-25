@@ -20,16 +20,18 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
     var showsInvisibles = false {
         
         didSet {
-            guard let textStorage = self.textStorage else { return assertionFailure() }
+            guard let textStorage = textStorage else {
+                return assertionFailure()
+            }
             
             let wholeRange = textStorage.range
             
-            if self.showsOtherInvisibles {
+            if showsOtherInvisibles {
                 // -> force recaluculate layout in order to make spaces for control characters drawing
-                self.invalidateGlyphs(forCharacterRange: wholeRange, changeInLength: 0, actualCharacterRange: nil)
-                self.invalidateLayout(forCharacterRange: wholeRange, actualCharacterRange: nil)
+                invalidateGlyphs(forCharacterRange: wholeRange, changeInLength: 0, actualCharacterRange: nil)
+                invalidateLayout(forCharacterRange: wholeRange, actualCharacterRange: nil)
             } else {
-                self.invalidateDisplay(forCharacterRange: wholeRange)
+                invalidateDisplay(forCharacterRange: wholeRange)
             }
         }
     }
@@ -43,12 +45,12 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
         //    Japansete text is input nevertheless the font that user specified dosen't support it.
         didSet {
             // cache metric values to fix line height
-            if let textFont = self.textFont {
-                self.defaultLineHeight = self.defaultLineHeight(for: textFont)
-                self.defaultBaselineOffset = self.defaultBaselineOffset(for: textFont)
+            if let textFont = textFont {
+                defaultLineHeight = defaultLineHeight(for: textFont)
+                defaultBaselineOffset = defaultBaselineOffset(for: textFont)
                 
                 // cache width of space char for hanging indent width calculation
-                self.spaceWidth = textFont.spaceWidth
+                spaceWidth = textFont.spaceWidth
                 
 //                // cache replacement glyph width for ATS Typesetter
 //                let invisibleFont = NSFont(named: .lucidaGrande, size: textFont.pointSize) ?? textFont  // use current text font for fallback
@@ -56,14 +58,14 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
 //                self.replacementGlyphWidth = invisibleFont.boundingRect(forGlyph: replacementGlyph).width
             }
             
-            self.invisibleLines = self.generateInvisibleLines()
+            invisibleLines = generateInvisibleLines()
         }
     }
     
     var invisiblesColor = NSColor.disabledControlTextColor {
         
         didSet {
-            self.invisibleLines = self.generateInvisibleLines()
+            invisibleLines = generateInvisibleLines()
         }
     }
     
@@ -84,7 +86,7 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
     private var showsNewLine = false
     private var showsFullwidthSpace = false
     
-    private lazy var invisibleLines: InvisibleLines = self.generateInvisibleLines()
+    private lazy var invisibleLines: InvisibleLines = generateInvisibleLines()
     
     
     private struct InvisibleLines {
@@ -105,14 +107,14 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
         
         super.init()
         
-        self.applyDefaultInvisiblesSetting()
+        applyDefaultInvisiblesSetting()
         
         // Since NSLayoutManager's showsControlCharacters flag is totally buggy (at least on El Capitan),
         // we stopped using it since CotEditor 2.3.3 released in 2016-01.
         // Previously, CotEditor used this flag for "Other Invisible Characters."
         // However, as CotEditor draws such control-glyph-alternative-characters by itself in `drawGlyphs(forGlyphRange:at:)`,
         // this flag is actually not so necessary as I thougth. Thus, treat carefully this.
-        self.showsControlCharacters = false
+        showsControlCharacters = false
         
       //  self.typesetter = ATSTypesetter()
         
@@ -163,9 +165,9 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
         
         // -> height of the extra line fragment should be the same as normal other fragments that are likewise customized in ATSTypesetter
         var fragmentRect = fragmentRect
-        fragmentRect.size.height = self.lineHeight
+        fragmentRect.size.height = lineHeight
         var usedRect = usedRect
-        usedRect.size.height = self.lineHeight
+        usedRect.size.height = lineHeight
         
         super.setExtraLineFragmentRect(fragmentRect, usedRect: usedRect, textContainer: container)
     }
@@ -178,17 +180,17 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
         
         // set anti-alias state on screen drawing
         if NSGraphicsContext.currentContextDrawingToScreen() {
-            NSGraphicsContext.current?.shouldAntialias = self.usesAntialias
+            NSGraphicsContext.current?.shouldAntialias = usesAntialias
         }
         
         // draw invisibles
-        if self.showsInvisibles,
+        if showsInvisibles,
             let context = NSGraphicsContext.current?.cgContext,
-            let string = self.textStorage?.string as NSString?
+            let string = textStorage?.string as NSString?
         {
-            let isVertical = (self.firstTextView?.layoutOrientation == .vertical)
-            let isRTL = (self.firstTextView?.baseWritingDirection == .rightToLeft)
-            let isOpaque = self.firstTextView?.isOpaque ?? true
+            let isVertical = (firstTextView?.layoutOrientation == .vertical)
+            let isRTL = (firstTextView?.baseWritingDirection == .rightToLeft)
+            let isOpaque = firstTextView?.isOpaque ?? true
             
             if !isOpaque {
                 context.setShouldSmoothFonts(false)
@@ -200,43 +202,42 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
             }
             
             // draw invisibles glyph by glyph
-            for glyphIndex in glyphsToShow.location..<glyphsToShow.upperBound {
-                let charIndex = self.characterIndexForGlyph(at: glyphIndex)
+            for glyphIndex in glyphsToShow.location ..< glyphsToShow.upperBound {
+                let charIndex = characterIndexForGlyph(at: glyphIndex)
                 let codeUnit = string.character(at: charIndex)
                 let invisible = Invisible(codeUnit: codeUnit)
                 
                 let line: CTLine
                 switch invisible {
                 case .space?:
-                    guard self.showsSpace else { continue }
-                    line = self.invisibleLines.space
+                    guard showsSpace else { continue }
+                    line = invisibleLines.space
                     
                 case .tab?:
-                    guard self.showsTab else { continue }
-                    line = self.invisibleLines.tab
+                    guard showsTab else { continue }
+                    line = invisibleLines.tab
                     
                 case .newLine?:
-                    guard self.showsNewLine else { continue }
-                    line = self.invisibleLines.newLine
+                    guard showsNewLine else { continue }
+                    line = invisibleLines.newLine
                     
                 case .fullwidthSpace?:
-                    guard self.showsFullwidthSpace else { continue }
-                    line = self.invisibleLines.fullwidthSpace
+                    guard showsFullwidthSpace else { continue }
+                    line = invisibleLines.fullwidthSpace
                     
                 default:
-                    guard self.showsOtherInvisibles else { continue }
-                    guard self.propertyForGlyph(at: glyphIndex) == .controlCharacter else { continue }
-                    line = self.invisibleLines.replacement
+                    guard showsOtherInvisibles else { continue }
+                    guard propertyForGlyph(at: glyphIndex) == .controlCharacter else { continue }
+                    line = invisibleLines.replacement
                 }
                 
                 // calculate position to draw glyph
-                let lineOrigin = self.lineFragmentRect(forGlyphAt: glyphIndex, effectiveRange: nil, withoutAdditionalLayout: true).origin
-                let glyphLocation = self.location(forGlyphAt: glyphIndex)
+                let lineOrigin = lineFragmentRect(forGlyphAt: glyphIndex, effectiveRange: nil, withoutAdditionalLayout: true).origin
+                let glyphLocation = location(forGlyphAt: glyphIndex)
                 var point = lineOrigin.offset(by: origin).offsetBy(dx: glyphLocation.x,
-                                                                   dy: self.defaultBaselineOffset)
+                                                                   dy: defaultBaselineOffset)
                 if isVertical {
-                    // [note] Probably not a good solution but better than doing nothing (2016-05-25).
-                    point.y += line.bounds(options: .useGlyphPathBounds).height / 2
+                   point.y += line.bounds(options: .useGlyphPathBounds).height / 2
                 }
                 if isRTL, invisible == .newLine {
                     point.x -= line.bounds().width
@@ -265,7 +266,7 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
         // -> Otherwise, `.secondarySelectedControlColor` will be used forcely and text becomes unreadable in a dark theme.
         if NSAppKitVersion.current <= .macOS10_13,
             color == .secondarySelectedControlColor,  // check if inactive
-            let theme = (self.textViewForBeginningOfSelection as? Themable)?.theme,
+            let theme = (textViewForBeginningOfSelection as? Themable)?.theme,
             let secondarySelectionColor = theme.secondarySelectionColor
         {
             secondarySelectionColor.setFill()
@@ -280,7 +281,9 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
         
         // ignore display validation during applying temporary attributes continuously
         // -> See `SyntaxParser.apply(highlights:range:)` for the usage of this option. (2018-12)
-        if self.ignoresDisplayValidation { return }
+        if ignoresDisplayValidation {
+            return
+        }
         
         super.invalidateDisplay(forCharacterRange: charRange)
     }
@@ -292,9 +295,9 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
     /// return fixed line height to avoid having different line height by composite font
     var lineHeight: CGFloat {
         
-        let multiple = self.firstTextView?.defaultParagraphStyle?.lineHeightMultiple ?? 1.0
+        let multiple = firstTextView?.defaultParagraphStyle?.lineHeightMultiple ?? 1.0
         
-        return multiple * self.defaultLineHeight
+        return 1.5 //multiple * defaultLineHeight
     }
     
     
@@ -316,23 +319,23 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
     /// cache CTLines for invisible characters drawing
     private func generateInvisibleLines() -> InvisibleLines {
 
-        let fontSize = self.textFont?.pointSize ?? 0
+        let fontSize = textFont?.pointSize ?? 0
         let font = NSFont.systemFont(ofSize: fontSize)
         let textFont = self.textFont ?? font
         let fullWidthFont = NSFont.systemFont(ofSize: fontSize)
 
-        return InvisibleLines(space: self.invisibleLine(.space, font: textFont),
-                              tab: self.invisibleLine(.tab, font: font),
-                              newLine: self.invisibleLine(.newLine, font: font),
-                              fullwidthSpace: self.invisibleLine(.fullwidthSpace, font: fullWidthFont),
-                              replacement: self.invisibleLine(.replacement, font: textFont))
+        return InvisibleLines(space: invisibleLine(.space, font: textFont),
+                              tab: invisibleLine(.tab, font: font),
+                              newLine: invisibleLine(.newLine, font: font),
+                              fullwidthSpace: invisibleLine(.fullwidthSpace, font: fullWidthFont),
+                              replacement: invisibleLine(.replacement, font: textFont))
     }
     
     
     /// create CTLine for given invisible type
     private func invisibleLine(_ invisible: Invisible, font: NSFont) -> CTLine {
         
-        return CTLine.create(string: invisible.usedSymbol, color: self.invisiblesColor, font: font)
+        return CTLine.create(string: invisible.usedSymbol, color: invisiblesColor, font: font)
     }
     
 }

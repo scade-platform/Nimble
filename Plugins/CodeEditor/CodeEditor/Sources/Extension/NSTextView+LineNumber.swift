@@ -74,10 +74,10 @@ class LineNumberRulerView: NSRulerView {
         let relativePoint = convert(NSZeroPoint, from: textView)
         let lineNumberAttributes = [NSAttributedString.Key.font: lineFont, NSAttributedString.Key.foregroundColor: NSColor.gray] as [NSAttributedString.Key : Any]
         
-        let drawLineNumber = { (lineNumberString:String, y:CGFloat) -> Void in
+        let drawLineNumber = { (lineNumberString: String, y: CGFloat) -> Void in
             let attString = NSAttributedString(string: lineNumberString, attributes: lineNumberAttributes)
             let x = 35 - attString.size().width
-            attString.draw(at: NSPoint(x: x, y: relativePoint.y + y))
+            attString.draw(at: NSPoint(x: x, y: relativePoint.y + y + 8))
         }
         
         let visibleGlyphRange = layoutManager.glyphRange(forBoundingRect: textView.visibleRect, in: textView.textContainer!)

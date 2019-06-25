@@ -22,6 +22,9 @@
 		4252B4B222BA4EE400CFFA3A /* String+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B4B122BA4EE400CFFA3A /* String+Constants.swift */; };
 		4252B4B422BA4F2800CFFA3A /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B4B322BA4F2800CFFA3A /* Collection.swift */; };
 		4252B4B622BA4F9100CFFA3A /* NSString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B4B522BA4F9100CFFA3A /* NSString.swift */; };
+		427E517C22C22B55008573F1 /* NSTextView+CurrentLineHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427E517B22C22B54008573F1 /* NSTextView+CurrentLineHighlighting.swift */; };
+		427E517E22C22C1F008573F1 /* CodeEditorTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427E517D22C22C1F008573F1 /* CodeEditorTextView.swift */; };
+		427E518022C232A6008573F1 /* MutableCopying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427E517F22C232A6008573F1 /* MutableCopying.swift */; };
 		428C0F1522BA9A21002142BD /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1422BA9A21002142BD /* Theme.swift */; };
 		428C0F1922BA9CA3002142BD /* ColorKeywordMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1822BA9CA3002142BD /* ColorKeywordMap.swift */; };
 		428C0F1C22BA9CAA002142BD /* NSColor+ColorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1A22BA9CAA002142BD /* NSColor+ColorCode.swift */; };
@@ -70,6 +73,9 @@
 		4252B4B122BA4EE400CFFA3A /* String+Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Constants.swift"; sourceTree = "<group>"; };
 		4252B4B322BA4F2800CFFA3A /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		4252B4B522BA4F9100CFFA3A /* NSString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSString.swift; sourceTree = "<group>"; };
+		427E517B22C22B54008573F1 /* NSTextView+CurrentLineHighlighting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSTextView+CurrentLineHighlighting.swift"; sourceTree = "<group>"; };
+		427E517D22C22C1F008573F1 /* CodeEditorTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorTextView.swift; sourceTree = "<group>"; };
+		427E517F22C232A6008573F1 /* MutableCopying.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MutableCopying.swift; sourceTree = "<group>"; };
 		428C0F1422BA9A21002142BD /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		428C0F1822BA9CA3002142BD /* ColorKeywordMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorKeywordMap.swift; sourceTree = "<group>"; };
 		428C0F1A22BA9CAA002142BD /* NSColor+ColorCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSColor+ColorCode.swift"; sourceTree = "<group>"; };
@@ -129,6 +135,8 @@
 			children = (
 				4252B48222B8C20E00CFFA3A /* NSTextView+LineNumber.swift */,
 				428C0F2622BBB830002142BD /* NSTextView+Theme.swift */,
+				427E517B22C22B54008573F1 /* NSTextView+CurrentLineHighlighting.swift */,
+				427E517F22C232A6008573F1 /* MutableCopying.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -241,6 +249,7 @@
 				4252B48B22B8DE4A00CFFA3A /* Extension */,
 				D7D2D59322B1B59E0017B45D /* CodeEditor.swift */,
 				D7D2D59A22B1B9C80017B45D /* CodeEditorController.swift */,
+				427E517D22C22C1F008573F1 /* CodeEditorTextView.swift */,
 				D7D2D59B22B1B9C80017B45D /* CodeEditorController.xib */,
 				D7D2D5A222B28F020017B45D /* SourceCodeDocument.swift */,
 				428C0F1322BA99FB002142BD /* Theme */,
@@ -333,6 +342,7 @@
 				428C0F3522BBC19B002142BD /* SyntaxHighlightParseOperation.swift in Sources */,
 				428C0F3122BBC0A0002142BD /* NSTextView+Layout.swift in Sources */,
 				428C0F3722BBC1D7002142BD /* Atomic.swift in Sources */,
+				427E517E22C22C1F008573F1 /* CodeEditorTextView.swift in Sources */,
 				D7D2D59422B1B59E0017B45D /* CodeEditor.swift in Sources */,
 				42A56DF922BBD1DB00983A9B /* NSFont+Size.swift in Sources */,
 				4252B4A322BA4C9D00CFFA3A /* Pair.swift in Sources */,
@@ -349,6 +359,7 @@
 				4252B4A822BA4D4100CFFA3A /* HighlightExtractors.swift in Sources */,
 				4252B4B422BA4F2800CFFA3A /* Collection.swift in Sources */,
 				428C0F1522BA9A21002142BD /* Theme.swift in Sources */,
+				427E517C22C22B55008573F1 /* NSTextView+CurrentLineHighlighting.swift in Sources */,
 				4252B4A622BA4CFE00CFFA3A /* String+Additions.swift in Sources */,
 				428C0F2D22BBBEEB002142BD /* NSAttributedString.swift in Sources */,
 				4252B4AC22BA4D8400CFFA3A /* OutlineItem.swift in Sources */,
@@ -356,6 +367,7 @@
 				428C0F2922BBBA3B002142BD /* SyntaxParser.swift in Sources */,
 				428C0F1D22BA9CAA002142BD /* NSColor+HSL.swift in Sources */,
 				428C0F1922BA9CA3002142BD /* ColorKeywordMap.swift in Sources */,
+				427E518022C232A6008573F1 /* MutableCopying.swift in Sources */,
 				D7D2D59C22B1B9C80017B45D /* CodeEditorController.swift in Sources */,
 				428C0F3922BBC309002142BD /* Geometry.swift in Sources */,
 				4252B4B022BA4EA400CFFA3A /* String+Counting.swift in Sources */,
