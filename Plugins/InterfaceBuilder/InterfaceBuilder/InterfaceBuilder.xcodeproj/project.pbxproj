@@ -16,6 +16,8 @@
 		E451B18A22B91A4E006185B7 /* PageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E451B18922B91A4E006185B7 /* PageView.mm */; };
 		E451B25C22B92061006185B7 /* libphoenix.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E451B0BD22B8E5A7006185B7 /* libphoenix.dylib */; };
 		E451B2FE22C0E919006185B7 /* WidgetVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2DD22C0E919006185B7 /* WidgetVisitor.swift */; };
+		E451B30022C4B69F006185B7 /* WidgetHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2FF22C4B69F006185B7 /* WidgetHighlighter.swift */; };
+		E451B30322C4B925006185B7 /* PageHighlighter.mm in Sources */ = {isa = PBXBuildFile; fileRef = E451B30122C4B925006185B7 /* PageHighlighter.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -181,6 +183,9 @@
 		E451B18822B91A4E006185B7 /* PageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageView.h; sourceTree = "<group>"; };
 		E451B18922B91A4E006185B7 /* PageView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PageView.mm; sourceTree = "<group>"; };
 		E451B2DD22C0E919006185B7 /* WidgetVisitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetVisitor.swift; sourceTree = "<group>"; };
+		E451B2FF22C4B69F006185B7 /* WidgetHighlighter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetHighlighter.swift; sourceTree = "<group>"; };
+		E451B30122C4B925006185B7 /* PageHighlighter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PageHighlighter.mm; sourceTree = "<group>"; };
+		E451B30222C4B925006185B7 /* PageHighlighter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageHighlighter.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -228,6 +233,7 @@
 			isa = PBXGroup;
 			children = (
 				E451B16622B919D3006185B7 /* ScadeKit */,
+				E451B2FF22C4B69F006185B7 /* WidgetHighlighter.swift */,
 				E451B2DD22C0E919006185B7 /* WidgetVisitor.swift */,
 				D7CD750122B8CC5B004C437B /* InterfaceBuilder.swift */,
 				D7CD750622B8CCF5004C437B /* PageDocument.swift */,
@@ -276,6 +282,8 @@
 		E451B16622B919D3006185B7 /* ScadeKit */ = {
 			isa = PBXGroup;
 			children = (
+				E451B30222C4B925006185B7 /* PageHighlighter.h */,
+				E451B30122C4B925006185B7 /* PageHighlighter.mm */,
 				E451B18822B91A4E006185B7 /* PageView.h */,
 				E451B18922B91A4E006185B7 /* PageView.mm */,
 				E451B18722B91A4E006185B7 /* InterfaceBuilderBridging.h */,
@@ -510,6 +518,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7CD750A22B8CDCC004C437B /* InterfaceBuilderController.swift in Sources */,
+				E451B30022C4B69F006185B7 /* WidgetHighlighter.swift in Sources */,
+				E451B30322C4B925006185B7 /* PageHighlighter.mm in Sources */,
 				D7CD750222B8CC5B004C437B /* InterfaceBuilder.swift in Sources */,
 				D7CD750722B8CCF5004C437B /* PageDocument.swift in Sources */,
 				E451B2FE22C0E919006185B7 /* WidgetVisitor.swift in Sources */,
@@ -638,8 +648,19 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "../../../../build/ScadeSDK-Xcode/lib/macos/";
-				GCC_PREPROCESSOR_DEFINITIONS = PHOENIX_USE_QUARTZ_RENDER;
-				HEADER_SEARCH_PATHS = ../../../../Phoenix/src;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					PHOENIX_USE_QUARTZ_RENDER,
+					SCADE_PHOENIX_SUPPORT,
+				);
+				HEADER_SEARCH_PATHS = (
+					../../../../Phoenix/src,
+					../../../../ScadeSDK/api/objc/lib,
+					../../../../ScadeSDK/src/emf,
+					../../../../ScadeSDK/src/ui,
+					../../../../ScadeSDK/src,
+					../../../../ScadeSDK/src/graphics,
+					../../../../ScadeSDK/src/svg,
+				);
 				INFOPLIST_FILE = InterfaceBuilder/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -669,8 +690,19 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "../../../../build/ScadeSDK-Xcode/lib/macos/";
-				GCC_PREPROCESSOR_DEFINITIONS = PHOENIX_USE_QUARTZ_RENDER;
-				HEADER_SEARCH_PATHS = ../../../../Phoenix/src;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					PHOENIX_USE_QUARTZ_RENDER,
+					SCADE_PHOENIX_SUPPORT,
+				);
+				HEADER_SEARCH_PATHS = (
+					../../../../Phoenix/src,
+					../../../../ScadeSDK/api/objc/lib,
+					../../../../ScadeSDK/src/emf,
+					../../../../ScadeSDK/src/ui,
+					../../../../ScadeSDK/src,
+					../../../../ScadeSDK/src/graphics,
+					../../../../ScadeSDK/src/svg,
+				);
 				INFOPLIST_FILE = InterfaceBuilder/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = (

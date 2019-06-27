@@ -2,6 +2,9 @@ import Cocoa
 import ScadeKit
 
 class InterfaceBuilderController: NSViewController {
+
+  var highlighter: WidgetHighlighter?
+
   @IBOutlet
   weak var pageView: PageView? = nil
   
@@ -51,7 +54,10 @@ class InterfaceBuilderController: NSViewController {
   }
 
   private func addTouchListeners(_ page: SCDWidgetsPage) {
-    TouchListenerApplier().visit(page)
+    if highlighter == nil {
+      highlighter = WidgetHighlighter()
+      highlighter?.visit(page)
+    }
   }
 
   private func getSvgSize() -> CGSize {
