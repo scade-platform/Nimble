@@ -69,5 +69,5 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
     @objc private func textDidChange(notification: NSNotification) {
         _ = doc?.syntaxParser.highlightAll()
     }
-e
+
  }
