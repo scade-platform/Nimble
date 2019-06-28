@@ -44,9 +44,6 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
    
     //update textStorage of textView.layoutManager
     layoutManager.replaceTextStorage(doc.textStorage)
-
-    //setup line count
-    textView.setUpLineNumberView()
     
     //setup text color & font from Theme
     if let textStorage = textView.textStorage, let theme = ThemeManager.shared.theme  {
@@ -61,6 +58,9 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
     }
 
     func setupTextView(textView: NSTextView) {
+        //setup line count
+        textView.setUpLineNumberView()
+
         if let theme = ThemeManager.shared.theme {
             textView.applyTheme(theme: theme)
         }
@@ -70,4 +70,8 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
         _ = doc?.syntaxParser.highlightAll()
     }
 
+    public func textView(_ textView: NSTextView, completions words: [String], forPartialWordRange charRange: NSRange, indexOfSelectedItem index: UnsafeMutablePointer<Int>?) -> [String] {
+        guard let completions = doc?.delegates.first?.complete() else { return [] }
+        return completions
+    }
  }

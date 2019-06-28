@@ -31,7 +31,7 @@ public extension Document {
 public class DocumentManager {
   private let openedDocumentsCapacity: Int = 10
   
-  private var documentClasses: [AnyClass] = []
+  private var documentClasses: [Document.Type] = []
   
   private var openedDocuments: [File: Document] = [:]
   private var openedDocumentsQueue: [Document] = []
@@ -45,11 +45,10 @@ public class DocumentManager {
   public func selectDocumentClass(for file: File) -> Document.Type? {
     var docClass: Document.Type? = nil
     for dc in documentClasses {
-      let _dc = dc as! Document.Type
-      if _dc.canOpen(file) {
-        docClass = _dc
+      if dc.canOpen(file) {
+        docClass = dc
       }
-      if _dc.isDefault(for: file) {
+      if dc.isDefault(for: file) {
         break
       }
     }

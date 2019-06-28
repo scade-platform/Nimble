@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "9999"
+   LastUpgradeVersion = "1020"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NimbleCore::NimbleCore"
-               BuildableName = "NimbleCore.framework"
-               BlueprintName = "NimbleCore"
-               ReferencedContainer = "container:NimbleCore.xcodeproj">
+               BlueprintIdentifier = "D7BEC80B22B9158B00A8F48B"
+               BuildableName = "SwiftExtensions.plugin"
+               BlueprintName = "SwiftExtensions"
+               ReferencedContainer = "container:SwiftExtensions.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,10 +45,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NimbleCore::NimbleCore"
-            BuildableName = "NimbleCore.framework"
-            BlueprintName = "NimbleCore"
-            ReferencedContainer = "container:NimbleCore.xcodeproj">
+            BlueprintIdentifier = "D7BEC80B22B9158B00A8F48B"
+            BuildableName = "SwiftExtensions.plugin"
+            BlueprintName = "SwiftExtensions"
+            ReferencedContainer = "container:SwiftExtensions.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -60,6 +60,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "D7BEC80B22B9158B00A8F48B"
+            BuildableName = "SwiftExtensions.plugin"
+            BlueprintName = "SwiftExtensions"
+            ReferencedContainer = "container:SwiftExtensions.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

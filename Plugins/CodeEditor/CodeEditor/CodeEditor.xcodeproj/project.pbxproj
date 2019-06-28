@@ -50,6 +50,7 @@
 		42A56DFD22BBD28500983A9B /* DefaultKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A56DFC22BBD28500983A9B /* DefaultKey.swift */; };
 		42A56DFF22BBD82100983A9B /* TextContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A56DFE22BBD82100983A9B /* TextContainer.swift */; };
 		42D37E5A22BA7E0400A5DDA1 /* Syntaxes in Resources */ = {isa = PBXBuildFile; fileRef = 42D37E5922BA7E0400A5DDA1 /* Syntaxes */; };
+		D7BEC82822B91DDF00A8F48B /* CodeEditorCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7BEC82722B91DDF00A8F48B /* CodeEditorCore.framework */; };
 		D7D2D59422B1B59E0017B45D /* CodeEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D59322B1B59E0017B45D /* CodeEditor.swift */; };
 		D7D2D59722B1B5AD0017B45D /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D2D59622B1B5AD0017B45D /* NimbleCore.framework */; };
 		D7D2D59C22B1B9C80017B45D /* CodeEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D59A22B1B9C80017B45D /* CodeEditorController.swift */; };
@@ -101,6 +102,7 @@
 		42A56DFC22BBD28500983A9B /* DefaultKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultKey.swift; sourceTree = "<group>"; };
 		42A56DFE22BBD82100983A9B /* TextContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextContainer.swift; sourceTree = "<group>"; };
 		42D37E5922BA7E0400A5DDA1 /* Syntaxes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Syntaxes; sourceTree = "<group>"; };
+		D7BEC82722B91DDF00A8F48B /* CodeEditorCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CodeEditorCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7D2D58922B1B48C0017B45D /* CodeEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7D2D58C22B1B48C0017B45D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7D2D59322B1B59E0017B45D /* CodeEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditor.swift; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7D2D59722B1B5AD0017B45D /* NimbleCore.framework in Frameworks */,
+				D7BEC82822B91DDF00A8F48B /* CodeEditorCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,6 +264,7 @@
 		D7D2D59522B1B5AD0017B45D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D7BEC82722B91DDF00A8F48B /* CodeEditorCore.framework */,
 				D7D2D59622B1B5AD0017B45D /* NimbleCore.framework */,
 			);
 			name = Frameworks;

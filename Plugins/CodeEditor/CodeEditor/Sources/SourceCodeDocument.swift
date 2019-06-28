@@ -8,9 +8,9 @@
 
 import AppKit
 import NimbleCore
+import CodeEditorCore
 
-
-public final class SourceCodeDocument: NSDocument, Document {
+public final class SourceCodeDocument: NSDocument, TextDocument {
     var content: String = "" {
         didSet {
             let string = content.replacingLineEndings(with: .lf)
@@ -33,6 +33,18 @@ public final class SourceCodeDocument: NSDocument, Document {
   }()
   
   public var contentViewController: NSViewController? { return editorController }
+  
+  // TODO: language detection
+  public var languageId: String {
+    if self.fileURL?.pathExtension == .some("swift") {
+      return "swift"
+    }
+    return ""
+  }
+  
+  public lazy var delegates: [TextDocumentDelegate] = {
+    return TextDocumentDelegateManager.shared.createDelegates(for: self)
+  }()
   
   public class func canOpen(_ file: File) -> Bool {
     return true // file.typeIdentifierConforms(to: "public.text")

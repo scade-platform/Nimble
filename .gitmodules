@@ -1,0 +1,3 @@
+[submodule "Plugins/SwiftExtensions/sourcekit-lsp"]
+	path = Plugins/SwiftExtensions/sourcekit-lsp
+	url = https://github.com/apple/sourcekit-lsp.git

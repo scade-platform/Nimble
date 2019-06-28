@@ -1,0 +1,411 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D75508F422BB8E6A0092F7F7 /* SKCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D75508F322BB8E6A0092F7F7 /* SKCore.framework */; };
+		D75508F622BB8E710092F7F7 /* SourceKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D75508F522BB8E710092F7F7 /* SourceKit.framework */; };
+		D75508F822BB8E770092F7F7 /* LanguageServerProtocol.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D75508F722BB8E770092F7F7 /* LanguageServerProtocol.framework */; };
+		D7BEC81722B915D100A8F48B /* SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEC81622B915D100A8F48B /* SwiftExtensions.swift */; };
+		D7BEC82122B917E400A8F48B /* SwiftDocumentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEC82022B917E400A8F48B /* SwiftDocumentDelegate.swift */; };
+		D7BEC82422B9180100A8F48B /* CodeEditorCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7BEC82322B9180100A8F48B /* CodeEditorCore.framework */; };
+		D7BEC82622B9191D00A8F48B /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7BEC82522B9191D00A8F48B /* NimbleCore.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		D75508F322BB8E6A0092F7F7 /* SKCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SKCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D75508F522BB8E710092F7F7 /* SourceKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SourceKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D75508F722BB8E770092F7F7 /* LanguageServerProtocol.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LanguageServerProtocol.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7550AF722BB940A0092F7F7 /* IndexStoreDB_CIndexStoreDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = IndexStoreDB_CIndexStoreDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7BEC80C22B9158B00A8F48B /* SwiftExtensions.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftExtensions.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7BEC80F22B9158B00A8F48B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D7BEC81622B915D100A8F48B /* SwiftExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftExtensions.swift; sourceTree = "<group>"; };
+		D7BEC82022B917E400A8F48B /* SwiftDocumentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDocumentDelegate.swift; sourceTree = "<group>"; };
+		D7BEC82322B9180100A8F48B /* CodeEditorCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CodeEditorCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7BEC82522B9191D00A8F48B /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7BECA2822BA426600A8F48B /* LanguageServerProtocol.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LanguageServerProtocol.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7BECA2B22BA459400A8F48B /* clibc.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = clibc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7BECC1922BB58B600A8F48B /* SKCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SKCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7BECC1B22BB59A600A8F48B /* SourceKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SourceKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7BECD2622BB5C6900A8F48B /* SwiftExtensionsCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftExtensionsCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D7BEC80922B9158B00A8F48B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D75508F822BB8E770092F7F7 /* LanguageServerProtocol.framework in Frameworks */,
+				D75508F622BB8E710092F7F7 /* SourceKit.framework in Frameworks */,
+				D75508F422BB8E6A0092F7F7 /* SKCore.framework in Frameworks */,
+				D7BEC82622B9191D00A8F48B /* NimbleCore.framework in Frameworks */,
+				D7BEC82422B9180100A8F48B /* CodeEditorCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D7BEC80322B9158B00A8F48B = {
+			isa = PBXGroup;
+			children = (
+				D7BEC81522B915BB00A8F48B /* Sources */,
+				D7BEC80E22B9158B00A8F48B /* SwiftExtensions */,
+				D7BEC80D22B9158B00A8F48B /* Products */,
+				D7BEC82222B9180100A8F48B /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		D7BEC80D22B9158B00A8F48B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D7BEC80C22B9158B00A8F48B /* SwiftExtensions.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D7BEC80E22B9158B00A8F48B /* SwiftExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				D7BEC80F22B9158B00A8F48B /* Info.plist */,
+			);
+			path = SwiftExtensions;
+			sourceTree = "<group>";
+		};
+		D7BEC81522B915BB00A8F48B /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				D7BEC81622B915D100A8F48B /* SwiftExtensions.swift */,
+				D7BEC82022B917E400A8F48B /* SwiftDocumentDelegate.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		D7BEC82222B9180100A8F48B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D7550AF722BB940A0092F7F7 /* IndexStoreDB_CIndexStoreDB.framework */,
+				D75508F722BB8E770092F7F7 /* LanguageServerProtocol.framework */,
+				D75508F522BB8E710092F7F7 /* SourceKit.framework */,
+				D75508F322BB8E6A0092F7F7 /* SKCore.framework */,
+				D7BECD2622BB5C6900A8F48B /* SwiftExtensionsCore.framework */,
+				D7BECC1B22BB59A600A8F48B /* SourceKit.framework */,
+				D7BECC1922BB58B600A8F48B /* SKCore.framework */,
+				D7BECA2B22BA459400A8F48B /* clibc.framework */,
+				D7BECA2822BA426600A8F48B /* LanguageServerProtocol.framework */,
+				D7BEC82522B9191D00A8F48B /* NimbleCore.framework */,
+				D7BEC82322B9180100A8F48B /* CodeEditorCore.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D7BEC80B22B9158B00A8F48B /* SwiftExtensions */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D7BEC81222B9158B00A8F48B /* Build configuration list for PBXNativeTarget "SwiftExtensions" */;
+			buildPhases = (
+				D7BEC80822B9158B00A8F48B /* Sources */,
+				D7BEC80922B9158B00A8F48B /* Frameworks */,
+				D7BEC80A22B9158B00A8F48B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SwiftExtensions;
+			productName = SwiftExtensions;
+			productReference = D7BEC80C22B9158B00A8F48B /* SwiftExtensions.plugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D7BEC80422B9158B00A8F48B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1020;
+				ORGANIZATIONNAME = SCADE;
+				TargetAttributes = {
+					D7BEC80B22B9158B00A8F48B = {
+						CreatedOnToolsVersion = 10.2.1;
+						LastSwiftMigration = 1020;
+					};
+				};
+			};
+			buildConfigurationList = D7BEC80722B9158B00A8F48B /* Build configuration list for PBXProject "SwiftExtensions" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D7BEC80322B9158B00A8F48B;
+			productRefGroup = D7BEC80D22B9158B00A8F48B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D7BEC80B22B9158B00A8F48B /* SwiftExtensions */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D7BEC80A22B9158B00A8F48B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D7BEC80822B9158B00A8F48B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7BEC82122B917E400A8F48B /* SwiftDocumentDelegate.swift in Sources */,
+				D7BEC81722B915D100A8F48B /* SwiftExtensions.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		D7BEC81022B9158B00A8F48B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		D7BEC81122B9158B00A8F48B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				OTHER_SWIFT_FLAGS = "";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		D7BEC81322B9158B00A8F48B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SwiftExtensions/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				HEADER_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/CIndexStoreDB/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/Index/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/Database/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/Core/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/Support/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/LLVMSupport/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/swift-llbuild/products/libllbuild/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/swift-llbuild/lib/BuildSystem/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/swift-llbuild/lib/Core/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/swift-llbuild/lib/Basic/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/swift-llbuild/lib/llvm/Support/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/swift-llbuild/lib/llvm/Demangle/include",
+               "$(SRCROOT)/../sourcekit-lsp/Sources/Csourcekitd/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/swift-package-manager/Sources/clibc/include",
+               "$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/IndexStoreDB_CIndexStoreDB",
+               "$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/IndexStoreDB_Index",
+               "$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llbuildBuildSystem",
+               "$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llbuildCore",
+               "$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llbuildBasic",
+               "$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llvmSupport",
+               "$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llvmDemangle"
+         );
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/IndexStoreDB_CIndexStoreDB/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/IndexStoreDB_Index/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/Database/include/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/Core/include/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/Support/include/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/LLVMSupport/include/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/.build/checkouts/swift-llbuild/products/libllbuild/include/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llbuildBuildSystem/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llbuildCore/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llbuildBasic/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llvmSupport/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llvmDemangle/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/Sources/Csourcekitd/include/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/.build/checkouts/swift-package-manager/Sources/clibc/include/module.modulemap";
+				PRODUCT_BUNDLE_IDENTIFIER = com.scade.SwiftExtensions;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Debug;
+		};
+		D7BEC81422B9158B00A8F48B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = SwiftExtensions/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				HEADER_SEARCH_PATHS = (
+               "$(inherited)",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/CIndexStoreDB/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/Index/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/Database/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/Core/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/Support/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/LLVMSupport/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/swift-llbuild/products/libllbuild/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/swift-llbuild/lib/BuildSystem/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/swift-llbuild/lib/Core/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/swift-llbuild/lib/Basic/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/swift-llbuild/lib/llvm/Support/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/swift-llbuild/lib/llvm/Demangle/include",
+               "$(SRCROOT)/../sourcekit-lsp/Sources/Csourcekitd/include",
+               "$(SRCROOT)/../sourcekit-lsp/.build/checkouts/swift-package-manager/Sources/clibc/include",
+               "$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/IndexStoreDB_CIndexStoreDB",
+               "$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/IndexStoreDB_Index",
+               "$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llbuildBuildSystem",
+               "$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llbuildCore",
+               "$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llbuildBasic",
+               "$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llvmSupport",
+               "$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llvmDemangle"
+         );				
+				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/IndexStoreDB_CIndexStoreDB/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/IndexStoreDB_Index/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/Database/include/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/Core/include/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/Support/include/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/.build/checkouts/indexstore-db/lib/LLVMSupport/include/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/.build/checkouts/swift-llbuild/products/libllbuild/include/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llbuildBuildSystem/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llbuildCore/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llbuildBasic/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llvmSupport/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/SourceKitLSP.xcodeproj/GeneratedModuleMap/llvmDemangle/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/Sources/Csourcekitd/include/module.modulemap -Xcc -fmodule-map-file=$(SRCROOT)/../sourcekit-lsp/.build/checkouts/swift-package-manager/Sources/clibc/include/module.modulemap";
+				PRODUCT_BUNDLE_IDENTIFIER = com.scade.SwiftExtensions;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D7BEC80722B9158B00A8F48B /* Build configuration list for PBXProject "SwiftExtensions" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7BEC81022B9158B00A8F48B /* Debug */,
+				D7BEC81122B9158B00A8F48B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D7BEC81222B9158B00A8F48B /* Build configuration list for PBXNativeTarget "SwiftExtensions" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7BEC81322B9158B00A8F48B /* Debug */,
+				D7BEC81422B9158B00A8F48B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D7BEC80422B9158B00A8F48B /* Project object */;
+}
