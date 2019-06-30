@@ -58,14 +58,11 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
     }
 
     func setupTextView(textView: NSTextView) {
-        //setup line count
-        textView.setUpLineNumberView()
-
         if let theme = ThemeManager.shared.theme {
             textView.applyTheme(theme: theme)
         }
     }
-    
+  
     @objc private func textDidChange(notification: NSNotification) {
         _ = doc?.syntaxParser.highlightAll()
     }
