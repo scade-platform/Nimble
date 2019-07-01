@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4252B48922B8D6FD00CFFA3A /* SFMono-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 4252B48822B8D49200CFFA3A /* SFMono-Medium.otf */; };
 		4252B49B22BA4A5200CFFA3A /* SyntaxManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B49A22BA4A5200CFFA3A /* SyntaxManager.swift */; };
 		4252B49D22BA4BEC00CFFA3A /* SyntaxStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B49C22BA4BEC00CFFA3A /* SyntaxStyle.swift */; };
 		4252B4A022BA4C3C00CFFA3A /* SyntaxDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4252B49F22BA4C3C00CFFA3A /* SyntaxDictionary.swift */; };
@@ -50,6 +49,7 @@
 		42A56DFF22BBD82100983A9B /* TextContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A56DFE22BBD82100983A9B /* TextContainer.swift */; };
 		42D37E5A22BA7E0400A5DDA1 /* Syntaxes in Resources */ = {isa = PBXBuildFile; fileRef = 42D37E5922BA7E0400A5DDA1 /* Syntaxes */; };
 		D722322622C92BC300E471C2 /* LineNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D722322522C92BC300E471C2 /* LineNumberView.swift */; };
+		D7AD216622CA6D760062C835 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = D7AD216522CA6D760062C835 /* Fonts */; };
 		D7BEC82822B91DDF00A8F48B /* CodeEditorCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7BEC82722B91DDF00A8F48B /* CodeEditorCore.framework */; };
 		D7D2D59422B1B59E0017B45D /* CodeEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D59322B1B59E0017B45D /* CodeEditor.swift */; };
 		D7D2D59722B1B5AD0017B45D /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D2D59622B1B5AD0017B45D /* NimbleCore.framework */; };
@@ -59,7 +59,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4252B48822B8D49200CFFA3A /* SFMono-Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFMono-Medium.otf"; sourceTree = "<group>"; };
 		4252B49A22BA4A5200CFFA3A /* SyntaxManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxManager.swift; sourceTree = "<group>"; };
 		4252B49C22BA4BEC00CFFA3A /* SyntaxStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyntaxStyle.swift; sourceTree = "<group>"; };
 		4252B49F22BA4C3C00CFFA3A /* SyntaxDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyntaxDictionary.swift; sourceTree = "<group>"; };
@@ -102,6 +101,7 @@
 		42A56DFE22BBD82100983A9B /* TextContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextContainer.swift; sourceTree = "<group>"; };
 		42D37E5922BA7E0400A5DDA1 /* Syntaxes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Syntaxes; sourceTree = "<group>"; };
 		D722322522C92BC300E471C2 /* LineNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineNumberView.swift; sourceTree = "<group>"; };
+		D7AD216522CA6D760062C835 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
 		D7BEC82722B91DDF00A8F48B /* CodeEditorCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CodeEditorCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7D2D58922B1B48C0017B45D /* CodeEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7D2D58C22B1B48C0017B45D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -125,14 +125,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4252B48A22B8DE3800CFFA3A /* Fonts */ = {
-			isa = PBXGroup;
-			children = (
-				4252B48822B8D49200CFFA3A /* SFMono-Medium.otf */,
-			);
-			path = Fonts;
-			sourceTree = "<group>";
-		};
 		4252B48B22B8DE4A00CFFA3A /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -146,9 +138,9 @@
 		4252B49722BA48E100CFFA3A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D7AD216522CA6D760062C835 /* Fonts */,
 				428C0F2022BA9EFE002142BD /* Themes */,
 				42D37E5922BA7E0400A5DDA1 /* Syntaxes */,
-				4252B48A22B8DE3800CFFA3A /* Fonts */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -327,8 +319,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7AD216622CA6D760062C835 /* Fonts in Resources */,
 				428C0F2122BA9EFE002142BD /* Themes in Resources */,
-				4252B48922B8D6FD00CFFA3A /* SFMono-Medium.otf in Resources */,
 				42D37E5A22BA7E0400A5DDA1 /* Syntaxes in Resources */,
 				D7D2D59D22B1B9C80017B45D /* CodeEditorController.xib in Resources */,
 			);

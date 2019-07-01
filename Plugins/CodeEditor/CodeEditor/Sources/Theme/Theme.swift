@@ -7,8 +7,7 @@
 import Foundation
 import AppKit.NSColor
 
-protocol Themable: AnyObject {
-    
+protocol Themable: AnyObject {    
     var theme: Theme? { get }
 }
 

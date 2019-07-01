@@ -23,8 +23,9 @@ final class LineNumberView: NSRulerView {
   }
   
   init(textView: NSTextView) {
-    self.lineFont = NSFont.init(name: "SFMono-Medium", size: 11)  ?? NSFont.systemFont(ofSize: 11)
-    self.textFont = NSFont.init(name: "SFMono-Medium", size: 12)  ?? NSFont.systemFont(ofSize: 12)
+    // TODO: load this from themes
+    self.lineFont = NSFont.init(name: "XcodeDigits", size: 12) ?? NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .medium)
+    self.textFont = NSFont.init(name: "SFMono-Medium", size: 12) ?? NSFont.systemFont(ofSize: 12)
     
     super.init(scrollView: textView.enclosingScrollView, orientation: NSRulerView.Orientation.verticalRuler)
     
@@ -52,11 +53,14 @@ final class LineNumberView: NSRulerView {
     self.drawHashMarksAndLabels(in: dirtyRect)
   }
   
-  func drawLineNumber(_ lineNumberString: String, in lineRect: NSRect) {
+  func drawLineNumber(_ lineNumberString: String, in lineRect: NSRect, selected: Bool = false) {
     //let scale = textView.scale
     
+    let numberColor = selected ? NSColor.white : NSColor.gray
+    
     let relativePoint = self.convert(NSZeroPoint, from: textView)
-    let lineNumberAttributes = [NSAttributedString.Key.font: lineFont, NSAttributedString.Key.foregroundColor: NSColor.gray] as [NSAttributedString.Key : Any]
+    let lineNumberAttributes: [NSAttributedString.Key : Any] =
+      [.font: lineFont, .foregroundColor: numberColor]
     
     let attString = NSAttributedString(string: lineNumberString, attributes: lineNumberAttributes)
     
@@ -88,6 +92,11 @@ final class LineNumberView: NSRulerView {
       )
       let glyphRangeForStringLine = layoutManager.glyphRange(forCharacterRange: characterRangeForStringLine, actualCharacterRange: nil)
       
+      // Check whether the current line is selected
+      let isStringLineInSelection = textView.selectedRanges
+        .map { $0.rangeValue }
+        .contains { $0.intersection(characterRangeForStringLine) != nil }
+      
       var glyphIndexForGlyphLine = glyphIndexForStringLine
       var glyphLineCount = 0
       
@@ -104,7 +113,7 @@ final class LineNumberView: NSRulerView {
         if glyphLineCount > 0 {
           drawLineNumber("", in: lineRect)
         } else {
-          drawLineNumber("\(lineNumber)", in: lineRect)
+          drawLineNumber("\(lineNumber)", in: lineRect, selected: isStringLineInSelection)
         }
         
         // Move to next glyph line

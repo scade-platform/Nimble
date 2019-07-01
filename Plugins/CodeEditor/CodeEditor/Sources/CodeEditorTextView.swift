@@ -10,7 +10,19 @@ import Cocoa
 
 // MARK: -
 
-final class CodeEditorTextView: NSTextView {
+final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
+  
+  // MARK: -
+  // MARK: CurrentLineHighlighting
+  
+  var needsUpdateLineHighlight = true
+  var lineHighLightRects: [NSRect] = []
+  
+  //TODO: load from themes
+  private(set) var lineHighLightColor: NSColor? = NSColor(colorCode: "#2F3239")
+  private(set) var selectionBackgroundColor: NSColor? = NSColor(colorCode: "#515B70")
+  
+  // MARK: -
   
   var lineNumberView: LineNumberView? = nil
   
@@ -37,8 +49,9 @@ final class CodeEditorTextView: NSTextView {
     
     // setup layoutManager and textContainer
     let textContainer = TextContainer()
+    // TODO: move to settings
     textContainer.isHangingIndentEnabled = true //defaults[.enablesHangingIndent]
-    textContainer.hangingIndentWidth = 0 //defaults[.hangingIndentWidth]
+    textContainer.hangingIndentWidth = 2 //defaults[.hangingIndentWidth]
     self.replaceTextContainer(textContainer)
     
     let layoutManager = LayoutManager()
@@ -60,12 +73,19 @@ final class CodeEditorTextView: NSTextView {
     self.importsGraphics = false
     self.usesFindPanel = true
     self.acceptsGlyphInfo = true
+    
+    //TODO: setup by applying themes
     self.linkTextAttributes = [.cursor: NSCursor.pointingHand,
-                               .underlineStyle: NSUnderlineStyle.single.rawValue]
+                               .underlineStyle: NSUnderlineStyle.single.rawValue]    
+    self.selectedTextAttributes = [.backgroundColor: selectionBackgroundColor ?? .selectedTextBackgroundColor]
+    
     
     self.invalidateDefaultParagraphStyle()
     
-    //TODO: compute it as a half of the self.frame, instead of hard coded
+    //TODO: make it optional, if no wrapping enabled, turn on horizontal scrolling
+    self.wrapsLines = true
+    
+    //TODO: compute it as an overscroll ration relative to the self.frame
     self.textContainerInset.height = 100.0
   }
   
@@ -249,5 +269,25 @@ final class CodeEditorTextView: NSTextView {
     self.invalidateStyle()
   }
   
+  
+  /// draw background
+  override func drawBackground(in rect: NSRect) {
+    
+    super.drawBackground(in: rect)
+    
+    // draw current line highlight
+    if true { //UserDefaults.standard[.highlightCurrentLine] {
+      self.drawCurrentLine(in: rect)
+    }
+    
+    //self.drawRoundedBackground(in: rect)
+  }
+  
+  override func setSelectedRanges(_ ranges: [NSValue], affinity: NSSelectionAffinity, stillSelecting stillSelectingFlag: Bool) {
+    super.setSelectedRanges(ranges, affinity: affinity, stillSelecting: stillSelectingFlag)
+    
+    self.needsUpdateLineHighlight = true
+    self.lineNumberView?.needsDisplay = true
+  }
 }
 

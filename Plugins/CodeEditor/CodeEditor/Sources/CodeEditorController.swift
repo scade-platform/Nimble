@@ -58,9 +58,12 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
     }
 
     func setupTextView(textView: NSTextView) {
+      // TODO: temporarly deactivated
+      /*
         if let theme = ThemeManager.shared.theme {
             textView.applyTheme(theme: theme)
         }
+      */
     }
   
     @objc private func textDidChange(notification: NSNotification) {
