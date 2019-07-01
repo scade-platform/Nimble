@@ -8,8 +8,6 @@
 
 import Cocoa
 
-private let kTextContainerInset = NSSize(width: 0.0, height: 4.0)
-
 // MARK: -
 
 final class CodeEditorTextView: NSTextView {
@@ -53,7 +51,6 @@ final class CodeEditorTextView: NSTextView {
     self.isHorizontallyResizable = false
     self.isVerticallyResizable = true
     self.autoresizingMask = .width
-    self.textContainerInset = kTextContainerInset
     
     // set NSTextView behaviors
     self.baseWritingDirection = .leftToRight  // default is fixed in LTR
@@ -68,6 +65,7 @@ final class CodeEditorTextView: NSTextView {
     
     self.invalidateDefaultParagraphStyle()
     
+    //TODO: compute it as a half of the self.frame, instead of hard coded
     self.textContainerInset.height = 100.0
   }
   
@@ -97,10 +95,9 @@ final class CodeEditorTextView: NSTextView {
   }
   
   
-  /// append inset only to the bottom for overscroll
+  // append inset only to the bottom for overscroll
   override var textContainerOrigin: NSPoint {
-    
-    return NSPoint(x: super.textContainerOrigin.x, y: kTextContainerInset.height)
+    return NSPoint(x: super.textContainerOrigin.x, y: 0.0)
   }
   
   

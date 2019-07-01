@@ -9,14 +9,22 @@
 import Cocoa
 
 
-//TODO: provide reference to the code origin
-
 final class LineNumberView: NSRulerView {
   
   private let lineFont: NSFont
+  private let textFont: NSFont
+  
+  private var textView: NSTextView? {
+    return clientView as? NSTextView
+  }
+  
+  private var layoutManager: NSLayoutManager? {
+    return textView?.layoutManager
+  }
   
   init(textView: NSTextView) {
     self.lineFont = NSFont.init(name: "SFMono-Medium", size: 11)  ?? NSFont.systemFont(ofSize: 11)
+    self.textFont = NSFont.init(name: "SFMono-Medium", size: 12)  ?? NSFont.systemFont(ofSize: 12)
     
     super.init(scrollView: textView.enclosingScrollView, orientation: NSRulerView.Orientation.verticalRuler)
     
@@ -44,19 +52,23 @@ final class LineNumberView: NSRulerView {
     self.drawHashMarksAndLabels(in: dirtyRect)
   }
   
-  override func drawHashMarksAndLabels(in rect: NSRect) {
-    guard let textView = clientView as? NSTextView, let layoutManager = textView.layoutManager else {
-      return
-    }
+  func drawLineNumber(_ lineNumberString: String, in lineRect: NSRect) {
+    //let scale = textView.scale
     
-    let relativePoint = convert(NSZeroPoint, from: textView)
+    let relativePoint = self.convert(NSZeroPoint, from: textView)
     let lineNumberAttributes = [NSAttributedString.Key.font: lineFont, NSAttributedString.Key.foregroundColor: NSColor.gray] as [NSAttributedString.Key : Any]
     
-    let drawLineNumber = { (lineNumberString: String, y: CGFloat) -> Void in
-      let attString = NSAttributedString(string: lineNumberString, attributes: lineNumberAttributes)
-      let x = 35 - attString.size().width
-      attString.draw(at: NSPoint(x: x, y: relativePoint.y + y + 8))
-    }
+    let attString = NSAttributedString(string: lineNumberString, attributes: lineNumberAttributes)
+    
+    let x = 35 - attString.size().width
+    let y = relativePoint.y + lineRect.origin.y + lineRect.height + self.textFont.descender
+    let rect = NSMakeRect(x,y, lineRect.width, lineRect.height)
+    
+    attString.draw(with: rect)
+  }
+  
+  override func drawHashMarksAndLabels(in rect: NSRect) {
+    guard let textView = self.textView, let layoutManager = self.layoutManager else { return }
     
     let visibleGlyphRange = layoutManager.glyphRange(forBoundingRect: textView.visibleRect, in: textView.textContainer!)
     let firstVisibleGlyphCharacterIndex = layoutManager.characterIndexForGlyph(at: visibleGlyphRange.location)
@@ -90,9 +102,9 @@ final class LineNumberView: NSRulerView {
         let lineRect = layoutManager.lineFragmentRect(forGlyphAt: glyphIndexForGlyphLine, effectiveRange: &effectiveRange, withoutAdditionalLayout: true)
         
         if glyphLineCount > 0 {
-          drawLineNumber("", lineRect.minY)
+          drawLineNumber("", in: lineRect)
         } else {
-          drawLineNumber("\(lineNumber)", lineRect.minY)
+          drawLineNumber("\(lineNumber)", in: lineRect)
         }
         
         // Move to next glyph line
@@ -106,7 +118,7 @@ final class LineNumberView: NSRulerView {
     
     // Draw line number for the extra line at the end of the text
     if layoutManager.extraLineFragmentTextContainer != nil {
-      drawLineNumber("\(lineNumber)", layoutManager.extraLineFragmentRect.minY)
+      drawLineNumber("\(lineNumber)", in: layoutManager.extraLineFragmentRect)
     }
     
   }

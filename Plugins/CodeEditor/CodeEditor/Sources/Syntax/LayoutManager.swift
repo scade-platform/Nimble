@@ -159,7 +159,9 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
     
     
     // MARK: Layout Manager Methods
-    
+/*
+   Comment out because of incorrect rendering of the last empty line (it's not rendered)
+   
     /// adjust rect of last empty line
     override func setExtraLineFragmentRect(_ fragmentRect: NSRect, usedRect: NSRect, textContainer container: NSTextContainer) {
         
@@ -171,7 +173,7 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
         
         super.setExtraLineFragmentRect(fragmentRect, usedRect: usedRect, textContainer: container)
     }
-    
+*/
     
     /// draw glyphs
     override func drawGlyphs(forGlyphRange glyphsToShow: NSRange, at origin: NSPoint) {
