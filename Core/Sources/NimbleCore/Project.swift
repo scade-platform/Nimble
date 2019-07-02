@@ -8,7 +8,8 @@
 
 
 public class Project {
-  public var folders: [Folder] = []
+  //TODO: remove default home path, it's only for demo
+  public var folders: [Folder] = [Folder(path: Path.home)]
 }
 
 

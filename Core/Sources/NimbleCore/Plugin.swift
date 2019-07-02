@@ -41,8 +41,9 @@ public class PluginManager {
   
   
   private static var pluginDirs: [Path] {
-    if let main = Path(Bundle.main.bundlePath) {
-      return [main/"..", main/"Plugins"]
+    //TODO: add user folders
+    if let pluginsPath = Bundle.main.builtInPlugInsPath, let path = Path(pluginsPath) {
+      return [path]
     }
     return []
   }

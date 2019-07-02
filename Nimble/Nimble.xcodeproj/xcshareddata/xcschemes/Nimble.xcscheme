@@ -28,20 +28,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D7CD74F622B8CC24004C437B"
-               BuildableName = "InterfaceBuilder.plugin"
-               BlueprintName = "InterfaceBuilder"
-               ReferencedContainer = "container:../Plugins/InterfaceBuilder/InterfaceBuilder/InterfaceBuilder.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "D7D2D58822B1B48C0017B45D"
                BuildableName = "CodeEditor.plugin"
                BlueprintName = "CodeEditor"
@@ -56,10 +42,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D7CD74F622B8CC24004C437B"
-               BuildableName = "InterfaceBuilder.plugin"
-               BlueprintName = "InterfaceBuilder"
-               ReferencedContainer = "container:../Plugins/InterfaceBuilder/InterfaceBuilder/InterfaceBuilder.xcodeproj">
+               BlueprintIdentifier = "D7CBF8CE222ACD770088715C"
+               BuildableName = "ProjectNavigator.plugin"
+               BlueprintName = "ProjectNavigator"
+               ReferencedContainer = "container:../Plugins/ProjectNavigator/ProjectNavigator/ProjectNavigator.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -103,12 +89,6 @@
             ReferencedContainer = "container:Nimble.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "~/Downloads/skype/RenderSVG/src/"
-            isEnabled = "YES">
-         </CommandLineArgument>
-      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -134,6 +114,6 @@
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
-      revealArchiveInOrganizer = "YES">
+      revealArchiveInOrganizer = "NO">
    </ArchiveAction>
 </Scheme>

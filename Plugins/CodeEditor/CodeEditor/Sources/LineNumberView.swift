@@ -24,7 +24,7 @@ final class LineNumberView: NSRulerView {
   
   init(textView: NSTextView) {
     // TODO: load this from themes
-    self.lineFont = NSFont.init(name: "XcodeDigits", size: 12) ?? NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .medium)
+    self.lineFont = NSFont.init(name: "XcodeDigits", size: 12) ?? NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .regular)
     self.textFont = NSFont.init(name: "SFMono-Medium", size: 12) ?? NSFont.systemFont(ofSize: 12)
     
     super.init(scrollView: textView.enclosingScrollView, orientation: NSRulerView.Orientation.verticalRuler)
