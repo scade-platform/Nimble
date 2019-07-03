@@ -18,16 +18,16 @@ public final class CodeEditor: Module {
 
 open class CodeEditorPlugin: Plugin {
   required public init() {
-    DocumentManager.shared.registerDocumentClass(SourceCodeDocument.self, ofTypes: ["public.text"])
-    ThemeManager.shared.loadDefaultDarkTheme()
-    SyntaxManager.shared.loadSwiftSyntax()
+    DocumentManager.shared.registerDocumentClass(SourceCodeDocument.self)
+    
+//    ThemeManager.shared.loadDefaultDarkTheme()
+//    SyntaxManager.shared.loadSwiftSyntax()
+    
     loadCustomFonts()
   }
   
-  static var workbench: Workbench? = nil
-  
   public func activate(workbench: Workbench) {
-    CodeEditorPlugin.workbench = workbench
+
   }
   
   public func deactivate() {

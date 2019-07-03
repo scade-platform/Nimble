@@ -20,9 +20,12 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    /*
     if let theme = ThemeManager.shared.theme {
         view.setValue(theme.background.color, forKey: "backgroundColor")
     }
+*/
     
     guard let textView = textView else {
         return
@@ -46,15 +49,18 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
     layoutManager.replaceTextStorage(doc.textStorage)
     
     //setup text color & font from Theme
+    
+    /*
     if let textStorage = textView.textStorage, let theme = ThemeManager.shared.theme  {
         for layoutManager in textStorage.layoutManagers {
             layoutManager.firstTextView?.font = theme.font
             layoutManager.firstTextView?.textColor = theme.text.color
         }
     }
+    */
     
     //highlight syntax
-      _ = doc.syntaxParser.highlightAll()
+      //_ = doc.syntaxParser.highlightAll()
     }
 
     func setupTextView(textView: NSTextView) {
@@ -67,7 +73,7 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
     }
   
     @objc private func textDidChange(notification: NSNotification) {
-        _ = doc?.syntaxParser.highlightAll()
+      //_ = doc?.syntaxParser.highlightAll()
       if let url = doc?.fileURL{
         CodeEditorPlugin.workbench?.project?.changed(url: url)
       }

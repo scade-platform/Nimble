@@ -4,3 +4,6 @@
 [submodule "Plugins/TabsControl"]
 	path = Nimble/Dependencies/TabsControl
 	url = git@github.com:Kristalev/KPCTabsControl.git
+[submodule "Plugins/CodeEditor/CotEditor"]
+	path = Plugins/CodeEditor/CotEditor
+	url = https://github.com/coteditor/CotEditor.git

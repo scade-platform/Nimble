@@ -32,15 +32,14 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   required init?(coder: NSCoder) {
     
     // set paragraph style values
-    
-    if let theme = ThemeManager.shared.theme {
-      lineHeight = theme.lineHeight
-      tabWidth = theme.tabWidth
-    } else {
+
+//    if let theme = ThemeManager.shared.theme {
+//      lineHeight = theme.lineHeight
+//      tabWidth = theme.tabWidth
+//    } else {
       lineHeight = 1.2
       tabWidth = 4
-    }
-    
+//    }
     super.init(coder: coder)
     
     // workaround for: the text selection highlight can remain between lines (2017-09 macOS 10.13).

@@ -19,11 +19,11 @@ public final class SourceCodeDocument: NSDocument, TextDocument {
     }
     
     let textStorage = NSTextStorage()
-    let syntaxParser: SyntaxParser
+    //let syntaxParser: SyntaxParser
     
     override init() {
-        let style = SyntaxManager.shared.style ?? SyntaxStyle()
-        syntaxParser = SyntaxParser(textStorage: textStorage, style: style)
+        //let style = SyntaxManager.shared.style ?? SyntaxStyle()
+        //syntaxParser = SyntaxParser(textStorage: textStorage, style: style)
     }
   
   private lazy var editorController: CodeEditorController = {

@@ -1,17 +1,34 @@
 //
 //  LayoutManager.swift
 //
-//  CodeEditor
+//  CotEditor
+//  https://coteditor.com
 //
-//  Created by Mark Goldin on 19/06/2019.
-//  Copyright © 2019 SCADE. All rights reserved.
+//  Created by nakamuxu on 2005-01-10.
 //
+//  ---------------------------------------------------------------------------
 //
+//  © 2004-2007 nakamuxu
+//  © 2014-2019 1024jp
+//
+//  Licensed under the Apache License, Version 2.0 (the "License");
+//  you may not use this file except in compliance with the License.
+//  You may obtain a copy of the License at
+//
+//  https://www.apache.org/licenses/LICENSE-2.0
+//
+//  Unless required by applicable law or agreed to in writing, software
+//  distributed under the License is distributed on an "AS IS" BASIS,
+//  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//  See the License for the specific language governing permissions and
+//  limitations under the License.
+//
+
 
 import Cocoa
 import CoreText
 
-final class LayoutManager: NSLayoutManager, ValidationIgnorable {
+final class LayoutManager: NSLayoutManager {
     
     // MARK: Public Properties
     
@@ -58,14 +75,14 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
 //                self.replacementGlyphWidth = invisibleFont.boundingRect(forGlyph: replacementGlyph).width
             }
             
-            invisibleLines = generateInvisibleLines()
+//            invisibleLines = generateInvisibleLines()
         }
     }
     
     var invisiblesColor = NSColor.disabledControlTextColor {
         
         didSet {
-            invisibleLines = generateInvisibleLines()
+//            invisibleLines = generateInvisibleLines()
         }
     }
     
@@ -86,7 +103,7 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
     private var showsNewLine = false
     private var showsFullwidthSpace = false
     
-    private lazy var invisibleLines: InvisibleLines = generateInvisibleLines()
+//    private lazy var invisibleLines: InvisibleLines = generateInvisibleLines()
     
     
     private struct InvisibleLines {
@@ -184,7 +201,8 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
         if NSGraphicsContext.currentContextDrawingToScreen() {
             NSGraphicsContext.current?.shouldAntialias = usesAntialias
         }
-        
+      
+        /*
         // draw invisibles
         if showsInvisibles,
             let context = NSGraphicsContext.current?.cgContext,
@@ -254,16 +272,17 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
                 context.setShouldSmoothFonts(true)
             }
         }
-        
+        */
+      
         super.drawGlyphs(forGlyphRange: glyphsToShow, at: origin)
-        
         NSGraphicsContext.restoreGraphicsState()
     }
     
     
     /// fill background rectangles with a color
     override func fillBackgroundRectArray(_ rectArray: UnsafePointer<NSRect>, count rectCount: Int, forCharacterRange charRange: NSRange, color: NSColor) {
-        
+        //TODO: enable it back
+        /*
         // modify selected highlight color when document is inactive
         // -> Otherwise, `.secondarySelectedControlColor` will be used forcely and text becomes unreadable in a dark theme.
         if NSAppKitVersion.current <= .macOS10_13,
@@ -273,7 +292,7 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
         {
             secondarySelectionColor.setFill()
         }
-    
+        */
         super.fillBackgroundRectArray(rectArray, count: rectCount, forCharacterRange: charRange, color: color)
     }
     
@@ -317,7 +336,7 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
 //        self.showsOtherInvisibles = defaults[.showOtherInvisibleChars]
     }
     
-    
+    /*
     /// cache CTLines for invisible characters drawing
     private func generateInvisibleLines() -> InvisibleLines {
 
@@ -332,14 +351,15 @@ final class LayoutManager: NSLayoutManager, ValidationIgnorable {
                               fullwidthSpace: invisibleLine(.fullwidthSpace, font: fullWidthFont),
                               replacement: invisibleLine(.replacement, font: textFont))
     }
-    
-    
+    */
+  
+    /*
     /// create CTLine for given invisible type
     private func invisibleLine(_ invisible: Invisible, font: NSFont) -> CTLine {
         
         return CTLine.create(string: invisible.usedSymbol, color: invisiblesColor, font: font)
     }
-    
+    */
 }
 
 
