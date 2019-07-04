@@ -47,7 +47,7 @@ class InterfaceBuilderController: NSViewController {
         if let size = pageDocument.svgSize {
           render(svg, size: size)
         } else {
-          render(svg, size: pageView!.frame.size)
+          render(svg, size: pageView!.phoenixView.frame.size)
         }
       }
     }

@@ -48,7 +48,20 @@ public final class PageDocument: NSDocument, Document {
     }
 
     else if url.pathExtension == "svg" {
-      svgRoot = SCDRuntime.parseSvg(url.path) as? SCDSvgBox
+      let tempUrl = URL(fileURLWithPath: NSTemporaryDirectory())
+        .appendingPathComponent(UUID().uuidString)
+
+      let data: Data = """
+        <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:scade="http://www.scade.io/v0.1" contentScriptType="text/ecmascript" zoomAndPan="magnify" contentStyleType="text/css" preserveAspectRatio="xMidYMid meet" version="1.0">
+        <image id="image" width="100%" height="100%" xlink:href="\(url.path)"/>
+        </svg>
+        """.data(using: .utf8)!
+      try data.write(to: tempUrl, options: .atomicWrite)
+
+      svgRoot = SCDRuntime.parseSvg(tempUrl.path) as? SCDSvgBox
+
+      try FileManager.default.removeItem(at: tempUrl)
     }
   }
   
