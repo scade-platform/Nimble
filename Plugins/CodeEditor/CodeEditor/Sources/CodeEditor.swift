@@ -7,9 +7,10 @@
 //
 
 import AppKit
-import NimbleCore
-import CoreGraphics
 import CoreText
+import CoreGraphics
+import NimbleCore
+
 
 public final class CodeEditor: Module {
   public static var pluginClass: Plugin.Type = CodeEditorPlugin.self

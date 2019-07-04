@@ -8,12 +8,13 @@ let package = Package(
     .library(name: "CodeEditorCore", type: .dynamic, targets: ["CodeEditorCore"]),
   ],
   dependencies: [
-    .package(path: "../../../Core")
+    .package(path: "../../../Core"), // NimbleCore
+    .package(url: "https://github.com/1024jp/WFColorCode.git", from: "2.5.0")
   ],
   targets: [
     .target(
       name: "CodeEditorCore",
-      dependencies: ["NimbleCore"]
+      dependencies: ["NimbleCore", "ColorCode"]
     )
   ]
 )

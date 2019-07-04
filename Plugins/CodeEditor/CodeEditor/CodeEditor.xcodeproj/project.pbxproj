@@ -14,9 +14,6 @@
 		42A56DFF22BBD82100983A9B /* TextContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A56DFE22BBD82100983A9B /* TextContainer.swift */; };
 		42D37E5A22BA7E0400A5DDA1 /* Syntaxes in Resources */ = {isa = PBXBuildFile; fileRef = 42D37E5922BA7E0400A5DDA1 /* Syntaxes */; };
 		D722322622C92BC300E471C2 /* LineNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D722322522C92BC300E471C2 /* LineNumberView.swift */; };
-		D722327222CD488700E471C2 /* NSColor+ColorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1A22BA9CAA002142BD /* NSColor+ColorCode.swift */; };
-		D722327322CD488C00E471C2 /* NSColor+HSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1B22BA9CAA002142BD /* NSColor+HSL.swift */; };
-		D722327C22CD4B1800E471C2 /* ColorKeywordMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428C0F1822BA9CA3002142BD /* ColorKeywordMap.swift */; };
 		D722328822CD587700E471C2 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D722328422CD587700E471C2 /* OrderedSet.swift */; };
 		D722328922CD587700E471C2 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D722328522CD587700E471C2 /* Collection.swift */; };
 		D722328A22CD587700E471C2 /* LineEnding.swift in Sources */ = {isa = PBXBuildFile; fileRef = D722328622CD587700E471C2 /* LineEnding.swift */; };
@@ -45,9 +42,6 @@
 /* Begin PBXFileReference section */
 		427E517B22C22B54008573F1 /* CurrentLineHighlighting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentLineHighlighting.swift; sourceTree = "<group>"; };
 		427E517D22C22C1F008573F1 /* CodeEditorTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorTextView.swift; sourceTree = "<group>"; };
-		428C0F1822BA9CA3002142BD /* ColorKeywordMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorKeywordMap.swift; sourceTree = "<group>"; };
-		428C0F1A22BA9CAA002142BD /* NSColor+ColorCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSColor+ColorCode.swift"; sourceTree = "<group>"; };
-		428C0F1B22BA9CAA002142BD /* NSColor+HSL.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSColor+HSL.swift"; sourceTree = "<group>"; };
 		428C0F2022BA9EFE002142BD /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Themes; sourceTree = "<group>"; };
 		42A56DF622BBD1A500983A9B /* LayoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutManager.swift; sourceTree = "<group>"; };
 		42A56DFE22BBD82100983A9B /* TextContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextContainer.swift; sourceTree = "<group>"; };
@@ -109,9 +103,6 @@
 				42A56DFE22BBD82100983A9B /* TextContainer.swift */,
 				42A56DF622BBD1A500983A9B /* LayoutManager.swift */,
 				427E517B22C22B54008573F1 /* CurrentLineHighlighting.swift */,
-				428C0F1822BA9CA3002142BD /* ColorKeywordMap.swift */,
-				428C0F1A22BA9CAA002142BD /* NSColor+ColorCode.swift */,
-				428C0F1B22BA9CAA002142BD /* NSColor+HSL.swift */,
 				D722328222CD564B00E471C2 /* Sources */,
 			);
 			path = CotEditor;
@@ -281,13 +272,10 @@
 				D722329B22CD595F00E471C2 /* MutableCopying.swift in Sources */,
 				D722329E22CD595F00E471C2 /* String+Additions.swift in Sources */,
 				D7D2D59C22B1B9C80017B45D /* CodeEditorController.swift in Sources */,
-				D722327222CD488700E471C2 /* NSColor+ColorCode.swift in Sources */,
 				D722329822CD595F00E471C2 /* NSAttributedString.swift in Sources */,
 				D722329A22CD595F00E471C2 /* NSFont+Size.swift in Sources */,
 				D722329922CD595F00E471C2 /* NSLayoutManager+Range.swift in Sources */,
 				42A56DFF22BBD82100983A9B /* TextContainer.swift in Sources */,
-				D722327C22CD4B1800E471C2 /* ColorKeywordMap.swift in Sources */,
-				D722327322CD488C00E471C2 /* NSColor+HSL.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
