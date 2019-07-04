@@ -7,14 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D722324722CC0F4F00E471C2 /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7CBF8C2222970430088715C /* NimbleCore.framework */; };
-		D722324822CC0F4F00E471C2 /* NimbleCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7CBF8C2222970430088715C /* NimbleCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D722324F22CC0F8B00E471C2 /* Path.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D722324522CC0ED900E471C2 /* Path.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D722325322CC0F8B00E471C2 /* CYaml.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D722324622CC0ED900E471C2 /* CYaml.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D722325522CC0F8B00E471C2 /* Yams.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D722324422CC0ED900E471C2 /* Yams.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		D722326D22CC110E00E471C2 /* CodeEditor.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = D722326B22CC10F800E471C2 /* CodeEditor.plugin */; };
-		D722326E22CC110E00E471C2 /* ProjectNavigator.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = D722326C22CC10FE00E471C2 /* ProjectNavigator.plugin */; };
-		D722326F22CC114B00E471C2 /* CodeEditorCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D722324322CC0ED900E471C2 /* CodeEditorCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D72F9587222CAC3C009F2EC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78BCB05222B4DE300AE0A9C /* AppDelegate.swift */; };
 		D72F9589222CAD09009F2EC3 /* NavigatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F956A222C50A7009F2EC3 /* NavigatorViewController.swift */; };
 		D72F958A222CAD0C009F2EC3 /* WorkbenchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F9579222CA4B5009F2EC3 /* WorkbenchViewController.swift */; };
@@ -24,45 +16,50 @@
 		D791B2E222B053C5001BBA0E /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D791B2E122B053C5001BBA0E /* EditorViewController.swift */; };
 		D7CBF7D3222878F40088715C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D2222878F40088715C /* Assets.xcassets */; };
 		D7CBF7D6222878F40088715C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D4222878F40088715C /* Main.storyboard */; };
+		E42DC02D22CE3C3200486CC1 /* NimbleCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7CBF8C2222970430088715C /* NimbleCore.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E42DC04422CE436200486CC1 /* Path.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC04122CE42A400486CC1 /* Path.framework */; };
+		E42DC04522CE436200486CC1 /* Path.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC04122CE42A400486CC1 /* Path.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E42DC04622CE436C00486CC1 /* CYaml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC04022CE42A100486CC1 /* CYaml.framework */; };
+		E42DC04722CE436C00486CC1 /* CYaml.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC04022CE42A100486CC1 /* CYaml.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E42DC04822CE436C00486CC1 /* CodeEditorCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC03F22CE422E00486CC1 /* CodeEditorCore.framework */; };
+		E42DC04922CE436C00486CC1 /* CodeEditorCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC03F22CE422E00486CC1 /* CodeEditorCore.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E42DC05622CE45BE00486CC1 /* Yams.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC05522CE458500486CC1 /* Yams.framework */; };
+		E42DC05722CE45BE00486CC1 /* Yams.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC05522CE458500486CC1 /* Yams.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E42DC05C22CE49A700486CC1 /* CodeEditor.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC05B22CE498200486CC1 /* CodeEditor.plugin */; };
+		E42DC05D22CE49A700486CC1 /* ProjectNavigator.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC05A22CE497F00486CC1 /* ProjectNavigator.plugin */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		D722324922CC0F4F00E471C2 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				D722326F22CC114B00E471C2 /* CodeEditorCore.framework in Embed Frameworks */,
-				D722324822CC0F4F00E471C2 /* NimbleCore.framework in Embed Frameworks */,
-				D722325522CC0F8B00E471C2 /* Yams.framework in Embed Frameworks */,
-				D722325322CC0F8B00E471C2 /* CYaml.framework in Embed Frameworks */,
-				D722324F22CC0F8B00E471C2 /* Path.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D722326422CC10A100E471C2 /* Embed PlugIns */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				D722326D22CC110E00E471C2 /* CodeEditor.plugin in Embed PlugIns */,
-				D722326E22CC110E00E471C2 /* ProjectNavigator.plugin in Embed PlugIns */,
+				E42DC05C22CE49A700486CC1 /* CodeEditor.plugin in Embed PlugIns */,
+				E42DC05D22CE49A700486CC1 /* ProjectNavigator.plugin in Embed PlugIns */,
 			);
 			name = "Embed PlugIns";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E42DC02E22CE3C3300486CC1 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				E42DC04722CE436C00486CC1 /* CYaml.framework in Embed Frameworks */,
+				E42DC05722CE45BE00486CC1 /* Yams.framework in Embed Frameworks */,
+				E42DC02D22CE3C3200486CC1 /* NimbleCore.framework in Embed Frameworks */,
+				E42DC04522CE436200486CC1 /* Path.framework in Embed Frameworks */,
+				E42DC04922CE436C00486CC1 /* CodeEditorCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		D722324322CC0ED900E471C2 /* CodeEditorCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CodeEditorCore.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Nimble-dqcsoeoknebwlbbxqhgpymthgxfy/Build/Products/Debug/CodeEditorCore.framework"; sourceTree = "<group>"; };
-		D722324422CC0ED900E471C2 /* Yams.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Yams.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Nimble-dqcsoeoknebwlbbxqhgpymthgxfy/Build/Products/Debug/Yams.framework"; sourceTree = "<group>"; };
-		D722324522CC0ED900E471C2 /* Path.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Path.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Nimble-dqcsoeoknebwlbbxqhgpymthgxfy/Build/Products/Debug/Path.framework"; sourceTree = "<group>"; };
-		D722324622CC0ED900E471C2 /* CYaml.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CYaml.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Nimble-dqcsoeoknebwlbbxqhgpymthgxfy/Build/Products/Debug/CYaml.framework"; sourceTree = "<group>"; };
-		D722326B22CC10F800E471C2 /* CodeEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CodeEditor.plugin; path = "../../../../Library/Developer/Xcode/DerivedData/Nimble-dqcsoeoknebwlbbxqhgpymthgxfy/Build/Products/Debug/CodeEditor.plugin"; sourceTree = "<group>"; };
-		D722326C22CC10FE00E471C2 /* ProjectNavigator.plugin */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = ProjectNavigator.plugin; path = "../../../../Library/Developer/Xcode/DerivedData/Nimble-dqcsoeoknebwlbbxqhgpymthgxfy/Build/Products/Debug/ProjectNavigator.plugin"; sourceTree = "<group>"; };
 		D72F956A222C50A7009F2EC3 /* NavigatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorViewController.swift; sourceTree = "<group>"; };
 		D72F9579222CA4B5009F2EC3 /* WorkbenchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchViewController.swift; sourceTree = "<group>"; };
 		D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkbenchSidebar.xib; sourceTree = "<group>"; };
@@ -75,6 +72,12 @@
 		D7CBF7D7222878F40088715C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleWorkbench.swift; sourceTree = "<group>"; };
 		D7CBF8C2222970430088715C /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E42DC03F22CE422E00486CC1 /* CodeEditorCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CodeEditorCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E42DC04022CE42A100486CC1 /* CYaml.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CYaml.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E42DC04122CE42A400486CC1 /* Path.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Path.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E42DC05522CE458500486CC1 /* Yams.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Yams.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E42DC05A22CE497F00486CC1 /* ProjectNavigator.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = ProjectNavigator.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		E42DC05B22CE498200486CC1 /* CodeEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = CodeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +85,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D722324722CC0F4F00E471C2 /* NimbleCore.framework in Frameworks */,
+				E42DC05622CE45BE00486CC1 /* Yams.framework in Frameworks */,
+				E42DC04822CE436C00486CC1 /* CodeEditorCore.framework in Frameworks */,
+				E42DC04422CE436200486CC1 /* Path.framework in Frameworks */,
+				E42DC04622CE436C00486CC1 /* CYaml.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -92,8 +98,8 @@
 		D722326A22CC10E900E471C2 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
-				D722326B22CC10F800E471C2 /* CodeEditor.plugin */,
-				D722326C22CC10FE00E471C2 /* ProjectNavigator.plugin */,
+				E42DC05B22CE498200486CC1 /* CodeEditor.plugin */,
+				E42DC05A22CE497F00486CC1 /* ProjectNavigator.plugin */,
 			);
 			name = Plugins;
 			sourceTree = "<group>";
@@ -152,10 +158,10 @@
 		D7CBF8B1222928300088715C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D722324322CC0ED900E471C2 /* CodeEditorCore.framework */,
-				D722324422CC0ED900E471C2 /* Yams.framework */,
-				D722324622CC0ED900E471C2 /* CYaml.framework */,
-				D722324522CC0ED900E471C2 /* Path.framework */,
+				E42DC05522CE458500486CC1 /* Yams.framework */,
+				E42DC04122CE42A400486CC1 /* Path.framework */,
+				E42DC04022CE42A100486CC1 /* CYaml.framework */,
+				E42DC03F22CE422E00486CC1 /* CodeEditorCore.framework */,
 				D7CBF8C2222970430088715C /* NimbleCore.framework */,
 			);
 			name = Frameworks;
@@ -171,8 +177,8 @@
 				D7CBF7C7222878F10088715C /* Sources */,
 				D7CBF7C8222878F10088715C /* Frameworks */,
 				D7CBF7C9222878F10088715C /* Resources */,
-				D722324922CC0F4F00E471C2 /* Embed Frameworks */,
 				D722326422CC10A100E471C2 /* Embed PlugIns */,
+				E42DC02E22CE3C3300486CC1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
