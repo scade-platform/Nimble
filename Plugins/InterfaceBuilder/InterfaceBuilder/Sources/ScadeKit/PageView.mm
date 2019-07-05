@@ -5,6 +5,7 @@
 
 - (void)awakeFromNib {
   self.phoenixView = phoenix::display::Display::createView();
+  [self.phoenixView.layer setBackgroundColor:[NSColor clearColor].CGColor];
 
   [self addSubview:self.phoenixView];
 }
