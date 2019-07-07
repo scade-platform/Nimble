@@ -48,6 +48,34 @@
                ReferencedContainer = "container:../Plugins/ProjectNavigator/ProjectNavigator/ProjectNavigator.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D7CD74F622B8CC24004C437B"
+               BuildableName = "InterfaceBuilder.plugin"
+               BlueprintName = "InterfaceBuilder"
+               ReferencedContainer = "container:../Plugins/InterfaceBuilder/InterfaceBuilder/InterfaceBuilder.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E42DC0A622D269ED00486CC1"
+               BuildableName = "ImageViewer.plugin"
+               BlueprintName = "ImageViewer"
+               ReferencedContainer = "container:../Plugins/ImageViewer/ImageViewer.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -89,6 +117,12 @@
             ReferencedContainer = "container:Nimble.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "~/Downloads/skype/RenderSVG/src/"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>

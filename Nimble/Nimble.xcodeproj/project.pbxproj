@@ -32,6 +32,7 @@
 		E42DC09122CFA61200486CC1 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC09022CFA61200486CC1 /* ScadeKit.framework */; };
 		E42DC09222CFA63C00486CC1 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC09022CFA61200486CC1 /* ScadeKit.framework */; };
 		E42DC09322CFA63C00486CC1 /* ScadeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC09022CFA61200486CC1 /* ScadeKit.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		E42DC0C322D26C3100486CC1 /* ImageViewer.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC0C222D26C1200486CC1 /* ImageViewer.plugin */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,6 +42,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				E42DC0C322D26C3100486CC1 /* ImageViewer.plugin in Embed PlugIns */,
 				E42DC07A22CFA02500486CC1 /* InterfaceBuilder.plugin in Embed PlugIns */,
 				E42DC05C22CE49A700486CC1 /* CodeEditor.plugin in Embed PlugIns */,
 				E42DC05D22CE49A700486CC1 /* ProjectNavigator.plugin in Embed PlugIns */,
@@ -89,6 +91,7 @@
 		E42DC07922CFA01100486CC1 /* InterfaceBuilder.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = InterfaceBuilder.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42DC08122CFA32F00486CC1 /* libphoenix.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libphoenix.dylib; path = "../../build/ScadeSDK-Xcode/lib/macos/libphoenix.dylib"; sourceTree = SOURCE_ROOT; };
 		E42DC09022CFA61200486CC1 /* ScadeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScadeKit.framework; path = "../../build/ScadeSDK-Xcode/lib/macos/ScadeKit.framework"; sourceTree = SOURCE_ROOT; };
+		E42DC0C222D26C1200486CC1 /* ImageViewer.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = ImageViewer.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +114,7 @@
 		D722326A22CC10E900E471C2 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				E42DC0C222D26C1200486CC1 /* ImageViewer.plugin */,
 				E42DC07922CFA01100486CC1 /* InterfaceBuilder.plugin */,
 				E42DC05B22CE498200486CC1 /* CodeEditor.plugin */,
 				E42DC05A22CE497F00486CC1 /* ProjectNavigator.plugin */,
