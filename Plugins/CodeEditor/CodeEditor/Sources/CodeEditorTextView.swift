@@ -17,11 +17,8 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   
   var needsUpdateLineHighlight = true
   var lineHighLightRects: [NSRect] = []
-  
-  //TODO: load from themes
-  private(set) var lineHighLightColor: NSColor? = NSColor(colorCode: "#2F3239")
-  private(set) var selectionBackgroundColor: NSColor? = NSColor(colorCode: "#515B70")
-  
+  var lineHighLightColor: NSColor? = nil
+    
   // MARK: -
   
   var lineNumberView: LineNumberView? = nil
@@ -76,7 +73,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     //TODO: setup by applying themes
     self.linkTextAttributes = [.cursor: NSCursor.pointingHand,
                                .underlineStyle: NSUnderlineStyle.single.rawValue]    
-    self.selectedTextAttributes = [.backgroundColor: selectionBackgroundColor ?? .selectedTextBackgroundColor]
+
     
     
     self.invalidateDefaultParagraphStyle()
@@ -288,5 +285,6 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     self.needsUpdateLineHighlight = true
     self.lineNumberView?.needsDisplay = true
   }
+  
 }
 

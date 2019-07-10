@@ -5,6 +5,7 @@
 //  Created by Grigory Markin on 16.03.19.
 //
 
+import Foundation
 @_exported import Path
 
 
@@ -16,6 +17,10 @@ public class FileSystemElement {
   
   public var name: String {
     return path.basename()
+  }
+  
+  public var `extension`: String {
+    return path.extension
   }
   
   required public init(path: Path) {
@@ -39,3 +44,10 @@ extension FileSystemElement: Hashable {
   }
 }
 
+
+public extension URL {
+  var file: File? {
+    guard let path = Path(url: self) else { return nil }
+    return File(path: path)
+  }
+}

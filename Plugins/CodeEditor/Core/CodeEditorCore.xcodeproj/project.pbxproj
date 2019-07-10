@@ -7,7 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D7C590B022CE9ACF00ACD4BF /* Grammar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C590AF22CE9ACF00ACD4BF /* Grammar.swift */; };
+		D7C590B222CE9AE100ACD4BF /* ScopeExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C590B122CE9AE100ACD4BF /* ScopeExtractor.swift */; };
+		D7C590FC22D27D9900ACD4BF /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C590FB22D27D9900ACD4BF /* Language.swift */; };
 		D7EAC7D622CD694C00B7701E /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EAC7D522CD694C00B7701E /* Core.swift */; };
+		D7EAC7D822CE6E8100B7701E /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EAC7D722CE6E8100B7701E /* ColorTheme.swift */; };
 		OBJ_102 /* TextDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* TextDocument.swift */; };
 		OBJ_103 /* TextDocumentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* TextDocumentDelegate.swift */; };
 		OBJ_105 /* ColorCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "ColorCode::ColorCode::Product" /* ColorCode.framework */; };
@@ -140,7 +144,11 @@
 /* Begin PBXFileReference section */
 		"CodeEditorCore::CodeEditorCore::Product" /* CodeEditorCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CodeEditorCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		"ColorCode::ColorCode::Product" /* ColorCode.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ColorCode.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7C590AF22CE9ACF00ACD4BF /* Grammar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grammar.swift; sourceTree = "<group>"; };
+		D7C590B122CE9AE100ACD4BF /* ScopeExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopeExtractor.swift; sourceTree = "<group>"; };
+		D7C590FB22D27D9900ACD4BF /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		D7EAC7D522CD694C00B7701E /* Core.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core.swift; sourceTree = "<group>"; };
+		D7EAC7D722CE6E8100B7701E /* ColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTheme.swift; sourceTree = "<group>"; };
 		"NimbleCore::NimbleCore::Product" /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_11 /* TextDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextDocument.swift; sourceTree = "<group>"; };
 		OBJ_12 /* TextDocumentDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextDocumentDelegate.swift; sourceTree = "<group>"; };
@@ -255,10 +263,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D7C590FA22D27D6800ACD4BF /* Language */ = {
+			isa = PBXGroup;
+			children = (
+				D7C590AF22CE9ACF00ACD4BF /* Grammar.swift */,
+				D7C590B122CE9AE100ACD4BF /* ScopeExtractor.swift */,
+				D7C590FB22D27D9900ACD4BF /* Language.swift */,
+			);
+			path = Language;
+			sourceTree = "<group>";
+		};
 		OBJ_10 /* CodeEditorCore */ = {
 			isa = PBXGroup;
 			children = (
+				D7C590FA22D27D6800ACD4BF /* Language */,
 				D7EAC7D522CD694C00B7701E /* Core.swift */,
+				D7EAC7D722CE6E8100B7701E /* ColorTheme.swift */,
 				OBJ_11 /* TextDocument.swift */,
 				OBJ_12 /* TextDocumentDelegate.swift */,
 			);
@@ -404,7 +424,7 @@
 			path = .build/checkouts/Yams/Sources/Yams;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -414,7 +434,6 @@
 				OBJ_14 /* Dependencies */,
 				OBJ_75 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_64 /* Path.swift 0.16.3 */ = {
@@ -672,7 +691,7 @@
 				English,
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_75 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -697,8 +716,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				D7C590B022CE9ACF00ACD4BF /* Grammar.swift in Sources */,
 				D7EAC7D622CD694C00B7701E /* Core.swift in Sources */,
+				D7EAC7D822CE6E8100B7701E /* ColorTheme.swift in Sources */,
 				OBJ_102 /* TextDocument.swift in Sources */,
+				D7C590B222CE9AE100ACD4BF /* ScopeExtractor.swift in Sources */,
+				D7C590FC22D27D9900ACD4BF /* Language.swift in Sources */,
 				OBJ_103 /* TextDocumentDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

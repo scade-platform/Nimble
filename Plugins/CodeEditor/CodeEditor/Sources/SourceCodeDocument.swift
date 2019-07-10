@@ -11,20 +11,9 @@ import NimbleCore
 import CodeEditorCore
 
 public final class SourceCodeDocument: NSDocument, TextDocument {
-    var content: String = "" {
-        didSet {
-            let string = content.replacingLineEndings(with: .lf)
-            textStorage.replaceCharacters(in: textStorage.range, with: string)
-        }
-    }
-    
-    let textStorage = NSTextStorage()
-    //let syntaxParser: SyntaxParser
-    
-    override init() {
-        //let style = SyntaxManager.shared.style ?? SyntaxStyle()
-        //syntaxParser = SyntaxParser(textStorage: textStorage, style: style)
-    }
+  let textStorage = NSTextStorage()
+  
+  public var language: Language?
   
   private lazy var editorController: CodeEditorController = {
     let controller = CodeEditorController.loadFromNib()
@@ -34,12 +23,12 @@ public final class SourceCodeDocument: NSDocument, TextDocument {
   
   public var contentViewController: NSViewController? { return editorController }
   
-  // TODO: language detection
   public var languageId: String {
-    if self.fileURL?.pathExtension == .some("swift") {
-      return "swift"
+    if let lang = language {
+      return lang.id
     }
-    return ""
+    guard let id = self.fileURL?.file?.language?.id else { return "" }
+    return id
   }
   
   public lazy var delegates: [TextDocumentDelegate] = {
@@ -57,7 +46,8 @@ public final class SourceCodeDocument: NSDocument, TextDocument {
     guard let str =  String(bytes: data, encoding: .utf8) else {
       throw NSError.init(domain: "NimbleCodeEditor", code: 1, userInfo: ["FileUrl": self.fileURL ?? ""])
     }
-    content = str
+    let content = str.replacingLineEndings(with: .lf)
+    textStorage.replaceCharacters(in: textStorage.range, with: content)
   }
   
   public override func data(ofType typeName: String) throws -> Data {

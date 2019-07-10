@@ -1,0 +1,60 @@
+name: Default-Dark
+settings:
+  - settings:
+      foreground: "#ffffff"
+      background: "#1f1f24"
+      caret: "#000000"
+      lineHighlight: "#2f3239"
+      selection: "#515f70"
+      invisibles: "#808080"
+
+  - name: Comment
+    scope: comment
+    settings:
+      foreground: "#6c7886"
+
+  - name: String
+    scope: string
+    settings:
+      foreground: "#fd695d"
+
+  - name: Number
+    scope: constant.numeric
+    settings:
+      foreground: "#9586f5"
+
+  - name: Keyword
+    scope: keyword
+    settings:
+      foreground: "#fb60a2"
+
+  - name: Value
+    scope: value
+    settings:
+      foreground: "#fb60a2"
+
+  - name: Type
+    scope: entity.name
+    settings:
+      foreground:  "#75b492"
+
+  - name: Attribute
+    scope: entity.other.attribute-name
+    settings:
+      foreground: "#fb60a2"
+
+  - name: Variable
+    scope: variable
+    settings:
+      foreground: "#6b6b79"
+
+  - name: Character
+    scope: constant.character
+    settings:
+      foreground: "#9586f5"
+
+  - name: Function
+    scope: variable.function
+    settings:
+      foreground: "#683821"
+

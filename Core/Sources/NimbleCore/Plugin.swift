@@ -9,17 +9,27 @@
 import Foundation
 
 
-public protocol Module {
+public protocol Module: class {
   static var pluginClass: Plugin.Type { get }
 }
 
 
-public protocol Plugin {
+public protocol Plugin: class {
   init?()
-  
   func activate(workbench: Workbench) -> Void
-  
   func deactivate() -> Void
+}
+
+
+public extension Plugin {
+  var bundle: Bundle {
+    return Bundle(for: type(of: self))
+  }
+  
+  var resourcePath: Path? {
+    guard let path = bundle.resourcePath else { return nil }
+    return Path(path)
+  }  
 }
 
 

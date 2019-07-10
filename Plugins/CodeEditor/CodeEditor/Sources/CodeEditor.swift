@@ -9,8 +9,9 @@
 import AppKit
 import CoreText
 import CoreGraphics
-import NimbleCore
 
+import NimbleCore
+import CodeEditorCore
 
 public final class CodeEditor: Module {
   public static var pluginClass: Plugin.Type = CodeEditorPlugin.self
@@ -21,8 +22,13 @@ open class CodeEditorPlugin: Plugin {
   required public init() {
     DocumentManager.shared.registerDocumentClass(SourceCodeDocument.self)
     
-//    ThemeManager.shared.loadDefaultDarkTheme()
-//    SyntaxManager.shared.loadSwiftSyntax()
+    if let path = self.resourcePath {
+      ColorThemeManager.shared.load(from: path/"Themes")
+    }
+    
+    // TODO: move to a configuration file
+    
+    
     
     loadCustomFonts()
   }
@@ -38,9 +44,8 @@ open class CodeEditorPlugin: Plugin {
   private func loadCustomFonts() {
     var fonts: [String] = []
     
-    let bundle = Bundle(for: type(of: self))
-    fonts.append(contentsOf: bundle.paths(forResourcesOfType: ".otf", inDirectory: "Fonts"))
-    fonts.append(contentsOf: bundle.paths(forResourcesOfType: ".ttf", inDirectory: "Fonts"))
+    fonts.append(contentsOf: self.bundle.paths(forResourcesOfType: ".otf", inDirectory: "Fonts"))
+    fonts.append(contentsOf: self.bundle.paths(forResourcesOfType: ".ttf", inDirectory: "Fonts"))
     
     for fontPath in fonts {
       guard let path = Path(fontPath) else { continue }

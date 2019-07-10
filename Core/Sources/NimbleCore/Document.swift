@@ -17,11 +17,7 @@ public protocol Document where Self: NSDocument {
 }
 
 
-public extension Document {
-  init(_ file: File) throws {
-    try self.init(contentsOf: file.path.url, ofType: file.uti)
-  }
-  
+public extension Document {  
   static func isDefault(for file: File) -> Bool {
     return false
   }
@@ -74,8 +70,8 @@ public class DocumentManager {
     }
     
     guard let docClass = selectDocumentClass(for: file) else {return nil}
-    
-    guard let doc = try? docClass.init(file) else {
+        
+    guard let doc = try? docClass.init(contentsOf: file.path.url, ofType: file.uti) else {
       return nil
     }
     openedDocuments[file] = doc

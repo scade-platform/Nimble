@@ -30,6 +30,7 @@
 		D72232A022CD595F00E471C2 /* String+Counting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D722329522CD595F00E471C2 /* String+Counting.swift */; };
 		D72232A222CD59E800E471C2 /* NSString.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72232A122CD59E800E471C2 /* NSString.swift */; };
 		D72232A422CD5BF200E471C2 /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72232A322CD5BF200E471C2 /* String+Localization.swift */; };
+		D773AD3322D3812A003A12A5 /* CodeEditorTextView+ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773AD3222D3812A003A12A5 /* CodeEditorTextView+ColorTheme.swift */; };
 		D7AD216622CA6D760062C835 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = D7AD216522CA6D760062C835 /* Fonts */; };
 		D7BEC82822B91DDF00A8F48B /* CodeEditorCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7BEC82722B91DDF00A8F48B /* CodeEditorCore.framework */; };
 		D7D2D59422B1B59E0017B45D /* CodeEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D59322B1B59E0017B45D /* CodeEditor.swift */; };
@@ -63,6 +64,7 @@
 		D722329522CD595F00E471C2 /* String+Counting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Counting.swift"; path = "../../../CotEditor/CotEditor/Sources/String+Counting.swift"; sourceTree = "<group>"; };
 		D72232A122CD59E800E471C2 /* NSString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSString.swift; path = ../../../CotEditor/CotEditor/Sources/NSString.swift; sourceTree = "<group>"; };
 		D72232A322CD5BF200E471C2 /* String+Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Localization.swift"; path = "../../../CotEditor/CotEditor/Sources/String+Localization.swift"; sourceTree = "<group>"; };
+		D773AD3222D3812A003A12A5 /* CodeEditorTextView+ColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorTextView+ColorTheme.swift"; sourceTree = "<group>"; };
 		D7AD216522CA6D760062C835 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fonts; sourceTree = "<group>"; };
 		D7BEC82722B91DDF00A8F48B /* CodeEditorCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CodeEditorCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7D2D58922B1B48C0017B45D /* CodeEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,6 +133,14 @@
 			name = Sources;
 			sourceTree = "<group>";
 		};
+		D773AD3122D37DC8003A12A5 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D773AD3222D3812A003A12A5 /* CodeEditorTextView+ColorTheme.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		D7D2D58022B1B48C0017B45D = {
 			isa = PBXGroup;
 			children = (
@@ -167,6 +177,7 @@
 				D7D2D5A222B28F020017B45D /* SourceCodeDocument.swift */,
 				D7D2D59B22B1B9C80017B45D /* CodeEditorController.xib */,
 				D722322522C92BC300E471C2 /* LineNumberView.swift */,
+				D773AD3122D37DC8003A12A5 /* Extensions */,
 				D722328122CD4E7A00E471C2 /* CotEditor */,
 			);
 			path = Sources;
@@ -269,6 +280,7 @@
 				D722328A22CD587700E471C2 /* LineEnding.swift in Sources */,
 				D722329D22CD595F00E471C2 /* Geometry.swift in Sources */,
 				D722322622C92BC300E471C2 /* LineNumberView.swift in Sources */,
+				D773AD3322D3812A003A12A5 /* CodeEditorTextView+ColorTheme.swift in Sources */,
 				D722329B22CD595F00E471C2 /* MutableCopying.swift in Sources */,
 				D722329E22CD595F00E471C2 /* String+Additions.swift in Sources */,
 				D7D2D59C22B1B9C80017B45D /* CodeEditorController.swift in Sources */,
