@@ -114,7 +114,7 @@ public final class ColorTheme: Decodable {
       
       // Decode scope
       self.name = try container.decode(String.self, forKey: .name)
-      self.scope = try container.decode(GrammarScope.self, forKey: .scope)
+      self.scope = GrammarScope(try container.decode(String.self, forKey: .scope))
       
       // Decode settings
       let settings = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .settings)

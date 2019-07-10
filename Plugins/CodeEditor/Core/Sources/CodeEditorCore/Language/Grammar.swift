@@ -23,7 +23,7 @@ public final class GrammarDefinition: Grammar {
   public required init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     
-    self.scope = try container.decode(GrammarScope?.self, forKey: .scopeName)
+    self.scope = try GrammarScope(container.decode(String?.self, forKey: .scopeName))
     self.fileTypes = try container.decode([String]?.self, forKey: .fileTypes) ?? []
     self.foldingStartMarker = try container.decode(MatchRegex?.self, forKey: .foldingStartMarker)
     self.foldingEndMarker = try container.decode(MatchRegex?.self, forKey: .foldingEndMarker)
@@ -35,19 +35,62 @@ public final class GrammarDefinition: Grammar {
 
 // MARK: Scope
 
-public struct GrammarScope: Decodable {
-  public var scopeName: String
+public struct GrammarScope {
+  public var value: String
   
-  public init(scopeName: String) {
-    self.scopeName = scopeName
+  public init(_ value: String) {
+    self.value = value
   }
   
-  public init(from decoder: Decoder) throws {
-    self.scopeName = try decoder.singleValueContainer().decode(String.self)
+  public init?(_ value: String?) {
+    guard let val = value else { return nil }
+    self.value = val
   }
 }
 
-// MARK: Grammar content
+extension GrammarScope: Hashable {
+  public static func == (lhs: GrammarScope, rhs: GrammarScope) -> Bool {
+    return lhs.value == rhs.value
+  }
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(value)
+  }
+}
+
+
+// MARK: References
+public enum GrammarRef {
+  case this
+  case base
+  case local(String)
+  case global(GrammarScope, String?)
+  
+  public init?(_ value: String) {
+    switch value {
+    case "$self":
+      self = .this
+    case "$base":
+      self = .base
+    default:
+      if let sep = value.index(of: "#") {
+        let key = String(value.suffix(from: value.index(after: sep)))
+        let scope = String(value.prefix(upTo: sep))
+        
+        if scope == "" {
+          self = .local(key)
+        } else {
+          self = .global(GrammarScope(scope), key)
+        }
+      } else if value != "" {
+        self = .global(GrammarScope(value), nil)
+      } else {
+        return nil
+      }
+    }
+  }
+}
+
+// MARK: Content
 
 public class Grammar: Decodable {
   private enum CodingKeys: String, CodingKey {
@@ -69,7 +112,7 @@ public class Grammar: Decodable {
   
   public enum Pattern: Decodable {
     private enum CodingKeys: String, CodingKey {
-      case include, match, end, while_key = "while"
+      case include, match, end, `while`
     }
     
     case include(IncludePattern)
@@ -85,7 +128,7 @@ public class Grammar: Decodable {
         self = try .match(.init(from: decoder))
       } else if (container.contains(.end)) {
         self = try .beginEnd(.init(from: decoder))
-      } else if (container.contains(.while_key)) {
+      } else if (container.contains(.while)) {
         self = try .beginWhile(.init(from: decoder))
       } else {
         throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath,
@@ -119,11 +162,11 @@ public class Grammar: Decodable {
       case include
     }
     
-    public let include: String
+    public let ref: GrammarRef?
     
     public required init(from decoder: Decoder) throws {
       let container = try decoder.container(keyedBy: CodingKeys.self)
-      self.include = try container.decode(String.self, forKey: .include)
+      self.ref = try GrammarRef(container.decode(String.self, forKey: .include))
       try super.init(from: decoder)
     }
   }
@@ -205,11 +248,11 @@ public class Grammar: Decodable {
   
   public class BeginWhilePattern: RangeMatchPattern {
     private enum CodingKeys: String, CodingKey {
-      case begin, while_key = "while", beginCapture, whileCapture
+      case begin, `while`, beginCapture, whileCapture
     }
     
     public let begin: MatchRegex
-    public let while_: MatchRegex
+    public let `while`: MatchRegex
     
     public let beginCapture: [String: MatchCapture]
     public let whileCapture: [String: MatchCapture]
@@ -217,7 +260,7 @@ public class Grammar: Decodable {
     public required init(from decoder: Decoder) throws {
       let container = try decoder.container(keyedBy: CodingKeys.self)
       self.begin = try container.decode(MatchRegex.self, forKey: .begin)
-      self.while_ = try container.decode(MatchRegex.self, forKey: .while_key)
+      self.while = try container.decode(MatchRegex.self, forKey: .while)
       self.beginCapture = try container.decode([String: MatchCapture]?.self, forKey: .beginCapture) ?? [:]
       self.whileCapture = try container.decode([String: MatchCapture]?.self, forKey: .whileCapture) ?? [:]
       try super.init(from: decoder)

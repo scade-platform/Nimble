@@ -33,6 +33,10 @@ public class LanguageGrammar: Decodable {
     ".tmLanguage.json": JSONDecoder.self
   ]
   
+  public lazy var scope: GrammarScope = {
+    GrammarScope(self.scopeName)
+  }()
+  
   public lazy var definition: GrammarDefinition? = {
     guard let decoder = LanguageGrammar.decoders.first(
       where: {self.path.basename().hasSuffix($0.key)})?.value else { return nil}
@@ -45,6 +49,7 @@ public class LanguageGrammar: Decodable {
 public final class LanguageManager {
   public private(set) var languages: [Language] = []
   public private(set) var grammars: [LanguageGrammar] = []
+  public private(set) var scopes: [GrammarScope: Grammar] = [:]
   
   public static let shared: LanguageManager = LanguageManager()
   
@@ -54,6 +59,7 @@ public final class LanguageManager {
   
   public func add(grammar: LanguageGrammar) {
     self.grammars.append(grammar)
+    self.scopes[grammar.scope] = grammar.definition
   }
   
   public func findLanguage(forExt ext: String) -> Language? {
