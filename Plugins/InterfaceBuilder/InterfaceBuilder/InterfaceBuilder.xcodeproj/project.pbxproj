@@ -12,8 +12,8 @@
 		D7CD750722B8CCF5004C437B /* PageDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CD750622B8CCF5004C437B /* PageDocument.swift */; };
 		D7CD750A22B8CDCC004C437B /* InterfaceBuilderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CD750822B8CDCC004C437B /* InterfaceBuilderController.swift */; };
 		D7CD750B22B8CDCC004C437B /* InterfaceBuilderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7CD750922B8CDCC004C437B /* InterfaceBuilderController.xib */; };
-		E42DC07422CF9D5C00486CC1 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC07322CF9D5C00486CC1 /* ScadeKit.framework */; };
-		E42DC07622CF9E8900486CC1 /* libphoenix.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC07522CF9E8900486CC1 /* libphoenix.dylib */; };
+		E42DC0CE22D8AC4100486CC1 /* libphoenix.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC0CC22D8AC4100486CC1 /* libphoenix.dylib */; };
+		E42DC0CF22D8AC4100486CC1 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC0CD22D8AC4100486CC1 /* ScadeKit.framework */; };
 		E451B18A22B91A4E006185B7 /* PageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E451B18922B91A4E006185B7 /* PageView.mm */; };
 		E451B2FE22C0E919006185B7 /* WidgetVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2DD22C0E919006185B7 /* WidgetVisitor.swift */; };
 		E451B30022C4B69F006185B7 /* WidgetHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2FF22C4B69F006185B7 /* WidgetHighlighter.swift */; };
@@ -28,8 +28,8 @@
 		D7CD750622B8CCF5004C437B /* PageDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDocument.swift; sourceTree = "<group>"; };
 		D7CD750822B8CDCC004C437B /* InterfaceBuilderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceBuilderController.swift; sourceTree = "<group>"; };
 		D7CD750922B8CDCC004C437B /* InterfaceBuilderController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InterfaceBuilderController.xib; sourceTree = "<group>"; };
-		E42DC07322CF9D5C00486CC1 /* ScadeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScadeKit.framework; path = "../../../../build/ScadeSDK-Xcode/lib/macos/ScadeKit.framework"; sourceTree = "<group>"; };
-		E42DC07522CF9E8900486CC1 /* libphoenix.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libphoenix.dylib; path = "../../../../build/ScadeSDK-Xcode/lib/macos/libphoenix.dylib"; sourceTree = "<group>"; };
+		E42DC0CC22D8AC4100486CC1 /* libphoenix.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libphoenix.dylib; sourceTree = "<group>"; };
+		E42DC0CD22D8AC4100486CC1 /* ScadeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ScadeKit.framework; sourceTree = "<group>"; };
 		E451B18722B91A4E006185B7 /* InterfaceBuilderBridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InterfaceBuilderBridging.h; sourceTree = "<group>"; };
 		E451B18822B91A4E006185B7 /* PageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageView.h; sourceTree = "<group>"; };
 		E451B18922B91A4E006185B7 /* PageView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PageView.mm; sourceTree = "<group>"; };
@@ -44,9 +44,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E42DC07622CF9E8900486CC1 /* libphoenix.dylib in Frameworks */,
-				E42DC07422CF9D5C00486CC1 /* ScadeKit.framework in Frameworks */,
+				E42DC0CE22D8AC4100486CC1 /* libphoenix.dylib in Frameworks */,
 				D7CD750522B8CC6F004C437B /* NimbleCore.framework in Frameworks */,
+				E42DC0CF22D8AC4100486CC1 /* ScadeKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,6 +56,7 @@
 		D7CD74EE22B8CC24004C437B = {
 			isa = PBXGroup;
 			children = (
+				E42DC0CB22D8AC4100486CC1 /* Libraries */,
 				D7CD750022B8CC37004C437B /* Sources */,
 				D7CD74F922B8CC24004C437B /* InterfaceBuilder */,
 				D7CD74F822B8CC24004C437B /* Products */,
@@ -96,11 +97,18 @@
 		D7CD750322B8CC6F004C437B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E42DC07522CF9E8900486CC1 /* libphoenix.dylib */,
-				E42DC07322CF9D5C00486CC1 /* ScadeKit.framework */,
 				D7CD750422B8CC6F004C437B /* NimbleCore.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E42DC0CB22D8AC4100486CC1 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				E42DC0CC22D8AC4100486CC1 /* libphoenix.dylib */,
+				E42DC0CD22D8AC4100486CC1 /* ScadeKit.framework */,
+			);
+			path = Libraries;
 			sourceTree = "<group>";
 		};
 		E451B16622B919D3006185B7 /* ScadeKit */ = {
@@ -313,7 +321,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "../../../../build/ScadeSDK-Xcode/lib/macos/";
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Libraries";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					PHOENIX_USE_QUARTZ_RENDER,
 					SCADE_PHOENIX_SUPPORT,
@@ -334,7 +342,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "../../../../build/ScadeSDK-Xcode/lib/macos/";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Libraries";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"'-std=gnu++1z'",
@@ -355,7 +363,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "../../../../build/ScadeSDK-Xcode/lib/macos/";
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Libraries";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					PHOENIX_USE_QUARTZ_RENDER,
 					SCADE_PHOENIX_SUPPORT,
@@ -376,7 +384,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				LIBRARY_SEARCH_PATHS = "../../../../build/ScadeSDK-Xcode/lib/macos/";
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/Libraries";
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"'-std=gnu++1z'",
