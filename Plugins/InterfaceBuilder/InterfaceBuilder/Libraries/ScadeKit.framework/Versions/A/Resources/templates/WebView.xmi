@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:com.scade.sdk.view.widgets.native="http://scade.com/sdk/view/widgets/native" xmlns:svg="http://scade.com/svg/draw">
-  <com.scade.sdk.view.widgets.native:WebView name="webView" drawing="/1">
-    <size width="100" height="100"/>
-  </com.scade.sdk.view.widgets.native:WebView>
-  <svg:Group/>
-</xmi:XMI>
