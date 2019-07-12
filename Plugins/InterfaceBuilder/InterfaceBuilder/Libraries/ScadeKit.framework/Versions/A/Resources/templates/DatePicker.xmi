@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.scade.sdk.expr="com.scade.sdk.expr" xmlns:com.scade.sdk.view="http://scade.com/sdk/view/widgets" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:svg="http://scade.com/svg/draw" xmlns:svg_1="http://scade.com/svg/constraints" xmlns:svg_2="http://scade.com/svg/style/color">
+  <com.scade.sdk.view:DatePicker name="datepicker" drawing="/1" date="2019-05-21T12:15:43.590+0700">
+    <size width="320" height="200"/>
+  </com.scade.sdk.view:DatePicker>
+  <svg:Group>
+    <children xsi:type="svg:Box" attributes="{&quot;template-id&quot;:&quot;background&quot;}">
+      <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.h">
+        <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Box/height"/>
+        <expression xsi:type="com.scade.sdk.expr:Variable" name="size">
+          <path>h</path>
+        </expression>
+      </constraints>
+      <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w">
+        <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Box/width"/>
+        <expression xsi:type="com.scade.sdk.expr:Variable" name="size">
+          <path>w</path>
+        </expression>
+      </constraints>
+    </children>
+    <children xsi:type="svg:Group" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0">
+      <children xsi:type="svg:Rect" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0">
+        <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w">
+          <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Rect/width"/>
+          <expression xsi:type="com.scade.sdk.expr:Variable" name="size">
+            <path>w</path>
+          </expression>
+        </constraints>
+        <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.h">
+          <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Rect/height"/>
+          <expression xsi:type="com.scade.sdk.expr:Variable" name="size">
+            <path>h</path>
+          </expression>
+        </constraints>
+        <fill xsi:type="svg_2:RGBColor" r="1.0" g="1.0" b="1.0"/>
+        <width value="320.0"/>
+        <height value="200.0"/>
+        <rx value="5.0"/>
+        <ry value="5.0"/>
+      </children>
+      <children xsi:type="svg:Group" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0">
+        <children xsi:type="svg:Group" attributes="{&quot;template-id&quot;:&quot;monthColumn&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0">
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row1month&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="19" fontName="HelveticaNeue-Light" text="September">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 - 120">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Minus">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="120.0"/>
+              </expression>
+            </constraints>
+            <fill xsi:type="svg_2:RGBColor" r="0.77254903" g="0.77254903" b="0.77254903"/>
+            <x value="40.0"/>
+            <y value="25.0"/>
+          </children>
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row2month&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="19" fontName="HelveticaNeue-Light" text="October">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 - 120">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Minus">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="120.0"/>
+              </expression>
+            </constraints>
+            <fill xsi:type="svg_2:RGBColor" r="0.77254903" g="0.77254903" b="0.77254903"/>
+            <x value="40.0"/>
+            <y value="50.0"/>
+          </children>
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row3month&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="19" fontName="HelveticaNeue-Light" text="November">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 - 120">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Minus">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="120.0"/>
+              </expression>
+            </constraints>
+            <fill xsi:type="svg_2:RGBColor" r="0.77254903" g="0.77254903" b="0.77254903"/>
+            <x value="40.0"/>
+            <y value="75.0"/>
+          </children>
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row4month&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="21" fontName="HelveticaNeue-Light" text="December">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 - 120">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Minus">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="120.0"/>
+              </expression>
+            </constraints>
+            <x value="40.0"/>
+            <y value="106.0"/>
+          </children>
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row5month&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="19" fontName="HelveticaNeue-Light" text="January">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 - 120">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Minus">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="120.0"/>
+              </expression>
+            </constraints>
+            <fill xsi:type="svg_2:RGBColor" r="0.77254903" g="0.77254903" b="0.77254903"/>
+            <x value="40.0"/>
+            <y value="135.0"/>
+          </children>
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row6month&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="19" fontName="HelveticaNeue-Light" text="February">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 - 120">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Minus">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="120.0"/>
+              </expression>
+            </constraints>
+            <fill xsi:type="svg_2:RGBColor" r="0.77254903" g="0.77254903" b="0.77254903"/>
+            <x value="40.0"/>
+            <y value="160.0"/>
+          </children>
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row7month&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="19" fontName="HelveticaNeue-Light" text="March">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 - 120">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Minus">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="120.0"/>
+              </expression>
+            </constraints>
+            <fill xsi:type="svg_2:RGBColor" r="0.77254903" g="0.77254903" b="0.77254903"/>
+            <x value="40.0"/>
+            <y value="185.0"/>
+          </children>
+        </children>
+        <children xsi:type="svg:Group" attributes="{&quot;template-id&quot;:&quot;dayColumn&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0">
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row1day&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="19" fontName="HelveticaNeue-Light" text="11" anchor="end">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 + 20">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Sum">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="20.0"/>
+              </expression>
+            </constraints>
+            <fill xsi:type="svg_2:RGBColor" r="0.77254903" g="0.77254903" b="0.77254903"/>
+            <x value="190.0"/>
+            <y value="25.0"/>
+          </children>
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row2day&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="19" fontName="HelveticaNeue-Light" text="12" anchor="end">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 + 20">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Sum">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="20.0"/>
+              </expression>
+            </constraints>
+            <fill xsi:type="svg_2:RGBColor" r="0.77254903" g="0.77254903" b="0.77254903"/>
+            <x value="190.0"/>
+            <y value="50.0"/>
+          </children>
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row3day&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="19" fontName="HelveticaNeue-Light" text="1" anchor="end">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 + 20">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Sum">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="20.0"/>
+              </expression>
+            </constraints>
+            <fill xsi:type="svg_2:RGBColor" r="0.77254903" g="0.77254903" b="0.77254903"/>
+            <x value="190.0"/>
+            <y value="75.0"/>
+          </children>
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row4day&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="21" fontName="HelveticaNeue-Light" text="2" anchor="end">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 + 20">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Sum">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="20.0"/>
+              </expression>
+            </constraints>
+            <x value="191.0"/>
+            <y value="106.0"/>
+          </children>
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row5day&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="19" fontName="HelveticaNeue-Light" text="3" anchor="end">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 + 20">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Sum">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="20.0"/>
+              </expression>
+            </constraints>
+            <fill xsi:type="svg_2:RGBColor" r="0.77254903" g="0.77254903" b="0.77254903"/>
+            <x value="190.0"/>
+            <y value="135.0"/>
+          </children>
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row6day&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="19" fontName="HelveticaNeue-Light" text="4" anchor="end">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 + 20">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Sum">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="20.0"/>
+              </expression>
+            </constraints>
+            <fill xsi:type="svg_2:RGBColor" r="0.77254903" g="0.77254903" b="0.77254903"/>
+            <x value="190.0"/>
+            <y value="160.0"/>
+          </children>
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row7day&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="19" fontName="HelveticaNeue-Light" text="5" anchor="end">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 + 20">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Sum">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="20.0"/>
+              </expression>
+            </constraints>
+            <fill xsi:type="svg_2:RGBColor" r="0.77254903" g="0.77254903" b="0.77254903"/>
+            <x value="190.0"/>
+            <y value="185.0"/>
+          </children>
+        </children>
+        <children xsi:type="svg:Group" attributes="{&quot;template-id&quot;:&quot;yearColumn&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0">
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row1year&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="19" fontName="HelveticaNeue-Light" text="2001">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 + 50">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Sum">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="50.0"/>
+              </expression>
+            </constraints>
+            <fill xsi:type="svg_2:RGBColor" r="0.77254903" g="0.77254903" b="0.77254903"/>
+            <x value="217.0"/>
+            <y value="25.0"/>
+          </children>
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row2year&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="19" fontName="HelveticaNeue-Light" text="2002">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 + 50">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Sum">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="50.0"/>
+              </expression>
+            </constraints>
+            <fill xsi:type="svg_2:RGBColor" r="0.77254903" g="0.77254903" b="0.77254903"/>
+            <x value="217.0"/>
+            <y value="50.0"/>
+          </children>
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row3year&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="19" fontName="HelveticaNeue-Light" text="2003">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 + 50">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Sum">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="50.0"/>
+              </expression>
+            </constraints>
+            <fill xsi:type="svg_2:RGBColor" r="0.77254903" g="0.77254903" b="0.77254903"/>
+            <x value="217.0"/>
+            <y value="75.0"/>
+          </children>
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row4year&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="21" fontName="HelveticaNeue-Light" text="2004">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 + 50">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Sum">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="50.0"/>
+              </expression>
+            </constraints>
+            <x value="216.0"/>
+            <y value="106.0"/>
+          </children>
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row5year&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="19" fontName="HelveticaNeue-Light" text="2005">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 + 50">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Sum">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="50.0"/>
+              </expression>
+            </constraints>
+            <fill xsi:type="svg_2:RGBColor" r="0.77254903" g="0.77254903" b="0.77254903"/>
+            <x value="217.0"/>
+            <y value="135.0"/>
+          </children>
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row6year&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="19" fontName="HelveticaNeue-Light" text="2006">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 + 50">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Sum">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="50.0"/>
+              </expression>
+            </constraints>
+            <fill xsi:type="svg_2:RGBColor" r="0.77254903" g="0.77254903" b="0.77254903"/>
+            <x value="217.0"/>
+            <y value="160.0"/>
+          </children>
+          <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;row7year&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="19" fontName="HelveticaNeue-Light" text="2007">
+            <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w/2 + 50">
+              <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Text/x"/>
+              <expression xsi:type="com.scade.sdk.expr:Sum">
+                <left xsi:type="com.scade.sdk.expr:Division">
+                  <left xsi:type="com.scade.sdk.expr:Variable" name="size">
+                    <path>w</path>
+                  </left>
+                  <right xsi:type="com.scade.sdk.expr:Number" value="2.0"/>
+                </left>
+                <right xsi:type="com.scade.sdk.expr:Number" value="50.0"/>
+              </expression>
+            </constraints>
+            <fill xsi:type="svg_2:RGBColor" r="0.77254903" g="0.77254903" b="0.77254903"/>
+            <x value="217.0"/>
+            <y value="185.0"/>
+          </children>
+        </children>
+        <children xsi:type="svg:Line" attributes="{&quot;stroke-miterlimit&quot;:&quot;10&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0">
+          <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w">
+            <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Line/x2"/>
+            <expression xsi:type="com.scade.sdk.expr:Variable" name="size">
+              <path>w</path>
+            </expression>
+          </constraints>
+          <fill xsi:type="svg_2:NoneColor"/>
+          <stroke xsi:type="svg_2:RGBColor" r="0.8" g="0.79607844" b="0.8156863"/>
+          <x1/>
+          <y1 value="80.5"/>
+          <x2 value="320.0"/>
+          <y2 value="80.5"/>
+        </children>
+        <children xsi:type="svg:Line" attributes="{&quot;stroke-miterlimit&quot;:&quot;10&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0">
+          <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w">
+            <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Line/x2"/>
+            <expression xsi:type="com.scade.sdk.expr:Variable" name="size">
+              <path>w</path>
+            </expression>
+          </constraints>
+          <fill xsi:type="svg_2:NoneColor"/>
+          <stroke xsi:type="svg_2:RGBColor" r="0.8" g="0.79607844" b="0.8156863"/>
+          <x1/>
+          <y1 value="115.5"/>
+          <x2 value="320.0"/>
+          <y2 value="115.5"/>
+        </children>
+        <matrix translateY="4.0"/>
+      </children>
+    </children>
+  </svg:Group>
+</xmi:XMI>

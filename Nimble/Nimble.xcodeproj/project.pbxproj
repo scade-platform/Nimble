@@ -28,11 +28,9 @@
 		E42DC05C22CE49A700486CC1 /* CodeEditor.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC05B22CE498200486CC1 /* CodeEditor.plugin */; };
 		E42DC05D22CE49A700486CC1 /* ProjectNavigator.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC05A22CE497F00486CC1 /* ProjectNavigator.plugin */; };
 		E42DC07A22CFA02500486CC1 /* InterfaceBuilder.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC07922CFA01100486CC1 /* InterfaceBuilder.plugin */; };
-		E42DC08222CFA35000486CC1 /* libphoenix.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC08122CFA32F00486CC1 /* libphoenix.dylib */; };
-		E42DC09122CFA61200486CC1 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC09022CFA61200486CC1 /* ScadeKit.framework */; };
-		E42DC09222CFA63C00486CC1 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC09022CFA61200486CC1 /* ScadeKit.framework */; };
-		E42DC09322CFA63C00486CC1 /* ScadeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC09022CFA61200486CC1 /* ScadeKit.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E42DC0C322D26C3100486CC1 /* ImageViewer.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC0C222D26C1200486CC1 /* ImageViewer.plugin */; };
+		E42DC0D222D8AE2200486CC1 /* libphoenix.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC0D022D8AE2200486CC1 /* libphoenix.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		E42DC0D422D8AE2200486CC1 /* ScadeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC0D122D8AE2200486CC1 /* ScadeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -56,12 +54,12 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E42DC08222CFA35000486CC1 /* libphoenix.dylib in Embed Frameworks */,
+				E42DC0D222D8AE2200486CC1 /* libphoenix.dylib in Embed Frameworks */,
 				E42DC04722CE436C00486CC1 /* CYaml.framework in Embed Frameworks */,
 				E42DC05722CE45BE00486CC1 /* Yams.framework in Embed Frameworks */,
 				E42DC02D22CE3C3200486CC1 /* NimbleCore.framework in Embed Frameworks */,
 				E42DC04522CE436200486CC1 /* Path.framework in Embed Frameworks */,
-				E42DC09322CFA63C00486CC1 /* ScadeKit.framework in Embed Frameworks */,
+				E42DC0D422D8AE2200486CC1 /* ScadeKit.framework in Embed Frameworks */,
 				E42DC04922CE436C00486CC1 /* CodeEditorCore.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -89,9 +87,9 @@
 		E42DC05A22CE497F00486CC1 /* ProjectNavigator.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = ProjectNavigator.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42DC05B22CE498200486CC1 /* CodeEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = CodeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42DC07922CFA01100486CC1 /* InterfaceBuilder.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = InterfaceBuilder.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
-		E42DC08122CFA32F00486CC1 /* libphoenix.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libphoenix.dylib; path = "../../build/ScadeSDK-Xcode/lib/macos/libphoenix.dylib"; sourceTree = SOURCE_ROOT; };
-		E42DC09022CFA61200486CC1 /* ScadeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScadeKit.framework; path = "../../build/ScadeSDK-Xcode/lib/macos/ScadeKit.framework"; sourceTree = SOURCE_ROOT; };
 		E42DC0C222D26C1200486CC1 /* ImageViewer.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = ImageViewer.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		E42DC0D022D8AE2200486CC1 /* libphoenix.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libphoenix.dylib; path = ../Plugins/InterfaceBuilder/InterfaceBuilder/Libraries/libphoenix.dylib; sourceTree = "<group>"; };
+		E42DC0D122D8AE2200486CC1 /* ScadeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScadeKit.framework; path = ../Plugins/InterfaceBuilder/InterfaceBuilder/Libraries/ScadeKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,9 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E42DC09122CFA61200486CC1 /* ScadeKit.framework in Frameworks */,
 				E42DC05622CE45BE00486CC1 /* Yams.framework in Frameworks */,
-				E42DC09222CFA63C00486CC1 /* ScadeKit.framework in Frameworks */,
 				E42DC04822CE436C00486CC1 /* CodeEditorCore.framework in Frameworks */,
 				E42DC04422CE436200486CC1 /* Path.framework in Frameworks */,
 				E42DC04622CE436C00486CC1 /* CYaml.framework in Frameworks */,
@@ -176,8 +172,8 @@
 		D7CBF8B1222928300088715C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E42DC09022CFA61200486CC1 /* ScadeKit.framework */,
-				E42DC08122CFA32F00486CC1 /* libphoenix.dylib */,
+				E42DC0D022D8AE2200486CC1 /* libphoenix.dylib */,
+				E42DC0D122D8AE2200486CC1 /* ScadeKit.framework */,
 				E42DC05522CE458500486CC1 /* Yams.framework */,
 				E42DC04122CE42A400486CC1 /* Path.framework */,
 				E42DC04022CE42A100486CC1 /* CYaml.framework */,
@@ -416,7 +412,7 @@
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/../../build/ScadeSDK-Xcode/lib/macos/",
+					"$(SRCROOT)/../Plugins/InterfaceBuilder/InterfaceBuilder/Libraries",
 				);
 				INFOPLIST_FILE = Nimble/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -440,7 +436,7 @@
 				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/../../build/ScadeSDK-Xcode/lib/macos/",
+					"$(SRCROOT)/../Plugins/InterfaceBuilder/InterfaceBuilder/Libraries",
 				);
 				INFOPLIST_FILE = Nimble/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
