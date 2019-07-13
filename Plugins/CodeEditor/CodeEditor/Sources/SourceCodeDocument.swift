@@ -13,7 +13,18 @@ import CodeEditorCore
 public final class SourceCodeDocument: NSDocument, TextDocument {
   let textStorage = NSTextStorage()
   
-  public var language: Language?
+  public var language: Language? {
+    didSet {
+      guard let grammar = language?.grammar else { return }
+      self.syntaxParser = SyntaxParser(textStorage: textStorage, grammar: grammar)
+    }
+  }
+  
+  private var languageFromURL: Language? {
+    return self.fileURL?.file?.language
+  }
+  
+  public var syntaxParser: SyntaxParser?
   
   private lazy var editorController: CodeEditorController = {
     let controller = CodeEditorController.loadFromNib()
@@ -27,7 +38,7 @@ public final class SourceCodeDocument: NSDocument, TextDocument {
     if let lang = language {
       return lang.id
     }
-    guard let id = self.fileURL?.file?.language?.id else { return "" }
+    guard let id = languageFromURL?.id else { return "" }
     return id
   }
   
@@ -40,6 +51,11 @@ public final class SourceCodeDocument: NSDocument, TextDocument {
       return true
     }
     return file.typeIdentifierConforms(to: "public.text") || file.typeIdentifierConforms(to: "public.svg-image")
+  }
+  
+  public override func read(from url: URL, ofType typeName: String) throws {
+    try super.read(from: url, ofType: typeName)
+    self.language = url.file?.language
   }
   
   public override func read(from data: Data, ofType typeName: String) throws {

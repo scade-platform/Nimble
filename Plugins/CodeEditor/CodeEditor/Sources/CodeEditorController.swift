@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import CodeEditorCore
 
 class CodeEditorController: NSViewController, NSTextViewDelegate {
   weak var doc: SourceCodeDocument? = nil {
@@ -16,71 +17,44 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
   }
   
   @IBOutlet
-  weak var textView: NSTextView? = nil
-
+  weak var textView: CodeEditorTextView?
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    /*
-    if let theme = ThemeManager.shared.theme {
-        view.setValue(theme.background.color, forKey: "backgroundColor")
-    }
-*/
     
-    guard let textView = textView else {
-        return
-    }
-    
-    //subscribe to type text changes
     NotificationCenter.default.addObserver(self, selector: #selector(textDidChange), name: NSText.didChangeNotification, object: textView)
     
-    setupTextView(textView: textView)
     loadContent()
-    }
-    
+  }
+  
   private func loadContent() {
-    guard let textView = textView,
-        let layoutManager = textView.layoutManager,
-        let doc = doc else {
-        return
-    }
-   
-    //update textStorage of textView.layoutManager
+    guard let textView = self.textView,
+          let layoutManager = textView.layoutManager,
+          let doc = doc else { return }
+    
     layoutManager.replaceTextStorage(doc.textStorage)
     
-    //setup text color & font from Theme
+    // Need to reapply whole coloring after replacing the textStorage
+    applyTheme()
     
-    /*
-    if let textStorage = textView.textStorage, let theme = ThemeManager.shared.theme  {
-        for layoutManager in textStorage.layoutManagers {
-            layoutManager.firstTextView?.font = theme.font
-            layoutManager.firstTextView?.textColor = theme.text.color
-        }
-    }
-    */
-    
-    //highlight syntax
-      //_ = doc.syntaxParser.highlightAll()
-    }
+    // Highlight syntax
+    doc.syntaxParser?.highlightAll()
+  }
 
-    func setupTextView(textView: NSTextView) {
-      // TODO: temporarly deactivated
-      /*
-        if let theme = ThemeManager.shared.theme {
-            textView.applyTheme(theme: theme)
-        }
-      */
-    }
+  private func applyTheme() {
+    guard let theme = ColorThemeManager.shared.currentTheme else { return }
+    view.setValue(theme.global.background, forKey: "backgroundColor")
+    
+    guard let textView = self.textView else { return }
+    textView.apply(theme: theme)
+  }
   
-    @objc private func textDidChange(notification: NSNotification) {
-      //_ = doc?.syntaxParser.highlightAll()
-      if let url = doc?.fileURL{
-        CodeEditorPlugin.workbench?.project?.changed(url: url)
-      }
-    }
-
-    public func textView(_ textView: NSTextView, completions words: [String], forPartialWordRange charRange: NSRange, indexOfSelectedItem index: UnsafeMutablePointer<Int>?) -> [String] {
-        guard let completions = doc?.delegates.first?.complete() else { return [] }
-        return completions
-    }
- }
+  @objc private func textDidChange(notification: NSNotification) {
+    //_ = doc?.syntaxParser.highlightAll()
+  }
+  
+  public func textView(_ textView: NSTextView, completions words: [String], forPartialWordRange charRange: NSRange, indexOfSelectedItem index: UnsafeMutablePointer<Int>?) -> [String] {
+    guard let completions = doc?.delegates.first?.complete() else { return [] }
+    return completions
+  }
+}

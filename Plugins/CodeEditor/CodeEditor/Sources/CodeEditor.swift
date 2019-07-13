@@ -27,8 +27,15 @@ open class CodeEditorPlugin: Plugin {
     }
     
     // TODO: move to a configuration file
-    
-    
+    if let path = self.resourcePath {
+      let swiftLang = Language(id: "swift", extensions: [".swift"])
+      let swiftGrammar = LanguageGrammar(language: "swift",
+                                         scopeName: "source.swift",
+                                         path: path/"Syntaxes"/"swift.tmLanguage.json")
+      
+      LanguageManager.shared.add(language: swiftLang)
+      LanguageManager.shared.add(grammar: swiftGrammar)
+    }
     
     loadCustomFonts()
   }

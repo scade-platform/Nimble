@@ -8,22 +8,24 @@
 import AppKit
 
 
-public class Language: Decodable {
+public final class Language: Decodable {
   public let id: String
   public let extensions: [String]
-  
-  public var grammar: LanguageGrammar? {
-    return LanguageManager.shared.findGrammar(forLang: id)
-  }
   
   public init(id: String, extensions: [String]) {
     self.id = id
     self.extensions = extensions
   }
+  
+  public var grammar: LanguageGrammar? {
+    return LanguageManager.shared.findGrammar(forLang: id)
+  }
 }
 
 
-public class LanguageGrammar: Decodable {
+// MARK: -
+
+public final class LanguageGrammar: Decodable, TokenizerRepository {
   public let language: String?
   public let scopeName: String
   public let path: Path
@@ -33,23 +35,47 @@ public class LanguageGrammar: Decodable {
     ".tmLanguage.json": JSONDecoder.self
   ]
   
+  public init(language: String? = nil, scopeName: String, path: Path) {
+    self.language = language
+    self.scopeName = scopeName
+    self.path = path
+  }
+  
   public lazy var scope: GrammarScope = {
     GrammarScope(self.scopeName)
   }()
   
-  public lazy var definition: GrammarDefinition? = {
+  private lazy var grammar: Grammar? = {
     guard let decoder = LanguageGrammar.decoders.first(
       where: {self.path.basename().hasSuffix($0.key)})?.value else { return nil}
-    
     return decoder.decode(from: path)
   }()
+  
+  private lazy var grammarTokenizer = grammar?.createTokenizer(with: self)
+  
+  
+  // MARK:
+  
+  public lazy var tokenizer: Tokenizer? = grammarTokenizer?.tokenizer
+    
+  public subscript(ref: GrammarRef) -> Tokenizer? {
+    switch ref {
+    case .local(let val):
+      return grammarTokenizer?.repository[val]
+    default:
+      return nil
+    }
+  }
 }
+
+
+
+// MARK: -
 
 
 public final class LanguageManager {
   public private(set) var languages: [Language] = []
   public private(set) var grammars: [LanguageGrammar] = []
-  public private(set) var scopes: [GrammarScope: Grammar] = [:]
   
   public static let shared: LanguageManager = LanguageManager()
   
@@ -59,7 +85,6 @@ public final class LanguageManager {
   
   public func add(grammar: LanguageGrammar) {
     self.grammars.append(grammar)
-    self.scopes[grammar.scope] = grammar.definition
   }
   
   public func findLanguage(forExt ext: String) -> Language? {
@@ -73,6 +98,9 @@ public final class LanguageManager {
     }
   }
 }
+
+
+// MARK: -
 
 
 public extension File {

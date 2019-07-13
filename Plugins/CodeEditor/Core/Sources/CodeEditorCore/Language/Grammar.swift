@@ -7,7 +7,11 @@
 
 import AppKit
 
-public final class GrammarDefinition: Grammar {
+
+
+// MARK: Grammar
+
+public final class Grammar: GrammarRule {
   private enum CodingKeys: String, CodingKey {
     case scopeName, fileTypes, foldingStartMarker, foldingEndMarker, firstLineMatch
   }
@@ -23,92 +27,36 @@ public final class GrammarDefinition: Grammar {
   public required init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     
-    self.scope = try GrammarScope(container.decode(String?.self, forKey: .scopeName))
-    self.fileTypes = try container.decode([String]?.self, forKey: .fileTypes) ?? []
-    self.foldingStartMarker = try container.decode(MatchRegex?.self, forKey: .foldingStartMarker)
-    self.foldingEndMarker = try container.decode(MatchRegex?.self, forKey: .foldingEndMarker)
-    self.firstLineMatch = try container.decode(MatchRegex?.self, forKey: .firstLineMatch)
+    self.scope = try GrammarScope(container.decodeIfPresent(String.self, forKey: .scopeName))
+    self.fileTypes = try container.decodeIfPresent([String].self, forKey: .fileTypes) ?? []
+    self.foldingStartMarker = try container.decodeIfPresent(MatchRegex.self, forKey: .foldingStartMarker)
+    self.foldingEndMarker = try container.decodeIfPresent(MatchRegex.self, forKey: .foldingEndMarker)
+    self.firstLineMatch = try container.decodeIfPresent(MatchRegex.self, forKey: .firstLineMatch)
     
     try super.init(from: decoder)
   }
 }
 
-// MARK: Scope
 
-public struct GrammarScope {
-  public var value: String
-  
-  public init(_ value: String) {
-    self.value = value
-  }
-  
-  public init?(_ value: String?) {
-    guard let val = value else { return nil }
-    self.value = val
-  }
-}
+// MARK: Grammar rule consisting of the set of patterns
 
-extension GrammarScope: Hashable {
-  public static func == (lhs: GrammarScope, rhs: GrammarScope) -> Bool {
-    return lhs.value == rhs.value
-  }
-  public func hash(into hasher: inout Hasher) {
-    hasher.combine(value)
-  }
-}
-
-
-// MARK: References
-public enum GrammarRef {
-  case this
-  case base
-  case local(String)
-  case global(GrammarScope, String?)
-  
-  public init?(_ value: String) {
-    switch value {
-    case "$self":
-      self = .this
-    case "$base":
-      self = .base
-    default:
-      if let sep = value.index(of: "#") {
-        let key = String(value.suffix(from: value.index(after: sep)))
-        let scope = String(value.prefix(upTo: sep))
-        
-        if scope == "" {
-          self = .local(key)
-        } else {
-          self = .global(GrammarScope(scope), key)
-        }
-      } else if value != "" {
-        self = .global(GrammarScope(value), nil)
-      } else {
-        return nil
-      }
-    }
-  }
-}
-
-// MARK: Content
-
-public class Grammar: Decodable {
+public class GrammarRule: Decodable {
   private enum CodingKeys: String, CodingKey {
     case patterns, repository
   }
   
   public let patterns: [Pattern]
-  public let repository: [String: Grammar]
+  public let repository: [String: GrammarRule]
   
   public required init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     
-    self.patterns = try container.decode([Pattern]?.self, forKey: .patterns) ?? []
-    self.repository = try container.decode([String: Grammar]?.self, forKey: .repository) ?? [:]
+    self.patterns = try container.decodeIfPresent([Pattern].self, forKey: .patterns) ?? []
+    self.repository = try container.decodeIfPresent([String: GrammarRule].self, forKey: .repository) ?? [:]
   }
   
-  
-  // MARK: -
+
+  // MARK: Content types
   
   public enum Pattern: Decodable {
     private enum CodingKeys: String, CodingKey {
@@ -150,11 +98,11 @@ public class Grammar: Decodable {
     public required init(from decoder: Decoder) throws {
       let container = try decoder.container(keyedBy: CodingKeys.self)
       
-      self.comment = try container.decode(String?.self, forKey: .comment) ?? ""
-      self.disabled = try container.decode(Bool?.self, forKey: .disabled) ?? false
+      self.comment = try container.decodeIfPresent(String.self, forKey: .comment) ?? ""
+      self.disabled = try container.decodeIfPresent(Bool.self, forKey: .disabled) ?? false
     }
   }
-
+  
   // MARK: -
   
   public class IncludePattern: PatternRule {
@@ -178,11 +126,11 @@ public class Grammar: Decodable {
       case name
     }
     
-    public let name: MatchScope
+    public let name: MatchName?
     
     public required init(from decoder: Decoder) throws {
       let container = try decoder.container(keyedBy: CodingKeys.self)
-      self.name = try container.decode(MatchScope.self, forKey: .name)
+      self.name = try container.decodeIfPresent(MatchName.self, forKey: .name)
       try super.init(from: decoder)
     }
   }
@@ -200,7 +148,7 @@ public class Grammar: Decodable {
     public required init(from decoder: Decoder) throws {
       let container = try decoder.container(keyedBy: CodingKeys.self)
       self.match = try container.decode(MatchRegex.self, forKey: .match)
-      self.capture = try container.decode([String: MatchCapture]?.self, forKey: .capture) ?? [:]
+      self.capture = try container.decodeIfPresent([String: MatchCapture].self, forKey: .capture) ?? [:]
       try super.init(from: decoder)
     }
   }
@@ -209,14 +157,14 @@ public class Grammar: Decodable {
   
   public class RangeMatchPattern: MatchRule {
     private enum CodingKeys: String, CodingKey {
-      case captureName
+      case contentName
     }
     
-    public let captureName: MatchScope
+    public let contentName: MatchName?
     
     public required init(from decoder: Decoder) throws {
       let container = try decoder.container(keyedBy: CodingKeys.self)
-      self.captureName = try container.decode(MatchScope.self, forKey: .captureName)
+      self.contentName = try container.decodeIfPresent(MatchName.self, forKey: .contentName)
       try super.init(from: decoder)
     }
   }
@@ -238,8 +186,8 @@ public class Grammar: Decodable {
       let container = try decoder.container(keyedBy: CodingKeys.self)
       self.begin = try container.decode(MatchRegex.self, forKey: .begin)
       self.end = try container.decode(MatchRegex.self, forKey: .end)
-      self.beginCapture = try container.decode([String: MatchCapture]?.self, forKey: .beginCapture) ?? [:]
-      self.endCapture = try container.decode([String: MatchCapture]?.self, forKey: .endCapture) ?? [:]
+      self.beginCapture = try container.decodeIfPresent([String: MatchCapture].self, forKey: .beginCapture) ?? [:]
+      self.endCapture = try container.decodeIfPresent([String: MatchCapture].self, forKey: .endCapture) ?? [:]
       try super.init(from: decoder)
     }
   }
@@ -261,15 +209,15 @@ public class Grammar: Decodable {
       let container = try decoder.container(keyedBy: CodingKeys.self)
       self.begin = try container.decode(MatchRegex.self, forKey: .begin)
       self.while = try container.decode(MatchRegex.self, forKey: .while)
-      self.beginCapture = try container.decode([String: MatchCapture]?.self, forKey: .beginCapture) ?? [:]
-      self.whileCapture = try container.decode([String: MatchCapture]?.self, forKey: .whileCapture) ?? [:]
+      self.beginCapture = try container.decodeIfPresent([String: MatchCapture].self, forKey: .beginCapture) ?? [:]
+      self.whileCapture = try container.decodeIfPresent([String: MatchCapture].self, forKey: .whileCapture) ?? [:]
       try super.init(from: decoder)
     }
   }
   
   // MARK: -
   
-  public final class MatchRegex: Decodable {
+  public struct MatchRegex: Decodable {
     public let value: String
     public init(from decoder: Decoder) throws {
       self.value = try decoder.singleValueContainer().decode(String.self)
@@ -278,7 +226,7 @@ public class Grammar: Decodable {
   
   // MARK: -
   
-  public final class MatchScope: Decodable {
+  public struct MatchName: Decodable {
     public let value: String
     public init(from decoder: Decoder) throws {
       self.value = try decoder.singleValueContainer().decode(String.self)
@@ -287,36 +235,94 @@ public class Grammar: Decodable {
   
   // MARK: -
   
-  public final class MatchCapture: Decodable {
+  public struct MatchCapture: Decodable {
     private enum CodingKeys: String, CodingKey {
       case name, patterns
     }
     
-    public let name: MatchScope?
+    public let name: MatchName?
     public let patterns: [Pattern]
     
     public init(from decoder: Decoder) throws {
       let container = try decoder.container(keyedBy: CodingKeys.self)
-      self.name = try container.decode(MatchScope?.self, forKey: .name)
-      self.patterns = try container.decode([Pattern]?.self, forKey: .patterns) ?? []
+      self.name = try container.decodeIfPresent(MatchName.self, forKey: .name)
+      self.patterns = try container.decodeIfPresent([Pattern].self, forKey: .patterns) ?? []
     }
   }
-  
 }
 
+
+
+// MARK: Scope
+
+public struct GrammarScope {
+  public var value: String
+  
+  public init(_ value: String) {
+    self.value = value
+  }
+  
+  public init?(_ value: String?) {
+    guard let val = value else { return nil }
+    self.value = val
+  }
+}
+
+extension GrammarScope: Hashable {
+  public static func == (lhs: GrammarScope, rhs: GrammarScope) -> Bool {
+    return lhs.value == rhs.value
+  }
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(value)
+  }
+}
+
+
+// MARK: References
+
+public enum GrammarRef {
+  case this
+  case base
+  case local(String)
+  case global(GrammarScope, String?)
+  
+  public init?(_ value: String) {
+    switch value {
+    case "$self":
+      self = .this
+    case "$base":
+      self = .base
+    default:
+      if let sep = value.index(of: "#") {
+        let key = String(value.suffix(from: value.index(after: sep)))
+        let scope = String(value.prefix(upTo: sep))
+        
+        if scope == "" {
+          self = .local(key)
+        } else {
+          self = .global(GrammarScope(scope), key)
+        }
+      } else if value != "" {
+        self = .global(GrammarScope(value), nil)
+      } else {
+        return nil
+      }
+    }
+  }
+}
 
 // MARK: Decoders
 
 protocol GrammarDecoder {
-  static func decode(from: Path) -> GrammarDefinition?
+  static func decode(from: Path) -> Grammar?
 }
 
 
 extension YAMLDecoder: GrammarDecoder {
-  static func decode(from file: Path) -> GrammarDefinition? {
+  static func decode(from file: Path) -> Grammar? {
     guard let content = try? String(contentsOf: file) else { return nil }
     do {
-      return try YAMLDecoder().decode(GrammarDefinition.self, from: content)
+      return try YAMLDecoder().decode(Grammar.self, from: content)
     } catch let error as DecodingError {
       print(error)
       return nil
@@ -327,11 +333,11 @@ extension YAMLDecoder: GrammarDecoder {
 }
 
 extension PropertyListDecoder: GrammarDecoder {
-  static func decode(from file: Path) -> GrammarDefinition? {
+  static func decode(from file: Path) -> Grammar? {
     guard let content = try? Data(contentsOf: file) else { return nil }
     
     do {
-      return try PropertyListDecoder().decode(GrammarDefinition.self, from: content)
+      return try PropertyListDecoder().decode(Grammar.self, from: content)
     } catch let error as DecodingError {
       print(error)
       return nil
@@ -342,11 +348,11 @@ extension PropertyListDecoder: GrammarDecoder {
 }
 
 extension JSONDecoder: GrammarDecoder {
-  static func decode(from file: Path) -> GrammarDefinition? {
+  static func decode(from file: Path) -> Grammar? {
     guard let content = try? Data(contentsOf: file) else { return nil }
     
     do {
-      return try JSONDecoder().decode(GrammarDefinition.self, from: content)
+      return try JSONDecoder().decode(Grammar.self, from: content)
     } catch let error as DecodingError {
       print(error)
       return nil
