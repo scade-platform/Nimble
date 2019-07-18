@@ -7,18 +7,22 @@
 //
 
 import Cocoa
+import NimbleCore
+
 
 public class EditorViewController: NSViewController {
-  private weak var currentEditor: NSViewController? = nil
-  
-  public func showEditor(_ editor: NSViewController) {
-    currentEditor?.view.removeFromSuperview()
-    currentEditor?.removeFromParent()
-    currentEditor = editor
+    private var tabbedEditor: TabbedEditorController? = nil
     
-    editor.view.frame = view.frame
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        tabbedEditor = TabbedEditorController.loadFromNib()
+        addChild(tabbedEditor!)
+        view.addSubview(tabbedEditor!.view)
+        tabbedEditor!.view.frame = view.frame
+    }
     
-    addChild(editor)
-    view.addSubview(editor.view)
-  }
+    
+    public func showEditor(_ editor: NSViewController, file shownFile: File) {
+        tabbedEditor?.addNewTab(viewController: editor, file: shownFile)
+    }
 }
