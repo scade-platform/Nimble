@@ -19,10 +19,13 @@ open class InterfaceBuilderPlugin: Plugin {
   required public init() {
     DocumentManager.shared.registerDocumentClass(PageDocument.self)
     SCDRuntime.loadMetaModel()
+    
   }
   
   public func activate(workbench: Workbench) {
-    
+    workbench.project.folders.forEach {
+      UserDefaults.standard.set($0.path.string, forKey: "Resource Folder")
+    }
   }
   
   public func deactivate() {
