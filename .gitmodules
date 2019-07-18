@@ -1,6 +1,3 @@
 [submodule "Plugins/SwiftExtensions/sourcekit-lsp"]
 	path = Plugins/SwiftExtensions/sourcekit-lsp
 	url = https://github.com/apple/sourcekit-lsp.git
-[submodule "Plugins/KPCTabsControl"]
-	path = Plugins/KPCTabsControl
-	url = https://github.com/onekiloparsec/KPCTabsControl.git
