@@ -51,7 +51,7 @@ extension NimbleWorkbench: Workbench {
     }
     
     if let docController = doc?.contentViewController {
-      viewController?.editorViewController?.showEditor(docController)
+        viewController?.editorViewController?.showEditor(docController, file: file)
     }
     
     return doc
