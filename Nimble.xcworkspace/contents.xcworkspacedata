@@ -11,6 +11,9 @@
       location = "container:"
       name = "Plugins">
       <FileRef
+         location = "group:Plugins/TabsControl/KPCTabsControl.xcodeproj">
+      </FileRef>
+      <FileRef
          location = "group:Plugins/ImageViewer/ImageViewer.xcodeproj">
       </FileRef>
       <FileRef

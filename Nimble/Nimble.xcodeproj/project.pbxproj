@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0CCC757822DF199900C0CCF4 /* TabbedEditorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC757722DF199900C0CCF4 /* TabbedEditorController.xib */; };
+		0CCC757A22DF268400C0CCF4 /* TabbedEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC757922DF268400C0CCF4 /* TabbedEditorController.swift */; };
+		0CCC758222E07CE100C0CCF4 /* KPCTabsControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CCC758122E07CE100C0CCF4 /* KPCTabsControl.framework */; };
+		0CCC758322E07CE100C0CCF4 /* KPCTabsControl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CCC758122E07CE100C0CCF4 /* KPCTabsControl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D72F9587222CAC3C009F2EC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78BCB05222B4DE300AE0A9C /* AppDelegate.swift */; };
 		D72F9589222CAD09009F2EC3 /* NavigatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F956A222C50A7009F2EC3 /* NavigatorViewController.swift */; };
 		D72F958A222CAD0C009F2EC3 /* WorkbenchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F9579222CA4B5009F2EC3 /* WorkbenchViewController.swift */; };
@@ -64,6 +68,7 @@
 				E42DC04522CE436200486CC1 /* Path.framework in Embed Frameworks */,
 				E42DC0D422D8AE2200486CC1 /* ScadeKit.framework in Embed Frameworks */,
 				E42DC04922CE436C00486CC1 /* CodeEditorCore.framework in Embed Frameworks */,
+				0CCC758322E07CE100C0CCF4 /* KPCTabsControl.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -71,6 +76,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0CCC757722DF199900C0CCF4 /* TabbedEditorController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TabbedEditorController.xib; path = Controls/TabbedEditorController.xib; sourceTree = "<group>"; };
+		0CCC757922DF268400C0CCF4 /* TabbedEditorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbedEditorController.swift; sourceTree = "<group>"; };
+		0CCC758122E07CE100C0CCF4 /* KPCTabsControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KPCTabsControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D72F956A222C50A7009F2EC3 /* NavigatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorViewController.swift; sourceTree = "<group>"; };
 		D72F9579222CA4B5009F2EC3 /* WorkbenchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchViewController.swift; sourceTree = "<group>"; };
 		D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkbenchSidebar.xib; sourceTree = "<group>"; };
@@ -106,6 +114,7 @@
 				E42DC04422CE436200486CC1 /* Path.framework in Frameworks */,
 				E42DC12422D9C91600486CC1 /* ScadeKitExtensions.framework in Frameworks */,
 				E42DC04622CE436C00486CC1 /* CYaml.framework in Frameworks */,
+				0CCC758222E07CE100C0CCF4 /* KPCTabsControl.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,6 +144,7 @@
 		D7CBF7C2222878F10088715C = {
 			isa = PBXGroup;
 			children = (
+				0CCC758122E07CE100C0CCF4 /* KPCTabsControl.framework */,
 				D7CBF8AE2229268C0088715C /* Sources */,
 				D7CBF7CD222878F10088715C /* Nimble */,
 				D7CBF7CC222878F10088715C /* Products */,
@@ -170,6 +180,8 @@
 				D72F9579222CA4B5009F2EC3 /* WorkbenchViewController.swift */,
 				D72F956A222C50A7009F2EC3 /* NavigatorViewController.swift */,
 				D791B2E122B053C5001BBA0E /* EditorViewController.swift */,
+				0CCC757722DF199900C0CCF4 /* TabbedEditorController.xib */,
+				0CCC757922DF268400C0CCF4 /* TabbedEditorController.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -257,6 +269,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CCC757822DF199900C0CCF4 /* TabbedEditorController.xib in Resources */,
 				D7CBF7D3222878F40088715C /* Assets.xcassets in Resources */,
 				D72F959C222DF2D9009F2EC3 /* WorkbenchSidebar.xib in Resources */,
 				D7CBF7D6222878F40088715C /* Main.storyboard in Resources */,
@@ -274,6 +287,7 @@
 				D791B2E222B053C5001BBA0E /* EditorViewController.swift in Sources */,
 				D72F959F222DF7AF009F2EC3 /* WorkbenchSidebar.swift in Sources */,
 				D788ED452239C2750072C21E /* NimbleWorkbench.swift in Sources */,
+				0CCC757A22DF268400C0CCF4 /* TabbedEditorController.swift in Sources */,
 				D72F958A222CAD0C009F2EC3 /* WorkbenchViewController.swift in Sources */,
 				D72F9587222CAC3C009F2EC3 /* AppDelegate.swift in Sources */,
 			);
