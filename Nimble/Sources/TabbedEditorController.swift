@@ -27,7 +27,7 @@ extension TabItem: Equatable {
     }
 }
 
-class TabbedEditorController : NSViewController {
+class TabbedEditorController: NSViewController {
     
     @IBOutlet weak var tabBar: TabsControl?
     @IBOutlet weak var tabViewContainer: NSView!
@@ -69,7 +69,7 @@ class TabbedEditorController : NSViewController {
     
 }
 
-extension TabbedEditorController : TabsControlDataSource {
+extension TabbedEditorController: TabsControlDataSource {
     
     func tabsControlNumberOfTabs(_ control: TabsControl) -> Int {
         return items.count
@@ -84,7 +84,7 @@ extension TabbedEditorController : TabsControlDataSource {
     }
 }
 
-extension TabbedEditorController : TabsControlDelegate {
+extension TabbedEditorController: TabsControlDelegate {
     
     func tabsControl(_ control: TabsControl, canSelectItem item: AnyObject) -> Bool {
         return (item as! TabItem).selectable
@@ -117,10 +117,3 @@ extension TabbedEditorController : TabsControlDelegate {
         self.items = items.map{$0 as! TabItem}
     }
 }
-
-
-
-
-
-
-
