@@ -37,6 +37,7 @@ class TabbedEditorController : NSViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tabBar?.style = NimbleStyle()
         tabBar?.dataSource = self
         tabBar?.delegate = self
         tabBar?.reloadTabs()
@@ -47,16 +48,23 @@ class TabbedEditorController : NSViewController {
         items.append(newTabItem)
         selectTabItem(tabItem: newTabItem)
         tabBar?.reloadTabs()
+        tabBar?.selectItemAtIndex(items.count - 1)
     }
     
     private func selectTabItem(tabItem: TabItem){
-        currentItem?.viewController.view.removeFromSuperview()
-        currentItem?.viewController.removeFromParent()
+        if let currentItem = self.currentItem {
+            closeTabItem(tabItem: currentItem)
+        }
         currentItem = tabItem
         tabItem.viewController.view.frame = tabViewContainer.frame
         addChild(tabItem.viewController)
         tabViewContainer.addSubview(tabItem.viewController.view)
         currentItem = tabItem
+    }
+    
+    private func closeTabItem(tabItem: TabItem) {
+        tabItem.viewController.view.removeFromSuperview()
+        tabItem.viewController.removeFromParent()
     }
     
 }
@@ -94,9 +102,19 @@ extension TabbedEditorController : TabsControlDelegate {
         return true
     }
     
+    
     func tabsControlDidChangeSelection(_ control: TabsControl, item: AnyObject) {
         let tabItem = (item as! TabItem)
         selectTabItem(tabItem: tabItem)
+    }
+    
+    func tabsControlWillCloseTab(_ control: TabsControl, item: AnyObject) {
+        let tabItem = (item as! TabItem)
+        closeTabItem(tabItem: tabItem)
+    }
+    
+    func tabsControlDidCloseTab(_ control: TabsControl, items: [AnyObject]) {
+        self.items = items.map{$0 as! TabItem}
     }
 }
 
