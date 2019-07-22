@@ -26,13 +26,13 @@ public class NimbleWorkbench: NSWindowController {
     PluginManager.shared.activate(workbench: self)
   }
   
-//  func launch() -> Void {
-//    pluginManager.activate(workbench: self)
-//  }
-//
-//  func terminate() -> Void {
-//    pluginManager.deactivate()
-//  }
+  //  func launch() -> Void {
+  //    pluginManager.activate(workbench: self)
+  //  }
+  //
+  //  func terminate() -> Void {
+  //    pluginManager.deactivate()
+  //  }
 }
 
 
@@ -51,7 +51,7 @@ extension NimbleWorkbench: Workbench {
     }
     
     if let docController = doc?.contentViewController {
-        viewController?.editorViewController?.showEditor(docController, file: file)
+      viewController?.editorViewController?.showEditor(docController, file: file)
     }
     
     return doc
