@@ -14,11 +14,14 @@ class TabItem {
   let title: String
   let selectable: Bool
   let viewController: NSViewController
-  init(title: String, viewController: NSViewController, selectable: Bool = true) {
-    self.title = title
+  let file: File
+  init(file: File, viewController: NSViewController, selectable: Bool = true) {
+    self.title = file.name
     self.selectable = selectable
     self.viewController = viewController
+    self.file = file
   }
+  
 }
 
 extension TabItem: Equatable {
@@ -44,11 +47,27 @@ class TabbedEditorController: NSViewController {
   }
   
   func addNewTab(viewController tabView: NSViewController, file: File){
-    let newTabItem = TabItem(title: file.name, viewController: tabView)
+    guard !containsFile(file) else {
+      showFile(file)
+      return
+    }
+    let newTabItem = TabItem(file: file, viewController: tabView)
     items.append(newTabItem)
     selectTabItem(tabItem: newTabItem)
     tabBar?.reloadTabs()
     tabBar?.selectItemAtIndex(items.count - 1)
+  }
+  
+  private func containsFile(_ file: File) -> Bool {
+    return items.map{$0.file}.contains(file)
+  }
+  
+  private func showFile(_ file: File) {
+    let index = items.map{$0.file}.index(of: file)
+    if let index = index {
+      tabBar?.selectItemAtIndex(index)
+    }
+    
   }
   
   private func selectTabItem(tabItem: TabItem){
