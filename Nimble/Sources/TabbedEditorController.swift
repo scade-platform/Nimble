@@ -53,7 +53,6 @@ class TabbedEditorController: NSViewController {
     }
     let newTabItem = TabItem(file: file, viewController: tabView)
     items.append(newTabItem)
-    selectTabItem(tabItem: newTabItem)
     tabBar?.reloadTabs()
     tabBar?.selectItemAtIndex(items.count - 1)
   }
