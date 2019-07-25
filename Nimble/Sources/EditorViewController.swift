@@ -18,7 +18,12 @@ public class EditorViewController: NSViewController {
     tabbedEditor = TabbedEditorController.loadFromNib()
     addChild(tabbedEditor!)
     view.addSubview(tabbedEditor!.view)
-    tabbedEditor!.view.frame = view.frame
+    tabbedEditor!.view.translatesAutoresizingMaskIntoConstraints = false
+    tabbedEditor?.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+    tabbedEditor?.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+    tabbedEditor?.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+    tabbedEditor?.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+    tabbedEditor?.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
   }
   
   
