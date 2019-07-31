@@ -28,5 +28,29 @@
 	<string>Main</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.text</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Nimble Project</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.scade.nimble.project</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.mime-type</key>
+				<array>
+					<string>application/scade.nimble.project</string>
+				</array>
+				<key>public.filename-extension</key>
+				<array>
+					<string>nimble-project</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>
