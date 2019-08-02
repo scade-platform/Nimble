@@ -137,9 +137,9 @@
 		OBJ_62 /* Path->Bool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Path->Bool.swift"; sourceTree = "<group>"; };
 		OBJ_63 /* Path.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Path.swift; sourceTree = "<group>"; };
 		OBJ_8 /* Nimble.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Nimble.xcconfig; path = ../Nimble.xcconfig; sourceTree = "<group>"; };
-		"Path.swift::Path::Product" /* Path.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Path.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		"Yams::CYaml::Product" /* CYaml.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CYaml.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		"Yams::Yams::Product" /* Yams.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Yams.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"Path.swift::Path::Product" /* Path.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Path.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"Yams::CYaml::Product" /* CYaml.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CYaml.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		"Yams::Yams::Product" /* Yams.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Yams.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -285,7 +285,7 @@
 			path = .build/checkouts/Yams/Sources/Yams;
 			sourceTree = SOURCE_ROOT;
 		};
-		OBJ_5 /*  */ = {
+		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
 				OBJ_6 /* Package.swift */,
@@ -295,7 +295,6 @@
 				OBJ_22 /* Dependencies */,
 				OBJ_64 /* Products */,
 			);
-			name = "";
 			sourceTree = "<group>";
 		};
 		OBJ_53 /* Path.swift 0.16.2 */ = {
@@ -486,7 +485,7 @@
 				English,
 				en,
 			);
-			mainGroup = OBJ_5 /*  */;
+			mainGroup = OBJ_5;
 			productRefGroup = OBJ_64 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
