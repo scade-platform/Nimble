@@ -6,7 +6,7 @@
 //  Copyright © 2019 SCADE. All rights reserved.
 //
 
-import Cocoa
+import AppKit
 import NimbleCore
 
 class ProjectDocument : NSDocument {
@@ -44,6 +44,16 @@ class ProjectDocument : NSDocument {
       storyboard.instantiateController(
         withIdentifier: NSStoryboard.SceneIdentifier("Document Window Controller")) as? NSWindowController {
       addWindowController(windowController)
+      if !project.incorrectPaths.isEmpty {
+        let alert = NSAlert()
+        alert.messageText =  "Project file has incorrect paths:"
+        let paths = project.incorrectPaths.reduce("", {$0 + $1 + "\n"})
+        alert.informativeText = paths
+        alert.addButton(withTitle: "OK")
+        alert.alertStyle = .warning
+        alert.runModal()
+      }
+      
       // Set the view controller's represented object as your document.
 //      if let contentVC = windowController.contentViewController as? WorkbenchViewController {
 //      }
