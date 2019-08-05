@@ -9,13 +9,13 @@
 /* Begin PBXBuildFile section */
 		0CCC757822DF199900C0CCF4 /* TabbedEditorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC757722DF199900C0CCF4 /* TabbedEditorController.xib */; };
 		0CCC757A22DF268400C0CCF4 /* TabbedEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC757922DF268400C0CCF4 /* TabbedEditorController.swift */; };
-		0CCC758222E07CE100C0CCF4 /* KPCTabsControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CCC758122E07CE100C0CCF4 /* KPCTabsControl.framework */; };
-		0CCC758322E07CE100C0CCF4 /* KPCTabsControl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0CCC758122E07CE100C0CCF4 /* KPCTabsControl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D72F9587222CAC3C009F2EC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78BCB05222B4DE300AE0A9C /* AppDelegate.swift */; };
 		D72F9589222CAD09009F2EC3 /* NavigatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F956A222C50A7009F2EC3 /* NavigatorViewController.swift */; };
 		D72F958A222CAD0C009F2EC3 /* WorkbenchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F9579222CA4B5009F2EC3 /* WorkbenchViewController.swift */; };
 		D72F959C222DF2D9009F2EC3 /* WorkbenchSidebar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */; };
 		D72F959F222DF7AF009F2EC3 /* WorkbenchSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F959E222DF7AF009F2EC3 /* WorkbenchSidebar.swift */; };
+		D751F28222F87F4A00D33972 /* ScadeKitExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC12322D9C91600486CC1 /* ScadeKitExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D751F28D22F881C800D33972 /* KPCTabsControl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D751F28C22F881B800D33972 /* KPCTabsControl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D788ED452239C2750072C21E /* NimbleWorkbench.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */; };
 		D791B2E222B053C5001BBA0E /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D791B2E122B053C5001BBA0E /* EditorViewController.swift */; };
 		D7CBF7D3222878F40088715C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D2222878F40088715C /* Assets.xcassets */; };
@@ -36,8 +36,17 @@
 		E42DC0D222D8AE2200486CC1 /* libphoenix.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC0D022D8AE2200486CC1 /* libphoenix.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		E42DC0D422D8AE2200486CC1 /* ScadeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC0D122D8AE2200486CC1 /* ScadeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E42DC12422D9C91600486CC1 /* ScadeKitExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC12322D9C91600486CC1 /* ScadeKitExtensions.framework */; };
-		E42DC12522D9C91600486CC1 /* ScadeKitExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC12322D9C91600486CC1 /* ScadeKitExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D751F28B22F881B800D33972 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9FA7EDA51AD668BC0060FF79;
+			remoteInfo = KPCTabsControl;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		D722326422CC10A100E471C2 /* Embed PlugIns */ = {
@@ -60,7 +69,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				E42DC12522D9C91600486CC1 /* ScadeKitExtensions.framework in Embed Frameworks */,
+				D751F28D22F881C800D33972 /* KPCTabsControl.framework in Embed Frameworks */,
+				D751F28222F87F4A00D33972 /* ScadeKitExtensions.framework in Embed Frameworks */,
 				E42DC0D222D8AE2200486CC1 /* libphoenix.dylib in Embed Frameworks */,
 				E42DC04722CE436C00486CC1 /* CYaml.framework in Embed Frameworks */,
 				E42DC05722CE45BE00486CC1 /* Yams.framework in Embed Frameworks */,
@@ -68,7 +78,6 @@
 				E42DC04522CE436200486CC1 /* Path.framework in Embed Frameworks */,
 				E42DC0D422D8AE2200486CC1 /* ScadeKit.framework in Embed Frameworks */,
 				E42DC04922CE436C00486CC1 /* CodeEditorCore.framework in Embed Frameworks */,
-				0CCC758322E07CE100C0CCF4 /* KPCTabsControl.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -78,11 +87,11 @@
 /* Begin PBXFileReference section */
 		0CCC757722DF199900C0CCF4 /* TabbedEditorController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TabbedEditorController.xib; path = Controls/TabbedEditorController.xib; sourceTree = "<group>"; };
 		0CCC757922DF268400C0CCF4 /* TabbedEditorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbedEditorController.swift; sourceTree = "<group>"; };
-		0CCC758122E07CE100C0CCF4 /* KPCTabsControl.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = KPCTabsControl.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D72F956A222C50A7009F2EC3 /* NavigatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorViewController.swift; sourceTree = "<group>"; };
 		D72F9579222CA4B5009F2EC3 /* WorkbenchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchViewController.swift; sourceTree = "<group>"; };
 		D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkbenchSidebar.xib; sourceTree = "<group>"; };
 		D72F959E222DF7AF009F2EC3 /* WorkbenchSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchSidebar.swift; sourceTree = "<group>"; };
+		D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KPCTabsControl.xcodeproj; path = Dependencies/TabsControl/KPCTabsControl.xcodeproj; sourceTree = "<group>"; };
 		D78BCB05222B4DE300AE0A9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D791B2E122B053C5001BBA0E /* EditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorViewController.swift; sourceTree = "<group>"; };
 		D7CBF7CB222878F10088715C /* Nimble.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nimble.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -114,7 +123,6 @@
 				E42DC04422CE436200486CC1 /* Path.framework in Frameworks */,
 				E42DC12422D9C91600486CC1 /* ScadeKitExtensions.framework in Frameworks */,
 				E42DC04622CE436C00486CC1 /* CYaml.framework in Frameworks */,
-				0CCC758222E07CE100C0CCF4 /* KPCTabsControl.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,14 +149,30 @@
 			path = Controls;
 			sourceTree = "<group>";
 		};
+		D751F28622F8818300D33972 /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */,
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		D751F28822F881B800D33972 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D751F28C22F881B800D33972 /* KPCTabsControl.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		D7CBF7C2222878F10088715C = {
 			isa = PBXGroup;
 			children = (
-				0CCC758122E07CE100C0CCF4 /* KPCTabsControl.framework */,
 				D7CBF8AE2229268C0088715C /* Sources */,
 				D7CBF7CD222878F10088715C /* Nimble */,
 				D7CBF7CC222878F10088715C /* Products */,
 				D722326A22CC10E900E471C2 /* Plugins */,
+				D751F28622F8818300D33972 /* Dependencies */,
 				D7CBF8B1222928300088715C /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -257,12 +281,28 @@
 			mainGroup = D7CBF7C2222878F10088715C;
 			productRefGroup = D7CBF7CC222878F10088715C /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = D751F28822F881B800D33972 /* Products */;
+					ProjectRef = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				D7CBF7CA222878F10088715C /* Nimble */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		D751F28C22F881B800D33972 /* KPCTabsControl.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = KPCTabsControl.framework;
+			remoteRef = D751F28B22F881B800D33972 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D7CBF7C9222878F10088715C /* Resources */ = {

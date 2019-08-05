@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D751F28322F87F7400D33972 /* ScadeKitExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC10E22D939C100486CC1 /* ScadeKitExtensions.framework */; };
 		D7CD750222B8CC5B004C437B /* InterfaceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CD750122B8CC5B004C437B /* InterfaceBuilder.swift */; };
 		D7CD750522B8CC6F004C437B /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7CD750422B8CC6F004C437B /* NimbleCore.framework */; };
 		D7CD750722B8CCF5004C437B /* PageDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CD750622B8CCF5004C437B /* PageDocument.swift */; };
 		D7CD750A22B8CDCC004C437B /* InterfaceBuilderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CD750822B8CDCC004C437B /* InterfaceBuilderController.swift */; };
 		D7CD750B22B8CDCC004C437B /* InterfaceBuilderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7CD750922B8CDCC004C437B /* InterfaceBuilderController.xib */; };
-		E42DC10222D9316100486CC1 /* libphoenix.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC0F822D8E73600486CC1 /* libphoenix.dylib */; };
 		E42DC10322D9316100486CC1 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC0F922D8E73600486CC1 /* ScadeKit.framework */; };
 		E42DC10722D9356900486CC1 /* InterfaceBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = E42DC10522D9349B00486CC1 /* InterfaceBuilder.mm */; };
 		E42DC11222D939C100486CC1 /* ScadeKitExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = E42DC11022D939C100486CC1 /* ScadeKitExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -24,24 +24,9 @@
 		E42DC11B22D9C73E00486CC1 /* libphoenix.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC0F822D8E73600486CC1 /* libphoenix.dylib */; };
 		E42DC11C22D9C73E00486CC1 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC0F922D8E73600486CC1 /* ScadeKit.framework */; };
 		E42DC11E22D9C7A800486CC1 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC11D22D9C7A800486CC1 /* AppKit.framework */; };
-		E42DC12022D9C80000486CC1 /* ScadeKitExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = E42DC10E22D939C100486CC1 /* ScadeKitExtensions.framework */; };
-		E42DC12722D9CA8F00486CC1 /* ScadeKitExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC12622D9CA8F00486CC1 /* ScadeKitExtensions.framework */; };
 		E451B2FE22C0E919006185B7 /* WidgetVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2DD22C0E919006185B7 /* WidgetVisitor.swift */; };
 		E451B30022C4B69F006185B7 /* WidgetHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2FF22C4B69F006185B7 /* WidgetHighlighter.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		E42DC11F22D9C7E500486CC1 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "$(PROJECT_DIR)/Libraries";
-			dstSubfolderSpec = 0;
-			files = (
-				E42DC12022D9C80000486CC1 /* ScadeKitExtensions.framework in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D7CD74F722B8CC24004C437B /* InterfaceBuilder.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InterfaceBuilder.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -53,14 +38,11 @@
 		D7CD750922B8CDCC004C437B /* InterfaceBuilderController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InterfaceBuilderController.xib; sourceTree = "<group>"; };
 		E42DC0F822D8E73600486CC1 /* libphoenix.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libphoenix.dylib; sourceTree = "<group>"; };
 		E42DC0F922D8E73600486CC1 /* ScadeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ScadeKit.framework; sourceTree = "<group>"; };
-		E42DC0FC22D8E74C00486CC1 /* libScadeSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libScadeSDK.a; sourceTree = "<group>"; };
 		E42DC10522D9349B00486CC1 /* InterfaceBuilder.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = InterfaceBuilder.mm; sourceTree = "<group>"; };
 		E42DC10E22D939C100486CC1 /* ScadeKitExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ScadeKitExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42DC11022D939C100486CC1 /* ScadeKitExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScadeKitExtensions.h; sourceTree = "<group>"; };
 		E42DC11122D939C100486CC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E42DC11D22D9C7A800486CC1 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		E42DC12122D9C8D900486CC1 /* ScadeKitExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScadeKitExtensions.framework; path = Libraries/ScadeKitExtensions.framework; sourceTree = "<group>"; };
-		E42DC12622D9CA8F00486CC1 /* ScadeKitExtensions.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ScadeKitExtensions.framework; sourceTree = "<group>"; };
 		E451B18722B91A4E006185B7 /* InterfaceBuilderBridging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InterfaceBuilderBridging.h; sourceTree = "<group>"; };
 		E451B18822B91A4E006185B7 /* PageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PageView.h; sourceTree = "<group>"; };
 		E451B18922B91A4E006185B7 /* PageView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PageView.mm; sourceTree = "<group>"; };
@@ -77,8 +59,7 @@
 			files = (
 				E42DC10322D9316100486CC1 /* ScadeKit.framework in Frameworks */,
 				D7CD750522B8CC6F004C437B /* NimbleCore.framework in Frameworks */,
-				E42DC12722D9CA8F00486CC1 /* ScadeKitExtensions.framework in Frameworks */,
-				E42DC10222D9316100486CC1 /* libphoenix.dylib in Frameworks */,
+				D751F28322F87F7400D33972 /* ScadeKitExtensions.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -142,7 +123,6 @@
 		D7CD750322B8CC6F004C437B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E42DC12122D9C8D900486CC1 /* ScadeKitExtensions.framework */,
 				E42DC11D22D9C7A800486CC1 /* AppKit.framework */,
 				D7CD750422B8CC6F004C437B /* NimbleCore.framework */,
 			);
@@ -152,8 +132,6 @@
 		E42DC0F722D8E73600486CC1 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				E42DC12622D9CA8F00486CC1 /* ScadeKitExtensions.framework */,
-				E42DC0FC22D8E74C00486CC1 /* libScadeSDK.a */,
 				E42DC0F822D8E73600486CC1 /* libphoenix.dylib */,
 				E42DC0F922D8E73600486CC1 /* ScadeKit.framework */,
 			);
@@ -223,7 +201,6 @@
 				E42DC10A22D939C100486CC1 /* Sources */,
 				E42DC10B22D939C100486CC1 /* Frameworks */,
 				E42DC10C22D939C100486CC1 /* Resources */,
-				E42DC11F22D9C7E500486CC1 /* CopyFiles */,
 			);
 			buildRules = (
 			);

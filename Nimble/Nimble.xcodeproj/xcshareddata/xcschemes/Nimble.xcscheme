@@ -148,6 +148,6 @@
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
-      revealArchiveInOrganizer = "NO">
+      revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
