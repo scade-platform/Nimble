@@ -635,16 +635,16 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Project" id="H5L-B6-tnc">
                                     <items>
-                                        <menuItem title="Open Project..." id="P3f-JR-KCE">
+                                        <menuItem title="Open Project..." tag="1" id="P3f-JR-KCE">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="openDocument:" target="Ady-hI-5gd" id="F7u-JA-bml"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Switch Project..." id="2n4-Se-7B8">
+                                        <menuItem title="Switch Project..." tag="2" id="2n4-Se-7B8">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="openDocument:" target="Ady-hI-5gd" id="AtH-m2-2cE"/>
+                                                <action selector="switchProject:" target="Ady-hI-5gd" id="fF9-if-HFt"/>
                                             </connections>
                                         </menuItem>
                                     </items>

@@ -11,10 +11,17 @@ import NimbleCore
 
 class ProjectDocument : NSDocument {
   
-  var project = ProjectManager.shared.currentProject
+  var project: Project? = nil
+  
+  var workbench: Workbench? {
+    return self.windowForSheet?.windowController as? Workbench
+  }
+  
+  private var incorrectPaths : [String]?
   
   override init() {
     super.init()
+    project = ProjectManager.shared.createProject()
   }
   
   // MARK: - Enablers
@@ -36,41 +43,65 @@ class ProjectDocument : NSDocument {
   
   // MARK: - User Interface
   
-  /// - Tag: makeWindowControllersExample
   override func makeWindowControllers() {
     // Returns the storyboard that contains your document window.
+    
     let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: nil)
     if let windowController =
       storyboard.instantiateController(
         withIdentifier: NSStoryboard.SceneIdentifier("Document Window Controller")) as? NSWindowController {
       addWindowController(windowController)
-      if !project.incorrectPaths.isEmpty {
-        let alert = NSAlert()
-        alert.messageText =  "Project file has incorrect paths:"
-        let paths = project.incorrectPaths.reduce("", {$0 + $1 + "\n"})
-        alert.informativeText = paths
-        alert.addButton(withTitle: "OK")
-        alert.alertStyle = .warning
-        alert.runModal()
-      }
+      
+      showIncorrectPaths()
       
       // Set the view controller's represented object as your document.
 //      if let contentVC = windowController.contentViewController as? WorkbenchViewController {
 //      }
     }
   }
-
+  
+  func switchProject(contentsOf url: URL, ofType typeName: String) throws {
+    project = ProjectManager.shared.createProject()
+    let data = try! Data(contentsOf: url)
+    try read(from: data, ofType: typeName)
+    showIncorrectPaths()
+    if let workbench = workbench as? NimbleWorkbench, let project = project {
+//      workbench.navigatorArea?.delegates.forEach{$0.projectHasChanged(projet: project)}
+      workbench.navigatorArea?.projectHasChanged(project: project)
+    }
+  }
   
   // MARK: - Reading and Writing
   
   /// - Tag: readExample
   override func read(from data: Data, ofType typeName: String) throws {
-    project.read(from: data)
+    guard let project = project else {
+      return
+    }
+    incorrectPaths = project.read(from: data)
   }
   
   /// - Tag: writeExample
   override func data(ofType typeName: String) throws -> Data {
-    return project.data()!
+    guard let project = project else{
+      return Data()
+    }
+    return project.data()
   }
+  
+  
+  
+  func showIncorrectPaths(){
+    if let paths = incorrectPaths, !paths.isEmpty {
+      let alert = NSAlert()
+      alert.messageText =  "Project file has incorrect paths:"
+      let pathsMessage = paths.reduce("", {$0 + $1 + "\n"})
+      alert.informativeText = pathsMessage
+      alert.addButton(withTitle: "OK")
+      alert.alertStyle = .warning
+      alert.runModal()
+    }
+  }
+
   
 }

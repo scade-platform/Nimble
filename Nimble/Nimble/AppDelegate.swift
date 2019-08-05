@@ -16,6 +16,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
   }
   
+  func applicationWillFinishLaunching(_ notification: Notification) {
+    _ = NimbleController()
+  }
+  
   func applicationWillTerminate(_ aNotification: Notification) {
     
   }

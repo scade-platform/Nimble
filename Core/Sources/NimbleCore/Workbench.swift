@@ -21,15 +21,25 @@ public protocol Workbench {
   
   @discardableResult
   func open(file: File) -> Document?
+  
 }
 
+public protocol WorkbenchDelegate {
+  func projectHasChanged(project: Project)
+}
 
-public protocol WorkbenchArea {
+public extension WorkbenchDelegate {
+  func projectHasChanged(project: Project){
+    //by default do nothing
+  }
+}
+
+public protocol WorkbenchArea: WorkbenchDelegate {
   func add(part: WorkbenchPart) -> Void
 }
 
 
-public protocol WorkbenchPart {
+public protocol WorkbenchPart: WorkbenchDelegate {
   var view: NSView { get }
   
   var title: String { get }

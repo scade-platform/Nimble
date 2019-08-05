@@ -165,3 +165,14 @@ extension ProjectOutlineDataSource: NSOutlineViewDelegate {
   }
   
 }
+
+extension ProjectNavigatorPart: WorkbenchDelegate {
+  
+  public func projectHasChanged(project: Project) {
+    outlineDataSource = ProjectOutlineDataSource(workbench)
+    outlineView.outline?.delegate = outlineDataSource
+    outlineView.outline?.dataSource = outlineDataSource
+    outlineView.outline?.floatsGroupRows = false
+    outlineView.outline?.expandItem(workbench?.project)
+  }
+}
