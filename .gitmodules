@@ -2,5 +2,5 @@
 	path = Plugins/SwiftExtensions/sourcekit-lsp
 	url = https://github.com/apple/sourcekit-lsp.git
 [submodule "Plugins/TabsControl"]
-	path = Plugins/TabsControl
+	path = Nimble/Dependencies/TabsControl
 	url = git@github.com:Kristalev/KPCTabsControl.git
