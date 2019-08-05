@@ -68,8 +68,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E42DC11E22D9C7A800486CC1 /* AppKit.framework in Frameworks */,
-				E42DC11B22D9C73E00486CC1 /* libphoenix.dylib in Frameworks */,
 				E42DC11C22D9C73E00486CC1 /* ScadeKit.framework in Frameworks */,
+				E42DC11B22D9C73E00486CC1 /* libphoenix.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
