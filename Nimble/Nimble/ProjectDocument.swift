@@ -24,6 +24,16 @@ class ProjectDocument : NSDocument {
     project = ProjectManager.shared.createProject()
   }
   
+  init(contentsOf url: URL, ofType typeName: String) throws {
+    super.init()
+    project = ProjectManager.shared.createProject(url)
+    try read(from: url, ofType: typeName)
+    self.fileURL = url
+    self.fileType = typeName
+  }
+  
+  
+  
   // MARK: - Enablers
   
   // This enables auto save.
@@ -61,12 +71,10 @@ class ProjectDocument : NSDocument {
   }
   
   func switchProject(contentsOf url: URL, ofType typeName: String) throws {
-    project = ProjectManager.shared.createProject()
-    let data = try! Data(contentsOf: url)
-    try read(from: data, ofType: typeName)
+    project = ProjectManager.shared.createProject(url)
+    try read(from: url, ofType: typeName)
     showIncorrectPaths()
     if let workbench = workbench as? NimbleWorkbench, let project = project {
-//      workbench.navigatorArea?.delegates.forEach{$0.projectHasChanged(projet: project)}
       workbench.navigatorArea?.projectHasChanged(project: project)
     }
   }
