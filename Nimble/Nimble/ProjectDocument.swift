@@ -112,4 +112,13 @@ class ProjectDocument : NSDocument {
   }
 
   
+  func addFolderToProject(urls: [URL]){
+    guard let project = project else {
+      return
+    }
+    project.addFolders(urls: urls)
+    if let workbench = workbench as? NimbleWorkbench {
+      workbench.navigatorArea?.projectHasChanged(project: project)
+    }
+  }
 }

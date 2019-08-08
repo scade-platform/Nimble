@@ -647,6 +647,13 @@
                                                 <action selector="switchProject:" target="Ady-hI-5gd" id="fF9-if-HFt"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="Hxz-1l-9Rz"/>
+                                        <menuItem title="Add Folder to Project..." id="GlY-G6-8zl">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="addFolderToProject:" target="Ady-hI-5gd" id="6pd-mU-zqr"/>
+                                            </connections>
+                                        </menuItem>
                                     </items>
                                 </menu>
                             </menuItem>

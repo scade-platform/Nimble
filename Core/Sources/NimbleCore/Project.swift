@@ -23,6 +23,43 @@ public class Project {
       name = nil
     }
   }
+  
+  public func addFolders(urls: [URL]){
+    guard !urls.isEmpty else {
+      return
+    }
+    urls.forEach{ addFolder($0.path) }
+  }
+  
+  @discardableResult
+  private func addFolder(_ folder: String) -> Bool {
+    if let folderPath = Path(folder) {
+      if !addFolder(folderPath) {
+        return addRelativeFolder(folder)
+      }
+      return true
+    }
+    return addRelativeFolder(folder)
+  }
+  
+  @discardableResult
+  private func addFolder(_ folderPath: Path) -> Bool{
+    guard folderPath.exists && folderPath.isDirectory else {
+      return false
+    }
+    folders.append(Folder(path: folderPath))
+    return true
+    
+  }
+  
+  @discardableResult
+  private func addRelativeFolder(_ folder: String) -> Bool {
+    guard let base = self.location else {
+      return false
+    }
+    let absolutPath = base.join(folder)
+    return addFolder(absolutPath)
+  }
 }
 
 
@@ -73,34 +110,6 @@ extension Project {
     }
     return nil
   }
-  
-  private func addFolder(_ folder: String) -> Bool {
-    if let folderPath = Path(folder) {
-      if !addFolder(folderPath) {
-        return addRelativeFolder(folder)
-      }
-      return true
-    }
-    return addRelativeFolder(folder)
-  }
-  
-  private func addFolder(_ folderPath: Path) -> Bool{
-    guard folderPath.exists && folderPath.isDirectory else {
-      return false
-    }
-    folders.append(Folder(path: folderPath))
-    return true
-    
-  }
-  
-  private func addRelativeFolder(_ folder: String) -> Bool {
-    guard let base = self.location else {
-      return false
-    }
-    let absolutPath = base.join(folder)
-    return addFolder(absolutPath)
-  }
-  
   
   public func data() -> Data {
     return Data()
