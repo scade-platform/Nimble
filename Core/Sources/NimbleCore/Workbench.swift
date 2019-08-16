@@ -24,22 +24,12 @@ public protocol Workbench {
   
 }
 
-public protocol WorkbenchDelegate {
-  func projectHasChanged(project: Project)
-}
-
-public extension WorkbenchDelegate {
-  func projectHasChanged(project: Project){
-    //by default do nothing
-  }
-}
-
-public protocol WorkbenchArea: WorkbenchDelegate {
+public protocol WorkbenchArea {
   func add(part: WorkbenchPart) -> Void
 }
 
 
-public protocol WorkbenchPart: WorkbenchDelegate {
+public protocol WorkbenchPart {
   var view: NSView { get }
   
   var title: String { get }

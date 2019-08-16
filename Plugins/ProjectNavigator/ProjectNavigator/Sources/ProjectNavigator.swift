@@ -25,6 +25,8 @@ open class ProjectNavigatorPlugin: Plugin {
   
   public func activate(workbench: Workbench) {
     workbench.navigatorArea?.add(part: navigatorPart)
+    ProjectManager.shared.subscribe(projectObserver: navigatorPart)
+    workbench.project.subscribe(resourceObserver: navigatorPart)
     navigatorPart.workbench = workbench
   }
   

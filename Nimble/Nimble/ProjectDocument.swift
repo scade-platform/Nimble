@@ -21,12 +21,12 @@ class ProjectDocument : NSDocument {
   
   override init() {
     super.init()
-    project = ProjectManager.shared.createProject()
+    project = ProjectManager.shared.create()
   }
   
   init(contentsOf url: URL, ofType typeName: String) throws {
     super.init()
-    project = ProjectManager.shared.createProject(url)
+    project = ProjectManager.shared.create(projectFile: url)
     try read(from: url, ofType: typeName)
     self.fileURL = url
     self.fileType = typeName
@@ -61,9 +61,7 @@ class ProjectDocument : NSDocument {
       storyboard.instantiateController(
         withIdentifier: NSStoryboard.SceneIdentifier("Document Window Controller")) as? NSWindowController {
       addWindowController(windowController)
-      
       showIncorrectPaths()
-      
       // Set the view controller's represented object as your document.
 //      if let contentVC = windowController.contentViewController as? WorkbenchViewController {
 //      }
@@ -71,12 +69,9 @@ class ProjectDocument : NSDocument {
   }
   
   func switchProject(contentsOf url: URL, ofType typeName: String) throws {
-    project = ProjectManager.shared.createProject(url)
+    project = ProjectManager.shared.create(projectFile: url)
     try read(from: url, ofType: typeName)
     showIncorrectPaths()
-    if let workbench = workbench as? NimbleWorkbench, let project = project {
-      workbench.navigatorArea?.projectHasChanged(project: project)
-    }
   }
   
   // MARK: - Reading and Writing
@@ -112,13 +107,10 @@ class ProjectDocument : NSDocument {
   }
 
   
-  func addFolderToProject(urls: [URL]){
+  func add(folders urls: [URL]){
     guard let project = project else {
       return
     }
-    project.addFolders(urls: urls)
-    if let workbench = workbench as? NimbleWorkbench {
-      workbench.navigatorArea?.projectHasChanged(project: project)
-    }
+    project.add(folders: urls)
   }
 }

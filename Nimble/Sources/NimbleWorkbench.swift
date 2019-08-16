@@ -20,7 +20,7 @@ public class NimbleWorkbench: NSWindowController {
     
     if CommandLine.arguments.count > 1,
       let path = Path(CommandLine.arguments[1]), path.isDirectory {
-      project.folders = [Folder(path: path)]
+      project.add(folders: [path.url])
     }
     
     PluginManager.shared.activate(workbench: self)

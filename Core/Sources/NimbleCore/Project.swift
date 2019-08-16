@@ -9,12 +9,48 @@
 import Cocoa
 import Yams
 
+public class ProjectManager {
+  private var _currentProject: Project = Project()
+  public var currentProject: Project {
+    get {
+      return _currentProject
+    }
+    set{
+      _currentProject = newValue
+      notifyObservers()
+    }
+  }
+  
+  public static let shared: ProjectManager = ProjectManager()
+  private var observers = [ProjectObserver]()
+  
+  private func notifyObservers(){
+    observers.forEach{$0.changed(project: _currentProject)}
+  }
+  
+  public func create(projectFile url : URL? = nil) -> Project {
+    let newProject = Project(url: url)
+    currentProject = newProject
+    return newProject
+  }
+  
+  public func subscribe(projectObserver : ProjectObserver){
+    self.observers.append(projectObserver)
+  }
+}
+
+public protocol ProjectObserver {
+  func changed(project: Project)
+}
+
 public class Project {
-  public var folders: [Folder] = []
+  public private(set) var folders = [Folder]()
   private let location: Path?
   private let name: String?
+  private var observers = [ResourceObserver]()
   
-  init(_ url: URL?  = nil){
+  
+  init(url: URL?  = nil){
     if let url = url, let path = Path(url: url)  {
       location = path.parent
       name = path.basename(dropExtension: true)
@@ -24,56 +60,68 @@ public class Project {
     }
   }
   
-  public func addFolders(urls: [URL]){
+  public func subscribe(resourceObserver : ResourceObserver ) {
+    self.observers.append(resourceObserver)
+  }
+  
+  private func notifyResourceObservers(_ event: ResourceChangeEvent){
+    observers.forEach{$0.changed(event: event)}
+  }
+  
+  private func chargeResourceChangeEvent(type: ResourceChangeEvent.TypeEvent, deltas : [ResourceDelta]?){
+    guard let deltas = deltas, !deltas.isEmpty else {
+      return
+    }
+    notifyResourceObservers(ResourceChangeEvent(project: self, type: type, deltas: deltas))
+  }
+  
+  public func add(folders urls: [URL]){
     guard !urls.isEmpty else {
       return
     }
-    urls.forEach{ addFolder($0.path) }
+    var deltas = [ResourceDelta?]()
+    for url in urls {
+      deltas.append(add(folder: url.path))
+    }
+    chargeResourceChangeEvent(type: .post, deltas: deltas.compactMap{$0})
   }
   
-  @discardableResult
-  private func addFolder(_ folder: String) -> Bool {
+  
+  private func add(folder: String) -> ResourceDelta? {
     if let folderPath = Path(folder) {
-      if !addFolder(folderPath) {
-        return addRelativeFolder(folder)
+      guard let delta = add(folder: folderPath) else {
+        return add(relativeFolder: folder)
       }
-      return true
+      return delta
     }
-    return addRelativeFolder(folder)
+    return add(relativeFolder: folder)
   }
   
-  @discardableResult
-  private func addFolder(_ folderPath: Path) -> Bool{
+  
+  private func add(folder folderPath: Path) -> ResourceDelta? {
     guard folderPath.exists && folderPath.isDirectory else {
-      return false
+      return nil
     }
-    folders.append(Folder(path: folderPath))
-    return true
-    
+    let newFolder = Folder(path: folderPath)
+    folders.append(newFolder)
+    return ResourceDelta(resource: newFolder, kind: .added)
   }
   
-  @discardableResult
-  private func addRelativeFolder(_ folder: String) -> Bool {
+  private func add(relativeFolder folder: String) -> ResourceDelta? {
     guard let base = self.location else {
-      return false
+      return nil
     }
     let absolutPath = base.join(folder)
-    return addFolder(absolutPath)
+    return add(folder: absolutPath)
+  }
+  
+  deinit {
+    observers.removeAll()
   }
 }
 
 
-public class ProjectManager {
-  public var currentProject: Project = Project()
-  
-  public static let shared: ProjectManager = ProjectManager()
-  
-  public func createProject(_ url : URL? = nil) -> Project {
-    let newProject = Project(url)
-    currentProject = newProject
-    return newProject
-  }
-}
+
 
 extension Project {
   public func read(from data: Data) -> [String]? {
@@ -84,7 +132,7 @@ extension Project {
     let loadedDictionary = try? Yams.load(yaml: yamlContent) as! [String: [String]]
     if let loadedDictionary = loadedDictionary {
       var incorrectPaths = [String]()
-      if let p = addFolders(loadedDictionary){
+      if let p = parse(folders : loadedDictionary){
         incorrectPaths.append(contentsOf: p)
       }
       //TODO: add files
@@ -95,16 +143,20 @@ extension Project {
     return nil
   }
   
-  private func addFolders(_ loadedDictionary: [String: [String]]) -> [String]? {
+  private func parse(folders loadedDictionary: [String: [String]]) -> [String]? {
     guard let foldersPaths = loadedDictionary[caseInsensitive: "FOLDERS"] else {
       return nil
     }
     var incorrectPaths = [String]()
+    var deltas = [ResourceDelta?]()
     for folderPath in foldersPaths {
-      if !addFolder(folderPath){
+      if let delta = add(folder: folderPath){
+        deltas.append(delta)
+      } else {
         incorrectPaths.append(folderPath)
       }
     }
+    chargeResourceChangeEvent(type: .post, deltas: deltas.compactMap{$0})
     if !incorrectPaths.isEmpty {
       return incorrectPaths
     }
@@ -115,6 +167,34 @@ extension Project {
     return Data()
   }
 }
+
+public protocol ResourceObserver {
+  func changed(event: ResourceChangeEvent)
+}
+
+public struct ResourceChangeEvent {
+  public let project: Project
+  public let type: TypeEvent
+  public let deltas: [ResourceDelta]?
+  
+  public enum TypeEvent {
+    case post
+  }
+}
+
+public struct ResourceDelta {
+  public let resource: FileSystemElement
+  public let kind: Kind
+  
+  public enum Kind {
+    case added
+    case removed
+    case changed
+  }
+}
+
+
+
 
 private extension Dictionary where Key == String {
   

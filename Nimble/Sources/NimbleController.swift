@@ -47,7 +47,7 @@ class NimbleController : NSDocumentController {
     guard let urls = urls, let doc = self.currentDocument, let projectDoc = doc as? ProjectDocument else {
       return
     }
-    projectDoc.addFolderToProject(urls: urls)
+    projectDoc.add(folders: urls)
   }
   
   

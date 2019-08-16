@@ -166,13 +166,22 @@ extension ProjectOutlineDataSource: NSOutlineViewDelegate {
   
 }
 
-extension ProjectNavigatorPart: WorkbenchDelegate {
-  
-  public func projectHasChanged(project: Project) {
-    outlineDataSource = ProjectOutlineDataSource(workbench)
-    outlineView.outline?.delegate = outlineDataSource
-    outlineView.outline?.dataSource = outlineDataSource
-    outlineView.outline?.floatsGroupRows = false
-    outlineView.outline?.expandItem(workbench?.project)
+
+
+extension ProjectNavigatorPart : ResourceObserver {
+  public func changed(event: ResourceChangeEvent) {
+    guard event.project === workbench?.project, let deltas = event.deltas, !deltas.isEmpty else {
+      return
+    }
+    outlineView.outline?.reloadData()
+    outlineView.outline?.expandItem(event.project)
+  }
+}
+
+extension ProjectNavigatorPart : ProjectObserver {
+  public func changed(project: Project) {
+    project.subscribe(resourceObserver: self)
+    outlineView.outline?.reloadData()
+    outlineView.outline?.expandItem(project)
   }
 }
