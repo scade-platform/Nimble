@@ -51,6 +51,7 @@ class ProjectDocument : NSDocument {
     return ofType == "com.scade.nimble.project"
   }
   
+  
   // MARK: - User Interface
   
   override func makeWindowControllers() {
@@ -89,10 +90,8 @@ class ProjectDocument : NSDocument {
     guard let project = project else{
       return Data()
     }
-    return project.data()
+    return project.data(document: self) ?? Data()
   }
-  
-  
   
   func showIncorrectPaths(){
     if let paths = incorrectPaths, !paths.isEmpty {
@@ -113,4 +112,19 @@ class ProjectDocument : NSDocument {
     }
     project.add(folders: urls)
   }
+  
+  @IBAction func saveProjectAs(_ sender: Any? ){
+    saveAs(sender)
+  }
+  
+  override func save(to url: URL, ofType typeName: String, for saveOperation: NSDocument.SaveOperationType, completionHandler: @escaping (Error?) -> Void) {
+    self.fileURL = url
+    super.save(to: url, ofType: typeName, for: saveOperation, completionHandler: completionHandler)
+  }
+  
+  override func prepareSavePanel(_ savePanel: NSSavePanel) -> Bool {
+    savePanel.isExtensionHidden = false
+    return true
+  }
+  
 }

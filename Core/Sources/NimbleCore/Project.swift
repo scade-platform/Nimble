@@ -25,7 +25,9 @@ public class ProjectManager {
   private var observers = [ProjectObserver]()
   
   private func notifyObservers(){
-    observers.forEach{$0.changed(project: _currentProject)}
+    DispatchQueue.main.async {
+       self.observers.forEach{$0.changed(project: self._currentProject)}
+    }
   }
   
   public func create(projectFile url : URL? = nil) -> Project {
@@ -65,7 +67,9 @@ public class Project {
   }
   
   private func notifyResourceObservers(_ event: ResourceChangeEvent){
-    observers.forEach{$0.changed(event: event)}
+    DispatchQueue.main.async {
+      self.observers.forEach{$0.changed(event: event)}
+    }
   }
   
   private func chargeResourceChangeEvent(type: ResourceChangeEvent.TypeEvent, deltas : [ResourceDelta]?){
@@ -163,8 +167,21 @@ extension Project {
     return nil
   }
   
-  public func data() -> Data {
-    return Data()
+  public func data(document : NSDocument) -> Data? {
+    guard !folders.isEmpty, let documentURL = document.fileURL else{
+      return nil
+    }
+    let documentPath = Path(url: documentURL)?.parent
+    let foldersString: String = folders.reduce("") { res, folder in
+      let relativePath = folder.path.relative(to: documentPath!)
+      if relativePath.isEmpty{
+        return res + "  - .\n"
+      }else{
+        return res + ("  - \(relativePath)\n")
+      }
+    }
+    let result = "Folders:\n" + foldersString
+    return result.data(using: .utf8)
   }
 }
 

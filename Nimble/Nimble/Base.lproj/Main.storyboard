@@ -660,6 +660,13 @@
                                                 </items>
                                             </menu>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="0nh-gH-rgH"/>
+                                        <menuItem title="Save Project As..." id="QlQ-2r-pqJ">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="saveProjectAs:" target="Ady-hI-5gd" id="f2J-AF-BGx"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" id="Hxz-1l-9Rz"/>
                                         <menuItem title="Add Folder to Project..." id="GlY-G6-8zl">
                                             <modifierMask key="keyEquivalentModifierMask"/>
