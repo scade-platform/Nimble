@@ -46,6 +46,7 @@ public protocol ProjectObserver {
 }
 
 public class Project {
+  public private(set) var files = [File]()
   public private(set) var folders = [Folder]()
   private let location: Path?
   private let name: String?
@@ -79,52 +80,70 @@ public class Project {
     notifyResourceObservers(ResourceChangeEvent(project: self, type: type, deltas: deltas))
   }
   
-  public func add(folders urls: [URL]){
+  public func add(folders urls: [URL]) {
+    add(items: urls, addFunc: addFolder(_:))
+  }
+  
+  public func add(files urls: [URL]) {
+    add(items: urls, addFunc: addFile(_:))
+  }
+  
+  private func add(items urls: [URL], addFunc: (String) -> ResourceDelta?) {
     guard !urls.isEmpty else {
       return
     }
     var deltas = [ResourceDelta?]()
     for url in urls {
-      deltas.append(add(folder: url.path))
+      deltas.append(addFunc(url.path))
     }
     chargeResourceChangeEvent(type: .post, deltas: deltas.compactMap{$0})
   }
   
-  
-  private func add(folder: String) -> ResourceDelta? {
-    if let folderPath = Path(folder) {
-      guard let delta = add(folder: folderPath) else {
-        return add(relativeFolder: folder)
-      }
-      return delta
+  private func addFolder(_ folder: String) -> ResourceDelta? {
+    let predicate: (Path) -> Bool = { path in
+      return path.exists && path.isDirectory
     }
-    return add(relativeFolder: folder)
+    return add(folder, type: Folder.self, target: &folders, predicate: predicate)
   }
   
+  private func addFile(_ file: String) -> ResourceDelta? {
+    let predicate: (Path) -> Bool = { path in
+      return path.exists && path.isFile
+    }
+    return add(file, type: File.self, target: &files, predicate: predicate)
+  }
   
-  private func add(folder folderPath: Path) -> ResourceDelta? {
-    guard folderPath.exists && folderPath.isDirectory else {
+  private func add<T: FileSystemElement>(_ item: String, type : T.Type, target: inout [T], predicate: (Path) -> Bool) -> ResourceDelta? {
+    guard let path = Path(item), let delta = add(item: path, type: type, target: &target, predicate: predicate) else {
+      guard let absolutePath = convertToAbsolutePath(relative: item) else {
+        return nil
+      }
+      return add(item: absolutePath, type: File.self, target: &files, predicate: predicate)
+    }
+    return delta
+  }
+  
+  private func add<T: FileSystemElement>(item path: Path, type : T.Type, target: inout [T], predicate : (Path) -> Bool) -> ResourceDelta? {
+    guard predicate(path) else {
       return nil
     }
-    let newFolder = Folder(path: folderPath)
-    folders.append(newFolder)
-    return ResourceDelta(resource: newFolder, kind: .added)
+    let newItem = type.init(path: path)
+    target.append(newItem)
+    return ResourceDelta(resource: newItem, kind: .added)
   }
   
-  private func add(relativeFolder folder: String) -> ResourceDelta? {
+  
+  private func convertToAbsolutePath(relative path: String) -> Path? {
     guard let base = self.location else {
       return nil
     }
-    let absolutPath = base.join(folder)
-    return add(folder: absolutPath)
+    return base.join(path)
   }
   
   deinit {
     observers.removeAll()
   }
 }
-
-
 
 
 extension Project {
@@ -154,7 +173,7 @@ extension Project {
     var incorrectPaths = [String]()
     var deltas = [ResourceDelta?]()
     for folderPath in foldersPaths {
-      if let delta = add(folder: folderPath){
+      if let delta = addFolder(folderPath){
         deltas.append(delta)
       } else {
         incorrectPaths.append(folderPath)
@@ -209,9 +228,6 @@ public struct ResourceDelta {
     case changed
   }
 }
-
-
-
 
 private extension Dictionary where Key == String {
   
