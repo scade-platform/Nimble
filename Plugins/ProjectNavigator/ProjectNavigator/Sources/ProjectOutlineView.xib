@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14313.18"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,14 +16,14 @@
             <rect key="frame" x="0.0" y="0.0" width="233" height="645"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Ol-Ka-gHq">
+                <scrollView fixedFrame="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Ol-Ka-gHq">
                     <rect key="frame" x="0.0" y="0.0" width="233" height="645"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <clipView key="contentView" ambiguous="YES" drawsBackground="NO" id="zqD-1G-bxT">
                         <rect key="frame" x="1" y="1" width="231" height="643"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" outlineTableColumn="jb6-Gp-aD0" id="10y-x7-nd7">
+                            <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" outlineTableColumn="jb6-Gp-aD0" id="10y-x7-nd7">
                                 <rect key="frame" x="0.0" y="0.0" width="231" height="643"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
@@ -85,6 +85,64 @@
                                                     <outlet property="textField" destination="nyh-VN-bXr" id="5TP-Vh-7Z1"/>
                                                 </connections>
                                             </tableCellView>
+                                            <tableCellView identifier="ClosableDataCell" id="YsI-UW-Qoh" customClass="FileTableCellView" customModule="ProjectNavigator" customModuleProvider="target">
+                                                <rect key="frame" x="1" y="39" width="228" height="17"/>
+                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                <subviews>
+                                                    <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Ls-Ux-TX2">
+                                                        <rect key="frame" x="0.0" y="0.0" width="228" height="17"/>
+                                                        <subviews>
+                                                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="D4P-IE-r5W">
+                                                                <rect key="frame" x="0.0" y="0.0" width="17" height="17"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="17" id="0tP-4y-0xE"/>
+                                                                    <constraint firstAttribute="width" secondItem="D4P-IE-r5W" secondAttribute="height" multiplier="1:1" id="b5p-2H-6Cm"/>
+                                                                </constraints>
+                                                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="cross" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="D4L-8c-obv">
+                                                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                                                    <font key="font" metaFont="system"/>
+                                                                </buttonCell>
+                                                            </button>
+                                                            <imageView translatesAutoresizingMaskIntoConstraints="NO" id="3nu-mF-reh">
+                                                                <rect key="frame" x="25" y="2" width="14" height="14"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" secondItem="3nu-mF-reh" secondAttribute="height" multiplier="1:1" id="kmO-MZ-Rs2"/>
+                                                                </constraints>
+                                                                <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="NSActionTemplate" id="WHm-jm-A7q"/>
+                                                            </imageView>
+                                                            <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="k5t-fd-2sL">
+                                                                <rect key="frame" x="45" y="0.0" width="185" height="17"/>
+                                                                <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="R6P-Ki-PvB">
+                                                                    <font key="font" metaFont="system"/>
+                                                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                </textFieldCell>
+                                                            </textField>
+                                                        </subviews>
+                                                        <visibilityPriorities>
+                                                            <integer value="1000"/>
+                                                            <integer value="1000"/>
+                                                            <integer value="1000"/>
+                                                        </visibilityPriorities>
+                                                        <customSpacing>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                            <real value="3.4028234663852886e+38"/>
+                                                        </customSpacing>
+                                                    </stackView>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="0Ls-Ux-TX2" firstAttribute="top" secondItem="YsI-UW-Qoh" secondAttribute="top" id="Qen-EP-LOq"/>
+                                                    <constraint firstItem="0Ls-Ux-TX2" firstAttribute="leading" secondItem="YsI-UW-Qoh" secondAttribute="leading" id="duR-w9-eV8"/>
+                                                    <constraint firstAttribute="trailing" secondItem="0Ls-Ux-TX2" secondAttribute="trailing" id="dz3-eb-Yrd"/>
+                                                    <constraint firstAttribute="bottom" secondItem="0Ls-Ux-TX2" secondAttribute="bottom" id="wpB-hK-PS0"/>
+                                                </constraints>
+                                                <connections>
+                                                    <outlet property="closeButton" destination="D4P-IE-r5W" id="3VB-Jf-Pwm"/>
+                                                    <outlet property="imageView" destination="3nu-mF-reh" id="MJx-id-GSc"/>
+                                                    <outlet property="textField" destination="k5t-fd-2sL" id="uis-Xo-Cua"/>
+                                                </connections>
+                                            </tableCellView>
                                         </prototypeCellViews>
                                     </tableColumn>
                                 </tableColumns>
@@ -107,5 +165,6 @@
     </objects>
     <resources>
         <image name="NSActionTemplate" width="14" height="14"/>
+        <image name="cross" width="128" height="128"/>
     </resources>
 </document>

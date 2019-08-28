@@ -84,8 +84,15 @@ public class Project {
     add(items: urls, addFunc: addFolder(_:))
   }
   
-  public func add(files urls: [URL]) {
+  public func open(files urls: [URL]) {
     add(items: urls, addFunc: addFile(_:))
+  }
+  
+  public func close(file: URL) {
+    let closableFils = files.filter{$0.path.url == file}
+    files = files.filter{$0.path.url != file}
+    let deltas = closableFils.map{ResourceDelta(resource: $0, kind: .closed)}
+    chargeResourceChangeEvent(type: .post, deltas: deltas)
   }
   
   private func add(items urls: [URL], addFunc: (String) -> ResourceDelta?) {
@@ -114,6 +121,10 @@ public class Project {
   }
   
   private func add<T: FileSystemElement>(_ item: String, type : T.Type, target: inout [T], predicate: (Path) -> Bool) -> ResourceDelta? {
+    let contains = target.contains{$0.path.string == item}
+    guard !contains else {
+      return nil
+    }
     guard let path = Path(item), let delta = add(item: path, type: type, target: &target, predicate: predicate) else {
       guard let absolutePath = convertToAbsolutePath(relative: item) else {
         return nil
@@ -226,6 +237,7 @@ public struct ResourceDelta {
     case added
     case removed
     case changed
+    case closed
   }
 }
 

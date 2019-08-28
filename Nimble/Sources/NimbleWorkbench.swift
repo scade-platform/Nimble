@@ -24,6 +24,7 @@ public class NimbleWorkbench: NSWindowController {
     }
     
     PluginManager.shared.activate(workbench: self)
+    project.subscribe(resourceObserver: self)
   }
   
 //  func launch() -> Void {
@@ -51,9 +52,19 @@ extension NimbleWorkbench: Workbench {
     }
     
     if let docController = doc?.contentViewController {
+      self.project.open(files: [file.path.url])
       viewController?.editorViewController?.showEditor(docController)
     }
     
     return doc
+  }
+}
+
+extension NimbleWorkbench: ResourceObserver{
+  public func changed(event: ResourceChangeEvent) {
+    guard event.project === self.project, let deltas = event.deltas, !deltas.isEmpty else {
+      return
+    }
+    event.deltas?.filter{$0.resource is File}.filter{$0.kind == .added}.forEach{self.open(file: $0.resource as! File)}
   }
 }

@@ -113,6 +113,13 @@ class ProjectDocument : NSDocument {
     project.add(folders: urls)
   }
   
+  func add(files urls: [URL]){
+    guard let project = project else {
+      return
+    }
+    project.open(files: urls)
+  }
+  
   @IBAction func saveProjectAs(_ sender: Any? ){
     saveAs(sender)
   }

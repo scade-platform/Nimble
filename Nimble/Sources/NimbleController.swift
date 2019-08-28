@@ -50,5 +50,25 @@ class NimbleController : NSDocumentController {
     projectDoc.add(folders: urls)
   }
   
+  @IBAction func addFileToProject(_ sender: Any?) {
+    let openPanel = NSOpenPanel()
+    openPanel.allowsMultipleSelection = true
+    openPanel.canChooseDirectories = false
+    openPanel.canChooseFiles = true
+    openPanel.canCreateDirectories = false
+    let pressedButton = self.runModalOpenPanel(openPanel, forTypes: nil)
+    guard pressedButton == NSApplication.ModalResponse.OK.rawValue else {
+      return
+    }
+    addFilesToProject(urls: openPanel.urls)
+  }
+  
+  func addFilesToProject(urls: [URL]?) {
+    guard let urls = urls, let doc = self.currentDocument, let projectDoc = doc as? ProjectDocument else {
+      return
+    }
+    projectDoc.add(files: urls)
+  }
+  
   
 }

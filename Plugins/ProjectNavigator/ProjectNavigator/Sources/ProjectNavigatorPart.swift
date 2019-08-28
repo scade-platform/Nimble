@@ -9,7 +9,6 @@
 import Cocoa
 import NimbleCore
 
-
 open class ProjectNavigatorPart: WorkbenchPart {
   public var title: String
   
@@ -27,8 +26,8 @@ open class ProjectNavigatorPart: WorkbenchPart {
       outlineView.outline?.dataSource = outlineDataSource
       
       outlineView.outline?.floatsGroupRows = false
-      
-      outlineView.outline?.expandItem(workbench?.project)
+      outlineView.outline?.expandItem(workbench?.project.folders)
+      outlineView.outline?.expandItem(workbench?.project.files)
     }
   }
   
@@ -58,15 +57,24 @@ public class ProjectOutlineDataSource: NSObject {
 extension ProjectOutlineDataSource: NSOutlineViewDataSource {
   public func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
     guard let item = item else {
-      return workbench.project
+      if index == 0 {
+        return workbench.project.files
+      }else{
+        return workbench.project.folders
+      }
     }
     
     switch item {
+    case let arr as [FileSystemElement]:
+      return arr[index]
     case let folder as Folder:
       return folder.content[index]
-      
     case let project as Project:
-      return project.folders[index]
+      if index == 0 {
+        return project.files
+      }else{
+        return project.folders
+      }
     default:
       return self
     }
@@ -74,26 +82,27 @@ extension ProjectOutlineDataSource: NSOutlineViewDataSource {
   
   public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
     switch item {
+    case let arr as [FileSystemElement]:
+      return arr.count > 0
     case let folder as Folder:
       return folder.content.count > 0
-      
     case let project as Project:
-      return project.folders.count > 0
-      
+      return project.folders.count > 0 || project.files.count > 0
     default:
       return false
     }
   }
   
   public func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
-    guard let item = item else { return 1 }
+    guard let item = item else { return 2 }
     
     switch item {
+    case let arr as [FileSystemElement]:
+      return arr.count
     case let folder as Folder:
       return !folder.path.isSymlink ? folder.content.count : 0
-      
-    case let project as Project:
-      return project.folders.count
+    case _ as Project :
+      return 2
       
     default:
       return 0
@@ -103,27 +112,32 @@ extension ProjectOutlineDataSource: NSOutlineViewDataSource {
 
 extension ProjectOutlineDataSource: NSOutlineViewDelegate {
   public func outlineView(_ outlineView: NSOutlineView, isGroupItem item: Any) -> Bool {
-    return item is Project
+    return (item is [Folder])  || (item is [File])
   }
   
   public func outlineView(_ outlineView: NSOutlineView, shouldShowOutlineCellForItem item: Any) -> Bool {
-    return !(item is Project)
+    return !(item is [Folder]) && !(item is [File])
   }
   
   public func outlineView(_ outlineView: NSOutlineView, shouldSelectItem item: Any) -> Bool {
-    return !(item is Project)
+    return !(item is [Folder]) && !(item is [File])
   }
   
   public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
     switch item {
-    case _ as Project:
+    case let folders as [Folder]:
+      guard !folders.isEmpty else {
+        return nil
+      }
       guard let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "HeaderCell"), owner: self) as? NSTableCellView else { return nil }
       view.textField?.stringValue = "FOLDERS"
       return view
-    
+    case _ as [File]:
+      guard let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "HeaderCell"), owner: self) as? NSTableCellView else { return nil }
+      view.textField?.stringValue = "OPEN FILES"
+      return view
     case let folder as Folder:
       guard let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "DataCell"), owner: self) as? NSTableCellView else { return nil }
-      
       view.textField?.stringValue = folder.name
       
       if outlineView.isItemExpanded(item) {
@@ -135,7 +149,13 @@ extension ProjectOutlineDataSource: NSOutlineViewDelegate {
       return view
     
     case let file as File:
-      guard let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "DataCell"), owner: self) as? NSTableCellView else { return nil }
+      guard let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: (outlineView.parent(forItem: item) as? [File]) != nil ? "ClosableDataCell" : "DataCell"), owner: self) as? NSTableCellView else { return nil }
+      if let closableView = view as? FileTableCellView {
+        closableView.closeFileCallback = { [unowned self] file in
+          self.workbench.project.close(file: file.path.url)
+        }
+      }
+      view.objectValue = item
       view.textField?.stringValue = file.name
       view.imageView?.image = Bundle(for: type(of: self)).image(forResource: "document")
       
@@ -164,6 +184,11 @@ extension ProjectOutlineDataSource: NSOutlineViewDelegate {
     outlineView.reloadItem(item, reloadChildren: false)
   }
   
+  struct OutlineRootItem{
+    let title: String
+    let data: [FileSystemElement]
+  }
+  
 }
 
 
@@ -174,7 +199,8 @@ extension ProjectNavigatorPart : ResourceObserver {
       return
     }
     outlineView.outline?.reloadData()
-    outlineView.outline?.expandItem(event.project)
+    outlineView.outline?.expandItem(event.project.files)
+    outlineView.outline?.expandItem(event.project.folders)
   }
 }
 
@@ -182,6 +208,7 @@ extension ProjectNavigatorPart : ProjectObserver {
   public func changed(project: Project) {
     project.subscribe(resourceObserver: self)
     outlineView.outline?.reloadData()
-    outlineView.outline?.expandItem(project)
+    outlineView.outline?.expandItem(project.files)
+    outlineView.outline?.expandItem(project.folders)
   }
 }
