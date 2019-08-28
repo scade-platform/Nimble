@@ -129,7 +129,7 @@ public class Project {
       guard let absolutePath = convertToAbsolutePath(relative: item) else {
         return nil
       }
-      return add(item: absolutePath, type: File.self, target: &files, predicate: predicate)
+      return add(item: absolutePath, type: type, target: &target, predicate: predicate)
     }
     return delta
   }
@@ -166,10 +166,12 @@ extension Project {
     let loadedDictionary = try? Yams.load(yaml: yamlContent) as! [String: [String]]
     if let loadedDictionary = loadedDictionary {
       var incorrectPaths = [String]()
-      if let p = parse(folders : loadedDictionary){
+      if let p = parse(loadedDictionary, section: "FOLDERS", addFunc: addFolder(_:)){
         incorrectPaths.append(contentsOf: p)
       }
-      //TODO: add files
+      if let p = parse(loadedDictionary, section: "FILES", addFunc: addFile(_:)){
+        incorrectPaths.append(contentsOf: p)
+      }
       if !incorrectPaths.isEmpty {
         return incorrectPaths
       }
@@ -177,17 +179,17 @@ extension Project {
     return nil
   }
   
-  private func parse(folders loadedDictionary: [String: [String]]) -> [String]? {
-    guard let foldersPaths = loadedDictionary[caseInsensitive: "FOLDERS"] else {
+  private func parse(_ loadedDictionary: [String: [String]], section: String, addFunc: (String) -> ResourceDelta?) -> [String]? {
+    guard let itemsPaths = loadedDictionary[caseInsensitive: section] else {
       return nil
     }
     var incorrectPaths = [String]()
     var deltas = [ResourceDelta?]()
-    for folderPath in foldersPaths {
-      if let delta = addFolder(folderPath){
+    for itemPath in itemsPaths {
+      if let delta = addFunc(itemPath){
         deltas.append(delta)
       } else {
-        incorrectPaths.append(folderPath)
+        incorrectPaths.append(itemPath)
       }
     }
     chargeResourceChangeEvent(type: .post, deltas: deltas.compactMap{$0})
@@ -198,20 +200,38 @@ extension Project {
   }
   
   public func data(document : NSDocument) -> Data? {
+    let folders = foldersYAML(document)
+    let files = filesYAML(document)
+    var result = folders ?? ""
+    result = result + (files ?? "")
+    return result.data(using: .utf8)
+  }
+  
+  private func foldersYAML(_ document: NSDocument) -> String? {
     guard !folders.isEmpty, let documentURL = document.fileURL else{
       return nil
     }
-    let documentPath = Path(url: documentURL)?.parent
-    let foldersString: String = folders.reduce("") { res, folder in
-      let relativePath = folder.path.relative(to: documentPath!)
+    return createYAML(url: documentURL, arr: folders, section: "Folders:")
+  }
+  
+  private func filesYAML(_ document: NSDocument) -> String? {
+    guard !files.isEmpty, let documentURL = document.fileURL else{
+      return nil
+    }
+    return createYAML(url: documentURL, arr: files, section: "Files:")
+  }
+  
+  private func createYAML(url: URL, arr: [FileSystemElement], section: String) -> String {
+    let documentPath = Path(url: url)?.parent
+    let result: String = arr.reduce("") { res, item in
+      let relativePath = item.path.relative(to: documentPath!)
       if relativePath.isEmpty{
         return res + "  - .\n"
       }else{
         return res + ("  - \(relativePath)\n")
       }
     }
-    let result = "Folders:\n" + foldersString
-    return result.data(using: .utf8)
+    return "\(section)\n" + result
   }
 }
 
