@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */; };
 		0CB6607822F41D1500CBB386 /* NimbleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6607722F41D1500CBB386 /* NimbleController.swift */; };
+		0CEB19AE231E38A10092E801 /* DropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEB19AD231E38A10092E801 /* DropView.swift */; };
 		D72F9587222CAC3C009F2EC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78BCB05222B4DE300AE0A9C /* AppDelegate.swift */; };
 		D72F9589222CAD09009F2EC3 /* NavigatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F956A222C50A7009F2EC3 /* NavigatorViewController.swift */; };
 		D72F958A222CAD0C009F2EC3 /* WorkbenchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F9579222CA4B5009F2EC3 /* WorkbenchViewController.swift */; };
@@ -75,6 +76,7 @@
 /* Begin PBXFileReference section */
 		0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDocument.swift; sourceTree = "<group>"; };
 		0CB6607722F41D1500CBB386 /* NimbleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleController.swift; sourceTree = "<group>"; };
+		0CEB19AD231E38A10092E801 /* DropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DropView.swift; path = Sources/DropView.swift; sourceTree = SOURCE_ROOT; };
 		D72F956A222C50A7009F2EC3 /* NavigatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorViewController.swift; sourceTree = "<group>"; };
 		D72F9579222CA4B5009F2EC3 /* WorkbenchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchViewController.swift; sourceTree = "<group>"; };
 		D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkbenchSidebar.xib; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				D72F956A222C50A7009F2EC3 /* NavigatorViewController.swift */,
 				D791B2E122B053C5001BBA0E /* EditorViewController.swift */,
 				0CB6607722F41D1500CBB386 /* NimbleController.swift */,
+				0CEB19AD231E38A10092E801 /* DropView.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 				D788ED452239C2750072C21E /* NimbleWorkbench.swift in Sources */,
 				D72F958A222CAD0C009F2EC3 /* WorkbenchViewController.swift in Sources */,
 				D72F9587222CAC3C009F2EC3 /* AppDelegate.swift in Sources */,
+				0CEB19AE231E38A10092E801 /* DropView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -759,7 +759,7 @@
                         <splitViewItem id="ND0-p8-RRp"/>
                         <splitViewItem holdingPriority="249" id="9p0-uC-ZSh"/>
                     </splitViewItems>
-                    <splitView key="splitView" dividerStyle="thin" vertical="YES" id="Kd3-Dd-nrm">
+                    <splitView key="splitView" dividerStyle="thin" vertical="YES" id="Kd3-Dd-nrm" customClass="DropView" customModule="Nimble" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>

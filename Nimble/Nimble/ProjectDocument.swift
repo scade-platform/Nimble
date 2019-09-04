@@ -56,16 +56,12 @@ class ProjectDocument : NSDocument {
   
   override func makeWindowControllers() {
     // Returns the storyboard that contains your document window.
-    
     let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: nil)
     if let windowController =
       storyboard.instantiateController(
         withIdentifier: NSStoryboard.SceneIdentifier("Document Window Controller")) as? NSWindowController {
       addWindowController(windowController)
       showIncorrectPaths()
-      // Set the view controller's represented object as your document.
-//      if let contentVC = windowController.contentViewController as? WorkbenchViewController {
-//      }
     }
   }
   

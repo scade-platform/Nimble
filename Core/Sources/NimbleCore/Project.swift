@@ -26,7 +26,7 @@ public class ProjectManager {
   
   private func notifyObservers(){
     DispatchQueue.main.async {
-       self.observers.forEach{$0.changed(project: self._currentProject)}
+      self.observers.forEach{$0.changed(project: self._currentProject)}
     }
   }
   
@@ -86,6 +86,11 @@ public class Project {
   
   public func open(files urls: [URL]) {
     add(items: urls, addFunc: addFile(_:))
+  }
+  
+  public func openAll(fileSystemElements items: [URL]){
+    add(folders: items)
+    open(files: items)
   }
   
   public func close(file: URL) {

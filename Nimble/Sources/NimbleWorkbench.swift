@@ -27,13 +27,13 @@ public class NimbleWorkbench: NSWindowController {
     project.subscribe(resourceObserver: self)
   }
   
-//  func launch() -> Void {
-//    pluginManager.activate(workbench: self)
-//  }
-//
-//  func terminate() -> Void {
-//    pluginManager.deactivate()
-//  }
+  //  func launch() -> Void {
+  //    pluginManager.activate(workbench: self)
+  //  }
+  //
+  //  func terminate() -> Void {
+  //    pluginManager.deactivate()
+  //  }
 }
 
 
