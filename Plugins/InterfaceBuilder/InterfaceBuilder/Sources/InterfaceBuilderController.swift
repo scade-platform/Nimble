@@ -18,22 +18,22 @@ class InterfaceBuilderController: NSViewController {
     super.viewDidLoad()
 
     if let view = pageView {
-      let svgSize = getSvgSize()
+      let size = (pageView?.superview?.frame.size)!
 
       for c in view.constraints {
         switch c.identifier {
         case .some("width"):
-          c.constant = svgSize.width
+          c.constant = size.width
           
         case .some("height"):
-          c.constant = svgSize.height
+          c.constant = size.height
           
         default:
           break
         }
       }
-      view.phoenixView.frame.size = svgSize
-      Swift.print("set frame: \(svgSize)")
+      view.phoenixView.frame.size = size
+      //Swift.print("set frame: \(size)")
     }
     loadPage()
   }
@@ -44,11 +44,7 @@ class InterfaceBuilderController: NSViewController {
         addTouchListeners(page);
       }
       if let svg = pageDocument.svgRoot {
-        if let size = pageDocument.svgSize {
-          render(svg, size: size)
-        } else {
-          render(svg, size: pageView!.phoenixView.frame.size)
-        }
+        render(svg, size: pageView!.phoenixView.frame.size)
       }
     }
   }
@@ -58,35 +54,6 @@ class InterfaceBuilderController: NSViewController {
       highlighter = WidgetHighlighter()
       highlighter?.visit(page)
     }
-  }
-
-  private func getSvgSize() -> CGSize {
-    if let size = doc?.svgSize {
-      return size
-    }
-
-    if let superViewSize = pageView?.superview?.frame.size {
-      if let svg = doc?.svgRoot {
-        let getUnitValue = {
-          (unit: SCDSvgUnit, bound: Float) -> Int in
-          switch unit.measurement {
-          case .percentage:
-            return Int(unit.value * bound / 100.0)
-
-          case .pixel:
-            return Int(unit.value)
-
-            @unknown default:
-              return 0
-          }
-        }
-
-        return CGSize(width: getUnitValue(svg.width, Float(superViewSize.width)),
-                      height: getUnitValue(svg.height, Float(superViewSize.height)))
-      }
-    }
-    
-    return CGSize(width: 100, height: 100)
   }
 
   private func render(_ root: SCDSvgBox, size: CGSize) {

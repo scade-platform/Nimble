@@ -19,8 +19,13 @@ using namespace phoenix::display::geometry;
         if (auto const& displayObject = drawing->getDisplayObject()) {
           if (auto const& containerObject =
                   displayObject->as<ContainerObject>()) {
-            containerObject->add(
-                [PageHighlighter createBorder:containerObject->getFrame()]);
+
+            auto const& size = containerObject->getFullTransformation()
+                                   .inverse()
+                                   .mapRect(containerObject->getFrame())
+                                   .size;
+
+            containerObject->add([PageHighlighter createBorder:size]);
           }
         }
       }
@@ -43,12 +48,17 @@ using namespace phoenix::display::geometry;
   }
 }
 
-+ (DisplayObject_ptr)createBorder:(RectF)rect {
++ (DisplayObject_ptr)createBorder:(SizeF)size {
   auto res = DisplayFactory::createRect();
-  res->set(0, 0, rect.size.width, rect.size.height);
+  auto strokeWidth = 2;
+  auto halfStrokeWidth = strokeWidth / 2;
+
+  res->set(halfStrokeWidth, halfStrokeWidth, size.width - strokeWidth,
+           size.height - strokeWidth);
+
   res->setFillColor(0, 0, 0, 0);
-  res->setStrokeWidth(3);
-  res->setStrokeColor(255, 0, 0);
+  res->setStrokeWidth(strokeWidth);
+  res->setStrokeColor(73, 158, 255);
 
   return res;
 }

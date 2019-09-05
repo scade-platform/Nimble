@@ -1,6 +1,0 @@
-framework module ScadeKitExtensions {
-  umbrella header "ScadeKitExtensions.h"
-
-  export *
-  module * { export * }
-}

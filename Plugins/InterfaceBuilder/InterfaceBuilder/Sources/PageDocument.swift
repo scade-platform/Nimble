@@ -4,7 +4,6 @@ import ScadeKit
 
 public final class PageDocument: NSDocument, Document {
   public var svgRoot: SCDSvgBox?
-  public var svgSize: CGSize?
   public var page: SCDWidgetsPage?
   
   private lazy var builderController: InterfaceBuilderController = {
@@ -32,17 +31,24 @@ public final class PageDocument: NSDocument, Document {
       let resource = SCDRuntime.loadXmiResource(url.path) as! SCDCoreResource
       let resourceContents = resource.contents
       if !resourceContents.isEmpty {
-        svgRoot = resourceContents[resourceContents.count - 1] as? SCDSvgBox
+        let root = SCDSvgBox()
+        root.children.append(resourceContents[resourceContents.count - 1] as! SCDSvgBox)
+
         if let page = resourceContents[0] as? SCDWidgetsPage {
           self.page = page
-          var width = page.size.width
-          var height = page.size.height
-          let minSize = page.minArea
-          if minSize.width > 0 && minSize.height > 0 {
-            width = minSize.width
-            height = minSize.height
-          }
-          svgSize = CGSize(width: width, height: height)
+          // var width = page.size.width
+          // var height = page.size.height
+          // let minSize = page.minArea
+          // if minSize.width > 0 && minSize.height > 0 {
+          //   width = minSize.width
+          //   height = minSize.height
+          // }
+          root.viewBox = "0 0 \(page.size.width) \(page.size.height)"
+          //root.alignment = .xmidymid
+          //root.width.value = Float(width)
+          //root.height.value = Float(height)
+          //Swift.print("size: \(page.size.width)x\(page.size.height)")
+          svgRoot = root
         }
       }
     }
@@ -51,7 +57,7 @@ public final class PageDocument: NSDocument, Document {
       let content = """
         <?xml version="1.0" encoding="UTF-8" standalone="no"?>
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:scade="http://www.scade.io/v0.1" contentScriptType="text/ecmascript" zoomAndPan="magnify" contentStyleType="text/css" preserveAspectRatio="xMidYMid meet" version="1.0">
-        <image id="image" width="100%" height="100%" xlink:href="\(url.path)"/>
+        <image id="image" preserveAspectRatio="xMidYMid meet" width="100%" height="100%" xlink:href="\(url.path)"/>
         </svg>
         """
       svgRoot = SCDRuntime.parseSvgContent(content) as? SCDSvgBox
