@@ -18,7 +18,7 @@ public final class CodeEditor: Module {
 
 open class CodeEditorPlugin: Plugin {
   required public init() {
-    DocumentManager.shared.registerDocumentClass(SourceCodeDocument.self)
+    DocumentManager.shared.registerDocumentClass(SourceCodeDocument.self, ofTypes: ["public.text"])
     ThemeManager.shared.loadDefaultDarkTheme()
     SyntaxManager.shared.loadSwiftSyntax()
     

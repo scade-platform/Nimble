@@ -21,8 +21,8 @@ public protocol Workbench {
   
   @discardableResult
   func open(file: File) -> Document?
+  
 }
-
 
 public protocol WorkbenchArea {
   func add(part: WorkbenchPart) -> Void

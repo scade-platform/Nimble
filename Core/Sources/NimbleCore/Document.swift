@@ -35,11 +35,20 @@ public class DocumentManager {
   
   private var openedDocuments: [File: Document] = [:]
   private var openedDocumentsQueue: [Document] = []
+  public private(set) var documentUTI: Set<String> = Set()
   
   public static let shared: DocumentManager = DocumentManager()
   
-  public func registerDocumentClass<T: Document>(_ docClass: T.Type) {
+  public func registerDocumentClass<T: Document>(_ docClass: T.Type, ofTypes uti: [String]? = nil) {
     documentClasses.append(docClass)
+    guard let arr = uti else {
+      return
+    }
+    registerOpenableUTI(ofTypes: arr)
+  }
+  
+  public func registerOpenableUTI(ofTypes: [String]){
+    ofTypes.forEach{documentUTI.insert($0)}
   }
   
   public func selectDocumentClass(for file: File) -> Document.Type? {

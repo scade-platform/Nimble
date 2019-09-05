@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0CEB19AC231552950092E801 /* FileTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEB19AB231552950092E801 /* FileTableCellView.swift */; };
 		D788ED5A2239C6A50072C21E /* ProjectNavigatorPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788ED592239C6A50072C21E /* ProjectNavigatorPart.swift */; };
 		D788ED5E2239CB050072C21E /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D788ED5B2239C9D60072C21E /* NimbleCore.framework */; };
 		D788ED62223AC30A0072C21E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D788ED61223AC30A0072C21E /* Assets.xcassets */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0CEB19AB231552950092E801 /* FileTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTableCellView.swift; sourceTree = "<group>"; };
 		D788ED592239C6A50072C21E /* ProjectNavigatorPart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorPart.swift; sourceTree = "<group>"; };
 		D788ED5B2239C9D60072C21E /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D788ED61223AC30A0072C21E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -72,6 +74,7 @@
 				D788ED592239C6A50072C21E /* ProjectNavigatorPart.swift */,
 				D788ED66223B20270072C21E /* ProjectOutlineView.swift */,
 				D788ED6B223B22C10072C21E /* ProjectOutlineView.xib */,
+				0CEB19AB231552950092E801 /* FileTableCellView.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -154,6 +157,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7CBF900222ACE080088715C /* ProjectNavigator.swift in Sources */,
+				0CEB19AC231552950092E801 /* FileTableCellView.swift in Sources */,
 				D788ED67223B20270072C21E /* ProjectOutlineView.swift in Sources */,
 				D788ED5A2239C6A50072C21E /* ProjectNavigatorPart.swift in Sources */,
 			);

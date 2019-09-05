@@ -17,5 +17,4 @@ extension NavigatorViewController: WorkbenchArea {
   public func add(part: WorkbenchPart) {
     sidebar?.appendView(part.view, title: part.title, icon: part.icon)
   }
-  
 }

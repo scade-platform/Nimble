@@ -18,7 +18,7 @@ public class FileSystemElement {
     return path.basename()
   }
   
-  public init(path: Path) {
+  required public init(path: Path) {
     self.path = path
   }
   
