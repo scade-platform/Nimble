@@ -53,7 +53,7 @@ extension NimbleWorkbench: Workbench {
     
     if let docController = doc?.contentViewController {
       self.project.open(files: [file.path.url])
-      viewController?.editorViewController?.showEditor(docController)
+      viewController?.editorViewController?.showEditor(docController, file: file)
     }
     
     return doc
