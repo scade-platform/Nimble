@@ -18,14 +18,14 @@
             <rect key="frame" x="0.0" y="0.0" width="627" height="360"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <customView translatesAutoresizingMaskIntoConstraints="NO" id="gTU-Ly-qCb" customClass="TabsControl" customModule="KPCTabsControl">
+                <customView horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="G8a-Uv-06z">
+                    <rect key="frame" x="0.0" y="0.0" width="627" height="335"/>
+                </customView>
+                <customView horizontalHuggingPriority="249" horizontalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="gTU-Ly-qCb" customClass="TabsControl" customModule="KPCTabsControl">
                     <rect key="frame" x="0.0" y="335" width="627" height="25"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="25" id="Vah-b0-t3k"/>
                     </constraints>
-                </customView>
-                <customView translatesAutoresizingMaskIntoConstraints="NO" id="G8a-Uv-06z">
-                    <rect key="frame" x="0.0" y="0.0" width="627" height="335"/>
                 </customView>
             </subviews>
             <constraints>

@@ -730,10 +730,9 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController storyboardIdentifier="Document Window Controller" id="B8D-0N-5wS" customClass="NimbleWorkbench" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hasShadow="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" titleVisibility="hidden" id="IQv-IB-iLA">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" titleVisibility="hidden" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" texturedBackground="YES"/>
-                        <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="193" y="617" width="443" height="261"/>
+                        <rect key="contentRect" x="193" y="617" width="1200" height="900"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
                         <toolbar key="toolbar" implicitIdentifier="FD91EA69-B73D-4402-9240-680D634D32DB" autosavesConfiguration="NO" displayMode="iconOnly" sizeMode="regular" id="dAQ-7e-Fcr">
                             <allowedToolbarItems/>
@@ -774,7 +773,7 @@
                 </splitViewController>
                 <customObject id="PxC-WY-9Ko" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="104" y="702"/>
+            <point key="canvasLocation" x="100" y="1051"/>
         </scene>
         <!--Navigator View Controller-->
         <scene sceneID="kYI-m9-sar">
@@ -796,7 +795,7 @@
                 </viewController>
                 <customObject id="VOl-xV-dCT" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="771" y="500"/>
+            <point key="canvasLocation" x="1090" y="722"/>
         </scene>
         <!--Editor View Controller-->
         <scene sceneID="dsF-QD-dQD">
@@ -809,7 +808,7 @@
                 </viewController>
                 <customObject id="xi1-Hq-DW4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1221" y="1284"/>
+            <point key="canvasLocation" x="1383" y="1595"/>
         </scene>
     </scenes>
 </document>

@@ -21,8 +21,8 @@ public class EditorViewController: NSViewController {
     tabbedEditor!.view.translatesAutoresizingMaskIntoConstraints = false
     tabbedEditor?.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
     tabbedEditor?.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-    tabbedEditor?.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-    tabbedEditor?.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+    tabbedEditor?.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+    tabbedEditor?.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
     tabbedEditor?.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
   }
   
