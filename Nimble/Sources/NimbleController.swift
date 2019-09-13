@@ -70,5 +70,15 @@ class NimbleController : NSDocumentController {
     projectDoc.add(files: urls)
   }
   
+  override func openDocument(_ sender: Any?) {
+    if let doc = currentDocument, let projectDoc = doc as? ProjectDocument, let project = projectDoc.project {
+      if project.files.isEmpty, project.folders.isEmpty, project.name == nil {
+        switchProject(sender)
+        return
+      }
+    }
+    super.openDocument(sender)
+  }
+  
   
 }

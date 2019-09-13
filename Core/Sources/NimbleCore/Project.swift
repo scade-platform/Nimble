@@ -49,7 +49,7 @@ public class Project {
   public private(set) var files = [File]()
   public private(set) var folders = [Folder]()
   private let location: Path?
-  private let name: String?
+  public let name: String?
   private var observers = [ResourceObserver]()
   
   

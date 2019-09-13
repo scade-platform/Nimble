@@ -24,6 +24,7 @@ public class NimbleWorkbench: NSWindowController {
     }
     
     PluginManager.shared.activate(workbench: self)
+    ProjectManager.shared.subscribe(projectObserver: self)
     project.subscribe(resourceObserver: self)
   }
   
@@ -66,5 +67,11 @@ extension NimbleWorkbench: ResourceObserver{
       return
     }
     event.deltas?.filter{$0.resource is File}.filter{$0.kind == .added}.forEach{self.open(file: $0.resource as! File)}
+  }
+}
+
+extension NimbleWorkbench : ProjectObserver {
+  public func changed(project: Project) {
+    project.subscribe(resourceObserver: self)
   }
 }
