@@ -30,4 +30,9 @@ public class EditorViewController: NSViewController {
   public func showEditor(_ editor: NSViewController, file shownFile: File) {
     tabbedEditor?.addNewTab(viewController: editor, file: shownFile)
   }
+  
+  public func closeEditor(file closedFile: File){
+    tabbedEditor?.closeTab(file: closedFile)
+  }
+  
 }

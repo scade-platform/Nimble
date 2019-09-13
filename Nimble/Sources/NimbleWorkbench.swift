@@ -66,7 +66,11 @@ extension NimbleWorkbench: ResourceObserver{
     guard event.project === self.project, let deltas = event.deltas, !deltas.isEmpty else {
       return
     }
-    event.deltas?.filter{$0.resource is File}.filter{$0.kind == .added}.forEach{self.open(file: $0.resource as! File)}
+    deltas.filter{$0.resource is File}.filter{$0.kind == .added}.forEach{self.open(file: $0.resource as! File)}
+    let closedFilesDeltas = deltas.filter{$0.resource is File}.filter{$0.kind == .closed}
+    for delta in closedFilesDeltas {
+      viewController?.editorViewController?.closeEditor(file: delta.resource as! File)
+    }
   }
 }
 

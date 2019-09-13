@@ -57,6 +57,21 @@ class TabbedEditorController: NSViewController {
     tabBar?.selectItemAtIndex(items.count - 1)
   }
   
+  func closeTab(file: File){
+    guard containsFile(file), let tabItem = items.first(where: {$0.file == file}), let index = items.index(of: tabItem) else {
+      return
+    }
+    items.remove(at: index)
+    tabBar?.reloadTabs()
+    if !items.isEmpty {
+      if index != 0 {
+         tabBar?.selectItemAtIndex(index - 1)
+      } else {
+        tabBar?.selectItemAtIndex(0)
+      }
+    }
+  }
+  
   private func containsFile(_ file: File) -> Bool {
     return items.map{$0.file}.contains(file)
   }
@@ -129,6 +144,9 @@ extension TabbedEditorController: TabsControlDelegate {
   func tabsControlWillCloseTab(_ control: TabsControl, item: AnyObject) {
     let tabItem = (item as! TabItem)
     closeTabItem(tabItem: tabItem)
+    if let project = NimbleController.shared.project {
+      project.close(file: tabItem.file.path.url)
+    }
   }
   
   func tabsControlDidCloseTab(_ control: TabsControl, items: [AnyObject]) {
