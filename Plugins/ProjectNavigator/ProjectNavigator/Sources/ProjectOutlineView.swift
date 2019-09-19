@@ -11,10 +11,18 @@ import NimbleCore
 
 open class ProjectOutlineView: XibView {
   @IBOutlet var outline: NSOutlineView? = nil
+  public var workbench: Workbench? = nil
   
   open override func awakeFromNib() {
     super.awakeFromNib()
-    
 //    outline?.backgroundColor = .clear
+  }
+  
+  
+  @IBAction func doubleClickedItem(_ sender: Any) {
+    guard let outlineView = outline else { return }
+    if let item = outlineView.item(atRow: outlineView.selectedRow) as? File {
+      self.workbench?.open(file: item)
+    }
   }
 }

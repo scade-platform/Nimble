@@ -146,6 +146,9 @@
                                         </prototypeCellViews>
                                     </tableColumn>
                                 </tableColumns>
+                                <connections>
+                                    <action trigger="doubleAction" selector="doubleClickedItem:" target="-2" id="mfk-14-BWd"/>
+                                </connections>
                             </outlineView>
                         </subviews>
                         <nil key="backgroundColor"/>

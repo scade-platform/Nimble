@@ -30,12 +30,62 @@ extension TabItem: Equatable {
   }
 }
 
+class PreviewTabItem: TabItem, СustomizableTabItem {
+  var tabStyle: Style? = nil
+}
+
+struct PreviewTheme: Theme{
+  let tabButtonTheme: TabButtonTheme = DefaultTabButtonTheme()
+  let selectedTabButtonTheme: TabButtonTheme = SelectedTabButtonTheme(base: DefaultTabButtonTheme())
+  let unselectableTabButtonTheme: TabButtonTheme = UnselectableTabButtonTheme(base: DefaultTabButtonTheme())
+  let tabsControlTheme: TabsControlTheme = DefaultTabsControlTheme()
+  
+  fileprivate static var sharedBorderColor: NSColor { return getColorFromAsset("BorderColor", defualt: NSColor.separatorColor)}
+  
+  fileprivate static var sharedBackgroundColor: NSColor { return getColorFromAsset("BackgroundColor", defualt: NSColor.windowBackgroundColor) }
+  
+  fileprivate struct DefaultTabButtonTheme: KPCTabsControl.TabButtonTheme {
+    var backgroundColor: NSColor { return PreviewTheme.sharedBackgroundColor }
+    var borderColor: NSColor { return PreviewTheme.sharedBorderColor }
+    var titleColor: NSColor { return getColorFromAsset("TextColor", defualt: NSColor.selectedTextColor) }
+    var titleFont: NSFont { return NSFontManager.shared.convert(NSFont.systemFont(ofSize: 12), toHaveTrait: .italicFontMask) }
+  }
+  
+  fileprivate struct SelectedTabButtonTheme: KPCTabsControl.TabButtonTheme {
+    let base: DefaultTabButtonTheme
+    
+    var backgroundColor: NSColor { return getColorFromAsset("SelectedBackgroundColor", defualt: NSColor.white)}
+    var borderColor: NSColor { return PreviewTheme.sharedBorderColor }
+    var titleColor: NSColor { return getColorFromAsset("SelectedTextColor", defualt: NSColor.selectedTextColor)  }
+    var titleFont: NSFont { return NSFontManager.shared.convert(NSFont.systemFont(ofSize: 12), toHaveTrait: .italicFontMask) }
+  }
+  
+  fileprivate struct UnselectableTabButtonTheme: KPCTabsControl.TabButtonTheme {
+    let base: DefaultTabButtonTheme
+    
+    var backgroundColor: NSColor { return base.backgroundColor }
+    var borderColor: NSColor { return base.borderColor }
+    var titleColor: NSColor { return base.titleColor }
+    var titleFont: NSFont { return base.titleFont }
+  }
+  
+  fileprivate struct DefaultTabsControlTheme: KPCTabsControl.TabsControlTheme {
+    var backgroundColor: NSColor { return PreviewTheme.sharedBackgroundColor }
+    var borderColor: NSColor { return PreviewTheme.sharedBorderColor }
+  }
+}
+
+fileprivate func getColorFromAsset(_ name: String, defualt: NSColor) -> NSColor {
+  return NSColor.init(named: name, bundle: Bundle.init(for: TabsControl.self)) ?? defualt
+}
+
 class TabbedEditorController: NSViewController {
   
   @IBOutlet weak var tabBar: TabsControl?
   @IBOutlet weak var tabViewContainer: NSView!
   
   private var items = [TabItem]()
+  private var previewItem : PreviewTabItem? = nil
   private var currentItem: TabItem? = nil
   
   override func viewDidLoad() {
@@ -46,20 +96,29 @@ class TabbedEditorController: NSViewController {
     tabBar?.reloadTabs()
   }
   
-  func addNewTab(viewController tabView: NSViewController, file: File){
-    guard !containsFile(file) else {
-      showFile(file)
+  func addTab(tabViewController: NSViewController, file: File){
+    let previewIndex: Int?
+    if contains(file: file), let previewItem = previewItem, previewItem.file === file, let index = items.firstIndex(of: previewItem) {
+      items.remove(at:index)
+      previewIndex = index
+      self.previewItem = nil
+    }else{
+      previewIndex = nil
+    }
+    guard !contains(file: file) else {
+      show(file: file)
       return
     }
-    let newTabItem = TabItem(file: file, viewController: tabView)
-    items.append(newTabItem)
+    let index = previewIndex ?? items.count
+    let newTabItem = TabItem(file: file, viewController: tabViewController)
+    items.insert(newTabItem, at: index)
     tabBar?.reloadTabs()
-    tabBar?.selectItemAtIndex(items.count - 1)
+    tabBar?.selectItemAtIndex(index)
   }
   
-  func closeTab(file: File){
-    guard containsFile(file), let tabItem = items.first(where: {$0.file == file}), let index = items.index(of: tabItem) else {
-      return
+  func closeTab(file: File) -> Int? {
+    guard contains(file: file), let tabItem = items.first(where: {$0.file == file}), let index = items.index(of: tabItem) else {
+      return nil
     }
     items.remove(at: index)
     tabBar?.reloadTabs()
@@ -70,13 +129,33 @@ class TabbedEditorController: NSViewController {
         tabBar?.selectItemAtIndex(0)
       }
     }
+    return index
   }
   
-  private func containsFile(_ file: File) -> Bool {
+  func preview(tabViewController: NSViewController, file: File) {
+    guard !contains(file: file) else {
+      show(file: file)
+      return
+    }
+    let closedIndex: Int?
+    if let preview = previewItem {
+      closedIndex = closeTab(file: preview.file)
+    }else{
+      closedIndex = nil
+    }
+    let index = closedIndex ?? items.count
+    self.previewItem = PreviewTabItem(file: file, viewController: tabViewController)
+    self.previewItem?.tabStyle = NimbleStyle(theme: PreviewTheme())
+    items.insert(previewItem!, at: index)
+    tabBar?.reloadTabs()
+    tabBar?.selectItemAtIndex(index)
+  }
+  
+  private func contains(file: File) -> Bool {
     return items.map{$0.file}.contains(file)
   }
   
-  private func showFile(_ file: File) {
+  private func show(file: File) {
     let index = items.map{$0.file}.index(of: file)
     if let index = index {
       tabBar?.selectItemAtIndex(index)
@@ -84,9 +163,9 @@ class TabbedEditorController: NSViewController {
     
   }
   
-  private func selectTabItem(tabItem: TabItem){
+  private func select(tabItem: TabItem){
     if let currentItem = self.currentItem {
-      closeTabItem(tabItem: currentItem)
+      close(tabItem: currentItem)
     }
     currentItem = tabItem
     tabItem.viewController.view.frame = tabViewContainer.frame
@@ -95,7 +174,7 @@ class TabbedEditorController: NSViewController {
     currentItem = tabItem
   }
   
-  private func closeTabItem(tabItem: TabItem) {
+  private func close(tabItem: TabItem) {
     tabItem.viewController.view.removeFromSuperview()
     tabItem.viewController.removeFromParent()
   }
@@ -138,12 +217,12 @@ extension TabbedEditorController: TabsControlDelegate {
   
   func tabsControlDidChangeSelection(_ control: TabsControl, item: AnyObject) {
     let tabItem = (item as! TabItem)
-    selectTabItem(tabItem: tabItem)
+    select(tabItem: tabItem)
   }
   
   func tabsControlWillCloseTab(_ control: TabsControl, item: AnyObject) {
     let tabItem = (item as! TabItem)
-    closeTabItem(tabItem: tabItem)
+    close(tabItem: tabItem)
     if let project = NimbleController.shared.project {
       project.close(file: tabItem.file.path.url)
     }

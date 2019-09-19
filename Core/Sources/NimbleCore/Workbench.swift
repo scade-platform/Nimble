@@ -22,6 +22,8 @@ public protocol Workbench {
   @discardableResult
   func open(file: File) -> Document?
   
+  func preview(file: File)
+  
 }
 
 public protocol WorkbenchArea {

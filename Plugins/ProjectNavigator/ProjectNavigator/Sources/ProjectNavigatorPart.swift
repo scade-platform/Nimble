@@ -20,6 +20,7 @@ open class ProjectNavigatorPart: WorkbenchPart {
   
   internal var workbench: Workbench? = nil {
     didSet {
+      outlineView.workbench = workbench
       outlineDataSource = ProjectOutlineDataSource(workbench)
       
       outlineView.outline?.delegate = outlineDataSource
@@ -28,6 +29,7 @@ open class ProjectNavigatorPart: WorkbenchPart {
       outlineView.outline?.floatsGroupRows = false
       outlineView.outline?.expandItem(workbench?.project.folders)
       outlineView.outline?.expandItem(workbench?.project.files)
+      
     }
   }
   
@@ -164,7 +166,7 @@ extension ProjectOutlineDataSource: NSOutlineViewDelegate {
   public func outlineViewSelectionDidChange(_ notification: Notification) {
     guard let outlineView = notification.object as? NSOutlineView else { return }
     if let item = outlineView.item(atRow: outlineView.selectedRow) as? File {
-      self.workbench.open(file: item)
+      self.workbench.preview(file: item)
     }
   }
   

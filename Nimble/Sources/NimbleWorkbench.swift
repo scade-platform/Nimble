@@ -59,6 +59,17 @@ extension NimbleWorkbench: Workbench {
     
     return doc
   }
+  
+  public func preview(file: File) {
+    guard let doc = try? file.open() else {
+      return
+    }
+    if let docController = doc?.contentViewController {
+      viewController?.editorViewController?.previewEditor(docController, file: file)
+    }
+  }
+  
+  
 }
 
 extension NimbleWorkbench: ResourceObserver{
