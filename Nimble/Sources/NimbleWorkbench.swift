@@ -49,7 +49,7 @@ extension NimbleWorkbench: Workbench {
   
   public func open(file: File) -> Document? {
     guard let doc = try? file.open(), let d = doc else {
-      showAlert(path: file.path.url)
+      showUnsupportedFileAlert(path: file.path.url)
       return nil
     }
     
@@ -63,7 +63,7 @@ extension NimbleWorkbench: Workbench {
   
   public func preview(file: File) {
     guard let doc = try? file.open(), let d = doc else {
-      showAlert(path: file.path.url)
+      showUnsupportedFileAlert(path: file.path.url)
       return
     }
     if let docController = d.contentViewController {

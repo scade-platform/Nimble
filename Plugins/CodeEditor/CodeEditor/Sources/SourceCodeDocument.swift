@@ -55,7 +55,7 @@ public final class SourceCodeDocument: NSDocument, TextDocument {
   
   public override func read(from data: Data, ofType typeName: String) throws {
     guard let str =  String(bytes: data, encoding: .utf8) else {
-      showIncorrectPaths(path: self.fileURL)
+      showUnsupportedFileAlert(path: self.fileURL)
       throw NSError.init()
     }
     content = str
