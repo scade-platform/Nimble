@@ -120,7 +120,8 @@ class TabbedEditorController: NSViewController {
     guard contains(file: file), let tabItem = items.first(where: {$0.file == file}), let index = items.index(of: tabItem) else {
       return nil
     }
-    items.remove(at: index)
+    let item = items.remove(at: index)
+    close(tabItem: item)
     tabBar?.reloadTabs()
     if !items.isEmpty {
       if index != 0 {

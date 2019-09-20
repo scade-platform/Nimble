@@ -74,11 +74,12 @@ public class DocumentManager {
     }
     
     guard let docClass = selectDocumentClass(for: file) else {return nil}
-    let doc = try docClass.init(file)
     
+    guard let doc = try? docClass.init(file) else {
+      return nil
+    }
     openedDocuments[file] = doc
     openedDocumentsQueue.append(doc)
-    
     return doc
   }
   

@@ -47,14 +47,33 @@ public final class SourceCodeDocument: NSDocument, TextDocument {
   }()
   
   public class func canOpen(_ file: File) -> Bool {
-    return true // file.typeIdentifierConforms(to: "public.text")
+    guard !file.uti.starts(with: "dy") else {
+      return true
+    }
+    return file.typeIdentifierConforms(to: "public.text")
   }
   
   public override func read(from data: Data, ofType typeName: String) throws {
-    content = String(bytes: data, encoding: .utf8)!
+    guard let str =  String(bytes: data, encoding: .utf8) else {
+      showIncorrectPaths(path: self.fileURL)
+      throw NSError.init()
+    }
+    content = str
   }
   
   public override func data(ofType typeName: String) throws -> Data {
     return content.data(using: .utf8)!
+  }
+  
+  func showUnsupportedFileAlert(path: URL?){
+    guard let path = path else {
+      return
+    }
+    let alert = NSAlert()
+    alert.messageText =  "Code Editor can't read file:"
+    alert.informativeText = path.absoluteString
+    alert.addButton(withTitle: "OK")
+    alert.alertStyle = .warning
+    alert.runModal()
   }
 }
