@@ -9,8 +9,8 @@
 public class Folder: FileSystemElement {
   
   //TODO: sorting, reloading/FS watchig etc.
-  public lazy var content: [FileSystemElement] = {
-    return try! path.ls().compactMap {
+  public lazy var content: [FileSystemElement]? = {
+    return try? path.ls().compactMap {
       switch $0.kind {
       case .file:
         if $0.path.basename() == ".DS_Store" {

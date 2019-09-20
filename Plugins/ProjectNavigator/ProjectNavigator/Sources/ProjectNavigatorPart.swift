@@ -70,7 +70,11 @@ extension ProjectOutlineDataSource: NSOutlineViewDataSource {
     case let root as RootItem:
       return root.data[index]
     case let folder as Folder:
-      return folder.content[index]
+      guard let foldersContent = folder.content else {
+        showPermissionAlert(path: folder.path.url)
+        return self
+      }
+      return foldersContent[index]
     case is Project:
       if index == 0 {
         return RootItem.openFiles
@@ -87,7 +91,11 @@ extension ProjectOutlineDataSource: NSOutlineViewDataSource {
     case let root as RootItem:
       return root.data.count > 0
     case let folder as Folder:
-      return folder.content.count > 0
+      guard let foldersContent = folder.content else {
+        showPermissionAlert(path: folder.path.url)
+        return false
+      }
+      return foldersContent.count > 0
     case let project as Project:
       return project.folders.count > 0 || project.files.count > 0
     default:
@@ -102,12 +110,27 @@ extension ProjectOutlineDataSource: NSOutlineViewDataSource {
     case let root as RootItem:
       return root.data.count
     case let folder as Folder:
-      return !folder.path.isSymlink ? folder.content.count : 0
+      guard let foldersContent = folder.content else {
+        showPermissionAlert(path: folder.path.url)
+        return 0
+      }
+      return !folder.path.isSymlink ? foldersContent.count : 0
     case _ as Project :
       return 2
       
     default:
       return 0
+    }
+  }
+  
+  func showPermissionAlert(path: URL){
+    DispatchQueue.main.async {
+      let alert = NSAlert()
+      alert.messageText =  "Permission denied:"
+      alert.informativeText = path.absoluteString
+      alert.addButton(withTitle: "OK")
+      alert.alertStyle = .warning
+      alert.runModal()
     }
   }
 }
