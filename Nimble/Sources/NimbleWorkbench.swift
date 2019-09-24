@@ -49,7 +49,8 @@ extension NimbleWorkbench: Workbench {
   
   public func open(file: File) -> Document? {
     guard let doc = try? file.open(), let d = doc else {
-      showUnsupportedFileAlert(path: file.path.url)
+      let unsupportedPane = UnsupportedPane.loadFromNib()
+      viewController?.editorViewController?.previewEditor(unsupportedPane, file: file)
       return nil
     }
     
@@ -63,7 +64,8 @@ extension NimbleWorkbench: Workbench {
   
   public func preview(file: File) {
     guard let doc = try? file.open(), let d = doc else {
-      showUnsupportedFileAlert(path: file.path.url)
+      let unsupportedPane = UnsupportedPane.loadFromNib()
+      viewController?.editorViewController?.previewEditor(unsupportedPane, file: file)
       return
     }
     if let docController = d.contentViewController {
@@ -90,16 +92,5 @@ extension NimbleWorkbench: ResourceObserver{
 extension NimbleWorkbench : ProjectObserver {
   public func changed(project: Project) {
     project.subscribe(resourceObserver: self)
-  }
-}
-
-extension NimbleWorkbench {
-  func showUnsupportedFileAlert(path: URL){
-    let alert = NSAlert()
-    alert.messageText =  "Nimble can't open this file:"
-    alert.informativeText = path.absoluteString
-    alert.addButton(withTitle: "OK")
-    alert.alertStyle = .warning
-    alert.runModal()
   }
 }
