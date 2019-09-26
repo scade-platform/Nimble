@@ -21,12 +21,12 @@ class ProjectDocument : NSDocument {
   
   override init() {
     super.init()
-    project = ProjectManager.shared.create()
+    project = Project()
   }
   
   init(contentsOf url: URL, ofType typeName: String) throws {
     super.init()
-    project = ProjectManager.shared.create(projectFile: url)
+    project = Project(url: url)
     try read(from: url, ofType: typeName)
     self.fileURL = url
     self.fileType = typeName
@@ -60,13 +60,19 @@ class ProjectDocument : NSDocument {
     if let windowController =
       storyboard.instantiateController(
         withIdentifier: NSStoryboard.SceneIdentifier("Document Window Controller")) as? NSWindowController {
+      if let workbench = windowController as? NimbleWorkbench {
+        workbench.projectDocument = self
+      }
       addWindowController(windowController)
       showIncorrectPaths()
     }
   }
   
   func switchProject(contentsOf url: URL, ofType typeName: String) throws {
-    project = ProjectManager.shared.create(projectFile: url)
+    guard let project = project else {
+      return
+    }
+    self.project = Project(subscribersFrom: project, url: url)
     try read(from: url, ofType: typeName)
     showIncorrectPaths()
   }

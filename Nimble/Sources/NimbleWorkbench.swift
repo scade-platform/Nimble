@@ -11,6 +11,17 @@ import NimbleCore
 
 
 public class NimbleWorkbench: NSWindowController {
+  
+  var projectDocument: ProjectDocument? {
+    didSet {
+      guard let project = projectDocument?.project else {
+        return
+      }
+      PluginManager.shared.activate(workbench: self)
+      project.subscribe(resourceObserver: self)
+    }
+  }
+  
   private var viewController: WorkbenchViewController? {
     return self.contentViewController as? WorkbenchViewController
   }
@@ -20,12 +31,8 @@ public class NimbleWorkbench: NSWindowController {
     
     if CommandLine.arguments.count > 1,
       let path = Path(CommandLine.arguments[1]), path.isDirectory {
-      project.add(folders: [path.url])
+      project?.add(folders: [path.url])
     }
-    
-    PluginManager.shared.activate(workbench: self)
-    ProjectManager.shared.subscribe(projectObserver: self)
-    project.subscribe(resourceObserver: self)
   }
   
   //  func launch() -> Void {
@@ -39,8 +46,8 @@ public class NimbleWorkbench: NSWindowController {
 
 
 extension NimbleWorkbench: Workbench {
-  public var project: Project {
-    return ProjectManager.shared.currentProject
+  public var project: Project? {
+    return projectDocument?.project
   }
   
   public var navigatorArea: WorkbenchArea? {
@@ -55,7 +62,7 @@ extension NimbleWorkbench: Workbench {
     }
     
     if let docController = d.contentViewController {
-      self.project.open(files: [file.path.url])
+      self.project?.open(files: [file.path.url])
       viewController?.editorViewController?.showEditor(docController, file: file)
     }
     
@@ -89,8 +96,3 @@ extension NimbleWorkbench: ResourceObserver{
   }
 }
 
-extension NimbleWorkbench : ProjectObserver {
-  public func changed(project: Project) {
-    project.subscribe(resourceObserver: self)
-  }
-}

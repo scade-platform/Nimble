@@ -224,7 +224,7 @@ extension TabbedEditorController: TabsControlDelegate {
   func tabsControlWillCloseTab(_ control: TabsControl, item: AnyObject) {
     let tabItem = (item as! TabItem)
     close(tabItem: tabItem)
-    if let project = NimbleController.shared.project {
+    if let project = NimbleController.shared.currentProject {
       project.close(file: tabItem.file.path.url)
     }
   }

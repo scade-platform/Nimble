@@ -11,9 +11,9 @@ import NimbleCore
 
 class NimbleController : NSDocumentController {
   
-  public var project: Project? {
-    if let doc = currentDocument, let projectDoc = doc as? ProjectDocument, let project = projectDoc.project {
-      return project
+  public var currentProject: Project? {
+    if let doc = currentDocument, let projectDoc = doc as? ProjectDocument {
+      return projectDoc.project
     }
     return nil
   }
@@ -82,7 +82,7 @@ class NimbleController : NSDocumentController {
   }
   
   override func openDocument(_ sender: Any?) {
-    if let project = project {
+    if let project = currentProject {
       if project.files.isEmpty, project.folders.isEmpty, project.name == nil {
         switchProject(sender)
         return

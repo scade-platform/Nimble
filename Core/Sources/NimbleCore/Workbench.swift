@@ -9,7 +9,7 @@
 import Cocoa
 
 public protocol Workbench {
-  var project: Project { get }
+  var project: Project? { get }
   
   var navigatorArea: WorkbenchArea? { get }
 

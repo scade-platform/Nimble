@@ -9,42 +9,6 @@
 import Cocoa
 import Yams
 
-public class ProjectManager {
-  private var _currentProject: Project = Project()
-  public var currentProject: Project {
-    get {
-      return _currentProject
-    }
-    set{
-      _currentProject = newValue
-      notifyObservers()
-    }
-  }
-  
-  public static let shared: ProjectManager = ProjectManager()
-  private var observers = [ProjectObserver]()
-  
-  private func notifyObservers(){
-    DispatchQueue.main.async {
-      self.observers.forEach{$0.changed(project: self._currentProject)}
-    }
-  }
-  
-  public func create(projectFile url : URL? = nil) -> Project {
-    let newProject = Project(url: url)
-    currentProject = newProject
-    return newProject
-  }
-  
-  public func subscribe(projectObserver : ProjectObserver){
-    self.observers.append(projectObserver)
-  }
-}
-
-public protocol ProjectObserver {
-  func changed(project: Project)
-}
-
 public class Project {
   public private(set) var files = [File]()
   public private(set) var folders = [Folder]()
@@ -53,7 +17,7 @@ public class Project {
   private var observers = [ResourceObserver]()
   
   
-  init(url: URL?  = nil){
+  public init(url: URL?  = nil){
     if let url = url, let path = Path(url: url)  {
       location = path.parent
       name = path.basename(dropExtension: true)
@@ -61,6 +25,13 @@ public class Project {
       location = nil
       name = nil
     }
+  }
+  
+  public convenience init(subscribersFrom project: Project, url: URL?  = nil) {
+    self.init(url: url)
+    self.observers.append(contentsOf: project.observers)
+    let deltas = project.files.map{ResourceDelta(resource: $0, kind: .closed)}
+    chargeResourceChangeEvent(type: .post, deltas: deltas)
   }
   
   public func subscribe(resourceObserver : ResourceObserver ) {

@@ -55,25 +55,12 @@ public final class SourceCodeDocument: NSDocument, TextDocument {
   
   public override func read(from data: Data, ofType typeName: String) throws {
     guard let str =  String(bytes: data, encoding: .utf8) else {
-      showUnsupportedFileAlert(path: self.fileURL)
-      throw NSError.init()
+      throw NSError.init(domain: "NimbleCodeEditor", code: 1, userInfo: ["FileUrl": self.fileURL ?? ""])
     }
     content = str
   }
   
   public override func data(ofType typeName: String) throws -> Data {
     return content.data(using: .utf8)!
-  }
-  
-  func showUnsupportedFileAlert(path: URL?){
-    guard let path = path else {
-      return
-    }
-    let alert = NSAlert()
-    alert.messageText =  "Code Editor can't read file:"
-    alert.informativeText = path.absoluteString
-    alert.addButton(withTitle: "OK")
-    alert.alertStyle = .warning
-    alert.runModal()
   }
 }
