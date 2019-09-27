@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C238B12233E4E3D004F87E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D2222878F40088715C /* Assets.xcassets */; };
 		0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */; };
 		0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */; };
 		0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */; };
@@ -23,7 +24,6 @@
 		D788ED452239C2750072C21E /* NimbleWorkbench.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */; };
 		D79132F722F88E2F009EE2A3 /* ScadeKitExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D79132F622F88DC0009EE2A3 /* ScadeKitExtensions.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D791B2E222B053C5001BBA0E /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D791B2E122B053C5001BBA0E /* EditorViewController.swift */; };
-		D7CBF7D3222878F40088715C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D2222878F40088715C /* Assets.xcassets */; };
 		D7CBF7D6222878F40088715C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D4222878F40088715C /* Main.storyboard */; };
 		E42DC02D22CE3C3200486CC1 /* NimbleCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7CBF8C2222970430088715C /* NimbleCore.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E42DC04422CE436200486CC1 /* Path.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC04122CE42A400486CC1 /* Path.framework */; };
@@ -321,10 +321,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				0CCC757822DF199900C0CCF4 /* TabbedEditorController.xib in Resources */,
-				D7CBF7D3222878F40088715C /* Assets.xcassets in Resources */,
 				D72F959C222DF2D9009F2EC3 /* WorkbenchSidebar.xib in Resources */,
 				D7CBF7D6222878F40088715C /* Main.storyboard in Resources */,
 				0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */,
+				0C238B12233E4E3D004F87E7 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
