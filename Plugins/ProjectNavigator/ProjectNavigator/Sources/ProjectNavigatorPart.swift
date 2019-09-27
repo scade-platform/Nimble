@@ -249,12 +249,15 @@ class Folders: RootItem, DataSource {
 
 extension ProjectNavigatorPart : ResourceObserver {
   public func changed(event: ResourceChangeEvent) {
-    guard let deltas = event.deltas, !deltas.isEmpty else {
+    guard let deltas = event.deltas, !deltas.isEmpty, let outline = outlineView.outline else {
       return
     }
-    outlineView.outline?.reloadData()
-    outlineView.outline?.expandItem(openFiles)
-    outlineView.outline?.expandItem(folders)
+    let item = outline.item(atRow: outline.selectedRow)
+    outline.reloadData()
+    outline.expandItem(openFiles)
+    outline.expandItem(folders)
+    let row = outline.row(forItem: item)
+    outline.selectRowIndexes([row], byExtendingSelection: false)
   }
 }
 

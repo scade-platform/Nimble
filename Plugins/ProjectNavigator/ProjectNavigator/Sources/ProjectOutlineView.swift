@@ -20,9 +20,8 @@ open class ProjectOutlineView: XibView {
   
   
   @IBAction func doubleClickedItem(_ sender: Any) {
-    guard let outlineView = outline else { return }
-    if let item = outlineView.item(atRow: outlineView.selectedRow) as? File {
-      self.workbench?.open(file: item)
-    }
+    guard let outlineView = outline,
+      let item = outlineView.item(atRow: outlineView.selectedRow) as? File else { return }
+    self.workbench?.open(file: item)
   }
 }
