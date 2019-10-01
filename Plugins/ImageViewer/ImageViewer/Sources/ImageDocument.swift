@@ -14,7 +14,13 @@ public final class ImageDocument: NSDocument, Document {
   public var contentViewController: NSViewController? { return builderController }
   
   public static func canOpen(_ file: File) -> Bool {
-    return ["jpeg", "jpg", "png"].contains(file.path.extension);
+    guard !file.uti.starts(with: "dy") else {
+      return ["jpeg", "jpg", "png"].contains(file.path.extension.lowercased())
+    }
+    if file.typeIdentifierConforms(to: "public.svg-image") {
+      return false
+    }
+    return file.typeIdentifierConforms(to: "public.image")
   }
   
   public static func isDefault(for file: File) -> Bool {

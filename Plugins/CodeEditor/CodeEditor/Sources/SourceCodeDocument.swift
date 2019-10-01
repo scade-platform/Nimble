@@ -50,7 +50,7 @@ public final class SourceCodeDocument: NSDocument, TextDocument {
     guard !file.uti.starts(with: "dy") else {
       return true
     }
-    return file.typeIdentifierConforms(to: "public.text")
+    return file.typeIdentifierConforms(to: "public.text") || file.typeIdentifierConforms(to: "public.svg-image")
   }
   
   public override func read(from data: Data, ofType typeName: String) throws {
