@@ -61,6 +61,6 @@ public final class SourceCodeDocument: NSDocument, TextDocument {
   }
   
   public override func data(ofType typeName: String) throws -> Data {
-    return content.data(using: .utf8)!
+    return textStorage.string.data(using: .utf8)!
   }
 }

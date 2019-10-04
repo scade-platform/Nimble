@@ -22,7 +22,7 @@ public class NimbleWorkbench: NSWindowController {
     }
   }
   
-  private var viewController: WorkbenchViewController? {
+  var viewController: WorkbenchViewController? {
     return self.contentViewController as? WorkbenchViewController
   }
   
@@ -46,6 +46,11 @@ public class NimbleWorkbench: NSWindowController {
 
 
 extension NimbleWorkbench: Workbench {
+  
+  public var changedFiles: [File]? {
+    return self.viewController?.editorViewController?.changedFiles
+  }
+  
   public var project: Project? {
     return projectDocument?.project
   }
@@ -80,6 +85,10 @@ extension NimbleWorkbench: Workbench {
     }
   }
   
+
+  public func save(file: File) {
+    self.projectDocument?.save(file: file)
+  }
   
 }
 
@@ -90,9 +99,17 @@ extension NimbleWorkbench: ResourceObserver{
     }
     deltas.filter{$0.resource is File}.filter{$0.kind == .added}.forEach{self.open(file: $0.resource as! File)}
     let closedFilesDeltas = deltas.filter{$0.resource is File}.filter{$0.kind == .closed}
+    let editor = viewController!.editorViewController!
     for delta in closedFilesDeltas {
-      viewController?.editorViewController?.closeEditor(file: delta.resource as! File)
+      editor.closeEditor(file: delta.resource as! File)
+    }
+    if let changedItem = deltas.first(where: {$0.kind == .changed}) {
+      editor.markEditor(file: changedItem.resource as! File)
+    }
+    if let savedItem = deltas.first(where: {$0.kind == .saved}) {
+      if changedFiles?.contains(savedItem.resource as! File ) ?? false {
+        editor.markEditor(file: savedItem.resource as! File, changed: false)
+      }
     }
   }
 }
-

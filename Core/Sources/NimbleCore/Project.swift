@@ -64,11 +64,28 @@ public class Project {
     open(files: items)
   }
   
+  public func changed(url: URL) {
+    performEvent(file: url, kind: .changed)
+  }
+  
+  public func saved(url: URL) {
+    performEvent(file: url, kind: .saved)
+  }
+  
   public func close(file: URL) {
     let closableFils = files.filter{$0.path.url == file}
     files = files.filter{$0.path.url != file}
+    closableFils.forEach{$0.close()}
     let deltas = closableFils.map{ResourceDelta(resource: $0, kind: .closed)}
     chargeResourceChangeEvent(type: .post, deltas: deltas)
+  }
+  
+  private func performEvent(file: URL, kind: ResourceDelta.Kind){
+    let filesURL = files.map{$0.path.url}
+    guard filesURL.contains(file), let changedFile = files.first(where: {$0.path.url == file}) else {
+      return
+    }
+    chargeResourceChangeEvent(type: .post, deltas: [ResourceDelta(resource: changedFile, kind: kind)])
   }
   
   private func add(items urls: [URL], addFunc: (String) -> ResourceDelta?) {
@@ -234,6 +251,7 @@ public struct ResourceDelta {
     case removed
     case changed
     case closed
+    case saved
   }
 }
 

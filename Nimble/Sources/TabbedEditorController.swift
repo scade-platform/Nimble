@@ -11,15 +11,19 @@ import KPCTabsControl
 import NimbleCore
 
 class TabItem {
-  let title: String
+  var title: String {
+    let t = file.name
+    return changed ? "*\(t)" : t
+  }
   let selectable: Bool
   let viewController: NSViewController
   let file: File
+  var changed: Bool
   init(file: File, viewController: NSViewController, selectable: Bool = true) {
-    self.title = file.name
     self.selectable = selectable
     self.viewController = viewController
     self.file = file
+    self.changed = false
   }
   
 }
@@ -84,6 +88,15 @@ class TabbedEditorController: NSViewController {
   @IBOutlet weak var tabBar: TabsControl?
   @IBOutlet weak var tabViewContainer: NSView!
   
+  var currentFile: File? {
+    return currentItem?.file
+  }
+  
+  var changedFiles: [File]? {
+    return items.filter{$0.changed}.map{$0.file}
+  }
+  
+  
   private var items = [TabItem]()
   private var previewItem : PreviewTabItem? = nil
   private var currentItem: TabItem? = nil
@@ -125,12 +138,33 @@ class TabbedEditorController: NSViewController {
     tabBar?.reloadTabs()
     if !items.isEmpty {
       if index != 0 {
-         tabBar?.selectItemAtIndex(index - 1)
+        tabBar?.selectItemAtIndex(index - 1)
       } else {
         tabBar?.selectItemAtIndex(0)
       }
     }
     return index
+  }
+  
+  func closeCurrentTab(){
+    guard let curItem = currentItem, checkForSave(curItem) else {
+      return
+    }
+    closeTab(file: curItem.file)
+    NimbleController.shared.currentProject?.close(file:  curItem.file.path.url)
+  }
+  
+  private func checkForSave(_ tabItem: TabItem) -> Bool {
+    if tabItem.changed {
+      let result = saveDialog(question: "Do you want to save the changes you made to \(tabItem.file.name)? ", text: "Your changes will be lost if you don't save them")
+      if result.save {
+        if let projectDoc = NimbleController.shared.currentDocument as? ProjectDocument{
+          projectDoc.save(file: tabItem.file)
+        }
+      }
+      return result.close
+    }
+    return true
   }
   
   func preview(tabViewController: NSViewController, file: File) {
@@ -150,6 +184,14 @@ class TabbedEditorController: NSViewController {
     items.insert(previewItem!, at: index)
     tabBar?.reloadTabs()
     tabBar?.selectItemAtIndex(index)
+  }
+  
+  func markTab(file: File, changed: Bool){
+    guard currentItem?.file == file else {
+      return
+    }
+    currentItem?.changed = changed
+    tabBar?.reloadTabs()
   }
   
   private func contains(file: File) -> Bool {
@@ -178,6 +220,18 @@ class TabbedEditorController: NSViewController {
   private func close(tabItem: TabItem) {
     tabItem.viewController.view.removeFromSuperview()
     tabItem.viewController.removeFromParent()
+  }
+  
+  private func saveDialog(question: String, text: String) -> (save: Bool, close: Bool) {
+    let alert = NSAlert()
+    alert.messageText = question
+    alert.informativeText = text
+    alert.alertStyle = .warning
+    alert.addButton(withTitle: "Save")
+    alert.addButton(withTitle: "Cancel")
+    alert.addButton(withTitle: "Don't Save")
+    let result = alert.runModal()
+    return (save: result == .alertFirstButtonReturn, close:  result == .alertThirdButtonReturn || result == .alertFirstButtonReturn)
   }
   
 }
@@ -221,15 +275,19 @@ extension TabbedEditorController: TabsControlDelegate {
     select(tabItem: tabItem)
   }
   
-  func tabsControlWillCloseTab(_ control: TabsControl, item: AnyObject) {
+  func tabsControlWillCloseTab(_ control: TabsControl, item: AnyObject) -> Bool {
     let tabItem = (item as! TabItem)
-    close(tabItem: tabItem)
-    if let project = NimbleController.shared.currentProject {
-      project.close(file: tabItem.file.path.url)
+    guard checkForSave(tabItem) else {
+      return false
     }
+    close(tabItem: tabItem)
+    NimbleController.shared.currentProject?.close(file: tabItem.file.path.url)
+    return true
   }
   
   func tabsControlDidCloseTab(_ control: TabsControl, items: [AnyObject]) {
     self.items = items.map{$0 as! TabItem}
   }
+  
+  
 }

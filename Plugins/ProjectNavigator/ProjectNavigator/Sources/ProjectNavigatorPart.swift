@@ -149,11 +149,11 @@ extension ProjectOutlineDataSource: NSOutlineViewDelegate {
   }
   
   public func outlineView(_ outlineView: NSOutlineView, shouldShowOutlineCellForItem item: Any) -> Bool {
-     return !(item is RootItem)
+    return !(item is RootItem)
   }
   
   public func outlineView(_ outlineView: NSOutlineView, shouldSelectItem item: Any) -> Bool {
-     return !(item is RootItem)
+    return !(item is RootItem)
   }
   
   public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
@@ -173,7 +173,7 @@ extension ProjectOutlineDataSource: NSOutlineViewDelegate {
       }
       
       return view
-    
+      
     case let file as File:
       let parentItem = outlineView.parent(forItem: item)
       let cellName: String
@@ -185,8 +185,14 @@ extension ProjectOutlineDataSource: NSOutlineViewDelegate {
       guard let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: cellName), owner: self) as? NSTableCellView else { return nil }
       if let closableView = view as? FileTableCellView {
         closableView.closeFileCallback = { [unowned self] file in
-          self.workbench.project?.close(file: file.path.url)
+          if self.checkForSave(file: file as! File) {
+            self.workbench.project?.close(file: file.path.url)
+          }
         }
+        if !(workbench.changedFiles?.contains(file) ?? false) {
+          view.textField?.font = NSFont.systemFont(ofSize: (view.textField?.font!.pointSize)!)
+        }
+        
       }
       view.objectValue = item
       view.textField?.stringValue = file.name
@@ -217,6 +223,28 @@ extension ProjectOutlineDataSource: NSOutlineViewDelegate {
     outlineView.reloadItem(item, reloadChildren: false)
   }
   
+  func checkForSave(file: File) -> Bool {
+    if workbench.changedFiles?.contains(file) ?? false{
+      let result = saveDialog(question: "Do you want to save the changes you made to \(file.name)? ", text: "Your changes will be lost if you don't save them")
+      if result.save {
+        workbench.save(file: file)
+      }
+      return result.close
+    }
+    return true
+  }
+}
+
+func saveDialog(question: String, text: String) -> (save: Bool, close: Bool) {
+  let alert = NSAlert()
+  alert.messageText = question
+  alert.informativeText = text
+  alert.alertStyle = .warning
+  alert.addButton(withTitle: "Save")
+  alert.addButton(withTitle: "Cancel")
+  alert.addButton(withTitle: "Don't Save")
+  let result = alert.runModal()
+  return (save: result == .alertFirstButtonReturn, close:  result == .alertThirdButtonReturn || result == .alertFirstButtonReturn)
 }
 
 protocol DataSource {
@@ -252,12 +280,44 @@ extension ProjectNavigatorPart : ResourceObserver {
     guard let deltas = event.deltas, !deltas.isEmpty, let outline = outlineView.outline else {
       return
     }
-    let item = outline.item(atRow: outline.selectedRow)
+    let item = outline.item(atRow: outline.selectedRow) as? FileSystemElement
+    let itemDelta = deltas.filter{$0.resource.path == item?.path }.first
     outline.reloadData()
     outline.expandItem(openFiles)
     outline.expandItem(folders)
-    let row = outline.row(forItem: item)
-    outline.selectRowIndexes([row], byExtendingSelection: false)
+    if let delta = itemDelta, delta.kind != .closed, delta.kind != .removed {
+      let row = outline.row(forItem: item)
+      outline.selectRowIndexes([row], byExtendingSelection: false)
+    }
+    if let changedItem = deltas.first(where: {$0.kind == .changed}), let cell = cellView(for: changedItem) {
+      cell.textField?.font = NSFontManager.shared.convert(NSFont.systemFont(ofSize: (cell.textField?.font!.pointSize)!), toHaveTrait: .italicFontMask)
+    }
+    if let savedItem = deltas.first(where: {$0.kind == .saved}), let cell = cellView(for: savedItem) {
+      if workbench?.changedFiles?.contains(savedItem.resource as! File) ?? false {
+        cell.textField?.font = NSFont.systemFont(ofSize: (cell.textField?.font!.pointSize)!)
+      }
+    }
+  }
+  
+  private func cellView(for item: Any?) -> NSTableCellView? {
+    guard let outline = outlineView.outline, let item = item as? ResourceDelta else {
+      return nil
+    }
+    let countOpenFiles = outline.numberOfChildren(ofItem: openFiles)
+    for childIndex in 0..<countOpenFiles {
+      let file =  outline.child(childIndex, ofItem: openFiles) as! File
+      if file.path == item.resource.path {
+        let row = outline.row(forItem: file)
+        guard let rowView = outline.rowView(atRow: row, makeIfNecessary: true) else {
+          return nil
+        }
+        guard let cell = rowView.view(atColumn: 0) as? NSTableCellView else {
+          return nil
+        }
+        return cell
+      }
+    }
+    return nil
   }
 }
 

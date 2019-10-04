@@ -33,7 +33,6 @@ class ProjectDocument : NSDocument {
   }
   
   
-  
   // MARK: - Enablers
   
   // This enables auto save.
@@ -126,6 +125,35 @@ class ProjectDocument : NSDocument {
     saveAs(sender)
   }
   
+  @IBAction func saveFile(_ sender: Any? ){
+    guard let workbench = workbench as? NimbleWorkbench else {
+      return
+    }
+    save(file: (workbench.viewController?.editorViewController?.currentFile!)!)
+  }
+  
+  @IBAction func saveFileAs(_ sender: Any? ){
+    guard let workbench = workbench as? NimbleWorkbench else {
+      return
+    }
+    saveAs(file: (workbench.viewController?.editorViewController?.currentFile!)!)
+  }
+  
+  func saveAs(file: File){
+    let doc = try! file.open()!
+    let fileURL = doc.fileURL!
+    doc.saveAs(nil)
+    project?.saved(url: fileURL)
+    project?.close(file: fileURL)
+    project?.open(files: [doc.fileURL!])
+  }
+  
+  func save(file: File){
+    let doc = try! file.open()!
+    doc.save(nil)
+    project?.saved(url: doc.fileURL!)
+  }
+  
   override func save(to url: URL, ofType typeName: String, for saveOperation: NSDocument.SaveOperationType, completionHandler: @escaping (Error?) -> Void) {
     self.fileURL = url
     super.save(to: url, ofType: typeName, for: saveOperation, completionHandler: completionHandler)
@@ -136,4 +164,10 @@ class ProjectDocument : NSDocument {
     return true
   }
   
+  @IBAction func closeFile(_ sender: Any?) {
+    guard let workbench = workbench as? NimbleWorkbench else {
+      return
+    }
+    workbench.viewController?.editorViewController?.closeCurrentTab()
+  }
 }

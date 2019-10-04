@@ -12,6 +12,8 @@ public protocol Workbench {
   var project: Project? { get }
   
   var navigatorArea: WorkbenchArea? { get }
+  
+  var changedFiles: [File]? { get }
 
 //  var inspectorArea: WorkbenchPart { get }
 //
@@ -23,6 +25,8 @@ public protocol Workbench {
   func open(file: File) -> Document?
   
   func preview(file: File)
+  
+  func save(file: File)
   
 }
 

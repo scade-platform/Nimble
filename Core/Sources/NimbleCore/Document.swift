@@ -83,7 +83,9 @@ public class DocumentManager {
     return doc
   }
   
-  
+  public func close(file: File) {
+    openedDocuments.removeValue(forKey: file)
+  }
 }
 
 
@@ -107,5 +109,9 @@ public extension File {
   
   func open() throws -> Document? {
     return try DocumentManager.shared.open(file: self)
+  }
+  
+  func close() {
+    DocumentManager.shared.close(file: self)
   }
 }

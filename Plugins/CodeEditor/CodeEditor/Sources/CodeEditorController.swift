@@ -68,6 +68,9 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
   
     @objc private func textDidChange(notification: NSNotification) {
         _ = doc?.syntaxParser.highlightAll()
+      if let url = doc?.fileURL{
+        CodeEditorPlugin.workbench?.project?.changed(url: url)
+      }
     }
 
     public func textView(_ textView: NSTextView, completions words: [String], forPartialWordRange charRange: NSRange, indexOfSelectedItem index: UnsafeMutablePointer<Int>?) -> [String] {
