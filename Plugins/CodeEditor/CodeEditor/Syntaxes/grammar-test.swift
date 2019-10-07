@@ -25,7 +25,7 @@ if #available(macOS 10.12, iOS 9.1.2, *) {}
 #selector(MyClass.func)
 #selector(getter: MyClass.func) #selector(setter: MyClass.func)
 #keyPath(self.parent.name)
-#colorLiteral(), #imageLiteral(), #fileLiteral()
+
 #file, #line, #function, #dsohandle
 __FILE__, __LINE__, __FUNCTION__, __DSO_HANDLE__
 

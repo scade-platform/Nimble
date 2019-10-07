@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D70D243823352E8800338EC7 /* Range.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70D243723352E8800338EC7 /* Range.swift */; };
 		D77C30C922D9E24500F79B96 /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D77C30C822D9E24500F79B96 /* NimbleCore.framework */; };
 		D77C30D722D9E39D00F79B96 /* ColorCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D77C30D422D9E37E00F79B96 /* ColorCode.framework */; };
 		D77C30F522DA2B5800F79B96 /* COniguruma.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D77C30EF22DA2A7C00F79B96 /* COniguruma.framework */; };
@@ -16,6 +17,7 @@
 		D7C590FC22D27D9900ACD4BF /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C590FB22D27D9900ACD4BF /* Language.swift */; };
 		D7C591FE22D7489600ACD4BF /* SyntaxParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C591FD22D7489600ACD4BF /* SyntaxParser.swift */; };
 		D7C5920322D74C5100ACD4BF /* String+Ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C5920222D74C5100ACD4BF /* String+Ranges.swift */; };
+		D7DAB18A2347E32800B728E9 /* Syntax.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DAB1892347E32800B728E9 /* Syntax.swift */; };
 		D7EAC7D622CD694C00B7701E /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EAC7D522CD694C00B7701E /* Core.swift */; };
 		D7EAC7D822CE6E8100B7701E /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EAC7D722CE6E8100B7701E /* ColorTheme.swift */; };
 		OBJ_102 /* TextDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* TextDocument.swift */; };
@@ -62,6 +64,7 @@
 
 /* Begin PBXFileReference section */
 		"CodeEditorCore::CodeEditorCore::Product" /* CodeEditorCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CodeEditorCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D70D243723352E8800338EC7 /* Range.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Range.swift; sourceTree = "<group>"; };
 		D77C30C822D9E24500F79B96 /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D77C30CB22D9E37E00F79B96 /* Packages.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Packages.xcodeproj; path = Packages/Packages.xcodeproj; sourceTree = "<group>"; };
 		D77C30E722DA2A7C00F79B96 /* Oniguruma.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Oniguruma.xcodeproj; path = ../oniguruma/Oniguruma.xcodeproj; sourceTree = "<group>"; };
@@ -70,6 +73,7 @@
 		D7C590FB22D27D9900ACD4BF /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		D7C591FD22D7489600ACD4BF /* SyntaxParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyntaxParser.swift; sourceTree = "<group>"; };
 		D7C5920222D74C5100ACD4BF /* String+Ranges.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ranges.swift"; sourceTree = "<group>"; };
+		D7DAB1892347E32800B728E9 /* Syntax.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Syntax.swift; sourceTree = "<group>"; };
 		D7EAC7D522CD694C00B7701E /* Core.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core.swift; sourceTree = "<group>"; };
 		D7EAC7D722CE6E8100B7701E /* ColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTheme.swift; sourceTree = "<group>"; };
 		OBJ_11 /* TextDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextDocument.swift; sourceTree = "<group>"; };
@@ -133,6 +137,7 @@
 			children = (
 				D7C590AF22CE9ACF00ACD4BF /* Grammar.swift */,
 				D7C590FB22D27D9900ACD4BF /* Language.swift */,
+				D7DAB1892347E32800B728E9 /* Syntax.swift */,
 				D7C591FD22D7489600ACD4BF /* SyntaxParser.swift */,
 				D7C590B122CE9AE100ACD4BF /* Tokenizer.swift */,
 			);
@@ -143,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				D7C5920222D74C5100ACD4BF /* String+Ranges.swift */,
+				D70D243723352E8800338EC7 /* Range.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -305,9 +311,11 @@
 			files = (
 				D7C590B022CE9ACF00ACD4BF /* Grammar.swift in Sources */,
 				D7EAC7D622CD694C00B7701E /* Core.swift in Sources */,
+				D70D243823352E8800338EC7 /* Range.swift in Sources */,
 				D7EAC7D822CE6E8100B7701E /* ColorTheme.swift in Sources */,
 				OBJ_102 /* TextDocument.swift in Sources */,
 				D7C5920322D74C5100ACD4BF /* String+Ranges.swift in Sources */,
+				D7DAB18A2347E32800B728E9 /* Syntax.swift in Sources */,
 				D7C591FE22D7489600ACD4BF /* SyntaxParser.swift in Sources */,
 				D7C590B222CE9AE100ACD4BF /* Tokenizer.swift in Sources */,
 				D7C590FC22D27D9900ACD4BF /* Language.swift in Sources */,

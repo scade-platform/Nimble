@@ -41,8 +41,8 @@ public final class LanguageGrammar: Decodable, TokenizerRepository {
     self.path = path
   }
   
-  public lazy var scope: GrammarScope = {
-    GrammarScope(self.scopeName)
+  public lazy var scope: SyntaxScope = {
+    SyntaxScope(self.scopeName)
   }()
   
   private lazy var grammar: Grammar? = {

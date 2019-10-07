@@ -37,6 +37,11 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
     // Need to reapply whole coloring after replacing the textStorage
     applyTheme()
     
+    ///TODO: read from settings
+    if let font = NSFont.init(name: "SFMono-Medium", size: 12) {
+      textView.font = font
+    }
+    
     // Highlight syntax
     doc.syntaxParser?.highlightAll()
   }

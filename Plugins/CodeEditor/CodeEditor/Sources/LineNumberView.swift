@@ -11,9 +11,6 @@ import Cocoa
 
 final class LineNumberView: NSRulerView {
   
-  private let lineFont: NSFont
-  private let textFont: NSFont
-  
   private var textView: NSTextView? {
     return clientView as? NSTextView
   }
@@ -22,11 +19,16 @@ final class LineNumberView: NSRulerView {
     return textView?.layoutManager
   }
   
+  private var textFont: NSFont? {
+    return textView?.font
+  }
+  
+  private lazy var lineFont: NSFont = {
+    let size = self.textFont?.pointSize ?? 12
+    return NSFont.init(name: "XcodeDigits", size: 12) ?? NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .regular)
+  }()
+  
   init(textView: NSTextView) {
-    // TODO: load this from themes
-    self.lineFont = NSFont.init(name: "XcodeDigits", size: 12) ?? NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .regular)
-    self.textFont = NSFont.init(name: "SFMono-Medium", size: 12) ?? NSFont.systemFont(ofSize: 12)
-    
     super.init(scrollView: textView.enclosingScrollView, orientation: NSRulerView.Orientation.verticalRuler)
     
     self.clientView = textView
@@ -65,7 +67,7 @@ final class LineNumberView: NSRulerView {
     let attString = NSAttributedString(string: lineNumberString, attributes: lineNumberAttributes)
     
     let x = 35 - attString.size().width
-    let y = relativePoint.y + lineRect.origin.y + lineRect.height + self.textFont.descender
+    let y = relativePoint.y + lineRect.origin.y + lineRect.height + (self.textFont?.descender ?? 0)
     let rect = NSMakeRect(x,y, lineRect.width, lineRect.height)
     
     attString.draw(with: rect)

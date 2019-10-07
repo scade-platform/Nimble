@@ -17,26 +17,29 @@ public final class ColorTheme: Decodable {
   
   public var name: String
   public var path: Path? = nil
-  public var settings: [Setting] = []
   
-  public var global: GlobalSetting {
+  public var global: GlobalSetting
+  public var scopes: [ScopeSetting] = []
+  
+  public required init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    self.name = try container.decode(String.self, forKey: .name)
+    
+    let settings = try container.decode([Setting].self, forKey: .settings)
+    var globalSetting: GlobalSetting? = nil
+    
     for setting in settings {
-      if case let .global(global) = setting {
-        return global
+      switch(setting) {
+      case .global(let global):
+        globalSetting = global
+      case .scope(let scope):
+        scopes.append(scope)
       }
     }
-    return GlobalSetting.default
+    
+    self.global = globalSetting ?? GlobalSetting.default
   }
-
-  public var scopes: [ScopeSetting] {
-    var res: [ScopeSetting] = []
-    for setting in settings {
-      if case let .scope(scope) = setting {
-        res.append(scope)
-      }
-    }
-    return res
-  }
+  
   
   private typealias ColorDecoder<Key> = (Key) throws -> NSColor?
   
@@ -104,7 +107,7 @@ public final class ColorTheme: Decodable {
     }
     
     public var name: String
-    public var scope: GrammarScope
+    public var scope: SyntaxScope
     
     public var fontStyle: String?
     public var foreground: NSColor?
@@ -114,7 +117,7 @@ public final class ColorTheme: Decodable {
       
       // Decode scope
       self.name = try container.decode(String.self, forKey: .name)
-      self.scope = GrammarScope(try container.decode(String.self, forKey: .scope))
+      self.scope = SyntaxScope(try container.decode(String.self, forKey: .scope))
       
       // Decode settings
       let settings = try container.nestedContainer(keyedBy: CodingKeys.self, forKey: .settings)
@@ -133,41 +136,6 @@ public final class ColorTheme: Decodable {
 protocol ColorThemeDecoder {
   static func decode(from: Path) -> ColorTheme?
 }
-
-
-// MARK: -
-
-public final class ColorThemeManager {
-  public var colorThemes: [ColorTheme] = []
-  
-  private let decoders: [String: ColorThemeDecoder.Type]  = [
-    ".thTheme": PropertyListDecoder.self,
-    ".tmTheme.yml": YAMLDecoder.self,
-    ".thTheme.json": JSONDecoder.self
-  ]
-  
-  public var currentTheme: ColorTheme!
-  
-  public static let shared = ColorThemeManager()
-  
-  public func load(from path: Path) {
-    if path.isDirectory {
-      _ = try? path.ls().files.forEach { load(from: $0) }
-      
-    } else if path.isFile {
-      guard let decoder = decoders.first(where: { path.basename().hasSuffix($0.key) })?.value,
-            let theme = decoder.decode(from: path) else { return }
-      
-      if path.basename().hasPrefix("Default-Dark") {
-        self.currentTheme = theme
-      }
-      
-      theme.path = path
-      colorThemes.append(theme)
-    }
-  }
-}
-
 
 // MARK: Decoders
 
@@ -216,3 +184,52 @@ extension JSONDecoder: ColorThemeDecoder {
 }
 
 
+// MARK: Extensions
+
+public extension ColorTheme {
+  func setting(for scope: SyntaxScope) -> ScopeSetting? {
+    var res: ScopeSetting? = nil
+    for s in scopes where s.scope.contains(scope) {
+      if let rs = res?.scope, rs.value.count < scope.value.count {
+        res = s
+      } else {
+        res = s
+      }
+    }
+    return res
+  }
+}
+
+
+// MARK: -
+
+public final class ColorThemeManager {
+  public var colorThemes: [ColorTheme] = []
+  
+  private let decoders: [String: ColorThemeDecoder.Type]  = [
+    ".thTheme": PropertyListDecoder.self,
+    ".tmTheme.yml": YAMLDecoder.self,
+    ".thTheme.json": JSONDecoder.self
+  ]
+  
+  public var currentTheme: ColorTheme!
+  
+  public static let shared = ColorThemeManager()
+  
+  public func load(from path: Path) {
+    if path.isDirectory {
+      _ = try? path.ls().files.forEach { load(from: $0) }
+      
+    } else if path.isFile {
+      guard let decoder = decoders.first(where: { path.basename().hasSuffix($0.key) })?.value,
+        let theme = decoder.decode(from: path) else { return }
+      
+      if path.basename().hasPrefix("Default-Dark") {
+        self.currentTheme = theme
+      }
+      
+      theme.path = path
+      colorThemes.append(theme)
+    }
+  }
+}

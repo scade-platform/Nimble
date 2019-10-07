@@ -28,6 +28,11 @@ settings:
     settings:
       foreground: "#fb60a2"
 
+  - name: Storage
+    scope: storage
+    settings:
+      foreground: "#fb60a2"
+
   - name: Value
     scope: value
     settings:
@@ -48,6 +53,16 @@ settings:
     settings:
       foreground: "#6b6b79"
 
+  - name: Variable Language
+    scope: variable.language
+    settings:
+      foreground: "#6b6b79"
+
+  - name: Constant Language
+    scope: constant.language
+    settings:
+      foreground: "#fb60a2"
+
   - name: Character
     scope: constant.character
     settings:
@@ -57,4 +72,5 @@ settings:
     scope: variable.function
     settings:
       foreground: "#683821"
+
 

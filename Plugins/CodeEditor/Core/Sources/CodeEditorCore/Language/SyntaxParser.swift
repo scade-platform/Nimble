@@ -17,9 +17,29 @@ public final class SyntaxParser {
   }
   
   public func highlightAll() {
-    guard let extractor = grammar.tokenizer else { return }
-            
-    let _ = extractor.tokenize(textStorage.string, in: textStorage.string.nsRange)
+    guard let tokenizer = grammar.tokenizer else { return }
+    
+    let str = String(utf8String: textStorage.string.cString(using: .utf8)!)!
+    let res = tokenizer.tokenize(str)
+    
+    apply(res.nodes, in: res.range, for: str)
+    
+    for t in res.nodes {
+      print("\(t)")
+    }
+  }
+  
+  private func apply(_ nodes: [SyntaxNode], `in` range: Range<Int>, for str: String) {
+    let theme = ColorThemeManager.shared.currentTheme
+    for layoutManager in self.textStorage.layoutManagers {
+      layoutManager.removeTemporaryAttribute(.foregroundColor, forCharacterRange: NSRange(range))
+      nodes.visit {
+        if let scope = $0, let setting = theme?.setting(for: scope), let color = setting.foreground {
+          let range = NSRange(str.chars(utf8: $1))
+          layoutManager.addTemporaryAttribute(.foregroundColor, value: color, forCharacterRange: range)
+        }
+      }
+    }
   }
   
 }
