@@ -23,7 +23,7 @@ open class InterfaceBuilderPlugin: Plugin {
   }
   
   public func activate(workbench: Workbench) {
-    workbench.project.folders.forEach {
+    workbench.project?.folders.forEach {
       UserDefaults.standard.set($0.path.string, forKey: "Resource Folder")
     }
   }

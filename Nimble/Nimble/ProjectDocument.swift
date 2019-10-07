@@ -140,7 +140,7 @@ class ProjectDocument : NSDocument {
   }
   
   func saveAs(file: File){
-    let doc = try! file.open()!
+    let doc = (try! file.open()!) as NSDocument
     let fileURL = doc.fileURL!
     doc.saveAs(nil)
     project?.saved(url: fileURL)
@@ -149,7 +149,7 @@ class ProjectDocument : NSDocument {
   }
   
   func save(file: File){
-    let doc = try! file.open()!
+    let doc = (try! file.open()!) as NSDocument
     doc.save(nil)
     project?.saved(url: doc.fileURL!)
   }
