@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14868"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -723,12 +722,35 @@
                         </connections>
                     </window>
                     <connections>
-                        <segue destination="fjW-vM-mzH" kind="relationship" relationship="window.shadowedContentViewController" id="3SC-4t-mE6"/>
+                        <segue destination="f9f-3t-OXY" kind="relationship" relationship="window.shadowedContentViewController" id="lqA-yw-7wq"/>
                     </connections>
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="100" y="265"/>
+        </scene>
+        <!--Horizontal Root Split View Controller-->
+        <scene sceneID="AYH-wU-0K0">
+            <objects>
+                <splitViewController id="f9f-3t-OXY" customClass="HorizontalRootSplitViewController" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
+                    <splitViewItems>
+                        <splitViewItem id="fx5-KP-Tjm"/>
+                    </splitViewItems>
+                    <splitView key="splitView" dividerStyle="thin" id="69o-ns-cfo">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <connections>
+                            <outlet property="delegate" destination="f9f-3t-OXY" id="iz6-Y6-X0n"/>
+                        </connections>
+                    </splitView>
+                    <connections>
+                        <outlet property="splitView" destination="69o-ns-cfo" id="pMH-nU-Fz9"/>
+                        <segue destination="fjW-vM-mzH" kind="relationship" relationship="splitItems" id="ChY-ju-7sD"/>
+                    </connections>
+                </splitViewController>
+                <customObject id="IXb-F3-JHA" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-259" y="1135"/>
         </scene>
         <!--Workbench View Controller-->
         <scene sceneID="wTH-cn-3SB">
@@ -753,7 +775,7 @@
                 </splitViewController>
                 <customObject id="PxC-WY-9Ko" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="100" y="1051"/>
+            <point key="canvasLocation" x="-341" y="1733"/>
         </scene>
         <!--Navigator View Controller-->
         <scene sceneID="kYI-m9-sar">
@@ -775,7 +797,7 @@
                 </viewController>
                 <customObject id="VOl-xV-dCT" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1090" y="722"/>
+            <point key="canvasLocation" x="1164" y="758"/>
         </scene>
         <!--Editor View Controller-->
         <scene sceneID="dsF-QD-dQD">
@@ -788,7 +810,7 @@
                 </viewController>
                 <customObject id="xi1-Hq-DW4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1383" y="1595"/>
+            <point key="canvasLocation" x="1517" y="1648"/>
         </scene>
     </scenes>
 </document>
