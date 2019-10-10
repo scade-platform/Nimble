@@ -34,6 +34,10 @@ class HorizontalRootSplitViewController: NSSplitViewController {
     }
   }
   
+  var consoleIsShown: Bool {
+    return innerConsoleViewController != nil
+  }
+  
   private var innerConsoleViewController: ConsoleController? = nil
   private var consoleSplitViewItem: NSSplitViewItem? = nil
 }

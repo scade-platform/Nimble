@@ -17,6 +17,15 @@ class NimbleConsoleViewController: NSViewController, ConsoleController {
   
   private var consolesStorage : [String: NimbleTextConsole] = [:]
   
+  private func handler(fileHandle: FileHandle) {
+    let data = fileHandle.availableData
+    if let string = String(data: data, encoding: String.Encoding.utf8) {
+      DispatchQueue.main.async {
+        self.textView.string += string
+      }
+    }
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -25,18 +34,19 @@ class NimbleConsoleViewController: NSViewController, ConsoleController {
   }
   
   func createConsole(title: String, show: Bool) -> Console {
-    let consoleName = check(title: title)
+    let consoleName = improveName(title)
     let newConsole = NimbleTextConsole(title: consoleName)
     consoleSelectionButton.addItem(withTitle: newConsole.title)
     if (show) {
-      textView.string = newConsole.out
+      textView.string = newConsole.contents
       consoleSelectionButton.selectItem(withTitle: newConsole.title)
     }
+    newConsole.outputPipe.fileHandleForReading.readabilityHandler = handler(fileHandle:)
     consolesStorage[newConsole.title] = newConsole
     return newConsole
   }
   
-  private func check(title: String) -> String {
+  private func improveName(_ title: String) -> String {
     var count = 0
     var result = title
     while (consolesStorage[result] != nil)  {
@@ -50,10 +60,11 @@ class NimbleConsoleViewController: NSViewController, ConsoleController {
     guard let console = consolesStorage[title] else {
       return
     }
+    console.outputPipe.fileHandleForReading.readabilityHandler = handler(fileHandle:)
     consoleSelectionButton.selectItem(withTitle: console.title)
-    textView.string = console.out
+    textView.string = console.contents
   }
-
+  
   @IBAction func selectionDidChange(_ sender: NSPopUpButton) {
     guard let title  = sender.selectedItem?.title else {
       return
@@ -63,14 +74,42 @@ class NimbleConsoleViewController: NSViewController, ConsoleController {
 }
 
 class NimbleTextConsole: Console {
+  private var innerContent: String
+  
+  var contents: String{
+    return innerContent
+  }
+  
   var title: String
   
-  var out: String
+  var input: Pipe {
+    return inputPipe
+  }
+  
+  let inputPipe = Pipe()
+  let outputPipe = Pipe()
   
   init(title: String){
     self.title = title
-    self.out = title
+    self.innerContent = ""
+    // Set up a read handler which fires when data is written to our inputPipe
+    inputPipe.fileHandleForReading.readabilityHandler = { [weak self] fileHandle in
+      guard let strongSelf = self else { return }
+      
+      let data = fileHandle.availableData
+      if let string = String(data: data, encoding: .utf8) {
+        strongSelf.innerContent += string
+      }
+      strongSelf.outputPipe.fileHandleForWriting.write(data)
+    }
   }
+  
+  
+  func write(data: Data) -> Console {
+    self.outputPipe.fileHandleForWriting.write(data)
+    return self
+  }
+  
   
 }
 

@@ -616,6 +616,19 @@
                                     </items>
                                 </menu>
                             </menuItem>
+                            <menuItem title="Tools" id="yOl-9J-jHi">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Tools" id="olp-ot-P8e">
+                                    <items>
+                                        <menuItem title="Run Simulator" id="df8-Xa-ITo">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="buildProject:" target="Ady-hI-5gd" id="w50-yJ-YsQ"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </menuItem>
                             <menuItem title="Project" id="o6q-mC-Z3O">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Project" id="H5L-B6-tnc">

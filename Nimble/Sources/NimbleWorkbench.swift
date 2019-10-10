@@ -94,17 +94,16 @@ extension NimbleWorkbench: Workbench {
   }
   
   public func showConsole(value show: Bool) {
-    guard let consoleController = consoleController else {
+    guard let consoleController = consoleController, let consoleIsShown =  self.rootViewController?.consoleIsShown  else {
       return
     }
-    if show, (self.rootViewController?.consoleViewController == nil) {
+    if show, !consoleIsShown {
       self.rootViewController?.consoleViewController = consoleController
     }
-    if !show, let _ = self.rootViewController?.consoleViewController {
+    if !show, consoleIsShown {
       self.rootViewController?.consoleViewController = nil
     }
   }
-  
 }
 
 extension NimbleWorkbench: ResourceObserver{

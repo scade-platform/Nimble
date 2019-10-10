@@ -110,4 +110,8 @@ class NimbleController : NSDocumentController {
     doc.workbench?.showConsole(value: show)
   }
   
+  @IBAction func buildProject(_ sender: Any?) {
+    self.currentProject?.build()
+  }
+  
 }
