@@ -11,8 +11,6 @@
 		0CE4E209234EE98E00114287 /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE4E208234EE98E00114287 /* NimbleCore.framework */; };
 		0CE4E212234EF1F900114287 /* NimbleConsoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E210234EF1F900114287 /* NimbleConsoleViewController.swift */; };
 		0CE4E213234EF1F900114287 /* NimbleConsoleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CE4E211234EF1F900114287 /* NimbleConsoleViewController.xib */; };
-		0CE4E219234EFFA000114287 /* ConsoleTextView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CE4E218234EFFA000114287 /* ConsoleTextView.xib */; };
-		0CE4E21B234EFFD800114287 /* ConsoleTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E21A234EFFD800114287 /* ConsoleTextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,8 +20,6 @@
 		0CE4E208234EE98E00114287 /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CE4E210234EF1F900114287 /* NimbleConsoleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleConsoleViewController.swift; sourceTree = "<group>"; };
 		0CE4E211234EF1F900114287 /* NimbleConsoleViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NimbleConsoleViewController.xib; sourceTree = "<group>"; };
-		0CE4E218234EFFA000114287 /* ConsoleTextView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConsoleTextView.xib; sourceTree = "<group>"; };
-		0CE4E21A234EFFD800114287 /* ConsoleTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsoleTextView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,8 +66,6 @@
 				0CE4E205234EE97F00114287 /* NimbleConsole.swift */,
 				0CE4E210234EF1F900114287 /* NimbleConsoleViewController.swift */,
 				0CE4E211234EF1F900114287 /* NimbleConsoleViewController.xib */,
-				0CE4E218234EFFA000114287 /* ConsoleTextView.xib */,
-				0CE4E21A234EFFD800114287 /* ConsoleTextView.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -143,7 +137,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0CE4E213234EF1F900114287 /* NimbleConsoleViewController.xib in Resources */,
-				0CE4E219234EFFA000114287 /* ConsoleTextView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,7 +147,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CE4E21B234EFFD800114287 /* ConsoleTextView.swift in Sources */,
 				0CE4E206234EE97F00114287 /* NimbleConsole.swift in Sources */,
 				0CE4E212234EF1F900114287 /* NimbleConsoleViewController.swift in Sources */,
 			);

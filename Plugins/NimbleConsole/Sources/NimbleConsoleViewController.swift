@@ -10,41 +10,68 @@ import Cocoa
 import NimbleCore
 
 class NimbleConsoleViewController: NSViewController, ConsoleController {
-  @IBOutlet weak var currentConsoleView: NSView!
+  
+  @IBOutlet var textView: NSTextView!
   
   @IBOutlet weak var consoleSelectionButton: NSPopUpButton!
   
+  private var consolesStorage : [String: NimbleTextConsole] = [:]
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-    // Do view setup here.
+    
+    self.view.setBackgroundColor(.white)
+    
   }
   
   func createConsole(title: String, show: Bool) -> Console {
-    let newConsole = TextViewConsole(title: title)
+    let consoleName = check(title: title)
+    let newConsole = NimbleTextConsole(title: consoleName)
+    if (show){
+      textView.string = newConsole.out
+    }
     consoleSelectionButton.addItem(withTitle: newConsole.title)
     consoleSelectionButton.selectItem(withTitle: newConsole.title)
-    currentConsoleView.removeFromSuperview()
-    self.view.addSubview(newConsole.view)
-    currentConsoleView = newConsole.view
+    consolesStorage[newConsole.title] = newConsole
     return newConsole
   }
-
-}
-
-public class TextViewConsole: Console{
-  public var title: String
   
-  private let consoleView : ConsoleTextView
-  
-  public var view: NSView {
-    return consoleView.textView
+  private func check(title: String) -> String {
+    var count = 0
+    var result = title
+    while (consolesStorage[result] != nil)  {
+      count = count + 1
+      result = "\(title) \(count)"
+    }
+    return result
   }
   
-  public var out: String
+  func open(console title: String) {
+    guard let console = consolesStorage[title] else {
+      return
+    }
+    consoleSelectionButton.selectItem(withTitle: console.title)
+    textView.string = console.out
+  }
+
+  @IBAction func selectionDidChange(_ sender: NSPopUpButton) {
+    guard let title  = sender.selectedItem?.title else {
+      return
+    }
+    open(console: title)
+  }
+}
+
+class NimbleTextConsole: Console {
+  var title: String
   
-  init(title: String) {
+  var out: String
+  
+  init(title: String){
     self.title = title
-    self.consoleView = ConsoleTextView()
-    self.out = ""
+    self.out = title
   }
+  
 }
+
+

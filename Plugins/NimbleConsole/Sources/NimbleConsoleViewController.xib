@@ -8,43 +8,62 @@
         <customObject id="-2" userLabel="File's Owner" customClass="NimbleConsoleViewController" customModule="NimbleConsole" customModuleProvider="target">
             <connections>
                 <outlet property="consoleSelectionButton" destination="6sq-ed-dLL" id="Vfz-2o-Cpt"/>
-                <outlet property="currentConsoleView" destination="V8b-sl-6OS" id="kku-6C-6Kd"/>
+                <outlet property="textView" destination="489-L5-7Z7" id="LKt-ag-auG"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="480" height="298"/>
+            <rect key="frame" x="0.0" y="0.0" width="480" height="469"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LPN-tK-UIz">
-                    <rect key="frame" x="0.0" y="0.0" width="480" height="298"/>
+                    <rect key="frame" x="0.0" y="10" width="480" height="459"/>
                     <subviews>
-                        <customView translatesAutoresizingMaskIntoConstraints="NO" id="V8b-sl-6OS">
-                            <rect key="frame" x="0.0" y="0.0" width="480" height="298"/>
-                        </customView>
+                        <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FaY-ic-0Uz">
+                            <rect key="frame" x="0.0" y="58" width="480" height="401"/>
+                            <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="ruM-Th-wN2">
+                                <rect key="frame" x="0.0" y="0.0" width="480" height="401"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="489-L5-7Z7">
+                                        <rect key="frame" x="0.0" y="0.0" width="480" height="401"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                        <size key="minSize" width="480" height="401"/>
+                                        <size key="maxSize" width="480" height="10000000"/>
+                                        <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    </textView>
+                                </subviews>
+                            </clipView>
+                            <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="6yP-W6-vIo">
+                                <rect key="frame" x="-100" y="-100" width="240" height="16"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                            </scroller>
+                            <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="BGL-Ee-E9j">
+                                <rect key="frame" x="464" y="0.0" width="16" height="401"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                            </scroller>
+                        </scrollView>
                         <popUpButton translatesAutoresizingMaskIntoConstraints="NO" id="6sq-ed-dLL">
-                            <rect key="frame" x="-2" y="-2" width="61" height="21"/>
-                            <popUpButtonCell key="cell" type="check" title="Item 1" bezelStyle="regularSquare" imagePosition="left" lineBreakMode="truncatingTail" state="on" inset="2" selectedItem="hEj-jL-Hoa" id="pHo-q2-rE9">
+                            <rect key="frame" x="-2" y="-2" width="104" height="54"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="100" id="rD1-bj-TLf"/>
+                            </constraints>
+                            <popUpButtonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" lineBreakMode="truncatingTail" inset="2" id="pHo-q2-rE9">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="menu"/>
-                                <menu key="menu" id="GPz-r8-kCC">
-                                    <items>
-                                        <menuItem title="Item 1" state="on" id="hEj-jL-Hoa"/>
-                                        <menuItem title="Item 2" id="el5-Wn-EQS"/>
-                                        <menuItem title="Item 3" id="2e9-X6-mce"/>
-                                    </items>
-                                </menu>
+                                <menu key="menu" id="GPz-r8-kCC"/>
                             </popUpButtonCell>
+                            <connections>
+                                <action selector="selectionDidChange:" target="-2" id="piY-pU-rXk"/>
+                            </connections>
                         </popUpButton>
                     </subviews>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="V8b-sl-6OS" secondAttribute="bottom" id="6gh-1M-yVr"/>
-                        <constraint firstItem="6sq-ed-dLL" firstAttribute="top" secondItem="V8b-sl-6OS" secondAttribute="bottom" id="6r2-Pq-LkU"/>
-                        <constraint firstItem="V8b-sl-6OS" firstAttribute="top" secondItem="LPN-tK-UIz" secondAttribute="top" id="gai-D1-PxL"/>
-                        <constraint firstItem="V8b-sl-6OS" firstAttribute="leading" secondItem="LPN-tK-UIz" secondAttribute="leading" id="plJ-nK-hug"/>
-                        <constraint firstAttribute="trailing" secondItem="V8b-sl-6OS" secondAttribute="trailing" id="u7d-15-yKG"/>
+                        <constraint firstAttribute="trailing" secondItem="FaY-ic-0Uz" secondAttribute="trailing" id="BtU-HP-ynP"/>
                         <constraint firstAttribute="bottom" secondItem="6sq-ed-dLL" secondAttribute="bottom" id="uSB-G4-V0g"/>
                         <constraint firstItem="6sq-ed-dLL" firstAttribute="leading" secondItem="LPN-tK-UIz" secondAttribute="leading" id="y9T-HQ-loo"/>
                     </constraints>
@@ -62,7 +81,7 @@
                 <constraint firstItem="LPN-tK-UIz" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="SLw-HX-0px"/>
                 <constraint firstItem="LPN-tK-UIz" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="dPh-Fo-UQy"/>
                 <constraint firstAttribute="trailing" secondItem="LPN-tK-UIz" secondAttribute="trailing" id="fcD-Zx-FrO"/>
-                <constraint firstAttribute="bottom" secondItem="LPN-tK-UIz" secondAttribute="bottom" id="roe-Xr-82M"/>
+                <constraint firstAttribute="bottom" secondItem="LPN-tK-UIz" secondAttribute="bottom" constant="10" id="roe-Xr-82M"/>
             </constraints>
             <point key="canvasLocation" x="139" y="167"/>
         </customView>

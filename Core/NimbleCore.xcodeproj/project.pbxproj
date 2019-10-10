@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0CE4E1EE234ED68D00114287 /* Console.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E1ED234ED68D00114287 /* Console.swift */; };
+		0CE4E21D234F119900114287 /* NSViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E21C234F119900114287 /* NSViewExtensions.swift */; };
 		OBJ_100 /* CYaml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Yams::CYaml::Product" /* CYaml.framework */; };
 		OBJ_101 /* Path.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Path.swift::Path::Product" /* Path.framework */; };
 		OBJ_112 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
@@ -92,6 +93,7 @@
 
 /* Begin PBXFileReference section */
 		0CE4E1ED234ED68D00114287 /* Console.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Console.swift; sourceTree = "<group>"; };
+		0CE4E21C234F119900114287 /* NSViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSViewExtensions.swift; sourceTree = "<group>"; };
 		"NimbleCore::NimbleCore::Product" /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_11 /* Core.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core.swift; sourceTree = "<group>"; };
 		OBJ_12 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 			children = (
 				OBJ_18 /* NSViewController.swift */,
 				OBJ_19 /* XibView.swift */,
+				0CE4E21C234F119900114287 /* NSViewExtensions.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -479,6 +482,11 @@
 			attributes = {
 				LastSwiftMigration = 9999;
 				LastUpgradeCheck = 9999;
+				TargetAttributes = {
+					"Yams::CYaml" = {
+						LastSwiftMigration = 1030;
+					};
+				};
 			};
 			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "NimbleCore" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -574,6 +582,7 @@
 			files = (
 				OBJ_74 /* api.c in Sources */,
 				OBJ_75 /* emitter.c in Sources */,
+				0CE4E21D234F119900114287 /* NSViewExtensions.swift in Sources */,
 				OBJ_76 /* parser.c in Sources */,
 				OBJ_77 /* reader.c in Sources */,
 				OBJ_78 /* scanner.c in Sources */,
@@ -870,6 +879,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGET_NAME = CYaml;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;
@@ -903,6 +914,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
 				TARGET_NAME = CYaml;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;

@@ -20,7 +20,9 @@ public class NimbleWorkbench: NSWindowController {
       PluginManager.shared.activate(workbench: self)
       if let consoleController = consoleController {
         self.rootViewController?.addSplitViewItem(NSSplitViewItem(viewController: consoleController))
-        consoleController.createConsole(title: "Test1", show: true)
+        consoleController.createConsole(title: "Test", show: true)
+        consoleController.createConsole(title: "Test", show: true)
+        consoleController.createConsole(title: "Test", show: true)
       }
       project.subscribe(resourceObserver: self)
     }

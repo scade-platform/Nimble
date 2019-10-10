@@ -11,8 +11,6 @@ public protocol Console {
 
   var title: String { get }
 
-  var view: NSView { get }
-
   //TODO: Improv to Pipe, Stream or something else
   var out: String {set get}
 }
