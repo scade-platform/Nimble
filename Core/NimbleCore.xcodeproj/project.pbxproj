@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0CE4E1EE234ED68D00114287 /* Console.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E1ED234ED68D00114287 /* Console.swift */; };
 		OBJ_100 /* CYaml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Yams::CYaml::Product" /* CYaml.framework */; };
 		OBJ_101 /* Path.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Path.swift::Path::Product" /* Path.framework */; };
 		OBJ_112 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
@@ -90,6 +91,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0CE4E1ED234ED68D00114287 /* Console.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Console.swift; sourceTree = "<group>"; };
 		"NimbleCore::NimbleCore::Product" /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_11 /* Core.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core.swift; sourceTree = "<group>"; };
 		OBJ_12 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 				OBJ_16 /* Project.swift */,
 				OBJ_20 /* Workbench.swift */,
 				OBJ_17 /* UI */,
+				0CE4E1ED234ED68D00114287 /* Console.swift */,
 			);
 			name = NimbleCore;
 			path = Sources/NimbleCore;
@@ -583,6 +586,7 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_89 /* Core.swift in Sources */,
+				0CE4E1EE234ED68D00114287 /* Console.swift in Sources */,
 				OBJ_90 /* Document.swift in Sources */,
 				OBJ_91 /* File.swift in Sources */,
 				OBJ_92 /* Folder.swift in Sources */,

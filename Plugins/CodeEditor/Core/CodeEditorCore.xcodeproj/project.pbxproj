@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0CE4E1F1234ED78D00114287 /* Console.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E1F0234ED78C00114287 /* Console.swift */; };
 		D7BEC82B22B9222800A8F48B /* TextDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEC82922B921FB00A8F48B /* TextDocument.swift */; };
 		OBJ_112 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
 		OBJ_117 /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_16 /* Core.swift */; };
@@ -125,6 +126,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0CE4E1F0234ED78C00114287 /* Console.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Console.swift; sourceTree = "<group>"; };
 		"CodeEditorCore::CodeEditorCore::Product" /* CodeEditorCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CodeEditorCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7BEC82922B921FB00A8F48B /* TextDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextDocument.swift; sourceTree = "<group>"; };
 		"NimbleCore::NimbleCore::Product" /* NimbleCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -267,6 +269,7 @@
 		OBJ_15 /* NimbleCore */ = {
 			isa = PBXGroup;
 			children = (
+				0CE4E1F0234ED78C00114287 /* Console.swift */,
 				OBJ_16 /* Core.swift */,
 				OBJ_17 /* Document.swift */,
 				OBJ_18 /* File.swift */,
@@ -626,6 +629,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 0;
 			files = (
+				0CE4E1F1234ED78D00114287 /* Console.swift in Sources */,
 				OBJ_117 /* Core.swift in Sources */,
 				OBJ_118 /* Document.swift in Sources */,
 				OBJ_119 /* File.swift in Sources */,
