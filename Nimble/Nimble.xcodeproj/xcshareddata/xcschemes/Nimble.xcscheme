@@ -76,6 +76,20 @@
                ReferencedContainer = "container:../Plugins/ImageViewer/ImageViewer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "0CE4E1FA234EE94400114287"
+               BuildableName = "NimbleConsole.plugin"
+               BlueprintName = "NimbleConsole"
+               ReferencedContainer = "container:../Plugins/NimbleConsole/NimbleConsole.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
