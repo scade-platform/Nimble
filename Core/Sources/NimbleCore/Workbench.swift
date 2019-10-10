@@ -30,11 +30,17 @@ public protocol Workbench {
   
   func save(file: File)
   
+  func showConsole(value: Bool)
+  
 }
 
 public extension Workbench {
   var consoleController:ConsoleController? {
     return ConsoleManager.shared.controllerInstance()
+  }
+  
+  func showConsole(value: Bool){
+    //by default do nothing
   }
 }
 

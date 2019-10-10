@@ -27,11 +27,11 @@ class NimbleConsoleViewController: NSViewController, ConsoleController {
   func createConsole(title: String, show: Bool) -> Console {
     let consoleName = check(title: title)
     let newConsole = NimbleTextConsole(title: consoleName)
-    if (show){
-      textView.string = newConsole.out
-    }
     consoleSelectionButton.addItem(withTitle: newConsole.title)
-    consoleSelectionButton.selectItem(withTitle: newConsole.title)
+    if (show) {
+      textView.string = newConsole.out
+      consoleSelectionButton.selectItem(withTitle: newConsole.title)
+    }
     consolesStorage[newConsole.title] = newConsole
     return newConsole
   }

@@ -92,4 +92,22 @@ class NimbleController : NSDocumentController {
   }
   
   
+  @IBAction func showConsole(_ sender: Any?) {
+    guard let doc = currentDocument as? ProjectDocument else {
+      return
+    }
+    let show: Bool
+    if let menuItem = sender as? NSMenuItem {
+      show = menuItem.title == "Show Console"
+      if show {
+        menuItem.title = "Hide Console"
+      } else {
+        menuItem.title = "Show Console"
+      }
+    } else {
+      show = false
+    }
+    doc.workbench?.showConsole(value: show)
+  }
+  
 }

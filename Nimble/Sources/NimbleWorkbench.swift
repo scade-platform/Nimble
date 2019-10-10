@@ -18,12 +18,6 @@ public class NimbleWorkbench: NSWindowController {
         return
       }
       PluginManager.shared.activate(workbench: self)
-      if let consoleController = consoleController {
-        self.rootViewController?.addSplitViewItem(NSSplitViewItem(viewController: consoleController))
-        consoleController.createConsole(title: "Test", show: true)
-        consoleController.createConsole(title: "Test", show: true)
-        consoleController.createConsole(title: "Test", show: true)
-      }
       project.subscribe(resourceObserver: self)
     }
   }
@@ -97,6 +91,18 @@ extension NimbleWorkbench: Workbench {
 
   public func save(file: File) {
     self.projectDocument?.save(file: file)
+  }
+  
+  public func showConsole(value show: Bool) {
+    guard let consoleController = consoleController else {
+      return
+    }
+    if show, (self.rootViewController?.consoleViewController == nil) {
+      self.rootViewController?.consoleViewController = consoleController
+    }
+    if !show, let _ = self.rootViewController?.consoleViewController {
+      self.rootViewController?.consoleViewController = nil
+    }
   }
   
 }
