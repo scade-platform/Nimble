@@ -18,6 +18,10 @@ public class NimbleWorkbench: NSWindowController {
         return
       }
       PluginManager.shared.activate(workbench: self)
+      if let consoleController = consoleController {
+        self.rootViewController?.addSplitViewItem(NSSplitViewItem(viewController: consoleController))
+        consoleController.createConsole(title: "Test1", show: true)
+      }
       project.subscribe(resourceObserver: self)
     }
   }
@@ -32,7 +36,6 @@ public class NimbleWorkbench: NSWindowController {
   
   public override func windowDidLoad() {
     super.windowDidLoad()
-    
     if CommandLine.arguments.count > 1,
       let path = Path(CommandLine.arguments[1]), path.isDirectory {
       project?.add(folders: [path.url])

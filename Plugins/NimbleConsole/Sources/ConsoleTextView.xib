@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="ConsoleTextView" customModule="NimbleConsole" customModuleProvider="target">
+            <connections>
+                <outlet property="textView" destination="cXP-JD-2Dx" id="ce8-bc-2C3"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" id="Jo6-jh-tkX">
+            <rect key="frame" x="0.0" y="0.0" width="454" height="281"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="eAh-nT-SLU">
+                <rect key="frame" x="0.0" y="0.0" width="454" height="281"/>
+                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <subviews>
+                    <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="cXP-JD-2Dx">
+                        <rect key="frame" x="0.0" y="0.0" width="454" height="281"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        <size key="minSize" width="454" height="281"/>
+                        <size key="maxSize" width="454" height="10000000"/>
+                        <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                    </textView>
+                </subviews>
+            </clipView>
+            <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="H65-KR-iPN">
+                <rect key="frame" x="-100" y="-100" width="240" height="16"/>
+                <autoresizingMask key="autoresizingMask"/>
+            </scroller>
+            <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="Lob-lJ-olu">
+                <rect key="frame" x="438" y="0.0" width="16" height="281"/>
+                <autoresizingMask key="autoresizingMask"/>
+            </scroller>
+            <point key="canvasLocation" x="45" y="74.5"/>
+        </scrollView>
+    </objects>
+</document>

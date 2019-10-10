@@ -9,12 +9,13 @@
 import Cocoa
 import NimbleCore
 
-public final class NimbleConsoleModule: Module {
+public final class NimbleConsole: Module {
   public static var pluginClass: Plugin.Type = NimbleConsolePlugin.self
 }
 
 open class NimbleConsolePlugin: Plugin {
   required public init() {
+    ConsoleManager.shared.registerControllerClass(NimbleConsoleViewController.self)
   }
   
   static var workbench: Workbench? = nil

@@ -14,6 +14,8 @@ public protocol Workbench {
   var navigatorArea: WorkbenchArea? { get }
   
   var changedFiles: [File]? { get }
+  
+  var consoleController: ConsoleController? { get }
 
 //  var inspectorArea: WorkbenchPart { get }
 //
@@ -28,6 +30,12 @@ public protocol Workbench {
   
   func save(file: File)
   
+}
+
+public extension Workbench {
+  var consoleController:ConsoleController? {
+    return ConsoleManager.shared.controllerInstance()
+  }
 }
 
 public protocol WorkbenchArea {
