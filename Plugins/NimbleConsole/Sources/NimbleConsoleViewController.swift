@@ -45,9 +45,11 @@ class NimbleConsoleViewController: NSViewController, ConsoleController {
   }
   
   func setControllersHidden(_ value: Bool){
-    consoleSelectionButton.isHidden = value
-    clearButton.isHidden = value
-    closeButton.isHidden = value
+    DispatchQueue.main.async {
+      self.consoleSelectionButton.isHidden = value
+      self.clearButton.isHidden = value
+      self.closeButton.isHidden = value
+    }
   }
   
   

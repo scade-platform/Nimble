@@ -32,10 +32,10 @@ public class NimbleWorkbench: NSWindowController {
   
   public override func windowDidLoad() {
     super.windowDidLoad()
-    if CommandLine.arguments.count > 1,
-      let path = Path(CommandLine.arguments[1]), path.isDirectory {
-      project?.add(folders: [path.url])
-    }
+//    if CommandLine.arguments.count > 1,
+//      let path = Path(CommandLine.arguments[1]), path.isDirectory {
+//      project?.add(folders: [path.url])
+//    }
   }
   
   //  func launch() -> Void {
@@ -93,16 +93,26 @@ extension NimbleWorkbench: Workbench {
     self.projectDocument?.save(file: file)
   }
   
-  public func showConsole(value show: Bool) {
-    guard let consoleController = consoleController, let consoleIsShown =  self.rootViewController?.consoleIsShown  else {
-      return
+  public var isConsoleHidden: Bool {
+    set {
+      let show = !newValue
+      guard let consoleController = consoleController, let consoleIsShown =  self.rootViewController?.consoleIsShown  else {
+        return
+      }
+      if show, !consoleIsShown {
+        self.rootViewController?.consoleViewController = consoleController
+      }
+      if !show, consoleIsShown {
+        self.rootViewController?.consoleViewController = nil
+      }
     }
-    if show, !consoleIsShown {
-      self.rootViewController?.consoleViewController = consoleController
+    get {
+      guard let consoleIsShown =  self.rootViewController?.consoleIsShown  else {
+        return false
+      }
+      return !consoleIsShown
     }
-    if !show, consoleIsShown {
-      self.rootViewController?.consoleViewController = nil
-    }
+    
   }
 }
 

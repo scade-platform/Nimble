@@ -81,20 +81,13 @@ public class Project {
     chargeResourceChangeEvent(type: .post, deltas: deltas)
   }
   
-  public func build() {
-    delegate?.build(project: self)
+  public func build(folder: Folder) {
+    delegate?.build(folder: folder)
   }
   
-  public func runCMake() {
-    delegate?.runCMake(project: self)
-  }
   
-  public func runSimulator() {
-    delegate?.runSimulator(project: self)
-  }
-  
-  public func stopSimulator() {
-    delegate?.stopSimulator(project: self)
+  public func runSimulator(folder: Folder){
+    delegate?.runSimulator(folder: folder)
   }
   
   private func performEvent(file: URL, kind: ResourceDelta.Kind){
@@ -246,26 +239,26 @@ extension Project {
 }
 
 public protocol ProjectDelegate {
-  func runSimulator(project: Project)
-  func stopSimulator(project: Project)
-  func runCMake(project: Project)
-  func build(project: Project)
+  func runSimulator(folder: Folder)
+  func stopSimulator(folder: Folder)
+  func runCMake(folder: Folder)
+  func build(folder: Folder)
 }
 
 public extension ProjectDelegate{
-  func runSimulator(project: Project){
+  func runSimulator(folder: Folder){
     //default implementation
   }
   
-  func stopSimulator(project: Project){
+  func stopSimulator(folder: Folder){
     //default implementation
   }
   
-  func runCMake(project: Project){
+  func runCMake(folder: Folder){
     //default implementation
   }
   
-  func build(project: Project){
+  func build(folder: Folder){
     //default implementation
   }
 }

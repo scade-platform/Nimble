@@ -22,8 +22,14 @@ class NimbleController : NSDocumentController {
     return NSDocumentController.shared as! NimbleController
   }
   
+  //TODO: improve it
+  var toolchainPath: String? {
+    return ProcessInfo.processInfo.environment["TOOLCHAIN_PATH"]
+  }
+  
   override init(){
     super.init()
+    
   }
   
   required init?(coder: NSCoder) {
@@ -36,6 +42,7 @@ class NimbleController : NSDocumentController {
   }
   
   private var buildMenuItems: [NSMenuItem: Folder] = [:]
+  private var runMenuItems: [NSMenuItem: Folder] = [:]
   
   private var buildSubMenu: NSMenu {
     buildMenuItems.removeAll()
@@ -47,6 +54,18 @@ class NimbleController : NSDocumentController {
     }
     return result
   }
+  
+  private var runSubMenu: NSMenu {
+    runMenuItems.removeAll()
+    let result = NSMenu()
+    for folder in currentProject?.folders ?? [] {
+      let menuItem = NSMenuItem(title: folder.name, action: #selector(runFolder(_:)), keyEquivalent: "")
+      runMenuItems[menuItem] = folder
+      result.addItem(menuItem)
+    }
+    return result
+  }
+
   
   func switchProject(urls: [URL]?) {
     if let url = urls?.first, let doc = self.currentDocument, let projectDoc = doc as? ProjectDocument {
@@ -106,66 +125,65 @@ class NimbleController : NSDocumentController {
   
   
   @IBAction func showConsole(_ sender: Any?) {
-    guard let doc = currentDocument as? ProjectDocument else {
+    guard let doc = currentDocument as? ProjectDocument, var workbench = doc.workbench else {
       return
     }
-    let show: Bool
+    let hide: Bool
     if let menuItem = sender as? NSMenuItem {
-      show = menuItem.title == "Show Console"
-      if show {
-        menuItem.title = "Hide Console"
-      } else {
+      hide = menuItem.title != "Show Console"
+      if hide {
         menuItem.title = "Show Console"
-      }
-    } else {
-      show = false
-    }
-    doc.workbench?.showConsole(value: show)
-  }
-  
-  @IBAction func runSimulator(_ sender: Any?) {
-    guard let project = currentProject else {
-      return
-    }
-    let run: Bool
-    if let menuItem = sender as? NSMenuItem {
-      run = menuItem.title == "Run Simulator"
-      if run {
-        menuItem.title = "Stop Simulator"
       } else {
-        menuItem.title = "Run Simulator"
+        menuItem.title = "Hide Console"
       }
     } else {
-      run = false
+      hide = true
     }
-    if run {
-      project.runSimulator()
-    } else {
-      project.stopSimulator()
-    }
+    workbench.isConsoleHidden = hide
   }
-  
-  @IBAction func buildProject(_ sender: Any?) {
-    guard let project = currentProject else {
-      return
-    }
-    project.runCMake()
-  }
+
   
   override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
-    if menuItem.title == "Build" {
+    if menuItem.tag == 53 {
+      menuItem.title = (currentDocument as! ProjectDocument).workbench?.isConsoleHidden ?? true ? "Show Console" : "Hide Console"
+    }
+    if menuItem.tag == 62 {
+      if toolchainPath == nil || buildSubMenu.items.count == 0 {
+        return false
+      }
       menuItem.submenu = buildSubMenu
+      return true
+    }
+    if menuItem.tag == 61 {
+      if toolchainPath == nil || runSubMenu.items.count == 0 {
+        return false
+      }
+      menuItem.submenu = runSubMenu
+      return true
     }
     return super.validateMenuItem(menuItem)
   }
   
   @objc func buildFolder(_ sender: Any?) {
-    guard let menuItem = sender as? NSMenuItem, let selectedFolder = buildMenuItems[menuItem] else {
+    guard let menuItem = sender as? NSMenuItem, let selectedFolder = buildMenuItems[menuItem], let project = currentProject else {
       return
     }
-    Swift.print(selectedFolder.path.string)
+    project.build(folder: selectedFolder)
   }
   
+  @objc func runFolder(_ sender: Any?) {
+    guard let menuItem = sender as? NSMenuItem, let selectedFolder = runMenuItems[menuItem], let project = currentProject else {
+      return
+    }
+    project.runSimulator(folder: selectedFolder)
+  }
+  
+  @IBAction func requestTag(_ sender: Any?) {
+    guard let menuItem = sender as? NSMenuItem else {
+      return
+    }
+    let _ = menuItem.tag
+  }
   
   
 }

@@ -13,7 +13,7 @@ import NimbleCore
 class AppDelegate: NSObject, NSApplicationDelegate {
       
   func applicationDidFinishLaunching(_ aNotification: Notification) {
-    
+
   }
   
   func applicationWillFinishLaunching(_ notification: Notification) {

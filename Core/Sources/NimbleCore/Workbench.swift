@@ -30,7 +30,7 @@ public protocol Workbench {
   
   func save(file: File)
   
-  func showConsole(value: Bool)
+  var isConsoleHidden: Bool { set get }
   
 }
 

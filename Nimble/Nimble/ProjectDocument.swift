@@ -14,7 +14,7 @@ class ProjectDocument : NSDocument {
   var project: Project
   
   var workbench: Workbench? {
-    return self.windowForSheet?.windowController as? Workbench
+      return self.windowForSheet?.windowController as? Workbench
   }
   
   private var incorrectPaths : [String]?

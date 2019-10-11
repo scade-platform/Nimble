@@ -594,7 +594,7 @@
                                                 <action selector="runToolbarCustomizationPalette:" target="Ady-hI-5gd" id="pQI-g3-MTW"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Show Console" id="pAJ-j8-Uf8">
+                                        <menuItem title="Show Console" tag="53" id="pAJ-j8-Uf8">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
                                                 <action selector="showConsole:" target="Ady-hI-5gd" id="afy-vM-o8t"/>
@@ -616,24 +616,27 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Tools" id="yOl-9J-jHi">
+                            <menuItem title="Tools" tag="6" id="yOl-9J-jHi">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Tools" id="olp-ot-P8e">
                                     <items>
-                                        <menuItem title="Run Simulator" id="df8-Xa-ITo">
+                                        <menuItem title="Run Simulator" tag="61" id="df8-Xa-ITo">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="runSimulator:" target="Ady-hI-5gd" id="c5c-tI-ch9"/>
+                                                <action selector="requestTag:" target="Ady-hI-5gd" id="H6z-FH-8q7"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Build" id="1c8-P2-UOy">
+                                        <menuItem title="Build" tag="62" id="1c8-P2-UOy">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="buildProject:" target="Ady-hI-5gd" id="g8v-AW-5ct"/>
+                                                <action selector="requestTag:" target="Ady-hI-5gd" id="D2h-LW-XAg"/>
                                             </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
+                                <connections>
+                                    <action selector="requestTag:" target="Ady-hI-5gd" id="F6s-4E-RXF"/>
+                                </connections>
                             </menuItem>
                             <menuItem title="Project" id="o6q-mC-Z3O">
                                 <modifierMask key="keyEquivalentModifierMask"/>
