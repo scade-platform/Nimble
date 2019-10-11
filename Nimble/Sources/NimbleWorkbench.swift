@@ -23,11 +23,11 @@ public class NimbleWorkbench: NSWindowController {
   }
   
   var viewController: WorkbenchViewController? {
-    return rootViewController?.workbenchViewController
+    return self.contentViewController as? WorkbenchViewController
   }
   
   var rootViewController: HorizontalRootSplitViewController? {
-    return self.contentViewController as? HorizontalRootSplitViewController
+    return viewController?.horizontalRootSplitViewController
   }
   
   public override func windowDidLoad() {

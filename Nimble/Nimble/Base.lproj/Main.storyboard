@@ -741,7 +741,7 @@
                         </connections>
                     </window>
                     <connections>
-                        <segue destination="f9f-3t-OXY" kind="relationship" relationship="window.shadowedContentViewController" id="lqA-yw-7wq"/>
+                        <segue destination="fjW-vM-mzH" kind="relationship" relationship="window.shadowedContentViewController" id="sby-4e-u2R"/>
                     </connections>
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -753,7 +753,7 @@
             <objects>
                 <splitViewController id="f9f-3t-OXY" customClass="HorizontalRootSplitViewController" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
                     <splitViewItems>
-                        <splitViewItem id="fx5-KP-Tjm"/>
+                        <splitViewItem id="6CT-wf-mhQ"/>
                     </splitViewItems>
                     <splitView key="splitView" dividerStyle="thin" id="69o-ns-cfo">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
@@ -764,12 +764,12 @@
                     </splitView>
                     <connections>
                         <outlet property="splitView" destination="69o-ns-cfo" id="pMH-nU-Fz9"/>
-                        <segue destination="fjW-vM-mzH" kind="relationship" relationship="splitItems" id="ChY-ju-7sD"/>
+                        <segue destination="UtC-nN-7Sb" kind="relationship" relationship="splitItems" id="bVp-L5-Hnr"/>
                     </connections>
                 </splitViewController>
                 <customObject id="IXb-F3-JHA" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-259" y="1135"/>
+            <point key="canvasLocation" x="417" y="1678"/>
         </scene>
         <!--Workbench View Controller-->
         <scene sceneID="wTH-cn-3SB">
@@ -777,7 +777,7 @@
                 <splitViewController id="fjW-vM-mzH" customClass="WorkbenchViewController" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
                     <splitViewItems>
                         <splitViewItem id="ND0-p8-RRp"/>
-                        <splitViewItem holdingPriority="249" id="9p0-uC-ZSh"/>
+                        <splitViewItem id="5X7-a0-fnU"/>
                     </splitViewItems>
                     <splitView key="splitView" dividerStyle="thin" vertical="YES" id="Kd3-Dd-nrm" customClass="DropView" customModule="Nimble" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
@@ -789,12 +789,12 @@
                     <connections>
                         <outlet property="splitView" destination="Kd3-Dd-nrm" id="ois-II-s6c"/>
                         <segue destination="fbF-er-OZS" kind="relationship" relationship="splitItems" id="vBS-nC-6Qu"/>
-                        <segue destination="UtC-nN-7Sb" kind="relationship" relationship="splitItems" id="0dq-Gb-a8N"/>
+                        <segue destination="f9f-3t-OXY" kind="relationship" relationship="splitItems" id="ycZ-jr-zzz"/>
                     </connections>
                 </splitViewController>
                 <customObject id="PxC-WY-9Ko" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-341" y="1733"/>
+            <point key="canvasLocation" x="-36" y="1131"/>
         </scene>
         <!--Navigator View Controller-->
         <scene sceneID="kYI-m9-sar">

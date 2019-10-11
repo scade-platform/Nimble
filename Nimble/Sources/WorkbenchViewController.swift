@@ -14,8 +14,13 @@ public class WorkbenchViewController: NSSplitViewController {
     return children[0] as? NavigatorViewController
   }
   
-  public var editorViewController: EditorViewController? {
-    return children[1] as? EditorViewController
+  var horizontalRootSplitViewController: HorizontalRootSplitViewController? {
+    return children[1] as? HorizontalRootSplitViewController
   }
+  
+  public var editorViewController: EditorViewController? {
+    return horizontalRootSplitViewController?.editorViewController
+  }
+  
   
 }

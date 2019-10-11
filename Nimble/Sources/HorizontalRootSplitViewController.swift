@@ -11,8 +11,8 @@ import NimbleCore
 
 class HorizontalRootSplitViewController: NSSplitViewController {
   
-  var workbenchViewController: WorkbenchViewController? {
-    return children[0] as? WorkbenchViewController
+  public var editorViewController: EditorViewController? {
+    return children[0] as? EditorViewController
   }
   
   var consoleViewController: ConsoleController? {
