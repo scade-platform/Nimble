@@ -15,13 +15,18 @@ class NimbleConsoleViewController: NSViewController, ConsoleController {
   
   @IBOutlet weak var consoleSelectionButton: NSPopUpButton!
   
+  @IBOutlet weak var closeButton: NSButton!
+  @IBOutlet weak var clearButton: NSButton!
+  
   private var consolesStorage : [String: NimbleTextConsole] = [:]
   
-  private var currentConsole: Console? {
-    guard let title = consoleSelectionButton.selectedItem?.title else {
-      return nil
+  private var currentConsole: Console? = nil
+  
+  private func handler(fileHandle: FileHandle, console: Console) {
+    guard console.title == currentConsole?.title else {
+      return
     }
-    return consolesStorage[title]
+    handler(fileHandle: fileHandle)
   }
   
   private func handler(fileHandle: FileHandle) {
@@ -35,21 +40,33 @@ class NimbleConsoleViewController: NSViewController, ConsoleController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
     self.view.setBackgroundColor(.white)
-    
+    setControllersHidden(true)
   }
+  
+  func setControllersHidden(_ value: Bool){
+    consoleSelectionButton.isHidden = value
+    clearButton.isHidden = value
+    closeButton.isHidden = value
+  }
+  
   
   func createConsole(title: String, show: Bool) -> Console {
     let consoleName = improveName(title)
     let newConsole = NimbleTextConsole(title: consoleName)
-    consoleSelectionButton.addItem(withTitle: newConsole.title)
-    if (show) {
-      textView.string = newConsole.contents
-      consoleSelectionButton.selectItem(withTitle: newConsole.title)
+    DispatchQueue.main.async {
+      self.consoleSelectionButton.addItem(withTitle: newConsole.title)
     }
-    newConsole.outputPipe.fileHandleForReading.readabilityHandler = handler(fileHandle:)
+    if (show) {
+      DispatchQueue.main.async {
+        self.textView.string = newConsole.contents
+        self.consoleSelectionButton.selectItem(withTitle: newConsole.title)
+      }
+      currentConsole = newConsole
+    }
+    newConsole.handler = handler(fileHandle:console:)
     consolesStorage[newConsole.title] = newConsole
+    setControllersHidden(false)
     return newConsole
   }
   
@@ -67,7 +84,8 @@ class NimbleConsoleViewController: NSViewController, ConsoleController {
     guard let console = consolesStorage[title] else {
       return
     }
-    console.outputPipe.fileHandleForReading.readabilityHandler = handler(fileHandle:)
+    currentConsole = console
+    console.handler = handler(fileHandle:console:)
     consoleSelectionButton.selectItem(withTitle: console.title)
     textView.string = console.contents
   }
@@ -87,7 +105,11 @@ class NimbleConsoleViewController: NSViewController, ConsoleController {
     consoleSelectionButton.removeItem(withTitle: currentConsole.title)
     currentConsole.close()
     textView.string = ""
-    open(console: consolesStorage.keys.first ?? "")
+    if !consolesStorage.isEmpty{
+       open(console: consolesStorage.keys.first ?? "")
+    }else{
+      setControllersHidden(true)
+    }
   }
   
   @IBAction func clearCurrentConsole(_ sender: Any) {
@@ -101,11 +123,21 @@ class NimbleConsoleViewController: NSViewController, ConsoleController {
 }
 
 class NimbleTextConsole: Console {
-  private var innerContent: String
   
-  var contents: String{
-    return innerContent
+  private let queue = DispatchQueue(label: "com.scade.nimble.consoleBuffer")
+  private var innerContent : String
+  
+  var contents: String {
+    get {
+      return queue.sync { innerContent }
+    }
+    set {
+      queue.sync { [weak self] in
+        self?.innerContent = newValue
+      }
+    }
   }
+  
   
   var title: String
   
@@ -116,6 +148,14 @@ class NimbleTextConsole: Console {
   let inputPipe = Pipe()
   let outputPipe = Pipe()
   
+  var handler: (FileHandle, Console) -> Void = {_,_ in} {
+    didSet{
+      outputPipe.fileHandleForReading.readabilityHandler = { fh in
+        self.handler(fh, self)
+      }
+    }
+  }
+  
   init(title: String){
     self.title = title
     self.innerContent = ""
@@ -125,7 +165,7 @@ class NimbleTextConsole: Console {
       
       let data = fileHandle.availableData
       if let string = String(data: data, encoding: .utf8) {
-        strongSelf.innerContent += string
+        strongSelf.contents += string
       }
       strongSelf.outputPipe.fileHandleForWriting.write(data)
     }
@@ -133,6 +173,9 @@ class NimbleTextConsole: Console {
   
   
   func write(data: Data) -> Console {
+    if let str = String(data: data, encoding: .utf8){
+      self.contents += str
+    }
     self.outputPipe.fileHandleForWriting.write(data)
     return self
   }
@@ -143,7 +186,7 @@ class NimbleTextConsole: Console {
   }
   
   func clear() {
-    self.innerContent = ""
+    self.contents = ""
   }
   
 }

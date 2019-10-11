@@ -35,6 +35,19 @@ class NimbleController : NSDocumentController {
     self.beginOpenPanel(completionHandler: self.switchProject(urls:))
   }
   
+  private var buildMenuItems: [NSMenuItem: Folder] = [:]
+  
+  private var buildSubMenu: NSMenu {
+    buildMenuItems.removeAll()
+    let result = NSMenu()
+    for folder in currentProject?.folders ?? [] {
+      let menuItem = NSMenuItem(title: folder.name, action: #selector(buildFolder(_:)), keyEquivalent: "")
+      buildMenuItems[menuItem] = folder
+      result.addItem(menuItem)
+    }
+    return result
+  }
+  
   func switchProject(urls: [URL]?) {
     if let url = urls?.first, let doc = self.currentDocument, let projectDoc = doc as? ProjectDocument {
       try! projectDoc.switchProject(contentsOf: url, ofType: self.defaultType!)
@@ -110,8 +123,49 @@ class NimbleController : NSDocumentController {
     doc.workbench?.showConsole(value: show)
   }
   
-  @IBAction func buildProject(_ sender: Any?) {
-    self.currentProject?.build()
+  @IBAction func runSimulator(_ sender: Any?) {
+    guard let project = currentProject else {
+      return
+    }
+    let run: Bool
+    if let menuItem = sender as? NSMenuItem {
+      run = menuItem.title == "Run Simulator"
+      if run {
+        menuItem.title = "Stop Simulator"
+      } else {
+        menuItem.title = "Run Simulator"
+      }
+    } else {
+      run = false
+    }
+    if run {
+      project.runSimulator()
+    } else {
+      project.stopSimulator()
+    }
   }
+  
+  @IBAction func buildProject(_ sender: Any?) {
+    guard let project = currentProject else {
+      return
+    }
+    project.runCMake()
+  }
+  
+  override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+    if menuItem.title == "Build" {
+      menuItem.submenu = buildSubMenu
+    }
+    return super.validateMenuItem(menuItem)
+  }
+  
+  @objc func buildFolder(_ sender: Any?) {
+    guard let menuItem = sender as? NSMenuItem, let selectedFolder = buildMenuItems[menuItem] else {
+      return
+    }
+    Swift.print(selectedFolder.path.string)
+  }
+  
+  
   
 }

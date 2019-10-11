@@ -85,6 +85,18 @@ public class Project {
     delegate?.build(project: self)
   }
   
+  public func runCMake() {
+    delegate?.runCMake(project: self)
+  }
+  
+  public func runSimulator() {
+    delegate?.runSimulator(project: self)
+  }
+  
+  public func stopSimulator() {
+    delegate?.stopSimulator(project: self)
+  }
+  
   private func performEvent(file: URL, kind: ResourceDelta.Kind){
     let filesURL = files.map{$0.path.url}
     guard filesURL.contains(file), let changedFile = files.first(where: {$0.path.url == file}) else {
@@ -234,7 +246,28 @@ extension Project {
 }
 
 public protocol ProjectDelegate {
+  func runSimulator(project: Project)
+  func stopSimulator(project: Project)
+  func runCMake(project: Project)
   func build(project: Project)
+}
+
+public extension ProjectDelegate{
+  func runSimulator(project: Project){
+    //default implementation
+  }
+  
+  func stopSimulator(project: Project){
+    //default implementation
+  }
+  
+  func runCMake(project: Project){
+    //default implementation
+  }
+  
+  func build(project: Project){
+    //default implementation
+  }
 }
 
 public protocol ResourceObserver {

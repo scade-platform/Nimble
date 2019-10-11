@@ -623,7 +623,13 @@
                                         <menuItem title="Run Simulator" id="df8-Xa-ITo">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="buildProject:" target="Ady-hI-5gd" id="w50-yJ-YsQ"/>
+                                                <action selector="runSimulator:" target="Ady-hI-5gd" id="c5c-tI-ch9"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Build" id="1c8-P2-UOy">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="buildProject:" target="Ady-hI-5gd" id="g8v-AW-5ct"/>
                                             </connections>
                                         </menuItem>
                                     </items>

@@ -11,7 +11,7 @@ import NimbleCore
 
 class ProjectDocument : NSDocument {
   
-  var project: Project? = nil
+  var project: Project
   
   var workbench: Workbench? {
     return self.windowForSheet?.windowController as? Workbench
@@ -20,13 +20,15 @@ class ProjectDocument : NSDocument {
   private var incorrectPaths : [String]?
   
   override init() {
-    super.init()
     project = Project()
+    project.delegate = DefaultProjectDelegate()
+    super.init()
+    
   }
   
   init(contentsOf url: URL, ofType typeName: String) throws {
-    super.init()
     project = Project(url: url)
+    super.init()
     try read(from: url, ofType: typeName)
     self.fileURL = url
     self.fileType = typeName
@@ -68,10 +70,8 @@ class ProjectDocument : NSDocument {
   }
   
   func switchProject(contentsOf url: URL, ofType typeName: String) throws {
-    guard let project = project else {
-      return
-    }
     self.project = Project(subscribersFrom: project, url: url)
+    project.delegate = DefaultProjectDelegate()
     try read(from: url, ofType: typeName)
     showIncorrectPaths()
   }
@@ -80,17 +80,11 @@ class ProjectDocument : NSDocument {
   
   /// - Tag: readExample
   override func read(from data: Data, ofType typeName: String) throws {
-    guard let project = project else {
-      return
-    }
     incorrectPaths = project.read(from: data)
   }
   
   /// - Tag: writeExample
   override func data(ofType typeName: String) throws -> Data {
-    guard let project = project else{
-      return Data()
-    }
     return project.data(document: self) ?? Data()
   }
   
@@ -108,16 +102,10 @@ class ProjectDocument : NSDocument {
 
   
   func add(folders urls: [URL]){
-    guard let project = project else {
-      return
-    }
     project.add(folders: urls)
   }
   
   func add(files urls: [URL]){
-    guard let project = project else {
-      return
-    }
     project.open(files: urls)
   }
   
@@ -143,15 +131,15 @@ class ProjectDocument : NSDocument {
     let doc = (try! file.open()!) as NSDocument
     let fileURL = doc.fileURL!
     doc.saveAs(nil)
-    project?.saved(url: fileURL)
-    project?.close(file: fileURL)
-    project?.open(files: [doc.fileURL!])
+    project.saved(url: fileURL)
+    project.close(file: fileURL)
+    project.open(files: [doc.fileURL!])
   }
   
   func save(file: File){
     let doc = (try! file.open()!) as NSDocument
     doc.save(nil)
-    project?.saved(url: doc.fileURL!)
+    project.saved(url: doc.fileURL!)
   }
   
   override func save(to url: URL, ofType typeName: String, for saveOperation: NSDocument.SaveOperationType, completionHandler: @escaping (Error?) -> Void) {
