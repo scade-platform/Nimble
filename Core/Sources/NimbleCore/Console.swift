@@ -11,7 +11,7 @@ public protocol Console {
 
   var title: String { get }
   
-  var input: Pipe { get }
+  var output: Pipe { get }
   
   var contents: String { get }
   
@@ -35,6 +35,8 @@ public protocol Console {
   
   @discardableResult
   func writeLine(data: Data) -> Console
+  
+  func close()
 }
 
 public extension Console {

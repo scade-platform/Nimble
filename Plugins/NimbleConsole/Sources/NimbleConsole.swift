@@ -40,7 +40,7 @@ class ProjectBuilder: ProjectDelegate {
     let task = Process()
     task.executableURL = URL(fileURLWithPath: "/Users/danilkristalev/Documents/Work/Scade/runtime-New_configuration/.metadata/.plugins/com.scade.sdk.toolchain.nightly/Toolchain/bin/macos/PhoenixSimulator.app/Contents/MacOS/PhoenixSimulator")
     task.arguments = ["/Users/danilkristalev/Documents/Work/Scade/runtime-New_configuration/TestProject/products/TestProject.scadeapp"]
-    task.standardOutput = console.input
+    task.standardOutput = console.output
     try! task.run()
     console.write(string: "Teeeesttt1").writeLine()
   }

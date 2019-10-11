@@ -17,6 +17,13 @@ class NimbleConsoleViewController: NSViewController, ConsoleController {
   
   private var consolesStorage : [String: NimbleTextConsole] = [:]
   
+  private var currentConsole: Console? {
+    guard let title = consoleSelectionButton.selectedItem?.title else {
+      return nil
+    }
+    return consolesStorage[title]
+  }
+  
   private func handler(fileHandle: FileHandle) {
     let data = fileHandle.availableData
     if let string = String(data: data, encoding: String.Encoding.utf8) {
@@ -71,6 +78,26 @@ class NimbleConsoleViewController: NSViewController, ConsoleController {
     }
     open(console: title)
   }
+  
+  @IBAction func closeCurrentConsole(_ sender: Any) {
+    guard let currentConsole = currentConsole as? NimbleTextConsole else {
+      return
+    }
+    consolesStorage.removeValue(forKey: currentConsole.title)
+    consoleSelectionButton.removeItem(withTitle: currentConsole.title)
+    currentConsole.close()
+    textView.string = ""
+    open(console: consolesStorage.keys.first ?? "")
+  }
+  
+  @IBAction func clearCurrentConsole(_ sender: Any) {
+    guard let currentConsole = currentConsole as? NimbleTextConsole else {
+      return
+    }
+    currentConsole.clear()
+    textView.string = currentConsole.contents
+  }
+  
 }
 
 class NimbleTextConsole: Console {
@@ -82,7 +109,7 @@ class NimbleTextConsole: Console {
   
   var title: String
   
-  var input: Pipe {
+  var output: Pipe {
     return inputPipe
   }
   
@@ -110,6 +137,14 @@ class NimbleTextConsole: Console {
     return self
   }
   
+  func close() {
+    outputPipe.fileHandleForReading.readabilityHandler = nil
+    inputPipe.fileHandleForReading.readabilityHandler = nil
+  }
+  
+  func clear() {
+    self.innerContent = ""
+  }
   
 }
 

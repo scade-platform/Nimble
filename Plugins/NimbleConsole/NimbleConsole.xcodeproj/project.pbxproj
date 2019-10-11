@@ -11,6 +11,7 @@
 		0CE4E209234EE98E00114287 /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CE4E208234EE98E00114287 /* NimbleCore.framework */; };
 		0CE4E212234EF1F900114287 /* NimbleConsoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E210234EF1F900114287 /* NimbleConsoleViewController.swift */; };
 		0CE4E213234EF1F900114287 /* NimbleConsoleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CE4E211234EF1F900114287 /* NimbleConsoleViewController.xib */; };
+		0CE4E22123503B8A00114287 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CE4E22023503B8A00114287 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		0CE4E208234EE98E00114287 /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CE4E210234EF1F900114287 /* NimbleConsoleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleConsoleViewController.swift; sourceTree = "<group>"; };
 		0CE4E211234EF1F900114287 /* NimbleConsoleViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NimbleConsoleViewController.xib; sourceTree = "<group>"; };
+		0CE4E22023503B8A00114287 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 			isa = PBXGroup;
 			children = (
 				0CE4E1FE234EE94400114287 /* Info.plist */,
+				0CE4E22023503B8A00114287 /* Assets.xcassets */,
 			);
 			path = NimbleConsole;
 			sourceTree = "<group>";
@@ -136,6 +139,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CE4E22123503B8A00114287 /* Assets.xcassets in Resources */,
 				0CE4E213234EF1F900114287 /* NimbleConsoleViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
