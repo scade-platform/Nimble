@@ -31,7 +31,9 @@ open class CodeEditorPlugin: Plugin {
       let swiftLang = Language(id: "swift", extensions: ["swift"])
       let swiftGrammar = LanguageGrammar(language: "swift",
                                          scopeName: "source.swift",
+                                         //path: path/"Syntaxes"/"Swift.tmLanguage")
                                          path: path/"Syntaxes"/"swift.tmLanguage.json")
+        
       
       LanguageManager.shared.add(language: swiftLang)
       LanguageManager.shared.add(grammar: swiftGrammar)

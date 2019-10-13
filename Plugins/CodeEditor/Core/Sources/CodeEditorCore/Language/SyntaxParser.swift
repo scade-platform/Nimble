@@ -20,13 +20,21 @@ public final class SyntaxParser {
     guard let tokenizer = grammar.tokenizer else { return }
     
     let str = String(utf8String: textStorage.string.cString(using: .utf8)!)!
+    
+    let t1 = mach_absolute_time()
     let res = tokenizer.tokenize(str)
+    let t2 = mach_absolute_time()
     
-    apply(res.nodes, in: res.range, for: str)
-    
-    for t in res.nodes {
-      print("\(t)")
+    if let res = res {
+      apply(res.nodes, in: res.range, for: str)
+      
+      for t in res.nodes {
+        print("\(t)")
+      }
+      
+      print("Tokenize time: \( Double(t2 - t1) * 1E-9)")
     }
+    
   }
   
   private func apply(_ nodes: [SyntaxNode], `in` range: Range<Int>, for str: String) {

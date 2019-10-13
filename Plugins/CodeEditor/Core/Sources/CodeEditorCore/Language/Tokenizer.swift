@@ -9,14 +9,19 @@ import AppKit
 import Oniguruma
 
 public protocol Tokenizer: class {
-  func tokenize(_: String) -> TokenizerResult
-  func tokenize(_: String, in: Range<Int>, upperBound: Int) -> TokenizerResult
+  /// The `in` parameter has to be a range of bytes of the string
+  func tokenize(_: String, in: Range<Int>, upperBound: Int) -> TokenizerResult?
+  
   func prepare() -> Void
 }
 
 public extension Tokenizer {
-  func tokenize(_ str: String) -> TokenizerResult {
-    return self.tokenize(str, in: 0..<str.count, upperBound: -1)
+  func tokenize(_ str: String, in range: Range<String.Index>) -> TokenizerResult? {
+    return tokenize(str, in: str.utf8(in: range), upperBound: -1)
+  }
+  
+  func tokenize(_ str: String) -> TokenizerResult? {
+    return tokenize(str, in: str.range)
   }
   
   func prepare() { }
@@ -27,66 +32,97 @@ public protocol TokenizerRepository: class {
 }
 
 public struct TokenizerResult {
-  var range: Range<Int> = 0..<0
-  var nodes: [SyntaxNode] = []
+  var range: Range<Int>
+  
+  var nodes: [SyntaxNode]
   
   var isEmpty: Bool { return range.isEmpty }
+  
+  init(range: Range<Int> = 0..<0, nodes: [SyntaxNode] = []) {
+    self.range = range
+    self.nodes = nodes
+  }
+  
+  init(location: Int) {
+    self.init(range: location..<location)
+  }
+  
+  init(node: SyntaxNode) {
+    self.range = node.range
+    self.nodes = [node]
+
+  }
 }
 
 
-// MARK: Grammar and grammar rule tokenizer
+// MARK: Grammar extensions
+
+extension Grammar {
+  public func createTokenizer(with repo: TokenizerRepository) -> Tokenizer? {
+    return GrammarTokenizer(self, with: repo)
+  }
+  
+  func buildRepository(with global: TokenizerRepository) -> [String : Tokenizer] {
+    return patterns.buildRepository(with: global, from: buildLocalRepo(with: global))
+  }
+}
 
 extension GrammarRule {
-  public func createTokenizer(with globalRepo: TokenizerRepository) -> (tokenizer: Tokenizer, repository: [String: Tokenizer])? {
-    var localRepo: [String: Tokenizer] = [:]
-
-    self.repository.forEach {
-      guard let result = $0.value.createTokenizer(with: globalRepo) else { return }
-      localRepo[$0.key] = result.tokenizer
-      // NOTE: keys are not overrided
-      localRepo.merge(result.repository) { (current, _) in current }
-    }
-    
-    if self is Grammar {
-     return (GrammarTokenizer(self.patterns, with: globalRepo), localRepo)
-    } else {
-      return (GrammarRuleTokenizer(self.patterns, with: globalRepo), localRepo)
+  func buildLocalRepo(with global: TokenizerRepository) -> [String : Tokenizer] {
+    return repository.reduce([:]) {
+      var r = $0.merging($1.value.buildRepository(with: global)) { (current, _) in current }
+      if let t = $1.value.createTokenizer(with: global) {
+        r[$1.key] = t
+      }
+      return r
     }
   }
 }
 
-
-// MARK: Repository entry (either Rule or Patters) tokenizer
-
-extension GrammarRepositoryEntry {
-  func createTokenizer(with repo: TokenizerRepository) -> (tokenizer: Tokenizer, repository: [String: Tokenizer])? {
-    switch self {
-    case .rule(let r):
-      return r.createTokenizer(with: repo)
-    case .pattern(let p):
-      guard let t = p.createTokenizer(with: repo) else { return nil }
-      return (t, [:])
+extension Array where Element == Pattern {
+  func buildRepository(with global: TokenizerRepository, from local: [String : Tokenizer] = [:]) -> [String : Tokenizer] {
+    return self.reduce(local) {
+      return $0.merging($1.buildRepository(with: global)) { (current, _) in current }
     }
   }
 }
 
-// MARK: Pattern tokenizers
-
-extension Grammar.Pattern {
+extension Pattern {
   func createTokenizer(with repo: TokenizerRepository) -> Tokenizer? {
     switch self {
-    case .include(let pattern):
-      guard let ref = pattern.ref else { return nil }
-      return IncludeTokenizer(ref, with: repo)
+    case .include(let p):
+      return IncludeTokenizer(p, with: repo)
       
-    case .match(let pattern):
-      return MatchTokenizer(pattern, with: repo)
-    
-    case .beginEnd(let pattern):
-      return BeginEndTokenizer(pattern, with: repo)
-    
-    case .beginWhile(let pattern):
-      return BeginWhileTokenizer(pattern, with: repo)
+    case .match(let p):
+      return MatchTokenizer(p, with: repo)
+      
+    case .beginEnd(let p):
+      return BeginEndTokenizer(p, with: repo)
+      
+    case .beginWhile(let p):
+      return BeginWhileTokenizer(p, with: repo)
+      
+    case .patterns(let p):
+      return PatternsListTokenizer(p, with: repo)
+    }
+  }
+  
+  func buildRepository(with global: TokenizerRepository) -> [String : Tokenizer] {
+    switch self {
+    case .include(let p):
+      return p.buildLocalRepo(with: global)
+      
+    case .match(let p):
+      return p.buildLocalRepo(with: global)
+      
+    case .beginEnd(let p):
+      return p.patterns.buildRepository(with: global, from: p.buildLocalRepo(with: global))
+      
+    case .beginWhile(let p):
+      return p.patterns.buildRepository(with: global, from: p.buildLocalRepo(with: global))
+      
+    case .patterns(let p):
+      return p.patterns.buildRepository(with: global, from: p.buildLocalRepo(with: global))
     }
   }
 }
@@ -94,79 +130,41 @@ extension Grammar.Pattern {
 
 // MARK: Tokenizers
 
-class GrammarTokenizer: GrammarRuleTokenizer {
+class GrammarTokenizer: PatternsListTokenizer {
   
-  override func tokenize(_ str: String, in range: Range<Int>, upperBound: Int = -1) -> TokenizerResult {
-    let t1 = mach_absolute_time()
+  override func tokenize(_ str: String, in range: Range<Int>, upperBound: Int = -1) -> TokenizerResult? {
+    var result: TokenizerResult? = nil
     
-    var result = TokenizerResult(range: range, nodes: [])
+    var line = str.utf8.lineRange(at: range.lowerBound)
+    line = max(range.lowerBound, line.lowerBound)..<line.upperBound
     
-    let bytes = str.utf8
-    let bytesRange = str.utf8(in: range)
-    
-    var line = bytes.lineRange(at: bytesRange.lowerBound)
-    while(line.lowerBound < bytesRange.upperBound) {
-      let res = applyTokenizers(tokenizers, to: str, in: line)
-      result.nodes.append(contentsOf: res.nodes)
-
-//      result.nodes.append(contentsOf: res.nodes.map {
-//        (str.chars(utf8: $0.0), $0.1)
-//      })
+    while(line.lowerBound < range.upperBound && (upperBound < 0 || line.lowerBound < upperBound)) {
+      let res = applyTokenizers(tokenizers, to: str, in: line, upperBound: upperBound)
+      merge(res, into: &result)
       
-      if res.range.lowerBound > line.upperBound {
-        line = res.range.upperBound..<bytes.lineEnd(at: res.range.upperBound)
+      if let res = result, res.range.upperBound > line.upperBound {
+        line = res.range.upperBound..<str.utf8.lineEnd(at: res.range.upperBound)
       } else {
-        line = bytes.lineRange(at: line.upperBound)
+        line = str.utf8.lineRange(at: line.upperBound)
       }
-      
     }
-    
-    let t2 = mach_absolute_time()
-    print("Tokenize time: \( Double(t2 - t1) * 1E-9)")
-    
+        
     return result
   }
   
 }
 
 
-class GrammarRuleTokenizer: Tokenizer {
-  var patterns: [GrammarRule.Pattern]
-  weak var repository: TokenizerRepository?
+class PatternsListTokenizer: Tokenizer {
+  let tokenizers: [Tokenizer]
   
-//  var tokenizers: [Tokenizer] = []
-  
-  lazy var tokenizers: [Tokenizer] = {
-    guard let repo = self.repository else { return [] }
-    return patterns.compactMap{ $0.createTokenizer(with: repo) }
-  }()
-  
-  required init (_ patterns: [GrammarRule.Pattern], with repo: TokenizerRepository) {
-    self.patterns = patterns
-    self.repository = repo
+  init (_ pattern: PatternsList , with repo: TokenizerRepository) {
+    self.tokenizers = pattern.patterns.compactMap { $0.createTokenizer(with: repo) }
   }
   
-  open func tokenize(_ str: String, in range: Range<Int>, upperBound: Int = -1) -> TokenizerResult {
-    var res = TokenizerResult()
-    
-    for t in tokenizers {
-      let cur = t.tokenize(str, in: range, upperBound: upperBound)
-      if !cur.range.isEmpty && (res.range.isEmpty || cur.range.lowerBound < res.range.lowerBound) {
-        res = cur
-      }
-    }
-    
-    return res
+  open func tokenize(_ str: String, in range: Range<Int>, upperBound: Int = -1) -> TokenizerResult? {
+    return applyBeforeFirstMatch(tokenizers, to: str, in: range, upperBound: upperBound)
   }
-  
-//  public func prepare() {
-//    guard let repo = self.repository else { return }
-//    self.tokenizers = patterns.compactMap{ $0.createTokenizer(with: repo) }
-//
-//    for t in tokenizers {
-//      t.prepare()
-//    }
-//  }
 }
 
 
@@ -185,16 +183,27 @@ class IncludeTokenizer: Tokenizer {
       _tokenizer = repo?[ref]
       _tokenizerInit = true
     }
+    
+//    switch(ref) {
+//    case .local(let n):
+//      if n == "protocol-method" {
+//        print("Hello")
+//      }
+//    default:
+//      break
+//    }
+    
     return _tokenizer
   }
   
-  init(_ ref: GrammarRef, with repo: TokenizerRepository) {
+  init?(_ pattern: IncludePattern, with repo: TokenizerRepository) {
+    guard let ref = pattern.ref else { return nil }
     self.ref = ref
     self.repo = repo
   }
   
-  func tokenize(_ str: String, in range: Range<Int>, upperBound: Int = -1) -> TokenizerResult {
-    guard let t = tokenizer else { return TokenizerResult() }
+  func tokenize(_ str: String, in range: Range<Int>, upperBound: Int = -1) -> TokenizerResult? {
+    guard let t = tokenizer else { return nil }
     return t.tokenize(str, in: range, upperBound: upperBound)
   }
   
@@ -207,14 +216,17 @@ class IncludeTokenizer: Tokenizer {
 
 // MARK: -
 
-typealias CaptureTokenizer = (`var`: Grammar.MatchCapture.MatchGroup, (name: Grammar.MatchName?, tokenizers: [Tokenizer]))
+typealias CaptureTokenizer = (`var`: MatchCapture.MatchGroup, (name: MatchName?, tokenizers: [Tokenizer]))
 
+
+
+// MARK: -
 class MatchTokenizer: Tokenizer {
   let regex: Regex?
-  let name: Grammar.MatchName?
+  let name: MatchName?
   let tokenizers: [CaptureTokenizer]
   
-  init(_ pattern: Grammar.MatchPattern, with repo: TokenizerRepository) {
+  init(_ pattern: MatchPattern, with repo: TokenizerRepository) {
     self.name = pattern.name
     self.regex = pattern.match.regex
     self.tokenizers = pattern.captures.map {
@@ -222,18 +234,17 @@ class MatchTokenizer: Tokenizer {
     }
   }
   
-  func tokenize(_ str: String, in range: Range<Int>, upperBound: Int = -1) -> TokenizerResult {
-    var result = TokenizerResult()
+  func tokenize(_ str: String, in range: Range<Int>, upperBound: Int = -1) -> TokenizerResult? {
+    var result: TokenizerResult? = nil
     
     /// A match has to start before the `upperBound` if it's larger than `range.lowerBound`
     if let regex = self.regex, let res = regex.search(str, in: range),
-        upperBound < range.lowerBound || res.regs[0].lowerBound < upperBound {
+        upperBound < 0 || res.regs[0].lowerBound < upperBound {
       
       let nodes = applyCaptureTokenizers(tokenizers, to: str, with: res)
-      
-      result.range = res.regs[0]
-      result.nodes.append(
-        SyntaxNode(scope: name?.resolve(res), range: result.range, nodes: nodes))
+      result = TokenizerResult(node: SyntaxNode(scope: name?.resolve(in: str, with: res),
+                                                range: res.regs[0],
+                                                nodes: nodes))
     }
     
     return result
@@ -243,15 +254,17 @@ class MatchTokenizer: Tokenizer {
 // MARK: -
 
 class RangeTokenizer {
-  let name: Grammar.MatchName?
-  let contentName: Grammar.MatchName?
+  let name: MatchName?
+  let contentName: MatchName?
   
   let contentTokenizers: [Tokenizer]
   
   let begin: Regex?
   let beginTokenizers: [CaptureTokenizer]
   
-  init(_ pattern: Grammar.RangeMatchPattern, with repo: TokenizerRepository) {
+  let pattern: RangeMatchPattern
+  
+  init(_ pattern: RangeMatchPattern, with repo: TokenizerRepository) {
     self.name = pattern.name
     self.contentName = pattern.contentName
     
@@ -264,6 +277,7 @@ class RangeTokenizer {
       ($0.key, $0.createTokenizer(with: repo))
     }
     
+    self.pattern = pattern
   }
 }
 
@@ -273,7 +287,7 @@ class BeginEndTokenizer: RangeTokenizer, Tokenizer {
   let end: Regex?
   let endTokenizers: [CaptureTokenizer]
 
-  init(_ pattern: Grammar.BeginEndPattern, with repo: TokenizerRepository) {
+  init(_ pattern: BeginEndPattern, with repo: TokenizerRepository) {
     self.end = pattern.end.regex
     self.endTokenizers = pattern.endCaptures.map {
       ($0.key, $0.createTokenizer(with: repo))
@@ -282,47 +296,55 @@ class BeginEndTokenizer: RangeTokenizer, Tokenizer {
     super.init(pattern, with: repo)
   }
 
-  func tokenize(_ str: String, in range: Range<Int>, upperBound: Int = -1) -> TokenizerResult {
-    var result = TokenizerResult()
+  func tokenize(_ str: String, in range: Range<Int>, upperBound: Int = -1) -> TokenizerResult? {
+    var result: TokenizerResult? = nil
     
     /// A match has to start before the `upperBound` if it's larger than `range.lowerBound`
     if let regex = self.begin, let beginRes = regex.search(str, in: range),
-        upperBound < range.lowerBound || beginRes.regs[0].lowerBound < upperBound {
+        upperBound < 0 || beginRes.regs[0].lowerBound < upperBound {
       
       let begin = beginRes.regs[0]
       // Setup search space starting from begin and up to the current line's end
       var line = begin.upperBound..<str.utf8.lineEnd(at: begin.upperBound)
       var (end, endRes) = findEnd(str, start: line)
       
-      var contentResult = TokenizerResult()
-      
+      var content: TokenizerResult? = nil
+                
       while(line.lowerBound < end.lowerBound) {
-        let res = applyTokenizers(self.contentTokenizers, to: str, in: line, upperBound: end.lowerBound)
-        
-        if contentResult.isEmpty {
-          contentResult = res
-        } else {
-          contentResult.range = contentResult.range.union(res.range)
-          contentResult.nodes.append(contentsOf: res.nodes)
+        while true {
+          let res = applyTokenizers(contentTokenizers, to: str, in: line, upperBound: end.lowerBound)
+          merge(res, into: &content)
+          
+          if let res = res, res.range.upperBound >= end.upperBound {
+            line = res.range.upperBound..<str.utf8.lineEnd(at: res.range.upperBound)
+            (end, endRes) = findEnd(str, start: line)
+          } else {
+            break
+          }
         }
-        
+
         line = str.utf8.lineRange(at: line.upperBound)
       }
       
       
+      
+      var ub = end.upperBound
+      var nodes: [SyntaxNode] = []
+      
       // Content node
-      if contentResult.range.upperBound >= end.upperBound {
-        line = contentResult.range.upperBound..<str.utf8.lineEnd(at: contentResult.range.upperBound)
-        (end, endRes) = findEnd(str, start: line)
+      if let content = content {
+        let contentNode = SyntaxNode(scope: contentName?.resolve(),
+                                     range: content.range,
+                                     nodes: content.nodes)
+        
+        nodes.append(contentNode)
+        
+        if end.isEmpty && !content.range.isEmpty {
+          ub = content.range.upperBound
+        }
       }
       
-      let contentNode = SyntaxNode(scope: contentName?.resolve(),
-                                   range: begin.upperBound..<end.lowerBound,
-                                   nodes: contentResult.nodes)
-      
-      var nodes = [contentNode]
-      
-      
+                        
       // Begin node
       if !begin.isEmpty{
         let beginNode = SyntaxNode(scope: nil,
@@ -341,15 +363,16 @@ class BeginEndTokenizer: RangeTokenizer, Tokenizer {
         nodes.append(endNode)
       }
       
-      
-      // Result
-      result.range = begin.lowerBound..<end.upperBound
-      result.nodes.append(SyntaxNode(scope: name?.resolve(), range: result.range, nodes: nodes))
+                  
+      result = TokenizerResult(node: SyntaxNode(scope: name?.resolve(),
+                                                range: begin.lowerBound..<ub,
+                                                nodes: nodes))
     }
     
     return result
   }
   
+    
   func findEnd(_ str: String, start from: Range<Int>) -> (Range<Int>, Regex.SearchResult?) {
     if let regex = self.end {
       var line = from
@@ -373,7 +396,7 @@ class BeginWhileTokenizer: RangeTokenizer, Tokenizer {
   let `while`: Regex?
   let whileTokenizers: [CaptureTokenizer]
 
-  init(_ pattern: Grammar.BeginWhilePattern, with repo: TokenizerRepository) {
+  init(_ pattern: BeginWhilePattern, with repo: TokenizerRepository) {
     self.while = pattern.while.regex
     self.whileTokenizers = pattern.whileCapture.map {
       ($0.key, $0.createTokenizer(with: repo))
@@ -381,49 +404,63 @@ class BeginWhileTokenizer: RangeTokenizer, Tokenizer {
     super.init(pattern, with: repo)
   }
   
-  func tokenize(_: String, in: Range<Int>, upperBound: Int = -1) -> TokenizerResult {
-    return TokenizerResult()
+  func tokenize(_: String, in: Range<Int>, upperBound: Int = -1) -> TokenizerResult? {
+    return nil
   }
 }
 
 
 // MARK: Utilities
 
-fileprivate func applyTokenizers(_ tokenizers: [Tokenizer], to str: String,
-                                    in range: Range<Int>, upperBound: Int = -1) -> TokenizerResult {
-  
-  var res = TokenizerResult(range: range.lowerBound..<range.lowerBound, nodes: [])
-  
-  var begin = range.lowerBound
-  while begin < range.upperBound {
-    var pos = begin
-    var curRes = TokenizerResult()
-    
-    for t in tokenizers {
-      let cur = t.tokenize(str, in: pos..<range.upperBound, upperBound: upperBound)
-      if !cur.range.isEmpty && (curRes.range.isEmpty || cur.range.lowerBound < curRes.range.lowerBound) {
-        curRes = cur
-        if cur.range.lowerBound == pos {
-          break
-        }
-      }
-    }
-    
-    if !curRes.range.isEmpty {
-      res.nodes.append(contentsOf: curRes.nodes)
-      res.range = res.range.union(curRes.range)
-      pos = curRes.range.upperBound
-    }
 
-    // If no tokenizer matched, break
-    if pos > begin {
-      begin = pos
-    } else {
-      break
+fileprivate func merge(_ res1: TokenizerResult?, into res2: inout TokenizerResult?) -> Void {
+  guard let res1 = res1 else { return }
+  if var res = res2 {
+    res.range = res.range.union(res1.range)
+    res.nodes.append(contentsOf: res1.nodes)
+    res2 = res
+  } else {
+    res2 = res1
+  }
+}
+
+
+fileprivate func applyBeforeFirstMatch(_ tokenizers: [Tokenizer], to str: String,
+                                       in range: Range<Int>,
+                                       upperBound: Int = -1) -> TokenizerResult? {
+  var result: TokenizerResult? = nil
+
+  for t in tokenizers {
+    guard let cur = t.tokenize(str, in: range, upperBound: upperBound) else { continue }
+    if cur.range.lowerBound == range.lowerBound {
+      return cur
+    }
+    
+    guard let res = result else { result = cur; continue }
+    if cur.range.lowerBound < res.range.lowerBound {
+      result = cur
     }
   }
 
-  return res
+  return result
+}
+
+
+fileprivate func applyTokenizers(_ tokenizers: [Tokenizer], to str: String,
+                                    in range: Range<Int>, upperBound: Int = -1) -> TokenizerResult? {
+  
+  var result: TokenizerResult? = nil
+  var begin = range.lowerBound
+  
+  while begin < range.upperBound && (upperBound < 0 || begin < upperBound) {
+    guard let cur = applyBeforeFirstMatch(tokenizers,
+                                          to: str, in: begin..<range.upperBound, upperBound: upperBound) else { break }
+    
+    merge(cur, into: &result)
+    begin = cur.range.upperBound
+  }
+
+  return result
 }
 
 
@@ -445,10 +482,12 @@ fileprivate func applyCaptureTokenizers(_ tokenizers: [CaptureTokenizer], to str
       }
     }
     
-    for r in regs where r.lowerBound >= 0 { //where !r.isEmpty {
+    for r in regs where !r.isEmpty {
       let tRes = applyTokenizers(t.1.tokenizers, to: str, in: r)
       nodes.append(
-        SyntaxNode(scope: t.1.name?.resolve(res), range: r, nodes: tRes.nodes))
+        SyntaxNode(scope: t.1.name?.resolve(in: str, with: res),
+                   range: r,
+                   nodes: tRes?.nodes ?? []))
     }
   }
   
@@ -459,7 +498,7 @@ fileprivate func applyCaptureTokenizers(_ tokenizers: [CaptureTokenizer], to str
 
 fileprivate var onig_initialized: Bool = false
 
-extension Grammar.MatchRegex {
+extension MatchRegex {
   typealias Regex = Oniguruma.Regex
   var regex: Regex? {
     if !onig_initialized {
@@ -469,15 +508,36 @@ extension Grammar.MatchRegex {
   }
 }
 
-extension Grammar.MatchCapture {
-  func createTokenizer(with repo: TokenizerRepository) -> (name: Grammar.MatchName?, tokenizers: [Tokenizer]) {
+extension MatchCapture {
+  func createTokenizer(with repo: TokenizerRepository) -> (name: MatchName?, tokenizers: [Tokenizer]) {
     return (name, patterns.compactMap { $0.createTokenizer(with: repo) })
   }
 }
 
-extension Grammar.MatchName {
-  func resolve(_ result: Oniguruma.Regex.SearchResult? = nil) -> SyntaxScope {
-    ///TODO: for now just return the value as is
-    return SyntaxScope(self.value)
+
+fileprivate let nameRegex = try? NSRegularExpression(pattern: "\\$([0-9]+)", options: [])
+
+extension MatchName {
+  func resolve(`in` str: String? = nil, with result: Oniguruma.Regex.SearchResult? = nil) -> SyntaxScope {
+    guard let regex = nameRegex, let str = str, let res = result, res.regs.count > 0 else {
+       return SyntaxScope(self.value)
+    }
+        
+    var name = self.value
+    
+    regex.enumerateMatches(in: self.value, options: [], range: self.value.nsRange) { (match, _, _) in
+      guard let match = match else { return }
+      let r0 = match.range(at: 0)
+      let r1 = match.range(at: 1)
+      
+      guard let i = Int((self.value as NSString).substring(with: r1)), i < res.regs.count else { return }
+      
+      let r = name.index(at: r0.lowerBound)..<name.index(at: r0.upperBound)
+      let repl = str.chars(utf8: res.regs[i])
+      
+      name.replaceSubrange(r, with: str[repl])
+    }
+    
+    return SyntaxScope(name)
   }
 }

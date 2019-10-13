@@ -8,6 +8,10 @@
 import Foundation
 
 public extension String {
+  var range: Range<Index> {
+    return startIndex..<endIndex
+  }
+  
   var nsRange: NSRange {
     return  NSRange(location: 0, length: (self as NSString).length)
   }
@@ -21,7 +25,17 @@ public extension String {
   }
   
   func utf8(at offset: Int) -> Int {
-    return self.utf8.distance(from: self.startIndex, to: self.index(at: offset))
+    return utf8(at: self.index(at: offset))
+  }
+  
+  func utf8(at offset: Index) -> Int {
+    return self.utf8.distance(from: self.startIndex, to: offset)
+  }
+  
+  func utf8(`in` range: Range<Index>) -> Range<Int> {
+    let from = utf8(at: range.lowerBound)
+    let to = utf8(at: range.upperBound)
+    return from..<to
   }
   
   func utf8(`in` range: Range<Int>) -> Range<Int> {

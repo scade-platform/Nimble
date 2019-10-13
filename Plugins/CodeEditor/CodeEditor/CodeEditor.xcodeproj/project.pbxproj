@@ -177,8 +177,8 @@
 				D7D2D5A222B28F020017B45D /* SourceCodeDocument.swift */,
 				D7D2D59B22B1B9C80017B45D /* CodeEditorController.xib */,
 				D722322522C92BC300E471C2 /* LineNumberView.swift */,
-				D773AD3122D37DC8003A12A5 /* Extensions */,
 				D722328122CD4E7A00E471C2 /* CotEditor */,
+				D773AD3122D37DC8003A12A5 /* Extensions */,
 			);
 			path = Sources;
 			sourceTree = "<group>";

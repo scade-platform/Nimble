@@ -8,69 +8,151 @@ settings:
       selection: "#515f70"
       invisibles: "#808080"
 
-  - name: Comment
+
+#MARK: Comments
+
+  - name: Comments
     scope: comment
     settings:
       foreground: "#6c7886"
 
-  - name: String
-    scope: string
-    settings:
-      foreground: "#fd695d"
 
-  - name: Number
+#MARK: Constants
+
+  - name: Characters
+    scope: constant.character
+    settings:
+      foreground: "#D0BF69"
+  
+  - name: Numbers
     scope: constant.numeric
     settings:
-      foreground: "#9586f5"
+      foreground: "#D0BF69"
 
-  - name: Keyword
+  - name: Language Constants
+    scope: constant.language
+    settings:
+      foreground: "#fb60a2"
+
+
+#MARK: Entities
+
+  - name: Functions
+    scope: entity.name.function
+    settings:
+      foreground:  "#41A1C0"
+
+  - name: Types
+    scope: entity.name.type
+    settings:
+      foreground:  "#9EF1DD"
+  
+  - name: Class Declarations
+    scope: entity.name.type.class
+    settings:
+      foreground:  "#5DD8FF"
+
+  - name: Struct Declarations
+    scope: entity.name.type.struct
+    settings:
+      foreground:  "#5DD8FF"
+
+  - name: Protocol Declarations
+    scope: entity.name.type.protocol
+    settings:
+      foreground:  "#5DD8FF"
+
+  - name: Enum Declarations
+    scope: entity.name.type.enum
+    settings:
+      foreground:  "#5DD8FF"
+
+
+#MARK: Keywords
+
+  - name: Keywords
     scope: keyword
     settings:
       foreground: "#fb60a2"
+
+  - name: Preprocessor Statements
+    scope: keyword.control.preprocessor
+    settings:
+      foreground: "#FD8F3F"
+      
+  - name: Other conditions
+    scope: keyword.other.condition
+    settings:
+      foreground: "#FD8F3F"
+
+
+#MARK: Storage (types, modifiers)
 
   - name: Storage
     scope: storage
     settings:
       foreground: "#fb60a2"
 
-  - name: Value
-    scope: value
+
+#MARK: Strings
+
+  - name: String
+    scope: string
+    settings:
+      foreground: "#fd695d"
+
+
+#MARK: Support
+
+  - name: Support Constants
+    scope: support.constant
+    settings:
+      foreground: "#FD8F3F"
+
+  - name: Support Variables
+    scope: support.variable
     settings:
       foreground: "#fb60a2"
-
-  - name: Type
-    scope: entity.name
+  
+  - name: Support Types
+    scope: support.type
     settings:
-      foreground:  "#75b492"
+      foreground: "#D0A8FF"
 
-  - name: Attribute
-    scope: entity.other.attribute-name
+  - name: Support Functions
+    scope: support.function
+    settings:
+      foreground: "#A167E6"
+
+#TODO: do not list every support function explicitely
+  - name: Availability Condition
+    scope: support.function.availability-condition
     settings:
       foreground: "#fb60a2"
-
-  - name: Variable
-    scope: variable
+    
+  - name: Selector Reference
+    scope: support.function.selector-reference
     settings:
-      foreground: "#6b6b79"
+      foreground: "#fb60a2"
+    
+  - name: KeyPath
+    scope: support.function.key-path
+    settings:
+      foreground: "#fb60a2"
+  
+  - name: Support Functions (any method)
+    scope: support.function.any-method
+    settings:
+      foreground: "#67B7A4"
 
-  - name: Variable Language
+
+#MARK: Variables
+
+  - name: Language Variables
     scope: variable.language
     settings:
-      foreground: "#6b6b79"
-
-  - name: Constant Language
-    scope: constant.language
-    settings:
       foreground: "#fb60a2"
+  
 
-  - name: Character
-    scope: constant.character
-    settings:
-      foreground: "#9586f5"
-
-  - name: Function
-    scope: variable.function
-    settings:
-      foreground: "#683821"
 
 

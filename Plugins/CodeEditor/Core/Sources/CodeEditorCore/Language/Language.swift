@@ -51,17 +51,16 @@ public final class LanguageGrammar: Decodable, TokenizerRepository {
     return decoder.decode(from: path)
   }()
   
-  private lazy var grammarTokenizer = grammar?.createTokenizer(with: self)
   
-  
-  // MARK:
-  
-  public lazy var tokenizer: Tokenizer? = grammarTokenizer?.tokenizer
+  private lazy var repository = grammar?.buildRepository(with: self)
+  public lazy var tokenizer: Tokenizer? = grammar?.createTokenizer(with: self)
     
   public subscript(ref: GrammarRef) -> Tokenizer? {
     switch ref {
     case .local(let val):
-      return grammarTokenizer?.repository[val]
+      return repository?[val]
+    case .this:
+      return tokenizer
     default:
       return nil
     }

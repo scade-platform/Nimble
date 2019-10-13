@@ -190,9 +190,8 @@ public extension ColorTheme {
   func setting(for scope: SyntaxScope) -> ScopeSetting? {
     var res: ScopeSetting? = nil
     for s in scopes where s.scope.contains(scope) {
-      if let rs = res?.scope, rs.value.count < scope.value.count {
-        res = s
-      } else {
+      guard let rs = res?.scope else { res = s; continue }
+      if rs.value.count < s.scope.value.count {
         res = s
       }
     }

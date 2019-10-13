@@ -1,6 +1,6 @@
 protocol Foo {
-  func bar() -> Void
+  func foo()// comment
+  func bar() {}
 }
 
 
-//func bar() { /* this is valid */ }
