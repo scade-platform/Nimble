@@ -6,7 +6,7 @@
 //
 
 import AppKit
-
+import Oniguruma
 
 
 // MARK: Grammar
@@ -258,10 +258,84 @@ public class BeginWhilePattern: RangeMatchPattern {
 // MARK: -
 
 public struct MatchRegex: Decodable {
-  public let value: String
+  public typealias Regex = Oniguruma.Regex
+  
+  // A0_G0, A0_G1, A1_G0, A1_G1
+  private let regex: [Regex?]
+  
+  private static var onig_initialized: Bool = false
+    
   public init(from decoder: Decoder) throws {
-    self.value = try decoder.singleValueContainer().decode(String.self)
+    let value = try decoder.singleValueContainer().decode(String.self)
+    
+    let values = MatchRegex.resolveAnchors(value)
+    var regex = [Regex?](repeating: nil, count: values.count)
+    
+    if !MatchRegex.onig_initialized {
+      Oniguruma.initialize()
+      MatchRegex.onig_initialized = true
+    }
+    
+    for (i, v) in values.enumerated() {
+      regex[i] = Oniguruma.Regex(v)
+    }
+    
+    self.regex = regex
   }
+  
+  public func get(allowA: Bool, allowG: Bool) -> Regex? {
+    if regex.count == 1 {
+      return regex[0]
+    }
+    
+    if allowA {
+      return allowG ? regex[3] : regex[2]
+    } else if allowG {
+      return allowA ? regex[3] : regex[1]
+    } else {
+      return regex[0]
+    }
+  }
+    
+  private static func resolveAnchors(_ str: String) -> [String] {
+    var anchors = ["", "", "", ""]
+    var hasAnchors = false
+    
+    var i = 0
+    while i < str.count {
+      let cur = str[i]
+      
+      for (j, _) in anchors.enumerated() {
+        anchors[j].append(cur)
+      }
+      
+      if cur == "\\" && i + 1 < str.count {
+        let next = str[i + 1]
+        switch(next) {
+        case "A":
+          anchors[0].append("\u{FFFF}")
+          anchors[1].append("\u{FFFF}")
+          anchors[2].append(next)
+          anchors[3].append(next)
+          hasAnchors = true
+        case "G":
+          anchors[0].append("\u{FFFF}")
+          anchors[1].append(next)
+          anchors[2].append("\u{FFFF}")
+          anchors[3].append(next)
+          hasAnchors = true
+        default:
+          for (j, _) in anchors.enumerated() {
+            anchors[j].append(next)
+          }
+        }
+        i += 1
+      }
+      i += 1
+    }
+    return hasAnchors ? anchors  : [str]
+  }
+  
 }
   
 // MARK: -

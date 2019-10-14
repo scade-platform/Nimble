@@ -1,6 +1,2 @@
-protocol Foo {
-  func foo()// comment
-  func bar() {}
-}
-
-
+// comment
+func foo() {}

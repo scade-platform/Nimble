@@ -16,6 +16,10 @@ public extension String {
     return  NSRange(location: 0, length: (self as NSString).length)
   }
   
+  subscript(value: Int) -> Character {
+    return self[index(at: value)]
+  }
+    
   subscript(value: Range<Int>) -> Substring {
     return self[self.index(at: value.lowerBound)..<self.index(at: value.upperBound)]
   }
