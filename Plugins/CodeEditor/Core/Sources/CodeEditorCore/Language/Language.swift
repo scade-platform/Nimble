@@ -48,7 +48,14 @@ public final class LanguageGrammar: Decodable, TokenizerRepository {
   private lazy var grammar: Grammar? = {
     guard let decoder = LanguageGrammar.decoders.first(
       where: {self.path.basename().hasSuffix($0.key)})?.value else { return nil}
-    return decoder.decode(from: path)
+    
+    let t1 = mach_absolute_time()
+    let g = decoder.decode(from: path)
+    let t2 = mach_absolute_time()
+    
+    print("Load time: \( Double(t2 - t1) * 1E-9)")
+    
+    return g
   }()
   
   

@@ -79,7 +79,7 @@ settings:
     scope: keyword.control.preprocessor
     settings:
       foreground: "#FD8F3F"
-      
+            
   - name: Other conditions
     scope: keyword.other.condition
     settings:
@@ -154,5 +154,9 @@ settings:
       foreground: "#fb60a2"
   
 
-
-
+#MARK: Punctuation
+  
+  - name: Preprocessor punctuation
+    scope: punctuation.definition.preprocessor.swift
+    settings:
+      foreground: "#FD8F3F"

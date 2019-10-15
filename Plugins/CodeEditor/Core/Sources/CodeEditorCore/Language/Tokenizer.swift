@@ -209,16 +209,7 @@ class IncludeTokenizer: Tokenizer {
       _tokenizer = repo?[ref]
       _tokenizerInit = true
     }
-    
-//    switch(ref) {
-//    case .local(let n):
-//      if n == "protocol-method" {
-//        print("Hello")
-//      }
-//    default:
-//      break
-//    }
-    
+        
     return _tokenizer
   }
   
@@ -359,25 +350,24 @@ class BeginEndTokenizer: RangeTokenizer, Tokenizer {
       
       var nodes: [SyntaxNode] = []
       
-      // Content node
-      if let content = content {
-        let contentNode = SyntaxNode(scope: contentName?.resolve(),
-                                     range: content.range,
-                                     nodes: content.nodes)
-        
-        nodes.append(contentNode)
-      }
-      
-                        
+
       // Begin node
       if !begin.isEmpty{
         let beginNode = SyntaxNode(scope: nil,
                                    range: begin.lowerBound..<begin.upperBound,
                                    nodes: applyCaptureTokenizers(beginTokenizers, to: str, with: beginRes))
         
-        nodes.insert(beginNode, at: 0)
+        nodes.append(beginNode)
       }
 
+      
+      // Content node
+      let contentNode = SyntaxNode(scope: contentName?.resolve(),
+                                   range: begin.upperBound..<end.lowerBound,
+                                   nodes: content?.nodes ?? [])
+      
+      nodes.append(contentNode)
+      
       
       // End node
       if !end.isEmpty, let endRes = endRes {
