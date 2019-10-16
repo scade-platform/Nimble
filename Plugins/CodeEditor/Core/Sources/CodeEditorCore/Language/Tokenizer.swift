@@ -10,23 +10,9 @@ import Oniguruma
 
 
 public protocol Tokenizer: class {
-  /// The `in` parameter has to be a range of bytes of the string
-  func tokenize(_: String, with: TokenizerContext) -> TokenizerResult?
+  func tokenize(_ str: String, in range: Range<String.Index>) -> TokenizerResult?
   
-  func prepare() -> Void
-}
-
-public extension Tokenizer {
-  func tokenize(_ str: String, in range: Range<String.Index>) -> TokenizerResult? {
-    let ctx = TokenizerContext(range: str.utf8(in: range), upperBound: -1, isFirstLine: true)
-    return tokenize(str, with: ctx)
-  }
-  
-  func tokenize(_ str: String) -> TokenizerResult? {
-    return tokenize(str, in: str.range)
-  }
-  
-  func prepare() { }
+  func tokenize(_ str: String) -> TokenizerResult?
 }
 
 
@@ -47,7 +33,10 @@ public struct TokenizerContext {
     self.isFirstLine = isFirstLine
   }
     
-  func with(range: Range<Int>? = nil, upperBound: Int? = nil, isFirstLine: Bool? = nil) -> TokenizerContext {
+  func with(range: Range<Int>? = nil,
+            upperBound: Int? = nil,
+            isFirstLine: Bool? = nil) -> TokenizerContext {
+    
     return TokenizerContext(range: range ?? self.range,
                             upperBound: upperBound ?? self.upperBound,
                             isFirstLine: isFirstLine ?? self.isFirstLine)
@@ -80,6 +69,35 @@ public struct TokenizerResult {
 public protocol TokenizerRepository: class {
   subscript(ref: GrammarRef) -> Tokenizer? { get }
 }
+
+
+
+// MARK: TM Tokenizer
+
+protocol TMTokenizer: Tokenizer {
+  /// The `in` parameter has to be a range of bytes of the string
+  func tokenize(_: String, with: TokenizerContext) -> TokenizerResult?
+  
+  func prepare() -> Void
+}
+
+
+extension TMTokenizer {
+  func tokenize(_ str: String, in range: Range<String.Index>) -> TokenizerResult? {    
+    let ctx = TokenizerContext(range: str.utf8(in: range),
+                               upperBound: -1,
+                               isFirstLine: true)
+    
+    return tokenize(str, with: ctx)
+  }
+  
+  func tokenize(_ str: String) -> TokenizerResult? {
+    return tokenize(str, in: str.range)
+  }
+  
+  func prepare() { }
+}
+
 
 // MARK: Grammar extensions
 
@@ -114,7 +132,7 @@ extension Array where Element == Pattern {
 }
 
 extension Pattern {
-  func createTokenizer(with repo: TokenizerRepository) -> Tokenizer? {
+  func createTokenizer(with repo: TokenizerRepository) -> TMTokenizer? {
     switch self {
     case .include(let p):
       return IncludeTokenizer(p, with: repo)
@@ -164,6 +182,8 @@ class GrammarTokenizer: PatternsListTokenizer {
     var line = str.utf8.lineRange(at: ctx.range.lowerBound)
     line = max(ctx.range.lowerBound, line.lowerBound)..<line.upperBound
     
+    
+    
     while(line.lowerBound < ctx.range.upperBound && (ctx.upperBound < 0 || line.lowerBound < ctx.upperBound)) {
       let res = applyTokenizers(tokenizers, to: str, with: ctx.with(range: line))
       merge(res, into: &result)
@@ -181,8 +201,8 @@ class GrammarTokenizer: PatternsListTokenizer {
 }
 
 
-class PatternsListTokenizer: Tokenizer {
-  let tokenizers: [Tokenizer]
+class PatternsListTokenizer: TMTokenizer {
+  let tokenizers: [TMTokenizer]
   
   init (_ pattern: PatternsList , with repo: TokenizerRepository) {
     self.tokenizers = pattern.patterns.compactMap { $0.createTokenizer(with: repo) }
@@ -196,17 +216,18 @@ class PatternsListTokenizer: Tokenizer {
 
 // MARK: -
 
-class IncludeTokenizer: Tokenizer {
+class IncludeTokenizer: TMTokenizer {
   var ref: GrammarRef
   weak var repo: TokenizerRepository?
   
   // Emulate a lazy weak variable
   private var _tokenizerInit: Bool = false
-  private weak var _tokenizer: Tokenizer? = nil
+  private weak var _tokenizer: TMTokenizer? = nil
   
-  var tokenizer: Tokenizer? {
+  var tokenizer: TMTokenizer? {
     if !_tokenizerInit {
-      _tokenizer = repo?[ref]
+      //TODO: integrate other types of tokenizers
+      _tokenizer = repo?[ref] as? TMTokenizer
       _tokenizerInit = true
     }
         
@@ -233,12 +254,12 @@ class IncludeTokenizer: Tokenizer {
 
 // MARK: -
 
-typealias CaptureTokenizer = (`var`: MatchCapture.MatchGroup, (name: MatchName?, tokenizers: [Tokenizer]))
+typealias CaptureTokenizer = (`var`: MatchCapture.MatchGroup, (name: MatchName?, tokenizers: [TMTokenizer]))
 
 
 
 // MARK: -
-class MatchTokenizer: Tokenizer {
+class MatchTokenizer: TMTokenizer {
   let name: MatchName?
   let match: MatchRegex
   let tokenizers: [CaptureTokenizer]
@@ -274,7 +295,7 @@ class RangeTokenizer {
   let name: MatchName?
   let contentName: MatchName?
   
-  let contentTokenizers: [Tokenizer]
+  let contentTokenizers: [TMTokenizer]
   
   let begin: MatchRegex
   let beginTokenizers: [CaptureTokenizer]
@@ -301,7 +322,7 @@ class RangeTokenizer {
 
 // MARK: -
 
-class BeginEndTokenizer: RangeTokenizer, Tokenizer {
+class BeginEndTokenizer: RangeTokenizer, TMTokenizer {
   let end: MatchRegex
   let endTokenizers: [CaptureTokenizer]
 
@@ -408,7 +429,7 @@ class BeginEndTokenizer: RangeTokenizer, Tokenizer {
 
 // MARK: -
 
-class BeginWhileTokenizer: RangeTokenizer, Tokenizer {
+class BeginWhileTokenizer: RangeTokenizer, TMTokenizer {
   let `while`: MatchRegex
   let whileTokenizers: [CaptureTokenizer]
 
@@ -441,7 +462,7 @@ fileprivate func merge(_ res1: TokenizerResult?, into res2: inout TokenizerResul
 }
 
 
-fileprivate func applyBeforeFirstMatch(_ tokenizers: [Tokenizer], to str: String, with ctx: TokenizerContext) -> TokenizerResult? {
+fileprivate func applyBeforeFirstMatch(_ tokenizers: [TMTokenizer], to str: String, with ctx: TokenizerContext) -> TokenizerResult? {
   var result: TokenizerResult? = nil
 
   for t in tokenizers {
@@ -460,7 +481,7 @@ fileprivate func applyBeforeFirstMatch(_ tokenizers: [Tokenizer], to str: String
 }
 
 
-fileprivate func applyTokenizers(_ tokenizers: [Tokenizer], to str: String, with ctx: TokenizerContext) -> TokenizerResult? {
+fileprivate func applyTokenizers(_ tokenizers: [TMTokenizer], to str: String, with ctx: TokenizerContext) -> TokenizerResult? {
   
   var result: TokenizerResult? = nil
   var begin = ctx.range.lowerBound
@@ -516,7 +537,7 @@ fileprivate func applyCaptureTokenizers(_ tokenizers: [CaptureTokenizer], to str
 // MARK: Extensions
 
 extension MatchCapture {
-  func createTokenizer(with repo: TokenizerRepository) -> (name: MatchName?, tokenizers: [Tokenizer]) {
+  func createTokenizer(with repo: TokenizerRepository) -> (name: MatchName?, tokenizers: [TMTokenizer]) {
     return (name, patterns.compactMap { $0.createTokenizer(with: repo) })
   }
 }
