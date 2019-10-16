@@ -88,21 +88,13 @@ public class ConsoleManager {
   
   public static let shared = ConsoleManager()
   
-  private var controllerClass: ConsoleController.Type?
-  
   private var loadedController: ConsoleController?
-  
-  public func registerControllerClass<T: ConsoleController>(_ controllerClass: T.Type) {
-    self.controllerClass = controllerClass
-  }
   
   public func controllerInstance() -> ConsoleController? {
     if let loaded = loadedController {
       return loaded
     }
-    guard let result = controllerClass?.loadFromNib() else {
-      return nil
-    }
+    let result = NimbleConsoleViewController.loadFromNib()
     self.loadedController = result
     return loadedController
   }

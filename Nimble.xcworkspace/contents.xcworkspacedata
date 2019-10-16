@@ -11,9 +11,6 @@
       location = "container:"
       name = "Plugins">
       <FileRef
-         location = "group:Plugins/NimbleConsole/NimbleConsole.xcodeproj">
-      </FileRef>
-      <FileRef
          location = "group:Plugins/ImageViewer/ImageViewer.xcodeproj">
       </FileRef>
       <FileRef

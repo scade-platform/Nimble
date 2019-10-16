@@ -15,7 +15,6 @@
 		0CCC757822DF199900C0CCF4 /* TabbedEditorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC757722DF199900C0CCF4 /* TabbedEditorController.xib */; };
 		0CCC757A22DF268400C0CCF4 /* TabbedEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC757922DF268400C0CCF4 /* TabbedEditorController.swift */; };
 		0CE4E1B0234DEF3600114287 /* HorizontalRootSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E1AF234DEF3600114287 /* HorizontalRootSplitViewController.swift */; };
-		0CE4E20F234EEAD900114287 /* NimbleConsole.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 0CE4E20D234EEA7500114287 /* NimbleConsole.plugin */; };
 		0CE4E2252350605A00114287 /* ProjectDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E2242350605A00114287 /* ProjectDelegate.swift */; };
 		0CE4E2272355D12400114287 /* DebugViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E2262355D12400114287 /* DebugViewController.swift */; };
 		0CEB19AE231E38A10092E801 /* DropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEB19AD231E38A10092E801 /* DropView.swift */; };
@@ -62,7 +61,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				0CE4E20F234EEAD900114287 /* NimbleConsole.plugin in Embed PlugIns */,
 				E42DC0C322D26C3100486CC1 /* ImageViewer.plugin in Embed PlugIns */,
 				E42DC07A22CFA02500486CC1 /* InterfaceBuilder.plugin in Embed PlugIns */,
 				E42DC05C22CE49A700486CC1 /* CodeEditor.plugin in Embed PlugIns */,
@@ -100,7 +98,6 @@
 		0CCC757722DF199900C0CCF4 /* TabbedEditorController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TabbedEditorController.xib; path = Controls/TabbedEditorController.xib; sourceTree = "<group>"; };
 		0CCC757922DF268400C0CCF4 /* TabbedEditorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbedEditorController.swift; sourceTree = "<group>"; };
 		0CE4E1AF234DEF3600114287 /* HorizontalRootSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalRootSplitViewController.swift; sourceTree = "<group>"; };
-		0CE4E20D234EEA7500114287 /* NimbleConsole.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = NimbleConsole.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CE4E2242350605A00114287 /* ProjectDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDelegate.swift; sourceTree = "<group>"; };
 		0CE4E2262355D12400114287 /* DebugViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugViewController.swift; sourceTree = "<group>"; };
 		0CEB19AD231E38A10092E801 /* DropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DropView.swift; path = Sources/DropView.swift; sourceTree = SOURCE_ROOT; };
@@ -147,7 +144,6 @@
 		D722326A22CC10E900E471C2 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
-				0CE4E20D234EEA7500114287 /* NimbleConsole.plugin */,
 				E42DC0C222D26C1200486CC1 /* ImageViewer.plugin */,
 				E42DC07922CFA01100486CC1 /* InterfaceBuilder.plugin */,
 				E42DC05B22CE498200486CC1 /* CodeEditor.plugin */,
