@@ -14,6 +14,7 @@ public class Project {
   public private(set) var folders = [Folder]()
   private let location: Path?
   public let name: String?
+  public var delegate: ProjectDelegate? = nil
   private var observers = [ResourceObserver]()
   
   
@@ -78,6 +79,15 @@ public class Project {
     closableFils.forEach{$0.close()}
     let deltas = closableFils.map{ResourceDelta(resource: $0, kind: .closed)}
     chargeResourceChangeEvent(type: .post, deltas: deltas)
+  }
+  
+  public func build(folder: Folder) {
+    delegate?.build(folder: folder)
+  }
+  
+  
+  public func runSimulator(folder: Folder){
+    delegate?.runSimulator(folder: folder)
   }
   
   private func performEvent(file: URL, kind: ResourceDelta.Kind){
@@ -225,6 +235,31 @@ extension Project {
       }
     }
     return "\(section)\n" + result
+  }
+}
+
+public protocol ProjectDelegate {
+  func runSimulator(folder: Folder)
+  func stopSimulator(folder: Folder)
+  func runCMake(folder: Folder)
+  func build(folder: Folder)
+}
+
+public extension ProjectDelegate{
+  func runSimulator(folder: Folder){
+    //default implementation
+  }
+  
+  func stopSimulator(folder: Folder){
+    //default implementation
+  }
+  
+  func runCMake(folder: Folder){
+    //default implementation
+  }
+  
+  func build(folder: Folder){
+    //default implementation
   }
 }
 

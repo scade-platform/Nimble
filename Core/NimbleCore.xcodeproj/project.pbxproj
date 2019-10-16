@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0CE4E1EE234ED68D00114287 /* Console.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E1ED234ED68D00114287 /* Console.swift */; };
+		0CE4E21D234F119900114287 /* NSViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E21C234F119900114287 /* NSViewExtensions.swift */; };
+		0CE4E22F23571D1E00114287 /* NimbleConsoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E22D23571D1E00114287 /* NimbleConsoleViewController.swift */; };
+		0CE4E23E23572CEF00114287 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CE4E23C23572A9E00114287 /* Media.xcassets */; };
 		OBJ_100 /* CYaml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Yams::CYaml::Product" /* CYaml.framework */; };
 		OBJ_101 /* Path.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Path.swift::Path::Product" /* Path.framework */; };
 		OBJ_112 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_6 /* Package.swift */; };
@@ -90,6 +94,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0CE4E1ED234ED68D00114287 /* Console.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Console.swift; sourceTree = "<group>"; };
+		0CE4E21C234F119900114287 /* NSViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSViewExtensions.swift; sourceTree = "<group>"; };
+		0CE4E22D23571D1E00114287 /* NimbleConsoleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NimbleConsoleViewController.swift; sourceTree = "<group>"; };
+		0CE4E22E23571D1E00114287 /* NimbleConsoleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NimbleConsoleViewController.xib; sourceTree = "<group>"; };
+		0CE4E23C23572A9E00114287 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		"NimbleCore::NimbleCore::Product" /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJ_11 /* Core.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Core.swift; sourceTree = "<group>"; };
 		OBJ_12 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
@@ -178,6 +187,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0CE4E22C23571D0700114287 /* Console */ = {
+			isa = PBXGroup;
+			children = (
+				0CE4E22D23571D1E00114287 /* NimbleConsoleViewController.swift */,
+				0CE4E22E23571D1E00114287 /* NimbleConsoleViewController.xib */,
+			);
+			path = Console;
+			sourceTree = "<group>";
+		};
 		OBJ_10 /* NimbleCore */ = {
 			isa = PBXGroup;
 			children = (
@@ -189,6 +207,7 @@
 				OBJ_16 /* Project.swift */,
 				OBJ_20 /* Workbench.swift */,
 				OBJ_17 /* UI */,
+				0CE4E1ED234ED68D00114287 /* Console.swift */,
 			);
 			name = NimbleCore;
 			path = Sources/NimbleCore;
@@ -197,8 +216,10 @@
 		OBJ_17 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				0CE4E22C23571D0700114287 /* Console */,
 				OBJ_18 /* NSViewController.swift */,
 				OBJ_19 /* XibView.swift */,
+				0CE4E21C234F119900114287 /* NSViewExtensions.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -288,6 +309,7 @@
 		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
+				0CE4E23C23572A9E00114287 /* Media.xcassets */,
 				OBJ_6 /* Package.swift */,
 				OBJ_7 /* Configs */,
 				OBJ_9 /* Sources */,
@@ -363,6 +385,7 @@
 			buildPhases = (
 				OBJ_88 /* Sources */,
 				OBJ_98 /* Frameworks */,
+				0CE4E23D23572CE900114287 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -476,6 +499,11 @@
 			attributes = {
 				LastSwiftMigration = 9999;
 				LastUpgradeCheck = 9999;
+				TargetAttributes = {
+					"Yams::CYaml" = {
+						LastSwiftMigration = 1030;
+					};
+				};
 			};
 			buildConfigurationList = OBJ_2 /* Build configuration list for PBXProject "NimbleCore" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -500,6 +528,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0CE4E23D23572CE900114287 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0CE4E23E23572CEF00114287 /* Media.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		OBJ_111 /* Sources */ = {
@@ -571,6 +610,7 @@
 			files = (
 				OBJ_74 /* api.c in Sources */,
 				OBJ_75 /* emitter.c in Sources */,
+				0CE4E21D234F119900114287 /* NSViewExtensions.swift in Sources */,
 				OBJ_76 /* parser.c in Sources */,
 				OBJ_77 /* reader.c in Sources */,
 				OBJ_78 /* scanner.c in Sources */,
@@ -583,6 +623,8 @@
 			buildActionMask = 0;
 			files = (
 				OBJ_89 /* Core.swift in Sources */,
+				0CE4E1EE234ED68D00114287 /* Console.swift in Sources */,
+				0CE4E22F23571D1E00114287 /* NimbleConsoleViewController.swift in Sources */,
 				OBJ_90 /* Document.swift in Sources */,
 				OBJ_91 /* File.swift in Sources */,
 				OBJ_92 /* Folder.swift in Sources */,
@@ -866,6 +908,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGET_NAME = CYaml;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;
@@ -899,6 +943,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited)";
+				SWIFT_VERSION = 5.0;
 				TARGET_NAME = CYaml;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				WATCHOS_DEPLOYMENT_TARGET = 2.0;

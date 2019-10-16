@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14868"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -595,6 +594,12 @@
                                                 <action selector="runToolbarCustomizationPalette:" target="Ady-hI-5gd" id="pQI-g3-MTW"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem title="Show Console" tag="53" id="pAJ-j8-Uf8">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="showConsole:" target="Ady-hI-5gd" id="afy-vM-o8t"/>
+                                            </connections>
+                                        </menuItem>
                                         <menuItem isSeparatorItem="YES" id="hB3-LF-h0Y"/>
                                         <menuItem title="Show Sidebar" keyEquivalent="s" id="kIP-vf-haE">
                                             <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
@@ -610,6 +615,28 @@
                                         </menuItem>
                                     </items>
                                 </menu>
+                            </menuItem>
+                            <menuItem title="Tools" id="yOl-9J-jHi">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Tools" id="olp-ot-P8e">
+                                    <items>
+                                        <menuItem title="Run Simulator" tag="61" id="df8-Xa-ITo">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="requestTag:" target="Ady-hI-5gd" id="CUW-IQ-TQu"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Build" tag="62" id="1c8-P2-UOy">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="requestTag:" target="Ady-hI-5gd" id="vei-Ts-NsZ"/>
+                                            </connections>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                                <connections>
+                                    <action selector="requestTag:" target="Ady-hI-5gd" id="nGE-Zg-jGc"/>
+                                </connections>
                             </menuItem>
                             <menuItem title="Project" id="o6q-mC-Z3O">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -723,12 +750,50 @@
                         </connections>
                     </window>
                     <connections>
-                        <segue destination="fjW-vM-mzH" kind="relationship" relationship="window.shadowedContentViewController" id="3SC-4t-mE6"/>
+                        <segue destination="fjW-vM-mzH" kind="relationship" relationship="window.shadowedContentViewController" id="sby-4e-u2R"/>
                     </connections>
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="100" y="265"/>
+        </scene>
+        <!--Horizontal Root Split View Controller-->
+        <scene sceneID="AYH-wU-0K0">
+            <objects>
+                <splitViewController id="f9f-3t-OXY" customClass="HorizontalRootSplitViewController" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
+                    <splitViewItems>
+                        <splitViewItem id="6CT-wf-mhQ"/>
+                        <splitViewItem id="6Es-Wo-iHc"/>
+                    </splitViewItems>
+                    <splitView key="splitView" dividerStyle="thin" id="69o-ns-cfo">
+                        <rect key="frame" x="-103" y="0.0" width="683" height="376"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <connections>
+                            <outlet property="delegate" destination="f9f-3t-OXY" id="iz6-Y6-X0n"/>
+                        </connections>
+                    </splitView>
+                    <connections>
+                        <outlet property="splitView" destination="69o-ns-cfo" id="pMH-nU-Fz9"/>
+                        <segue destination="UtC-nN-7Sb" kind="relationship" relationship="splitItems" id="bVp-L5-Hnr"/>
+                        <segue destination="vVK-t1-2nf" kind="relationship" relationship="splitItems" id="2Lc-3r-HFW"/>
+                    </connections>
+                </splitViewController>
+                <customObject id="IXb-F3-JHA" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="101" y="1879"/>
+        </scene>
+        <!--Debug View Controller-->
+        <scene sceneID="lFy-fe-dBa">
+            <objects>
+                <viewController id="vVK-t1-2nf" customClass="DebugViewController" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="QYh-oE-JSq">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="f3g-ad-EMA" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="100" y="2449"/>
         </scene>
         <!--Workbench View Controller-->
         <scene sceneID="wTH-cn-3SB">
@@ -736,10 +801,10 @@
                 <splitViewController id="fjW-vM-mzH" customClass="WorkbenchViewController" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
                     <splitViewItems>
                         <splitViewItem id="ND0-p8-RRp"/>
-                        <splitViewItem holdingPriority="249" id="9p0-uC-ZSh"/>
+                        <splitViewItem id="5X7-a0-fnU"/>
                     </splitViewItems>
                     <splitView key="splitView" dividerStyle="thin" vertical="YES" id="Kd3-Dd-nrm" customClass="DropView" customModule="Nimble" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="663" height="409"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>
                             <outlet property="delegate" destination="fjW-vM-mzH" id="HZX-I1-rDp"/>
@@ -748,12 +813,12 @@
                     <connections>
                         <outlet property="splitView" destination="Kd3-Dd-nrm" id="ois-II-s6c"/>
                         <segue destination="fbF-er-OZS" kind="relationship" relationship="splitItems" id="vBS-nC-6Qu"/>
-                        <segue destination="UtC-nN-7Sb" kind="relationship" relationship="splitItems" id="0dq-Gb-a8N"/>
+                        <segue destination="f9f-3t-OXY" kind="relationship" relationship="splitItems" id="ycZ-jr-zzz"/>
                     </connections>
                 </splitViewController>
                 <customObject id="PxC-WY-9Ko" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="100" y="1051"/>
+            <point key="canvasLocation" x="101" y="1197"/>
         </scene>
         <!--Navigator View Controller-->
         <scene sceneID="kYI-m9-sar">
@@ -775,7 +840,7 @@
                 </viewController>
                 <customObject id="VOl-xV-dCT" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1090" y="722"/>
+            <point key="canvasLocation" x="793" y="1080"/>
         </scene>
         <!--Editor View Controller-->
         <scene sceneID="dsF-QD-dQD">
@@ -788,7 +853,7 @@
                 </viewController>
                 <customObject id="xi1-Hq-DW4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1383" y="1595"/>
+            <point key="canvasLocation" x="1541" y="1879"/>
         </scene>
     </scenes>
 </document>

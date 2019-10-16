@@ -22,8 +22,14 @@ class NimbleController : NSDocumentController {
     return NSDocumentController.shared as! NimbleController
   }
   
+  //TODO: improve it
+  var toolchainPath: String? {
+    return ProcessInfo.processInfo.environment["TOOLCHAIN_PATH"]
+  }
+  
   override init(){
     super.init()
+    
   }
   
   required init?(coder: NSCoder) {
@@ -34,6 +40,32 @@ class NimbleController : NSDocumentController {
   @IBAction func switchProject(_ sender: Any?) {
     self.beginOpenPanel(completionHandler: self.switchProject(urls:))
   }
+  
+  private var buildMenuItems: [NSMenuItem: Folder] = [:]
+  private var runMenuItems: [NSMenuItem: Folder] = [:]
+  
+  private var buildSubMenu: NSMenu {
+    buildMenuItems.removeAll()
+    let result = NSMenu()
+    for folder in currentProject?.folders ?? [] {
+      let menuItem = NSMenuItem(title: folder.name, action: #selector(buildFolder(_:)), keyEquivalent: "")
+      buildMenuItems[menuItem] = folder
+      result.addItem(menuItem)
+    }
+    return result
+  }
+  
+  private var runSubMenu: NSMenu {
+    runMenuItems.removeAll()
+    let result = NSMenu()
+    for folder in currentProject?.folders ?? [] {
+      let menuItem = NSMenuItem(title: folder.name, action: #selector(runFolder(_:)), keyEquivalent: "")
+      runMenuItems[menuItem] = folder
+      result.addItem(menuItem)
+    }
+    return result
+  }
+
   
   func switchProject(urls: [URL]?) {
     if let url = urls?.first, let doc = self.currentDocument, let projectDoc = doc as? ProjectDocument {
@@ -89,6 +121,68 @@ class NimbleController : NSDocumentController {
       }
     }
     super.openDocument(sender)
+  }
+  
+  
+  @IBAction func showConsole(_ sender: Any?) {
+    guard let doc = currentDocument as? ProjectDocument, let workbench = doc.workbench, var debugArea = workbench.debugArea as? Hideable else {
+      return
+    }
+    let hide: Bool
+    if let menuItem = sender as? NSMenuItem {
+      hide = menuItem.title != "Show Console"
+      if hide {
+        menuItem.title = "Show Console"
+      } else {
+        menuItem.title = "Hide Console"
+      }
+    } else {
+      hide = true
+    }
+    debugArea.isHidden = hide
+  }
+
+  
+  override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+    if menuItem.tag == 53 {
+      menuItem.title = (((currentDocument as! ProjectDocument).workbench?.debugArea) as? Hideable)?.isHidden ?? true ? "Show Console" : "Hide Console"
+    }
+    if menuItem.tag == 62 {
+      if toolchainPath == nil || buildSubMenu.items.count == 0 {
+        return false
+      }
+      menuItem.submenu = buildSubMenu
+      return true
+    }
+    if menuItem.tag == 61 {
+      if toolchainPath == nil || runSubMenu.items.count == 0 {
+        return false
+      }
+      menuItem.submenu = runSubMenu
+      return true
+    }
+    return super.validateMenuItem(menuItem)
+  }
+  
+  @objc func buildFolder(_ sender: Any?) {
+    guard let menuItem = sender as? NSMenuItem, let selectedFolder = buildMenuItems[menuItem], let project = currentProject else {
+      return
+    }
+    project.build(folder: selectedFolder)
+  }
+  
+  @objc func runFolder(_ sender: Any?) {
+    guard let menuItem = sender as? NSMenuItem, let selectedFolder = runMenuItems[menuItem], let project = currentProject else {
+      return
+    }
+    project.runSimulator(folder: selectedFolder)
+  }
+  
+  @IBAction func requestTag(_ sender: Any?) {
+    guard let menuItem = sender as? NSMenuItem else {
+      return
+    }
+    let _ = menuItem.tag
   }
   
   

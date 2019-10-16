@@ -19,7 +19,8 @@ public protocol Workbench {
 //
 //  var toolbarArea: WorkbenchPart { get }
 //
-//  var debugArea: WorkbenchPart { get }
+  
+  var debugArea: WorkbenchArea? { get }
   
   @discardableResult
   func open(file: File) -> Document?
@@ -34,11 +35,15 @@ public protocol WorkbenchArea {
   func add(part: WorkbenchPart) -> Void
 }
 
+public protocol Hideable {
+  var isHidden: Bool { get set }
+}
+
 
 public protocol WorkbenchPart {
   var view: NSView { get }
   
-  var title: String { get }
+  var title: String? { get }
   
   var icon: NSImage? { get }
 }

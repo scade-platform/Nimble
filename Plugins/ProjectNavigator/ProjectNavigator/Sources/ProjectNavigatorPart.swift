@@ -10,7 +10,7 @@ import Cocoa
 import NimbleCore
 
 open class ProjectNavigatorPart: WorkbenchPart {
-  public var title: String
+  public var title: String?
   
   public var icon: NSImage? = nil
   

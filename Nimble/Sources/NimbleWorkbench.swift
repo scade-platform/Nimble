@@ -18,6 +18,7 @@ public class NimbleWorkbench: NSWindowController {
         return
       }
       PluginManager.shared.activate(workbench: self)
+      debugArea?.add(part: ConsoleManager.shared.controllerInstance() as! WorkbenchPart)
       project.subscribe(resourceObserver: self)
     }
   }
@@ -28,11 +29,10 @@ public class NimbleWorkbench: NSWindowController {
   
   public override func windowDidLoad() {
     super.windowDidLoad()
-    
-    if CommandLine.arguments.count > 1,
-      let path = Path(CommandLine.arguments[1]), path.isDirectory {
-      project?.add(folders: [path.url])
-    }
+//    if CommandLine.arguments.count > 1,
+//      let path = Path(CommandLine.arguments[1]), path.isDirectory {
+//      project?.add(folders: [path.url])
+//    }
   }
   
   //  func launch() -> Void {
@@ -57,6 +57,10 @@ extension NimbleWorkbench: Workbench {
   
   public var navigatorArea: WorkbenchArea? {
     return viewController?.navigatorViewController
+  }
+  
+  public var debugArea: WorkbenchArea? {
+     return viewController?.debugViewController
   }
   
   public func open(file: File) -> Document? {
@@ -89,7 +93,6 @@ extension NimbleWorkbench: Workbench {
   public func save(file: File) {
     self.projectDocument?.save(file: file)
   }
-  
 }
 
 extension NimbleWorkbench: ResourceObserver{
