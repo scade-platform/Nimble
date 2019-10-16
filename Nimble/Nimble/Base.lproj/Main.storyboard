@@ -616,26 +616,26 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Tools" tag="6" id="yOl-9J-jHi">
+                            <menuItem title="Tools" id="yOl-9J-jHi">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Tools" id="olp-ot-P8e">
                                     <items>
                                         <menuItem title="Run Simulator" tag="61" id="df8-Xa-ITo">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="requestTag:" target="Ady-hI-5gd" id="H6z-FH-8q7"/>
+                                                <action selector="requestTag:" target="Ady-hI-5gd" id="CUW-IQ-TQu"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Build" tag="62" id="1c8-P2-UOy">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="requestTag:" target="Ady-hI-5gd" id="D2h-LW-XAg"/>
+                                                <action selector="requestTag:" target="Ady-hI-5gd" id="vei-Ts-NsZ"/>
                                             </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
                                 <connections>
-                                    <action selector="requestTag:" target="Ady-hI-5gd" id="F6s-4E-RXF"/>
+                                    <action selector="requestTag:" target="Ady-hI-5gd" id="nGE-Zg-jGc"/>
                                 </connections>
                             </menuItem>
                             <menuItem title="Project" id="o6q-mC-Z3O">
@@ -763,9 +763,10 @@
                 <splitViewController id="f9f-3t-OXY" customClass="HorizontalRootSplitViewController" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
                     <splitViewItems>
                         <splitViewItem id="6CT-wf-mhQ"/>
+                        <splitViewItem id="6Es-Wo-iHc"/>
                     </splitViewItems>
                     <splitView key="splitView" dividerStyle="thin" id="69o-ns-cfo">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <rect key="frame" x="-103" y="0.0" width="683" height="376"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>
                             <outlet property="delegate" destination="f9f-3t-OXY" id="iz6-Y6-X0n"/>
@@ -774,11 +775,25 @@
                     <connections>
                         <outlet property="splitView" destination="69o-ns-cfo" id="pMH-nU-Fz9"/>
                         <segue destination="UtC-nN-7Sb" kind="relationship" relationship="splitItems" id="bVp-L5-Hnr"/>
+                        <segue destination="vVK-t1-2nf" kind="relationship" relationship="splitItems" id="2Lc-3r-HFW"/>
                     </connections>
                 </splitViewController>
                 <customObject id="IXb-F3-JHA" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="417" y="1678"/>
+            <point key="canvasLocation" x="101" y="1879"/>
+        </scene>
+        <!--Debug View Controller-->
+        <scene sceneID="lFy-fe-dBa">
+            <objects>
+                <viewController id="vVK-t1-2nf" customClass="DebugViewController" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="QYh-oE-JSq">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </view>
+                </viewController>
+                <customObject id="f3g-ad-EMA" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="100" y="2449"/>
         </scene>
         <!--Workbench View Controller-->
         <scene sceneID="wTH-cn-3SB">
@@ -789,7 +804,7 @@
                         <splitViewItem id="5X7-a0-fnU"/>
                     </splitViewItems>
                     <splitView key="splitView" dividerStyle="thin" vertical="YES" id="Kd3-Dd-nrm" customClass="DropView" customModule="Nimble" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="663" height="409"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>
                             <outlet property="delegate" destination="fjW-vM-mzH" id="HZX-I1-rDp"/>
@@ -803,7 +818,7 @@
                 </splitViewController>
                 <customObject id="PxC-WY-9Ko" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-36" y="1131"/>
+            <point key="canvasLocation" x="101" y="1197"/>
         </scene>
         <!--Navigator View Controller-->
         <scene sceneID="kYI-m9-sar">
@@ -825,7 +840,7 @@
                 </viewController>
                 <customObject id="VOl-xV-dCT" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1164" y="758"/>
+            <point key="canvasLocation" x="793" y="1080"/>
         </scene>
         <!--Editor View Controller-->
         <scene sceneID="dsF-QD-dQD">
@@ -838,7 +853,7 @@
                 </viewController>
                 <customObject id="xi1-Hq-DW4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1517" y="1648"/>
+            <point key="canvasLocation" x="1541" y="1879"/>
         </scene>
     </scenes>
 </document>

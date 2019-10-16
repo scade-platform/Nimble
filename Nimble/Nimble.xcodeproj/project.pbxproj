@@ -17,6 +17,7 @@
 		0CE4E1B0234DEF3600114287 /* HorizontalRootSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E1AF234DEF3600114287 /* HorizontalRootSplitViewController.swift */; };
 		0CE4E20F234EEAD900114287 /* NimbleConsole.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 0CE4E20D234EEA7500114287 /* NimbleConsole.plugin */; };
 		0CE4E2252350605A00114287 /* ProjectDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E2242350605A00114287 /* ProjectDelegate.swift */; };
+		0CE4E2272355D12400114287 /* DebugViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E2262355D12400114287 /* DebugViewController.swift */; };
 		0CEB19AE231E38A10092E801 /* DropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEB19AD231E38A10092E801 /* DropView.swift */; };
 		D72F9587222CAC3C009F2EC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78BCB05222B4DE300AE0A9C /* AppDelegate.swift */; };
 		D72F9589222CAD09009F2EC3 /* NavigatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F956A222C50A7009F2EC3 /* NavigatorViewController.swift */; };
@@ -101,6 +102,7 @@
 		0CE4E1AF234DEF3600114287 /* HorizontalRootSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalRootSplitViewController.swift; sourceTree = "<group>"; };
 		0CE4E20D234EEA7500114287 /* NimbleConsole.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = NimbleConsole.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CE4E2242350605A00114287 /* ProjectDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDelegate.swift; sourceTree = "<group>"; };
+		0CE4E2262355D12400114287 /* DebugViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugViewController.swift; sourceTree = "<group>"; };
 		0CEB19AD231E38A10092E801 /* DropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DropView.swift; path = Sources/DropView.swift; sourceTree = SOURCE_ROOT; };
 		D72F956A222C50A7009F2EC3 /* NavigatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigatorViewController.swift; sourceTree = "<group>"; };
 		D72F9579222CA4B5009F2EC3 /* WorkbenchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchViewController.swift; sourceTree = "<group>"; };
@@ -227,6 +229,7 @@
 				0CCC757922DF268400C0CCF4 /* TabbedEditorController.swift */,
 				0CE4E1AF234DEF3600114287 /* HorizontalRootSplitViewController.swift */,
 				0CE4E2242350605A00114287 /* ProjectDelegate.swift */,
+				0CE4E2262355D12400114287 /* DebugViewController.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -355,6 +358,7 @@
 				0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */,
 				D72F958A222CAD0C009F2EC3 /* WorkbenchViewController.swift in Sources */,
 				D72F9587222CAC3C009F2EC3 /* AppDelegate.swift in Sources */,
+				0CE4E2272355D12400114287 /* DebugViewController.swift in Sources */,
 				0CEB19AE231E38A10092E801 /* DropView.swift in Sources */,
 				0CE4E2252350605A00114287 /* ProjectDelegate.swift in Sources */,
 				0CE4E1B0234DEF3600114287 /* HorizontalRootSplitViewController.swift in Sources */,

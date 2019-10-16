@@ -18,16 +18,13 @@ public class NimbleWorkbench: NSWindowController {
         return
       }
       PluginManager.shared.activate(workbench: self)
+      debugArea?.add(part: ConsoleManager.shared.controllerInstance() as! WorkbenchPart)
       project.subscribe(resourceObserver: self)
     }
   }
   
   var viewController: WorkbenchViewController? {
     return self.contentViewController as? WorkbenchViewController
-  }
-  
-  var rootViewController: HorizontalRootSplitViewController? {
-    return viewController?.horizontalRootSplitViewController
   }
   
   public override func windowDidLoad() {
@@ -62,6 +59,10 @@ extension NimbleWorkbench: Workbench {
     return viewController?.navigatorViewController
   }
   
+  public var debugArea: WorkbenchArea? {
+     return viewController?.debugViewController
+  }
+  
   public func open(file: File) -> Document? {
     guard let doc = try? file.open(), let d = doc else {
       let unsupportedPane = UnsupportedPane.loadFromNib()
@@ -91,28 +92,6 @@ extension NimbleWorkbench: Workbench {
 
   public func save(file: File) {
     self.projectDocument?.save(file: file)
-  }
-  
-  public var isConsoleHidden: Bool {
-    set {
-      let show = !newValue
-      guard let consoleController = consoleController, let consoleIsShown =  self.rootViewController?.consoleIsShown  else {
-        return
-      }
-      if show, !consoleIsShown {
-        self.rootViewController?.consoleViewController = consoleController
-      }
-      if !show, consoleIsShown {
-        self.rootViewController?.consoleViewController = nil
-      }
-    }
-    get {
-      guard let consoleIsShown =  self.rootViewController?.consoleIsShown  else {
-        return false
-      }
-      return !consoleIsShown
-    }
-    
   }
 }
 

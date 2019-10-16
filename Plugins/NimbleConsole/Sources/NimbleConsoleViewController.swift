@@ -124,6 +124,15 @@ class NimbleConsoleViewController: NSViewController, ConsoleController {
   
 }
 
+extension NimbleConsoleViewController : WorkbenchPart {
+  
+  var icon: NSImage? {
+    return nil
+  }
+  
+  
+}
+
 class NimbleTextConsole: Console {
   
   private let queue = DispatchQueue(label: "com.scade.nimble.consoleBuffer")

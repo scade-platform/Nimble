@@ -14,14 +14,13 @@ public protocol Workbench {
   var navigatorArea: WorkbenchArea? { get }
   
   var changedFiles: [File]? { get }
-  
-  var consoleController: ConsoleController? { get }
 
 //  var inspectorArea: WorkbenchPart { get }
 //
 //  var toolbarArea: WorkbenchPart { get }
 //
-//  var debugArea: WorkbenchPart { get }
+  
+  var debugArea: WorkbenchArea? { get }
   
   @discardableResult
   func open(file: File) -> Document?
@@ -30,29 +29,21 @@ public protocol Workbench {
   
   func save(file: File)
   
-  var isConsoleHidden: Bool { set get }
-  
-}
-
-public extension Workbench {
-  var consoleController:ConsoleController? {
-    return ConsoleManager.shared.controllerInstance()
-  }
-  
-  func showConsole(value: Bool){
-    //by default do nothing
-  }
 }
 
 public protocol WorkbenchArea {
   func add(part: WorkbenchPart) -> Void
 }
 
+public protocol Hideable {
+  var isHidden: Bool { get set }
+}
+
 
 public protocol WorkbenchPart {
   var view: NSView { get }
   
-  var title: String { get }
+  var title: String? { get }
   
   var icon: NSImage? { get }
 }

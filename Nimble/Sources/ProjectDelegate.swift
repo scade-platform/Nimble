@@ -30,10 +30,11 @@ class DefaultProjectDelegate: ProjectDelegate {
     }
     try! simulatorTask.run()
   }
+
   
   func build(folder: Folder) {
-    if var workbench = (NimbleController.shared.currentDocument as? ProjectDocument)?.workbench {
-      workbench.isConsoleHidden = false
+    if let workbench = (NimbleController.shared.currentDocument as? ProjectDocument)?.workbench, var debugArea = workbench.debugArea as? Hideable {
+      debugArea.isHidden = false
     }
     cMakeRun(folder)
   }
@@ -43,7 +44,7 @@ class DefaultProjectDelegate: ProjectDelegate {
     let console: Console?
     if let consoleController = ConsoleManager.shared.controllerInstance()  {
       console = consoleController.createConsole(title: "CMake Run", show: true)
-    }else {
+    } else {
       console = nil
     }
     

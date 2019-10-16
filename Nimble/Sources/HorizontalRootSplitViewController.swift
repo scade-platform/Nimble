@@ -15,6 +15,10 @@ class HorizontalRootSplitViewController: NSSplitViewController {
     return children[0] as? EditorViewController
   }
   
+  public var debugViewController: DebugViewController? {
+    return children[1] as? DebugViewController
+  }
+  
   var consoleViewController: ConsoleController? {
     set {
       guard let value = newValue else {

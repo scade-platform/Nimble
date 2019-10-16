@@ -125,7 +125,7 @@ class NimbleController : NSDocumentController {
   
   
   @IBAction func showConsole(_ sender: Any?) {
-    guard let doc = currentDocument as? ProjectDocument, var workbench = doc.workbench else {
+    guard let doc = currentDocument as? ProjectDocument, let workbench = doc.workbench, var debugArea = workbench.debugArea as? Hideable else {
       return
     }
     let hide: Bool
@@ -139,13 +139,13 @@ class NimbleController : NSDocumentController {
     } else {
       hide = true
     }
-    workbench.isConsoleHidden = hide
+    debugArea.isHidden = hide
   }
 
   
   override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
     if menuItem.tag == 53 {
-      menuItem.title = (currentDocument as! ProjectDocument).workbench?.isConsoleHidden ?? true ? "Show Console" : "Hide Console"
+      menuItem.title = (((currentDocument as! ProjectDocument).workbench?.debugArea) as? Hideable)?.isHidden ?? true ? "Show Console" : "Hide Console"
     }
     if menuItem.tag == 62 {
       if toolchainPath == nil || buildSubMenu.items.count == 0 {

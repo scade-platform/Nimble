@@ -22,5 +22,9 @@ public class WorkbenchViewController: NSSplitViewController {
     return horizontalRootSplitViewController?.editorViewController
   }
   
+  public var debugViewController: DebugViewController? {
+    return horizontalRootSplitViewController?.debugViewController
+  }
+  
   
 }
