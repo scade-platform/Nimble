@@ -52,6 +52,66 @@ public class Project {
     notifyResourceObservers(ResourceChangeEvent(project: self, type: type, deltas: deltas))
   }
   
+  public func rename(fileSystemElement url: URL, new name: String){
+    if let renamedFile = files.first(where: {$0.path.url == url}) {
+      let oldPath = renamedFile.path
+      let newPath = try? renamedFile.path.rename(to: name)
+      guard let newUrl = newPath?.url else {
+        return
+      }
+      close(file: oldPath.url)
+      open(files: [newUrl])
+    }
+    if let renamedFolder = folders.first(where: {$0.path.url == url}) {
+      let oldPath = renamedFolder.path
+      let newPath = try? renamedFolder.path.rename(to: name)
+      guard let newUrl = newPath?.url else {
+        return
+      }
+      folders = folders.filter{$0.path.url != oldPath.url}
+      performEvent(container: folders, url: oldPath.url, kind: .closed)
+      add(folders: [newUrl])
+    }
+    
+    if let (folder, element) = findElement(url) {
+      let renamedFS = element
+      let newPath = try? renamedFS.path.rename(to: name)
+      guard let path = newPath else {
+        return
+      }
+      if let (_, newFs) = findElement(path.url) {
+        performEvent(container: folders, url: folder.path.url, kind: .changed, innerDeltas: [ResourceDelta(resource: renamedFS, kind: .closed), ResourceDelta(resource: newFs, kind: .added)])
+      }
+      
+    }
+  }
+  
+  private func findElement(_ url: URL) -> (rootFolder: Folder, element: FileSystemElement)? {
+    for folder in folders {
+      let (contains, element) = lookInto(folder: folder, url)
+      if contains {
+        return (folder, element!)
+      }
+    }
+    return nil
+  }
+  
+  private func lookInto(folder: Folder, _ url: URL) -> (contains: Bool, element: FileSystemElement?){
+    guard let content = folder.content else {
+      return (false, nil)
+    }
+    if let element = content.first(where: {$0.path.url == url}){
+      return (true, element)
+    }
+    for subFolder in content where subFolder is Folder {
+      let (contains, element) = lookInto(folder: subFolder as! Folder, url)
+      if contains {
+        return (true, element)
+      }
+    }
+    return (false, nil)
+  }
+  
   public func add(folders urls: [URL]) {
     add(items: urls, addFunc: addFolder(_:))
   }
@@ -66,11 +126,22 @@ public class Project {
   }
   
   public func changed(url: URL) {
-    performEvent(file: url, kind: .changed)
+    performEvent(container: files, url: url, kind: .changed)
   }
   
   public func saved(url: URL) {
-    performEvent(file: url, kind: .saved)
+    performEvent(container: files, url: url, kind: .saved)
+  }
+  
+  public func remove(url: URL) {
+    if let removedFile = files.first(where: {$0.path.url == url}){
+      close(file: removedFile.path.url)
+      try? removedFile.path.delete()
+    }
+    if let (folder, element) = findElement(url){
+      try? element.path.delete()
+      performEvent(container: folders, url: folder.path.url, kind: .changed, innerDeltas: [ResourceDelta(resource: element, kind: .closed)])
+    }
   }
   
   public func close(file: URL) {
@@ -90,12 +161,20 @@ public class Project {
     delegate?.runSimulator(folder: folder)
   }
   
-  private func performEvent(file: URL, kind: ResourceDelta.Kind){
-    let filesURL = files.map{$0.path.url}
-    guard filesURL.contains(file), let changedFile = files.first(where: {$0.path.url == file}) else {
+  public func make(folder name: String, at parent: URL) {
+    let parentPath = Path(url: parent)
+    if let newElement = try? parentPath?.join(name).mkdir(), let (folder, element) = findElement(newElement!.url){
+      performEvent(container: folders, url: folder.path.url, kind: .changed, innerDeltas: [ResourceDelta(resource: element, kind: .added)])
+    }
+    
+  }
+  
+  private func performEvent(container: [FileSystemElement], url: URL, kind: ResourceDelta.Kind, innerDeltas: [ResourceDelta]? = nil){
+    let fsURL = container.map{$0.path.url}
+    guard fsURL.contains(url), let changedElement = container.first(where: {$0.path.url == url}) else {
       return
     }
-    chargeResourceChangeEvent(type: .post, deltas: [ResourceDelta(resource: changedFile, kind: kind)])
+    chargeResourceChangeEvent(type: .post, deltas: [ResourceDelta(resource: changedElement, kind: kind, deltas: innerDeltas)])
   }
   
   private func add(items urls: [URL], addFunc: (String) -> ResourceDelta?) {
@@ -280,6 +359,13 @@ public struct ResourceChangeEvent {
 public struct ResourceDelta {
   public let resource: FileSystemElement
   public let kind: Kind
+  public let deltas: [ResourceDelta]?
+  
+  init(resource: FileSystemElement, kind: Kind, deltas: [ResourceDelta]? = nil) {
+    self.resource = resource
+    self.kind = kind
+    self.deltas = deltas
+  }
   
   public enum Kind {
     case added

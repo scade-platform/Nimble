@@ -101,12 +101,17 @@ extension NimbleWorkbench: ResourceObserver{
       return
     }
     deltas.filter{$0.resource is File}.filter{$0.kind == .added}.forEach{self.open(file: $0.resource as! File)}
+    let changedFoldersDeltas = deltas.filter{$0.resource is Folder}.filter{$0.kind == .changed}
+    for delta in changedFoldersDeltas {
+      delta.deltas?.filter{$0.kind == .closed}.filter{$0.resource is File}.forEach{self.viewController?.editorViewController?.closeEditor(file: $0.resource as! File)}
+      delta.deltas?.filter{$0.kind == .added}.filter{$0.resource is File}.forEach{self.preview(file: $0.resource as! File)}
+    }
     let closedFilesDeltas = deltas.filter{$0.resource is File}.filter{$0.kind == .closed}
     let editor = viewController!.editorViewController!
     for delta in closedFilesDeltas {
       editor.closeEditor(file: delta.resource as! File)
     }
-    if let changedItem = deltas.first(where: {$0.kind == .changed}) {
+    if let changedItem = deltas.filter({$0.resource is File}).first(where: {$0.kind == .changed}) {
       editor.markEditor(file: changedItem.resource as! File)
     }
     if let savedItem = deltas.first(where: {$0.kind == .saved}) {

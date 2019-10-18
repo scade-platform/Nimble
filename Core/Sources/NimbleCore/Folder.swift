@@ -9,7 +9,7 @@
 public class Folder: FileSystemElement {
   
   //TODO: sorting, reloading/FS watchig etc.
-  public lazy var content: [FileSystemElement]? = {
+  public var content: [FileSystemElement]? {
     return try? path.ls().compactMap {
       switch $0.kind {
       case .file:
@@ -27,5 +27,5 @@ public class Folder: FileSystemElement {
         return $0 is Folder
       }
     }
-  }()
+  }
 }

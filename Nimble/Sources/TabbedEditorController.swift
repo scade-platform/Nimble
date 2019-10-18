@@ -186,7 +186,7 @@ class TabbedEditorController: NSViewController {
     tabBar?.selectItemAtIndex(index)
   }
   
-  func markTab(file: File, changed: Bool){
+  func markTab(file: File, changed: Bool) {
     guard currentItem?.file == file else {
       return
     }

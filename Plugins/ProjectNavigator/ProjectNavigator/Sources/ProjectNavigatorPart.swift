@@ -99,11 +99,15 @@ extension ProjectOutlineDataSource: NSOutlineViewDataSource {
     case let root as DataSource:
       return root.data.count > 0
     case let folder as Folder:
-      guard let foldersContent = folder.content else {
-        showPermissionAlert(path: folder.path.url)
+      if folder.path.exists{
+        guard let foldersContent = folder.content else {
+          showPermissionAlert(path: folder.path.url)
+          return false
+        }
+        return foldersContent.count > 0
+      }else {
         return false
       }
-      return foldersContent.count > 0
     case let project as Project:
       return project.folders.count > 0 || project.files.count > 0
     default:
@@ -277,17 +281,36 @@ class Folders: RootItem, DataSource {
 
 extension ProjectNavigatorPart : ResourceObserver {
   public func changed(event: ResourceChangeEvent) {
-    guard let deltas = event.deltas, !deltas.isEmpty, let outline = outlineView.outline else {
+    guard let deltas = event.deltas, !deltas.isEmpty, let _ = outlineView.outline else {
+      return
+    }
+    update(openFiles: deltas.filter{$0.resource is File})
+    update(folders: deltas.filter{$0.resource is Folder})
+  }
+  
+  private func update(folders deltas: [ResourceDelta]) {
+    guard !deltas.isEmpty, let outline = outlineView.outline else {
       return
     }
     let item = outline.item(atRow: outline.selectedRow) as? FileSystemElement
-    let itemDelta = deltas.filter{$0.resource.path == item?.path }.first
-    outline.reloadData()
-    outline.expandItem(openFiles)
-    outline.expandItem(folders)
-    if let delta = itemDelta, delta.kind != .closed, delta.kind != .removed {
-      let row = outline.row(forItem: item)
-      outline.selectRowIndexes([row], byExtendingSelection: false)
+    let folderChangedDeltas = deltas.filter{$0.kind == .changed}.compactMap{$0.deltas}.flatMap{$0}
+    if !folderChangedDeltas.isEmpty {
+      if let closedItem = folderChangedDeltas.first(where: {$0.resource.path == item?.path}), closedItem.kind == .closed {
+        let parent = outline.parent(forItem: item)
+        outline.reloadItem(parent, reloadChildren: true)
+      }
+    }
+    if deltas.contains(where: {$0.kind == .added}){
+      outline.reloadItem(folders, reloadChildren: true)
+    }
+    if !outline.isItemExpanded(folders) {
+      outline.expandItem(folders)
+    }
+  }
+  
+  private func update(openFiles deltas: [ResourceDelta]) {
+    guard !deltas.isEmpty, let outline = outlineView.outline else {
+      return
     }
     if let changedItem = deltas.first(where: {$0.kind == .changed}), let cell = cellView(for: changedItem) {
       cell.textField?.font = NSFontManager.shared.convert(NSFont.systemFont(ofSize: (cell.textField?.font!.pointSize)!), toHaveTrait: .italicFontMask)
@@ -296,6 +319,10 @@ extension ProjectNavigatorPart : ResourceObserver {
       if workbench?.changedFiles?.contains(savedItem.resource as! File) ?? false {
         cell.textField?.font = NSFont.systemFont(ofSize: (cell.textField?.font!.pointSize)!)
       }
+    }
+    outline.reloadItem(openFiles, reloadChildren: true)
+    if !outline.isItemExpanded(openFiles) {
+      outline.expandItem(openFiles)
     }
   }
   
