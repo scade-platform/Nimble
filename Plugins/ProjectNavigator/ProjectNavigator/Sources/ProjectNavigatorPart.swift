@@ -299,6 +299,9 @@ extension ProjectNavigatorPart : ResourceObserver {
         let parent = outline.parent(forItem: item)
         outline.reloadItem(parent, reloadChildren: true)
       }
+      if let _ = folderChangedDeltas.first(where: {$0.kind == .added}) {
+        outline.reloadItem(item, reloadChildren: true)
+      }
     }
     if deltas.contains(where: {$0.kind == .added}){
       outline.reloadItem(folders, reloadChildren: true)
