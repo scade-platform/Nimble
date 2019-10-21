@@ -24,7 +24,7 @@ class DefaultProjectDelegate: ProjectDelegate {
     let simulatorTask = Process()
     simulatorTask.currentDirectoryPath = "\(folder.path.string)/.build/scade-simulator"
     simulatorTask.executableURL = URL(fileURLWithPath: "\(toolchain)/bin/macos/PhoenixSimulator.app/Contents/MacOS/PhoenixSimulator")
-    simulatorTask.arguments = ["\(folder.path.string)/products/TestProject.scadeapp"]
+    simulatorTask.arguments = ["\(folder.path.string)/products/\(folder.path.url.lastPathComponent).scadeapp"]
     if let console = console {
       simulatorTask.standardOutput = console.output
     }
