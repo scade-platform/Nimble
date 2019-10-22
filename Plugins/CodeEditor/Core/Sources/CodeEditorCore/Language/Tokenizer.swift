@@ -7,17 +7,23 @@
 
 import AppKit
 import Oniguruma
-
+import NimbleCore
 
 public protocol Tokenizer: class {
   func tokenize(_ str: String, in range: Range<String.Index>) -> TokenizerResult?
-  
   func tokenize(_ str: String) -> TokenizerResult?
 }
 
+extension Tokenizer {
+  func tokenize(_ str: String, in range: NSRange) -> TokenizerResult? {
+    let range = str.index(at: range.lowerBound)..<str.index(at: range.upperBound)
+    return tokenize(str, in: range)
+  }
+}
 
 public struct TokenizerContext {
   let range: Range<Int>
+  /// A match has to start before the `upperBound` if it's specified (larger than 0)
   let upperBound: Int
   let isFirstLine: Bool
   
@@ -75,27 +81,32 @@ public protocol TokenizerRepository: class {
 // MARK: TM Tokenizer
 
 protocol TMTokenizer: Tokenizer {
-  /// The `in` parameter has to be a range of bytes of the string
-  func tokenize(_: String, with: TokenizerContext) -> TokenizerResult?
+  typealias SearchResult = (range: Range<Int>, tokenize: () -> TokenizerResult)
   
   func prepare() -> Void
+  
+  func search(_: String, with: TokenizerContext) -> SearchResult?
+  
+  func tokenize(_: String, with: TokenizerContext) -> TokenizerResult?
 }
 
 
 extension TMTokenizer {
-  func tokenize(_ str: String, in range: Range<String.Index>) -> TokenizerResult? {    
-    let ctx = TokenizerContext(range: str.utf8(in: range),
-                               upperBound: -1,
-                               isFirstLine: true)
-    
-    return tokenize(str, with: ctx)
-  }
+  func prepare() { }
   
   func tokenize(_ str: String) -> TokenizerResult? {
     return tokenize(str, in: str.range)
   }
   
-  func prepare() { }
+  func tokenize(_ str: String, in range: Range<String.Index>) -> TokenizerResult? {    
+    let ctx = TokenizerContext(range: str.utf8(in: range), upperBound: -1, isFirstLine: true)
+    return tokenize(str, with: ctx)
+  }
+  
+  func tokenize(_ str: String, with ctx: TokenizerContext) -> TokenizerResult? {
+    guard let (_, tokenize) = self.search(str, with: ctx) else { return nil }
+    return tokenize()
+  }
 }
 
 
@@ -175,29 +186,46 @@ extension Pattern {
 // MARK: Tokenizers
 
 class GrammarTokenizer: PatternsListTokenizer {
-  
   override func tokenize(_ str: String, with ctx: TokenizerContext) -> TokenizerResult? {
+
+    let lines = str.utf8.lines(from: ctx.range)
+    var linesRes = [TokenizerResult?](repeating: nil, count: lines.count)
+
+    DispatchQueue.concurrentPerform(iterations: lines.count) {
+      linesRes[$0] = applyTokenizers(tokenizers, to: str, with: ctx.with(range: lines[$0]))
+    }
+
     var result: TokenizerResult? = nil
-    
-    var line = str.utf8.lineRange(at: ctx.range.lowerBound)
-    line = max(ctx.range.lowerBound, line.lowerBound)..<line.upperBound
-    
-    
-    
-    while(line.lowerBound < ctx.range.upperBound && (ctx.upperBound < 0 || line.lowerBound < ctx.upperBound)) {
-      let res = applyTokenizers(tokenizers, to: str, with: ctx.with(range: line))
-      merge(res, into: &result)
-      
-      if let res = result, res.range.upperBound > line.upperBound {
-        line = res.range.upperBound..<str.utf8.lineEnd(at: res.range.upperBound)
-      } else {
-        line = str.utf8.lineRange(at: line.upperBound)
+
+    for case let lineRes? in linesRes {
+      guard let res = result else { merge(lineRes, into: &result); continue }
+      if lineRes.range.lowerBound >= res.range.upperBound {
+        merge(lineRes, into: &result)
       }
     }
-        
+
     return result
   }
   
+//  override func tokenize(_ str: String, with ctx: TokenizerContext) -> TokenizerResult? {
+//    var result: TokenizerResult? = nil
+//
+//    var line = str.utf8.lineRange(at: ctx.range.lowerBound)
+//    line = max(ctx.range.lowerBound, line.lowerBound)..<line.upperBound
+//
+//    while(line.lowerBound < ctx.range.upperBound && (ctx.upperBound < 0 || line.lowerBound < ctx.upperBound)) {
+//      let res = applyTokenizers(tokenizers, to: str, with: ctx.with(range: line))
+//      merge(res, into: &result)
+//
+//      if let res = result, res.range.upperBound > line.upperBound {
+//        line = res.range.upperBound..<str.utf8.lineEnd(at: res.range.upperBound)
+//      } else {
+//        line = str.utf8.lineRange(at: line.upperBound)
+//      }
+//    }
+//
+//    return result
+//  }
 }
 
 
@@ -208,8 +236,13 @@ class PatternsListTokenizer: TMTokenizer {
     self.tokenizers = pattern.patterns.compactMap { $0.createTokenizer(with: repo) }
   }
   
+  func search(_ str: String, with ctx: TokenizerContext) -> SearchResult? {
+    return searchMatchingTokenizer(tokenizers, to: str, with: ctx)
+  }
+  
   open func tokenize(_ str: String, with ctx: TokenizerContext) -> TokenizerResult? {
-    return applyBeforeFirstMatch(tokenizers, to: str, with: ctx)
+    guard let (_, tokenize) = self.search(str, with: ctx) else { return nil }
+    return tokenize()
   }
 }
 
@@ -221,17 +254,19 @@ class IncludeTokenizer: TMTokenizer {
   weak var repo: TokenizerRepository?
   
   // Emulate a lazy weak variable
-  private var _tokenizerInit: Bool = false
+  private var _init: Bool = false
+  private var _queue: DispatchQueue = DispatchQueue(label: "com.nimble.IncludeTokenizer")
   private weak var _tokenizer: TMTokenizer? = nil
-  
+    
   var tokenizer: TMTokenizer? {
-    if !_tokenizerInit {
-      //TODO: integrate other types of tokenizers
-      _tokenizer = repo?[ref] as? TMTokenizer
-      _tokenizerInit = true
+    return _queue.sync {
+      if !self._init {
+        //TODO: integrate other types of tokenizers
+        self._tokenizer = repo?[ref] as? TMTokenizer
+        self._init = true
+      }
+      return self._tokenizer
     }
-        
-    return _tokenizer
   }
   
   init?(_ pattern: IncludePattern, with repo: TokenizerRepository) {
@@ -239,10 +274,10 @@ class IncludeTokenizer: TMTokenizer {
     self.ref = ref
     self.repo = repo
   }
-  
-  func tokenize(_ str: String, with ctx: TokenizerContext) -> TokenizerResult? {
+      
+  func search(_ str: String, with ctx: TokenizerContext) -> TMTokenizer.SearchResult? {
     guard let t = tokenizer else { return nil }
-    return t.tokenize(str, with: ctx)
+    return t.search(str, with: ctx)
   }
   
   public func prepare() {
@@ -271,23 +306,22 @@ class MatchTokenizer: TMTokenizer {
       ($0.key, $0.createTokenizer(with: repo))
     }
   }
-  
-  func tokenize(_ str: String, with ctx: TokenizerContext) -> TokenizerResult? {
-    var result: TokenizerResult? = nil
-    
-    /// A match has to start before the `upperBound` if it's larger than `range.lowerBound`
-    if let regex = match.get(allowA: ctx.isFirstLine, allowG: true), let res = regex.search(str, in: ctx.range),
-      ctx.upperBound < 0 || res.regs[0].lowerBound < ctx.upperBound {
       
-      let nodes = applyCaptureTokenizers(tokenizers, to: str, with: res)
-      result = TokenizerResult(node: SyntaxNode(scope: name?.resolve(in: str, with: res),
-                                                range: res.regs[0],
-                                                nodes: nodes))
-    }
+  func search(_ str: String, with ctx: TokenizerContext) -> SearchResult? {
+    guard let regex = match.get(allowA: ctx.isFirstLine, allowG: true),
+          let res = regex.search(str, in: ctx.range),
+          ctx.upperBound < 0 || res.range.lowerBound < ctx.upperBound else { return nil }
     
-    return result
+    return (res.range, {
+      let nodes = applyCaptureTokenizers(self.tokenizers, to: str, with: res)
+      return TokenizerResult(node: SyntaxNode(scope: self.name?.resolve(in: str, with: res),
+                                              range: res.range,
+                                              nodes: nodes))
+      
+    })
   }
 }
+
 
 // MARK: -
 
@@ -334,77 +368,82 @@ class BeginEndTokenizer: RangeTokenizer, TMTokenizer {
     
     super.init(pattern, with: repo)
   }
-
-  func tokenize(_ str: String, with ctx: TokenizerContext) -> TokenizerResult? {
-    var result: TokenizerResult? = nil
+  
+  
+  func search(_ str: String, with ctx: TokenizerContext) -> SearchResult? {
+    /// A match has to start before the `upperBound` if it's larger than `range.lowerBound`
+    guard let regex = self.begin.get(allowA: ctx.isFirstLine, allowG: true),
+          let res = regex.search(str, in: ctx.range),
+          ctx.upperBound < 0 || res.range.lowerBound < ctx.upperBound else { return nil }
+    
+    return (res.range, {
+      return self.tokenize(str, with: ctx, from: res)
+    })
+  }
+  
+  func tokenize(_ str: String, with ctx: TokenizerContext, from beginRes: Regex.SearchResult) -> TokenizerResult {
     var isFirstLine = ctx.isFirstLine
     
-    /// A match has to start before the `upperBound` if it's larger than `range.lowerBound`
-    if let regex = self.begin.get(allowA: isFirstLine, allowG: true), let beginRes = regex.search(str, in: ctx.range),
-      ctx.upperBound < 0 || beginRes.regs[0].lowerBound < ctx.upperBound {
-      
-      let begin = beginRes.regs[0]
-      // Setup search space starting from begin and up to the current line's end
-      var line = begin.upperBound..<str.utf8.lineEnd(at: begin.upperBound)
-      var (end, endRes) = findEnd(str, start: line, isFirstLine: isFirstLine, isBegin: true)
-      
-      var content: TokenizerResult? = nil
-                
-      while(line.lowerBound < end.lowerBound) {
-        while true {
-          let res = applyTokenizers(contentTokenizers, to: str, with: ctx.with(range: line, upperBound: end.lowerBound))
-          merge(res, into: &content)
-          
-          if let res = res, res.range.upperBound >= end.upperBound {
-            line = res.range.upperBound..<str.utf8.lineEnd(at: res.range.upperBound)
-            (end, endRes) = findEnd(str, start: line, isFirstLine: isFirstLine, isBegin: false)
-          } else {
-            break
-          }
-        }
-                
-        line = str.utf8.lineRange(at: line.upperBound)
-        isFirstLine = false
-      }
-      
-      
-      
-      var nodes: [SyntaxNode] = []
-      
-
-      // Begin node
-      if !begin.isEmpty{
-        let beginNode = SyntaxNode(scope: nil,
-                                   range: begin.lowerBound..<begin.upperBound,
-                                   nodes: applyCaptureTokenizers(beginTokenizers, to: str, with: beginRes))
+    let begin = beginRes.range
+    
+    // Setup search space starting from begin and up to the current line's end
+    var line = begin.upperBound..<str.utf8.lineEnd(at: begin.upperBound)
+    var (end, endRes) = findEnd(str, start: line, isFirstLine: isFirstLine, isBegin: true)
+    
+    var content: TokenizerResult? = nil
+              
+    while(line.lowerBound < end.lowerBound) {
+      while true {
+        let res = applyTokenizers(contentTokenizers, to: str, with: ctx.with(range: line, upperBound: end.lowerBound))
+        merge(res, into: &content)
         
-        nodes.append(beginNode)
+        if let res = res, res.range.upperBound >= end.upperBound {
+          line = res.range.upperBound..<str.utf8.lineEnd(at: res.range.upperBound)
+          (end, endRes) = findEnd(str, start: line, isFirstLine: isFirstLine, isBegin: false)
+        } else {
+          break
+        }
       }
-
-      
-      // Content node
-      let contentNode = SyntaxNode(scope: contentName?.resolve(),
-                                   range: begin.upperBound..<end.lowerBound,
-                                   nodes: content?.nodes ?? [])
-      
-      nodes.append(contentNode)
-      
-      
-      // End node
-      if !end.isEmpty, let endRes = endRes {
-        let endNode = SyntaxNode(scope: nil,
-                                 range: end.lowerBound..<end.upperBound,
-                                 nodes: applyCaptureTokenizers(endTokenizers, to: str, with: endRes))
-        nodes.append(endNode)
-      }
-      
-                  
-      result = TokenizerResult(node: SyntaxNode(scope: name?.resolve(),
-                                                range: begin.lowerBound..<end.upperBound,
-                                                nodes: nodes))
+              
+      line = str.utf8.lineRange(at: line.upperBound)
+      isFirstLine = false
     }
     
-    return result
+    
+    
+    var nodes: [SyntaxNode] = []
+    
+
+    // Begin node
+    if !begin.isEmpty{
+      let beginNode = SyntaxNode(scope: nil,
+                                 range: begin.lowerBound..<begin.upperBound,
+                                 nodes: applyCaptureTokenizers(beginTokenizers, to: str, with: beginRes))
+      
+      nodes.append(beginNode)
+    }
+
+    
+    // Content node
+    let contentNode = SyntaxNode(scope: contentName?.resolve(),
+                                 range: begin.upperBound..<end.lowerBound,
+                                 nodes: content?.nodes ?? [])
+    
+    nodes.append(contentNode)
+    
+    
+    // End node
+    if !end.isEmpty, let endRes = endRes {
+      let endNode = SyntaxNode(scope: nil,
+                               range: end.lowerBound..<end.upperBound,
+                               nodes: applyCaptureTokenizers(endTokenizers, to: str, with: endRes))
+      nodes.append(endNode)
+    }
+    
+                
+    return TokenizerResult(node: SyntaxNode(scope: name?.resolve(),
+                                            range: begin.lowerBound..<end.upperBound,
+                                            nodes: nodes))
   }
   
     
@@ -441,7 +480,7 @@ class BeginWhileTokenizer: RangeTokenizer, TMTokenizer {
     super.init(pattern, with: repo)
   }
   
-  func tokenize(_: String, with ctx: TokenizerContext) -> TokenizerResult? {
+  func search(_: String, with ctx: TokenizerContext) -> SearchResult? {
     return nil
   }
 }
@@ -462,11 +501,11 @@ fileprivate func merge(_ res1: TokenizerResult?, into res2: inout TokenizerResul
 }
 
 
-fileprivate func applyBeforeFirstMatch(_ tokenizers: [TMTokenizer], to str: String, with ctx: TokenizerContext) -> TokenizerResult? {
-  var result: TokenizerResult? = nil
-
+fileprivate func searchMatchingTokenizer(_ tokenizers: [TMTokenizer], to str: String, with ctx: TokenizerContext) -> TMTokenizer.SearchResult? {
+  var result: TMTokenizer.SearchResult? = nil
+  
   for t in tokenizers {
-    guard let cur = t.tokenize(str, with: ctx) else { continue }
+    guard let cur = t.search(str, with: ctx) else { continue }
     if cur.range.lowerBound == ctx.range.lowerBound {
       return cur
     }
@@ -487,9 +526,10 @@ fileprivate func applyTokenizers(_ tokenizers: [TMTokenizer], to str: String, wi
   var begin = ctx.range.lowerBound
   
   while begin < ctx.range.upperBound && (ctx.upperBound < 0 || begin < ctx.upperBound) {
-    guard let cur = applyBeforeFirstMatch(tokenizers,
-                                          to: str,
-                                          with: ctx.with(range: begin..<ctx.range.upperBound)) else { break }
+    let ctx = ctx.with(range: begin..<ctx.range.upperBound)
+    guard let (_, tokenize) = searchMatchingTokenizer(tokenizers, to: str, with: ctx) else { break }
+    
+    let cur = tokenize()
     
     merge(cur, into: &result)
     

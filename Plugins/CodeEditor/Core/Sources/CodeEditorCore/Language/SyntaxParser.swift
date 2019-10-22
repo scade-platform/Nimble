@@ -27,15 +27,23 @@ public final class SyntaxParser {
   
     
   public func highlightAll() {
-    highlight(str: textStorage.string, in: textStorage.string.range)
+//    var range = NSRange()
+//
+//    for layoutManager in textStorage.layoutManagers {
+//      guard let visibleRange = layoutManager.firstTextView?.visibleRange else { continue }
+//      range.formUnion(visibleRange)
+//    }
+//
+//    highlight(str: textStorage.string, in: range)
+    highlight(str: textStorage.string, in: textStorage.string.nsRange)
   }
   
-  public func highlight(around range: Range<String.Index>) -> Void {
+  public func highlight(around range: NSRange) -> Void {
     //TODO: compute range and highlight
   }
   
   
-  private func highlight(str: String, in range: Range<String.Index>) -> Void {
+  private func highlight(str: String, in range: NSRange) -> Void {
     guard !range.isEmpty else { return }
     
     guard let op = SyntaxParseOperation(grammar, str: str, range: range) else {return }
@@ -73,9 +81,15 @@ public final class SyntaxParser {
         defer {
           cleanup()
         }
+        
         guard !modified.value else { return }
         // store nodes
-        self?.applyColoring(res.nodes, in: res.range, for: str)
+        
+        let t1 = mach_absolute_time()
+        self?.applyColoring(res.nodes, in: res.range, for: str, offsets: op.offsets.value)
+        let t2 = mach_absolute_time()
+        
+        print("Coloring time: \( Double(t2 - t1) * 1E-9)")
       }
     }
     
@@ -83,13 +97,16 @@ public final class SyntaxParser {
   }
   
   
-  private func applyColoring(_ nodes: [SyntaxNode], `in` range: Range<Int>, for str: String) {
+  private func applyColoring(_ nodes: [SyntaxNode], `in` range: Range<Int>,
+                             for str: String, offsets: String.OffsetTable = String.OffsetTable.empty) {
+    
     let theme = ColorThemeManager.shared.currentTheme
     for layoutManager in self.textStorage.layoutManagers {
       layoutManager.removeTemporaryAttribute(.foregroundColor, forCharacterRange: NSRange(range))
+      
       nodes.visit {
         if let scope = $0, let setting = theme?.setting(for: scope), let color = setting.foreground {
-          let range = NSRange(str.chars(utf8: $1))
+          let range = NSRange(offsets.at($1.lowerBound)..<offsets.at($1.upperBound))
           layoutManager.addTemporaryAttribute(.foregroundColor, value: color, forCharacterRange: range)
         }
       }
@@ -102,17 +119,18 @@ public final class SyntaxParser {
 
 class SyntaxParseOperation: Operation {
   let str: String
-  let range: Range<String.Index>
+  var offsets: Atomic<String.OffsetTable>
   
+  let range: NSRange
   let tokenizer: Tokenizer
   
   var result: TokenizerResult? = nil
   
-  init?(_ grammar: LanguageGrammar, str: String, range: Range<String.Index>) {
+  init?(_ grammar: LanguageGrammar, str: String, range: NSRange) {
     guard let tokenizer = grammar.tokenizer else { return nil }
     self.tokenizer = tokenizer
-    
     self.str = String(utf8String: str.cString(using: .utf8)!)!
+    self.offsets = Atomic<String.OffsetTable>(String.OffsetTable.empty)
     self.range = range
   }
   
@@ -121,12 +139,21 @@ class SyntaxParseOperation: Operation {
         return
     }
     
+    let offsetsComputed = DispatchSemaphore(value: 0)
+    offsets.asyncModify { [weak self] in
+      defer {
+        offsetsComputed.signal()
+      }
+      guard let table = self?.str.createUTF8OffsetTable() else { return }
+      $0 = table
+    }
     result = parse()
+    let _ = offsetsComputed.wait(timeout: .distantFuture)
   }
   
   func parse() -> TokenizerResult? {
     let t1 = mach_absolute_time()
-    let res = tokenizer.tokenize(str)
+    let res = tokenizer.tokenize(str, in: range)
     let t2 = mach_absolute_time()
         
 //    for t in res?.nodes ?? [] {

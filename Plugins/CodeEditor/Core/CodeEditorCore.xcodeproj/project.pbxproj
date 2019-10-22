@@ -12,6 +12,8 @@
 		D77C30D722D9E39D00F79B96 /* ColorCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D77C30D422D9E37E00F79B96 /* ColorCode.framework */; };
 		D77C30F522DA2B5800F79B96 /* COniguruma.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D77C30EF22DA2A7C00F79B96 /* COniguruma.framework */; };
 		D77C30F622DA2B5800F79B96 /* Oniguruma.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D77C30F122DA2A7C00F79B96 /* Oniguruma.framework */; };
+		D79A33542359D23C00C98981 /* String+Encoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79A33532359D23C00C98981 /* String+Encoding.swift */; };
+		D7BEC6ED2357CAD000D30CD3 /* NSTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEC6EC2357CAD000D30CD3 /* NSTextView.swift */; };
 		D7C590B022CE9ACF00ACD4BF /* Grammar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C590AF22CE9ACF00ACD4BF /* Grammar.swift */; };
 		D7C590B222CE9AE100ACD4BF /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C590B122CE9AE100ACD4BF /* Tokenizer.swift */; };
 		D7C590FC22D27D9900ACD4BF /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C590FB22D27D9900ACD4BF /* Language.swift */; };
@@ -68,6 +70,8 @@
 		D77C30C822D9E24500F79B96 /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D77C30CB22D9E37E00F79B96 /* Packages.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Packages.xcodeproj; path = Packages/Packages.xcodeproj; sourceTree = "<group>"; };
 		D77C30E722DA2A7C00F79B96 /* Oniguruma.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Oniguruma.xcodeproj; path = ../oniguruma/Oniguruma.xcodeproj; sourceTree = "<group>"; };
+		D79A33532359D23C00C98981 /* String+Encoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Encoding.swift"; sourceTree = "<group>"; };
+		D7BEC6EC2357CAD000D30CD3 /* NSTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTextView.swift; sourceTree = "<group>"; };
 		D7C590AF22CE9ACF00ACD4BF /* Grammar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grammar.swift; sourceTree = "<group>"; };
 		D7C590B122CE9AE100ACD4BF /* Tokenizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
 		D7C590FB22D27D9900ACD4BF /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
@@ -148,7 +152,9 @@
 			isa = PBXGroup;
 			children = (
 				D7C5920222D74C5100ACD4BF /* String+Ranges.swift */,
+				D79A33532359D23C00C98981 /* String+Encoding.swift */,
 				D70D243723352E8800338EC7 /* Range.swift */,
+				D7BEC6EC2357CAD000D30CD3 /* NSTextView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -314,9 +320,11 @@
 				D70D243823352E8800338EC7 /* Range.swift in Sources */,
 				D7EAC7D822CE6E8100B7701E /* ColorTheme.swift in Sources */,
 				OBJ_102 /* TextDocument.swift in Sources */,
+				D79A33542359D23C00C98981 /* String+Encoding.swift in Sources */,
 				D7C5920322D74C5100ACD4BF /* String+Ranges.swift in Sources */,
 				D7DAB18A2347E32800B728E9 /* Syntax.swift in Sources */,
 				D7C591FE22D7489600ACD4BF /* SyntaxParser.swift in Sources */,
+				D7BEC6ED2357CAD000D30CD3 /* NSTextView.swift in Sources */,
 				D7C590B222CE9AE100ACD4BF /* Tokenizer.swift in Sources */,
 				D7C590FC22D27D9900ACD4BF /* Language.swift in Sources */,
 				OBJ_103 /* TextDocumentDelegate.swift in Sources */,

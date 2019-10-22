@@ -68,6 +68,18 @@ public extension String.UTF8View {
     return index(startIndex, offsetBy: offset)
   }
   
+  func lines(from range: Range<Int>) -> [Range<Int>] {
+    var line = lineRange(at: range.lowerBound)
+    var lines: [Range<Int>] = []
+    
+    while(line.lowerBound < range.upperBound){
+      lines.append(line)
+      line = lineRange(at: line.upperBound)
+    }
+    
+    return lines
+  }
+  
   ///TBD: Support all following delimiters
   /*
    U+000A Unicode Character 'LINE FEED (LF)' (\n)

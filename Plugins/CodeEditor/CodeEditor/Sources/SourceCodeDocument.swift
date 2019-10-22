@@ -54,8 +54,8 @@ public final class SourceCodeDocument: NSDocument, TextDocument {
   }
   
   public override func read(from url: URL, ofType typeName: String) throws {
-    try super.read(from: url, ofType: typeName)
     self.language = url.file?.language
+    try super.read(from: url, ofType: typeName)
   }
   
   public override func read(from data: Data, ofType typeName: String) throws {
