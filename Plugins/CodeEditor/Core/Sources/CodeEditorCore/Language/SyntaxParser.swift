@@ -10,7 +10,7 @@ import NimbleCore
 
 public final class SyntaxParser {
   private let grammar: LanguageGrammar
-  
+    
   private let textStorage: NSTextStorage
     
   private lazy var syntaxParseOperationQueue: OperationQueue = {
@@ -23,23 +23,34 @@ public final class SyntaxParser {
   public init (textStorage: NSTextStorage, grammar: LanguageGrammar) {
     self.grammar = grammar
     self.textStorage = textStorage
+    
+    self.grammar.preload()
   }
   
     
   public func highlightAll() {
-//    var range = NSRange()
-//
-//    for layoutManager in textStorage.layoutManagers {
-//      guard let visibleRange = layoutManager.firstTextView?.visibleRange else { continue }
-//      range.formUnion(visibleRange)
-//    }
-//
-//    highlight(str: textStorage.string, in: range)
-    highlight(str: textStorage.string, in: textStorage.string.nsRange)
+    // Highlight possibly the largest visible part (screen frame) of the document synchronously
+    let screenFrame = NSScreen.main!.frame
+    guard let range = textStorage.layoutManagers.first?.firstTextView?.range(for: screenFrame) else { return }
+            
+    guard let op = SyntaxParseOperation(grammar,
+                                        str: textStorage.string,
+                                        range: range) else {return }
+    
+    op.main()
+    guard let res = op.result else { return }
+    
+    applyColoring(res.nodes, in: res.range, for: textStorage.string, offsets: op.offsets.value)
+    
+    // Color the rest of the document asynchronously
+    let restRange = NSRange(res.range.upperBound..<textStorage.string.nsRange.upperBound)
+    highlight(str: textStorage.string, in: restRange)
   }
   
+  
+  
   public func highlight(around range: NSRange) -> Void {
-    //TODO: compute range and highlight
+    ///TODO: compute range and highlight
   }
   
   
@@ -52,9 +63,9 @@ public final class SyntaxParser {
     let modified = Atomic(false)
     weak var modificationObserver: NSObjectProtocol?
     
-    modificationObserver = NotificationCenter.default.addObserver(forName: NSTextStorage.didProcessEditingNotification,
-                                                                  object: self.textStorage, queue: nil)
-    { [weak op] (note) in
+    modificationObserver = NotificationCenter.default.addObserver(
+      forName: NSTextStorage.didProcessEditingNotification,
+      object: self.textStorage, queue: nil) { [weak op] (note) in
         guard (note.object as! NSTextStorage).editedMask.contains(.editedCharacters) else { return }
         
         modified.modify { $0 = true }
@@ -81,25 +92,21 @@ public final class SyntaxParser {
         defer {
           cleanup()
         }
-        
         guard !modified.value else { return }
-        // store nodes
-        
-        let t1 = mach_absolute_time()
         self?.applyColoring(res.nodes, in: res.range, for: str, offsets: op.offsets.value)
-        let t2 = mach_absolute_time()
-        
-        print("Coloring time: \( Double(t2 - t1) * 1E-9)")
       }
+      
+      ///TODO: Store results
     }
     
     syntaxParseOperationQueue.addOperation(op)
   }
   
   
+  
   private func applyColoring(_ nodes: [SyntaxNode], `in` range: Range<Int>,
                              for str: String, offsets: String.OffsetTable = String.OffsetTable.empty) {
-    
+            
     let theme = ColorThemeManager.shared.currentTheme
     for layoutManager in self.textStorage.layoutManagers {
       layoutManager.removeTemporaryAttribute(.foregroundColor, forCharacterRange: NSRange(range))

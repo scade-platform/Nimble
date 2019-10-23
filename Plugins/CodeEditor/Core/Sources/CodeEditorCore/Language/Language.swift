@@ -29,11 +29,25 @@ public final class LanguageGrammar: Decodable, TokenizerRepository {
   public let language: String?
   public let scopeName: String
   public let path: Path
-
+  
   private static let decoders: [String: GrammarDecoder.Type]  = [
     ".tmGrammar.json": JSONDecoder.self,
     ".tmLanguage.json": JSONDecoder.self
   ]
+  
+  private lazy var repository = grammar?.buildRepository(with: self)
+  
+  private lazy var grammar: Grammar? = {
+    guard let decoder = LanguageGrammar.decoders.first(
+      where: {self.path.basename().hasSuffix($0.key)})?.value else { return nil}    
+    return decoder.decode(from: path)
+  }()
+  
+  public lazy var scope: SyntaxScope = {
+    SyntaxScope(self.scopeName)
+  }()
+  
+  public lazy var tokenizer: Tokenizer? = grammar?.createTokenizer(with: self)
   
   public init(language: String? = nil, scopeName: String, path: Path) {
     self.language = language
@@ -41,27 +55,10 @@ public final class LanguageGrammar: Decodable, TokenizerRepository {
     self.path = path
   }
   
-  public lazy var scope: SyntaxScope = {
-    SyntaxScope(self.scopeName)
-  }()
+  public func preload() {
+    let _ = self.tokenizer
+  }
   
-  private lazy var grammar: Grammar? = {
-    guard let decoder = LanguageGrammar.decoders.first(
-      where: {self.path.basename().hasSuffix($0.key)})?.value else { return nil}
-    
-    let t1 = mach_absolute_time()
-    let g = decoder.decode(from: path)
-    let t2 = mach_absolute_time()
-    
-    print("Load time: \( Double(t2 - t1) * 1E-9)")
-    
-    return g
-  }()
-  
-  
-  private lazy var repository = grammar?.buildRepository(with: self)
-  public lazy var tokenizer: Tokenizer? = grammar?.createTokenizer(with: self)
-    
   public subscript(ref: GrammarRef) -> Tokenizer? {
     switch ref {
     case .local(let val):
