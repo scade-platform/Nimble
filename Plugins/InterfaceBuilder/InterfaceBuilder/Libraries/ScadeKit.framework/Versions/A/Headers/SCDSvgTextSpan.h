@@ -1,8 +1,9 @@
 #import <Foundation/Foundation.h>
 
-#import <ScadeKit/SCDSvgStylable.h>
 #import <ScadeKit/SCDSvgElement.h>
+#import <ScadeKit/SCDSvgStylable.h>
 #import <ScadeKit/SCDSvgTextElement.h>
+#import <ScadeKit/SCDSvgTextSegment.h>
 #import <ScadeKit/SCDSvgTouchReceiver.h>
 
 
@@ -12,6 +13,7 @@
 @protocol SCDSvgTouchReceiver;
 
 @class SCDSvgUnit;
+@class SCDSvgTextSegment;
 
 
 /*PROTECTED REGION ID(fb5ed76a35682abcd909a4da605da8c6) START*/
@@ -21,8 +23,9 @@
 
 
 SCADE_API
-@interface SCDSvgTextSpan : EObject <SCDSvgStylable, SCDSvgElement,
-                                     SCDSvgTextElement, SCDSvgTouchReceiver>
+@interface SCDSvgTextSpan
+    : SCDSvgTextSegment <SCDSvgStylable, SCDSvgElement, SCDSvgTextElement,
+                         SCDSvgTouchReceiver>
 
 
 @property(nonatomic) SCDSvgUnit* _Nonnull x;

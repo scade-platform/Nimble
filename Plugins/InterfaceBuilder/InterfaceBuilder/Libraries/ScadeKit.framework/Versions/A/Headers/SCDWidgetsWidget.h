@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
-#import <ScadeKit/SCDWidgetsIVisualControl.h>
 #import <ScadeKit/SCDLayoutNode.h>
+#import <ScadeKit/SCDWidgetsIVisualControl.h>
 
 
 @protocol SCDWidgetsIContainer;

@@ -16,13 +16,16 @@ SCADE_API
 @interface SCDSvgRGBColor : SCDSvgColor
 
 
-@property(nonatomic) float a;
-
 @property(nonatomic) float r;
 
 @property(nonatomic) float g;
 
 @property(nonatomic) float b;
+
+@property(nonatomic) float a;
+
+
+- (void)setCss:(NSString* _Nonnull)value;
 
 
 /*PROTECTED REGION ID(7fe5bb32149fd2b99dfcd9b9997953e7) START*/

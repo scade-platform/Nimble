@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
-#import <ScadeKit/SCDSvgDrawable.h>
 #import <ScadeKit/SCDSvgAlignmentElement.h>
+#import <ScadeKit/SCDSvgDrawable.h>
 
 
 @protocol SCDSvgDrawable;

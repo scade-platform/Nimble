@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
-#import <ScadeKit/SCDWidgetsLayoutable.h>
 #import <ScadeKit/SCDWidgetsClickable.h>
+#import <ScadeKit/SCDWidgetsLayoutable.h>
 
 
 @protocol SCDWidgetsLayoutable;

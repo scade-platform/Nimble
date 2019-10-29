@@ -2,12 +2,13 @@
 
 #import <ScadeKit/SCDSvgShape.h>
 #import <ScadeKit/SCDSvgTextElement.h>
+#import <ScadeKit/SCDSvgTextSegment.h>
 
 
-@protocol SCDSvgTextSegment;
 @protocol SCDSvgShape;
 @protocol SCDSvgTextElement;
 
+@class SCDSvgTextSegment;
 @class SCDSvgUnit;
 @class SCDGraphicsDimension;
 
@@ -19,10 +20,10 @@
 
 
 SCADE_API
-@interface SCDSvgText : EObject <SCDSvgShape, SCDSvgTextElement>
+@interface SCDSvgText : SCDSvgTextSegment <SCDSvgShape, SCDSvgTextElement>
 
 
-@property(nonatomic) NSArray<id<SCDSvgTextSegment>>* _Nonnull segments;
+@property(nonatomic) NSArray<SCDSvgTextSegment*>* _Nonnull segments;
 
 @property(nonatomic) SCDSvgUnit* _Nonnull x;
 

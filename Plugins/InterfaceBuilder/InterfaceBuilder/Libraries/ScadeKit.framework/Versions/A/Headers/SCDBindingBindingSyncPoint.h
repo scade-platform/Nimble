@@ -4,6 +4,7 @@
 
 
 @class SCDBindingBindingSelector;
+@class SCDBindingBindingValueTransformer;
 
 
 /*PROTECTED REGION ID(f15d15598acb209dfa0f3346251f7222) START*/
@@ -21,6 +22,9 @@ SCADE_API
 @property(nonatomic) SCDBindingBindingSelector* _Nullable dstSelector;
 
 @property(nonatomic) SCDBindingBindingSyncPoint* _Nullable next;
+
+@property(nonatomic)
+    SCDBindingBindingValueTransformer* _Nullable valueTransformer;
 
 
 /*PROTECTED REGION ID(5d4626da4546863c21f166096070966d) START*/

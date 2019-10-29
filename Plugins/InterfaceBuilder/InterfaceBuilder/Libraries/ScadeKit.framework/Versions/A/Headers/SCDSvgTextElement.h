@@ -1,11 +1,9 @@
 #import <Foundation/Foundation.h>
 
 #import <ScadeKit/SCDSvgFontStyleable.h>
-#import <ScadeKit/SCDSvgTextSegment.h>
 
 
 @protocol SCDSvgFontStyleable;
-@protocol SCDSvgTextSegment;
 
 
 typedef NS_ENUM(NSInteger, SCDSvgTextAnchor);
@@ -20,7 +18,7 @@ typedef NS_ENUM(NSInteger, SCDSvgTextAlignment);
 
 
 SCADE_API
-@protocol SCDSvgTextElement <SCDSvgFontStyleable, SCDSvgTextSegment>
+@protocol SCDSvgTextElement <SCDSvgFontStyleable>
 
 
 @property(nonatomic) SCDSvgTextAnchor anchor;

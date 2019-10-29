@@ -10,7 +10,7 @@
 
 
 SCADE_API
-@protocol SCDSvgTextSegment <EObject>
+@interface SCDSvgTextSegment : EObject
 
 
 @property(nonatomic) NSString* _Nonnull text;

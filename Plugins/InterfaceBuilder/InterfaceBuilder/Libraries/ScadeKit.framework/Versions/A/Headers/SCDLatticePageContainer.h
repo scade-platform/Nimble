@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
-#import <ScadeKit/SCDWidgetsWidget.h>
 #import <ScadeKit/SCDLatticeView.h>
+#import <ScadeKit/SCDWidgetsWidget.h>
 
 
 @protocol SCDLatticeView;

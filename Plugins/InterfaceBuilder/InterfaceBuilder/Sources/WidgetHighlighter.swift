@@ -2,7 +2,7 @@ import ScadeKit
 
 class WidgetHighlighter: WidgetVisitor {
   private var selected: SCDWidgetsWidget?
-  private let pageHighlighter = PageHighlighter()
+//  private let pageHighlighter = PageHighlighter()
 
   public func apply(_ widget: SCDWidgetsWidget) {
     widget.drawing?.gestureRecognizers.append(
@@ -26,12 +26,12 @@ class WidgetHighlighter: WidgetVisitor {
   }
 
   private func onUnselect(_ widget: SCDWidgetsWidget) {
-    pageHighlighter.unselect(widget)
+    //pageHighlighter.unselect(widget)
     //print("unselect: \(widget)")
   }
 
   private func onSelect(_ widget: SCDWidgetsWidget) {
-    pageHighlighter.select(widget)
+    //pageHighlighter.select(widget)
     //print("select: \(widget)")
   }
   

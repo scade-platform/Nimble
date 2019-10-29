@@ -1,10 +1,10 @@
 #import <Foundation/Foundation.h>
 
-#import <ScadeKit/SCDSvgElement.h>
-#import <ScadeKit/SCDSvgTransformable.h>
-#import <ScadeKit/SCDSvgAnimatable.h>
-#import <ScadeKit/SCDSvgTouchReceiver.h>
 #import <ScadeKit/SCDSvgAccessibility.h>
+#import <ScadeKit/SCDSvgAnimatable.h>
+#import <ScadeKit/SCDSvgElement.h>
+#import <ScadeKit/SCDSvgTouchReceiver.h>
+#import <ScadeKit/SCDSvgTransformable.h>
 
 
 @protocol SCDSvgElement;

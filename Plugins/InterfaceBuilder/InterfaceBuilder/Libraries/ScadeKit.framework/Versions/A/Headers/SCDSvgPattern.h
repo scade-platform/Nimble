@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
-#import <ScadeKit/SCDSvgGroup.h>
 #import <ScadeKit/SCDSvgAlignmentElement.h>
+#import <ScadeKit/SCDSvgGroup.h>
 
 
 @protocol SCDSvgAlignmentElement;

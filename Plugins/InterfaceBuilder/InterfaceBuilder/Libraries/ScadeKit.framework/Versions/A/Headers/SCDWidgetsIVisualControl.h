@@ -25,6 +25,8 @@ SCADE_API
 
 @property(nonatomic) NSString* _Nonnull backgroundImage;
 
+@property(nonatomic) long cornerRadius;
+
 
 - (id<SCDWidgetsIVisualControl> _Nullable)copy;
 

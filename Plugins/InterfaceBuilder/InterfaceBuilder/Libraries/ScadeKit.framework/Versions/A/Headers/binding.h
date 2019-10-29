@@ -10,3 +10,7 @@
 #import <ScadeKit/SCDBindingBindingSelector.h>
 
 #import <ScadeKit/SCDBindingCollectionSelector.h>
+
+#import <ScadeKit/SCDBindingBindingValue.h>
+
+#import <ScadeKit/SCDBindingBindingValueTransformer.h>

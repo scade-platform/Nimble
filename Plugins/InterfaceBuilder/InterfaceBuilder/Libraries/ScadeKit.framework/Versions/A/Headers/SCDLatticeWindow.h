@@ -18,7 +18,7 @@ SCADE_API
 @interface SCDLatticeWindow : EObject <SCDLatticeView>
 
 
-- (void)hide:(SCDWidgetsPage* _Nullable)page;
+- (void)close;
 
 
 /*PROTECTED REGION ID(30030e7e608718e656fdb111b2f3e9b8) START*/

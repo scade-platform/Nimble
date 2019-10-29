@@ -11,6 +11,7 @@
 		0CE4E22F23571D1E00114287 /* NimbleConsoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E22D23571D1E00114287 /* NimbleConsoleViewController.swift */; };
 		0CE4E23E23572CEF00114287 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CE4E23C23572A9E00114287 /* Media.xcassets */; };
 		0CE4E24323573B0800114287 /* Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E24223573B0800114287 /* Menu.swift */; };
+		D73D956A236896F4000587B3 /* NimbleConsoleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CE4E22E23571D1E00114287 /* NimbleConsoleViewController.xib */; };
 		D7DC827D2363A2A100D83CC5 /* NSViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E21C234F119900114287 /* NSViewExtensions.swift */; };
 		D7DC82802363A2DB00D83CC5 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DC827F2363A2DB00D83CC5 /* Atomic.swift */; };
 		OBJ_100 /* CYaml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = "Yams::CYaml::Product" /* CYaml.framework */; };
@@ -549,6 +550,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0CE4E23E23572CEF00114287 /* Media.xcassets in Resources */,
+				D73D956A236896F4000587B3 /* NimbleConsoleViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

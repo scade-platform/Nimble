@@ -2,8 +2,8 @@
 
 #import <ScadeKit/SCDSvgContainerElement.h>
 #import <ScadeKit/SCDSvgDrawable.h>
-#import <ScadeKit/SCDSvgStylable.h>
 #import <ScadeKit/SCDSvgFontStyleable.h>
+#import <ScadeKit/SCDSvgStylable.h>
 
 
 @protocol SCDSvgDrawable;

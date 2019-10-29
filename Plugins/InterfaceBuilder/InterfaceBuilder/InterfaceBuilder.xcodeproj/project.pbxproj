@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D751F28322F87F7400D33972 /* ScadeKitExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC10E22D939C100486CC1 /* ScadeKitExtensions.framework */; };
 		D7CD750222B8CC5B004C437B /* InterfaceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CD750122B8CC5B004C437B /* InterfaceBuilder.swift */; };
 		D7CD750522B8CC6F004C437B /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7CD750422B8CC6F004C437B /* NimbleCore.framework */; };
 		D7CD750722B8CCF5004C437B /* PageDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CD750622B8CCF5004C437B /* PageDocument.swift */; };
@@ -16,8 +15,6 @@
 		E42DC10322D9316100486CC1 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC0F922D8E73600486CC1 /* ScadeKit.framework */; };
 		E42DC10722D9356900486CC1 /* InterfaceBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = E42DC10522D9349B00486CC1 /* InterfaceBuilder.mm */; };
 		E42DC11222D939C100486CC1 /* ScadeKitExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = E42DC11022D939C100486CC1 /* ScadeKitExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E42DC11622D9C58B00486CC1 /* PageHighlighter.h in Headers */ = {isa = PBXBuildFile; fileRef = E451B30222C4B925006185B7 /* PageHighlighter.h */; };
-		E42DC11722D9C58F00486CC1 /* PageHighlighter.mm in Sources */ = {isa = PBXBuildFile; fileRef = E451B30122C4B925006185B7 /* PageHighlighter.mm */; };
 		E42DC11822D9C59200486CC1 /* PageView.h in Headers */ = {isa = PBXBuildFile; fileRef = E451B18822B91A4E006185B7 /* PageView.h */; };
 		E42DC11922D9C59500486CC1 /* PageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E451B18922B91A4E006185B7 /* PageView.mm */; };
 		E42DC11A22D9C59900486CC1 /* InterfaceBuilderBridging.h in Headers */ = {isa = PBXBuildFile; fileRef = E451B18722B91A4E006185B7 /* InterfaceBuilderBridging.h */; };
@@ -28,6 +25,18 @@
 		E451B30022C4B69F006185B7 /* WidgetHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2FF22C4B69F006185B7 /* WidgetHighlighter.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		D7DC82962367958D00D83CC5 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = Frameworks;
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		D7CD74F722B8CC24004C437B /* InterfaceBuilder.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InterfaceBuilder.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7CD74FA22B8CC24004C437B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -36,6 +45,8 @@
 		D7CD750622B8CCF5004C437B /* PageDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDocument.swift; sourceTree = "<group>"; };
 		D7CD750822B8CDCC004C437B /* InterfaceBuilderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceBuilderController.swift; sourceTree = "<group>"; };
 		D7CD750922B8CDCC004C437B /* InterfaceBuilderController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InterfaceBuilderController.xib; sourceTree = "<group>"; };
+		D7DC8292236791C700D83CC5 /* display.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = display.hpp; sourceTree = "<group>"; };
+		D7DC82942367930400D83CC5 /* NativeView.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = NativeView.hpp; sourceTree = "<group>"; };
 		E42DC0F822D8E73600486CC1 /* libphoenix.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libphoenix.dylib; sourceTree = "<group>"; };
 		E42DC0F922D8E73600486CC1 /* ScadeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ScadeKit.framework; sourceTree = "<group>"; };
 		E42DC10522D9349B00486CC1 /* InterfaceBuilder.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = InterfaceBuilder.mm; sourceTree = "<group>"; };
@@ -59,7 +70,6 @@
 			files = (
 				E42DC10322D9316100486CC1 /* ScadeKit.framework in Frameworks */,
 				D7CD750522B8CC6F004C437B /* NimbleCore.framework in Frameworks */,
-				D751F28322F87F7400D33972 /* ScadeKitExtensions.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,9 +139,43 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D7DC828F2367913D00D83CC5 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				D7DC82902367917000D83CC5 /* phoenix */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		D7DC82902367917000D83CC5 /* phoenix */ = {
+			isa = PBXGroup;
+			children = (
+				D7DC82912367917C00D83CC5 /* display */,
+			);
+			path = phoenix;
+			sourceTree = "<group>";
+		};
+		D7DC82912367917C00D83CC5 /* display */ = {
+			isa = PBXGroup;
+			children = (
+				D7DC82932367930400D83CC5 /* native */,
+				D7DC8292236791C700D83CC5 /* display.hpp */,
+			);
+			path = display;
+			sourceTree = "<group>";
+		};
+		D7DC82932367930400D83CC5 /* native */ = {
+			isa = PBXGroup;
+			children = (
+				D7DC82942367930400D83CC5 /* NativeView.hpp */,
+			);
+			path = native;
+			sourceTree = "<group>";
+		};
 		E42DC0F722D8E73600486CC1 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				D7DC828F2367913D00D83CC5 /* include */,
 				E42DC0F822D8E73600486CC1 /* libphoenix.dylib */,
 				E42DC0F922D8E73600486CC1 /* ScadeKit.framework */,
 			);
@@ -169,7 +213,6 @@
 				E42DC11822D9C59200486CC1 /* PageView.h in Headers */,
 				E42DC11222D939C100486CC1 /* ScadeKitExtensions.h in Headers */,
 				E42DC11A22D9C59900486CC1 /* InterfaceBuilderBridging.h in Headers */,
-				E42DC11622D9C58B00486CC1 /* PageHighlighter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,6 +244,7 @@
 				E42DC10A22D939C100486CC1 /* Sources */,
 				E42DC10B22D939C100486CC1 /* Frameworks */,
 				E42DC10C22D939C100486CC1 /* Resources */,
+				D7DC82962367958D00D83CC5 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -283,7 +327,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E42DC11722D9C58F00486CC1 /* PageHighlighter.mm in Sources */,
 				E42DC11922D9C59500486CC1 /* PageView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -480,15 +523,7 @@
 					PHOENIX_USE_QUARTZ_RENDER,
 					SCADE_PHOENIX_SUPPORT,
 				);
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../../../../Phoenix/src",
-					"$(PROJECT_DIR)/../../../../ScadeSDK/api/objc/lib",
-					"$(PROJECT_DIR)/../../../../ScadeSDK/src/emf",
-					"$(PROJECT_DIR)/../../../../ScadeSDK/src/ui",
-					"$(PROJECT_DIR)/../../../../ScadeSDK/src",
-					"$(PROJECT_DIR)/../../../../ScadeSDK/src/graphics",
-					"$(PROJECT_DIR)/../../../../ScadeSDK/src/svg",
-				);
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Libraries/include";
 				INFOPLIST_FILE = ScadeKitExtensions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -528,15 +563,7 @@
 					PHOENIX_USE_QUARTZ_RENDER,
 					SCADE_PHOENIX_SUPPORT,
 				);
-				HEADER_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/../../../../Phoenix/src",
-					"$(PROJECT_DIR)/../../../../ScadeSDK/api/objc/lib",
-					"$(PROJECT_DIR)/../../../../ScadeSDK/src/emf",
-					"$(PROJECT_DIR)/../../../../ScadeSDK/src/ui",
-					"$(PROJECT_DIR)/../../../../ScadeSDK/src",
-					"$(PROJECT_DIR)/../../../../ScadeSDK/src/graphics",
-					"$(PROJECT_DIR)/../../../../ScadeSDK/src/svg",
-				);
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Libraries/include";
 				INFOPLIST_FILE = ScadeKitExtensions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = (

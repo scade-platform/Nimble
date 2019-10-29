@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
-#import <ScadeKit/SCDWidgetsTextWidget.h>
 #import <ScadeKit/SCDWidgetsClickable.h>
+#import <ScadeKit/SCDWidgetsTextWidget.h>
 
 
 @protocol SCDWidgetsClickable;

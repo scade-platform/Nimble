@@ -5,6 +5,21 @@
 //  Created by Grigory Markin on 02/02/16.
 //  Copyright © 2016 Scade. All rights reserved.
 //
+
+#if defined(__APPLE__)
+
+#if TARGET_OS_IPHONE
+#import <UIKit/UIView.h>
+typedef UIView NativeView;
+#elif TARGET_OS_MAC
+#import <AppKit/AppKit.h>
+typedef NSView NativeView;
+#endif // TARGET_OS_IPHONE
+
+typedef NativeView* NativeView_ptr;
+
+#endif //__APPLE__
+
 #import <ScadeKit/ScadeKit-Defs.h>
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
@@ -22,6 +37,15 @@
 SCADE_API
 @interface SCDApplication : NSObject
 
+#if TARGET_OS_IPHONE
+@property (assign) CGSize screenSize;
+
+@property (assign) UIView* _Nullable activeTextView;
+
+@property(nonatomic, readonly, getter = rootView) NativeView_ptr _Nonnull rootView;
+
+#endif //TARGET_OS_IPHONE
+
 - (void)onEnterBackground;
 
 - (void)onEnterForeground;
@@ -31,7 +55,6 @@ SCADE_API
 - (void)onOpenWith:(NSString* _Nonnull)url;
 
 - (void)launch;
-
 @end
 
 
@@ -81,6 +104,11 @@ SCADE_API
 + (void)loadMetaModel;
 
 + (EObject* _Nullable)loadXmiResource:(NSString* _Nonnull)relativePath;
+
++ (EObject* _Nullable)readSvgDocument:(NSString* _Nonnull)relativePath;
+
++ (void)writeSvgDocument:(NSString* _Nonnull)relativePath svg:(EObject* _Nonnull)object;
+
 @end
 
 
