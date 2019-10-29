@@ -422,7 +422,6 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				OTHER_SWIFT_FLAGS = "-Xcc -fmodule-map-file=$(SRCROOT)/../oniguruma/src/include/module.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.CodeEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -449,7 +448,6 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				OTHER_SWIFT_FLAGS = "-Xcc -fmodule-map-file=$(SRCROOT)/../oniguruma/src/include/module.modulemap";
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.CodeEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

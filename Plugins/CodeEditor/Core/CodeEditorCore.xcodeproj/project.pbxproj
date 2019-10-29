@@ -3,15 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		D70D243823352E8800338EC7 /* Range.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70D243723352E8800338EC7 /* Range.swift */; };
+		D73D95882368A4A1000587B3 /* Oniguruma in Frameworks */ = {isa = PBXBuildFile; productRef = D73D95872368A4A1000587B3 /* Oniguruma */; };
 		D77C30C922D9E24500F79B96 /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D77C30C822D9E24500F79B96 /* NimbleCore.framework */; };
-		D77C30D722D9E39D00F79B96 /* ColorCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D77C30D422D9E37E00F79B96 /* ColorCode.framework */; };
-		D77C30F522DA2B5800F79B96 /* COniguruma.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D77C30EF22DA2A7C00F79B96 /* COniguruma.framework */; };
-		D77C30F622DA2B5800F79B96 /* Oniguruma.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D77C30F122DA2A7C00F79B96 /* Oniguruma.framework */; };
 		D79A33542359D23C00C98981 /* String+Encoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79A33532359D23C00C98981 /* String+Encoding.swift */; };
 		D7BEC6ED2357CAD000D30CD3 /* NSTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEC6EC2357CAD000D30CD3 /* NSTextView.swift */; };
 		D7C590B022CE9ACF00ACD4BF /* Grammar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C590AF22CE9ACF00ACD4BF /* Grammar.swift */; };
@@ -20,56 +18,17 @@
 		D7C591FE22D7489600ACD4BF /* SyntaxParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C591FD22D7489600ACD4BF /* SyntaxParser.swift */; };
 		D7C5920322D74C5100ACD4BF /* String+Ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C5920222D74C5100ACD4BF /* String+Ranges.swift */; };
 		D7DAB18A2347E32800B728E9 /* Syntax.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DAB1892347E32800B728E9 /* Syntax.swift */; };
+		D7DC82AB2368F63800D83CC5 /* ColorCode in Frameworks */ = {isa = PBXBuildFile; productRef = D7DC82AA2368F63800D83CC5 /* ColorCode */; };
 		D7EAC7D622CD694C00B7701E /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EAC7D522CD694C00B7701E /* Core.swift */; };
 		D7EAC7D822CE6E8100B7701E /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EAC7D722CE6E8100B7701E /* ColorTheme.swift */; };
 		OBJ_102 /* TextDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_11 /* TextDocument.swift */; };
 		OBJ_103 /* TextDocumentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJ_12 /* TextDocumentDelegate.swift */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		D77C30D322D9E37E00F79B96 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D77C30CB22D9E37E00F79B96 /* Packages.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = "ColorCode::ColorCode::Product";
-			remoteInfo = ColorCode;
-		};
-		D77C30D522D9E37E00F79B96 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D77C30CB22D9E37E00F79B96 /* Packages.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = "Packages::Packages::Product";
-			remoteInfo = Packages;
-		};
-		D77C30EE22DA2A7C00F79B96 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D77C30E722DA2A7C00F79B96 /* Oniguruma.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = "Oniguruma::COniguruma::Product";
-			remoteInfo = COniguruma;
-		};
-		D77C30F022DA2A7C00F79B96 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D77C30E722DA2A7C00F79B96 /* Oniguruma.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = "Oniguruma::Oniguruma::Product";
-			remoteInfo = Oniguruma;
-		};
-		D77C30F222DA2A7C00F79B96 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D77C30E722DA2A7C00F79B96 /* Oniguruma.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = "Oniguruma::Samples::Product";
-			remoteInfo = Samples;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		"CodeEditorCore::CodeEditorCore::Product" /* CodeEditorCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CodeEditorCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D70D243723352E8800338EC7 /* Range.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Range.swift; sourceTree = "<group>"; };
 		D77C30C822D9E24500F79B96 /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D77C30CB22D9E37E00F79B96 /* Packages.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Packages.xcodeproj; path = Packages/Packages.xcodeproj; sourceTree = "<group>"; };
-		D77C30E722DA2A7C00F79B96 /* Oniguruma.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Oniguruma.xcodeproj; path = ../oniguruma/Oniguruma.xcodeproj; sourceTree = "<group>"; };
 		D79A33532359D23C00C98981 /* String+Encoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Encoding.swift"; sourceTree = "<group>"; };
 		D7BEC6EC2357CAD000D30CD3 /* NSTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTextView.swift; sourceTree = "<group>"; };
 		D7C590AF22CE9ACF00ACD4BF /* Grammar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grammar.swift; sourceTree = "<group>"; };
@@ -90,10 +49,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 0;
 			files = (
-				D77C30F622DA2B5800F79B96 /* Oniguruma.framework in Frameworks */,
-				D77C30F522DA2B5800F79B96 /* COniguruma.framework in Frameworks */,
-				D77C30D722D9E39D00F79B96 /* ColorCode.framework in Frameworks */,
 				D77C30C922D9E24500F79B96 /* NimbleCore.framework in Frameworks */,
+				D7DC82AB2368F63800D83CC5 /* ColorCode in Frameworks */,
+				D73D95882368A4A1000587B3 /* Oniguruma in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,34 +64,6 @@
 				D77C30C822D9E24500F79B96 /* NimbleCore.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		D77C30CC22D9E37E00F79B96 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D77C30D422D9E37E00F79B96 /* ColorCode.framework */,
-				D77C30D622D9E37E00F79B96 /* Packages.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		D77C30D822D9E3AF00F79B96 /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				D77C30E722DA2A7C00F79B96 /* Oniguruma.xcodeproj */,
-				D77C30CB22D9E37E00F79B96 /* Packages.xcodeproj */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
-		D77C30E822DA2A7C00F79B96 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D77C30EF22DA2A7C00F79B96 /* COniguruma.framework */,
-				D77C30F122DA2A7C00F79B96 /* Oniguruma.framework */,
-				D77C30F322DA2A7C00F79B96 /* Samples */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		D7C590FA22D27D6800ACD4BF /* Language */ = {
@@ -183,7 +113,6 @@
 		OBJ_5 = {
 			isa = PBXGroup;
 			children = (
-				D77C30D822D9E3AF00F79B96 /* Packages */,
 				OBJ_7 /* Configs */,
 				OBJ_75 /* Products */,
 				OBJ_9 /* Sources */,
@@ -231,6 +160,10 @@
 			dependencies = (
 			);
 			name = CodeEditorCore;
+			packageProductDependencies = (
+				D73D95872368A4A1000587B3 /* Oniguruma */,
+				D7DC82AA2368F63800D83CC5 /* ColorCode */,
+			);
 			productName = CodeEditorCore;
 			productReference = "CodeEditorCore::CodeEditorCore::Product" /* CodeEditorCore.framework */;
 			productType = "com.apple.product-type.framework";
@@ -253,62 +186,18 @@
 				en,
 			);
 			mainGroup = OBJ_5;
+			packageReferences = (
+				D73D95862368A4A1000587B3 /* XCRemoteSwiftPackageReference "oniguruma" */,
+				D7DC82A92368F63800D83CC5 /* XCRemoteSwiftPackageReference "WFColorCode" */,
+			);
 			productRefGroup = OBJ_75 /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = D77C30E822DA2A7C00F79B96 /* Products */;
-					ProjectRef = D77C30E722DA2A7C00F79B96 /* Oniguruma.xcodeproj */;
-				},
-				{
-					ProductGroup = D77C30CC22D9E37E00F79B96 /* Products */;
-					ProjectRef = D77C30CB22D9E37E00F79B96 /* Packages.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				"CodeEditorCore::CodeEditorCore" /* CodeEditorCore */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		D77C30D422D9E37E00F79B96 /* ColorCode.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = ColorCode.framework;
-			remoteRef = D77C30D322D9E37E00F79B96 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D77C30D622D9E37E00F79B96 /* Packages.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Packages.framework;
-			remoteRef = D77C30D522D9E37E00F79B96 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D77C30EF22DA2A7C00F79B96 /* COniguruma.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = COniguruma.framework;
-			remoteRef = D77C30EE22DA2A7C00F79B96 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D77C30F122DA2A7C00F79B96 /* Oniguruma.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Oniguruma.framework;
-			remoteRef = D77C30F022DA2A7C00F79B96 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D77C30F322DA2A7C00F79B96 /* Samples */ = {
-			isa = PBXReferenceProxy;
-			fileType = text;
-			path = Samples;
-			remoteRef = D77C30F222DA2A7C00F79B96 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		OBJ_101 /* Sources */ = {
@@ -348,10 +237,13 @@
 					"$(SRCROOT)/.build/checkouts/Yams/Sources/CYaml/include",
 				);
 				INFOPLIST_FILE = CodeEditorCore.xcodeproj/CodeEditorCore_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+				);
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(SRCROOT)/../oniguruma/src/include/module.modulemap";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = CodeEditorCore;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -408,7 +300,8 @@
 				SDKROOT = macosx;
 				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) SWIFT_PACKAGE";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				USE_HEADERMAP = NO;
 			};
 			name = Release;
@@ -427,10 +320,13 @@
 					"$(SRCROOT)/.build/checkouts/Yams/Sources/CYaml/include",
 				);
 				INFOPLIST_FILE = CodeEditorCore.xcodeproj/CodeEditorCore_Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/macosx";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(TOOLCHAIN_DIR)/usr/lib/swift/macosx",
+				);
 				OTHER_CFLAGS = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
-				OTHER_SWIFT_FLAGS = "$(inherited) -Xcc -fmodule-map-file=$(SRCROOT)/../oniguruma/src/include/module.modulemap";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = CodeEditorCore;
 				PRODUCT_MODULE_NAME = "$(TARGET_NAME:c99extidentifier)";
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -463,6 +359,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D73D95862368A4A1000587B3 /* XCRemoteSwiftPackageReference "oniguruma" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/FLORG1/oniguruma.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		D7DC82A92368F63800D83CC5 /* XCRemoteSwiftPackageReference "WFColorCode" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/1024jp/WFColorCode.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D73D95872368A4A1000587B3 /* Oniguruma */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D73D95862368A4A1000587B3 /* XCRemoteSwiftPackageReference "oniguruma" */;
+			productName = Oniguruma;
+		};
+		D7DC82AA2368F63800D83CC5 /* ColorCode */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D7DC82A92368F63800D83CC5 /* XCRemoteSwiftPackageReference "WFColorCode" */;
+			productName = ColorCode;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = OBJ_1 /* Project object */;
 }
