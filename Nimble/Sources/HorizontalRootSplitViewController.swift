@@ -19,29 +19,11 @@ class HorizontalRootSplitViewController: NSSplitViewController {
     return children[1] as? DebugViewController
   }
   
-  var consoleViewController: ConsoleController? {
-    set {
-      guard let value = newValue else {
-        if let splitView = consoleSplitViewItem {
-          self.removeSplitViewItem(splitView)
-          consoleSplitViewItem = nil
-          innerConsoleViewController = nil          
-        }
-        return
-      }
-      consoleSplitViewItem = NSSplitViewItem(viewController: value)
-      self.addSplitViewItem(consoleSplitViewItem!)
-      self.innerConsoleViewController = value
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    guard let debugViewController = debugViewController else {
+      return
     }
-    get {
-      return innerConsoleViewController
-    }
+    debugViewController.isHidden = true
   }
-  
-  var consoleIsShown: Bool {
-    return innerConsoleViewController != nil
-  }
-  
-  private var innerConsoleViewController: ConsoleController? = nil
-  private var consoleSplitViewItem: NSSplitViewItem? = nil
 }
