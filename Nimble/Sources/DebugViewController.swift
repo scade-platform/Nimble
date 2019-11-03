@@ -10,11 +10,16 @@ import Cocoa
 import NimbleCore
 
 public class DebugViewController: NSViewController {
-  
+  lazy var consoleViewController: ConsoleViewController = {
+    let console = ConsoleViewController.loadFromNib()
+    self.add(part: console)
+    return console
+  }()
 }
 
 extension DebugViewController: WorkbenchArea {
   public func add(part: WorkbenchPart) {
+    //TODO: improve it, every area should be able to host many views
     self.view.subviews.removeAll()
     self.view.addSubview(part.view)
     part.view.translatesAutoresizingMaskIntoConstraints = false

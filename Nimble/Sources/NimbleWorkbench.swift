@@ -18,7 +18,6 @@ public class NimbleWorkbench: NSWindowController {
         return
       }
       PluginManager.shared.activate(workbench: self)
-      debugArea?.add(part: ConsoleManager.shared.controllerInstance() as! WorkbenchPart)
       project.subscribe(resourceObserver: self)
     }
   }
@@ -89,13 +88,16 @@ extension NimbleWorkbench: Workbench {
     }
   }
   
-
   public func save(file: File) {
     self.projectDocument?.save(file: file)
   }
+    
+  public func createConsole(title: String, show: Bool) -> Console? {
+    return viewController?.debugViewController?.consoleViewController.createConsole(title: title, show: show)
+  }
 }
 
-extension NimbleWorkbench: ResourceObserver{
+extension NimbleWorkbench: ResourceObserver {
   public func changed(event: ResourceChangeEvent) {
     guard event.project === self.project, let deltas = event.deltas, !deltas.isEmpty else {
       return

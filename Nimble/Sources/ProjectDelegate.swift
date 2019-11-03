@@ -11,16 +11,15 @@ import NimbleCore
 
 class DefaultProjectDelegate: ProjectDelegate {
   
+  
+  
   func runSimulator(folder: Folder) {
-    let console: Console?
     guard let toolchain = NimbleController.shared.toolchainPath else {
       return
     }
-    if let consoleController = ConsoleManager.shared.controllerInstance() {
-      console = consoleController.createConsole(title: "Simulator", show: true)
-    } else {
-      console = nil
-    }
+    
+    let console = NimbleController.workbench?.createConsole(title: "Simulator", show: true)
+    
     let simulatorTask = Process()
     simulatorTask.currentDirectoryPath = "\(folder.path.string)/.build/scade-simulator"
     simulatorTask.executableURL = URL(fileURLWithPath: "\(toolchain)/bin/macos/PhoenixSimulator.app/Contents/MacOS/PhoenixSimulator")
@@ -33,7 +32,8 @@ class DefaultProjectDelegate: ProjectDelegate {
 
   
   func build(folder: Folder) {
-    if let workbench = (NimbleController.shared.currentDocument as? ProjectDocument)?.workbench, var debugArea = workbench.debugArea as? Hideable {
+    if let workbench = NimbleController.workbench,
+        var debugArea = workbench.debugArea as? Hideable {
       debugArea.isHidden = false
     }
     cMakeRun(folder)
@@ -41,12 +41,7 @@ class DefaultProjectDelegate: ProjectDelegate {
 
   
   private func cMakeRun(_ folder: Folder) {
-    let console: Console?
-    if let consoleController = ConsoleManager.shared.controllerInstance()  {
-      console = consoleController.createConsole(title: "CMake Run", show: true)
-    } else {
-      console = nil
-    }
+    let console = NimbleController.workbench?.createConsole(title: "CMake Run", show: true)
     
     guard let toolchain = NimbleController.shared.toolchainPath else {
       if let console = console {
@@ -71,12 +66,8 @@ class DefaultProjectDelegate: ProjectDelegate {
     guard let toolchain = NimbleController.shared.toolchainPath else {
       return
     }
-    let console: Console?
-    if let consoleController = ConsoleManager.shared.controllerInstance()  {
-      console = consoleController.createConsole(title: "Build", show: true)
-    }else {
-      console = nil
-    }
+    let console = NimbleController.workbench?.createConsole(title: "Build", show: true)
+
     let buildTask = Process()
     buildTask.currentDirectoryURL = URL(fileURLWithPath: "\(folder.path.string)/.build/scade-simulator")
     buildTask.executableURL = URL(fileURLWithPath: "\(toolchain)/thirdparty/CMake.app/Contents/bin/cmake")

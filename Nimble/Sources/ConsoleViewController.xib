@@ -5,7 +5,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="NimbleConsoleViewController" customModule="NimbleConsole" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="ConsoleViewController" customModule="NimbleConsole" customModuleProvider="target">
             <connections>
                 <outlet property="clearButton" destination="KC3-0c-zVn" id="UJp-WX-6yS"/>
                 <outlet property="closeButton" destination="N6a-kt-c8u" id="Cwn-ri-qfS"/>
@@ -27,7 +27,7 @@
                             <rect key="frame" x="0.0" y="176" width="480" height="401"/>
                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="ruM-Th-wN2">
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="401"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
                                     <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="489-L5-7Z7">
                                         <rect key="frame" x="0.0" y="0.0" width="480" height="401"/>

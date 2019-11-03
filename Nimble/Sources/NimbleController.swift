@@ -22,6 +22,10 @@ class NimbleController : NSDocumentController {
     return NSDocumentController.shared as! NimbleController
   }
   
+  public static var workbench: Workbench? {
+    return (NimbleController.shared.currentDocument as? ProjectDocument)?.workbench
+  }
+  
   //TODO: improve it
   var toolchainPath: String? {
     return ProcessInfo.processInfo.environment["TOOLCHAIN_PATH"]

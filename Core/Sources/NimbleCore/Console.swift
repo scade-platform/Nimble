@@ -7,6 +7,7 @@
 
 import Cocoa
 
+
 public protocol Console {
 
   var title: String { get }
@@ -39,8 +40,10 @@ public protocol Console {
   func close()
 }
 
+
+
+
 public extension Console {
-  
   func writeLine() -> Console {
     return write(string: "\n")
   }
@@ -73,32 +76,6 @@ public extension Console {
   func writeLine(data: Data) -> Console {
     return write(data: data).writeLine()
   }
-  
-  
-}
-
-public protocol ConsoleController: NSViewController {
-  
-  func createConsole(title: String, show: Bool) -> Console
-  
-}
-
-
-public class ConsoleManager {
-  
-  public static let shared = ConsoleManager()
-  
-  private var loadedController: ConsoleController?
-  
-  public func controllerInstance() -> ConsoleController? {
-    if let loaded = loadedController {
-      return loaded
-    }
-    let result = NimbleConsoleViewController.loadFromNib()
-    self.loadedController = result
-    return loadedController
-  }
-  
 }
 
 

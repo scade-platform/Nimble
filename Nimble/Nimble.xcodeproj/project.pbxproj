@@ -23,6 +23,8 @@
 		D72F958A222CAD0C009F2EC3 /* WorkbenchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F9579222CA4B5009F2EC3 /* WorkbenchViewController.swift */; };
 		D72F959C222DF2D9009F2EC3 /* WorkbenchSidebar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */; };
 		D72F959F222DF7AF009F2EC3 /* WorkbenchSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F959E222DF7AF009F2EC3 /* WorkbenchSidebar.swift */; };
+		D7415490236CA5E600A1B80C /* ConsoleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D741548D236CA5E600A1B80C /* ConsoleViewController.swift */; };
+		D7415491236CA5E600A1B80C /* ConsoleViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D741548F236CA5E600A1B80C /* ConsoleViewController.xib */; };
 		D751F28D22F881C800D33972 /* KPCTabsControl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D751F28C22F881B800D33972 /* KPCTabsControl.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D788ED452239C2750072C21E /* NimbleWorkbench.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */; };
 		D791B2E222B053C5001BBA0E /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D791B2E122B053C5001BBA0E /* EditorViewController.swift */; };
@@ -106,6 +108,8 @@
 		D72F9579222CA4B5009F2EC3 /* WorkbenchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchViewController.swift; sourceTree = "<group>"; };
 		D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkbenchSidebar.xib; sourceTree = "<group>"; };
 		D72F959E222DF7AF009F2EC3 /* WorkbenchSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchSidebar.swift; sourceTree = "<group>"; };
+		D741548D236CA5E600A1B80C /* ConsoleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsoleViewController.swift; sourceTree = "<group>"; };
+		D741548F236CA5E600A1B80C /* ConsoleViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConsoleViewController.xib; sourceTree = "<group>"; };
 		D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KPCTabsControl.xcodeproj; path = Dependencies/TabsControl/KPCTabsControl.xcodeproj; sourceTree = "<group>"; };
 		D78BCB05222B4DE300AE0A9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D791B2E122B053C5001BBA0E /* EditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorViewController.swift; sourceTree = "<group>"; };
@@ -217,6 +221,8 @@
 			isa = PBXGroup;
 			children = (
 				D72F959D222DF2F4009F2EC3 /* Controls */,
+				D741548D236CA5E600A1B80C /* ConsoleViewController.swift */,
+				D741548F236CA5E600A1B80C /* ConsoleViewController.xib */,
 				D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */,
 				D72F9579222CA4B5009F2EC3 /* WorkbenchViewController.swift */,
 				D72F956A222C50A7009F2EC3 /* NavigatorViewController.swift */,
@@ -333,6 +339,7 @@
 			files = (
 				0CCC757822DF199900C0CCF4 /* TabbedEditorController.xib in Resources */,
 				D72F959C222DF2D9009F2EC3 /* WorkbenchSidebar.xib in Resources */,
+				D7415491236CA5E600A1B80C /* ConsoleViewController.xib in Resources */,
 				D7CBF7D6222878F40088715C /* Main.storyboard in Resources */,
 				0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */,
 				0C238B12233E4E3D004F87E7 /* Assets.xcassets in Resources */,
@@ -349,6 +356,7 @@
 				D72F9589222CAD09009F2EC3 /* NavigatorViewController.swift in Sources */,
 				0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */,
 				D791B2E222B053C5001BBA0E /* EditorViewController.swift in Sources */,
+				D7415490236CA5E600A1B80C /* ConsoleViewController.swift in Sources */,
 				D72F959F222DF7AF009F2EC3 /* WorkbenchSidebar.swift in Sources */,
 				0CB6607822F41D1500CBB386 /* NimbleController.swift in Sources */,
 				D788ED452239C2750072C21E /* NimbleWorkbench.swift in Sources */,

@@ -22,6 +22,8 @@ public protocol Workbench {
   
   var debugArea: WorkbenchArea? { get }
   
+  
+  
   @discardableResult
   func open(file: File) -> Document?
   
@@ -29,6 +31,7 @@ public protocol Workbench {
   
   func save(file: File)
   
+  func createConsole(title: String, show: Bool) -> Console?
 }
 
 public protocol WorkbenchArea {
