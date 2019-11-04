@@ -26,7 +26,7 @@ class NimbleController : NSDocumentController {
     return (NimbleController.shared.currentDocument as? ProjectDocument)?.workbench
   }
   
-  //TODO: improve it
+  //TODO: move it from here to the Build sub-system
   var toolchainPath: String? {
     return ProcessInfo.processInfo.environment["TOOLCHAIN_PATH"]
   }
@@ -116,17 +116,19 @@ class NimbleController : NSDocumentController {
     }
     projectDoc.add(files: urls)
   }
-  
-  override func openDocument(_ sender: Any?) {
+        
+  override func openDocument(withContentsOf url: URL, display displayDocument: Bool, completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void) {
+    
     if let project = currentProject {
       if project.files.isEmpty, project.folders.isEmpty, project.name == nil {
-        switchProject(sender)
+        ///TODO: pass and call completion handler
+        switchProject(urls: [url])
         return
       }
     }
-    super.openDocument(sender)
+    
+    super.openDocument(withContentsOf: url, display: displayDocument, completionHandler: completionHandler)
   }
-  
   
   @IBAction func showConsole(_ sender: Any?) {
     guard let doc = currentDocument as? ProjectDocument, let workbench = doc.workbench, var debugArea = workbench.debugArea as? Hideable else {
