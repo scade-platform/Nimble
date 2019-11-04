@@ -129,13 +129,6 @@
             ReferencedContainer = "container:Nimble.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "TOOLCHAIN_PATH"
-            value = "/Users/danilkristalev/Documents/Work/Scade/runtime-New_configuration/.metadata/.plugins/com.scade.sdk.toolchain.nightly/Toolchain"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
