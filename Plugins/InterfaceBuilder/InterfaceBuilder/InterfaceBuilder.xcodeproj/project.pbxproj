@@ -7,12 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D7798F64236F0F6D00CBF9B7 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC0F922D8E73600486CC1 /* ScadeKit.framework */; };
+		D7798F65236F0F6D00CBF9B7 /* ScadeKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC0F922D8E73600486CC1 /* ScadeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D7798F66236F0F7700CBF9B7 /* ScadeKitExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC10E22D939C100486CC1 /* ScadeKitExtensions.framework */; };
+		D7798F67236F0F7700CBF9B7 /* ScadeKitExtensions.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC10E22D939C100486CC1 /* ScadeKitExtensions.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D7798F6A236F0FA600CBF9B7 /* libphoenix.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC0F822D8E73600486CC1 /* libphoenix.dylib */; };
+		D7798F6B236F0FA600CBF9B7 /* libphoenix.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC0F822D8E73600486CC1 /* libphoenix.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D7799136236F16DF00CBF9B7 /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7799135236F16DF00CBF9B7 /* NimbleCore.framework */; };
 		D7CD750222B8CC5B004C437B /* InterfaceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CD750122B8CC5B004C437B /* InterfaceBuilder.swift */; };
-		D7CD750522B8CC6F004C437B /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7CD750422B8CC6F004C437B /* NimbleCore.framework */; };
 		D7CD750722B8CCF5004C437B /* PageDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CD750622B8CCF5004C437B /* PageDocument.swift */; };
 		D7CD750A22B8CDCC004C437B /* InterfaceBuilderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CD750822B8CDCC004C437B /* InterfaceBuilderController.swift */; };
 		D7CD750B22B8CDCC004C437B /* InterfaceBuilderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7CD750922B8CDCC004C437B /* InterfaceBuilderController.xib */; };
-		E42DC10322D9316100486CC1 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC0F922D8E73600486CC1 /* ScadeKit.framework */; };
 		E42DC10722D9356900486CC1 /* InterfaceBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = E42DC10522D9349B00486CC1 /* InterfaceBuilder.mm */; };
 		E42DC11222D939C100486CC1 /* ScadeKitExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = E42DC11022D939C100486CC1 /* ScadeKitExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E42DC11822D9C59200486CC1 /* PageView.h in Headers */ = {isa = PBXBuildFile; fileRef = E451B18822B91A4E006185B7 /* PageView.h */; };
@@ -25,7 +30,30 @@
 		E451B30022C4B69F006185B7 /* WidgetHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2FF22C4B69F006185B7 /* WidgetHighlighter.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		D7798F68236F0F7700CBF9B7 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D7CD74EF22B8CC24004C437B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E42DC10D22D939C100486CC1;
+			remoteInfo = ScadeKitExtensions;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
+		D7798F60236F0E5800CBF9B7 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D7798F6B236F0FA600CBF9B7 /* libphoenix.dylib in Embed Frameworks */,
+				D7798F65236F0F6D00CBF9B7 /* ScadeKit.framework in Embed Frameworks */,
+				D7798F67236F0F7700CBF9B7 /* ScadeKitExtensions.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		D7DC82962367958D00D83CC5 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 12;
@@ -38,6 +66,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D7799135236F16DF00CBF9B7 /* NimbleCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7CD74F722B8CC24004C437B /* InterfaceBuilder.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InterfaceBuilder.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7CD74FA22B8CC24004C437B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7CD750122B8CC5B004C437B /* InterfaceBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceBuilder.swift; sourceTree = "<group>"; };
@@ -68,8 +97,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E42DC10322D9316100486CC1 /* ScadeKit.framework in Frameworks */,
-				D7CD750522B8CC6F004C437B /* NimbleCore.framework in Frameworks */,
+				D7799136236F16DF00CBF9B7 /* NimbleCore.framework in Frameworks */,
+				D7798F6A236F0FA600CBF9B7 /* libphoenix.dylib in Frameworks */,
+				D7798F64236F0F6D00CBF9B7 /* ScadeKit.framework in Frameworks */,
+				D7798F66236F0F7700CBF9B7 /* ScadeKitExtensions.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -133,6 +164,7 @@
 		D7CD750322B8CC6F004C437B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D7799135236F16DF00CBF9B7 /* NimbleCore.framework */,
 				E42DC11D22D9C7A800486CC1 /* AppKit.framework */,
 				D7CD750422B8CC6F004C437B /* NimbleCore.framework */,
 			);
@@ -226,12 +258,16 @@
 				D7CD74F322B8CC24004C437B /* Sources */,
 				D7CD74F422B8CC24004C437B /* Frameworks */,
 				D7CD74F522B8CC24004C437B /* Resources */,
+				D7798F60236F0E5800CBF9B7 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				D7798F69236F0F7700CBF9B7 /* PBXTargetDependency */,
 			);
 			name = InterfaceBuilder;
+			packageProductDependencies = (
+			);
 			productName = InterfaceBuilder;
 			productReference = D7CD74F722B8CC24004C437B /* InterfaceBuilder.plugin */;
 			productType = "com.apple.product-type.bundle";
@@ -332,6 +368,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D7798F69236F0F7700CBF9B7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E42DC10D22D939C100486CC1 /* ScadeKitExtensions */;
+			targetProxy = D7798F68236F0F7700CBF9B7 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		D7CD74FB22B8CC24004C437B /* Debug */ = {
@@ -509,11 +553,12 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -538,6 +583,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.ScadeKitExtensions;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -549,11 +595,12 @@
 			buildSettings = {
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
 				CLANG_CXX_LIBRARY = "compiler-default";
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
@@ -578,6 +625,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.ScadeKitExtensions;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";

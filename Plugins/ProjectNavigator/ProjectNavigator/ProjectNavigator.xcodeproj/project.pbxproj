@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		0CE4E240235733D200114287 /* ProjectNavigatorMenuBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E23F235733D200114287 /* ProjectNavigatorMenuBuilder.swift */; };
 		0CEB19AC231552950092E801 /* FileTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEB19AB231552950092E801 /* FileTableCellView.swift */; };
+		D7799139236F16E800CBF9B7 /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7799138236F16E800CBF9B7 /* NimbleCore.framework */; };
 		D788ED5A2239C6A50072C21E /* ProjectNavigatorPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788ED592239C6A50072C21E /* ProjectNavigatorPart.swift */; };
-		D788ED5E2239CB050072C21E /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D788ED5B2239C9D60072C21E /* NimbleCore.framework */; };
 		D788ED62223AC30A0072C21E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D788ED61223AC30A0072C21E /* Assets.xcassets */; };
 		D788ED67223B20270072C21E /* ProjectOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788ED66223B20270072C21E /* ProjectOutlineView.swift */; };
 		D788ED6C223B22C10072C21E /* ProjectOutlineView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D788ED6B223B22C10072C21E /* ProjectOutlineView.xib */; };
@@ -20,6 +20,7 @@
 /* Begin PBXFileReference section */
 		0CE4E23F235733D200114287 /* ProjectNavigatorMenuBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorMenuBuilder.swift; sourceTree = "<group>"; };
 		0CEB19AB231552950092E801 /* FileTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTableCellView.swift; sourceTree = "<group>"; };
+		D7799138236F16E800CBF9B7 /* NimbleCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D788ED592239C6A50072C21E /* ProjectNavigatorPart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorPart.swift; sourceTree = "<group>"; };
 		D788ED5B2239C9D60072C21E /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D788ED61223AC30A0072C21E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -35,7 +36,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D788ED5E2239CB050072C21E /* NimbleCore.framework in Frameworks */,
+				D7799139236F16E800CBF9B7 /* NimbleCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +86,7 @@
 		D7CBF901222ACE290088715C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D7799138236F16E800CBF9B7 /* NimbleCore.framework */,
 				D788ED5B2239C9D60072C21E /* NimbleCore.framework */,
 			);
 			name = Frameworks;
@@ -106,6 +108,8 @@
 			dependencies = (
 			);
 			name = ProjectNavigator;
+			packageProductDependencies = (
+			);
 			productName = ProjectNavigator;
 			productReference = D7CBF8CF222ACD770088715C /* ProjectNavigator.plugin */;
 			productType = "com.apple.product-type.bundle";

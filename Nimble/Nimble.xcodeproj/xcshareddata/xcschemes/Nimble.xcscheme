@@ -30,7 +30,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D7D2D58822B1B48C0017B45D"
                BuildableName = "CodeEditor.plugin"
-               BlueprintName = "CodeEditor"
+               BlueprintName = "CodeEditor.plugin"
                ReferencedContainer = "container:../Plugins/CodeEditor/CodeEditor/CodeEditor.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -97,8 +97,6 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <Testables>
-      </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
@@ -108,8 +106,8 @@
             ReferencedContainer = "container:Nimble.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
+      <Testables>
+      </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -138,8 +136,6 @@
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

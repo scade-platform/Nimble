@@ -7,7 +7,7 @@
 //
 
 import AppKit
-import CodeEditorCore
+import CodeEditor
 
 extension CodeEditorTextView {
   

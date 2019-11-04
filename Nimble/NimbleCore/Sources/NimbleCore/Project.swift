@@ -163,7 +163,7 @@ public class Project {
   
   public func make(folder name: String, at parent: URL) {
     let parentPath = Path(url: parent)
-    if let newElement = try? parentPath?.join(name).mkdir(), let (folder, element) = findElement(newElement!.url){
+    if let newElement = try? parentPath?.join(name).mkdir(), let (folder, element) = findElement(newElement.url){
       performEvent(container: folders, url: folder.path.url, kind: .changed, innerDeltas: [ResourceDelta(resource: element, kind: .added)])
     }
     

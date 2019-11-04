@@ -7,7 +7,7 @@
 //
 
 import Cocoa
-import CodeEditorCore
+import CodeEditor
 
 class CodeEditorController: NSViewController, NSTextViewDelegate {
   weak var doc: SourceCodeDocument? = nil {

@@ -8,7 +8,7 @@
 
 import AppKit
 import NimbleCore
-import CodeEditorCore
+import CodeEditor
 
 public final class SourceCodeDocument: NSDocument, TextDocument {
   let textStorage = NSTextStorage()

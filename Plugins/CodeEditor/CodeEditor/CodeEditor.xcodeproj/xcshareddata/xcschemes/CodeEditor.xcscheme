@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D7D2D58822B1B48C0017B45D"
                BuildableName = "CodeEditor.plugin"
-               BlueprintName = "CodeEditor"
+               BlueprintName = "CodeEditor.plugin"
                ReferencedContainer = "container:CodeEditor.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -29,8 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -47,12 +45,10 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D7D2D58822B1B48C0017B45D"
             BuildableName = "CodeEditor.plugin"
-            BlueprintName = "CodeEditor"
+            BlueprintName = "CodeEditor.plugin"
             ReferencedContainer = "container:CodeEditor.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -65,7 +61,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D7D2D58822B1B48C0017B45D"
             BuildableName = "CodeEditor.plugin"
-            BlueprintName = "CodeEditor"
+            BlueprintName = "CodeEditor.plugin"
             ReferencedContainer = "container:CodeEditor.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

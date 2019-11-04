@@ -4,32 +4,20 @@
    <FileRef
       location = "container:Nimble/Nimble.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:Core/NimbleCore.xcodeproj">
-   </FileRef>
    <Group
       location = "container:"
       name = "Plugins">
       <FileRef
-         location = "group:Plugins/ImageViewer/ImageViewer.xcodeproj">
-      </FileRef>
-      <FileRef
          location = "group:Plugins/CodeEditor/CodeEditor/CodeEditor.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:Plugins/CodeEditor/CodeEditor/../Core/CodeEditorCore.xcodeproj">
+         location = "group:Plugins/ImageViewer/ImageViewer.xcodeproj">
       </FileRef>
       <FileRef
          location = "group:Plugins/InterfaceBuilder/InterfaceBuilder/InterfaceBuilder.xcodeproj">
       </FileRef>
       <FileRef
          location = "group:Plugins/ProjectNavigator/ProjectNavigator/ProjectNavigator.xcodeproj">
-      </FileRef>
-      <FileRef
-         location = "group:Plugins/SwiftExtensions/SwiftExtensions/SwiftExtensions.xcodeproj">
-      </FileRef>
-      <FileRef
-         location = "group:Plugins/SwiftExtensions/sourcekit-lsp/SourceKitLSP.xcodeproj">
       </FileRef>
    </Group>
 </Workspace>

@@ -11,7 +11,8 @@ import CoreText
 import CoreGraphics
 
 import NimbleCore
-import CodeEditorCore
+import CodeEditor
+
 
 public final class CodeEditor: Module {
   public static var pluginClass: Plugin.Type = CodeEditorPlugin.self
