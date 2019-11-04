@@ -28,16 +28,8 @@ public class NimbleWorkbench: NSWindowController {
   
   public override func windowDidLoad() {
     super.windowDidLoad()
-//    if CommandLine.arguments.count > 1,
-//      let path = Path(CommandLine.arguments[1]), path.isDirectory {
-//      project?.add(folders: [path.url])
-//    }
   }
   
-  //  func launch() -> Void {
-  //    pluginManager.activate(workbench: self)
-  //  }
-  //
   //  func terminate() -> Void {
   //    pluginManager.deactivate()
   //  }
