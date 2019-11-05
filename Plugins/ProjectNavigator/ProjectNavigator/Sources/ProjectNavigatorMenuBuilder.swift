@@ -121,7 +121,7 @@ class ProjectNavigatorMenuBuilder: MenuBuilder {
     }
     showRenameAlert(message: "Please enter a new name:", fileSystemElement, handler: {str in
       if !str.isEmpty, str != fileSystemElement.name {
-        self.workbench.project?.rename(fileSystemElement: fileSystemElement.path.url, new: str)
+//        self.workbench.project?.rename(fileSystemElement: fileSystemElement.path.url, new: str)
       }
     })
   }
@@ -140,7 +140,7 @@ class ProjectNavigatorMenuBuilder: MenuBuilder {
       return
     }
     if result {
-      workbench.project?.remove(url: fileSystemElement.path.url)
+//      workbench.project?.remove(url: fileSystemElement.path.url)
     }
   }
   
@@ -153,7 +153,7 @@ class ProjectNavigatorMenuBuilder: MenuBuilder {
     }
     showRenameAlert(message: "Please enter a name:", nil, handler: {str in
       if !str.isEmpty {
-        self.workbench.project?.make(folder: str, at: fileSystemElement.path.url)
+//        self.workbench.project?.make(folder: str, at: fileSystemElement.path.url)
       }
     })
   }

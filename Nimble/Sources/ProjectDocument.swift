@@ -1,145 +1,81 @@
 //
-//  ProjectDocument.swift
+//  NimbleProjectDocument.swift
 //  Nimble
 //
-//  Created by Danil Kristalev on 31/07/2019.
+//  Created by Danil Kristalev on 29/10/2019.
 //  Copyright © 2019 SCADE. All rights reserved.
 //
 
-import AppKit
+import Cocoa
 import NimbleCore
 
-class ProjectDocument : NSDocument {
+class ProjectDocument: NSDocument, ProjectDocumentProtocol {
   
-  var project: Project
+  private(set) var project: Project = Project()
   
   var workbench: Workbench? {
-      return self.windowForSheet?.windowController as? Workbench
+    return self.windowForSheet?.windowController as? Workbench
   }
   
-  private var incorrectPaths : [String]?
+  var notificationCenter: ProjectNotificationCenter {
+    return self
+  }
+  
+  override var fileURL: URL? {
+    didSet {
+      project.location = fileURL?.deletingLastPathComponent()
+    }
+  }
+  
+  private var observations = [ObjectIdentifier : Observation]()
   
   override init() {
-    project = Project()
-    project.delegate = DefaultProjectDelegate()
     super.init()
-    
+    project.observer = self
   }
   
-  init(contentsOf url: URL, ofType typeName: String) throws {
-    project = Project(url: url)
-    super.init()
-    try read(from: url, ofType: typeName)
+  convenience init(contentsOf url: URL, ofType typeName: String) throws {
+    self.init()
+    project.observer = self
     self.fileURL = url
     self.fileType = typeName
+    try read(from: url, ofType: typeName)
   }
   
-  
-  // MARK: - Enablers
-  
-  // This enables auto save.
-  override class var autosavesInPlace: Bool {
-    return true
-  }
-  
-  // This enables asynchronous-writing.
   override func canAsynchronouslyWrite(to url: URL, ofType typeName: String, for saveOperation: NSDocument.SaveOperationType) -> Bool {
     return true
   }
   
-  // This enables asynchronous reading.
   override class func canConcurrentlyReadDocuments(ofType: String) -> Bool {
     return ofType == "com.scade.nimble.project"
   }
   
-  
-  // MARK: - User Interface
-  
   override func makeWindowControllers() {
-    // Returns the storyboard that contains your document window.
     let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: nil)
     if let windowController =
       storyboard.instantiateController(
         withIdentifier: NSStoryboard.SceneIdentifier("Document Window Controller")) as? NSWindowController {
-      if let workbench = windowController as? NimbleWorkbench {
-        workbench.projectDocument = self
-      }
       addWindowController(windowController)
-      showIncorrectPaths()
+      if let workbench = windowController as? NimbleWorkbench {
+        workbench.launch()
+      }
     }
   }
   
-  func switchProject(contentsOf url: URL, ofType typeName: String) throws {
-    self.project = Project(subscribersFrom: project, url: url)
-    project.delegate = DefaultProjectDelegate()
-    try read(from: url, ofType: typeName)
-    showIncorrectPaths()
-  }
-  
-  // MARK: - Reading and Writing
-  
-  /// - Tag: readExample
   override func read(from data: Data, ofType typeName: String) throws {
-    incorrectPaths = project.read(from: data)
+    try project.read(from: data, incorrectPathHandler: {incorrectPaths in
+      if Thread.isMainThread {
+        self.showAlert(incorrectPaths)
+      } else {
+        DispatchQueue.main.async {
+          self.showAlert(incorrectPaths)
+        }
+      }
+    })
   }
   
-  /// - Tag: writeExample
   override func data(ofType typeName: String) throws -> Data {
-    return project.data(document: self) ?? Data()
-  }
-  
-  func showIncorrectPaths(){
-    if let paths = incorrectPaths, !paths.isEmpty {
-      let alert = NSAlert()
-      alert.messageText =  "Project file has incorrect paths:"
-      let pathsMessage = paths.reduce("", {$0 + $1 + "\n"})
-      alert.informativeText = pathsMessage
-      alert.addButton(withTitle: "OK")
-      alert.alertStyle = .warning
-      alert.runModal()
-    }
-  }
-
-  
-  func add(folders urls: [URL]){
-    project.add(folders: urls)
-  }
-  
-  func add(files urls: [URL]){
-    project.open(files: urls)
-  }
-  
-  @IBAction func saveProjectAs(_ sender: Any? ){
-    saveAs(sender)
-  }
-  
-  @IBAction func saveFile(_ sender: Any? ){
-    guard let workbench = workbench as? NimbleWorkbench else {
-      return
-    }
-    save(file: (workbench.viewController?.editorViewController?.currentFile!)!)
-  }
-  
-  @IBAction func saveFileAs(_ sender: Any? ){
-    guard let workbench = workbench as? NimbleWorkbench else {
-      return
-    }
-    saveAs(file: (workbench.viewController?.editorViewController?.currentFile!)!)
-  }
-  
-  func saveAs(file: File){
-    let doc = (try! file.open()!) as NSDocument
-    let fileURL = doc.fileURL!
-    doc.saveAs(nil)
-    project.saved(url: fileURL)
-    project.close(file: fileURL)
-    project.open(files: [doc.fileURL!])
-  }
-  
-  func save(file: File){
-    let doc = (try! file.open()!) as NSDocument
-    doc.save(nil)
-    project.saved(url: doc.fileURL!)
+    return try project.data()
   }
   
   override func save(to url: URL, ofType typeName: String, for saveOperation: NSDocument.SaveOperationType, completionHandler: @escaping (Error?) -> Void) {
@@ -152,10 +88,88 @@ class ProjectDocument : NSDocument {
     return true
   }
   
-  @IBAction func closeFile(_ sender: Any?) {
-    guard let workbench = workbench as? NimbleWorkbench else {
+  @IBAction func saveProjectAs(_ sender: Any? ){
+    saveAs(sender)
+  }
+}
+
+extension ProjectDocument {
+  func showAlert(_ incorrectPaths: [String] ) {
+    if !incorrectPaths.isEmpty {
+      let alert = NSAlert()
+      alert.messageText =  "Project file has incorrect paths:"
+      let pathsMessage = incorrectPaths.reduce("", {$0 + $1 + "\n"})
+      alert.informativeText = pathsMessage
+      alert.addButton(withTitle: "OK")
+      alert.alertStyle = .warning
+      alert.runModal()
+    }
+  }
+  
+  func change(projectTo url: URL) throws {
+    guard url != fileURL else {
       return
     }
-    workbench.viewController?.editorViewController?.closeCurrentTab()
+    project = Project()
+    fileURL = url
+    displayName = url.lastPathComponent
+    if let typeName = fileType {
+      try read(from: url, ofType: typeName)
+    } else if let typeName = ProjectController.shared.defaultType {
+      fileType = typeName
+      try read(from: url, ofType: typeName)
+    }
+    projectDidChange()
+  }
+  
+  func add(folders urls: [URL]){
+    project.add(folders: urls)
+  }
+  
+  func open(files urls: [URL]) {
+    for url in urls where url.file != nil {
+      self.workbench?.open(file: url.file!)
+    }
+  }
+}
+
+private extension ProjectDocument {
+  struct Observation {
+    weak var observer: ProjectObserver?
+  }
+  
+  func projectDidChange() {
+    for (id, observation) in observations {
+      guard let observer = observation.observer else {
+        observations.removeValue(forKey: id)
+        continue
+      }
+      observer.projectDidChanged(project)
+    }
+  }
+}
+
+extension ProjectDocument : ProjectObserver {
+  func project(_ project: Project, didUpdated folders: [Folder]) {
+    for (id, observation) in observations {
+      guard let observer = observation.observer else {
+        observations.removeValue(forKey: id)
+        continue
+      }
+      observer.project(project, didUpdated: folders)
+    }
+  }
+}
+
+
+extension ProjectDocument : ProjectNotificationCenter {
+  func addProjectObserver(_ observer: ProjectObserver) {
+    let id = ObjectIdentifier(observer)
+    observations[id] = Observation(observer: observer)
+  }
+  
+  func removeProjectObserver(_ observer: ProjectObserver) {
+    let id = ObjectIdentifier(observer)
+    observations.removeValue(forKey: id)
   }
 }

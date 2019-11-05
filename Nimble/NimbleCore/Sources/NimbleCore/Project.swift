@@ -9,372 +9,241 @@
 import Cocoa
 import Yams
 
+public protocol ProjectControllerProtocol where Self: NSDocumentController {}
+
+public protocol ProjectDocumentProtocol where Self: NSDocument {
+  var project: Project { get }
+  var workbench: Workbench? { get }
+  var notificationCenter: ProjectNotificationCenter { get }
+}
+
+public class ProjectController {
+  public static let shared = try! ProjectController()
+  private let controllerInstance: ProjectControllerProtocol
+  
+  private init() throws {
+    guard let nimbleController = NSDocumentController.shared as? ProjectControllerProtocol else {
+      throw ControllerErrors.init(reason: .controllerNotFound)
+    }
+    self.controllerInstance = nimbleController
+  }
+}
+
+public extension ProjectController {
+  
+  var defaultType: String? {
+    return controllerInstance.defaultType
+  }
+  
+  var currentWorkbench: Workbench? {
+    guard let projectDocument = controllerInstance.currentDocument as? ProjectDocumentProtocol else {
+        return nil
+    }
+    return projectDocument.workbench
+  }
+  
+  func projectDocument(for workbench: Workbench) -> ProjectDocumentProtocol? {
+    guard let window = workbench.window,
+      let projectDocument = controllerInstance.document(for: window) as? ProjectDocumentProtocol else {
+        return nil
+    }
+    return projectDocument
+  }
+  
+  func project(for workbench: Workbench) -> Project? {
+    return projectDocument(for: workbench)?.project
+  }
+}
+
+public protocol ProjectNotificationCenter {
+  func addProjectObserver(_ observer: ProjectObserver)
+  func removeProjectObserver(_ observer: ProjectObserver)
+}
+
+public protocol ProjectObserver: class {
+  func projectDidChanged(_ newProject: Project)
+  func project(_ project: Project, didUpdated folders: [Folder])
+}
+
+public extension ProjectObserver {
+  func projectDidChanged(_ newProject: Project) {}
+  func project(_ project: Project, didUpdated folders: [Folder]) {}
+}
+
+@propertyWrapper
+public struct ProjectObserverDelegate {
+  private weak var innerObserver: ProjectObserver? = nil
+
+  public var wrappedValue: ProjectObserver?  {
+    get {return innerObserver}
+    set  {
+      if let notificationCenter = newValue as? ProjectNotificationCenter {
+        innerObserver = notificationCenter as? ProjectObserver
+      } else {
+        innerObserver = nil
+      }
+    }
+  }
+  
+  public init(){
+    
+  }
+}
+
 public class Project {
-  public private(set) var files = [File]()
-  public private(set) var folders = [Folder]()
-  private let location: Path?
-  public let name: String?
-  public var delegate: ProjectDelegate? = nil
-  private var observers = [ResourceObserver]()
-  
-  
-  public init(url: URL?  = nil){
-    if let url = url, let path = Path(url: url)  {
-      location = path.parent
-      name = path.basename(dropExtension: true)
-    } else {
-      location = nil
-      name = nil
-    }
-  }
-  
-  public convenience init(subscribersFrom project: Project, url: URL?  = nil) {
-    self.init(url: url)
-    self.observers.append(contentsOf: project.observers)
-    let deltas = project.files.map{ResourceDelta(resource: $0, kind: .closed)}
-    chargeResourceChangeEvent(type: .post, deltas: deltas)
-  }
-  
-  public func subscribe(resourceObserver : ResourceObserver ) {
-    self.observers.append(resourceObserver)
-  }
-  
-  private func notifyResourceObservers(_ event: ResourceChangeEvent){
-    DispatchQueue.main.async {
-      self.observers.forEach{$0.changed(event: event)}
-    }
-  }
-  
-  private func chargeResourceChangeEvent(type: ResourceChangeEvent.TypeEvent, deltas : [ResourceDelta]?){
-    guard let deltas = deltas, !deltas.isEmpty else {
+  public private(set) var folders: [Folder] = []
+  public var location: URL? = nil
+  @ProjectObserverDelegate public var observer: ProjectObserver?
+  public init() {}
+}
+
+public extension Project {
+  func read(from data: Data, incorrectPathHandler handler : (([String]) -> Void)?) throws {
+    let yamlContent = String(bytes: data, encoding: .utf8)!
+    guard !yamlContent.isEmpty else {
       return
     }
-    notifyResourceObservers(ResourceChangeEvent(project: self, type: type, deltas: deltas))
-  }
-  
-  public func rename(fileSystemElement url: URL, new name: String){
-    if let renamedFile = files.first(where: {$0.path.url == url}) {
-      let oldPath = renamedFile.path
-      let newPath = try? renamedFile.path.rename(to: name)
-      guard let newUrl = newPath?.url else {
-        return
+    do {
+      let loadingDictionary = try Yams.load(yaml: yamlContent) as? [String: [String]]
+      guard let loadedDictionary = loadingDictionary else {
+        throw ParserErrors(reason: .incorrectFormat)
       }
-      close(file: oldPath.url)
-      open(files: [newUrl])
-    }
-    if let renamedFolder = folders.first(where: {$0.path.url == url}) {
-      let oldPath = renamedFolder.path
-      let newPath = try? renamedFolder.path.rename(to: name)
-      guard let newUrl = newPath?.url else {
-        return
-      }
-      folders = folders.filter{$0.path.url != oldPath.url}
-      performEvent(container: folders, url: oldPath.url, kind: .closed)
-      add(folders: [newUrl])
-    }
-    
-    if let (folder, element) = findElement(url) {
-      let renamedFS = element
-      let newPath = try? renamedFS.path.rename(to: name)
-      guard let path = newPath else {
-        return
-      }
-      if let (_, newFs) = findElement(path.url) {
-        performEvent(container: folders, url: folder.path.url, kind: .changed, innerDeltas: [ResourceDelta(resource: renamedFS, kind: .closed), ResourceDelta(resource: newFs, kind: .added)])
-      }
-      
+      var incorrectPaths : [String] = []
+      extract(from: loadedDictionary, incorrectPaths: &incorrectPaths)
+      handler?(incorrectPaths)
+    } catch {
+      throw ParserErrors(reason: .YAMLParseError(error))
     }
   }
   
-  private func findElement(_ url: URL) -> (rootFolder: Folder, element: FileSystemElement)? {
-    for folder in folders {
-      let (contains, element) = lookInto(folder: folder, url)
-      if contains {
-        return (folder, element!)
-      }
+  func data() throws -> Data {
+    guard let location = location else {
+      throw PathErrors(reason: .projectLocationIsNil)
     }
-    return nil
-  }
-  
-  private func lookInto(folder: Folder, _ url: URL) -> (contains: Bool, element: FileSystemElement?){
-    guard let content = folder.content else {
-      return (false, nil)
+    let foldersPath = try createFoldersRealtivePaths(for: location)
+    let yaml = foldersPath.reduce("Folders:\n") { result, path in
+      return result + "  - \(path)\n"
     }
-    if let element = content.first(where: {$0.path.url == url}){
-      return (true, element)
+    guard let result = yaml.data(using: .utf8) else {
+      throw DataErrors(reason: .stringNotConvertToUTF8Data(yaml))
     }
-    for subFolder in content where subFolder is Folder {
-      let (contains, element) = lookInto(folder: subFolder as! Folder, url)
-      if contains {
-        return (true, element)
-      }
-    }
-    return (false, nil)
+    return result
   }
   
-  public func add(folders urls: [URL]) {
-    add(items: urls, addFunc: addFolder(_:))
-  }
-  
-  public func open(files urls: [URL]) {
-    add(items: urls, addFunc: addFile(_:))
-  }
-  
-  public func openAll(fileSystemElements items: [URL]){
-    add(folders: items)
-    open(files: items)
-  }
-  
-  public func changed(url: URL) {
-    performEvent(container: files, url: url, kind: .changed)
-  }
-  
-  public func saved(url: URL) {
-    performEvent(container: files, url: url, kind: .saved)
-  }
-  
-  public func remove(url: URL) {
-    if let removedFile = files.first(where: {$0.path.url == url}){
-      close(file: removedFile.path.url)
-      try? removedFile.path.delete()
-    }
-    if let (folder, element) = findElement(url){
-      try? element.path.delete()
-      performEvent(container: folders, url: folder.path.url, kind: .changed, innerDeltas: [ResourceDelta(resource: element, kind: .closed)])
-    }
-  }
-  
-  public func close(file: URL) {
-    let closableFils = files.filter{$0.path.url == file}
-    files = files.filter{$0.path.url != file}
-    closableFils.forEach{$0.close()}
-    let deltas = closableFils.map{ResourceDelta(resource: $0, kind: .closed)}
-    chargeResourceChangeEvent(type: .post, deltas: deltas)
-  }
-  
-  public func build(folder: Folder) {
-    delegate?.build(folder: folder)
-  }
-  
-  
-  public func runSimulator(folder: Folder){
-    delegate?.runSimulator(folder: folder)
-  }
-  
-  public func make(folder name: String, at parent: URL) {
-    let parentPath = Path(url: parent)
-    if let newElement = try? parentPath?.join(name).mkdir(), let (folder, element) = findElement(newElement.url){
-      performEvent(container: folders, url: folder.path.url, kind: .changed, innerDeltas: [ResourceDelta(resource: element, kind: .added)])
-    }
-    
-  }
-  
-  private func performEvent(container: [FileSystemElement], url: URL, kind: ResourceDelta.Kind, innerDeltas: [ResourceDelta]? = nil){
-    let fsURL = container.map{$0.path.url}
-    guard fsURL.contains(url), let changedElement = container.first(where: {$0.path.url == url}) else {
-      return
-    }
-    chargeResourceChangeEvent(type: .post, deltas: [ResourceDelta(resource: changedElement, kind: kind, deltas: innerDeltas)])
-  }
-  
-  private func add(items urls: [URL], addFunc: (String) -> ResourceDelta?) {
+  func add(folders urls: [URL]) {
     guard !urls.isEmpty else {
       return
     }
-    var deltas = [ResourceDelta?]()
     for url in urls {
-      deltas.append(addFunc(url.path))
+      append(folder: url.path)
     }
-    chargeResourceChangeEvent(type: .post, deltas: deltas.compactMap{$0})
+    observer?.project(self, didUpdated: folders)
   }
-  
-  private func addFolder(_ folder: String) -> ResourceDelta? {
-    let predicate: (Path) -> Bool = { path in
-      return path.exists && path.isDirectory
+}
+
+fileprivate extension Project {
+  func extract(from dictionary: [String: [String]], incorrectPaths: inout [String]) {
+    guard let items = dictionary[caseInsensitive: "FOLDERS"] else {
+      return
     }
-    return add(folder, type: Folder.self, target: &folders, predicate: predicate)
-  }
-  
-  private func addFile(_ file: String) -> ResourceDelta? {
-    let predicate: (Path) -> Bool = { path in
-      return path.exists && path.isFile
-    }
-    return add(file, type: File.self, target: &files, predicate: predicate)
-  }
-  
-  private func add<T: FileSystemElement>(_ item: String, type : T.Type, target: inout [T], predicate: (Path) -> Bool) -> ResourceDelta? {
-    let contains = target.contains{$0.path.string == item}
-    guard !contains else {
-      return nil
-    }
-    guard let path = Path(item), let delta = add(item: path, type: type, target: &target, predicate: predicate) else {
-      guard let absolutePath = convertToAbsolutePath(relative: item) else {
-        return nil
+    for item in items {
+      guard let _ = append(folder: item) else {
+        incorrectPaths.append(item)
+        continue
       }
-      return add(item: absolutePath, type: type, target: &target, predicate: predicate)
     }
-    return delta
   }
   
-  private func add<T: FileSystemElement>(item path: Path, type : T.Type, target: inout [T], predicate : (Path) -> Bool) -> ResourceDelta? {
-    guard predicate(path) else {
+  @discardableResult
+  private func append(folder string: String) -> Folder? {
+    guard let path = createExistPath(string) else {
       return nil
     }
-    let newItem = type.init(path: path)
-    target.append(newItem)
-    return ResourceDelta(resource: newItem, kind: .added)
+    let folder = Folder(path: path)
+    if !folders.contains(folder) {
+      folders.append(folder)
+      return folder
+    } else {
+      return folders.first(where: {$0.path.string == string})
+    }
   }
   
+  private func createExistPath(_ string: String) -> Path? {
+    if let path = Path(string), validate(path) {
+      return path
+    } else if let path = convertToAbsolutePath(relative: string), validate(path) {
+      return path
+    }
+    return nil
+  }
+  
+  private func validate(_ path: Path) -> Bool {
+    return path.exists && path.isDirectory
+  }
   
   private func convertToAbsolutePath(relative path: String) -> Path? {
-    guard let base = self.location else {
+    guard let base = self.location, let basePath = Path(url: base) else {
       return nil
     }
-    return base.join(path)
+    return basePath.join(path)
   }
   
-  deinit {
-    observers.removeAll()
-  }
-}
-
-
-extension Project {
-  public func read(from data: Data) -> [String]? {
-    let yamlContent = String(bytes: data, encoding: .utf8)!
-    guard !yamlContent.isEmpty else {
-      return nil
+  private func createFoldersRealtivePaths(for location: URL) throws -> [String] {
+    guard var locationPath = Path(url: location) else {
+      throw PathErrors(reason: .incorrectURL(location))
     }
-    let loadedDictionary = try? Yams.load(yaml: yamlContent) as! [String: [String]]
-    if let loadedDictionary = loadedDictionary {
-      var incorrectPaths = [String]()
-      if let p = parse(loadedDictionary, section: "FOLDERS", addFunc: addFolder(_:)){
-        incorrectPaths.append(contentsOf: p)
+    if locationPath.isFile {
+      locationPath = locationPath.parent
+    }
+    return folders.map{ item in
+      let relative = item.path.relative(to: locationPath)
+      if relative.isEmpty {
+        return "."
       }
-      if let p = parse(loadedDictionary, section: "FILES", addFunc: addFile(_:)){
-        incorrectPaths.append(contentsOf: p)
-      }
-      if !incorrectPaths.isEmpty {
-        return incorrectPaths
-      }
+      return relative
     }
-    return nil
-  }
-  
-  private func parse(_ loadedDictionary: [String: [String]], section: String, addFunc: (String) -> ResourceDelta?) -> [String]? {
-    guard let itemsPaths = loadedDictionary[caseInsensitive: section] else {
-      return nil
-    }
-    var incorrectPaths = [String]()
-    var deltas = [ResourceDelta?]()
-    for itemPath in itemsPaths {
-      if let delta = addFunc(itemPath){
-        deltas.append(delta)
-      } else {
-        incorrectPaths.append(itemPath)
-      }
-    }
-    chargeResourceChangeEvent(type: .post, deltas: deltas.compactMap{$0})
-    if !incorrectPaths.isEmpty {
-      return incorrectPaths
-    }
-    return nil
-  }
-  
-  public func data(document : NSDocument) -> Data? {
-    let folders = foldersYAML(document)
-    let files = filesYAML(document)
-    var result = folders ?? ""
-    result = result + (files ?? "")
-    return result.data(using: .utf8)
-  }
-  
-  private func foldersYAML(_ document: NSDocument) -> String? {
-    guard !folders.isEmpty, let documentURL = document.fileURL else{
-      return nil
-    }
-    return createYAML(url: documentURL, arr: folders, section: "Folders:")
-  }
-  
-  private func filesYAML(_ document: NSDocument) -> String? {
-    guard !files.isEmpty, let documentURL = document.fileURL else{
-      return nil
-    }
-    return createYAML(url: documentURL, arr: files, section: "Files:")
-  }
-  
-  private func createYAML(url: URL, arr: [FileSystemElement], section: String) -> String {
-    let documentPath = Path(url: url)?.parent
-    let result: String = arr.reduce("") { res, item in
-      let relativePath = item.path.relative(to: documentPath!)
-      if relativePath.isEmpty{
-        return res + "  - .\n"
-      }else{
-        return res + ("  - \(relativePath)\n")
-      }
-    }
-    return "\(section)\n" + result
   }
 }
 
-public protocol ProjectDelegate {
-  func runSimulator(folder: Folder)
-  func stopSimulator(folder: Folder)
-  func runCMake(folder: Folder)
-  func build(folder: Folder)
-}
-
-public extension ProjectDelegate{
-  func runSimulator(folder: Folder){
-    //default implementation
-  }
-  
-  func stopSimulator(folder: Folder){
-    //default implementation
-  }
-  
-  func runCMake(folder: Folder){
-    //default implementation
-  }
-  
-  func build(folder: Folder){
-    //default implementation
+public struct ProjectError<Reason>: Error {
+  public var reason: Reason
+  public init(reason: Reason) {
+    self.reason = reason
   }
 }
 
-public protocol ResourceObserver {
-  func changed(event: ResourceChangeEvent)
-}
-
-public struct ResourceChangeEvent {
-  public let project: Project
-  public let type: TypeEvent
-  public let deltas: [ResourceDelta]?
-  
-  public enum TypeEvent {
-    case post
+extension ProjectError: CustomStringConvertible {
+  public var description: String {
+    return """
+    Reason: \(reason)
+    """
   }
 }
 
-public struct ResourceDelta {
-  public let resource: FileSystemElement
-  public let kind: Kind
-  public let deltas: [ResourceDelta]?
-  
-  init(resource: FileSystemElement, kind: Kind, deltas: [ResourceDelta]? = nil) {
-    self.resource = resource
-    self.kind = kind
-    self.deltas = deltas
-  }
-  
-  public enum Kind {
-    case added
-    case removed
-    case changed
-    case closed
-    case saved
-  }
+public enum PathErrorReason {
+  case incorrectURL(URL)
+  case projectLocationIsNil
 }
+
+public enum DataErrorReson {
+  case stringNotConvertToUTF8Data(String)
+}
+
+public enum ControllerErrorReason {
+  case controllerNotFound
+}
+
+public enum ParserErrorReason {
+  case YAMLParseError(Error)
+  case incorrectFormat
+}
+
+
+typealias ControllerErrors = ProjectError<ControllerErrorReason>
+typealias ParserErrors = ProjectError<ParserErrorReason>
+typealias PathErrors = ProjectError<PathErrorReason>
+typealias DataErrors = ProjectError<DataErrorReson>
+
 
 private extension Dictionary where Key == String {
   

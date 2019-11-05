@@ -18,20 +18,19 @@ open class ProjectNavigatorPart: WorkbenchPart {
     return outlineView
   }
   
-  private var openFiles: DataSource?
-  private var folders: DataSource?
+  private var folders: RootItem?
+  private var openedDocuments: OpenedDocumentsSource?
   
   internal var workbench: Workbench? = nil {
     didSet {
       guard let workbench = workbench else {return}
       outlineView.workbench = workbench
-      openFiles = OpenFiles(workbench: workbench, title: "OPEN FILES", cell: "ClosableDataCell")
-      folders = Folders(workbench: workbench, title: "FOLDERS", cell: "DataCell")
-      outlineDataSource = ProjectOutlineDataSource(workbench, filesRootItem: openFiles!, foldersRootItem: folders!)
+      folders = FoldersSource(title: "FOLDERS", cell: "Data cell", workbench: workbench)
+      openedDocuments = OpenedDocumentsSource(title: "OPENED DOCUMENTS", cell: "ClosableDataCell")
+      outlineDataSource = ProjectOutlineDataSource(workbench, foldersRootItem: folders!, openedDocumentsRootItem: openedDocuments!)
       outlineView.outline?.delegate = outlineDataSource
       outlineView.outline?.dataSource = outlineDataSource
       outlineView.outline?.floatsGroupRows = false
-      outlineView.outline?.expandItem(openFiles)
       outlineView.outline?.expandItem(folders)
       
     }
@@ -52,14 +51,14 @@ open class ProjectNavigatorPart: WorkbenchPart {
 
 public class ProjectOutlineDataSource: NSObject {
   private let workbench: Workbench
-  private let openFiles: DataSource
-  private let folders: DataSource
+  private let folders: RootItem
+  private let openDocuments: RootItem
   
-  init?(_ workbench: Workbench?, filesRootItem openFiles: DataSource, foldersRootItem folders: DataSource) {
+  fileprivate init?(_ workbench: Workbench?, foldersRootItem folders: RootItem, openedDocumentsRootItem openDocuments: RootItem) {
     guard let _workbench = workbench else { return nil }
     self.workbench = _workbench
-    self.openFiles = openFiles
     self.folders = folders
+    self.openDocuments = openDocuments
   }
 }
 
@@ -68,14 +67,15 @@ extension ProjectOutlineDataSource: NSOutlineViewDataSource {
   public func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
     guard let item = item else {
       if index == 0 {
-        return openFiles
-      }else{
+        return openDocuments
+      } else {
         return folders
       }
     }
-    
     switch item {
-    case let root as DataSource:
+    case let root as OpenedDocumentsSource:
+      return root.data[index]
+    case let root as FoldersSource:
       return root.data[index]
     case let folder as Folder:
       guard let foldersContent = folder.content else {
@@ -83,12 +83,6 @@ extension ProjectOutlineDataSource: NSOutlineViewDataSource {
         return self
       }
       return foldersContent[index]
-    case is Project:
-      if index == 0 {
-        return openFiles
-      }else{
-        return folders
-      }
     default:
       return self
     }
@@ -96,7 +90,9 @@ extension ProjectOutlineDataSource: NSOutlineViewDataSource {
   
   public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
     switch item {
-    case let root as DataSource:
+    case let root as OpenedDocumentsSource:
+      return root.data.count > 0
+    case let root as FoldersSource:
       return root.data.count > 0
     case let folder as Folder:
       if folder.path.exists{
@@ -108,8 +104,6 @@ extension ProjectOutlineDataSource: NSOutlineViewDataSource {
       }else {
         return false
       }
-    case let project as Project:
-      return project.folders.count > 0 || project.files.count > 0
     default:
       return false
     }
@@ -119,7 +113,9 @@ extension ProjectOutlineDataSource: NSOutlineViewDataSource {
     guard let item = item else { return 2 }
     
     switch item {
-    case let root as DataSource:
+    case let root as OpenedDocumentsSource:
+      return root.data.count
+    case let root as FoldersSource:
       return root.data.count
     case let folder as Folder:
       guard let foldersContent = folder.content else {
@@ -127,9 +123,6 @@ extension ProjectOutlineDataSource: NSOutlineViewDataSource {
         return 0
       }
       return !folder.path.isSymlink ? foldersContent.count : 0
-    case _ as Project :
-      return 2
-      
     default:
       return 0
     }
@@ -177,31 +170,22 @@ extension ProjectOutlineDataSource: NSOutlineViewDelegate {
       }
       
       return view
-      
     case let file as File:
-      let parentItem = outlineView.parent(forItem: item)
-      let cellName: String
-      if let rootItem = parentItem as? RootItem {
-        cellName = rootItem.cell
-      } else {
-        cellName = "DataCell"
-      }
-      guard let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: cellName), owner: self) as? NSTableCellView else { return nil }
-      if let closableView = view as? FileTableCellView {
-        closableView.closeFileCallback = { [unowned self] file in
-          if self.checkForSave(file: file as! File) {
-            self.workbench.project?.close(file: file.path.url)
-          }
-        }
-        if !(workbench.changedFiles?.contains(file) ?? false) {
-          view.textField?.font = NSFont.systemFont(ofSize: (view.textField?.font!.pointSize)!)
-        }
-        
-      }
+      guard let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "DataCell"), owner: self) as? NSTableCellView else { return nil }
       view.objectValue = item
       view.textField?.stringValue = file.name
       view.imageView?.image = Bundle(for: type(of: self)).image(forResource: "document")
-      
+      return view
+    case let document as Document:
+      guard let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ClosableDataCell"), owner: self) as? NSTableCellView else { return nil }
+      if let closableView = view as? FileTableCellView {
+        closableView.closeDocumentCallback = { [unowned self] document in
+          self.workbench.close(document: document)
+        }
+      }
+      view.objectValue = document
+      view.textField?.stringValue = document.title
+      view.imageView?.image = Bundle(for: type(of: self)).image(forResource: "document")
       return view
     default:
       return nil
@@ -212,6 +196,9 @@ extension ProjectOutlineDataSource: NSOutlineViewDelegate {
     guard let outlineView = notification.object as? NSOutlineView else { return }
     if let item = outlineView.item(atRow: outlineView.selectedRow) as? File {
       self.workbench.preview(file: item)
+    }
+    if let item = outlineView.item(atRow: outlineView.selectedRow) as? Document {
+      self.workbench.preview(document: item)
     }
   }
   
@@ -228,13 +215,13 @@ extension ProjectOutlineDataSource: NSOutlineViewDelegate {
   }
   
   func checkForSave(file: File) -> Bool {
-    if workbench.changedFiles?.contains(file) ?? false{
-      let result = saveDialog(question: "Do you want to save the changes you made to \(file.name)? ", text: "Your changes will be lost if you don't save them")
-      if result.save {
-        workbench.save(file: file)
-      }
-      return result.close
-    }
+//    if workbench.changedFiles?.contains(file) ?? false{
+//      let result = saveDialog(question: "Do you want to save the changes you made to \(file.name)? ", text: "Your changes will be lost if you don't save them")
+//      if result.save {
+//        workbench.save(file: file)
+//      }
+//      return result.close
+//    }
     return true
   }
 }
@@ -251,103 +238,80 @@ func saveDialog(question: String, text: String) -> (save: Bool, close: Bool) {
   return (save: result == .alertFirstButtonReturn, close:  result == .alertThirdButtonReturn || result == .alertFirstButtonReturn)
 }
 
-protocol DataSource {
-  var data: [FileSystemElement] {get}
+protocol DataSource : class {
+  associatedtype DataType
+  var data: [DataType] { get }
 }
 
-class RootItem: NSObject {
-  let workbench: Workbench
+fileprivate class RootItem: NSObject {
   let title: String
   let cell: String
   
-  init(workbench: Workbench, title: String, cell: String){
-    self.workbench = workbench
+  init(title: String, cell: String){
     self.title = title
     self.cell = cell
   }
 }
 
-class OpenFiles: RootItem, DataSource {
-  var data: [FileSystemElement] {
-    return self.workbench.project?.files ?? []
+fileprivate class FoldersSource: RootItem {
+  let workbench: Workbench
+  
+  init(title: String, cell: String, workbench: Workbench){
+    self.workbench = workbench
+    super.init(title: title, cell: cell)
   }
 }
 
-class Folders: RootItem, DataSource {
-  var data: [FileSystemElement] {
-    return self.workbench.project?.folders ?? []
+extension FoldersSource : DataSource {
+  var data: [Folder] {
+    return workbench.project?.folders ?? []
   }
 }
 
-extension ProjectNavigatorPart : ResourceObserver {
-  public func changed(event: ResourceChangeEvent) {
-    guard let deltas = event.deltas, !deltas.isEmpty, let _ = outlineView.outline else {
-      return
-    }
-    update(openFiles: deltas.filter{$0.resource is File})
-    update(folders: deltas.filter{$0.resource is Folder})
+fileprivate class OpenedDocumentsSource: RootItem {
+  var openedDocuments : [Document] = []
+}
+
+extension OpenedDocumentsSource : DataSource {
+  var data: [Document] {
+    return openedDocuments
   }
-  
-  private func update(folders deltas: [ResourceDelta]) {
-    guard !deltas.isEmpty, let outline = outlineView.outline else {
-      return
-    }
-    let item = outline.item(atRow: outline.selectedRow) as? FileSystemElement
-    let folderChangedDeltas = deltas.filter{$0.kind == .changed}.compactMap{$0.deltas}.flatMap{$0}
-    if !folderChangedDeltas.isEmpty {
-      if let closedItem = folderChangedDeltas.first(where: {$0.resource.path == item?.path}), closedItem.kind == .closed {
-        let parent = outline.parent(forItem: item)
-        outline.reloadItem(parent, reloadChildren: true)
-      }
-      if let _ = folderChangedDeltas.first(where: {$0.kind == .added}) {
-        outline.reloadItem(item, reloadChildren: true)
-      }
-    }
-    if deltas.contains(where: {$0.kind == .added}){
-      outline.reloadItem(folders, reloadChildren: true)
-    }
-    if !outline.isItemExpanded(folders) {
-      outline.expandItem(folders)
+}
+
+extension ProjectNavigatorPart : ProjectObserver {
+  public func project(_ project: Project, didUpdated folders: [Folder]) {
+    outlineView.outline?.reloadData()
+    DispatchQueue.main.async {
+      self.outlineView.outline?.expandItem(self.folders)
     }
   }
   
-  private func update(openFiles deltas: [ResourceDelta]) {
-    guard !deltas.isEmpty, let outline = outlineView.outline else {
-      return
+  public func projectDidChanged(_ newProject: Project) {
+    outlineView.outline?.reloadData()
+    DispatchQueue.main.async {
+      self.outlineView.outline?.expandItem(self.folders)
     }
-    if let changedItem = deltas.first(where: {$0.kind == .changed}), let cell = cellView(for: changedItem) {
-      cell.textField?.font = NSFontManager.shared.convert(NSFont.systemFont(ofSize: (cell.textField?.font!.pointSize)!), toHaveTrait: .italicFontMask)
-    }
-    if let savedItem = deltas.first(where: {$0.kind == .saved}), let cell = cellView(for: savedItem) {
-      if workbench?.changedFiles?.contains(savedItem.resource as! File) ?? false {
-        cell.textField?.font = NSFont.systemFont(ofSize: (cell.textField?.font!.pointSize)!)
-      }
-    }
-    outline.reloadItem(openFiles, reloadChildren: true)
-    if !outline.isItemExpanded(openFiles) {
-      outline.expandItem(openFiles)
+  }
+}
+
+extension ProjectNavigatorPart : WorkbenchObserver {
+  public func documentDidOpen(_ document: Document) {
+    openedDocuments?.openedDocuments.append(document)
+    outlineView.outline?.reloadData()
+    DispatchQueue.main.async {
+      self.outlineView.outline?.expandItem(self.openedDocuments)
     }
   }
   
-  private func cellView(for item: Any?) -> NSTableCellView? {
-    guard let outline = outlineView.outline, let item = item as? ResourceDelta else {
-      return nil
+  public func documentDidClose(_ document: Document) {
+    guard let index = openedDocuments?.openedDocuments.firstIndex(where: {$0 === document}) else {
+      return
     }
-    let countOpenFiles = outline.numberOfChildren(ofItem: openFiles)
-    for childIndex in 0..<countOpenFiles {
-      let file =  outline.child(childIndex, ofItem: openFiles) as! File
-      if file.path == item.resource.path {
-        let row = outline.row(forItem: file)
-        guard let rowView = outline.rowView(atRow: row, makeIfNecessary: true) else {
-          return nil
-        }
-        guard let cell = rowView.view(atColumn: 0) as? NSTableCellView else {
-          return nil
-        }
-        return cell
-      }
+    openedDocuments?.openedDocuments.remove(at: index)
+    outlineView.outline?.reloadData()
+    DispatchQueue.main.async {
+      self.outlineView.outline?.expandItem(self.openedDocuments)
     }
-    return nil
   }
 }
 

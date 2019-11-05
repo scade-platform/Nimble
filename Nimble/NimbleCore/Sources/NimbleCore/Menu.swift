@@ -7,9 +7,9 @@
 
 import Cocoa
 
-public class ContextMenuManger {
+public class ContextMenuManager {
   
-  public static let shared = ContextMenuManger()
+  public static let shared = ContextMenuManager()
   
   public private(set) var menuBuilders: [String : MenuBuilder] = [:]
   

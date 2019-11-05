@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		0C238B12233E4E3D004F87E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D2222878F40088715C /* Assets.xcassets */; };
-		0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */; };
 		0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */; };
 		0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */; };
-		0CB6607822F41D1500CBB386 /* NimbleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6607722F41D1500CBB386 /* NimbleController.swift */; };
+		0C8888E223716F1F00CFBFE0 /* NimbleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8888DF23716F1F00CFBFE0 /* NimbleController.swift */; };
+		0C8888E323716F1F00CFBFE0 /* ProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8888E123716F1F00CFBFE0 /* ProjectDocument.swift */; };
 		0CCC757822DF199900C0CCF4 /* TabbedEditorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CCC757722DF199900C0CCF4 /* TabbedEditorController.xib */; };
 		0CCC757A22DF268400C0CCF4 /* TabbedEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCC757922DF268400C0CCF4 /* TabbedEditorController.swift */; };
 		0CE4E1B0234DEF3600114287 /* HorizontalRootSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E1AF234DEF3600114287 /* HorizontalRootSplitViewController.swift */; };
@@ -99,10 +99,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDocument.swift; sourceTree = "<group>"; };
 		0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedPane.swift; sourceTree = "<group>"; };
 		0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnsupportedPane.xib; sourceTree = "<group>"; };
-		0CB6607722F41D1500CBB386 /* NimbleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleController.swift; sourceTree = "<group>"; };
+		0C8888DF23716F1F00CFBFE0 /* NimbleController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NimbleController.swift; sourceTree = "<group>"; };
+		0C8888E123716F1F00CFBFE0 /* ProjectDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProjectDocument.swift; sourceTree = "<group>"; };
 		0CCC757722DF199900C0CCF4 /* TabbedEditorController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = TabbedEditorController.xib; path = Controls/TabbedEditorController.xib; sourceTree = "<group>"; };
 		0CCC757922DF268400C0CCF4 /* TabbedEditorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbedEditorController.swift; sourceTree = "<group>"; };
 		0CE4E1AF234DEF3600114287 /* HorizontalRootSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalRootSplitViewController.swift; sourceTree = "<group>"; };
@@ -303,6 +303,8 @@
 		D7CBF8AE2229268C0088715C /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				0C8888DF23716F1F00CFBFE0 /* NimbleController.swift */,
+				0C8888E123716F1F00CFBFE0 /* ProjectDocument.swift */,
 				D72F959D222DF2F4009F2EC3 /* Controls */,
 				D741548D236CA5E600A1B80C /* ConsoleViewController.swift */,
 				D741548F236CA5E600A1B80C /* ConsoleViewController.xib */,
@@ -310,14 +312,12 @@
 				D72F9579222CA4B5009F2EC3 /* WorkbenchViewController.swift */,
 				D72F956A222C50A7009F2EC3 /* NavigatorViewController.swift */,
 				D791B2E122B053C5001BBA0E /* EditorViewController.swift */,
-				0CB6607722F41D1500CBB386 /* NimbleController.swift */,
 				0CEB19AD231E38A10092E801 /* DropView.swift */,
 				0CCC757722DF199900C0CCF4 /* TabbedEditorController.xib */,
 				0CCC757922DF268400C0CCF4 /* TabbedEditorController.swift */,
 				0CE4E1AF234DEF3600114287 /* HorizontalRootSplitViewController.swift */,
 				0CE4E2242350605A00114287 /* ProjectDelegate.swift */,
 				0CE4E2262355D12400114287 /* DebugViewController.swift */,
-				0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */,
 				D78BCB05222B4DE300AE0A9C /* AppDelegate.swift */,
 			);
 			path = Sources;
@@ -509,17 +509,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				D72F9589222CAD09009F2EC3 /* NavigatorViewController.swift in Sources */,
-				0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */,
 				D791B2E222B053C5001BBA0E /* EditorViewController.swift in Sources */,
 				D7415490236CA5E600A1B80C /* ConsoleViewController.swift in Sources */,
 				D72F959F222DF7AF009F2EC3 /* WorkbenchSidebar.swift in Sources */,
-				0CB6607822F41D1500CBB386 /* NimbleController.swift in Sources */,
 				D788ED452239C2750072C21E /* NimbleWorkbench.swift in Sources */,
 				0CCC757A22DF268400C0CCF4 /* TabbedEditorController.swift in Sources */,
 				0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */,
 				D72F958A222CAD0C009F2EC3 /* WorkbenchViewController.swift in Sources */,
+				0C8888E223716F1F00CFBFE0 /* NimbleController.swift in Sources */,
 				D72F9587222CAC3C009F2EC3 /* AppDelegate.swift in Sources */,
 				0CE4E2272355D12400114287 /* DebugViewController.swift in Sources */,
+				0C8888E323716F1F00CFBFE0 /* ProjectDocument.swift in Sources */,
 				0CEB19AE231E38A10092E801 /* DropView.swift in Sources */,
 				0CE4E2252350605A00114287 /* ProjectDelegate.swift in Sources */,
 				0CE4E1B0234DEF3600114287 /* HorizontalRootSplitViewController.swift in Sources */,

@@ -21,6 +21,17 @@ public extension Document {
   static func isDefault(for file: File) -> Bool {
     return false
   }
+  
+  var title : String {
+    return self.fileURL?.lastPathComponent ?? "Untitled"
+  }
+  
+  var file: File? {
+    guard let url = self.fileURL else {
+      return nil
+    }
+    return url.file
+  }
 }
 
 

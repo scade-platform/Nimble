@@ -12,14 +12,6 @@ import NimbleCore
 
 public class EditorViewController: NSViewController {
   private var tabbedEditor: TabbedEditorController? = nil
-  
-  var currentFile: File? {
-    return tabbedEditor?.currentFile
-  }
-  
-  var changedFiles: [File]? {
-    return tabbedEditor?.changedFiles
-  }
  
   public override func viewDidLoad() {
     super.viewDidLoad()
@@ -34,24 +26,17 @@ public class EditorViewController: NSViewController {
     tabbedEditor?.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
   }
   
-  
-  func showEditor(_ editor: NSViewController, file shownFile: File) {
-    tabbedEditor?.addTab(tabViewController: editor, file: shownFile)
+  func open(document: Document, preview: Bool){
+    tabbedEditor?.open(document: document, preview: preview)
   }
   
-  func closeEditor(file closedFile: File){
-    tabbedEditor?.closeTab(file: closedFile)
+  func show(unsupported file: File, preview: Bool) {
+    tabbedEditor?.show(usupported: file, preview: preview)
   }
   
-  func previewEditor(_ editor: NSViewController, file shownFile: File) {
-    tabbedEditor?.preview(tabViewController: editor, file: shownFile)
+  func close(document: Document) {
+    tabbedEditor?.close(document: document)
   }
+
   
-  func closeCurrentTab() {
-    tabbedEditor?.closeCurrentTab()
-  }
-  
-  func markEditor(file: File, changed: Bool = true){
-    tabbedEditor?.markTab(file: file, changed: changed)
-  }
 }

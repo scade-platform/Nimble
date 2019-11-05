@@ -12,40 +12,19 @@ import NimbleCore
 
 public class NimbleWorkbench: NSWindowController {
   
-  var projectDocument: ProjectDocument? {
-    didSet {
-      guard let project = projectDocument?.project else {
-        return
-      }
-      PluginManager.shared.activate(workbench: self)
-      project.subscribe(resourceObserver: self)
-    }
-  }
+  private var observations = [ObjectIdentifier : Observation]()
   
   var viewController: WorkbenchViewController? {
     return self.contentViewController as? WorkbenchViewController
   }
   
-  public override func windowDidLoad() {
-    super.windowDidLoad()
+  func launch() {
+    PluginManager.shared.activate(workbench: self)
   }
-  
-  //  func terminate() -> Void {
-  //    pluginManager.deactivate()
-  //  }
 }
 
 
 extension NimbleWorkbench: Workbench {
-  
-  public var changedFiles: [File]? {
-    return self.viewController?.editorViewController?.changedFiles
-  }
-  
-  public var project: Project? {
-    return projectDocument?.project
-  }
-  
   public var navigatorArea: WorkbenchArea? {
     return viewController?.navigatorViewController
   }
@@ -54,64 +33,70 @@ extension NimbleWorkbench: Workbench {
      return viewController?.debugViewController
   }
   
-  public func open(file: File) -> Document? {
-    guard let doc = try? file.open(), let d = doc else {
-      let unsupportedPane = UnsupportedPane.loadFromNib()
-      viewController?.editorViewController?.previewEditor(unsupportedPane, file: file)
-      return nil
-    }
-    
-    if let docController = d.contentViewController {
-      self.project?.open(files: [file.path.url])
-      viewController?.editorViewController?.showEditor(docController, file: file)
-    }
-    
-    return doc
-  }
-  
-  public func preview(file: File) {
-    guard let doc = try? file.open(), let d = doc else {
-      let unsupportedPane = UnsupportedPane.loadFromNib()
-      viewController?.editorViewController?.previewEditor(unsupportedPane, file: file)
-      return
-    }
-    if let docController = d.contentViewController {
-      viewController?.editorViewController?.previewEditor(docController, file: file)
+  public func open(document: Document, preview: Bool) {
+    viewController?.editorViewController?.open(document: document, preview: preview)
+    if !preview {
+      documentDidOpen(document)
     }
   }
   
-  public func save(file: File) {
-    self.projectDocument?.save(file: file)
+  public func show(unsupported file: File, preview: Bool) {
+    viewController?.editorViewController?.show(unsupported: file, preview: preview)
   }
-    
+  
+  public func close(document: Document) {
+    viewController?.editorViewController?.close(document: document)
+  }
+  
   public func createConsole(title: String, show: Bool) -> Console? {
     return viewController?.debugViewController?.consoleViewController.createConsole(title: title, show: show)
   }
+  
+  public func addWorkbenchObserver(_ observer: WorkbenchObserver) {
+    let id = ObjectIdentifier(observer)
+    observations[id] = Observation(observer: observer)
+  }
+   
+  public func removeWorkbenchObserver(_ observer: WorkbenchObserver) {
+    let id = ObjectIdentifier(observer)
+    observations.removeValue(forKey: id)
+  }
 }
 
-extension NimbleWorkbench: ResourceObserver {
-  public func changed(event: ResourceChangeEvent) {
-    guard event.project === self.project, let deltas = event.deltas, !deltas.isEmpty else {
-      return
-    }
-    deltas.filter{$0.resource is File}.filter{$0.kind == .added}.forEach{self.open(file: $0.resource as! File)}
-    let changedFoldersDeltas = deltas.filter{$0.resource is Folder}.filter{$0.kind == .changed}
-    for delta in changedFoldersDeltas {
-      delta.deltas?.filter{$0.kind == .closed}.filter{$0.resource is File}.forEach{self.viewController?.editorViewController?.closeEditor(file: $0.resource as! File)}
-      delta.deltas?.filter{$0.kind == .added}.filter{$0.resource is File}.forEach{self.preview(file: $0.resource as! File)}
-    }
-    let closedFilesDeltas = deltas.filter{$0.resource is File}.filter{$0.kind == .closed}
-    let editor = viewController!.editorViewController!
-    for delta in closedFilesDeltas {
-      editor.closeEditor(file: delta.resource as! File)
-    }
-    if let changedItem = deltas.filter({$0.resource is File}).first(where: {$0.kind == .changed}) {
-      editor.markEditor(file: changedItem.resource as! File)
-    }
-    if let savedItem = deltas.first(where: {$0.kind == .saved}) {
-      if changedFiles?.contains(savedItem.resource as! File ) ?? false {
-        editor.markEditor(file: savedItem.resource as! File, changed: false)
+fileprivate extension NimbleWorkbench {
+  struct Observation {
+    weak var observer: WorkbenchObserver?
+  }
+}
+
+extension NimbleWorkbench {
+  func documentDidOpen(_ document: Document) {
+    for (id, observation) in observations {
+      guard let observer = observation.observer else {
+        observations.removeValue(forKey: id)
+        continue
       }
+      observer.documentDidOpen(document)
+    }
+  }
+  
+  func documentDidClose(_ document: Document) {
+    for (id, observation) in observations {
+      guard let observer = observation.observer else {
+        observations.removeValue(forKey: id)
+        continue
+      }
+      observer.documentDidClose(document)
+    }
+  }
+  
+  func documentDidSelect(_ document: Document) {
+    for (id, observation) in observations {
+      guard let observer = observation.observer else {
+        observations.removeValue(forKey: id)
+        continue
+      }
+      observer.documentDidSelect(document)
     }
   }
 }

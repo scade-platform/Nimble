@@ -8,12 +8,8 @@
 
 import Cocoa
 
-public protocol Workbench {
-  var project: Project? { get }
-  
+public protocol Workbench where Self : NSWindowController {
   var navigatorArea: WorkbenchArea? { get }
-  
-  var changedFiles: [File]? { get }
 
 //  var inspectorArea: WorkbenchPart { get }
 //
@@ -22,16 +18,57 @@ public protocol Workbench {
   
   var debugArea: WorkbenchArea? { get }
   
+  func open(document: Document, preview: Bool)
   
+  func show(unsupported file: File, preview: Bool)
   
-  @discardableResult
-  func open(file: File) -> Document?
-  
-  func preview(file: File)
-  
-  func save(file: File)
+  func close(document: Document)
   
   func createConsole(title: String, show: Bool) -> Console?
+  
+  func addWorkbenchObserver(_ observer: WorkbenchObserver)
+  
+  func removeWorkbenchObserver(_ observer: WorkbenchObserver)
+}
+
+public extension Workbench {
+  var project: Project? {
+    return ProjectController.shared.project(for: self)
+  }
+  
+  var projectDocument: ProjectDocumentProtocol? {
+    return ProjectController.shared.projectDocument(for: self)
+  }
+  
+  var projectNotificationCenter: ProjectNotificationCenter? {
+    return projectDocument?.notificationCenter
+  }
+  
+  func open(document: Document) {
+    self.open(document: document, preview: false)
+  }
+  
+  func preview(document: Document) {
+    self.open(document: document, preview: true)
+  }
+  
+  func open(file: File) -> Document? {
+    guard let document = try? file.open() else {
+      show(unsupported: file, preview: false)
+      return nil
+    }
+    self.open(document: document)
+    return document
+  }
+  
+  func preview(file: File) -> Document? {
+    guard let document = try? file.open() else {
+      show(unsupported: file, preview: true)
+      return nil
+    }
+    self.preview(document: document)
+    return document
+  }
 }
 
 public protocol WorkbenchArea {
@@ -49,4 +86,21 @@ public protocol WorkbenchPart {
   var title: String? { get }
   
   var icon: NSImage? { get }
+}
+
+
+public protocol WorkbenchObserver : class {
+  func documentDidSelect(_ document: Document)
+  func documentDidOpen(_ document: Document)
+  func documentDidClose(_ document: Document)
+  func documentDidChange(_ document: Document)
+  func documentDidSave(_ document: Document)
+}
+
+public extension WorkbenchObserver {
+  func documentDidSelect(_ document: Document) {}
+  func documentDidOpen(_ document: Document) {}
+  func documentDidClose(_ document: Document) {}
+  func documentDidChange(_ document: Document) {}
+  func documentDidSave(_ document: Document) {}
 }
