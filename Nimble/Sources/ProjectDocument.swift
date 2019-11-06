@@ -13,8 +13,12 @@ class ProjectDocument: NSDocument, ProjectDocumentProtocol {
   
   private(set) var project: Project = Project()
   
+  private var nimbleWorkbench: NimbleWorkbench? {
+     return self.windowForSheet?.windowController as? NimbleWorkbench
+  }
+  
   var workbench: Workbench? {
-    return self.windowForSheet?.windowController as? Workbench
+    return nimbleWorkbench
   }
   
   var notificationCenter: ProjectNotificationCenter {
@@ -91,6 +95,27 @@ class ProjectDocument: NSDocument, ProjectDocumentProtocol {
   @IBAction func saveProjectAs(_ sender: Any? ){
     saveAs(sender)
   }
+  
+  @IBAction func saveCurrentDocument(_ sender: Any? ){
+    guard let document = nimbleWorkbench?.currentDocument else {
+      return
+    }
+    save(document: document)
+  }
+  
+  @IBAction func saveCurrentDocumentAs(_ sender: Any? ){
+    guard let document = nimbleWorkbench?.currentDocument else {
+      return
+    }
+    saveAs(document: document)
+  }
+  
+  @IBAction func closeCurrentDocument(_ sender: Any?) {
+    guard let document = nimbleWorkbench?.currentDocument else {
+      return
+    }
+    nimbleWorkbench?.close(document: document)
+  }
 }
 
 extension ProjectDocument {
@@ -130,6 +155,22 @@ extension ProjectDocument {
     for url in urls where url.file != nil {
       self.workbench?.open(file: url.file!)
     }
+  }
+  
+  func open(all urls: [URL]) {
+    add(folders: urls)
+    open(files: urls)
+  }
+  
+  func save(document: Document) {
+    document.save(nil)
+    nimbleWorkbench?.documentDidSave(document)
+  }
+  
+  func saveAs(document: Document) {
+    document.file?.close()
+    document.saveAs(nil)
+    nimbleWorkbench?.documentDidSave(document)
   }
 }
 

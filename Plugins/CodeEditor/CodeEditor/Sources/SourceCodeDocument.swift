@@ -13,12 +13,31 @@ import CodeEditor
 public final class SourceCodeDocument: NSDocument, TextDocument {
   let textStorage = NSTextStorage()
   
+  public var observer: DocumentObserver? = nil
+  
+  var changed : Bool = false {
+    didSet {
+      if changed {
+        self.observer?.documentDidChange(self)
+      } else {
+        self.observer?.documentDidSave(self)
+      }
+    }
+  }
+  
+  public var isChanged : Bool{
+    get {
+      return changed
+    }
+  }
+  
   public var language: Language? {
     didSet {
       guard let grammar = language?.grammar else { return }
       self.syntaxParser = SyntaxParser(textStorage: textStorage, grammar: grammar)
     }
   }
+  
   
   private var languageFromURL: Language? {
     return self.fileURL?.file?.language
@@ -68,5 +87,15 @@ public final class SourceCodeDocument: NSDocument, TextDocument {
   
   public override func data(ofType typeName: String) throws -> Data {
     return textStorage.string.data(using: .utf8)!
+  }
+  
+  public override func save(_ sender: Any?) {
+    changed = false
+    super.save(sender)
+  }
+  
+  public override func saveAs(_ sender: Any?) {
+    changed = false
+    super.saveAs(sender)
   }
 }

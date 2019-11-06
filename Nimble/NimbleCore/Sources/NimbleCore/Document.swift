@@ -11,9 +11,15 @@ import AppKit
 public protocol Document where Self: NSDocument {
   var contentViewController: NSViewController? { get }
   
+  var observer: DocumentObserver? {get set}
+  
+  var isChanged: Bool { get }
+  
   static func canOpen(_ file: File) -> Bool
   
   static func isDefault(for file: File) -> Bool
+  
+  
 }
 
 
@@ -31,6 +37,15 @@ public extension Document {
       return nil
     }
     return url.file
+  }
+  
+  var observer: DocumentObserver? {
+    get {return nil}
+    set {}
+  }
+  
+  var isChanged: Bool {
+    return false
   }
 }
 
@@ -121,4 +136,10 @@ public extension File {
   func close() {
     DocumentManager.shared.close(file: self)
   }
+}
+
+
+public protocol DocumentObserver {
+  func documentDidChange(_ document: Document)
+  func documentDidSave(_ document: Document)
 }

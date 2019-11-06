@@ -18,6 +18,7 @@ public final class InterfaceBuilder: Module {
 open class InterfaceBuilderPlugin: Plugin {
   required public init() {
     DocumentManager.shared.registerDocumentClass(PageDocument.self)
+    DocumentManager.shared.registerOpenableUTI(ofTypes: ["public.svg-image"])
     SCDRuntime.loadMetaModel()
     
   }

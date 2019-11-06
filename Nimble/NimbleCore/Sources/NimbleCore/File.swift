@@ -47,7 +47,7 @@ extension FileSystemElement: Hashable {
 
 public extension URL {
   var file: File? {
-    guard let path = Path(url: self) else { return nil }
+    guard let path = Path(url: self), path.isFile else { return nil }
     return File(path: path)
   }
 }

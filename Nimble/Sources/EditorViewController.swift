@@ -25,18 +25,22 @@ public class EditorViewController: NSViewController {
     tabbedEditor?.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
     tabbedEditor?.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
   }
+}
+
+extension EditorViewController {
+  var currentDocument: Document? {
+     return tabbedEditor?.currentDocument
+   }
   
   func open(document: Document, preview: Bool){
     tabbedEditor?.open(document: document, preview: preview)
   }
   
-  func show(unsupported file: File, preview: Bool) {
-    tabbedEditor?.show(usupported: file, preview: preview)
+  func show(unsupported file: File) {
+    tabbedEditor?.show(usupported: file)
   }
   
   func close(document: Document) {
     tabbedEditor?.close(document: document)
   }
-
-  
 }

@@ -213,29 +213,6 @@ extension ProjectOutlineDataSource: NSOutlineViewDelegate {
     guard let item = notification.userInfo?["NSObject"] else { return }
     outlineView.reloadItem(item, reloadChildren: false)
   }
-  
-  func checkForSave(file: File) -> Bool {
-//    if workbench.changedFiles?.contains(file) ?? false{
-//      let result = saveDialog(question: "Do you want to save the changes you made to \(file.name)? ", text: "Your changes will be lost if you don't save them")
-//      if result.save {
-//        workbench.save(file: file)
-//      }
-//      return result.close
-//    }
-    return true
-  }
-}
-
-func saveDialog(question: String, text: String) -> (save: Bool, close: Bool) {
-  let alert = NSAlert()
-  alert.messageText = question
-  alert.informativeText = text
-  alert.alertStyle = .warning
-  alert.addButton(withTitle: "Save")
-  alert.addButton(withTitle: "Cancel")
-  alert.addButton(withTitle: "Don't Save")
-  let result = alert.runModal()
-  return (save: result == .alertFirstButtonReturn, close:  result == .alertThirdButtonReturn || result == .alertFirstButtonReturn)
 }
 
 protocol DataSource : class {
@@ -280,14 +257,14 @@ extension OpenedDocumentsSource : DataSource {
 
 extension ProjectNavigatorPart : ProjectObserver {
   public func project(_ project: Project, didUpdated folders: [Folder]) {
-    outlineView.outline?.reloadData()
+    outlineView.outline?.reloadItem(self.folders, reloadChildren: true)
     DispatchQueue.main.async {
       self.outlineView.outline?.expandItem(self.folders)
     }
   }
   
   public func projectDidChanged(_ newProject: Project) {
-    outlineView.outline?.reloadData()
+    outlineView.outline?.reloadItem(self.folders, reloadChildren: true)
     DispatchQueue.main.async {
       self.outlineView.outline?.expandItem(self.folders)
     }
@@ -297,7 +274,7 @@ extension ProjectNavigatorPart : ProjectObserver {
 extension ProjectNavigatorPart : WorkbenchObserver {
   public func documentDidOpen(_ document: Document) {
     openedDocuments?.openedDocuments.append(document)
-    outlineView.outline?.reloadData()
+    outlineView.outline?.reloadItem(openedDocuments, reloadChildren: true)
     DispatchQueue.main.async {
       self.outlineView.outline?.expandItem(self.openedDocuments)
     }
@@ -308,7 +285,14 @@ extension ProjectNavigatorPart : WorkbenchObserver {
       return
     }
     openedDocuments?.openedDocuments.remove(at: index)
-    outlineView.outline?.reloadData()
+    outlineView.outline?.reloadItem(openedDocuments, reloadChildren: true)
+    DispatchQueue.main.async {
+      self.outlineView.outline?.expandItem(self.openedDocuments)
+    }
+  }
+  
+  public func documentDidSave(_ document: Document) {
+    outlineView.outline?.reloadItem(openedDocuments, reloadChildren: true)
     DispatchQueue.main.async {
       self.outlineView.outline?.expandItem(self.openedDocuments)
     }

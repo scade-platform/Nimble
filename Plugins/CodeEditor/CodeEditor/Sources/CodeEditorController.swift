@@ -56,6 +56,10 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
   
   @objc private func textDidChange(notification: NSNotification) {
     //_ = doc?.syntaxParser.highlightAll()
+    guard let document = doc else {
+      return
+    }
+    document.changed = true
   }
   
   public func textView(_ textView: NSTextView, completions words: [String], forPartialWordRange charRange: NSRange, indexOfSelectedItem index: UnsafeMutablePointer<Int>?) -> [String] {

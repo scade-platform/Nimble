@@ -15,11 +15,17 @@ protocol TabItem : class {
   var viewController: NSViewController { get }
   var selectable: Bool { get }
   func isEqual(to other: TabItem) -> Bool
+  var isChange: Bool {get set}
 }
 
 extension TabItem {
   var selectable: Bool {
     return true
+  }
+  
+  var isChange: Bool {
+    get {return false}
+    set {}
   }
 }
 
@@ -39,8 +45,11 @@ class DocumentTabItem : TabItem {
   let document: Document
   
   var title: String {
-    return document.title
+    let t = document.title
+    return isChange ? "*\(t)" : t
   }
+  
+  var isChange: Bool = false
   
   lazy var viewController: NSViewController = {
     return document.contentViewController ?? UnsupportedPane.loadFromNib()
@@ -56,6 +65,7 @@ extension DocumentTabItem: Equatable {
     return lhs.document === rhs.document
   }
 }
+
 
 class UnsupportedFileTabItem : TabItem {
   let file: File
@@ -122,38 +132,31 @@ class TabbedEditorController: NSViewController {
     tabBar?.delegate = self
     tabBar?.reloadTabs()
   }
-  
-  private func saveDialog(question: String, text: String) -> (save: Bool, close: Bool) {
-    let alert = NSAlert()
-    alert.messageText = question
-    alert.informativeText = text
-    alert.alertStyle = .warning
-    alert.addButton(withTitle: "Save")
-    alert.addButton(withTitle: "Cancel")
-    alert.addButton(withTitle: "Don't Save")
-    let result = alert.runModal()
-    return (save: result == .alertFirstButtonReturn, close:  result == .alertThirdButtonReturn || result == .alertFirstButtonReturn)
-  }
-  
 }
 
 extension TabbedEditorController {
   
-  func show(usupported file: File, preview: Bool) {
-    let newTab = UnsupportedFileTabItem(file: file)
-    preview ? showPreview(for: newTab) : append(tabItem: newTab)
+  var currentDocument: Document? {
+    return (currentItem as? DocumentTabItem)?.document
+  }
+  
+  func show(usupported file: File) {
+    showPreview(for: UnsupportedFileTabItem(file: file))
    }
   
   func open(document: Document, preview: Bool) {
     let newTab = DocumentTabItem(document: document)
-    preview ? showPreview(for: newTab) : append(tabItem: newTab)
+    if preview {
+      showPreview(for: newTab)
+    } else {
+      document.observer = self
+      append(tabItem: newTab)
+    }
   }
   
   func close(document: Document) {
     close(tab: DocumentTabItem(document: document))
-    workbench?.documentDidClose(document)
   }
-  
 }
 
 fileprivate extension TabbedEditorController {
@@ -302,19 +305,36 @@ extension TabbedEditorController: TabsControlDelegate {
   
   func tabsControlWillCloseTab(_ control: TabsControl, item: AnyObject) -> Bool {
     let tabItem = (item as! TabItem)
-//    guard checkForSave(tabItem) else {
-//      return false
-//    }
     if let documentTabItem = tabItem as? DocumentTabItem {
-      workbench?.documentDidClose(documentTabItem.document)
+      workbench?.close(document: documentTabItem.document)
+    } else {
+      close(tab: tabItem)
+      return true
     }
-    close(tab: tabItem)
-//    NimbleController.shared.currentProject?.close(file: tabItem.file.path.url)
-    return true
+    return false
   }
   
   func tabsControlDidCloseTab(_ control: TabsControl, items: [AnyObject]) {
     self.items = items.map{$0 as! TabItem}
+  }
+}
+
+extension TabbedEditorController: DocumentObserver {
+  func documentDidChange(_ document: Document) {
+    guard let documentTabItem = items.first(where: {$0.isEqual(to: DocumentTabItem(document: document))}) as? DocumentTabItem else {
+      return
+    }
+    documentTabItem.isChange = true
+    tabBar?.reloadTabs()
+    workbench?.documentDidChange(document)
+  }
+  
+  func documentDidSave(_ document: Document) {
+    guard let documentTabItem = items.first(where: {$0.isEqual(to: DocumentTabItem(document: document))}) as? DocumentTabItem else {
+      return
+    }
+    documentTabItem.isChange = false
+    tabBar?.reloadTabs()
   }
 }
 

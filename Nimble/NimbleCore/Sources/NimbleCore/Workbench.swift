@@ -20,7 +20,7 @@ public protocol Workbench where Self : NSWindowController {
   
   func open(document: Document, preview: Bool)
   
-  func show(unsupported file: File, preview: Bool)
+  func show(unsupported file: File)
   
   func close(document: Document)
   
@@ -54,7 +54,7 @@ public extension Workbench {
   
   func open(file: File) -> Document? {
     guard let document = try? file.open() else {
-      show(unsupported: file, preview: false)
+      show(unsupported: file)
       return nil
     }
     self.open(document: document)
@@ -63,7 +63,7 @@ public extension Workbench {
   
   func preview(file: File) -> Document? {
     guard let document = try? file.open() else {
-      show(unsupported: file, preview: true)
+      show(unsupported: file)
       return nil
     }
     self.preview(document: document)

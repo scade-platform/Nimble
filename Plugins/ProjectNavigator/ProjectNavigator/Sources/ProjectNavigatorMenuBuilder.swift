@@ -94,14 +94,14 @@ class ProjectNavigatorMenuBuilder: MenuBuilder {
     }
     switch fsElement {
     case let file as File:
-      menu.addItem(createMenuItem(title: "Rename...", selector: #selector(renameAction(_:)), representedObject: file))
-      menu.addItem(createMenuItem(title: "Delete file", selector: #selector(deleteAction(_:)), representedObject: file))
+      menu.addItem(createMenuItem(title: "Rename...", selector: nil, representedObject: file))
+      menu.addItem(createMenuItem(title: "Delete file", selector: nil, representedObject: file))
       return menu
     case let folder as Folder:
       menu.addItem(createMenuItem(title: "New File", selector: nil, representedObject: folder))
-      menu.addItem(createMenuItem(title: "Rename...", selector: #selector(renameAction(_:)), representedObject: folder))
-      menu.addItem(createMenuItem(title: "New Folder...", selector: #selector(createNewFolderAction(_:)), representedObject: folder))
-      menu.addItem(createMenuItem(title: "Delete Folder", selector: #selector(deleteAction(_:)), representedObject: folder))
+      menu.addItem(createMenuItem(title: "Rename...", selector: nil, representedObject: folder))
+      menu.addItem(createMenuItem(title: "New Folder...", selector: nil, representedObject: folder))
+      menu.addItem(createMenuItem(title: "Delete Folder", selector: nil, representedObject: folder))
       return menu
     default:
       return menu

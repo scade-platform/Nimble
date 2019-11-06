@@ -25,6 +25,7 @@ public class NimbleWorkbench: NSWindowController {
 
 
 extension NimbleWorkbench: Workbench {
+  
   public var navigatorArea: WorkbenchArea? {
     return viewController?.navigatorViewController
   }
@@ -40,12 +41,16 @@ extension NimbleWorkbench: Workbench {
     }
   }
   
-  public func show(unsupported file: File, preview: Bool) {
-    viewController?.editorViewController?.show(unsupported: file, preview: preview)
+  public func show(unsupported file: File) {
+    viewController?.editorViewController?.show(unsupported: file)
   }
   
   public func close(document: Document) {
-    viewController?.editorViewController?.close(document: document)
+    if checkForSave(document) {
+      viewController?.editorViewController?.close(document: document)
+      document.file?.close()
+      documentDidClose(document)
+    }
   }
   
   public func createConsole(title: String, show: Bool) -> Console? {
@@ -67,9 +72,40 @@ fileprivate extension NimbleWorkbench {
   struct Observation {
     weak var observer: WorkbenchObserver?
   }
+  
+  private func checkForSave(_ document: Document) -> Bool {
+    if document.isChanged {
+      let result = saveDialog(question: "Do you want to save the changes you made to \(document.title)? ", text: "Your changes will be lost if you don't save them")
+      if result.save {
+        if let projectDoc = projectDocument as? ProjectDocument {
+          projectDoc.save(document: document)
+        }
+      }
+      return result.close
+    }
+    return true
+  }
+  
+  private func saveDialog(question: String, text: String) -> (save: Bool, close: Bool) {
+    let alert = NSAlert()
+    alert.messageText = question
+    alert.informativeText = text
+    alert.alertStyle = .warning
+    alert.addButton(withTitle: "Save")
+    alert.addButton(withTitle: "Cancel")
+    alert.addButton(withTitle: "Don't Save")
+    let result = alert.runModal()
+    return (save: result == .alertFirstButtonReturn, close:  result == .alertThirdButtonReturn || result == .alertFirstButtonReturn)
+  }
 }
 
 extension NimbleWorkbench {
+  
+  public var currentDocument: Document? {
+    viewController?.editorViewController?.currentDocument
+  }
+  
+  
   func documentDidOpen(_ document: Document) {
     for (id, observation) in observations {
       guard let observer = observation.observer else {
@@ -97,6 +133,26 @@ extension NimbleWorkbench {
         continue
       }
       observer.documentDidSelect(document)
+    }
+  }
+  
+  func documentDidSave(_ document: Document) {
+    for (id, observation) in observations {
+      guard let observer = observation.observer else {
+        observations.removeValue(forKey: id)
+        continue
+      }
+      observer.documentDidSave(document)
+    }
+  }
+  
+  func documentDidChange(_ document: Document) {
+    for (id, observation) in observations {
+      guard let observer = observation.observer else {
+        observations.removeValue(forKey: id)
+        continue
+      }
+      observer.documentDidChange(document)
     }
   }
 }

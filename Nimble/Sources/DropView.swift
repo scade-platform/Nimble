@@ -75,10 +75,10 @@ class DropView : NSSplitView {
     }else{
       openableURL = getOpenableURL(board) ?? []
     }
-    guard let windowController = NSDocumentController.shared.currentDocument?.windowControllers.first(where: {$0 is NimbleWorkbench}), let workbench = windowController as? NimbleWorkbench else {
+    guard let window = self.window, let workbench = window.windowController as? NimbleWorkbench, let projectDocument = workbench.projectDocument as? ProjectDocument else {
       return false
     }
-//    workbench.project?.openAll(fileSystemElements: openableURL)
+    projectDocument.open(all: openableURL)
     return true
   }
   
