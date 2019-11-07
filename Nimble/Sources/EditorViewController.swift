@@ -43,4 +43,8 @@ extension EditorViewController {
   func close(document: Document) {
     tabbedEditor?.close(document: document)
   }
+  
+  func refresh() {
+    tabbedEditor?.refresh()
+  }
 }

@@ -108,6 +108,13 @@ public class DocumentManager {
   public func close(file: File) {
     openedDocuments.removeValue(forKey: file)
   }
+  
+  public func openedDocument(for file: File) -> Document? {
+    guard let doc = openedDocuments[file] else {
+      return nil
+    }
+    return doc
+  }
 }
 
 
@@ -135,6 +142,10 @@ public extension File {
   
   func close() {
     DocumentManager.shared.close(file: self)
+  }
+  
+  var document: Document? {
+    return DocumentManager.shared.openedDocument(for: self)
   }
 }
 

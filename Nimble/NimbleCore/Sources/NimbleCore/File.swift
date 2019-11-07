@@ -13,7 +13,7 @@ public class File: FileSystemElement { }
 
 
 public class FileSystemElement {
-  public let path: Path
+  public private(set) var path: Path
   
   public var name: String {
     return path.basename()
@@ -31,8 +31,14 @@ public class FileSystemElement {
     guard let path = Path(path) else { return nil }
     self.init(path: path)
   }
+  
+  public func rename(to name: String) {
+    guard let newPaht = try? path.rename(to: name) else {
+      return
+    }
+    self.path = newPaht
+  }
 }
-
 
 extension FileSystemElement: Hashable {
   public static func == (lhs: FileSystemElement, rhs: FileSystemElement) -> Bool {

@@ -10,6 +10,42 @@ import Cocoa
 import NimbleCore
 
 class NimbleController : NSDocumentController, ProjectControllerProtocol {
+  
+  private var currentProjectDocument: ProjectDocument? {
+    return currentDocument as? ProjectDocument
+  }
+  
+  private var buildMenuItems: [NSMenuItem: Folder] = [:]
+  private var runMenuItems: [NSMenuItem: Folder] = [:]
+  
+  private var buildSubMenu: NSMenu {
+    buildMenuItems.removeAll()
+    let result = NSMenu()
+    guard let folders = currentProjectDocument?.project.folders else {
+      return result
+    }
+    for folder in folders {
+      let menuItem = NSMenuItem(title: folder.name, action: #selector(buildFolder(_:)), keyEquivalent: "")
+      buildMenuItems[menuItem] = folder
+      result.addItem(menuItem)
+    }
+    return result
+  }
+  
+  private var runSubMenu: NSMenu {
+    runMenuItems.removeAll()
+    let result = NSMenu()
+    guard let folders = currentProjectDocument?.project.folders else {
+      return result
+    }
+    for folder in folders {
+      let menuItem = NSMenuItem(title: folder.name, action: #selector(runFolder(_:)), keyEquivalent: "")
+      runMenuItems[menuItem] = folder
+      result.addItem(menuItem)
+    }
+    return result
+  }
+  
   override init(){
     super.init()
     
@@ -19,11 +55,13 @@ class NimbleController : NSDocumentController, ProjectControllerProtocol {
     super.init(coder: coder)
   }
   
+  
+  
   @IBAction func switchProject(_ sender: Any?) {
     let openPanel = NSOpenPanel()
     openPanel.allowsMultipleSelection = false
     openPanel.canCreateDirectories = false
-    if let type = defaultType, let currentProjectDocument = currentDocument as? ProjectDocument {
+    if let type = defaultType, let currentProjectDocument = currentProjectDocument {
       let pressedButton = self.runModalOpenPanel(openPanel, forTypes: [type])
       guard pressedButton == NSApplication.ModalResponse.OK.rawValue else {
         return
@@ -45,10 +83,7 @@ class NimbleController : NSDocumentController, ProjectControllerProtocol {
     guard pressedButton == NSApplication.ModalResponse.OK.rawValue else {
       return
     }
-    guard let currentProjectDocument = self.currentDocument as? ProjectDocument else {
-      return
-    }
-    currentProjectDocument.add(folders: openPanel.urls)
+    currentProjectDocument?.add(folders: openPanel.urls)
   }
   
   @IBAction func openFiles(_ sender: Any?) {
@@ -61,10 +96,7 @@ class NimbleController : NSDocumentController, ProjectControllerProtocol {
     guard pressedButton == NSApplication.ModalResponse.OK.rawValue else {
       return
     }
-    guard let currentProjectDocument = self.currentDocument as? ProjectDocument else {
-      return
-    }
-    currentProjectDocument.open(files: openPanel.urls)
+    currentProjectDocument?.open(files: openPanel.urls)
   }
   
   @IBAction func showConsole(_ sender: Any?) {
@@ -83,5 +115,47 @@ class NimbleController : NSDocumentController, ProjectControllerProtocol {
       hide = true
     }
     debugArea.isHidden = hide
+  }
+  
+  override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+    if menuItem.tag == 53 {
+      menuItem.title = (((currentDocument as! ProjectDocument).workbench?.debugArea) as? Hideable)?.isHidden ?? true ? "Show Console" : "Hide Console"
+    }
+    if menuItem.tag == 62 {
+      if currentProjectDocument?.projectDelegate?.toolchainPath == nil || buildSubMenu.items.count == 0 {
+        return false
+      }
+      menuItem.submenu = buildSubMenu
+      return true
+    }
+    if menuItem.tag == 61 {
+      if currentProjectDocument?.projectDelegate?.toolchainPath == nil || runSubMenu.items.count == 0 {
+        return false
+      }
+      menuItem.submenu = runSubMenu
+      return true
+    }
+    return super.validateMenuItem(menuItem)
+  }
+  
+  @objc func buildFolder(_ sender: Any?) {
+    guard let menuItem = sender as? NSMenuItem, let selectedFolder = buildMenuItems[menuItem], let projectDelegate = currentProjectDocument?.projectDelegate else {
+      return
+    }
+    projectDelegate.build(folder: selectedFolder)
+  }
+  
+  @objc func runFolder(_ sender: Any?) {
+    guard let menuItem = sender as? NSMenuItem, let selectedFolder = runMenuItems[menuItem], let projectDelegate = currentProjectDocument?.projectDelegate else {
+      return
+    }
+    projectDelegate.runSimulator(folder: selectedFolder)
+  }
+  
+  @IBAction func requestTag(_ sender: Any?) {
+    guard let menuItem = sender as? NSMenuItem else {
+      return
+    }
+    let _ = menuItem.tag
   }
 }

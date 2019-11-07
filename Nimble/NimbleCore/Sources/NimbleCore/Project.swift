@@ -14,6 +14,7 @@ public protocol ProjectControllerProtocol where Self: NSDocumentController {}
 public protocol ProjectDocumentProtocol where Self: NSDocument {
   var project: Project { get }
   var workbench: Workbench? { get }
+  var projectDelegate: ProjectDelegate? { get }
   var notificationCenter: ProjectNotificationCenter { get }
 }
 
@@ -88,6 +89,21 @@ public struct ProjectObserverDelegate {
   public init(){
     
   }
+}
+
+public protocol ProjectDelegate {
+  var toolchainPath : String? { get }
+  func runSimulator(folder: Folder)
+  func stopSimulator(folder: Folder)
+  func runCMake(folder: Folder)
+  func build(folder: Folder)
+}
+
+public extension ProjectDelegate {
+  func runSimulator(folder: Folder) {}
+  func stopSimulator(folder: Folder) {}
+  func runCMake(folder: Folder){}
+  func build(folder: Folder) {}
 }
 
 public class Project {

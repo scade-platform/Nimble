@@ -157,6 +157,10 @@ extension TabbedEditorController {
   func close(document: Document) {
     close(tab: DocumentTabItem(document: document))
   }
+  
+  func refresh() {
+    tabBar?.reloadTabs()
+  }
 }
 
 fileprivate extension TabbedEditorController {

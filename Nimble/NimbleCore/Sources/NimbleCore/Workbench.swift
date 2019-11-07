@@ -24,6 +24,8 @@ public protocol Workbench where Self : NSWindowController {
   
   func close(document: Document)
   
+  func refresh()
+  
   func createConsole(title: String, show: Bool) -> Console?
   
   func addWorkbenchObserver(_ observer: WorkbenchObserver)
@@ -95,6 +97,7 @@ public protocol WorkbenchObserver : class {
   func documentDidClose(_ document: Document)
   func documentDidChange(_ document: Document)
   func documentDidSave(_ document: Document)
+  func refresh()
 }
 
 public extension WorkbenchObserver {
@@ -103,4 +106,5 @@ public extension WorkbenchObserver {
   func documentDidClose(_ document: Document) {}
   func documentDidChange(_ document: Document) {}
   func documentDidSave(_ document: Document) {}
+  func refresh() {}
 }

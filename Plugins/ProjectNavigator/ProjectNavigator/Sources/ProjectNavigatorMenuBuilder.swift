@@ -94,14 +94,14 @@ class ProjectNavigatorMenuBuilder: MenuBuilder {
     }
     switch fsElement {
     case let file as File:
-      menu.addItem(createMenuItem(title: "Rename...", selector: nil, representedObject: file))
-      menu.addItem(createMenuItem(title: "Delete file", selector: nil, representedObject: file))
+      menu.addItem(createMenuItem(title: "Rename...", selector: #selector(renameAction(_:)), representedObject: file))
+      menu.addItem(createMenuItem(title: "Delete file", selector: #selector(deleteAction(_:)), representedObject: file))
       return menu
     case let folder as Folder:
-      menu.addItem(createMenuItem(title: "New File", selector: nil, representedObject: folder))
-      menu.addItem(createMenuItem(title: "Rename...", selector: nil, representedObject: folder))
-      menu.addItem(createMenuItem(title: "New Folder...", selector: nil, representedObject: folder))
-      menu.addItem(createMenuItem(title: "Delete Folder", selector: nil, representedObject: folder))
+      menu.addItem(createMenuItem(title: "New File", selector: #selector(createNewFileAction(_:)), representedObject: folder))
+      menu.addItem(createMenuItem(title: "Rename...", selector: #selector(renameAction(_:)), representedObject: folder))
+      menu.addItem(createMenuItem(title: "New Folder...", selector: #selector(createNewFolderAction(_:)), representedObject: folder))
+      menu.addItem(createMenuItem(title: "Delete Folder", selector: #selector(deleteAction(_:)), representedObject: folder))
       return menu
     default:
       return menu
@@ -121,7 +121,14 @@ class ProjectNavigatorMenuBuilder: MenuBuilder {
     }
     showRenameAlert(message: "Please enter a new name:", fileSystemElement, handler: {str in
       if !str.isEmpty, str != fileSystemElement.name {
-//        self.workbench.project?.rename(fileSystemElement: fileSystemElement.path.url, new: str)
+        if let file = fileSystemElement as? File, let document = file.document {
+          self.workbench.close(document: document)
+        }
+        fileSystemElement.rename(to: str)
+        if let file = fileSystemElement as? File {
+          self.workbench.preview(file: file)
+        }
+        self.workbench.refresh()
       }
     })
   }
@@ -134,26 +141,44 @@ class ProjectNavigatorMenuBuilder: MenuBuilder {
     switch fileSystemElement {
     case let file as File:
       result = showDeleteAlert(messageText: "Delete file \(file.path.string)?")
+      if let document = file.document{
+         ProjectController.shared.currentWorkbench?.close(document: document)
+      }
     case let folder as Folder:
       result = showDeleteAlert(messageText: "Delete folder \(folder.path.string)?")
     default:
       return
     }
-    if result {
-//      workbench.project?.remove(url: fileSystemElement.path.url)
+    guard result, (try? fileSystemElement.path.delete()) != nil else {
+      return
     }
+    ProjectController.shared.currentWorkbench?.refresh()
   }
   
   @objc func createNewFileAction(_ sender: NSMenuItem?) {
+    guard let fileSystemElement = sender?.representedObject as? Folder else {
+         return
+       }
+       showRenameAlert(message: "Please enter a name:", nil, handler: {name in
+         if !name.isEmpty {
+           let parentPath = fileSystemElement.path
+           if (try? parentPath.join(name).touch()) != nil {
+             self.workbench.refresh()
+           }
+         }
+       })
   }
   
   @objc func createNewFolderAction(_ sender: NSMenuItem?) {
     guard let fileSystemElement = sender?.representedObject as? Folder else {
       return
     }
-    showRenameAlert(message: "Please enter a name:", nil, handler: {str in
-      if !str.isEmpty {
-//        self.workbench.project?.make(folder: str, at: fileSystemElement.path.url)
+    showRenameAlert(message: "Please enter a name:", nil, handler: {name in
+      if !name.isEmpty {
+        let parentPath = fileSystemElement.path
+        if (try? parentPath.join(name).mkdir()) != nil {
+          self.workbench.refresh()
+        }
       }
     })
   }

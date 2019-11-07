@@ -53,6 +53,11 @@ extension NimbleWorkbench: Workbench {
     }
   }
   
+  public func refresh() {
+    refreshNotification()
+    viewController?.editorViewController?.refresh()
+  }
+  
   public func createConsole(title: String, show: Bool) -> Console? {
     return viewController?.debugViewController?.consoleViewController.createConsole(title: title, show: show)
   }
@@ -153,6 +158,16 @@ extension NimbleWorkbench {
         continue
       }
       observer.documentDidChange(document)
+    }
+  }
+  
+  func refreshNotification(){
+    for (id, observation) in observations {
+      guard let observer = observation.observer else {
+        observations.removeValue(forKey: id)
+        continue
+      }
+      observer.refresh()
     }
   }
 }

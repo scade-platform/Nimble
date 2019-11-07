@@ -297,5 +297,13 @@ extension ProjectNavigatorPart : WorkbenchObserver {
       self.outlineView.outline?.expandItem(self.openedDocuments)
     }
   }
+  
+  public func refresh() {
+    outlineView.outline?.reloadData()
+    DispatchQueue.main.async {
+      self.outlineView.outline?.expandItem(self.openedDocuments)
+      self.outlineView.outline?.expandItem(self.folders)
+    }
+  }
 }
 
