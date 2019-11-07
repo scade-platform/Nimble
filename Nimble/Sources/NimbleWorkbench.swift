@@ -79,7 +79,7 @@ fileprivate extension NimbleWorkbench {
   }
   
   private func checkForSave(_ document: Document) -> Bool {
-    if document.isChanged {
+    if document.isDocumentEdited {
       let result = saveDialog(question: "Do you want to save the changes you made to \(document.title)? ", text: "Your changes will be lost if you don't save them")
       if result.save {
         if let projectDoc = projectDocument as? ProjectDocument {

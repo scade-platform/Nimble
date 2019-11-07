@@ -15,22 +15,6 @@ public final class SourceCodeDocument: NSDocument, TextDocument {
   
   public var observer: DocumentObserver? = nil
   
-  var changed : Bool = false {
-    didSet {
-      if changed {
-        self.observer?.documentDidChange(self)
-      } else {
-        self.observer?.documentDidSave(self)
-      }
-    }
-  }
-  
-  public var isChanged : Bool{
-    get {
-      return changed
-    }
-  }
-  
   public var language: Language? {
     didSet {
       guard let grammar = language?.grammar else { return }
@@ -90,12 +74,12 @@ public final class SourceCodeDocument: NSDocument, TextDocument {
   }
   
   public override func save(_ sender: Any?) {
-    changed = false
+    observer?.documentDidSave(self)
     super.save(sender)
   }
   
   public override func saveAs(_ sender: Any?) {
-    changed = false
+    observer?.documentDidSave(self)
     super.saveAs(sender)
   }
 }

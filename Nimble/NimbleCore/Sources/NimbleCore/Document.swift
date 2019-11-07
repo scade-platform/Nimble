@@ -13,8 +13,6 @@ public protocol Document where Self: NSDocument {
   
   var observer: DocumentObserver? {get set}
   
-  var isChanged: Bool { get }
-  
   static func canOpen(_ file: File) -> Bool
   
   static func isDefault(for file: File) -> Bool
