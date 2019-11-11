@@ -55,7 +55,17 @@ class NimbleController : NSDocumentController, ProjectControllerProtocol {
     super.init(coder: coder)
   }
   
-  
+  override func openDocument(withContentsOf url: URL, display displayDocument: Bool, completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void) {
+    
+    if let currentProjectDocument = currentProjectDocument {
+      if currentProjectDocument.project.folders.isEmpty,  currentProjectDocument.project.location == nil {
+        ///TODO: pass and call completion handler
+        try? currentProjectDocument.change(projectTo: url)
+        return
+      }
+    }
+    super.openDocument(withContentsOf: url, display: displayDocument, completionHandler: completionHandler)
+  }
   
   @IBAction func switchProject(_ sender: Any?) {
     let openPanel = NSOpenPanel()
