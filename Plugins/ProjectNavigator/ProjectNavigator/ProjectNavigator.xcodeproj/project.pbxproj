@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0CE4E240235733D200114287 /* ProjectNavigatorMenuBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E23F235733D200114287 /* ProjectNavigatorMenuBuilder.swift */; };
+		0C7D2BF4237B072C008F337A /* ContextMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7D2BF3237B072C008F337A /* ContextMenu.swift */; };
 		0CEB19AC231552950092E801 /* FileTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEB19AB231552950092E801 /* FileTableCellView.swift */; };
 		D7799139236F16E800CBF9B7 /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7799138236F16E800CBF9B7 /* NimbleCore.framework */; };
 		D788ED5A2239C6A50072C21E /* ProjectNavigatorPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788ED592239C6A50072C21E /* ProjectNavigatorPart.swift */; };
@@ -18,7 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0CE4E23F235733D200114287 /* ProjectNavigatorMenuBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorMenuBuilder.swift; sourceTree = "<group>"; };
+		0C7D2BF3237B072C008F337A /* ContextMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenu.swift; sourceTree = "<group>"; };
 		0CEB19AB231552950092E801 /* FileTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTableCellView.swift; sourceTree = "<group>"; };
 		D7799138236F16E800CBF9B7 /* NimbleCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D788ED592239C6A50072C21E /* ProjectNavigatorPart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorPart.swift; sourceTree = "<group>"; };
@@ -78,7 +78,7 @@
 				D788ED66223B20270072C21E /* ProjectOutlineView.swift */,
 				D788ED6B223B22C10072C21E /* ProjectOutlineView.xib */,
 				0CEB19AB231552950092E801 /* FileTableCellView.swift */,
-				0CE4E23F235733D200114287 /* ProjectNavigatorMenuBuilder.swift */,
+				0C7D2BF3237B072C008F337A /* ContextMenu.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -163,7 +163,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CE4E240235733D200114287 /* ProjectNavigatorMenuBuilder.swift in Sources */,
+				0C7D2BF4237B072C008F337A /* ContextMenu.swift in Sources */,
 				D7CBF900222ACE080088715C /* ProjectNavigator.swift in Sources */,
 				0CEB19AC231552950092E801 /* FileTableCellView.swift in Sources */,
 				D788ED67223B20270072C21E /* ProjectOutlineView.swift in Sources */,

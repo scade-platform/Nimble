@@ -17,12 +17,6 @@ public final class ProjectNavigator: Module {
 
 open class ProjectNavigatorPlugin: Plugin {
   
-  public static let MENU_ID = "com.scade.nimble.plugin.projectNavigator"
-  
-  public static var menBuilder : MenuBuilder {
-    return ContextMenuManger.shared.menuBuilders[MENU_ID]!
-  }
-  
   private var navigatorPart: ProjectNavigatorPart
   
   required public init() {
@@ -34,8 +28,6 @@ open class ProjectNavigatorPlugin: Plugin {
     DocumentManager.shared.registerOpenableUTI(ofTypes: ["public.folder", "public.text"])
     workbench.project?.subscribe(resourceObserver: navigatorPart)
     navigatorPart.workbench = workbench
-    let menuBuilder = ProjectNavigatorMenuBuilder(workbench: workbench)
-    ContextMenuManger.shared.registerMenuBulder(id: ProjectNavigatorPlugin.MENU_ID, builder: menuBuilder)
   }
   
   public func deactivate() {
