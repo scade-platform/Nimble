@@ -55,7 +55,7 @@ fileprivate extension ProjectOutlineView {
       menu.addItem(createMenuItem(title: "Delete file", selector: #selector(deleteAction(_:)), representedObject: file))
       break
     case let folder as Folder:
-      menu.addItem(createMenuItem(title: "New File", selector: nil, representedObject: folder))
+      menu.addItem(createMenuItem(title: "New File", selector: #selector(createNewFileAction(_:)), representedObject: folder))
       menu.addItem(createMenuItem(title: "Rename...", selector: #selector(renameAction(_:)), representedObject: folder))
       menu.addItem(createMenuItem(title: "New Folder...", selector: #selector(createNewFolderAction(_:)), representedObject: folder))
       menu.addItem(createMenuItem(title: "Delete Folder", selector: #selector(deleteAction(_:)), representedObject: folder))
@@ -83,7 +83,11 @@ fileprivate extension ProjectOutlineView {
       return
     }
     showRenameAlert(message: "Please enter a new name:", fileSystemElement, handler: {newName in
-      //TODO: Add rename action
+      if !newName.isEmpty, newName != fileSystemElement.name {
+        //TODO: FileSystemElement should update path
+        try? fileSystemElement.path.rename(to: newName)
+        //TODO: UI should listen FS to update correctly
+      }
     })
   }
   
@@ -100,12 +104,23 @@ fileprivate extension ProjectOutlineView {
     default:
       return
     }
-    if result {
-      //TODO: Add remove action
+    guard result, (try? fileSystemElement.path.delete()) != nil else {
+      return
     }
+    //TODO: UI should listen FS to update correctly
   }
   
   @objc func createNewFileAction(_ sender: NSMenuItem?) {
+    guard let folder = sender?.representedObject as? Folder else {
+      return
+    }
+    showRenameAlert(message: "Please enter a name:", nil, handler: {name in
+      if !name.isEmpty {
+        let parentPath = folder.path
+        try? parentPath.join(name).touch()
+        //TODO: UI should listen FS to update correctly
+      }
+    })
   }
   
   @objc func createNewFolderAction(_ sender: NSMenuItem?) {
@@ -113,7 +128,11 @@ fileprivate extension ProjectOutlineView {
       return
     }
     showRenameAlert(message: "Please enter a name:", nil, handler: {name in
-      //TODO: Add folder creation action
+      if !name.isEmpty {
+        let parentPath = folder.path
+        try? parentPath.join(name).mkdir()
+        //TODO: UI should listen FS to update correctly
+      }
     })
   }
   
