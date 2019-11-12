@@ -30,7 +30,6 @@
 		D7798F9B236F131900CBF9B7 /* NimbleCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7798F75236F12E600CBF9B7 /* NimbleCore.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D77990DD236F14D100CBF9B7 /* XibView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7799050236F14D100CBF9B7 /* XibView.swift */; };
 		D77990DE236F14D100CBF9B7 /* NSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7799051236F14D100CBF9B7 /* NSViewController.swift */; };
-		D77990DF236F14D100CBF9B7 /* NSViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7799052236F14D100CBF9B7 /* NSViewExtensions.swift */; };
 		D77990E0236F14D100CBF9B7 /* Console.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7799053236F14D100CBF9B7 /* Console.swift */; };
 		D77990E1236F14D100CBF9B7 /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7799054236F14D100CBF9B7 /* Folder.swift */; };
 		D77990E2236F14D100CBF9B7 /* Atomic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7799056236F14D100CBF9B7 /* Atomic.swift */; };
@@ -121,7 +120,6 @@
 		D779904C236F14D100CBF9B7 /* NimbleCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NimbleCore.h; sourceTree = "<group>"; };
 		D7799050236F14D100CBF9B7 /* XibView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XibView.swift; sourceTree = "<group>"; };
 		D7799051236F14D100CBF9B7 /* NSViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSViewController.swift; sourceTree = "<group>"; };
-		D7799052236F14D100CBF9B7 /* NSViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSViewExtensions.swift; sourceTree = "<group>"; };
 		D7799053236F14D100CBF9B7 /* Console.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Console.swift; sourceTree = "<group>"; };
 		D7799054236F14D100CBF9B7 /* Folder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
 		D7799056236F14D100CBF9B7 /* Atomic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Atomic.swift; sourceTree = "<group>"; };
@@ -255,7 +253,6 @@
 			children = (
 				D7799050236F14D100CBF9B7 /* XibView.swift */,
 				D7799051236F14D100CBF9B7 /* NSViewController.swift */,
-				D7799052236F14D100CBF9B7 /* NSViewExtensions.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -496,7 +493,6 @@
 				D77990E8236F14D100CBF9B7 /* Workbench.swift in Sources */,
 				D77990DD236F14D100CBF9B7 /* XibView.swift in Sources */,
 				D77990E2236F14D100CBF9B7 /* Atomic.swift in Sources */,
-				D77990DF236F14D100CBF9B7 /* NSViewExtensions.swift in Sources */,
 				D77990E6236F14D100CBF9B7 /* Core.swift in Sources */,
 				D77990E0236F14D100CBF9B7 /* Console.swift in Sources */,
 				D77990E5236F14D100CBF9B7 /* Document.swift in Sources */,

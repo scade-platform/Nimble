@@ -57,7 +57,9 @@ class DefaultProjectDelegate: ProjectDelegate {
       cMakeTask.standardOutput = console.output
     }
     cMakeTask.terminationHandler = { p in
-      self.cMakeBuild(folder)
+      DispatchQueue.main.async {
+        self.cMakeBuild(folder)
+      }
     }
     try! cMakeTask.run()
   }
