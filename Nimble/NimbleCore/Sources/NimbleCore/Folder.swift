@@ -28,4 +28,55 @@ public class Folder: FileSystemElement {
       }
     }
   }
+  
+  public var subfolders: ChildSequence<Folder> {
+    return ChildSequence<Folder>(folder: self.path, kind: .subfolders)
+  }
+  
+  public var files: ChildSequence<File> {
+    return ChildSequence<File>(folder: self.path, kind: .files)
+   }
 }
+
+public extension Folder {
+  
+  enum ChildKind {
+    case files
+    case subfolders
+  }
+  
+  struct ChildSequence<Child: FileSystemElement>: Sequence {
+    fileprivate let folder: Path
+    fileprivate let kind: ChildKind
+    
+    public func makeIterator() -> ChildIterator<Child> {
+      switch kind {
+      case .files:
+        return ChildIterator<Child>(items: try? folder.ls().files)
+      case .subfolders:
+        return ChildIterator<Child>(items: try? folder.ls().directories)
+      }
+    }
+  }
+  
+  struct ChildIterator<Child: FileSystemElement>: IteratorProtocol {
+    private var items : [Path]
+    private var index = 0
+
+    fileprivate init(items: [Path]?) {
+        self.items = items ?? []
+    }
+
+    public mutating func next() -> Child? {
+      guard index < items.count else {
+        return nil
+      }
+      let path = items[index]
+      index += 1
+      let child = Child.init(path: path)
+      return child
+    }
+    
+  }
+}
+
