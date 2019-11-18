@@ -2,7 +2,7 @@ import AppKit
 import NimbleCore
 import ScadeKit
 
-public final class PageDocument: NSDocument, Document {
+public final class PageDocument: NSDocument {
   public var svgRoot: SCDSvgBox?
   public var page: SCDWidgetsPage?
   
@@ -11,17 +11,7 @@ public final class PageDocument: NSDocument, Document {
     controller.doc = self
     return controller
   }()
-  
-  public var contentViewController: NSViewController? { return builderController }
-  
-  public static func canOpen(_ file: File) -> Bool {
-    return file.path.extension == "page" || file.path.extension == "svg"
-  }
-  
-  public static func isDefault(for file: File) -> Bool {
-    return canOpen(file)
-  }
-  
+    
   //  public override func read(from data: Data, ofType typeName: String) throws {
   //    svgRoot = SCDRuntime.parseSvg("") as! SCDSvgBox
   //  }
@@ -60,11 +50,29 @@ public final class PageDocument: NSDocument, Document {
         <image id="image" preserveAspectRatio="xMidYMid meet" width="100%" height="100%" xlink:href="\(url.path)"/>
         </svg>
         """
+      
       svgRoot = SCDRuntime.parseSvgContent(content) as? SCDSvgBox
     }
   }
   
   public override func data(ofType typeName: String) throws -> Data {
     return "".data(using: .utf8)!
+  }
+}
+
+
+
+extension PageDocument: Document {
+  public var contentViewController: NSViewController? { builderController }
+  
+  /// TODO: register UTIs for the page files
+  public static var typeIdentifiers: [String] = []
+  
+  public static func canOpen(_ file: File) -> Bool {
+    return file.path.extension == "page" || file.path.extension == "svg"
+  }
+  
+  public static func isDefault(for file: File) -> Bool {
+    return canOpen(file)
   }
 }

@@ -11,11 +11,9 @@ import NimbleCore
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-  
-  var controller: NimbleController? = nil
-    
+      
   func applicationWillFinishLaunching(_ notification: Notification) {
-    controller = NimbleController()
+    
   }
   
   func applicationWillTerminate(_ aNotification: Notification) {
@@ -23,11 +21,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   }
   
   func application(_ sender: NSApplication, openFile filename: String) -> Bool {
-    if let path = Path(filename), let controller = self.controller {
+    if let path = Path(filename) {
       ///TODO:  implement opening files/folders
-      controller.openDocument(withContentsOf: path.url,
-                              display: true,
-                              completionHandler: {_, _, _ in return})
+      NSDocumentController.shared.openDocument(withContentsOf: path.url,
+                                               display: true,
+                                               completionHandler: {_, _, _ in return})
     } else {
       ///TODO:  show error and open an empty project
     }

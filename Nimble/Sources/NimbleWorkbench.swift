@@ -10,108 +10,197 @@ import Cocoa
 import NimbleCore
 
 
-public class NimbleWorkbench: NSWindowController {
+// MARK: - Nimble workbench
+
+public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
+  public var observers = ObserverSet<WorkbenchObserver>()
   
-  var projectDocument: ProjectDocument? {
-    didSet {
-      guard let project = projectDocument?.project else {
-        return
-      }
-      PluginManager.shared.activate(workbench: self)
-      project.subscribe(resourceObserver: self)
+  public override var document: AnyObject? {
+    get { super.document }
+    set {
+      super.document = newValue
+      observers.notify { $0.workbenchDidChangeProject(self) }
     }
   }
   
-  var viewController: WorkbenchViewController? {
-    return self.contentViewController as? WorkbenchViewController
+  var workbenchView: NSSplitViewController? {
+    contentViewController as? NSSplitViewController
+  }
+      
+  var workbenchCentralView: NSSplitViewController? {
+    workbenchView?.children[1] as? NSSplitViewController
+  }
+  
+  var navigatorView: NavigatorView? {
+    workbenchView?.children[0] as? NavigatorView
+  }
+  
+  var editorView: TabbedEditor? {
+    workbenchCentralView?.children[0] as? TabbedEditor
+  }
+  
+  var debugView: DebugView? {
+    workbenchCentralView?.children[1] as? DebugView
   }
   
   public override func windowDidLoad() {
     super.windowDidLoad()
+    window?.delegate = self
+    
+    guard let debugView = debugView else { return }
+    debugView.isHidden = true
+    
+    PluginManager.shared.activate(in: self)
+  }
+    
+  public func windowWillClose(_ notification: Notification) {
+    PluginManager.shared.deactivate(in: self)
   }
   
-  //  func terminate() -> Void {
-  //    pluginManager.deactivate()
-  //  }
+  
+  public func open(_ url: URL) {
+    guard let path = Path(url: url) else { return }
+    open(path)
+  }
+  
+  public func openAll(_ urls: [URL]) {
+    urls.forEach { open($0) }
+  }
+  
+  private func showSaveDialog(question: String, text: String) -> (save: Bool, close: Bool) {
+    let alert = NSAlert()
+    
+    alert.messageText = question
+    alert.informativeText = text
+    alert.alertStyle = .warning
+    
+    alert.addButton(withTitle: "Save")
+    alert.addButton(withTitle: "Cancel")
+    alert.addButton(withTitle: "Don't Save")
+    
+    let result = alert.runModal()
+    return (save: result == .alertFirstButtonReturn,
+            close: result == .alertThirdButtonReturn || result == .alertFirstButtonReturn)
+  }
 }
+
 
 
 extension NimbleWorkbench: Workbench {
-  
-  public var changedFiles: [File]? {
-    return self.viewController?.editorViewController?.changedFiles
-  }
-  
   public var project: Project? {
-    return projectDocument?.project
+    return (document as? ProjectDocument)?.project
   }
+  
   
   public var navigatorArea: WorkbenchArea? {
-    return viewController?.navigatorViewController
+    return navigatorView
   }
   
   public var debugArea: WorkbenchArea? {
-     return viewController?.debugViewController
+     return debugView
   }
   
-  public func open(file: File) -> Document? {
-    guard let doc = try? file.open(), let d = doc else {
-      let unsupportedPane = UnsupportedPane.loadFromNib()
-      viewController?.editorViewController?.previewEditor(unsupportedPane, file: file)
-      return nil
-    }
-    
-    if let docController = d.contentViewController {
-      self.project?.open(files: [file.path.url])
-      viewController?.editorViewController?.showEditor(docController, file: file)
-    }
-    
-    return doc
+  
+  public var activeDocument: Document? {
+    return editorView?.currentDocument
   }
   
-  public func preview(file: File) {
-    guard let doc = try? file.open(), let d = doc else {
-      let unsupportedPane = UnsupportedPane.loadFromNib()
-      viewController?.editorViewController?.previewEditor(unsupportedPane, file: file)
-      return
-    }
-    if let docController = d.contentViewController {
-      viewController?.editorViewController?.previewEditor(docController, file: file)
-    }
+  public var openedDocuments: [Document] {
+    return editorView?.documents ?? []
   }
   
-  public func save(file: File) {
-    self.projectDocument?.save(file: file)
+  
+  public func open(_ path: Path) {
+    ///TODO: implement
+    print("Opening \(path)")
   }
+     
+  
+  public func open(_ doc: Document, show: Bool) {
+    guard let editorView = editorView else { return }
+        
+    if openedDocuments.count == 0 {
+      editorView.addTab(doc)
+      
+    } else if show {
+      if let index = editorView.findIndex(doc) {
+        editorView.selectTab(index)
+        
+      } else if let edited = activeDocument?.isDocumentEdited, edited {
+        editorView.insertTab(doc, at: editorView.currentIndex! + 1)
+        
+      } else {
+        editorView.show(doc)
+      }
+      
+    } else if editorView.findIndex(doc) == nil {
+      editorView.insertTab(doc, at: editorView.currentIndex!, select: false)
+    }
     
+    observers.notify { $0.workbenchDidOpenDocument(self, document: doc) }
+  }
+  
+    
+  public func close(_ doc: Document) -> Bool {
+    var close = true
+    if doc.isDocumentEdited {
+      let result = showSaveDialog(
+        question: "Do you want to save the changes you made to \(doc.title)?",
+        text: "Your changes will be lost if you don't save them"
+      )
+      
+      if result.save {
+        doc.save(nil)
+      }
+      
+      close = result.close
+    }
+    
+    editorView?.removeTab(doc)
+    observers.notify { $0.workbenchDidCloseDocument(self, document: doc) }
+    
+    return close
+  }
+  
+  
   public func createConsole(title: String, show: Bool) -> Console? {
-    return viewController?.debugViewController?.consoleViewController.createConsole(title: title, show: show)
+    return debugView?.consoleView.createConsole(title: title, show: show)
   }
 }
 
-extension NimbleWorkbench: ResourceObserver {
-  public func changed(event: ResourceChangeEvent) {
-    guard event.project === self.project, let deltas = event.deltas, !deltas.isEmpty else {
-      return
+
+// MARK: - Nimble workbench area
+
+protocol NimbleWorkbenchArea: WorkbenchArea where Self: NSViewController { }
+extension NimbleWorkbenchArea {
+  public var isHidden: Bool {
+    set {
+      guard let parent = self.parent as? NSSplitViewController else { return }
+      parent.splitViewItem(for: self)?.isCollapsed = newValue
     }
-    deltas.filter{$0.resource is File}.filter{$0.kind == .added}.forEach{self.open(file: $0.resource as! File)}
-    let changedFoldersDeltas = deltas.filter{$0.resource is Folder}.filter{$0.kind == .changed}
-    for delta in changedFoldersDeltas {
-      delta.deltas?.filter{$0.kind == .closed}.filter{$0.resource is File}.forEach{self.viewController?.editorViewController?.closeEditor(file: $0.resource as! File)}
-      delta.deltas?.filter{$0.kind == .added}.filter{$0.resource is File}.forEach{self.preview(file: $0.resource as! File)}
+    get {
+      guard let parent = self.parent as? NSSplitViewController else { return true }
+      return parent.splitViewItem(for: self)?.isCollapsed ?? true
     }
-    let closedFilesDeltas = deltas.filter{$0.resource is File}.filter{$0.kind == .closed}
-    let editor = viewController!.editorViewController!
-    for delta in closedFilesDeltas {
-      editor.closeEditor(file: delta.resource as! File)
-    }
-    if let changedItem = deltas.filter({$0.resource is File}).first(where: {$0.kind == .changed}) {
-      editor.markEditor(file: changedItem.resource as! File)
-    }
-    if let savedItem = deltas.first(where: {$0.kind == .saved}) {
-      if changedFiles?.contains(savedItem.resource as! File ) ?? false {
-        editor.markEditor(file: savedItem.resource as! File, changed: false)
-      }
-    }
+  }
+}
+
+
+
+// MARK: - Nimble workbench view and controller
+
+protocol NimbleWorkbenchView { }
+protocol NimbleWorkbenchViewController {}
+
+
+extension NimbleWorkbenchView where Self: NSView {
+  var workbench: NimbleWorkbench? {
+    return window?.windowController as? NimbleWorkbench
+  }
+}
+
+extension NimbleWorkbenchViewController where Self: NSViewController {
+  var workbench: NimbleWorkbench? {
+    return view.window?.windowController as? NimbleWorkbench
   }
 }

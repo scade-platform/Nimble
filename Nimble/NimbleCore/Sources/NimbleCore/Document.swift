@@ -11,43 +11,63 @@ import AppKit
 public protocol Document where Self: NSDocument {
   var contentViewController: NSViewController? { get }
   
-  static func canOpen(_ file: File) -> Bool
+  static var typeIdentifiers: [String] { get }
   
   static func isDefault(for file: File) -> Bool
+  
+  static func canOpen(_ file: File) -> Bool
 }
 
 
-public extension Document {  
+public extension Document {
+  var path: Path? {
+    guard let url = self.fileURL else { return nil }
+    return Path(url: url)
+  }
+  
+  var title: String {
+    return path?.basename() ?? "untitled"
+  }
+  
   static func isDefault(for file: File) -> Bool {
     return false
+  }
+  
+  static func canOpen(_ file: File) -> Bool {
+    guard !file.uti.starts(with: "dy") else {
+      return true
+    }
+    return typeIdentifiers.contains { file.typeIdentifierConforms(to: $0) }
   }
 }
 
 
 public class DocumentManager {
-  private let openedDocumentsCapacity: Int = 10
-  
   private var documentClasses: [Document.Type] = []
   
-  private var openedDocuments: [File: Document] = [:]
-  private var openedDocumentsQueue: [Document] = []
-  public private(set) var documentUTI: Set<String> = Set()
+  private var openedDocuments: [File: WeakRef<NSDocument>] = [:]
+  
+  public var typeIdentifiers: Set<String> { documentClasses.reduce(into: []) { $0.formUnion($1.typeIdentifiers) } }
   
   public static let shared: DocumentManager = DocumentManager()
-  
-  public func registerDocumentClass<T: Document>(_ docClass: T.Type, ofTypes uti: [String]? = nil) {
-    documentClasses.append(docClass)
-    guard let arr = uti else {
-      return
+      
+  public func open(file: File) -> Document? {
+    if let doc = searchOpenedDocument(file) {
+      return doc
     }
-    registerOpenableUTI(ofTypes: arr)
+      
+    guard let docClass = selectDocumentClass(for: file) else { return nil }
+    guard let doc = try? docClass.init(contentsOf: file.path.url, ofType: file.uti) else { return nil }
+    
+    openedDocuments[file] = WeakRef<NSDocument>(value: doc)
+    return doc
   }
   
-  public func registerOpenableUTI(ofTypes: [String]){
-    ofTypes.forEach{documentUTI.insert($0)}
+  public func registerDocumentClass<T: Document>(_ docClass: T.Type) {
+    documentClasses.append(docClass)
   }
   
-  public func selectDocumentClass(for file: File) -> Document.Type? {
+  private func selectDocumentClass(for file: File) -> Document.Type? {
     var docClass: Document.Type? = nil
     for dc in documentClasses {
       if dc.canOpen(file) {
@@ -59,28 +79,20 @@ public class DocumentManager {
     }
     return docClass
   }
-  
-  public func open(file: File) throws -> Document? {
-    if let doc = openedDocuments[file] {
-      return doc
-    }
     
-    if openedDocumentsQueue.count == openedDocumentsCapacity {
-      openedDocumentsQueue.removeFirst()
+  private func searchOpenedDocument(_ file: File) -> Document? {
+    var doc: Document? = nil
+    for (key, ref) in openedDocuments {
+      guard let value = ref.value else {
+        openedDocuments.removeValue(forKey: key)
+        continue
+      }
+      
+      if file == key {
+        doc = value as? Document
+      }
     }
-    
-    guard let docClass = selectDocumentClass(for: file) else {return nil}
-        
-    guard let doc = try? docClass.init(contentsOf: file.path.url, ofType: file.uti) else {
-      return nil
-    }
-    openedDocuments[file] = doc
-    openedDocumentsQueue.append(doc)
     return doc
-  }
-  
-  public func close(file: File) {
-    openedDocuments.removeValue(forKey: file)
   }
 }
 
@@ -103,11 +115,7 @@ public extension File {
     return UTTypeConformsTo(uti as CFString , to as CFString)
   }
   
-  func open() throws -> Document? {
-    return try DocumentManager.shared.open(file: self)
-  }
-  
-  func close() {
-    DocumentManager.shared.close(file: self)
+  func open() -> Document? {
+    return DocumentManager.shared.open(file: self)
   }
 }

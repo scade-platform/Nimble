@@ -42,15 +42,7 @@ open class CodeEditorPlugin: Plugin {
     
     loadCustomFonts()
   }
-  
-  public func activate(workbench: Workbench) {
-
-  }
-  
-  public func deactivate() {
-    
-  }
-  
+      
   private func loadCustomFonts() {
     var fonts: [String] = []
     

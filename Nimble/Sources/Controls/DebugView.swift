@@ -9,42 +9,25 @@
 import Cocoa
 import NimbleCore
 
-public class DebugViewController: NSViewController {
-  lazy var consoleViewController: ConsoleViewController = {
-    let console = ConsoleViewController.loadFromNib()
+public class DebugView: NSViewController {
+  lazy var consoleView: ConsoleView = {
+    let console = ConsoleView.loadFromNib()
     self.add(part: console)
     return console
   }()
 }
 
-extension DebugViewController: WorkbenchArea {
+extension DebugView: NimbleWorkbenchArea {
   public func add(part: WorkbenchPart) {
-    //TODO: improve it, every area should be able to host many views
+    ///TODO: improve it, every area should be able to host many views
     self.view.subviews.removeAll()
     self.view.addSubview(part.view)
+    
     part.view.translatesAutoresizingMaskIntoConstraints = false
     part.view.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
     part.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
     part.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
     part.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
     part.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-  }
-  
-}
-
-extension DebugViewController : Hideable {
-  public var isHidden : Bool {
-    set{
-      guard let splitViewController = self.parent as? NSSplitViewController else {
-        return
-      }
-      splitViewController.splitViewItem(for: self)?.isCollapsed = newValue
-    }
-    get{
-      guard let splitViewController = self.parent as? NSSplitViewController else {
-        return true
-      }
-      return splitViewController.splitViewItem(for: self)?.isCollapsed ?? true
-    }
   }
 }

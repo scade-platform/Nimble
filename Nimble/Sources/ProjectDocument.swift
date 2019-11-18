@@ -9,30 +9,47 @@
 import AppKit
 import NimbleCore
 
-class ProjectDocument : NSDocument {
+class ProjectDocument: NSDocument {
+  static let docType = "com.scade.nimble.project"
   
-  var project: Project
-  
-  var workbench: Workbench? {
-      return self.windowForSheet?.windowController as? Workbench
-  }
-  
-  private var incorrectPaths : [String]?
-  
-  override init() {
-    project = Project()
-    project.delegate = DefaultProjectDelegate()
-    super.init()
+  var project = Project()
     
+
+  // MARK: - User Interface
+  
+  override func makeWindowControllers() {
+    let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: nil)
+    
+    guard let windowController = storyboard.instantiateController(
+      withIdentifier: NSStoryboard.SceneIdentifier("Document Window Controller")) as? NSWindowController else { return }
+    
+    addWindowController(windowController)
   }
   
-  init(contentsOf url: URL, ofType typeName: String) throws {
-    project = Project(url: url)
-    super.init()
-    try read(from: url, ofType: typeName)
-    self.fileURL = url
-    self.fileType = typeName
+
+  // MARK: - Reading and Writing
+  
+  override func read(from url: URL, ofType typeName: String) throws {
+    guard typeName == ProjectDocument.docType else {
+      throw NSError(domain: "ProjectDocument", code: 0, userInfo: [NSLocalizedDescriptionKey: "Document type does not match"])
+    }
+    
+    guard let path = Path(url: url) else {
+      throw NSError(domain: "ProjectDocument", code: 0, userInfo: [NSLocalizedDescriptionKey: "Cannot acces \(url)"])
+    }
+    
+    try project.load(from: path)
   }
+  
+  
+  override func write(to url: URL, ofType typeName: String) throws {
+    guard let path = Path(url: url) else {
+      throw NSError(domain: "ProjectDocument", code: 0, userInfo: [NSLocalizedDescriptionKey: "Cannot acces \(url)"])
+    }
+    
+    try project.save(to: path)
+  }
+  
   
   
   // MARK: - Enablers
@@ -49,66 +66,12 @@ class ProjectDocument : NSDocument {
   
   // This enables asynchronous reading.
   override class func canConcurrentlyReadDocuments(ofType: String) -> Bool {
-    return ofType == "com.scade.nimble.project"
+    return ofType == ProjectDocument.docType
   }
   
   
-  // MARK: - User Interface
-  
-  override func makeWindowControllers() {
-    // Returns the storyboard that contains your document window.
-    let storyboard = NSStoryboard(name: NSStoryboard.Name("Main"), bundle: nil)
-    if let windowController =
-      storyboard.instantiateController(
-        withIdentifier: NSStoryboard.SceneIdentifier("Document Window Controller")) as? NSWindowController {
-      if let workbench = windowController as? NimbleWorkbench {
-        workbench.projectDocument = self
-      }
-      addWindowController(windowController)
-      showIncorrectPaths()
-    }
-  }
-  
-  func switchProject(contentsOf url: URL, ofType typeName: String) throws {
-    self.project = Project(subscribersFrom: project, url: url)
-    project.delegate = DefaultProjectDelegate()
-    try read(from: url, ofType: typeName)
-    showIncorrectPaths()
-  }
-  
-  // MARK: - Reading and Writing
-  
-  /// - Tag: readExample
-  override func read(from data: Data, ofType typeName: String) throws {
-    incorrectPaths = project.read(from: data)
-  }
-  
-  /// - Tag: writeExample
-  override func data(ofType typeName: String) throws -> Data {
-    return project.data(document: self) ?? Data()
-  }
-  
-  func showIncorrectPaths(){
-    if let paths = incorrectPaths, !paths.isEmpty {
-      let alert = NSAlert()
-      alert.messageText =  "Project file has incorrect paths:"
-      let pathsMessage = paths.reduce("", {$0 + $1 + "\n"})
-      alert.informativeText = pathsMessage
-      alert.addButton(withTitle: "OK")
-      alert.alertStyle = .warning
-      alert.runModal()
-    }
-  }
-
-  
-  func add(folders urls: [URL]){
-    project.add(folders: urls)
-  }
-  
-  func add(files urls: [URL]){
-    project.open(files: urls)
-  }
-  
+/*
+  // MARK: - Actions
   @IBAction func saveProjectAs(_ sender: Any? ){
     saveAs(sender)
   }
@@ -158,4 +121,6 @@ class ProjectDocument : NSDocument {
     }
     workbench.viewController?.editorViewController?.closeCurrentTab()
   }
+*/
+  
 }

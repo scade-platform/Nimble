@@ -40,13 +40,36 @@ extension SyntaxScope: Hashable {
 // MARK: SyntaxTree
 
 public struct SyntaxNode {
-  let scope: SyntaxScope?
-  let range: Range<Int>
-  let nodes: [SyntaxNode]
+  var scope: SyntaxScope?
+  var range: Range<Int>
+  var nodes: [SyntaxNode]
   
   func visit(_ visitor: (SyntaxScope?, Range<Int>) -> Void) {
     visitor(scope, range)
     nodes.visit(visitor)
+  }
+  
+  mutating func visit(_ visitor: (inout SyntaxNode) -> Void)  {
+    visitor(&self)
+    nodes.visit(visitor)
+  }
+      
+  func search(`in` subrange: Range<Int>) -> Range<Array<SyntaxNode>.Index> {
+    let begin = nodes.binarySearch { $0.range.endIndex < subrange.startIndex }
+    let end = nodes.binarySearch { $0.range.startIndex < subrange.endIndex }
+    return begin..<end
+  }
+  
+  func search(`in` subrange: NSRange) -> Range<Array<SyntaxNode>.Index> {
+    return search(in: subrange.lowerBound..<subrange.upperBound)
+  }
+  
+  mutating func replace(subrange: NSRange, with otherNodes: [SyntaxNode]) {
+    replace(subrange: subrange.lowerBound..<subrange.upperBound, with: otherNodes)
+  }
+  
+  mutating func replace(subrange: Range<Int>, with otherNodes: [SyntaxNode]) {
+    nodes.replaceSubrange(search(in: subrange), with: otherNodes)
   }
 }
 
@@ -54,6 +77,12 @@ public struct SyntaxNode {
 extension Array where Element == SyntaxNode {
   func visit(_ visitor: (SyntaxScope?, Range<Int>) -> Void) {
     self.forEach { $0.visit(visitor) }
+  }
+  
+  mutating func visit(_ visitor: (inout SyntaxNode) -> Void) {
+    for i in self.indices {
+      self[i].visit(visitor)
+    }
   }
 }
 

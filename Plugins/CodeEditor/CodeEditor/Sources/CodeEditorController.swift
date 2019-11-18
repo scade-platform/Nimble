@@ -9,7 +9,7 @@
 import Cocoa
 import CodeEditor
 
-class CodeEditorController: NSViewController, NSTextViewDelegate {
+class CodeEditorController: NSViewController, NSTextViewDelegate, NSTextStorageDelegate {
   weak var doc: SourceCodeDocument? = nil {
     didSet {
       loadContent()
@@ -19,11 +19,10 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
   @IBOutlet
   weak var textView: CodeEditorTextView?
   
+  private weak var highlightProgress: Progress? = nil
+  
   override func viewDidLoad() {
     super.viewDidLoad()
-    
-    NotificationCenter.default.addObserver(self, selector: #selector(textDidChange), name: NSText.didChangeNotification, object: textView)
-    
     loadContent()
   }
   
@@ -33,6 +32,7 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
           let doc = doc else { return }
     
     layoutManager.replaceTextStorage(doc.textStorage)
+    doc.textStorage.delegate = self
     
     // Need to reapply whole coloring after replacing the textStorage
     applyTheme()
@@ -43,7 +43,7 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
     }
     
     // Highlight syntax
-    doc.syntaxParser?.highlightAll()
+    highlightProgress = doc.syntaxParser?.highlightAll()
   }
 
   private func applyTheme() {
@@ -54,11 +54,28 @@ class CodeEditorController: NSViewController, NSTextViewDelegate {
     textView.apply(theme: theme)
   }
   
-  @objc private func textDidChange(notification: NSNotification) {
-    //_ = doc?.syntaxParser.highlightAll()
-  }
   
-  public func textView(_ textView: NSTextView, completions words: [String], forPartialWordRange charRange: NSRange, indexOfSelectedItem index: UnsafeMutablePointer<Int>?) -> [String] {
+  override func textStorageDidProcessEditing(_ notification: Notification) {
+    guard
+      let textStorage = notification.object as? NSTextStorage,
+      textStorage.editedMask.contains(.editedCharacters)
+      else { return }
+    
+    guard let syntaxParser = doc?.syntaxParser else { return }
+    let range = textStorage.editedRange
+    
+    DispatchQueue.main.async { [weak self] in
+      if let progress = self?.highlightProgress {
+        progress.cancel()
+        self?.highlightProgress = syntaxParser.highlightAll()
+      } else {
+        let _ = syntaxParser.highlight(around: range)
+      }
+    }
+  }
+
+  
+  func textView(_ textView: NSTextView, completions words: [String], forPartialWordRange charRange: NSRange, indexOfSelectedItem index: UnsafeMutablePointer<Int>?) -> [String] {
     guard let completions = doc?.delegates.first?.complete() else { return [] }
     return completions
   }

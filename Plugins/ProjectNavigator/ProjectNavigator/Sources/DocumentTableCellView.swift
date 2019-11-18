@@ -9,9 +9,9 @@
 import Cocoa
 import NimbleCore
 
-class FileTableCellView : NSTableCellView {
+class DocumentTableCellView : NSTableCellView {
   @IBOutlet weak var closeButton : NSButton!
-  var closeFileCallback: ((FileSystemElement) -> Void)?
+  var onCloseDocument: ((Document) -> Void)?
   
   override func viewDidMoveToWindow() {
     super.viewDidMoveToWindow()
@@ -20,10 +20,10 @@ class FileTableCellView : NSTableCellView {
   }
   
   @objc func closeFile(_ sender: Any) {
-    guard let fileSystemElement = self.objectValue as? FileSystemElement else {
+    guard let doc = self.objectValue as? Document else {
       return
     }
-    closeFileCallback?(fileSystemElement)
+    onCloseDocument?(doc)
   }
   
 }

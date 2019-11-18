@@ -9,12 +9,16 @@
 import Cocoa
 import NimbleCore
 
-public class NavigatorViewController: NSViewController {
+public class NavigatorView: NSViewController {
   @IBOutlet var sidebar: WorkbenchSidebar? = nil
 }
 
-extension NavigatorViewController: WorkbenchArea {
+extension NavigatorView: NimbleWorkbenchArea {
   public func add(part: WorkbenchPart) {
+    if let part = part as? NSViewController {
+      self.addChild(part)
+    }
+    
     sidebar?.appendView(part.view, title: part.title ?? "", icon: part.icon)
   }
 }

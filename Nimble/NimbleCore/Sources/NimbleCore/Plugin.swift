@@ -16,8 +16,8 @@ public protocol Module: class {
 
 public protocol Plugin: class {
   init?()
-  func activate(workbench: Workbench) -> Void
-  func deactivate() -> Void
+  func activate(in: Workbench) -> Void
+  func deactivate(in: Workbench) -> Void
 }
 
 
@@ -29,7 +29,11 @@ public extension Plugin {
   var resourcePath: Path? {
     guard let path = bundle.resourcePath else { return nil }
     return Path(path)
-  }  
+  }
+  
+  func activate(in _: Workbench) -> Void {}
+  
+  func deactivate(in _: Workbench) -> Void {}
 }
 
 
@@ -40,13 +44,13 @@ public class PluginManager {
   
   public static let shared: PluginManager = PluginManager()
   
-  public func activate(workbench: Workbench) -> Void {
+  public func activate(in workbench: Workbench) -> Void {
     plugins = PluginManager.modules.compactMap{$0.pluginClass.init()}
-    plugins.forEach{$0.activate(workbench: workbench)}
+    plugins.forEach{$0.activate(in: workbench)}
   }
   
-  public func deactivate() -> Void {
-    plugins.forEach { $0.deactivate() }
+  public func deactivate(in workbench: Workbench) -> Void {
+    plugins.forEach { $0.deactivate(in: workbench) }
   }
   
   

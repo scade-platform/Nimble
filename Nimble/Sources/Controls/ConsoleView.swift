@@ -9,7 +9,7 @@
 import Cocoa
 import NimbleCore
 
-class ConsoleViewController: NSViewController {
+class ConsoleView: NSViewController {
   
   @IBOutlet var textView: NSTextView!
   
@@ -124,7 +124,7 @@ class ConsoleViewController: NSViewController {
   
 }
 
-extension ConsoleViewController : WorkbenchPart {
+extension ConsoleView : WorkbenchPart {
   
   var icon: NSImage? {
     return nil

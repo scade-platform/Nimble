@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="ProjectOutlineView" customModule="ProjectNavigator" customModuleProvider="target">
+        <customObject id="-2" userLabel="File's Owner" customClass="OutlineView" customModule="ProjectNavigator" customModuleProvider="target">
             <connections>
-                <outlet property="outline" destination="10y-x7-nd7" id="bar-33-24S"/>
+                <outlet property="outlineView" destination="10y-x7-nd7" id="zsm-g6-e6e"/>
+                <outlet property="view" destination="c22-O7-iKe" id="pM4-by-qrC"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
@@ -85,7 +87,7 @@
                                                     <outlet property="textField" destination="nyh-VN-bXr" id="5TP-Vh-7Z1"/>
                                                 </connections>
                                             </tableCellView>
-                                            <tableCellView identifier="ClosableDataCell" id="YsI-UW-Qoh" customClass="FileTableCellView" customModule="ProjectNavigator" customModuleProvider="target">
+                                            <tableCellView identifier="ClosableDataCell" id="YsI-UW-Qoh" customClass="DocumentTableCellView" customModule="ProjectNavigator" customModuleProvider="target">
                                                 <rect key="frame" x="1" y="39" width="228" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
@@ -111,7 +113,7 @@
                                                                 <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="NSActionTemplate" id="WHm-jm-A7q"/>
                                                             </imageView>
                                                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="k5t-fd-2sL">
-                                                                <rect key="frame" x="45" y="0.0" width="185" height="17"/>
+                                                                <rect key="frame" x="45" y="1" width="185" height="16"/>
                                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="R6P-Ki-PvB">
                                                                     <font key="font" metaFont="system"/>
                                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>

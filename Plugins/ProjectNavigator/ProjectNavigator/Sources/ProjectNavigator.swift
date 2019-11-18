@@ -14,32 +14,17 @@ public final class ProjectNavigator: Module {
 }
 
 
-
-open class ProjectNavigatorPlugin: Plugin {
+public final class ProjectNavigatorPlugin: Plugin {
+  public init() { }
   
-  public static let MENU_ID = "com.scade.nimble.plugin.projectNavigator"
-  
-  public static var menBuilder : MenuBuilder {
-    return ContextMenuManger.shared.menuBuilders[MENU_ID]!
-  }
-  
-  private var navigatorPart: ProjectNavigatorPart
-  
-  required public init() {
-    navigatorPart = ProjectNavigatorPart()
-  }
-  
-  public func activate(workbench: Workbench) {
-    workbench.navigatorArea?.add(part: navigatorPart)
-    DocumentManager.shared.registerOpenableUTI(ofTypes: ["public.folder", "public.text"])
-    workbench.project?.subscribe(resourceObserver: navigatorPart)
-    navigatorPart.workbench = workbench
-    let menuBuilder = ProjectNavigatorMenuBuilder(workbench: workbench)
-    ContextMenuManger.shared.registerMenuBulder(id: ProjectNavigatorPlugin.MENU_ID, builder: menuBuilder)
-  }
-  
-  public func deactivate() {
+  public func activate(in workbench: Workbench) {
+    // Create an instance every time it's activated in a workbench
+    // An app can have multiple windows and hence multiple workbenches
+    // NOTE: store on the plugin level carefully (there is ONE instance of the plugin,
+    // that can be activated and disactivated multiple times within different workbenches)
     
+    let outlineView = OutlineView.loadFromNib()
+    outlineView.workbench = workbench
+    workbench.navigatorArea?.add(part: outlineView)
   }
-  
 }

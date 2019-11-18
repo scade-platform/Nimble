@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -757,10 +758,10 @@
             </objects>
             <point key="canvasLocation" x="100" y="265"/>
         </scene>
-        <!--Horizontal Root Split View Controller-->
+        <!--Split View Controller-->
         <scene sceneID="AYH-wU-0K0">
             <objects>
-                <splitViewController id="f9f-3t-OXY" customClass="HorizontalRootSplitViewController" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
+                <splitViewController id="f9f-3t-OXY" sceneMemberID="viewController">
                     <splitViewItems>
                         <splitViewItem id="6CT-wf-mhQ"/>
                         <splitViewItem id="6Es-Wo-iHc"/>
@@ -782,10 +783,10 @@
             </objects>
             <point key="canvasLocation" x="101" y="1879"/>
         </scene>
-        <!--Debug View Controller-->
+        <!--Debug View-->
         <scene sceneID="lFy-fe-dBa">
             <objects>
-                <viewController id="vVK-t1-2nf" customClass="DebugViewController" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="vVK-t1-2nf" customClass="DebugView" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="QYh-oE-JSq">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -795,10 +796,10 @@
             </objects>
             <point key="canvasLocation" x="100" y="2449"/>
         </scene>
-        <!--Workbench View Controller-->
+        <!--Split View Controller-->
         <scene sceneID="wTH-cn-3SB">
             <objects>
-                <splitViewController id="fjW-vM-mzH" customClass="WorkbenchViewController" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
+                <splitViewController id="fjW-vM-mzH" sceneMemberID="viewController">
                     <splitViewItems>
                         <splitViewItem id="ND0-p8-RRp"/>
                         <splitViewItem id="5X7-a0-fnU"/>
@@ -820,10 +821,10 @@
             </objects>
             <point key="canvasLocation" x="101" y="1197"/>
         </scene>
-        <!--Navigator View Controller-->
+        <!--Navigator View-->
         <scene sceneID="kYI-m9-sar">
             <objects>
-                <viewController id="fbF-er-OZS" customClass="NavigatorViewController" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="fbF-er-OZS" customClass="NavigatorView" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
                     <visualEffectView key="view" appearanceType="inheritedVibrantLight" blendingMode="behindWindow" material="sidebar" state="followsWindowActiveState" id="10S-HM-ZX6">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -842,15 +843,10 @@
             </objects>
             <point key="canvasLocation" x="793" y="1080"/>
         </scene>
-        <!--Editor View Controller-->
+        <!--Tabbed Editor-->
         <scene sceneID="dsF-QD-dQD">
             <objects>
-                <viewController id="UtC-nN-7Sb" customClass="EditorViewController" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="C0R-Is-bLu">
-                        <rect key="frame" x="0.0" y="0.0" width="1200" height="900"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </view>
-                </viewController>
+                <viewController id="UtC-nN-7Sb" customClass="TabbedEditor" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController"/>
                 <customObject id="xi1-Hq-DW4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1541" y="1879"/>

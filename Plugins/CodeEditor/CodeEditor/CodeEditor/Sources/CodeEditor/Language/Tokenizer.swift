@@ -16,8 +16,9 @@ public protocol Tokenizer: class {
 
 extension Tokenizer {
   func tokenize(_ str: String, in range: NSRange) -> TokenizerResult? {
-    let range = str.index(at: range.lowerBound)..<str.index(at: range.upperBound)
-    return tokenize(str, in: range)
+    let begin = str.index(str.startIndex, offsetBy: range.lowerBound, limitedBy: str.endIndex) ?? str.endIndex
+    let end = str.index(str.startIndex, offsetBy: range.upperBound, limitedBy: str.endIndex) ?? str.endIndex
+    return tokenize(str, in: begin..<end)
   }
 }
 
@@ -51,9 +52,7 @@ public struct TokenizerContext {
 
 public struct TokenizerResult {
   var range: Range<Int>
-  
-  var nodes: [SyntaxNode]
-  
+  var nodes: [SyntaxNode]  
   var isEmpty: Bool { return range.isEmpty }
   
   init(range: Range<Int> = 0..<0, nodes: [SyntaxNode] = []) {
@@ -98,7 +97,9 @@ extension TMTokenizer {
     return tokenize(str, in: str.range)
   }
   
-  func tokenize(_ str: String, in range: Range<String.Index>) -> TokenizerResult? {    
+  func tokenize(_ str: String, in range: Range<String.Index>) -> TokenizerResult? {
+    guard !range.isEmpty else { return nil }
+    
     let ctx = TokenizerContext(range: str.utf8(in: range), upperBound: -1, isFirstLine: true)
     return tokenize(str, with: ctx)
   }

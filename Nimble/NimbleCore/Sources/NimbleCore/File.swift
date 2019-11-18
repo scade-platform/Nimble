@@ -23,13 +23,13 @@ public class FileSystemElement {
     return path.extension
   }
   
-  required public init(path: Path) {
+  public init(path: Path) {
     self.path = path
   }
-  
-  public convenience init?(path: String) {
+      
+  public init?(path: String) {
     guard let path = Path(path) else { return nil }
-    self.init(path: path)
+    self.path = path
   }
 }
 

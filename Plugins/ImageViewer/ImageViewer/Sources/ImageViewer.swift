@@ -9,12 +9,4 @@ open class ImageViewerPlugin: Plugin {
   required public init() {
     DocumentManager.shared.registerDocumentClass(ImageDocument.self)
   }
-  
-  public func activate(workbench: Workbench) {
-    
-  }
-  
-  public func deactivate() {
-    
-  }
 }

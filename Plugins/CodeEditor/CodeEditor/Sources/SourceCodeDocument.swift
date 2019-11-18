@@ -10,7 +10,7 @@ import AppKit
 import NimbleCore
 import CodeEditor
 
-public final class SourceCodeDocument: NSDocument, TextDocument {
+public final class SourceCodeDocument: NSDocument {
   let textStorage = NSTextStorage()
   
   public var language: Language? {
@@ -31,9 +31,7 @@ public final class SourceCodeDocument: NSDocument, TextDocument {
     controller.doc = self
     return controller
   }()
-  
-  public var contentViewController: NSViewController? { return editorController }
-  
+    
   public var languageId: String {
     if let lang = language {
       return lang.id
@@ -46,12 +44,6 @@ public final class SourceCodeDocument: NSDocument, TextDocument {
     return TextDocumentDelegateManager.shared.createDelegates(for: self)
   }()
   
-  public class func canOpen(_ file: File) -> Bool {
-    guard !file.uti.starts(with: "dy") else {
-      return true
-    }
-    return file.typeIdentifierConforms(to: "public.text") || file.typeIdentifierConforms(to: "public.svg-image")
-  }
   
   public override func read(from url: URL, ofType typeName: String) throws {
     self.language = url.file?.language
@@ -60,7 +52,7 @@ public final class SourceCodeDocument: NSDocument, TextDocument {
   
   public override func read(from data: Data, ofType typeName: String) throws {
     guard let str =  String(bytes: data, encoding: .utf8) else {
-      throw NSError.init(domain: "NimbleCodeEditor", code: 1, userInfo: ["FileUrl": self.fileURL ?? ""])
+      throw NSError.init(domain: "CodeEditor", code: 1, userInfo: ["FileUrl": self.fileURL ?? ""])
     }
     let content = str.replacingLineEndings(with: .lf)
     textStorage.replaceCharacters(in: textStorage.range, with: content)
@@ -69,4 +61,10 @@ public final class SourceCodeDocument: NSDocument, TextDocument {
   public override func data(ofType typeName: String) throws -> Data {
     return textStorage.string.data(using: .utf8)!
   }
+}
+
+
+extension SourceCodeDocument: TextDocument {
+  public var contentViewController: NSViewController? { return editorController }
+  public static var typeIdentifiers: [String] { ["public.text", "public.svg-image"] }
 }

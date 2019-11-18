@@ -7,25 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0CE4E240235733D200114287 /* ProjectNavigatorMenuBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE4E23F235733D200114287 /* ProjectNavigatorMenuBuilder.swift */; };
-		0CEB19AC231552950092E801 /* FileTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEB19AB231552950092E801 /* FileTableCellView.swift */; };
+		D724C5F6237DA72200E80958 /* OutlineDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5F5237DA72200E80958 /* OutlineDataSource.swift */; };
+		D724C5F8237DC02D00E80958 /* DocumentTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5F7237DC02C00E80958 /* DocumentTableCellView.swift */; };
 		D7799139236F16E800CBF9B7 /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7799138236F16E800CBF9B7 /* NimbleCore.framework */; };
-		D788ED5A2239C6A50072C21E /* ProjectNavigatorPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788ED592239C6A50072C21E /* ProjectNavigatorPart.swift */; };
 		D788ED62223AC30A0072C21E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D788ED61223AC30A0072C21E /* Assets.xcassets */; };
-		D788ED67223B20270072C21E /* ProjectOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788ED66223B20270072C21E /* ProjectOutlineView.swift */; };
-		D788ED6C223B22C10072C21E /* ProjectOutlineView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D788ED6B223B22C10072C21E /* ProjectOutlineView.xib */; };
+		D788ED67223B20270072C21E /* OutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D788ED66223B20270072C21E /* OutlineView.swift */; };
+		D788ED6C223B22C10072C21E /* OutlineView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D788ED6B223B22C10072C21E /* OutlineView.xib */; };
 		D7CBF900222ACE080088715C /* ProjectNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CBF8FF222ACE080088715C /* ProjectNavigator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0CE4E23F235733D200114287 /* ProjectNavigatorMenuBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorMenuBuilder.swift; sourceTree = "<group>"; };
-		0CEB19AB231552950092E801 /* FileTableCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileTableCellView.swift; sourceTree = "<group>"; };
+		D724C5F5237DA72200E80958 /* OutlineDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineDataSource.swift; sourceTree = "<group>"; };
+		D724C5F7237DC02C00E80958 /* DocumentTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentTableCellView.swift; sourceTree = "<group>"; };
 		D7799138236F16E800CBF9B7 /* NimbleCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D788ED592239C6A50072C21E /* ProjectNavigatorPart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigatorPart.swift; sourceTree = "<group>"; };
 		D788ED5B2239C9D60072C21E /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D788ED61223AC30A0072C21E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		D788ED66223B20270072C21E /* ProjectOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectOutlineView.swift; sourceTree = "<group>"; };
-		D788ED6B223B22C10072C21E /* ProjectOutlineView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectOutlineView.xib; sourceTree = "<group>"; };
+		D788ED66223B20270072C21E /* OutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineView.swift; sourceTree = "<group>"; };
+		D788ED6B223B22C10072C21E /* OutlineView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OutlineView.xib; sourceTree = "<group>"; };
 		D7CBF8CF222ACD770088715C /* ProjectNavigator.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProjectNavigator.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7CBF8D2222ACD770088715C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7CBF8FF222ACE080088715C /* ProjectNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectNavigator.swift; sourceTree = "<group>"; };
@@ -73,12 +71,11 @@
 		D7CBF8FE222ACDE40088715C /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				D724C5F7237DC02C00E80958 /* DocumentTableCellView.swift */,
+				D724C5F5237DA72200E80958 /* OutlineDataSource.swift */,
+				D788ED66223B20270072C21E /* OutlineView.swift */,
+				D788ED6B223B22C10072C21E /* OutlineView.xib */,
 				D7CBF8FF222ACE080088715C /* ProjectNavigator.swift */,
-				D788ED592239C6A50072C21E /* ProjectNavigatorPart.swift */,
-				D788ED66223B20270072C21E /* ProjectOutlineView.swift */,
-				D788ED6B223B22C10072C21E /* ProjectOutlineView.xib */,
-				0CEB19AB231552950092E801 /* FileTableCellView.swift */,
-				0CE4E23F235733D200114287 /* ProjectNavigatorMenuBuilder.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -152,7 +149,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D788ED62223AC30A0072C21E /* Assets.xcassets in Resources */,
-				D788ED6C223B22C10072C21E /* ProjectOutlineView.xib in Resources */,
+				D788ED6C223B22C10072C21E /* OutlineView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,11 +160,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CE4E240235733D200114287 /* ProjectNavigatorMenuBuilder.swift in Sources */,
+				D724C5F8237DC02D00E80958 /* DocumentTableCellView.swift in Sources */,
 				D7CBF900222ACE080088715C /* ProjectNavigator.swift in Sources */,
-				0CEB19AC231552950092E801 /* FileTableCellView.swift in Sources */,
-				D788ED67223B20270072C21E /* ProjectOutlineView.swift in Sources */,
-				D788ED5A2239C6A50072C21E /* ProjectNavigatorPart.swift in Sources */,
+				D724C5F6237DA72200E80958 /* OutlineDataSource.swift in Sources */,
+				D788ED67223B20270072C21E /* OutlineView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -216,9 +216,9 @@
 			isa = PBXGroup;
 			children = (
 				D77990EC236F150C00CBF9B7 /* CodeEditor.h */,
+				D7799103236F150C00CBF9B7 /* Info.plist */,
 				D77990EE236F150C00CBF9B7 /* Package.swift */,
 				D77990EF236F150C00CBF9B7 /* Sources */,
-				D7799103236F150C00CBF9B7 /* Info.plist */,
 			);
 			path = CodeEditor;
 			sourceTree = "<group>";
@@ -234,12 +234,12 @@
 		D77990F0236F150C00CBF9B7 /* CodeEditor */ = {
 			isa = PBXGroup;
 			children = (
-				D77990F1236F150C00CBF9B7 /* TextDocument.swift */,
-				D77990F2236F150C00CBF9B7 /* Language */,
 				D77990F8236F150C00CBF9B7 /* ColorTheme.swift */,
-				D77990F9236F150C00CBF9B7 /* Extensions */,
-				D77990FE236F150C00CBF9B7 /* TextDocumentDelegate.swift */,
 				D77990FF236F150C00CBF9B7 /* Core.swift */,
+				D77990F1236F150C00CBF9B7 /* TextDocument.swift */,
+				D77990FE236F150C00CBF9B7 /* TextDocumentDelegate.swift */,
+				D77990F9236F150C00CBF9B7 /* Extensions */,
+				D77990F2236F150C00CBF9B7 /* Language */,
 			);
 			path = CodeEditor;
 			sourceTree = "<group>";
