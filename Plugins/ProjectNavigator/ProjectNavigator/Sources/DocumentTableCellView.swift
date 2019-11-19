@@ -16,10 +16,10 @@ class DocumentTableCellView : NSTableCellView {
   override func viewDidMoveToWindow() {
     super.viewDidMoveToWindow()
     closeButton.target = self
-    closeButton.action = #selector(closeFile(_:))
+    closeButton.action = #selector(closeDocument(_:))
   }
   
-  @objc func closeFile(_ sender: Any) {
+  @objc func closeDocument(_ sender: Any) {
     guard let doc = self.objectValue as? Document else {
       return
     }

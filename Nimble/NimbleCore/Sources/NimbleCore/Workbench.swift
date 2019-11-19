@@ -44,12 +44,14 @@ public protocol WorkbenchObserver: class {
   func workbenchDidChangeProject(_ workbench: Workbench)
   func workbenchDidOpenDocument(_ workbench: Workbench, document: Document)
   func workbenchDidCloseDocument(_ workbench: Workbench, document: Document)
+  func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?)
 }
 
 public extension WorkbenchObserver {
   func workbenchDidChangeProject(_ workbench: Workbench) { return }
   func workbenchDidOpenDocument(_ workbench: Workbench, document: Document) { return }
   func workbenchDidCloseDocument(_ workbench: Workbench, document: Document) { return }
+  func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) { return }
 }
 
 

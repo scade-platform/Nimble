@@ -48,8 +48,6 @@ class OutlineDataSource: NSObject {
   private weak var outline: NSOutlineView?
   private weak var workbench: Workbench?
   
-  var prevSelectedDocument: Document? = nil
-  
   let openedDocuments: OpenedDocumentsItem
   let projectFolders: ProjectFoldersItem
   
@@ -73,12 +71,12 @@ extension OutlineDataSource: WorkbenchObserver {
   }
   
   func workbenchDidOpenDocument(_ workbench: Workbench, document: Document) {
-    outline?.reloadItem(openedDocuments)
+    outline?.reloadItem(openedDocuments, reloadChildren: true)
     outline?.expandItem(openedDocuments)
   }
   
   func workbenchDidCloseDocument(_ workbench: Workbench, document: Document) {
-    outline?.reloadItem(openedDocuments)
+    outline?.reloadItem(openedDocuments, reloadChildren: true)
     outline?.expandItem(openedDocuments)
   }
 }
@@ -198,16 +196,7 @@ extension OutlineDataSource: NSOutlineViewDelegate {
       return nil
     }
   }
-      
-  public func outlineViewSelectionDidChange(_ notification: Notification) {
-    guard let outlineView = notification.object as? NSOutlineView,
-          let item = outlineView.item(atRow: outlineView.selectedRow) as? File,
-          let doc = item.open() else { return }
-    
-    self.prevSelectedDocument = self.workbench?.activeDocument
-    self.workbench?.open(doc, show: true)
-  }
-  
+        
   public func outlineViewItemDidExpand(_ notification: Notification) {
     guard let outlineView = notification.object as? NSOutlineView,
           let item = notification.userInfo?["NSObject"] else { return }

@@ -13,16 +13,36 @@ import NimbleCore
 open class OutlineView: NSViewController, WorkbenchPart {
   @IBOutlet var outlineView: NSOutlineView? = nil
   
+  private var prevSelectedDocument: Document? = nil
+  
   private var outlineDataSource: OutlineDataSource? = nil
   
   public lazy var icon: NSImage? = {
     Bundle(for: type(of: self)).image(forResource: "navigatorPart")
   }()
       
-  weak var workbench: Workbench? = nil
+  weak var workbench: Workbench? = nil {
+    didSet {
+      workbench?.observers.add(observer: self)
+    }
+    willSet {
+      workbench?.observers.remove(observer: self)
+    }
+  }
   
-  @IBAction func doubleClickedItem(_ sender: Any) {
-    guard let prevDoc = outlineDataSource?.prevSelectedDocument else { return }
+  @IBAction func itemClicked(_ sender: Any) {
+    guard let outlineView = outlineView,
+          let item = outlineView.item(atRow: outlineView.selectedRow) as? File,
+          let doc = item.open() else { return }
+    
+    if let activeDoc = workbench?.activeDocument, doc === activeDoc { return }
+    
+    prevSelectedDocument = workbench?.activeDocument
+    workbench?.open(doc, show: true)
+  }
+  
+  @IBAction func itemDoubleClicked(_ sender: Any) {
+    guard let prevDoc = prevSelectedDocument else { return }
     workbench?.open(prevDoc, show: false)
   }
   
@@ -46,3 +66,9 @@ open class OutlineView: NSViewController, WorkbenchPart {
   }
 }
 
+
+extension OutlineView: WorkbenchObserver {
+  public func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) {
+    
+  }
+}
