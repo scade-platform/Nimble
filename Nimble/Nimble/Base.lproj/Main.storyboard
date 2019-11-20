@@ -802,7 +802,7 @@
                 <splitViewController id="fjW-vM-mzH" sceneMemberID="viewController">
                     <splitViewItems>
                         <splitViewItem id="ND0-p8-RRp"/>
-                        <splitViewItem id="5X7-a0-fnU"/>
+                        <splitViewItem holdingPriority="249" id="5X7-a0-fnU"/>
                     </splitViewItems>
                     <splitView key="splitView" dividerStyle="thin" vertical="YES" id="Kd3-Dd-nrm" customClass="DropView" customModule="Nimble" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="663" height="409"/>
