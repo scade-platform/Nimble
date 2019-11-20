@@ -23,7 +23,7 @@ public final class ProjectNavigatorPlugin: Plugin {
     // NOTE: store on the plugin level carefully (there is ONE instance of the plugin,
     // that can be activated and disactivated multiple times within different workbenches)
     
-    let outlineView = OutlineViewController.loadFromNib()
+    let outlineView = OutlineView.loadFromNib()
     outlineView.workbench = workbench
     workbench.navigatorArea?.add(part: outlineView)
   }
