@@ -40,17 +40,18 @@ public extension Plugin {
 public class PluginManager {
   private static let modules: [Module.Type] = loadModules()
   
-  private var plugins: [Plugin] = []
-  
   public static let shared: PluginManager = PluginManager()
   
+  private lazy var plugins: [Plugin] = {
+    PluginManager.modules.compactMap{$0.pluginClass.init()}
+  }()
+  
   public func activate(in workbench: Workbench) -> Void {
-    plugins = PluginManager.modules.compactMap{$0.pluginClass.init()}
-    plugins.forEach{$0.activate(in: workbench)}
+    plugins.forEach{ $0.activate(in: workbench) }
   }
   
   public func deactivate(in workbench: Workbench) -> Void {
-    plugins.forEach { $0.deactivate(in: workbench) }
+    plugins.forEach{ $0.deactivate(in: workbench) }
   }
   
   
