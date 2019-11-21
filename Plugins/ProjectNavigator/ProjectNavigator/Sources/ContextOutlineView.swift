@@ -9,56 +9,48 @@
 import Cocoa
 import NimbleCore
 
-class OutlineViewMenu : NSOutlineView {
+class ContextOutlineView : NSOutlineView {
+  
   open override func menu(for event: NSEvent) -> NSMenu? {
-    let clickedRow = row(for: event)
+    let point = convert(event.locationInWindow, from: nil)
+    let clickedRow = row(at: point)
     guard clickedRow != -1, let fileSystemElement = item(atRow: clickedRow) as? FileSystemElement else {
       return super.menu(for: event)
     }
-    select(row: clickedRow)
-    menu = buildMenu(for: fileSystemElement)
-    return menu
+    if clickedRow != selectedRow {
+      selectRowIndexes([clickedRow], byExtendingSelection: false)
+    }
+    return ContextMenuManager.shared.menu(for: fileSystemElement)
   }
 }
 
-fileprivate extension OutlineViewMenu {
+ // MARK: - ContextMenuProvider
+
+extension ContextOutlineView : ContextMenuProvider {
   
-  func row(for event: NSEvent) -> Int {
-    let point = convert(event.locationInWindow, from: nil)
-    return row(at: point)
+  static func menuItems(for file: File) -> [NSMenuItem] {
+    var items: [NSMenuItem] = []
+    items.append(createMenuItem(title: "Rename...", selector: #selector(renameAction(_:)), representedObject: file))
+    items.append(createMenuItem(title: "Delete file", selector: #selector(deleteAction(_:)), representedObject: file))
+    return items
   }
   
-  func select(row: Int) {
-    if row != selectedRow {
-      selectRowIndexes([row], byExtendingSelection: false)
-    }
+  static func menuItems(for folder: Folder) -> [NSMenuItem] {
+    var items: [NSMenuItem] = []
+    items.append(createMenuItem(title: "New File", selector: #selector(createNewFileAction(_:)), representedObject: folder))
+    items.append(createMenuItem(title: "Rename...", selector: #selector(renameAction(_:)), representedObject: folder))
+    items.append(createMenuItem(title: "New Folder...", selector: #selector(createNewFolderAction(_:)), representedObject: folder))
+    items.append(createMenuItem(title: "Delete Folder", selector: #selector(deleteAction(_:)), representedObject: folder))
+    return items
   }
   
-  func buildMenu(for item: FileSystemElement) -> NSMenu {
-    let menu = NSMenu()
-    switch item {
-    case let file as File:
-      menu.addItem(createMenuItem(title: "Rename...", selector: #selector(renameAction(_:)), representedObject: file))
-      menu.addItem(createMenuItem(title: "Delete file", selector: #selector(deleteAction(_:)), representedObject: file))
-      break
-    case let folder as Folder:
-      menu.addItem(createMenuItem(title: "New File", selector: #selector(createNewFileAction(_:)), representedObject: folder))
-      menu.addItem(createMenuItem(title: "Rename...", selector: #selector(renameAction(_:)), representedObject: folder))
-      menu.addItem(createMenuItem(title: "New Folder...", selector: #selector(createNewFolderAction(_:)), representedObject: folder))
-      menu.addItem(createMenuItem(title: "Delete Folder", selector: #selector(deleteAction(_:)), representedObject: folder))
-      break
-    default:
-      break
-    }
-    return ContextMenuManager.shared.extend(menu, for: item)
-  }
-  
-  func createMenuItem(title: String, selector: Selector?, representedObject: Any? = nil) -> NSMenuItem {
+  private static func createMenuItem(title: String, selector: Selector?, representedObject: Any? = nil) -> NSMenuItem {
     let menuItem = NSMenuItem(title: title, action: selector, keyEquivalent: "")
     menuItem.representedObject = representedObject
-    menuItem.target = self
     return menuItem
   }
+  
+  // MARK: - Menu actions
   
   @objc func renameAction(_ sender: NSMenuItem?) {
     guard let fileSystemElement = sender?.representedObject as? FileSystemElement else {
@@ -79,17 +71,6 @@ fileprivate extension OutlineViewMenu {
     }
     try? fileSystemElement.path.delete()
     //TODO: UI should listen FS to update correctly
-  }
-  
-  func alertMessage(for item: FileSystemElement) -> String {
-    switch item {
-    case let file as File:
-      return "Delete file \(file.path.string)?"
-    case let folder as Folder:
-      return  "Delete folder \(folder.path.string)?"
-    default:
-      return ""
-    }
   }
   
   @objc func createNewFileAction(_ sender: NSMenuItem?) {
@@ -114,6 +95,19 @@ fileprivate extension OutlineViewMenu {
       try? parentPath.join(name).mkdir()
       //TODO: UI should listen FS to update correctly
     })
+  }
+  
+  // MARK: - Alerts
+  
+  func alertMessage(for item: FileSystemElement) -> String {
+    switch item {
+    case let file as File:
+      return "Delete file \(file.path.string)?"
+    case let folder as Folder:
+      return  "Delete folder \(folder.path.string)?"
+    default:
+      return ""
+    }
   }
   
   private func showDeleteAlert(messageText: String) -> Bool {
@@ -146,7 +140,6 @@ fileprivate extension OutlineViewMenu {
         handler(enteredString)
       }
     })
-    
   }
+  
 }
-

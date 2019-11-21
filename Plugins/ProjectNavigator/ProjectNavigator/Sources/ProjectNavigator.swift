@@ -24,6 +24,7 @@ public final class ProjectNavigatorPlugin: Plugin {
     // that can be activated and disactivated multiple times within different workbenches)
     
     let outlineView = OutlineView.loadFromNib()
+    ContextMenuManager.shared.registerContextMenuProvider(ContextOutlineView.self)
     outlineView.workbench = workbench
     workbench.navigatorArea?.add(part: outlineView)
   }
