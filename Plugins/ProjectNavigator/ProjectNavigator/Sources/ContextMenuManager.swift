@@ -12,6 +12,22 @@ import NimbleCore
 public protocol ContextMenuProvider {
   static func menuItems(for: File) -> [NSMenuItem]
   static func menuItems(for: Folder) -> [NSMenuItem]
+  static func menuItems(for: Document) -> [NSMenuItem]
+}
+
+public extension ContextMenuProvider {
+  //Default implementations
+  static func menuItems(for: File) -> [NSMenuItem] {
+    return []
+  }
+  
+  static func menuItems(for: Folder) -> [NSMenuItem] {
+    return []
+  }
+  
+  static func menuItems(for: Document) -> [NSMenuItem] {
+    return []
+  }
 }
 
 public final class ContextMenuManager {
@@ -31,6 +47,8 @@ public final class ContextMenuManager {
     case let folder as Folder:
       providers.flatMap{$0.menuItems(for: folder)}.forEach{menu.addItem($0)}
       break
+    case let document as Document:
+      providers.flatMap{$0.menuItems(for: document)}.forEach{menu.addItem($0)}
     default:
       break
     }

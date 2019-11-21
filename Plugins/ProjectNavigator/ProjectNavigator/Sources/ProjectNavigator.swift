@@ -15,7 +15,10 @@ public final class ProjectNavigator: Module {
 
 
 public final class ProjectNavigatorPlugin: Plugin {
-  public init() { }
+  
+  public init() {
+     ContextMenuManager.shared.registerContextMenuProvider(ContextOutlineView.self)
+  }
   
   public func activate(in workbench: Workbench) {
     // Create an instance every time it's activated in a workbench
@@ -24,7 +27,6 @@ public final class ProjectNavigatorPlugin: Plugin {
     // that can be activated and disactivated multiple times within different workbenches)
     
     let outlineView = OutlineView.loadFromNib()
-    ContextMenuManager.shared.registerContextMenuProvider(ContextOutlineView.self)
     outlineView.workbench = workbench
     workbench.navigatorArea?.add(part: outlineView)
   }
