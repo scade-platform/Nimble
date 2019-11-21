@@ -14,13 +14,13 @@ class ContextOutlineView : NSOutlineView {
   open override func menu(for event: NSEvent) -> NSMenu? {
     let point = convert(event.locationInWindow, from: nil)
     let clickedRow = row(at: point)
-    guard clickedRow != -1, let fileSystemElement = item(atRow: clickedRow) as? FileSystemElement else {
+    guard clickedRow != -1, let clickedItem = item(atRow: clickedRow) else {
       return super.menu(for: event)
     }
     if clickedRow != selectedRow {
       selectRowIndexes([clickedRow], byExtendingSelection: false)
     }
-    return ContextMenuManager.shared.menu(for: fileSystemElement)
+    return ContextMenuManager.shared.menu(for: clickedItem)
   }
 }
 
