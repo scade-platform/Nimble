@@ -15,7 +15,10 @@ public final class ProjectNavigator: Module {
 
 
 public final class ProjectNavigatorPlugin: Plugin {
-  public init() { }
+  
+  public init() {
+     ContextMenuManager.shared.registerContextMenuProvider(ContextOutlineView.self)
+  }
   
   public func activate(in workbench: Workbench) {
     // Create an instance every time it's activated in a workbench

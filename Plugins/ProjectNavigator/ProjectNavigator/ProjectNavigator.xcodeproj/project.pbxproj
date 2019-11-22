@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0CCBA1742383D1D4006C9188 /* ContextOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBA1732383D1D4006C9188 /* ContextOutlineView.swift */; };
+		0CCBA1762383DEB9006C9188 /* ContextMenuManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCBA1752383DEB9006C9188 /* ContextMenuManager.swift */; };
 		D724C5F6237DA72200E80958 /* OutlineDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5F5237DA72200E80958 /* OutlineDataSource.swift */; };
 		D724C5F8237DC02D00E80958 /* DocumentTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5F7237DC02C00E80958 /* DocumentTableCellView.swift */; };
 		D7799139236F16E800CBF9B7 /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7799138236F16E800CBF9B7 /* NimbleCore.framework */; };
@@ -17,6 +19,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0CCBA1732383D1D4006C9188 /* ContextOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextOutlineView.swift; sourceTree = "<group>"; };
+		0CCBA1752383DEB9006C9188 /* ContextMenuManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuManager.swift; sourceTree = "<group>"; };
 		D724C5F5237DA72200E80958 /* OutlineDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineDataSource.swift; sourceTree = "<group>"; };
 		D724C5F7237DC02C00E80958 /* DocumentTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentTableCellView.swift; sourceTree = "<group>"; };
 		D7799138236F16E800CBF9B7 /* NimbleCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -76,6 +80,8 @@
 				D788ED66223B20270072C21E /* OutlineView.swift */,
 				D788ED6B223B22C10072C21E /* OutlineView.xib */,
 				D7CBF8FF222ACE080088715C /* ProjectNavigator.swift */,
+				0CCBA1732383D1D4006C9188 /* ContextOutlineView.swift */,
+				0CCBA1752383DEB9006C9188 /* ContextMenuManager.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -163,6 +169,8 @@
 				D724C5F8237DC02D00E80958 /* DocumentTableCellView.swift in Sources */,
 				D7CBF900222ACE080088715C /* ProjectNavigator.swift in Sources */,
 				D724C5F6237DA72200E80958 /* OutlineDataSource.swift in Sources */,
+				0CCBA1742383D1D4006C9188 /* ContextOutlineView.swift in Sources */,
+				0CCBA1762383DEB9006C9188 /* ContextMenuManager.swift in Sources */,
 				D788ED67223B20270072C21E /* OutlineView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
