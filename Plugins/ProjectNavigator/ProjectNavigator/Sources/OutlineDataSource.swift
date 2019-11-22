@@ -36,22 +36,22 @@ class ProjectFoldersItem: OutlineRootItem {
   init(_ workbench: Workbench) {
     super.init(title: "FOLDERS", cell: "DataCell", workbench: workbench)
   }
-  var folders: [FolderData] {
+  var folders: [FolderItem] {
     let folders = workbench?.project?.folders ?? []
-    return folders.map{FolderData($0)}
+    return folders.map{FolderItem($0)}
   }
 }
 
-class FolderData {
+class FolderItem {
   let folder: Folder
-  private var subfoldersData: [FolderData] = []
+  private var subfolderItems: [FolderItem] = []
   private var files : [File] = []
   
   var data: [Any] {
-    if subfoldersData.isEmpty, files.isEmpty {
+    if subfolderItems.isEmpty, files.isEmpty {
       try? update()
     }
-    return subfoldersData + files
+    return subfolderItems + files
   }
   
   init(_ folder: Folder){
@@ -65,7 +65,7 @@ class FolderData {
   
   private func updateSubolders() throws {
     let subfolders = try folder.subfolders()
-    subfoldersData = subfolders.map{FolderData($0)}
+    subfolderItems = subfolders.map{FolderItem($0)}
   }
   
   private func updateFiles() throws {
@@ -127,8 +127,8 @@ extension OutlineDataSource: NSOutlineViewDataSource {
     case let item as ProjectFoldersItem:
       return item.folders[index]
       
-    case let folderData as FolderData:
-      return folderData.data[index]
+    case let item as FolderItem:
+      return item.data[index]
 
     default:
       return self
@@ -149,7 +149,7 @@ extension OutlineDataSource: NSOutlineViewDataSource {
     case let item as ProjectFoldersItem:
       return item.folders.count
       
-    case let item as FolderData:
+    case let item as FolderItem:
       guard item.folder.path.exists else { return 0 }
       return item.data.count
 
@@ -192,7 +192,7 @@ extension OutlineDataSource: NSOutlineViewDelegate {
       
       return view
       
-    case let item as FolderData:
+    case let item as FolderItem:
       guard let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "DataCell"),
                                             owner: self) as? NSTableCellView else { return nil }
       
