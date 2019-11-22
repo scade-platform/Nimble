@@ -36,10 +36,43 @@ class ProjectFoldersItem: OutlineRootItem {
   init(_ workbench: Workbench) {
     super.init(title: "FOLDERS", cell: "DataCell", workbench: workbench)
   }
-  var folders: [Folder] {
-    return workbench?.project?.folders ?? []
+  var folders: [FolderItem] {
+    let folders = workbench?.project?.folders ?? []
+    return folders.map{FolderItem($0)}
   }
 }
+
+class FolderItem {
+  let folder: Folder
+  private var subfolderItems: [FolderItem] = []
+  private var files : [File] = []
+  
+  var data: [Any] {
+    if subfolderItems.isEmpty, files.isEmpty {
+      try? update()
+    }
+    return subfolderItems + files
+  }
+  
+  init(_ folder: Folder){
+    self.folder = folder
+  }
+  
+  func update() throws {
+    try updateSubolders()
+    try updateFiles()
+  }
+  
+  private func updateSubolders() throws {
+    let subfolders = try folder.subfolders()
+    subfolderItems = subfolders.map{FolderItem($0)}
+  }
+  
+  private func updateFiles() throws {
+    files = try folder.files()
+  }
+}
+
 
 
 // MARK: - OutlineDataSource
@@ -94,9 +127,8 @@ extension OutlineDataSource: NSOutlineViewDataSource {
     case let item as ProjectFoldersItem:
       return item.folders[index]
       
-    case let folder as Folder:
-      guard let foldersContent = folder.content else { return self }
-      return foldersContent[index]
+    case let item as FolderItem:
+      return item.data[index]
 
     default:
       return self
@@ -117,9 +149,9 @@ extension OutlineDataSource: NSOutlineViewDataSource {
     case let item as ProjectFoldersItem:
       return item.folders.count
       
-    case let item as Folder:
-      guard item.path.exists, let content = item.content else { return 0 }
-      return content.count
+    case let item as FolderItem:
+      guard item.folder.path.exists else { return 0 }
+      return item.data.count
 
     default:
       return 0
@@ -160,11 +192,11 @@ extension OutlineDataSource: NSOutlineViewDelegate {
       
       return view
       
-    case let item as Folder:
+    case let item as FolderItem:
       guard let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "DataCell"),
                                             owner: self) as? NSTableCellView else { return nil }
       
-      view.textField?.stringValue = item.name
+      view.textField?.stringValue = item.folder.name
       
       if outlineView.isItemExpanded(item) {
         view.imageView?.image = Bundle(for: type(of: self)).image(forResource: "folder-open")
