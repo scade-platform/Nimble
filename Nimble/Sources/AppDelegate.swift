@@ -11,26 +11,51 @@ import NimbleCore
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
-      
-  func applicationWillFinishLaunching(_ notification: Notification) {
-    
+  
+  let documentController = NimbleController()
+  
+  @IBOutlet var openRecentDocumentMenu: NSMenu?
+  
+  func applicationDidFinishLaunching(_ notification: Notification) {
+    // Replace the default delegate installed by the NSDocumentController
+    // The default one shows all recent documents without filtering etc.
+    openRecentDocumentMenu?.delegate = self
   }
   
   func applicationWillTerminate(_ aNotification: Notification) {
     
   }
   
+  func openHandler(doc: NSDocument?, alreadyOpened: Bool, error: Error?) -> Void {
+    ///TODO: implement
+  }
+  
   func application(_ sender: NSApplication, openFile filename: String) -> Bool {
-    if let path = Path(filename) {
-      ///TODO:  implement opening files/folders
-      NSDocumentController.shared.openDocument(withContentsOf: path.url,
-                                               display: true,
-                                               completionHandler: {_, _, _ in return})
+    guard let path = Path(filename) else { return true }
+    
+    if path.url.typeIdentifierConforms(to: ProjectDocument.docType) {
+      documentController.openProject(withContentsOf: path.url,
+                                     completionHandler: openHandler)
+              
     } else {
-      ///TODO:  show error and open an empty project
+      documentController.openDocument(withContentsOf: path.url,
+                                      display: true,
+                                      completionHandler: openHandler)
     }
         
     return true
   }
-    
+  
+  
+//  func applicationShouldOpenUntitledFile(_ sender: NSApplication) -> Bool {
+//    //return true
+//  }
+  
+}
+
+
+extension AppDelegate : NSMenuDelegate {
+  func menuNeedsUpdate(_ menu: NSMenu) {
+    documentController.updateOpenRecentMenu(menu)
+  }
 }

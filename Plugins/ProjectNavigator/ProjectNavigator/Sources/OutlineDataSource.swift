@@ -95,24 +95,48 @@ class OutlineDataSource: NSObject {
     
     workbench.observers.add(observer: self)
   }
-}
-
-extension OutlineDataSource: WorkbenchObserver {
-  func workbenchDidChangeProject(_ workbench: Workbench) {
+  
+  func reloadFolders() {
     outline?.reloadItem(projectFolders)
     outline?.expandItem(projectFolders)
   }
   
-  func workbenchDidOpenDocument(_ workbench: Workbench, document: Document) {
-    outline?.reloadItem(openedDocuments, reloadChildren: true)
-    outline?.expandItem(openedDocuments)
-  }
-  
-  func workbenchDidCloseDocument(_ workbench: Workbench, document: Document) {
+  func reloadDocuments() {
     outline?.reloadItem(openedDocuments, reloadChildren: true)
     outline?.expandItem(openedDocuments)
   }
 }
+
+// MARK: - WorkbenchObserver
+
+extension OutlineDataSource: WorkbenchObserver {
+  func workbenchWillChangeProject(_ workbench: Workbench) {
+    workbench.project?.observers.remove(observer: self)
+  }
+  
+  func workbenchDidChangeProject(_ workbench: Workbench) {
+    workbench.project?.observers.add(observer: self)
+    reloadFolders()
+  }
+  
+  func workbenchDidOpenDocument(_ workbench: Workbench, document: Document) {
+    reloadDocuments()
+  }
+  
+  func workbenchDidCloseDocument(_ workbench: Workbench, document: Document) {
+    reloadDocuments()
+  }
+}
+
+// MARK: - ProjectObserver
+
+extension OutlineDataSource: ProjectObserver {
+  func projectFoldersDidChange(_: Project) {
+    reloadFolders()
+  }
+}
+
+// MARK: - NSOutlineViewDataSource
 
 extension OutlineDataSource: NSOutlineViewDataSource {
   public func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
@@ -160,7 +184,7 @@ extension OutlineDataSource: NSOutlineViewDataSource {
 }
 
 
-// MARK: - OutlineDelegate
+// MARK: - NSOutlineViewDelegate
 
 extension OutlineDataSource: NSOutlineViewDelegate {
   public func outlineView(_ outlineView: NSOutlineView, isGroupItem item: Any) -> Bool {

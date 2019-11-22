@@ -27,13 +27,13 @@ public protocol Workbench: class {
   
   var openedDocuments: [Document] { get }
   
-        
-  func open(_ path: Path)
-      
+              
+  
   func open(_ doc: Document, show: Bool)
   
   @discardableResult
   func close(_ doc: Document) -> Bool
+  
   
   
   func createConsole(title: String, show: Bool) -> Console?
@@ -41,6 +41,7 @@ public protocol Workbench: class {
 
 
 public protocol WorkbenchObserver: class {
+  func workbenchWillChangeProject(_ workbench: Workbench)
   func workbenchDidChangeProject(_ workbench: Workbench)
   func workbenchDidOpenDocument(_ workbench: Workbench, document: Document)
   func workbenchDidCloseDocument(_ workbench: Workbench, document: Document)
@@ -48,6 +49,7 @@ public protocol WorkbenchObserver: class {
 }
 
 public extension WorkbenchObserver {
+  func workbenchWillChangeProject(_ workbench: Workbench) { return }
   func workbenchDidChangeProject(_ workbench: Workbench) { return }
   func workbenchDidOpenDocument(_ workbench: Workbench, document: Document) { return }
   func workbenchDidCloseDocument(_ workbench: Workbench, document: Document) { return }

@@ -62,12 +62,12 @@
                                     <items>
                                         <menuItem title="Open…" keyEquivalent="o" id="IAo-SY-fd9">
                                             <connections>
-                                                <action selector="addFileToProject:" target="Ady-hI-5gd" id="WgO-cL-4zy"/>
+                                                <action selector="open:" target="Ady-hI-5gd" id="Bj8-T9-B1m"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Open Recent" id="tXI-mr-wws">
+                                        <menuItem title="Open Recent" tag="11" id="tXI-mr-wws">
                                             <modifierMask key="keyEquivalentModifierMask"/>
-                                            <menu key="submenu" title="Open Recent" id="oas-Oc-fiZ">
+                                            <menu key="submenu" title="Open Recent" systemMenu="recentDocuments" id="oas-Oc-fiZ">
                                                 <items>
                                                     <menuItem title="Clear Menu" id="vNY-rz-j42">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
@@ -76,6 +76,9 @@
                                                         </connections>
                                                     </menuItem>
                                                 </items>
+                                                <connections>
+                                                    <outlet property="delegate" destination="Voe-Tx-rLC" id="bHT-0D-Utq"/>
+                                                </connections>
                                             </menu>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
@@ -597,9 +600,6 @@
                                         </menuItem>
                                         <menuItem title="Show Console" tag="53" id="pAJ-j8-Uf8">
                                             <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="showConsole:" target="Ady-hI-5gd" id="afy-vM-o8t"/>
-                                            </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="hB3-LF-h0Y"/>
                                         <menuItem title="Show Sidebar" keyEquivalent="s" id="kIP-vf-haE">
@@ -617,28 +617,6 @@
                                     </items>
                                 </menu>
                             </menuItem>
-                            <menuItem title="Tools" id="yOl-9J-jHi">
-                                <modifierMask key="keyEquivalentModifierMask"/>
-                                <menu key="submenu" title="Tools" id="olp-ot-P8e">
-                                    <items>
-                                        <menuItem title="Run Simulator" tag="61" id="df8-Xa-ITo">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="requestTag:" target="Ady-hI-5gd" id="CUW-IQ-TQu"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Build" tag="62" id="1c8-P2-UOy">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="requestTag:" target="Ady-hI-5gd" id="vei-Ts-NsZ"/>
-                                            </connections>
-                                        </menuItem>
-                                    </items>
-                                </menu>
-                                <connections>
-                                    <action selector="requestTag:" target="Ady-hI-5gd" id="nGE-Zg-jGc"/>
-                                </connections>
-                            </menuItem>
                             <menuItem title="Project" id="o6q-mC-Z3O">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <menu key="submenu" title="Project" id="H5L-B6-tnc">
@@ -646,18 +624,18 @@
                                         <menuItem title="Open Project..." tag="1" id="P3f-JR-KCE">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="openDocument:" target="Ady-hI-5gd" id="F7u-JA-bml"/>
+                                                <action selector="openProject:" target="Ady-hI-5gd" id="7Ef-P6-sE9"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Switch Project..." tag="2" id="2n4-Se-7B8">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <connections>
-                                                <action selector="switchProject:" target="Ady-hI-5gd" id="fF9-if-HFt"/>
+                                                <action selector="switchProject:" target="Ady-hI-5gd" id="xiS-Ed-VlV"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Open Recent" id="otC-Ch-oY5">
                                             <modifierMask key="keyEquivalentModifierMask"/>
-                                            <menu key="submenu" title="Open Recent" systemMenu="recentDocuments" id="WZA-Vy-ls4">
+                                            <menu key="submenu" title="Open Recent" identifier="openRecentProjects" id="WZA-Vy-ls4">
                                                 <items>
                                                     <menuItem title="Clear Menu" id="mvs-Lr-N8n">
                                                         <modifierMask key="keyEquivalentModifierMask"/>
@@ -666,21 +644,18 @@
                                                         </connections>
                                                     </menuItem>
                                                 </items>
+                                                <connections>
+                                                    <outlet property="delegate" destination="Voe-Tx-rLC" id="JpH-S5-Ivh"/>
+                                                </connections>
                                             </menu>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="0nh-gH-rgH"/>
                                         <menuItem title="Save Project As..." id="QlQ-2r-pqJ">
                                             <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="saveProjectAs:" target="Ady-hI-5gd" id="f2J-AF-BGx"/>
-                                            </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="Hxz-1l-9Rz"/>
                                         <menuItem title="Add Folder to Project..." id="GlY-G6-8zl">
                                             <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="addFolderToProject:" target="Ady-hI-5gd" id="6pd-mU-zqr"/>
-                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
@@ -728,7 +703,11 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Nimble" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Nimble" customModuleProvider="target">
+                    <connections>
+                        <outlet property="openRecentDocumentMenu" destination="oas-Oc-fiZ" id="WUc-Sz-dmT"/>
+                    </connections>
+                </customObject>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>

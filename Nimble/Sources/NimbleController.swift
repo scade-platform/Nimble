@@ -9,187 +9,140 @@
 import Cocoa
 import NimbleCore
 
-class NimbleController : NSDocumentController {
-  
-  public var currentProject: Project? {
-    if let doc = currentDocument, let projectDoc = doc as? ProjectDocument {
-      return projectDoc.project
-    }
-    return nil
-  }
-  
-  public override static var shared : NimbleController {
-    return NSDocumentController.shared as! NimbleController
-  }
-  
-  public static var workbench: Workbench? {
-    return (NimbleController.shared.currentDocument as? ProjectDocument)?.workbench
-  }
-  
-  //TODO: move it from here to the Build sub-system
-  var toolchainPath: String? {
-    return ProcessInfo.processInfo.environment["TOOLCHAIN_PATH"]
-  }
-  
-  override init(){
-    super.init()
-    
-  }
-  
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
-  }
-  
-  
-  @IBAction func switchProject(_ sender: Any?) {
-    self.beginOpenPanel(completionHandler: self.switchProject(urls:))
-  }
-  
-  private var buildMenuItems: [NSMenuItem: Folder] = [:]
-  private var runMenuItems: [NSMenuItem: Folder] = [:]
-  
-  private var buildSubMenu: NSMenu {
-    buildMenuItems.removeAll()
-    let result = NSMenu()
-    for folder in currentProject?.folders ?? [] {
-      let menuItem = NSMenuItem(title: folder.name, action: #selector(buildFolder(_:)), keyEquivalent: "")
-      buildMenuItems[menuItem] = folder
-      result.addItem(menuItem)
-    }
-    return result
-  }
-  
-  private var runSubMenu: NSMenu {
-    runMenuItems.removeAll()
-    let result = NSMenu()
-    for folder in currentProject?.folders ?? [] {
-      let menuItem = NSMenuItem(title: folder.name, action: #selector(runFolder(_:)), keyEquivalent: "")
-      runMenuItems[menuItem] = folder
-      result.addItem(menuItem)
-    }
-    return result
-  }
 
+// MARK: - Controller
+
+class NimbleController: NSDocumentController {
   
-  func switchProject(urls: [URL]?) {
-    if let url = urls?.first, let doc = self.currentDocument, let projectDoc = doc as? ProjectDocument {
-      try! projectDoc.switchProject(contentsOf: url, ofType: self.defaultType!)
-    }
+  static func openDocumentHandler(_ doc: NSDocument?, documentWasAlreadyOpen: Bool, error: Error?) {
+    ///TODO: implement
   }
   
-  @IBAction func addFolderToProject(_ sender: Any?) {
-    let openPanel = NSOpenPanel()
-    openPanel.allowsMultipleSelection = true
-    openPanel.canChooseDirectories = true
-    openPanel.canChooseFiles = false
-    openPanel.canCreateDirectories = false
-    let pressedButton = self.runModalOpenPanel(openPanel, forTypes: nil)
-    guard pressedButton == NSApplication.ModalResponse.OK.rawValue else {
-      return
-    }
-    addFolderToProject(urls: openPanel.urls)
+  var currentWorkbench: Workbench? {
+    return currentProjectDocument?.workbench
   }
   
-  func addFolderToProject(urls: [URL]?) {
-    guard let urls = urls, let doc = self.currentDocument, let projectDoc = doc as? ProjectDocument else {
-      return
-    }
-    projectDoc.add(folders: urls)
+  var currentProjectDocument: ProjectDocument? {
+    return currentDocument as? ProjectDocument
   }
-  
-  @IBAction func addFileToProject(_ sender: Any?) {
-    let openPanel = NSOpenPanel()
-    openPanel.allowsMultipleSelection = true
-    openPanel.canChooseDirectories = false
-    openPanel.canChooseFiles = true
-    openPanel.canCreateDirectories = false
-    let pressedButton = self.runModalOpenPanel(openPanel, forTypes: nil)
-    guard pressedButton == NSApplication.ModalResponse.OK.rawValue else {
-      return
+      
+  override func openDocument(withContentsOf url: URL, display displayDocument: Bool,
+                             completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void) {
+            
+    guard let doc = DocumentManager.shared.open(url: url) else {
+      return completionHandler(nil, false, nil)
     }
-    addFilesToProject(urls: openPanel.urls)
-  }
-  
-  func addFilesToProject(urls: [URL]?) {
-    guard let urls = urls, let doc = self.currentDocument, let projectDoc = doc as? ProjectDocument else {
-      return
+    
+    var proj = currentProjectDocument
+    
+    if proj == nil {
+      proj = (try? makeUntitledDocument(ofType: ProjectDocument.docType)) as? ProjectDocument
     }
-    projectDoc.add(files: urls)
-  }
+    
+    guard let workbench = proj?.workbench else {
+      return completionHandler(nil, false, nil)
+    }
+    
+    workbench.open(doc, show: true)
+    noteNewRecentDocument(doc)
         
-  override func openDocument(withContentsOf url: URL, display displayDocument: Bool, completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void) {
-    
-    if let project = currentProject {
-      if project.files.isEmpty, project.folders.isEmpty, project.name == nil {
-        ///TODO: pass and call completion handler
-        switchProject(urls: [url])
-        return
-      }
-    }
-    
-    super.openDocument(withContentsOf: url, display: displayDocument, completionHandler: completionHandler)
+    completionHandler(doc, false, nil)
   }
   
-  @IBAction func showConsole(_ sender: Any?) {
-    guard let doc = currentDocument as? ProjectDocument, let workbench = doc.workbench, var debugArea = workbench.debugArea as? Hideable else {
-      return
-    }
-    let hide: Bool
-    if let menuItem = sender as? NSMenuItem {
-      hide = menuItem.title != "Show Console"
-      if hide {
-        menuItem.title = "Show Console"
-      } else {
-        menuItem.title = "Hide Console"
+  
+  func beginOpenProjectPanel(completionHandler: (URL) -> ()) {
+    let openPanel = NSOpenPanel();
+    guard let url = openPanel.selectFile(ofTypes: [ProjectDocument.docType]) else { return }
+    completionHandler(url)
+  }
+      
+  func openProject(withContentsOf url: URL, completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void)  {
+    if let doc = currentProjectDocument, doc.project.isEmpty {
+      do {
+        try doc.reload(from: url)
+        completionHandler(doc, false, nil)
+      } catch {
+        completionHandler(nil, false, error)
       }
     } else {
-      hide = true
+      super.openDocument(withContentsOf: url, display: true, completionHandler: completionHandler)
     }
-    debugArea.isHidden = hide
   }
+    
+  func updateOpenRecentMenu(_ menu: NSMenu){
+    var urls: [URL] = recentDocumentURLs
+    var action: Selector? = #selector(openRecentDocument(_:))
+    
+    if let menuId = menu.identifier?.rawValue, menuId == "openRecentProjects" {
+      urls = recentDocumentURLs.filter {
+        $0.typeIdentifierConforms(to: ProjectDocument.docType)
+      }
+      action = #selector(openRecentProject(_:))
+    }
+    
+    var items: [NSMenuItem] = urls.map {
+      let item = NSMenuItem(title: $0.lastPathComponent, action: action, keyEquivalent: "")
+      
+      let icon = NSWorkspace.shared.icon(forFile: $0.path)
+      icon.size = NSSize(width: 16, height: 16)
+      
+      item.image = icon
+      item.representedObject = $0
+      
+      return item
+    }
+    
+    items.append(NSMenuItem.separator())
+    menu.items.replaceSubrange(0..<menu.items.count - 1, with: items)
+  }
+  
+  @objc func openRecentDocument(_ sender: Any?) {
+    guard let url = (sender as? NSMenuItem)?.representedObject as? URL else { return }
+    openDocument(withContentsOf: url, display: true,
+                 completionHandler: NimbleController.openDocumentHandler)
+  }
+  
+  @objc func openRecentProject(_ sender: Any?) {
+    guard let url = (sender as? NSMenuItem)?.representedObject as? URL else { return }
+    openProject(withContentsOf: url,
+                completionHandler: NimbleController.openDocumentHandler)
+  }
+}
 
+// MARK: - Actions
+
+extension NimbleController {
   
-  override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
-    if menuItem.tag == 53 {
-      menuItem.title = (((currentDocument as! ProjectDocument).workbench?.debugArea) as? Hideable)?.isHidden ?? true ? "Show Console" : "Hide Console"
+  
+  @IBAction func open(_ sender: Any?) {
+    let openPanel = NSOpenPanel();
+    let urls = openPanel.selectAny().compactMap { Path(url: $0) }
+    
+    urls.filter{ $0.isDirectory }.forEach {
+      guard let folder = Folder(path: $0) else { return }
+      currentProjectDocument?.project.add(folder)
     }
-    if menuItem.tag == 62 {
-      if toolchainPath == nil || buildSubMenu.items.count == 0 {
-        return false
+    
+    urls.filter{ $0.isFile }.forEach {
+      openDocument(withContentsOf: $0.url, display: true,
+                   completionHandler: NimbleController.openDocumentHandler)
+    }
+  }
+  
+  @IBAction func openProject(_ sender: Any?) {
+    beginOpenProjectPanel {
+      openProject(withContentsOf: $0,
+                  completionHandler: NimbleController.openDocumentHandler)
+    }
+  }
+    
+  @IBAction func switchProject(_ sender: Any?) {
+    beginOpenProjectPanel {
+      do {
+        try currentProjectDocument?.reload(from: $0)
+      } catch {
+        /// TODO: implement
       }
-      menuItem.submenu = buildSubMenu
-      return true
     }
-    if menuItem.tag == 61 {
-      if toolchainPath == nil || runSubMenu.items.count == 0 {
-        return false
-      }
-      menuItem.submenu = runSubMenu
-      return true
-    }
-    return super.validateMenuItem(menuItem)
   }
-  
-  @objc func buildFolder(_ sender: Any?) {
-    guard let menuItem = sender as? NSMenuItem, let selectedFolder = buildMenuItems[menuItem], let project = currentProject else {
-      return
-    }
-    project.build(folder: selectedFolder)
-  }
-  
-  @objc func runFolder(_ sender: Any?) {
-    guard let menuItem = sender as? NSMenuItem, let selectedFolder = runMenuItems[menuItem], let project = currentProject else {
-      return
-    }
-    project.runSimulator(folder: selectedFolder)
-  }
-  
-  @IBAction func requestTag(_ sender: Any?) {
-    guard let menuItem = sender as? NSMenuItem else {
-      return
-    }
-    let _ = menuItem.tag
-  }
-  
-  
 }

@@ -28,7 +28,11 @@ public final class Project {
   }
   
   public var observers = ObserverSet<ProjectObserver>()
-    
+  
+  public var isEmpty: Bool {
+    projectFolders.isEmpty && path == nil
+  }
+  
   public init() {
     self.path = nil
     self.projectFolders = []
@@ -56,7 +60,7 @@ public final class Project {
     let content = try YAMLEncoder().encode(RawData(folders: folders))
     try content.write(to: path)
   }
-  
+      
   public func add(_ folder: Folder) {
     guard let path = self.path else {
       projectFolders.append(ProjectFolder(folder: folder))
@@ -92,8 +96,11 @@ fileprivate struct ProjectFolder {
   
   init?(_ path: String, relativeTo root: Path? = nil) {
     guard let folder = Folder(path: path) else {
-      guard let absolutePath = root?.join(path), absolutePath.exists else { return nil }
-      self.init(folder: Folder(path: absolutePath), relativePath: path)
+      guard let absolutePath = root?.join(path),
+            let folder = Folder(path: absolutePath),
+            folder.exists else { return nil }
+      
+      self.init(folder: folder, relativePath: path)
       return
     }
     self.init(folder: folder)
@@ -105,7 +112,9 @@ public protocol ProjectObserver: class {
   func projectFoldersDidChange(_: Project)
 }
 
-
+public extension ProjectObserver {
+  func projectFoldersDidChange(_: Project) {}
+}
 
 
 

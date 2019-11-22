@@ -32,13 +32,10 @@ open class OutlineView: NSViewController, WorkbenchPart {
   
   @IBAction func itemClicked(_ sender: Any) {
     guard let outlineView = outlineView,
-          let item = outlineView.item(atRow: outlineView.selectedRow) as? File,
-          let doc = item.open() else { return }
-    
-    if let activeDoc = workbench?.activeDocument, doc === activeDoc { return }
-    
+          let item = outlineView.item(atRow: outlineView.selectedRow) as? File else { return }
+        
     prevSelectedDocument = workbench?.activeDocument
-    workbench?.open(doc, show: true)
+    item.open()
   }
   
   @IBAction func itemDoubleClicked(_ sender: Any) {

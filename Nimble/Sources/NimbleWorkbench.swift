@@ -18,6 +18,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   public override var document: AnyObject? {
     get { super.document }
     set {
+      observers.notify { $0.workbenchWillChangeProject(self) }
       super.document = newValue
       observers.notify { $0.workbenchDidChangeProject(self) }
     }
@@ -55,16 +56,6 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     
   public func windowWillClose(_ notification: Notification) {
     PluginManager.shared.deactivate(in: self)
-  }
-  
-  
-  public func open(_ url: URL) {
-    guard let path = Path(url: url) else { return }
-    open(path)
-  }
-  
-  public func openAll(_ urls: [URL]) {
-    urls.forEach { open($0) }
   }
   
   private func showSaveDialog(question: String, text: String) -> (save: Bool, close: Bool) {
@@ -109,12 +100,7 @@ extension NimbleWorkbench: Workbench {
     return editorView?.documents ?? []
   }
   
-  
-  public func open(_ path: Path) {
-    ///TODO: implement
-    print("Opening \(path)")
-  }
-     
+       
   
   public func open(_ doc: Document, show: Bool) {
     guard let editorView = editorView else { return }

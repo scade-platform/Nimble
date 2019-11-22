@@ -11,6 +11,7 @@
 		0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */; };
 		0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */; };
 		0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */; };
+		D721CFA72385EC3200FD1B00 /* NSOpenPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */; };
 		D724C5E2237A21D100E80958 /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5E1237A21D100E80958 /* Observer.swift */; };
 		D724C5E4237B18A900E80958 /* WeakRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5E3237B18A900E80958 /* WeakRef.swift */; };
 		D724C5EE237C418B00E80958 /* TabbedEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = D724C5E7237C418B00E80958 /* TabbedEditor.xib */; };
@@ -42,6 +43,7 @@
 		D779912D236F169400CBF9B7 /* Path in Frameworks */ = {isa = PBXBuildFile; productRef = D779912C236F169400CBF9B7 /* Path */; };
 		D7799130236F16AE00CBF9B7 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = D779912F236F16AE00CBF9B7 /* Yams */; };
 		D788ED452239C2750072C21E /* NimbleWorkbench.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */; };
+		D79BE0BD2385AD4000D96619 /* NimbleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6607722F41D1500CBB386 /* NimbleController.swift */; };
 		D7CBF7D6222878F40088715C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D4222878F40088715C /* Main.storyboard */; };
 		E42DC05C22CE49A700486CC1 /* CodeEditor.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC05B22CE498200486CC1 /* CodeEditor.plugin */; };
 		E42DC05D22CE49A700486CC1 /* ProjectNavigator.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC05A22CE497F00486CC1 /* ProjectNavigator.plugin */; };
@@ -100,6 +102,7 @@
 		0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedPane.swift; sourceTree = "<group>"; };
 		0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnsupportedPane.xib; sourceTree = "<group>"; };
 		0CB6607722F41D1500CBB386 /* NimbleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleController.swift; sourceTree = "<group>"; };
+		D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSOpenPanel.swift; sourceTree = "<group>"; };
 		D724C5E1237A21D100E80958 /* Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
 		D724C5E3237B18A900E80958 /* WeakRef.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakRef.swift; sourceTree = "<group>"; };
 		D724C5E7237C418B00E80958 /* TabbedEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TabbedEditor.xib; sourceTree = "<group>"; };
@@ -170,6 +173,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D721CFA42385EC1800FD1B00 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		D722326A22CC10E900E471C2 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
@@ -316,6 +327,7 @@
 			isa = PBXGroup;
 			children = (
 				D72F959D222DF2F4009F2EC3 /* Controls */,
+				D721CFA42385EC1800FD1B00 /* Extensions */,
 				D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */,
 				0CB6607722F41D1500CBB386 /* NimbleController.swift */,
 				0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */,
@@ -513,10 +525,12 @@
 			files = (
 				0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */,
 				D72F959F222DF7AF009F2EC3 /* WorkbenchSidebar.swift in Sources */,
+				D79BE0BD2385AD4000D96619 /* NimbleController.swift in Sources */,
 				D724C5F2237C418B00E80958 /* TabbedEditor.swift in Sources */,
 				D788ED452239C2750072C21E /* NimbleWorkbench.swift in Sources */,
 				0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */,
 				D724C5EF237C418B00E80958 /* ConsoleView.swift in Sources */,
+				D721CFA72385EC3200FD1B00 /* NSOpenPanel.swift in Sources */,
 				D72F9587222CAC3C009F2EC3 /* AppDelegate.swift in Sources */,
 				D724C5F1237C418B00E80958 /* NavigatorView.swift in Sources */,
 				D724C5F4237C418B00E80958 /* DebugView.swift in Sources */,

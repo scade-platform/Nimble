@@ -14,7 +14,10 @@ class ProjectDocument: NSDocument {
   
   var project = Project()
     
-
+  var workbench: NimbleWorkbench? {
+    windowControllers.first as? NimbleWorkbench
+  }
+  
   // MARK: - User Interface
   
   override func makeWindowControllers() {
@@ -50,6 +53,16 @@ class ProjectDocument: NSDocument {
     try project.save(to: path)
   }
   
+  func reload(from url: URL) throws {
+    guard let path = Path(url: url) else {
+      throw NSError(domain: "ProjectDocument", code: 0, userInfo: [NSLocalizedDescriptionKey: "Cannot acces \(url)"])
+    }
+    
+    try project.load(from: path)
+    
+    self.fileURL = url
+    self.windowControllers.forEach{ $0.document = self }
+  }
   
   
   // MARK: - Enablers

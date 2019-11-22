@@ -7,6 +7,10 @@
 
 
 public class Folder: FileSystemElement {
+  public override init?(path: Path) {
+    guard path.isDirectory else { return nil }
+    super.init(path: path)
+  }
   
   //TODO: sorting, reloading/FS watchig etc.
   public var content: [FileSystemElement] {
@@ -18,12 +22,12 @@ public class Folder: FileSystemElement {
   }
   
   public func subfolders() throws -> [Folder] {
-    let directoryPaths = try self.path.ls().directories
-    return directoryPaths.map{Folder(path: $0)}.sorted{$0.name.lowercased() < $1.name.lowercased()}
+    let dirs = try self.path.ls().directories
+    return dirs.compactMap{Folder(path: $0)}.sorted{$0.name.lowercased() < $1.name.lowercased()}
   }
   
   public func files() throws -> [File] {
-    let filePaths = try self.path.ls().files
-    return filePaths.filter{$0.basename() != ".DS_Store"}.map{File(path: $0)}.sorted{$0.name.lowercased() < $1.name.lowercased()}
+    let files = try self.path.ls().files
+    return files.filter{$0.basename() != ".DS_Store"}.compactMap{File(path: $0)}.sorted{$0.name.lowercased() < $1.name.lowercased()}
   }
 }

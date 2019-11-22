@@ -34,39 +34,53 @@ public extension Document {
   }
   
   static func canOpen(_ file: File) -> Bool {
-    guard !file.uti.starts(with: "dy") else {
+    guard !file.url.uti.starts(with: "dy") else {
       return true
     }
-    return typeIdentifiers.contains { file.typeIdentifierConforms(to: $0) }
+    return typeIdentifiers.contains { file.url.typeIdentifierConforms(to: $0) }
   }
 }
 
 
 public class DocumentManager {
+  public static let shared: DocumentManager = DocumentManager()
+  
+  
   private var documentClasses: [Document.Type] = []
   
   private var openedDocuments: [File: WeakRef<NSDocument>] = [:]
   
   public var typeIdentifiers: Set<String> { documentClasses.reduce(into: []) { $0.formUnion($1.typeIdentifiers) } }
   
-  public static let shared: DocumentManager = DocumentManager()
-      
+  
+  public func registerDocumentClass<T: Document>(_ docClass: T.Type) {
+    documentClasses.append(docClass)
+  }
+
+  
+  public func open(url: URL) -> Document? {
+    guard let path = Path(url: url) else { return nil }
+    return open(path: path)
+  }
+  
+  public func open(path: Path) -> Document? {
+    guard let file = File(path: path) else { return nil }
+    return open(file: file)
+  }
+  
   public func open(file: File) -> Document? {
     if let doc = searchOpenedDocument(file) {
       return doc
     }
       
     guard let docClass = selectDocumentClass(for: file) else { return nil }
-    guard let doc = try? docClass.init(contentsOf: file.path.url, ofType: file.uti) else { return nil }
+    guard let doc = try? docClass.init(contentsOf: file.path.url, ofType: file.url.uti) else { return nil }
     
     openedDocuments[file] = WeakRef<NSDocument>(value: doc)
     return doc
   }
   
-  public func registerDocumentClass<T: Document>(_ docClass: T.Type) {
-    documentClasses.append(docClass)
-  }
-  
+
   private func selectDocumentClass(for file: File) -> Document.Type? {
     var docClass: Document.Type? = nil
     for dc in documentClasses {
@@ -98,24 +112,12 @@ public class DocumentManager {
 
 
 public extension File {
-  var uti: String {
-    if let resourceValues = try? path.url.resourceValues(forKeys: [.typeIdentifierKey]),
-      let uti = resourceValues.typeIdentifier {
-        return uti
+  @discardableResult
+  func open(show: Bool = true) -> Document? {
+    var fileDoc: Document? = nil
+    NSDocumentController.shared.openDocument(withContentsOf: path.url, display: show) {doc, _, _ in
+      fileDoc = doc as? Document
     }
-    return ""
-  }
-  
-  var mime: String {
-    guard let mime = UTTypeCopyPreferredTagWithClass(uti as CFString, kUTTagClassMIMEType) else { return "" }
-    return mime.takeRetainedValue() as String
-  }
-  
-  func typeIdentifierConforms(to: String) -> Bool {
-    return UTTypeConformsTo(uti as CFString , to as CFString)
-  }
-  
-  func open() -> Document? {
-    return DocumentManager.shared.open(file: self)
+    return fileDoc
   }
 }
