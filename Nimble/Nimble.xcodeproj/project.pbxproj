@@ -264,9 +264,9 @@
 				D779905D236F14D100CBF9B7 /* Plugin.swift */,
 				D7799057236F14D100CBF9B7 /* Project.swift */,
 				D779905C236F14D100CBF9B7 /* Workbench.swift */,
+				D72CEB412371D57600C13F01 /* Extensions */,
 				D779904F236F14D100CBF9B7 /* UI */,
 				D7799055236F14D100CBF9B7 /* Utils */,
-				D72CEB412371D57600C13F01 /* Extensions */,
 			);
 			path = NimbleCore;
 			sourceTree = "<group>";

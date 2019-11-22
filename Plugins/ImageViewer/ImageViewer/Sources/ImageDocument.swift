@@ -1,7 +1,7 @@
 import AppKit
 import NimbleCore
 
-public final class ImageDocument: NSDocument{
+public final class ImageDocument: NimbleDocument {
   var image: NSImage?
   
   private lazy var builderController: ImageViewerController = {

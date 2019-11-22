@@ -11,8 +11,14 @@ import Cocoa
 public protocol Workbench: class {
   var project: Project? { get }
   
+  var documents: [Document] { get }
+  
+  var currentDocument: Document? { get }
+  
   var observers: ObserverSet<WorkbenchObserver> { get }
 
+  
+  
   var navigatorArea: WorkbenchArea? { get }
   
 //  var inspectorArea: WorkbenchPart { get }
@@ -22,10 +28,6 @@ public protocol Workbench: class {
   
   var debugArea: WorkbenchArea? { get }
     
-  
-  var activeDocument: Document? { get }
-  
-  var openedDocuments: [Document] { get }
   
               
   

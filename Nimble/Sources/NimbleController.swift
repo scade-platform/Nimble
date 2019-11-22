@@ -107,6 +107,8 @@ class NimbleController: NSDocumentController {
     openProject(withContentsOf: url,
                 completionHandler: NimbleController.openDocumentHandler)
   }
+  
+  
 }
 
 // MARK: - Actions

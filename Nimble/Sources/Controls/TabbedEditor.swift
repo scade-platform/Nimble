@@ -11,7 +11,7 @@ import NimbleCore
 import KPCTabsControl
 
 
-// MARK: - TabItem
+// MARK: - Tab Item
 
 class TabItem: СustomizableTabItem {
   let document: Document
@@ -40,7 +40,7 @@ class TabItem: СustomizableTabItem {
 }
 
 
-// MARK: - TabbedEditor
+// MARK: - Tabbed Editor
 
 class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
   
@@ -102,6 +102,8 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
     let curIndex = currentIndex
     
     items.insert(TabItem(doc), at: pos)
+    doc.observers.add(observer: self)
+    
     tabBar?.reloadTabs()
         
     if select {
@@ -115,6 +117,8 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
     guard let pos = findIndex(doc) else { return }
     
     items.remove(at: pos)
+    doc.observers.remove(observer: self)
+    
     tabBar?.reloadTabs()
     
     if let curIndex = currentIndex {
@@ -140,7 +144,16 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
   }
 }
 
-// MARK: - TabbedEditorDataSource
+// MARK: - Document Observer
+
+extension TabbedEditor: DocumentObserver {
+  func documentDidChange(_ document: Document) {
+    tabBar?.reloadTabs()
+  }
+}
+
+
+// MARK: - Data Source
 
 extension TabbedEditor: TabsControlDataSource {
   func tabsControlNumberOfTabs(_ control: TabsControl) -> Int {

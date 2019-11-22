@@ -34,7 +34,7 @@ open class OutlineView: NSViewController, WorkbenchPart {
     guard let outlineView = outlineView,
           let item = outlineView.item(atRow: outlineView.selectedRow) as? File else { return }
         
-    prevSelectedDocument = workbench?.activeDocument
+    prevSelectedDocument = workbench?.currentDocument
     item.open()
   }
   

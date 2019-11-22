@@ -13,28 +13,42 @@ import NimbleCore
 class OutlineRootItem: NSObject {
   let title: String
   let cell: String
-  weak var workbench: Workbench?
   
-  init(title: String, cell: String, workbench: Workbench){
+  weak var workbench: Workbench?
+  weak var outline: NSOutlineView?
+  
+  init(title: String, cell: String, workbench: Workbench, outline: NSOutlineView?){
     self.title = title
     self.cell = cell
     self.workbench = workbench
+    self.outline = outline
+  }
+  
+  func reload() {
+    outline?.reloadItem(self)
+    outline?.expandItem(self)
   }
 }
 
 class OpenedDocumentsItem: OutlineRootItem {
-  init(_ workbench: Workbench) {
-    super.init(title: "OPEN FILES", cell: "ClosableDataCell", workbench: workbench)
+  init(_ workbench: Workbench, _ outline: NSOutlineView?) {
+    super.init(title: "OPEN FILES",
+               cell: "ClosableDataCell",
+               workbench: workbench,
+               outline: outline)
   }
   
   var documents: [Document] {
-    return workbench?.openedDocuments ?? []
+    return workbench?.documents ?? []
   }
 }
 
 class ProjectFoldersItem: OutlineRootItem {
-  init(_ workbench: Workbench) {
-    super.init(title: "FOLDERS", cell: "DataCell", workbench: workbench)
+  init(_ workbench: Workbench, _ outline: NSOutlineView?) {
+    super.init(title: "FOLDERS",
+               cell: "DataCell",
+               workbench: workbench,
+               outline: outline)
   }
   var folders: [FolderItem] {
     let folders = workbench?.project?.folders ?? []
@@ -83,26 +97,16 @@ class OutlineDataSource: NSObject {
     self.outline = outline
     self.workbench = workbench
     
-    self.openedDocuments = OpenedDocumentsItem(workbench)
-    self.projectFolders = ProjectFoldersItem(workbench)
+    self.openedDocuments = OpenedDocumentsItem(workbench, outline)
+    self.projectFolders = ProjectFoldersItem(workbench, outline)
     
     super.init()
     
     workbench.observers.add(observer: self)
   }
-  
-  func reloadFolders() {
-    outline?.reloadItem(projectFolders)
-    outline?.expandItem(projectFolders)
-  }
-  
-  func reloadDocuments() {
-    outline?.reloadItem(openedDocuments, reloadChildren: true)
-    outline?.expandItem(openedDocuments)
-  }
 }
 
-// MARK: - WorkbenchObserver
+// MARK: - Observers
 
 extension OutlineDataSource: WorkbenchObserver {
   func workbenchWillChangeProject(_ workbench: Workbench) {
@@ -111,25 +115,32 @@ extension OutlineDataSource: WorkbenchObserver {
   
   func workbenchDidChangeProject(_ workbench: Workbench) {
     workbench.project?.observers.add(observer: self)
-    reloadFolders()
+    projectFolders.reload()
   }
   
   func workbenchDidOpenDocument(_ workbench: Workbench, document: Document) {
-    reloadDocuments()
+    document.observers.add(observer: self)
+    openedDocuments.reload()
   }
   
   func workbenchDidCloseDocument(_ workbench: Workbench, document: Document) {
-    reloadDocuments()
+    document.observers.remove(observer: self)
+    openedDocuments.reload()
   }
 }
-
-// MARK: - ProjectObserver
 
 extension OutlineDataSource: ProjectObserver {
   func projectFoldersDidChange(_: Project) {
-    reloadFolders()
+    projectFolders.reload()
   }
 }
+
+extension OutlineDataSource: DocumentObserver {
+  func documentDidChange(_ document: Document) {
+    outline?.reloadItem(document)
+  }
+}
+
 
 // MARK: - NSOutlineViewDataSource
 

@@ -10,7 +10,7 @@ import Cocoa
 import NimbleCore
 
 
-// MARK: - Nimble workbench
+// MARK: - NimbleWorkbench
 
 public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   public var observers = ObserverSet<WorkbenchObserver>()
@@ -48,6 +48,10 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     super.windowDidLoad()
     window?.delegate = self
     
+    // Restore window position
+    window?.setFrameUsingName("NimbleWindow")
+    self.windowFrameAutosaveName = "NimbleWindow"
+    
     guard let debugView = debugView else { return }
     debugView.isHidden = true
     
@@ -76,13 +80,21 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
 }
 
 
+// MARK: - Workbench
 
 extension NimbleWorkbench: Workbench {
   public var project: Project? {
     return (document as? ProjectDocument)?.project
   }
   
+  public var documents: [Document] {
+    return editorView?.documents ?? []
+  }
   
+  public var currentDocument: Document? {
+    return editorView?.currentDocument
+  }
+    
   public var navigatorArea: WorkbenchArea? {
     return navigatorView
   }
@@ -91,28 +103,18 @@ extension NimbleWorkbench: Workbench {
      return debugView
   }
   
-  
-  public var activeDocument: Document? {
-    return editorView?.currentDocument
-  }
-  
-  public var openedDocuments: [Document] {
-    return editorView?.documents ?? []
-  }
-  
-       
-  
+
   public func open(_ doc: Document, show: Bool) {
     guard let editorView = editorView else { return }
         
-    if openedDocuments.count == 0 {
+    if documents.count == 0 {
       editorView.addTab(doc)
       
     } else if show {
       if let index = editorView.findIndex(doc) {
         editorView.selectTab(index)
         
-      } else if let edited = activeDocument?.isDocumentEdited, edited {
+      } else if let edited = currentDocument?.isDocumentEdited, edited {
         editorView.insertTab(doc, at: editorView.currentIndex! + 1)
         
       } else {
@@ -155,7 +157,42 @@ extension NimbleWorkbench: Workbench {
 }
 
 
-// MARK: - Nimble workbench area
+// MARK: - Actions
+
+extension NimbleWorkbench {
+  static let saveMenuItem: Int = 12
+  static let saveAsMenuItem: Int = 13
+  static let saveAllMenuItem: Int = 14
+  
+  @IBAction func save(_ sender: Any?) {
+    currentDocument?.save(sender)
+  }
+  
+  @IBAction func saveAs(_ sender: Any?) {    
+    currentDocument?.saveAs(sender)
+  }
+  
+  @IBAction func saveAll(_ sender: Any?) {
+    documents.forEach{$0.save(sender)}
+  }
+  
+  @objc func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
+    guard let menuItem = item as? NSMenuItem else { return true }
+    switch menuItem.tag {
+    case NimbleWorkbench.saveMenuItem:
+      return currentDocument?.isDocumentEdited ?? false
+    case NimbleWorkbench.saveAsMenuItem:
+      return currentDocument != nil
+    case NimbleWorkbench.saveAllMenuItem:
+      return documents.contains{$0.isDocumentEdited}
+    default:
+      return true
+    }
+  }
+}
+
+
+// MARK: - NimbleWorkbenchArea
 
 protocol NimbleWorkbenchArea: WorkbenchArea where Self: NSViewController { }
 extension NimbleWorkbenchArea {
@@ -173,7 +210,7 @@ extension NimbleWorkbenchArea {
 
 
 
-// MARK: - Nimble workbench view and controller
+// MARK: - NimbleWorkbenchWiew
 
 protocol NimbleWorkbenchView { }
 protocol NimbleWorkbenchViewController {}

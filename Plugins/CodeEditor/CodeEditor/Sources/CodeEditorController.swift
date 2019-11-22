@@ -10,7 +10,7 @@ import Cocoa
 import CodeEditor
 
 class CodeEditorController: NSViewController, NSTextViewDelegate, NSTextStorageDelegate {
-  weak var doc: SourceCodeDocument? = nil {
+  weak var document: SourceCodeDocument? = nil {
     didSet {
       loadContent()
     }
@@ -29,7 +29,7 @@ class CodeEditorController: NSViewController, NSTextViewDelegate, NSTextStorageD
   private func loadContent() {
     guard let textView = self.textView,
           let layoutManager = textView.layoutManager,
-          let doc = doc else { return }
+          let doc = document else { return }
     
     layoutManager.replaceTextStorage(doc.textStorage)
     doc.textStorage.delegate = self
@@ -61,7 +61,9 @@ class CodeEditorController: NSViewController, NSTextViewDelegate, NSTextStorageD
       textStorage.editedMask.contains(.editedCharacters)
       else { return }
     
-    guard let syntaxParser = doc?.syntaxParser else { return }
+    document?.updateChangeCount(.changeDone)
+    
+    guard let syntaxParser = document?.syntaxParser else { return }
     let range = textStorage.editedRange
     
     DispatchQueue.main.async { [weak self] in
@@ -76,7 +78,7 @@ class CodeEditorController: NSViewController, NSTextViewDelegate, NSTextStorageD
 
   
   func textView(_ textView: NSTextView, completions words: [String], forPartialWordRange charRange: NSRange, indexOfSelectedItem index: UnsafeMutablePointer<Int>?) -> [String] {
-    guard let completions = doc?.delegates.first?.complete() else { return [] }
+    guard let completions = document?.delegates.first?.complete() else { return [] }
     return completions
   }
 }

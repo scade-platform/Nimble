@@ -82,14 +82,20 @@
                                             </menu>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="m54-Is-iLE"/>
-                                        <menuItem title="Save…" keyEquivalent="s" id="pxx-59-PXV">
+                                        <menuItem title="Save" tag="12" keyEquivalent="s" id="pxx-59-PXV">
                                             <connections>
-                                                <action selector="saveFile:" target="Ady-hI-5gd" id="qkg-iI-q6Q"/>
+                                                <action selector="save:" target="Ady-hI-5gd" id="Zoi-DK-gNe"/>
                                             </connections>
                                         </menuItem>
-                                        <menuItem title="Save As…" keyEquivalent="S" id="Bw7-FT-i3A">
+                                        <menuItem title="Save As…" tag="13" keyEquivalent="S" id="Bw7-FT-i3A">
                                             <connections>
-                                                <action selector="saveFileAs:" target="Ady-hI-5gd" id="8TO-Lx-XK9"/>
+                                                <action selector="saveAs:" target="Ady-hI-5gd" id="BK0-tK-N8c"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Save All" tag="14" keyEquivalent="s" id="gWi-oj-j2B">
+                                            <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                            <connections>
+                                                <action selector="saveAll:" target="Ady-hI-5gd" id="LVj-Ba-L0O"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="aJh-i4-bef"/>
@@ -652,6 +658,9 @@
                                         <menuItem isSeparatorItem="YES" id="0nh-gH-rgH"/>
                                         <menuItem title="Save Project As..." id="QlQ-2r-pqJ">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="saveDocumentAs:" target="Ady-hI-5gd" id="pus-P5-rvg"/>
+                                            </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="Hxz-1l-9Rz"/>
                                         <menuItem title="Add Folder to Project..." id="GlY-G6-8zl">
@@ -717,7 +726,7 @@
         <scene sceneID="R2V-B0-nI4">
             <objects>
                 <windowController storyboardIdentifier="Document Window Controller" id="B8D-0N-5wS" customClass="NimbleWorkbench" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
-                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" tabbingMode="disallowed" titleVisibility="hidden" id="IQv-IB-iLA">
+                    <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="" animationBehavior="default" tabbingMode="disallowed" titleVisibility="hidden" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" texturedBackground="YES"/>
                         <rect key="contentRect" x="193" y="617" width="1200" height="900"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>

@@ -7,8 +7,11 @@
 
 import AppKit
 
+// MARK: - Document
 
 public protocol Document where Self: NSDocument {
+  var observers: ObserverSet<DocumentObserver> { get }
+  
   var contentViewController: NSViewController? { get }
   
   static var typeIdentifiers: [String] { get }
@@ -41,6 +44,32 @@ public extension Document {
   }
 }
 
+// MARK: - Default document
+
+open class NimbleDocument: NSDocument {
+  public var observers = ObserverSet<DocumentObserver> ()
+  
+  public override func updateChangeCount(_ change: NSDocument.ChangeType) {
+    super.updateChangeCount(change)
+    observers.notify {
+      guard let doc = self as? Document else { return }
+      $0.documentDidChange(doc)
+    }
+  }
+}
+
+
+// MARK: - Document Observer
+
+public protocol DocumentObserver {
+  func documentDidChange(_ document: Document)
+}
+
+public extension DocumentObserver {
+  func documentDidChange(_ document: Document) {}
+}
+
+// MARK: - Document Manager
 
 public class DocumentManager {
   public static let shared: DocumentManager = DocumentManager()
@@ -48,7 +77,7 @@ public class DocumentManager {
   
   private var documentClasses: [Document.Type] = []
   
-  private var openedDocuments: [File: WeakRef<NSDocument>] = [:]
+  private var openedDocuments: [WeakRef<NSDocument>] = []
   
   public var typeIdentifiers: Set<String> { documentClasses.reduce(into: []) { $0.formUnion($1.typeIdentifiers) } }
   
@@ -76,7 +105,7 @@ public class DocumentManager {
     guard let docClass = selectDocumentClass(for: file) else { return nil }
     guard let doc = try? docClass.init(contentsOf: file.path.url, ofType: file.url.uti) else { return nil }
     
-    openedDocuments[file] = WeakRef<NSDocument>(value: doc)
+    openedDocuments.append(WeakRef<NSDocument>(value: doc))
     return doc
   }
   
@@ -95,21 +124,19 @@ public class DocumentManager {
   }
     
   private func searchOpenedDocument(_ file: File) -> Document? {
-    var doc: Document? = nil
-    for (key, ref) in openedDocuments {
-      guard let value = ref.value else {
-        openedDocuments.removeValue(forKey: key)
-        continue
-      }
-      
-      if file == key {
-        doc = value as? Document
-      }
+    openedDocuments.removeAll{ $0.value == nil }
+    
+    let ref = openedDocuments.first{
+      guard let path = ($0.value as? Document)?.path else { return false}
+      return path == file.path
     }
-    return doc
+    
+    return ref?.value as? Document
   }
 }
 
+
+// MARK: - Extensions
 
 public extension File {
   @discardableResult

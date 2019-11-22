@@ -2,7 +2,7 @@ import AppKit
 import NimbleCore
 import ScadeKit
 
-public final class PageDocument: NSDocument {
+public final class PageDocument: NimbleDocument {
   public var svgRoot: SCDSvgBox?
   public var page: SCDWidgetsPage?
   

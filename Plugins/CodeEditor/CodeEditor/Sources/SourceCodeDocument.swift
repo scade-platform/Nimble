@@ -10,7 +10,7 @@ import AppKit
 import NimbleCore
 import CodeEditor
 
-public final class SourceCodeDocument: NSDocument {
+public final class SourceCodeDocument: NimbleDocument {
   let textStorage = NSTextStorage()
   
   public var language: Language? {
@@ -28,7 +28,7 @@ public final class SourceCodeDocument: NSDocument {
   
   private lazy var editorController: CodeEditorController = {
     let controller = CodeEditorController.loadFromNib()
-    controller.doc = self
+    controller.document = self
     return controller
   }()
     

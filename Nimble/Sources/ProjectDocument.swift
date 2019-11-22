@@ -137,3 +137,9 @@ class ProjectDocument: NSDocument {
 */
   
 }
+
+// MARK: - Actions
+
+extension ProjectDocument {
+  
+}
