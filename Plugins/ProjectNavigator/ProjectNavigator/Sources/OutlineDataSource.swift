@@ -44,32 +44,27 @@ class ProjectFoldersItem: OutlineRootItem {
 
 class FolderItem {
   let folder: Folder
-  private var subfolderItems: [FolderItem] = []
+  
+  // Cached content of the 'folder'
   private var files : [File] = []
+  private var items: [FolderItem] = []
   
   var data: [Any] {
-    if subfolderItems.isEmpty, files.isEmpty {
-      try? update()
+    if items.isEmpty, files.isEmpty {
+      update()
     }
-    return subfolderItems + files
+    return items + files
   }
   
   init(_ folder: Folder){
     self.folder = folder
   }
   
-  func update() throws {
-    try updateSubolders()
-    try updateFiles()
-  }
-  
-  private func updateSubolders() throws {
-    let subfolders = try folder.subfolders()
-    subfolderItems = subfolders.map{FolderItem($0)}
-  }
-  
-  private func updateFiles() throws {
-    files = try folder.files()
+  func update() {
+    self.files = (try? folder.files()) ?? []
+    
+    let subfolders = (try? folder.subfolders()) ?? []
+    self.items = subfolders.map{FolderItem($0)}
   }
 }
 
