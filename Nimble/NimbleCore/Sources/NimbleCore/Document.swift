@@ -13,7 +13,7 @@ public protocol Document where Self: NSDocument {
   var observers: ObserverSet<DocumentObserver> { get }
   
   var contentViewController: NSViewController? { get }
-  
+      
   static var typeIdentifiers: [String] { get }
   
   static func isDefault(for file: File) -> Bool
@@ -44,6 +44,13 @@ public extension Document {
   }
 }
 
+
+public protocol CreatableDocument where Self: Document {
+  static var newMenuTitle: String { get }
+  static func createUntitledDocument() -> Document?
+}
+
+
 // MARK: - Default document
 
 open class NimbleDocument: NSDocument {
@@ -73,13 +80,17 @@ public extension DocumentObserver {
 
 public class DocumentManager {
   public static let shared: DocumentManager = DocumentManager()
-  
-  
+    
   private var documentClasses: [Document.Type] = []
-  
   private var openedDocuments: [WeakRef<NSDocument>] = []
   
-  public var typeIdentifiers: Set<String> { documentClasses.reduce(into: []) { $0.formUnion($1.typeIdentifiers) } }
+  public var typeIdentifiers: Set<String> {
+    documentClasses.reduce(into: []) { $0.formUnion($1.typeIdentifiers) }
+  }
+  
+  public var creatableDocuments: [CreatableDocument.Type] {
+    documentClasses.compactMap{ $0 as? CreatableDocument.Type }
+  }
   
   
   public func registerDocumentClass<T: Document>(_ docClass: T.Type) {

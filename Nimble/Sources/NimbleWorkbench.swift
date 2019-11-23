@@ -160,10 +160,6 @@ extension NimbleWorkbench: Workbench {
 // MARK: - Actions
 
 extension NimbleWorkbench {
-  static let saveMenuItem: Int = 12
-  static let saveAsMenuItem: Int = 13
-  static let saveAllMenuItem: Int = 14
-  
   @IBAction func save(_ sender: Any?) {
     currentDocument?.save(sender)
   }
@@ -177,13 +173,13 @@ extension NimbleWorkbench {
   }
   
   @objc func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
-    guard let menuItem = item as? NSMenuItem else { return true }
-    switch menuItem.tag {
-    case NimbleWorkbench.saveMenuItem:
+    guard let menuId = (item as? NSMenuItem)?.identifier?.rawValue else { return true }
+    switch menuId {
+    case "saveMenuItem":
       return currentDocument?.isDocumentEdited ?? false
-    case NimbleWorkbench.saveAsMenuItem:
+    case "saveAsMenuItem":
       return currentDocument != nil
-    case NimbleWorkbench.saveAllMenuItem:
+    case "saveAllMenuItem":
       return documents.contains{$0.isDocumentEdited}
     default:
       return true

@@ -45,6 +45,11 @@ public class PluginManager {
   private lazy var plugins: [Plugin] = {
     PluginManager.modules.compactMap{$0.pluginClass.init()}
   }()
+    
+    
+  public func loadPlugins() {
+    let _ = self.plugins
+  }
   
   public func activate(in workbench: Workbench) -> Void {
     plugins.forEach{ $0.activate(in: workbench) }

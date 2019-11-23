@@ -23,23 +23,25 @@ class NimbleController: NSDocumentController {
   }
   
   var currentProjectDocument: ProjectDocument? {
-    return currentDocument as? ProjectDocument
+    if let doc = currentDocument as? ProjectDocument {
+      return doc
+    }
+    return (try? makeUntitledDocument(ofType: ProjectDocument.docType)) as? ProjectDocument
   }
-      
+   
+  func makeUntitledDocument(ofType typeClass: CreatableDocument.Type) {
+    guard let doc = typeClass.createUntitledDocument() else { return }
+    currentWorkbench?.open(doc, show: true)
+  }
+  
   override func openDocument(withContentsOf url: URL, display displayDocument: Bool,
                              completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void) {
             
     guard let doc = DocumentManager.shared.open(url: url) else {
       return completionHandler(nil, false, nil)
     }
-    
-    var proj = currentProjectDocument
-    
-    if proj == nil {
-      proj = (try? makeUntitledDocument(ofType: ProjectDocument.docType)) as? ProjectDocument
-    }
-    
-    guard let workbench = proj?.workbench else {
+        
+    guard let workbench = currentWorkbench else {
       return completionHandler(nil, false, nil)
     }
     
@@ -69,7 +71,7 @@ class NimbleController: NSDocumentController {
     }
   }
     
-  func updateOpenRecentMenu(_ menu: NSMenu){
+  func updateOpenRecentMenu(_ menu: NSMenu) {
     var urls: [URL] = recentDocumentURLs
     var action: Selector? = #selector(openRecentDocument(_:))
     
