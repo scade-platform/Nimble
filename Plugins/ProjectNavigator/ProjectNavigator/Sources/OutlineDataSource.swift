@@ -25,7 +25,7 @@ class OutlineRootItem: NSObject {
   }
   
   func reload() {
-    outline?.reloadItem(self)
+    outline?.reloadItem(self, reloadChildren: true)
     outline?.expandItem(self)
   }
 }

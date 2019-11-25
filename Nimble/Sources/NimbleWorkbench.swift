@@ -127,7 +127,11 @@ extension NimbleWorkbench: Workbench {
         
         // Show in the current tab
       } else {
+        let curDoc = self.currentDocument
         editorView.show(doc)
+        if let curDoc = curDoc {
+          observers.notify { $0.workbenchDidCloseDocument(self, document: curDoc) }
+        }
       }
     
     // Just insert a tab but not switch to it
