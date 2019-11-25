@@ -31,7 +31,7 @@ class NimbleController: NSDocumentController {
    
   func makeUntitledDocument(ofType typeClass: CreatableDocument.Type) {
     guard let doc = typeClass.createUntitledDocument() else { return }
-    currentWorkbench?.open(doc, show: true)
+    currentWorkbench?.open(doc, show: true, openNewEditor: true)
   }
   
   override func openDocument(withContentsOf url: URL, display displayDocument: Bool,

@@ -104,23 +104,33 @@ extension NimbleWorkbench: Workbench {
   }
   
 
-  public func open(_ doc: Document, show: Bool) {
+  public func open(_ doc: Document, show: Bool, openNewEditor: Bool) {
     guard let editorView = editorView else { return }
-        
+    
+    // If no document is opened, just create a new tab
     if documents.count == 0 {
       editorView.addTab(doc)
-      
+    
+    // If the current document has to be presented create
+    // a new tab or reuse the existing one
     } else if show {
+      // If the doc is already opened, switch to its tab
       if let index = editorView.findTab(doc) {
         editorView.selectTab(index)
         
-      } else if let edited = currentDocument?.isDocumentEdited, edited {
+      // Insert a new tab for edited or newly created documents
+      // and if it's forced by the flag 'openNewEditor'
+      } else if let curDoc = currentDocument,
+          openNewEditor || curDoc.isDocumentEdited || curDoc.fileURL == nil  {
+        
         editorView.insertTab(doc, at: editorView.currentIndex! + 1)
         
+        // Show in the current tab
       } else {
         editorView.show(doc)
       }
-      
+    
+    // Just insert a tab but not switch to it
     } else if editorView.findTab(doc) == nil {
       editorView.insertTab(doc, at: editorView.currentIndex!, select: false)
     }

@@ -33,12 +33,21 @@ public protocol Workbench: class {
   
   func open(_ doc: Document, show: Bool)
   
+  func open(_ doc: Document, show: Bool, openNewEditor: Bool)
+  
   @discardableResult
   func close(_ doc: Document) -> Bool
   
   
   
   func createConsole(title: String, show: Bool) -> Console?
+}
+
+
+public extension Workbench {
+  func open(_ doc: Document, show: Bool) {
+    open(doc, show: show, openNewEditor: false)
+  }
 }
 
 
