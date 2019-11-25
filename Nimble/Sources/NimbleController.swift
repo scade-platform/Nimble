@@ -75,7 +75,7 @@ class NimbleController: NSDocumentController {
     var urls: [URL] = recentDocumentURLs
     var action: Selector? = #selector(openRecentDocument(_:))
     
-    if let menuId = menu.identifier?.rawValue, menuId == "openRecentProjects" {
+    if let menuId = menu.identifier?.rawValue, menuId == AppDelegate.openRecentProjectMenuId {
       urls = recentDocumentURLs.filter {
         $0.typeIdentifierConforms(to: ProjectDocument.docType)
       }

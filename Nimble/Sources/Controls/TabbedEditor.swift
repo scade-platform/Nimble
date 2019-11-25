@@ -55,10 +55,15 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
     
   private(set) var currentItem: TabItem? = nil {
     didSet {
-      guard let itemController = currentItem?.viewController else { return }
+      guard let item = currentItem else { return }
+      guard let itemController = item.viewController else { return }
+      
       itemController.view.frame = tabViewContainer.frame
       addChild(itemController)
       tabViewContainer.addSubview(itemController.view)
+      
+      item.document.activate()
+      
       workbench?.observers.notify {
         $0.workbenchActiveDocumentDidChange(workbench!, document: currentDocument)
       }
@@ -114,7 +119,7 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
   }
   
   func removeTab(_ doc: Document) {
-    guard let pos = findIndex(doc) else { return }
+    guard let pos = items.firstIndex(where: {$0.document === doc}) else { return }
     
     items.remove(at: pos)
     doc.observers.remove(observer: self)
@@ -136,7 +141,7 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
     tabBar?.selectItemAtIndex(index)
   }
   
-  func findIndex(_ doc: Document) -> Int? {
+  func findTab(_ doc: Document) -> Int? {
     return items.firstIndex {
       guard let p1 = $0.document.path, let p2 = doc.path else { return false }
       return p1 == p2

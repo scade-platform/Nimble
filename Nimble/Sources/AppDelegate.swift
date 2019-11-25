@@ -12,13 +12,16 @@ import NimbleCore
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
   
+  static let openRecentProjectMenuId = "openRecentProjectMenu"
+  static let openRecentDocumentMenuId = "openRecentDocumentMenu"
+  
   let documentController = NimbleController()
   
   @IBOutlet var fileMenu: NSMenu?
-      
   @IBOutlet var newDocumentMenu: NSMenu?
   
   @IBOutlet var openRecentDocumentMenu: NSMenu?
+  
   
   @objc private func newDocument(_ sender: Any?) {
     guard let docType = (sender as? NSMenuItem)?.representedObject as? CreatableDocument.Type else { return }
@@ -29,6 +32,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Replace the default delegate installed by the NSDocumentController
     // The default one shows all recent documents without filtering etc.
     openRecentDocumentMenu?.delegate = self
+    
     PluginManager.shared.loadPlugins()
     
     // Build newDocumentMenu
@@ -38,7 +42,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       return item
     }
     
-    items.first?.keyEquivalent = "N"
+    items.first?.keyEquivalent = "n"
     items.first?.keyEquivalentModifierMask = .command
     
     // Enable iff. there are document creators
@@ -73,11 +77,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   
 }
 
-
-extension AppDelegate : NSMenuDelegate {
+extension AppDelegate: NSMenuDelegate {
   func menuNeedsUpdate(_ menu: NSMenu) {
-    if let openRecentMenu = openRecentDocumentMenu, openRecentMenu === menu {
+    switch menu.identifier?.rawValue {
+    case .some(AppDelegate.openRecentDocumentMenuId), .some(AppDelegate.openRecentProjectMenuId):
       documentController.updateOpenRecentMenu(menu)
+    default:
+      return
     }
   }
 }

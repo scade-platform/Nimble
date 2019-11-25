@@ -111,7 +111,7 @@ extension NimbleWorkbench: Workbench {
       editorView.addTab(doc)
       
     } else if show {
-      if let index = editorView.findIndex(doc) {
+      if let index = editorView.findTab(doc) {
         editorView.selectTab(index)
         
       } else if let edited = currentDocument?.isDocumentEdited, edited {
@@ -121,7 +121,7 @@ extension NimbleWorkbench: Workbench {
         editorView.show(doc)
       }
       
-    } else if editorView.findIndex(doc) == nil {
+    } else if editorView.findTab(doc) == nil {
       editorView.insertTab(doc, at: editorView.currentIndex!, select: false)
     }
     
@@ -131,6 +131,7 @@ extension NimbleWorkbench: Workbench {
     
   public func close(_ doc: Document) -> Bool {
     var close = true
+    
     if doc.isDocumentEdited {
       let result = showSaveDialog(
         question: "Do you want to save the changes you made to \(doc.title)?",
