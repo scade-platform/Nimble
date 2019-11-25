@@ -74,7 +74,7 @@ public final class SourceCodeDocument: NimbleDocument {
 
 extension SourceCodeDocument: Document {
   public var contentViewController: NSViewController? { return editorController }
-  public static var typeIdentifiers: [String] { ["public.text", "public.svg-image"] }
+  public static var typeIdentifiers: [String] { ["public.text", "public.data", "public.svg-image"] }
 }
 
 extension SourceCodeDocument: TextDocument {
@@ -84,6 +84,6 @@ extension SourceCodeDocument: TextDocument {
 extension SourceCodeDocument: CreatableDocument {
   public static let newMenuTitle: String = "File"
   public static func createUntitledDocument() -> Document? {
-    return SourceCodeDocument()
+    return try? SourceCodeDocument(type: "public.text")
   }
 }
