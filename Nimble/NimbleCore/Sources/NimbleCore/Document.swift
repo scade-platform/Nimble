@@ -22,6 +22,12 @@ public protocol Document where Self: NSDocument {
 }
 
 
+public protocol DocumentView: class {
+  @discardableResult
+  func focus() -> Bool
+}
+
+
 public extension Document {
   var path: Path? {
     guard let url = self.fileURL else { return nil }
@@ -42,6 +48,11 @@ public extension Document {
     }
     return typeIdentifiers.contains { file.url.typeIdentifierConforms(to: $0) }
   }
+  
+  func activate() {
+    guard let docView = contentViewController?.view as? DocumentView else { return }
+    docView.focus()
+  }
 }
 
 
@@ -56,7 +67,7 @@ public protocol CreatableDocument where Self: Document {
 open class NimbleDocument: NSDocument {
   public var observers = ObserverSet<DocumentObserver> ()
   
-  public override func updateChangeCount(_ change: NSDocument.ChangeType) {
+  open override func updateChangeCount(_ change: NSDocument.ChangeType) {
     super.updateChangeCount(change)
     observers.notify {
       guard let doc = self as? Document else { return }

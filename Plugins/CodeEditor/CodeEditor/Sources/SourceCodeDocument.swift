@@ -19,12 +19,12 @@ public final class SourceCodeDocument: NimbleDocument {
       self.syntaxParser = SyntaxParser(textStorage: textStorage, grammar: grammar)
     }
   }
-  
-  private var languageFromURL: Language? {
-    return self.fileURL?.file?.language
+    
+  public var syntaxParser: SyntaxParser? {
+    didSet {
+      editorController.highlightSyntax()
+    }
   }
-  
-  public var syntaxParser: SyntaxParser?
   
   private lazy var editorController: CodeEditorController = {
     let controller = CodeEditorController.loadFromNib()
@@ -36,7 +36,7 @@ public final class SourceCodeDocument: NimbleDocument {
     if let lang = language {
       return lang.id
     }
-    guard let id = languageFromURL?.id else { return "" }
+    guard let id = fileURL?.file?.language?.id else { return "" }
     return id
   }
   
@@ -60,6 +60,14 @@ public final class SourceCodeDocument: NimbleDocument {
   
   public override func data(ofType typeName: String) throws -> Data {
     return textStorage.string.data(using: .utf8)!
+  }
+  
+  public override func updateChangeCount(_ change: NSDocument.ChangeType) {
+    let lang = fileURL?.file?.language
+    if change == .changeCleared, self.language != lang {
+      self.language = lang
+    }
+    super.updateChangeCount(change)
   }
 }
 

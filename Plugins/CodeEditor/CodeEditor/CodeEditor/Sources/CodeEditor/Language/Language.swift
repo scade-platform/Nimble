@@ -22,6 +22,12 @@ public final class Language: Decodable {
   }
 }
 
+extension Language: Equatable {
+  public static func == (lhs: Language, rhs: Language) -> Bool {
+    return lhs.id == rhs.id
+  }
+}
+
 
 // MARK: -
 

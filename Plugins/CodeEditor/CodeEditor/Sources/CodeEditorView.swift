@@ -9,6 +9,19 @@
 import Cocoa
 import CodeEditor
 
+
+class CodeEditorView: NSView {
+  @IBOutlet
+  weak var textView: CodeEditorTextView?
+}
+
+extension CodeEditorView: DocumentView {
+  func focus() -> Bool {
+    return window?.makeFirstResponder(textView) ?? false
+  }
+}
+
+
 class CodeEditorController: NSViewController, NSTextViewDelegate, NSTextStorageDelegate {
   weak var document: SourceCodeDocument? = nil {
     didSet {
@@ -42,8 +55,7 @@ class CodeEditorController: NSViewController, NSTextViewDelegate, NSTextStorageD
       textView.font = font
     }
     
-    // Highlight syntax
-    highlightProgress = doc.syntaxParser?.highlightAll()
+    highlightSyntax()
   }
 
   private func applyTheme() {
@@ -52,6 +64,11 @@ class CodeEditorController: NSViewController, NSTextViewDelegate, NSTextStorageD
     
     guard let textView = self.textView else { return }
     textView.apply(theme: theme)
+  }
+  
+  
+  public func highlightSyntax() {
+    highlightProgress = document?.syntaxParser?.highlightAll()
   }
   
   
