@@ -46,7 +46,7 @@ public protocol Workbench: class {
 
 public extension Workbench {
   func open(_ doc: Document, show: Bool) {
-    open(doc, show: show, openNewEditor: false)
+    open(doc, show: show, openNewEditor: true)
   }
 }
 

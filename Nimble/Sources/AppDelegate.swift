@@ -58,13 +58,9 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     guard let path = Path(filename) else { return true }
     
     if path.url.typeIdentifierConforms(to: ProjectDocument.docType) {
-      documentController.openProject(withContentsOf: path.url,
-                                     completionHandler: NimbleController.openDocumentHandler)
-              
+      documentController.openProject(withContentsOf: path.url)
     } else {
-      documentController.openDocument(withContentsOf: path.url,
-                                      display: true,
-                                      completionHandler: NimbleController.openDocumentHandler)
+      documentController.openDocument(withContentsOf: path.url, display: true)
     }
         
     return true

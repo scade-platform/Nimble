@@ -161,12 +161,12 @@ public class DocumentManager {
 // MARK: - Extensions
 
 public extension File {
-  @discardableResult
-  func open(show: Bool = true) -> Document? {
-    var fileDoc: Document? = nil
-    NSDocumentController.shared.openDocument(withContentsOf: path.url, display: show) {doc, _, _ in
-      fileDoc = doc as? Document
-    }
-    return fileDoc
-  }
+//  @discardableResult
+//  func open(show: Bool = true) -> Document? {
+//    var fileDoc: Document? = nil
+//    NSDocumentController.shared.openDocument(withContentsOf: path.url, display: show) {doc, _, _ in
+//      fileDoc = doc as? Document
+//    }
+//    return fileDoc
+//  }
 }

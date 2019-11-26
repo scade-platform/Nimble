@@ -15,8 +15,13 @@ import NimbleCore
 class NimbleController: NSDocumentController {
   
   static func openDocumentHandler(_ doc: NSDocument?, documentWasAlreadyOpen: Bool, error: Error?) {
-    ///TODO: implement
+    ///TODO: process errors
   }
+  
+  static func openProjectHandler(_ doc: NSDocument?, documentWasAlreadyOpen: Bool, error: Error?) {
+    ///TODO: process errors
+  }
+  
   
   var currentWorkbench: Workbench? {
     return currentProjectDocument?.workbench
@@ -28,10 +33,15 @@ class NimbleController: NSDocumentController {
     }
     return (try? makeUntitledDocument(ofType: ProjectDocument.docType)) as? ProjectDocument
   }
-   
+  
+  
   func makeUntitledDocument(ofType typeClass: CreatableDocument.Type) {
     guard let doc = typeClass.createUntitledDocument() else { return }
-    currentWorkbench?.open(doc, show: true, openNewEditor: true)
+    currentWorkbench?.open(doc, show: true)
+  }
+  
+  func openDocument(withContentsOf url: URL, display displayDocument: Bool) {
+    self.openDocument(withContentsOf: url, display: displayDocument, completionHandler: NimbleController.openDocumentHandler)
   }
   
   override func openDocument(withContentsOf url: URL, display displayDocument: Bool,
@@ -40,16 +50,16 @@ class NimbleController: NSDocumentController {
     guard let doc = DocumentManager.shared.open(url: url) else {
       return completionHandler(nil, false, nil)
     }
-        
-    guard let workbench = currentWorkbench else {
-      return completionHandler(nil, false, nil)
+    
+    noteNewRecentDocument(doc)
+    
+    if let workbench = currentWorkbench, displayDocument {
+      workbench.open(doc, show: true)
     }
     
-    workbench.open(doc, show: true)
-    noteNewRecentDocument(doc)
-        
     completionHandler(doc, false, nil)
   }
+  
   
   
   func beginOpenProjectPanel(completionHandler: (URL) -> ()) {
@@ -57,8 +67,12 @@ class NimbleController: NSDocumentController {
     guard let url = openPanel.selectFile(ofTypes: [ProjectDocument.docType]) else { return }
     completionHandler(url)
   }
-      
-  func openProject(withContentsOf url: URL, completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void)  {
+  
+  func openProject(withContentsOf url: URL) {
+    self.openProject(withContentsOf: url, completionHandler: NimbleController.openProjectHandler)
+  }
+  
+  func openProject(withContentsOf url: URL, completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void) {
     if let doc = currentProjectDocument, doc.project.isEmpty {
       do {
         try doc.reload(from: url)
@@ -100,18 +114,15 @@ class NimbleController: NSDocumentController {
   
   @objc func openRecentDocument(_ sender: Any?) {
     guard let url = (sender as? NSMenuItem)?.representedObject as? URL else { return }
-    openDocument(withContentsOf: url, display: true,
-                 completionHandler: NimbleController.openDocumentHandler)
+    openDocument(withContentsOf: url, display: true)
   }
   
   @objc func openRecentProject(_ sender: Any?) {
     guard let url = (sender as? NSMenuItem)?.representedObject as? URL else { return }
-    openProject(withContentsOf: url,
-                completionHandler: NimbleController.openDocumentHandler)
+    openProject(withContentsOf: url)
   }
-  
-  
 }
+
 
 // MARK: - Actions
 
@@ -128,15 +139,13 @@ extension NimbleController {
     }
     
     urls.filter{ $0.isFile }.forEach {
-      openDocument(withContentsOf: $0.url, display: true,
-                   completionHandler: NimbleController.openDocumentHandler)
+      openDocument(withContentsOf: $0.url, display: true)
     }
   }
   
   @IBAction func openProject(_ sender: Any?) {
     beginOpenProjectPanel {
-      openProject(withContentsOf: $0,
-                  completionHandler: NimbleController.openDocumentHandler)
+      openProject(withContentsOf: $0)
     }
   }
     

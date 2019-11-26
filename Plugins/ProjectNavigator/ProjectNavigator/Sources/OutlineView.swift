@@ -35,7 +35,11 @@ open class OutlineView: NSViewController, WorkbenchPart {
           let item = outlineView.item(atRow: outlineView.selectedRow) as? File else { return }
         
     prevSelectedDocument = workbench?.currentDocument
-    item.open()
+    
+    NSDocumentController.shared.openDocument(withContentsOf: item.url, display: false) { [weak self] doc, _, _ in
+        guard let doc = doc as? Document else { return }
+      self?.workbench?.open(doc, show: true, openNewEditor: false)
+    }
   }
   
   @IBAction func itemDoubleClicked(_ sender: Any) {
