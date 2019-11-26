@@ -60,9 +60,7 @@ extension ContextOutlineView : ContextMenuProvider {
       return
     }
     showImputTextAlert(message: "Please enter a new name:", fileSystemElement, handler: {newName in
-      //TODO: FileSystemElement should update path
       try? fileSystemElement.path.rename(to: newName)
-      //TODO: UI should listen FS to update correctly
     })
   }
   
@@ -73,7 +71,6 @@ extension ContextOutlineView : ContextMenuProvider {
       return
     }
     try? fileSystemElement.path.delete()
-    //TODO: UI should listen FS to update correctly
   }
   
   @objc func createNewFileAction(_ sender: NSMenuItem?) {
@@ -84,7 +81,6 @@ extension ContextOutlineView : ContextMenuProvider {
       guard !name.isEmpty else { return }
       let parentPath = folder.path
       try? parentPath.join(name).touch()
-      //TODO: UI should listen FS to update correctly
     })
   }
   
@@ -96,7 +92,6 @@ extension ContextOutlineView : ContextMenuProvider {
       guard !name.isEmpty else { return }
       let parentPath = folder.path
       try? parentPath.join(name).mkdir()
-      //TODO: UI should listen FS to update correctly
     })
   }
   

@@ -84,7 +84,6 @@ class FolderItem: NSObject {
     self.folder = folder
     self.observer = observer
     super.init()
-    NSFileCoordinator.addFilePresenter(self)
   }
   
   func update() {
@@ -102,10 +101,6 @@ class FolderItem: NSObject {
       //save not changed items
       items.append(item)
     }
-  }
-  
-  deinit {
-    NSFileCoordinator.removeFilePresenter(self)
   }
 }
 
@@ -135,8 +130,8 @@ protocol FSObserver {
 
 extension NSOutlineView : FSObserver {
   func folderSubitemDidChange(_ folderItem: FolderItem) {
-    self.reloadItem(folderItem, reloadChildren: true)
-    self.expandItem(folderItem)
+    reloadItem(folderItem, reloadChildren: true)
+    expandItem(folderItem)
   }
 }
 
@@ -318,18 +313,30 @@ extension OutlineDataSource: NSOutlineViewDelegate {
       return nil
     }
   }
-        
+  
   public func outlineViewItemDidExpand(_ notification: Notification) {
     guard let outlineView = notification.object as? NSOutlineView,
           let item = notification.userInfo?["NSObject"] else { return }
-
+    //update folder icon
     outlineView.reloadItem(item, reloadChildren: false)
+  }
+        
+  public func outlineViewItemWillExpand(_ notification: Notification) {
+    guard let item = notification.userInfo?["NSObject"],
+          let folderItem = item as? FolderItem else { return }
+    //update data before expand, because content may be changed
+    folderItem.update()
+    //listening only expanded FolderItem
+    NSFileCoordinator.addFilePresenter(folderItem)
   }
   
   public func outlineViewItemDidCollapse(_ notification: Notification) {
     guard let outlineView = notification.object as? NSOutlineView,
-          let item = notification.userInfo?["NSObject"] else { return }
-    
+          let item = notification.userInfo?["NSObject"],
+          let folderItem = item as? FolderItem else { return }
+    //listening only expanded FolderItem
+    NSFileCoordinator.removeFilePresenter(folderItem)
+    //update folder icon
     outlineView.reloadItem(item, reloadChildren: false)
   }
   
