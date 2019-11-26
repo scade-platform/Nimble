@@ -44,24 +44,34 @@ class OpenedDocumentsItem: OutlineRootItem {
 }
 
 class ProjectFoldersItem: OutlineRootItem {
+  private var folderItems: [FolderItem] = []
+  
   init(_ workbench: Workbench, _ outline: NSOutlineView?) {
     super.init(title: "FOLDERS",
                cell: "DataCell",
                workbench: workbench,
                outline: outline)
+    update()
   }
   var folders: [FolderItem] {
-    let folders = workbench?.project?.folders ?? []
-    return folders.map{FolderItem($0)}
+    return folderItems
   }
+  
+  func update(){
+    let folders = workbench?.project?.folders ?? []
+    folderItems = folders.map{FolderItem($0, observer: outline)}
+  }
+  
 }
 
-class FolderItem {
+class FolderItem: NSObject {
   let folder: Folder
   
   // Cached content of the 'folder'
   private var files : [File] = []
   private var items: [FolderItem] = []
+  
+  private let observer : FSObserver?
   
   var data: [Any] {
     if items.isEmpty, files.isEmpty {
@@ -70,15 +80,63 @@ class FolderItem {
     return items + files
   }
   
-  init(_ folder: Folder){
+  init(_ folder: Folder, observer: FSObserver?){
     self.folder = folder
+    self.observer = observer
+    super.init()
+    NSFileCoordinator.addFilePresenter(self)
   }
   
   func update() {
     self.files = (try? folder.files()) ?? []
     
+    let previousItems = items
+    items.removeAll()
     let subfolders = (try? folder.subfolders()) ?? []
-    self.items = subfolders.map{FolderItem($0)}
+    for subfolder in subfolders  {
+      guard let item = previousItems.first(where: {$0.folder == subfolder}) else {
+        //add new items
+        items.append(FolderItem(subfolder, observer: observer))
+        continue
+      }
+      //save not changed items
+      items.append(item)
+    }
+  }
+  
+  deinit {
+    NSFileCoordinator.removeFilePresenter(self)
+  }
+}
+
+extension FolderItem : NSFilePresenter {
+  var presentedItemURL: URL? {
+    return folder.path.url
+  }
+  
+  var presentedItemOperationQueue: OperationQueue {
+    return OperationQueue.main
+  }
+  
+  func presentedSubitemDidChange(at url: URL) {
+    let path = Path(url : url)
+    let relativePath = path?.relative(to: folder.path)
+    //update only the parent of the changed item, not all hierarchy
+    if !(relativePath?.contains("/") ?? true) {
+      update()
+      observer?.folderSubitemDidChange(self)
+    }
+  }
+}
+
+protocol FSObserver {
+  func folderSubitemDidChange(_ folderItem: FolderItem)
+}
+
+extension NSOutlineView : FSObserver {
+  func folderSubitemDidChange(_ folderItem: FolderItem) {
+    self.reloadItem(folderItem, reloadChildren: true)
+    self.expandItem(folderItem)
   }
 }
 
@@ -115,6 +173,7 @@ extension OutlineDataSource: WorkbenchObserver {
   
   func workbenchDidChangeProject(_ workbench: Workbench) {
     workbench.project?.observers.add(observer: self)
+    projectFolders.update()
     projectFolders.reload()
   }
   
@@ -131,6 +190,7 @@ extension OutlineDataSource: WorkbenchObserver {
 
 extension OutlineDataSource: ProjectObserver {
   func projectFoldersDidChange(_: Project) {
+    projectFolders.update()
     projectFolders.reload()
   }
 }
