@@ -1,9 +1,9 @@
 [submodule "Plugins/SwiftExtensions/sourcekit-lsp"]
 	path = Plugins/SwiftExtensions/sourcekit-lsp
 	url = https://github.com/apple/sourcekit-lsp.git
-[submodule "Plugins/TabsControl"]
-	path = Nimble/Dependencies/TabsControl
-	url = git@github.com:Kristalev/KPCTabsControl.git
 [submodule "Plugins/CodeEditor/CotEditor"]
 	path = Plugins/CodeEditor/CotEditor
 	url = https://github.com/coteditor/CotEditor.git
+[submodule "Nimble/Dependencies/KPCTabsControl"]
+	path = Nimble/Dependencies/KPCTabsControl
+	url = git@github.com:FLORG1/KPCTabsControl.git

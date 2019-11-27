@@ -32,11 +32,6 @@ class TabItem: СustomizableTabItem {
   init(_ document: Document) {
     self.document = document
   }
-  
-  func close() {
-    viewController?.removeFromParent()
-    viewController?.view.removeFromSuperview()
-  }
 }
 
 
@@ -69,7 +64,9 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
       }
     }
     willSet {
-      currentItem?.close()
+      guard let itemController = currentItem?.viewController else { return }
+      itemController.view.removeFromSuperview()
+      itemController.removeFromParent()
     }
   }
   
@@ -120,7 +117,7 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
   
   func removeTab(_ doc: Document) {
     guard let pos = items.firstIndex(where: {$0.document === doc}) else { return }
-    
+        
     items.remove(at: pos)
     doc.observers.remove(observer: self)
     
@@ -192,18 +189,17 @@ extension TabbedEditor: TabsControlDelegate {
   }
     
   func tabsControlDidChangeSelection(_ control: TabsControl, item: AnyObject) {
-    if let curItem = currentItem, curItem === item { return }
-    currentItem = item as? TabItem
+    guard let item = item as? TabItem else { return }
+    if let curItem = currentItem, curItem === item {
+      return //item.document.activate()
+    }
+    currentItem = item
   }
   
   func tabsControlWillCloseTab(_ control: TabsControl, item: AnyObject) -> Bool {
     let item = item as! TabItem
     return workbench?.close(item.document) ?? true
   }
-  
-//  func tabsControlDidCloseTab(_ control: TabsControl, items: [AnyObject]) {
-//    self.items = items.map {$0 as! TabItem}
-//  }
 }
 
 
