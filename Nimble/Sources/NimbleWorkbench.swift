@@ -126,7 +126,8 @@ extension NimbleWorkbench: Workbench {
     observers.notify { $0.workbenchDidOpenDocument(self, document: doc) }
   }
   
-    
+  
+  @discardableResult
   public func close(_ doc: Document) -> Bool {
     let shouldClose: Bool = doc.close()
     
@@ -160,15 +161,24 @@ extension NimbleWorkbench {
     documents.forEach{$0.save(sender)}
   }
   
+  @IBAction func close(_ sender: Any?) {
+    guard let doc = currentDocument else { return }
+    close(doc)
+  }
+  
+  @IBAction func closeAll(_ sender: Any?) {
+    documents.forEach{close($0)}
+  }
+  
   @objc func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
     guard let menuId = (item as? NSMenuItem)?.identifier?.rawValue else { return true }
     switch menuId {
-    case "saveMenuItem":
-      return currentDocument?.isDocumentEdited ?? false
-    case "saveAsMenuItem":
+    case "saveMenuItem", "saveAsMenuItem":
       return currentDocument != nil
     case "saveAllMenuItem":
       return documents.contains{$0.isDocumentEdited}
+    case "closeMenuItem", "closeAllMenuItem":
+      return !documents.isEmpty
     default:
       return true
     }

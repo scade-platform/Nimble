@@ -104,9 +104,15 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="aJh-i4-bef"/>
-                                        <menuItem title="Close file" keyEquivalent="w" id="DVo-aG-piG">
+                                        <menuItem title="Close File" keyEquivalent="w" identifier="closeMenuItem" id="DVo-aG-piG">
                                             <connections>
-                                                <action selector="closeFile:" target="Ady-hI-5gd" id="IKU-uV-he2"/>
+                                                <action selector="close:" target="Ady-hI-5gd" id="Cbq-KT-OCj"/>
+                                            </connections>
+                                        </menuItem>
+                                        <menuItem title="Close All Files" identifier="closeAllMenuItem" id="8eH-2L-lHI">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="closeAll:" target="Ady-hI-5gd" id="LXC-2X-X6r"/>
                                             </connections>
                                         </menuItem>
                                     </items>
