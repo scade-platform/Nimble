@@ -676,6 +676,9 @@
                                         <menuItem isSeparatorItem="YES" id="Hxz-1l-9Rz"/>
                                         <menuItem title="Add Folder to Project..." id="GlY-G6-8zl">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <connections>
+                                                <action selector="addFolder:" target="Ady-hI-5gd" id="X8L-XA-jbA"/>
+                                            </connections>
                                         </menuItem>
                                     </items>
                                 </menu>

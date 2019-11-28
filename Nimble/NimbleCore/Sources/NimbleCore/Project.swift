@@ -19,7 +19,7 @@ public final class Project {
     didSet {
       observers.notify {
         $0.projectFoldersDidChange(self)
-      }
+      }      
     }
   }
   
@@ -75,12 +75,21 @@ public final class Project {
     }
 
     projectFolders.append(ProjectFolder(folder: folder, relativePath: relativePath))
+    save()
   }
   
   public func remove(_ folder: Folder) {
     projectFolders.removeAll {
       $0.folder == folder
     }
+    save()
+  }
+  
+  private func save() {
+    guard let path = path else { return }
+    do {
+      try save(to: path)
+    } catch {}
   }
 }
 

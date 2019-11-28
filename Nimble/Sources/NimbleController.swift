@@ -145,8 +145,6 @@ class NimbleController: NSDocumentController {
 // MARK: - Actions
 
 extension NimbleController {
-  
-  
   @IBAction func open(_ sender: Any?) {
     let openPanel = NSOpenPanel();
     openPanel.selectAny()

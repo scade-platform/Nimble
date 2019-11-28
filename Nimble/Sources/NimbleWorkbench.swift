@@ -170,6 +170,13 @@ extension NimbleWorkbench {
     documents.forEach{close($0)}
   }
   
+  @IBAction func addFolder(_ sender: Any?) {
+    let openPanel = NSOpenPanel();
+    openPanel.selectFolders()
+      .compactMap{Folder(url: $0)}
+      .forEach{ self.project?.add($0) }
+  }
+  
   @objc func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
     guard let menuId = (item as? NSMenuItem)?.identifier?.rawValue else { return true }
     switch menuId {
