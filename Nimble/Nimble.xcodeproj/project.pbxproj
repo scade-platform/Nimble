@@ -46,6 +46,7 @@
 		D7CBF7D6222878F40088715C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D4222878F40088715C /* Main.storyboard */; };
 		D7D46162238ED16B0090FC34 /* KPCTabsControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */; };
 		D7D46163238ED16B0090FC34 /* KPCTabsControl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D7D461652390083C0090FC34 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D461642390083C0090FC34 /* Document.swift */; };
 		E42DC05C22CE49A700486CC1 /* CodeEditor.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC05B22CE498200486CC1 /* CodeEditor.plugin */; };
 		E42DC05D22CE49A700486CC1 /* ProjectNavigator.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC05A22CE497F00486CC1 /* ProjectNavigator.plugin */; };
 		E42DC07A22CFA02500486CC1 /* InterfaceBuilder.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC07922CFA01100486CC1 /* InterfaceBuilder.plugin */; };
@@ -140,6 +141,7 @@
 		D7CBF7D7222878F40088715C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleWorkbench.swift; sourceTree = "<group>"; };
 		D7CBF8C2222970430088715C /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7D461642390083C0090FC34 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		D7DC8299236796C500D83CC5 /* ScadeKitExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ScadeKitExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42DC03F22CE422E00486CC1 /* CodeEditorCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CodeEditorCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42DC04022CE42A100486CC1 /* CYaml.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CYaml.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -179,6 +181,7 @@
 			isa = PBXGroup;
 			children = (
 				D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */,
+				D7D461642390083C0090FC34 /* Document.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -534,6 +537,7 @@
 				D724C5EF237C418B00E80958 /* ConsoleView.swift in Sources */,
 				D721CFA72385EC3200FD1B00 /* NSOpenPanel.swift in Sources */,
 				D72F9587222CAC3C009F2EC3 /* AppDelegate.swift in Sources */,
+				D7D461652390083C0090FC34 /* Document.swift in Sources */,
 				D724C5F1237C418B00E80958 /* NavigatorView.swift in Sources */,
 				D724C5F4237C418B00E80958 /* DebugView.swift in Sources */,
 				D724C5F0237C418B00E80958 /* DropView.swift in Sources */,

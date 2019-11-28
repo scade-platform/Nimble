@@ -82,60 +82,30 @@ class ProjectDocument: NSDocument {
     return ofType == ProjectDocument.docType
   }
   
-  
-/*
-  // MARK: - Actions
-  @IBAction func saveProjectAs(_ sender: Any? ){
-    saveAs(sender)
-  }
-  
-  @IBAction func saveFile(_ sender: Any? ){
-    guard let workbench = workbench as? NimbleWorkbench else {
-      return
+  // Closing is allowed iff. all opened documents can close
+  // The project itself is saved using autosave functionality
+  override func canClose(withDelegate delegate: Any, shouldClose shouldCloseSelector: Selector?, contextInfo: UnsafeMutableRawPointer?) {
+    var allowClosing = true
+    
+    let docs = workbench?.documents ?? []
+    for doc in docs where doc.isDocumentEdited {
+      allowClosing = doc.close() && allowClosing
+      if !allowClosing {
+        break
+      }
     }
-    save(file: (workbench.viewController?.editorViewController?.currentFile!)!)
+    
+    guard let Class: AnyClass = object_getClass(delegate),
+          let shouldClose = shouldCloseSelector,
+          let contextInfo = contextInfo else { return }
+
+    let method = class_getMethodImplementation(Class, shouldClose)
+
+    typealias signature = @convention(c) (AnyObject, Selector, AnyObject, Bool, UnsafeMutableRawPointer) -> Void
+    let function = unsafeBitCast(method, to: signature.self)
+
+    function(delegate as AnyObject, shouldClose, self, allowClosing, contextInfo)
   }
-  
-  @IBAction func saveFileAs(_ sender: Any? ){
-    guard let workbench = workbench as? NimbleWorkbench else {
-      return
-    }
-    saveAs(file: (workbench.viewController?.editorViewController?.currentFile!)!)
-  }
-  
-  func saveAs(file: File){
-    let doc = (try! file.open()!) as NSDocument
-    let fileURL = doc.fileURL!
-    doc.saveAs(nil)
-    project.saved(url: fileURL)
-    project.close(file: fileURL)
-    project.open(files: [doc.fileURL!])
-  }
-  
-  func save(file: File){
-    let doc = (try! file.open()!) as NSDocument
-    doc.save(nil)
-    project.saved(url: doc.fileURL!)
-  }
-  
-  override func save(to url: URL, ofType typeName: String, for saveOperation: NSDocument.SaveOperationType, completionHandler: @escaping (Error?) -> Void) {
-    self.fileURL = url
-    super.save(to: url, ofType: typeName, for: saveOperation, completionHandler: completionHandler)
-  }
-  
-  override func prepareSavePanel(_ savePanel: NSSavePanel) -> Bool {
-    savePanel.isExtensionHidden = false
-    return true
-  }
-  
-  @IBAction func closeFile(_ sender: Any?) {
-    guard let workbench = workbench as? NimbleWorkbench else {
-      return
-    }
-    workbench.viewController?.editorViewController?.closeCurrentTab()
-  }
-*/
-  
 }
 
 // MARK: - Actions

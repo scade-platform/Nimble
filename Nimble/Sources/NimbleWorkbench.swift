@@ -61,22 +61,6 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   public func windowWillClose(_ notification: Notification) {
     PluginManager.shared.deactivate(in: self)
   }
-  
-  private func showSaveDialog(question: String, text: String) -> (save: Bool, close: Bool) {
-    let alert = NSAlert()
-    
-    alert.messageText = question
-    alert.informativeText = text
-    alert.alertStyle = .warning
-    
-    alert.addButton(withTitle: "Save")
-    alert.addButton(withTitle: "Cancel")
-    alert.addButton(withTitle: "Don't Save")
-    
-    let result = alert.runModal()
-    return (save: result == .alertFirstButtonReturn,
-            close: result == .alertThirdButtonReturn || result == .alertFirstButtonReturn)
-  }
 }
 
 
@@ -144,25 +128,14 @@ extension NimbleWorkbench: Workbench {
   
     
   public func close(_ doc: Document) -> Bool {
-    var close = true
+    let shouldClose: Bool = doc.close()
     
-    if doc.isDocumentEdited {
-      let result = showSaveDialog(
-        question: "Do you want to save the changes you made to \(doc.title)?",
-        text: "Your changes will be lost if you don't save them"
-      )
-      
-      if result.save {
-        doc.save(nil)
-      }
-      
-      close = result.close
+    if shouldClose {
+      editorView?.removeTab(doc)
+      observers.notify { $0.workbenchDidCloseDocument(self, document: doc) }
     }
     
-    editorView?.removeTab(doc)
-    observers.notify { $0.workbenchDidCloseDocument(self, document: doc) }
-    
-    return close
+    return shouldClose
   }
   
   
