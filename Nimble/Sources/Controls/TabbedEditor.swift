@@ -107,7 +107,7 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
     let curIndex = currentIndex
     
     items.insert(TabItem(doc), at: pos)
-    doc.observers.add(observer: self)
+    doc.add(documentObserver: self)
     
     tabBar?.reloadTabs()
         
@@ -122,7 +122,7 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
     guard let pos = items.firstIndex(where: {$0.document === doc}) else { return }
     
     items.remove(at: pos)
-    doc.observers.remove(observer: self)
+    doc.remove(documentObserver: self)
     
     tabBar?.reloadTabs()
     

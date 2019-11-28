@@ -41,6 +41,9 @@ public protocol Workbench: class {
   
   
   func createConsole(title: String, show: Bool) -> Console?
+  
+  func add(workbenchObserver: WorkbenchObserver)
+  func remove(workbenchObserver: WorkbenchObserver)
 }
 
 

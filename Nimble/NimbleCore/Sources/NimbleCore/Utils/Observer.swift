@@ -11,35 +11,28 @@ fileprivate struct ObserverRef<T> {
   var value: T? { object as? T }
 }
 
-public class ObserverSet<T> {
+public struct ObserverSet<T> {
   fileprivate var observers: [ObjectIdentifier: ObserverRef<T>] = [:]
-  
-  var delegate: ObserverSetDelegate?
   
   public init() { }
   
-  public func add(observer: T) {
+  public mutating func add(observer: T) {
     let obj = observer as AnyObject
     let key = ObjectIdentifier(obj)
-    delegate?.observerWillAdd(obj)
     observers[key] = ObserverRef<T>(object: obj)
-    delegate?.observerDidAdd(obj)
   }
   
-  public func remove(observer: T) {
+  public mutating func remove(observer: T) {
     // Casting to AnyObject always succeeds, even for enum types
     let obj = observer as AnyObject
     let key = ObjectIdentifier(obj)
-    delegate?.observerWillRemove(obj)
     observers.removeValue(forKey: key)
-    delegate?.observerDidRemove(obj)
   }
   
-  public func notify(with notifier: (T) -> Void) {
+  public mutating func notify(with notifier: (T) -> Void) {
     for (id, ref) in observers {
       guard let observer = ref.value else {
         observers.removeValue(forKey: id)
-        delegate?.observerDidRelease()
         continue
       }
       notifier(observer)
@@ -57,19 +50,3 @@ public protocol Observable {
   var observers: ObserverSet<ObserverType> { get }
 }
 
-public protocol ObserverSetDelegate {
-  func observerWillAdd(_ observer: AnyObject)
-  func observerDidAdd(_ observer: AnyObject)
-  func observerWillRemove(_ observer: AnyObject)
-  func observerDidRemove(_ observer: AnyObject)
-  func observerDidRelease()
-}
-
-public extension ObserverSetDelegate {
-  //default implementation
-  func observerWillAdd(_ observer: AnyObject) {}
-  func observerDidAdd(_ observer: AnyObject) {}
-  func observerWillRemove(_ observer: AnyObject) {}
-  func observerDidRemove(_ observer: AnyObject) {}
-  func observerDidRelease(){}
-}

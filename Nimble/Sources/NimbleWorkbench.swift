@@ -169,6 +169,14 @@ extension NimbleWorkbench: Workbench {
   public func createConsole(title: String, show: Bool) -> Console? {
     return debugView?.consoleView.createConsole(title: title, show: show)
   }
+  
+  public func add(workbenchObserver: WorkbenchObserver) {
+    self.observers.add(observer: workbenchObserver)
+  }
+  
+  public func remove(workbenchObserver: WorkbenchObserver) {
+    self.observers.remove(observer: workbenchObserver)
+  }
 }
 
 
