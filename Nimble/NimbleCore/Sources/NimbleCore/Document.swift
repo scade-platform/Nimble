@@ -10,7 +10,7 @@ import AppKit
 // MARK: - Document
 
 public protocol Document where Self: NSDocument {
-  var observers: ObserverSet<DocumentObserver> { get }
+  var observers: ObserverSet<DocumentObserver> { set get }
   
   var contentViewController: NSViewController? { get }
       
@@ -19,6 +19,7 @@ public protocol Document where Self: NSDocument {
   static func isDefault(for file: File) -> Bool
   
   static func canOpen(_ file: File) -> Bool
+
 }
 
 

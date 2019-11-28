@@ -10,6 +10,25 @@ import Foundation
 
 
 public class File: FileSystemElement {
+  private var fsObserver: FSFileObserver?
+  
+  public var observers = ObserverSet<FileObserver>() {
+    didSet {
+      guard !observers.isEmpty, fsObserver == nil else {
+        //stop FS observing if there aren't observers
+        if let filePresenter = fsObserver {
+          NSFileCoordinator.removeFilePresenter(filePresenter)
+          fsObserver = nil
+        }
+        return
+      }
+      //begin FS observing only if there is at least one observer
+      let filePresenter = FSFileObserver(self)
+      self.fsObserver = filePresenter
+      NSFileCoordinator.addFilePresenter(filePresenter)
+    }
+  }
+  
   public override init?(path: Path) {
     guard path.isFile else { return nil }
     super.init(path: path)
@@ -49,6 +68,7 @@ public class FileSystemElement {
     guard let path = Path(url: url) else { return nil }
     self.init(path: path)
   }
+  
 }
 
 
@@ -60,6 +80,31 @@ extension FileSystemElement: Hashable {
   public func hash(into hasher: inout Hasher) {
     hasher.combine(path)
   }
+}
+
+fileprivate class FSFileObserver: NSObject, NSFilePresenter {
+  let presentedElement: File
+  
+  var presentedItemURL: URL? {
+    return presentedElement.path.url
+  }
+  
+  var presentedItemOperationQueue: OperationQueue {
+    return OperationQueue.main
+  }
+  
+  required init(_ presentedElement: File) {
+    self.presentedElement = presentedElement
+    super.init()
+  }
+  
+  func presentedItemDidChange() {
+    presentedElement.observers.notify{$0.fileDidChange(presentedElement)}
+  }
+}
+
+public protocol FileObserver {
+  func fileDidChange(_ file: File)
 }
 
 

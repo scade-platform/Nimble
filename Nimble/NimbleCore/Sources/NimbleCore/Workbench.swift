@@ -15,7 +15,7 @@ public protocol Workbench: class {
   
   var currentDocument: Document? { get }
   
-  var observers: ObserverSet<WorkbenchObserver> { get }
+  var observers: ObserverSet<WorkbenchObserver> { set get }
 
   
   
