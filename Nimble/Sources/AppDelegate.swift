@@ -55,14 +55,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   }
     
   func application(_ sender: NSApplication, openFile filename: String) -> Bool {
-    guard let path = Path(filename) else { return true }
-    
-    if path.url.typeIdentifierConforms(to: ProjectDocument.docType) {
-      documentController.openProject(withContentsOf: path.url)
-    } else {
-      documentController.openDocument(withContentsOf: path.url, display: true)
-    }
-        
+    documentController.open(url: URL(fileURLWithPath: filename))
     return true
   }
   

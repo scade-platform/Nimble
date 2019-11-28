@@ -28,10 +28,11 @@ class NimbleController: NSDocumentController {
   }
   
   var currentProjectDocument: ProjectDocument? {
-    if let doc = currentDocument as? ProjectDocument {
-      return doc
+    if currentDocument == nil  {
+      self.newDocument(nil)
     }
-    return (try? makeUntitledDocument(ofType: ProjectDocument.docType)) as? ProjectDocument
+    
+    return currentDocument as? ProjectDocument
   }
   
   
@@ -39,7 +40,25 @@ class NimbleController: NSDocumentController {
     guard let doc = typeClass.createUntitledDocument() else { return }
     currentWorkbench?.open(doc, show: true)
   }
-  
+      
+  func open(url: URL) {
+    if url.typeIdentifierConforms(to: ProjectDocument.docType) {
+      openProject(withContentsOf: url)
+    } else if let path = Path(url: url) {
+      open(path: path)
+    }
+  }
+    
+  func open(path: Path) {
+    if path.isDirectory {
+      guard let folder = Folder(path: path) else { return }
+      currentProjectDocument?.project.add(folder)
+      
+    } else if path.isFile {
+      openDocument(withContentsOf: path.url, display: true)
+    }
+  }
+    
   func openDocument(withContentsOf url: URL, display displayDocument: Bool) {
     self.openDocument(withContentsOf: url, display: displayDocument, completionHandler: NimbleController.openDocumentHandler)
   }
@@ -59,7 +78,6 @@ class NimbleController: NSDocumentController {
     
     completionHandler(doc, false, nil)
   }
-  
   
   
   func beginOpenProjectPanel(completionHandler: (URL) -> ()) {
@@ -131,16 +149,9 @@ extension NimbleController {
   
   @IBAction func open(_ sender: Any?) {
     let openPanel = NSOpenPanel();
-    let urls = openPanel.selectAny().compactMap { Path(url: $0) }
-    
-    urls.filter{ $0.isDirectory }.forEach {
-      guard let folder = Folder(path: $0) else { return }
-      currentProjectDocument?.project.add(folder)
-    }
-    
-    urls.filter{ $0.isFile }.forEach {
-      openDocument(withContentsOf: $0.url, display: true)
-    }
+    openPanel.selectAny()
+      .compactMap{Path(url: $0)}
+      .forEach{open(path: $0)}
   }
   
   @IBAction func openProject(_ sender: Any?) {
