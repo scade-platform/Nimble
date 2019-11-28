@@ -10,7 +10,7 @@ import AppKit
 // MARK: - Document
 
 public protocol Document where Self: NSDocument {
-  var observers: ObserverSet<DocumentObserver> { get }
+  var observers: ObserverSet<DocumentObserver> { set get }
   
   var contentViewController: NSViewController? { get }
       
@@ -19,10 +19,7 @@ public protocol Document where Self: NSDocument {
   static func isDefault(for file: File) -> Bool
   
   static func canOpen(_ file: File) -> Bool
-  
-  func add(documentObserver: DocumentObserver)
-  
-  func remove(documentObserver: DocumentObserver)
+
 }
 
 
@@ -77,14 +74,6 @@ open class NimbleDocument: NSDocument {
       guard let doc = self as? Document else { return }
       $0.documentDidChange(doc)
     }
-  }
-  
-  public func add(documentObserver: DocumentObserver) {
-    observers.add(observer: documentObserver)
-  }
-  
-  public func remove(documentObserver: DocumentObserver) {
-    observers.remove(observer: documentObserver)
   }
 }
 

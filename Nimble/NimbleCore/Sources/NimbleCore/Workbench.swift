@@ -15,7 +15,7 @@ public protocol Workbench: class {
   
   var currentDocument: Document? { get }
   
-  var observers: ObserverSet<WorkbenchObserver> { get }
+  var observers: ObserverSet<WorkbenchObserver> { set get }
 
   
   
@@ -41,9 +41,6 @@ public protocol Workbench: class {
   
   
   func createConsole(title: String, show: Bool) -> Console?
-  
-  func add(workbenchObserver: WorkbenchObserver)
-  func remove(workbenchObserver: WorkbenchObserver)
 }
 
 

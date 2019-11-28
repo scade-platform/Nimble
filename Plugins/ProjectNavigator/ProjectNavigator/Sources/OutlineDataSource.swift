@@ -102,7 +102,7 @@ class OutlineDataSource: NSObject {
     
     super.init()
     
-    workbench.add(workbenchObserver: self)
+    workbench.observers.add(observer: self)
   }
 }
 
@@ -119,12 +119,12 @@ extension OutlineDataSource: WorkbenchObserver {
   }
   
   func workbenchDidOpenDocument(_ workbench: Workbench, document: Document) {
-    document.add(documentObserver: self)
+    document.observers.add(observer: self)
     openedDocuments.reload()
   }
   
   func workbenchDidCloseDocument(_ workbench: Workbench, document: Document) {
-    document.remove(documentObserver: self)
+    document.observers.remove(observer: self)
     openedDocuments.reload()
   }
 }

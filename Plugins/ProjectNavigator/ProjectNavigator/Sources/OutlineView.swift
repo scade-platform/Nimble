@@ -23,10 +23,10 @@ open class OutlineView: NSViewController, WorkbenchPart {
       
   weak var workbench: Workbench? = nil {
     didSet {
-      workbench?.add(workbenchObserver: self)
+      workbench?.observers.add(observer: self)
     }
     willSet {
-      workbench?.remove(workbenchObserver: self)
+      workbench?.observers.remove(observer: self)
     }
   }
   
