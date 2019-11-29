@@ -14,15 +14,15 @@ public class File: FileSystemElement {
   
   public var observers = ObserverSet<FileObserver>() {
     didSet {
-      guard !observers.isEmpty, fsObserver == nil else {
+      guard !observers.isEmpty else {
         //stop FS observing if there aren't observers
-        if let filePresenter = fsObserver {
-          NSFileCoordinator.removeFilePresenter(filePresenter)
-          fsObserver = nil
-        }
+        guard let filePresenter = fsObserver  else { return }
+        NSFileCoordinator.removeFilePresenter(filePresenter)
+        fsObserver = nil
         return
       }
       //begin FS observing only if there is at least one observer
+      guard fsObserver == nil else { return }
       let filePresenter = FSFileObserver(self)
       self.fsObserver = filePresenter
       NSFileCoordinator.addFilePresenter(filePresenter)
