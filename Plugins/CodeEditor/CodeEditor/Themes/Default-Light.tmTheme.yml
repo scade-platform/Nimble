@@ -1,12 +1,12 @@
-name: Default(Dark)
+name: Default(Light)
 settings:
   - settings:
-      foreground: "#FFFFFF"
-      background: "#1F1F24"
-      caret: "#FFFFFF"
-      lineHighlight: "#2F3239"
-      selection: "#515F70"
-      invisibles: "#808080"
+      foreground: "#000000"
+      background: "#FFFFFF"
+      caret: "#000000"
+      lineHighlight: "#E8F2FF"
+      selection: "#A4CDFF"
+      invisibles: "#CCCCCC"
 
 
 #MARK: Comments
@@ -14,7 +14,7 @@ settings:
   - name: Comments
     scope: comment
     settings:
-      foreground: "#6C7886"
+      foreground: "#5D6C79"
 
 
 #MARK: Constants
@@ -22,49 +22,50 @@ settings:
   - name: Characters
     scope: constant.character
     settings:
-      foreground: "#D0BF69"
+      foreground: "#1C00CF"
   
   - name: Numbers
     scope: constant.numeric
     settings:
-      foreground: "#D0BF69"
+      foreground: "#1C00CF"
 
   - name: Language Constants
     scope: constant.language
     settings:
-      foreground: "#FC5FA3"
+      foreground: "#9B2393"
 
 
 #MARK: Entities
+
   - name: Functions
     scope: entity.name.function
     settings:
-      foreground:  "#41A1C0"
+      foreground:  "#0F68A0"
 
   - name: Types
     scope: entity.name.type
     settings:
-      foreground:  "#9EF1DD"
+      foreground:  "#1C464A"
   
   - name: Class Declarations
     scope: entity.name.type.class
     settings:
-      foreground:  "#5DD8FF"
+      foreground:  "#0B4F79"
 
   - name: Struct Declarations
     scope: entity.name.type.struct
     settings:
-      foreground:  "#5DD8FF"
+      foreground:  "#0B4F79"
 
   - name: Protocol Declarations
     scope: entity.name.type.protocol
     settings:
-      foreground:  "#5DD8FF"
+      foreground:  "#0B4F79"
 
   - name: Enum Declarations
     scope: entity.name.type.enum
     settings:
-      foreground:  "#5DD8FF"
+      foreground:  "#0B4F79"
 
 
 #MARK: Keywords
@@ -72,17 +73,17 @@ settings:
   - name: Keywords
     scope: keyword
     settings:
-      foreground: "#FC5FA3"
+      foreground: "#9B2393"
 
   - name: Preprocessor Statements
     scope: keyword.control.preprocessor
     settings:
-      foreground: "#FD8F3F"
+      foreground: "#643820"
             
   - name: Other conditions
     scope: keyword.other.condition
     settings:
-      foreground: "#FD8F3F"
+      foreground: "#643820"
 
 
 #MARK: Storage (types, modifiers)
@@ -90,7 +91,7 @@ settings:
   - name: Storage
     scope: storage
     settings:
-      foreground: "#FC5FA3"
+      foreground: "#9B2393"
 
 
 #MARK: Strings
@@ -98,7 +99,7 @@ settings:
   - name: String
     scope: string
     settings:
-      foreground: "#FC6A5D"
+      foreground: "#C41A16"
 
 
 #MARK: Support
@@ -106,38 +107,38 @@ settings:
   - name: Support Constants
     scope: support.constant
     settings:
-      foreground: "#FD8F3F"
+      foreground: "#643820"
 
   - name: Support Variables
     scope: support.variable
     settings:
-      foreground: "#FC5FA3"
+      foreground: "#9B2393"
   
   - name: Support Types
     scope: support.type
     settings:
-      foreground: "#9EF1DD"
+      foreground: "#1C464A"
 
   - name: Support Functions
     scope: support.function
     settings:
-      foreground: "#67B7A4"
+      foreground: "#326D74"
 
 #TODO: do not list every support function explicitely
   - name: Availability Condition
     scope: support.function.availability-condition
     settings:
-      foreground: "#FC5FA3"
+      foreground: "#9B2393"
     
   - name: Selector Reference
     scope: support.function.selector-reference
     settings:
-      foreground: "#FC5FA3"
+      foreground: "#9B2393"
     
   - name: KeyPath
     scope: support.function.key-path
     settings:
-      foreground: "#FC5FA3"
+      foreground: "#9B2393"
 
 
 #MARK: Variables
@@ -145,7 +146,7 @@ settings:
   - name: Language Variables
     scope: variable.language
     settings:
-      foreground: "#FC5FA3"
+      foreground: "#9B2393"
   
 
 #MARK: Punctuation

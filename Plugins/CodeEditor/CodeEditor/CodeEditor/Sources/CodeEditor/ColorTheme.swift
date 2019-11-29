@@ -203,32 +203,66 @@ public extension ColorTheme {
 // MARK: -
 
 public final class ColorThemeManager {
-  public var colorThemes: [ColorTheme] = []
   
   private let decoders: [String: ColorThemeDecoder.Type]  = [
     ".thTheme": PropertyListDecoder.self,
     ".tmTheme.yml": YAMLDecoder.self,
     ".thTheme.json": JSONDecoder.self
   ]
+    
+  public var observers = ObserverSet<ColorThemeObserver>()
   
-  public var currentTheme: ColorTheme!
+  public var colorThemes: [ColorTheme] = []
+  
+  public var defaultTheme: ColorTheme? {
+    let style = UserDefaults.standard.string(forKey: "AppleInterfaceStyle") ?? "Light"
+    return colorThemes.first{$0.name == "Default(\(style))"}
+  }
+    
+  public var selectedTheme: ColorTheme? {
+    didSet {
+      UserDefaults.standard.set(selectedTheme?.path?.url, forKey: "colorTheme")
+      guard let theme = selectedTheme ?? defaultTheme else { return }
+      observers.notify {
+        $0.colorThemeDidChanged(theme)
+      }
+    }
+  }
+  
+  public var currentTheme: ColorTheme? {
+    selectedTheme ?? defaultTheme
+  }
   
   public static let shared = ColorThemeManager()
   
   public func load(from path: Path) {
-    if path.isDirectory {
-      _ = try? path.ls().files.forEach { load(from: $0) }
-      
-    } else if path.isFile {
-      guard let decoder = decoders.first(where: { path.basename().hasSuffix($0.key) })?.value,
-        let theme = decoder.decode(from: path) else { return }
-      
-      if path.basename().hasPrefix("Default-Dark") {
-        self.currentTheme = theme
+    guard path.isDirectory else { return }
+    
+    do {
+      try path.ls().files.forEach { path in
+        guard let decoder = decoders.first(where: { path.basename().hasSuffix($0.key) })?.value,
+          let theme = decoder.decode(from: path) else { return }
+              
+        theme.path = path
+        colorThemes.append(theme)
       }
-      
-      theme.path = path
-      colorThemes.append(theme)
+    } catch {}
+    
+    if let themeURL = UserDefaults.standard.url(forKey: "colorTheme") {
+      selectedTheme = colorThemes.first {
+        $0.path?.url == themeURL
+      }
     }
   }
+}
+
+
+// MARK: -
+
+public protocol ColorThemeObserver {
+  func colorThemeDidChanged(_ theme: ColorTheme)
+}
+
+public extension ColorThemeObserver {
+  func colorThemeDidChanged(_ theme: ColorTheme) {}
 }

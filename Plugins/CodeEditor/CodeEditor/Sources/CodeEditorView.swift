@@ -36,6 +36,9 @@ class CodeEditorController: NSViewController, NSTextViewDelegate, NSTextStorageD
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    ColorThemeManager.shared.observers.add(observer: self)
+    
     loadContent()
   }
   
@@ -58,8 +61,8 @@ class CodeEditorController: NSViewController, NSTextViewDelegate, NSTextStorageD
     highlightSyntax()
   }
 
-  private func applyTheme() {
-    guard let theme = ColorThemeManager.shared.currentTheme else { return }
+  private func applyTheme(_ theme: ColorTheme? = nil) {
+    guard let theme = theme ?? ColorThemeManager.shared.currentTheme else { return }
     view.setValue(theme.global.background, forKey: "backgroundColor")
     
     guard let textView = self.textView else { return }
@@ -97,5 +100,13 @@ class CodeEditorController: NSViewController, NSTextViewDelegate, NSTextStorageD
   func textView(_ textView: NSTextView, completions words: [String], forPartialWordRange charRange: NSRange, indexOfSelectedItem index: UnsafeMutablePointer<Int>?) -> [String] {
     guard let completions = document?.delegates.first?.complete() else { return [] }
     return completions
+  }
+}
+
+
+extension CodeEditorController: ColorThemeObserver {
+  func colorThemeDidChanged(_ theme: ColorTheme) {
+    self.applyTheme(theme)
+    highlightSyntax()
   }
 }

@@ -13,7 +13,8 @@ extension CodeEditorTextView {
   
   public func apply(theme: ColorTheme) {
     self.selectedTextAttributes = [.backgroundColor: theme.global.selection]
-    self.lineHighLightColor = theme.global.lineHighlight
+    self.lineHighLightColor = theme.global.lineHighlight    
+    self.insertionPointColor = theme.global.caret
     
     if let textStorage = self.textStorage {
       for layoutManager in textStorage.layoutManagers {
