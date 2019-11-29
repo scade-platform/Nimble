@@ -44,16 +44,25 @@ class OpenedDocumentsItem: OutlineRootItem {
 }
 
 class ProjectFoldersItem: OutlineRootItem {
+  private var folderItems: [FolderItem] = []
+
   init(_ workbench: Workbench, _ outline: NSOutlineView?) {
     super.init(title: "FOLDERS",
                cell: "DataCell",
                workbench: workbench,
                outline: outline)
+    update()
   }
+  
   var folders: [FolderItem] {
-    let folders = workbench?.project?.folders ?? []
-    return folders.map{FolderItem($0)}
+    return folderItems
   }
+
+  func update(){
+    let folders = workbench?.project?.folders ?? []
+    folderItems = folders.map{FolderItem($0, observer: outline)}
+  }
+
 }
 
 class FolderItem {
@@ -63,6 +72,8 @@ class FolderItem {
   private var files : [File] = []
   private var items: [FolderItem] = []
   
+  private let observer: FolderItemObserver?
+  
   var data: [Any] {
     if items.isEmpty, files.isEmpty {
       update()
@@ -70,16 +81,57 @@ class FolderItem {
     return items + files
   }
   
-  init(_ folder: Folder){
+  init(_ folder: Folder, observer: FolderItemObserver?){
     self.folder = folder
+    self.observer = observer
   }
   
   func update() {
     self.files = (try? folder.files()) ?? []
     
+    let previousItems = items
+    items.removeAll()
+
     let subfolders = (try? folder.subfolders()) ?? []
-    self.items = subfolders.map{FolderItem($0)}
+    for subfolder in subfolders  {
+      guard let item = previousItems.first(where: {$0.folder == subfolder}) else {
+        //add new items
+        items.append(FolderItem(subfolder, observer: observer))
+        continue
+      }
+      //save not changed items
+      items.append(item)
+    }
   }
+  
+  func startMonitoring() {
+    folder.observers.add(observer: self)
+  }
+  
+  func stopMonitoring() {
+    folder.observers.remove(observer: self)
+  }
+  
+  deinit {
+    stopMonitoring()
+  }
+}
+
+extension FolderItem : FolderObserver {
+  
+  func subitemDidChange(_ folder: Folder, subitem url: URL) {
+    let path = Path(url : url)
+    let relativePath = path?.relative(to: folder.path)
+    //update only the parent of the changed item, not all hierarchy
+    if !(relativePath?.contains("/") ?? true) {
+      update()
+      observer?.folderItemDidChange(self)
+    }
+  }
+}
+
+protocol FolderItemObserver {
+  func folderItemDidChange(_ folderItem: FolderItem)
 }
 
 
@@ -115,6 +167,7 @@ extension OutlineDataSource: WorkbenchObserver {
   
   func workbenchDidChangeProject(_ workbench: Workbench) {
     workbench.project?.observers.add(observer: self)
+    projectFolders.update()
     projectFolders.reload()
   }
   
@@ -131,6 +184,7 @@ extension OutlineDataSource: WorkbenchObserver {
 
 extension OutlineDataSource: ProjectObserver {
   func projectFoldersDidChange(_: Project) {
+    projectFolders.update()
     projectFolders.reload()
   }
 }
@@ -138,6 +192,13 @@ extension OutlineDataSource: ProjectObserver {
 extension OutlineDataSource: DocumentObserver {
   func documentDidChange(_ document: Document) {
     outline?.reloadItem(document)
+  }
+}
+
+extension NSOutlineView : FolderItemObserver {
+  func folderItemDidChange(_ folderItem: FolderItem) {
+    reloadItem(folderItem, reloadChildren: true)
+    expandItem(folderItem)
   }
 }
 
@@ -262,14 +323,27 @@ extension OutlineDataSource: NSOutlineViewDelegate {
   public func outlineViewItemDidExpand(_ notification: Notification) {
     guard let outlineView = notification.object as? NSOutlineView,
           let item = notification.userInfo?["NSObject"] else { return }
-
+    
+    //update folder icon
     outlineView.reloadItem(item, reloadChildren: false)
+  }
+  
+  public func outlineViewItemWillExpand(_ notification: Notification) {
+    guard let item = notification.userInfo?["NSObject"],
+          let folderItem = item as? FolderItem else { return }
+    //update data before expand, because content may be changed
+    folderItem.update()
+    //listening only expanded FolderItem
+    folderItem.startMonitoring()
   }
   
   public func outlineViewItemDidCollapse(_ notification: Notification) {
     guard let outlineView = notification.object as? NSOutlineView,
-          let item = notification.userInfo?["NSObject"] else { return }
-    
+          let item = notification.userInfo?["NSObject"],
+          let folderItem = item as? FolderItem else { return }
+    //listening only expanded FolderItem
+    folderItem.stopMonitoring()
+    //update folder icon
     outlineView.reloadItem(item, reloadChildren: false)
   }
   
