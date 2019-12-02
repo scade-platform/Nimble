@@ -113,7 +113,6 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
-				Base,
 			);
 			mainGroup = 0C92E50F23950DEE00B073DE;
 			productRefGroup = 0C92E51923950DEE00B073DE /* Products */;
