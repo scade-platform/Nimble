@@ -8,6 +8,9 @@
       location = "container:"
       name = "Plugins">
       <FileRef
+         location = "group:Plugins/BuildSystem/BuildSystem.xcodeproj">
+      </FileRef>
+      <FileRef
          location = "group:Plugins/CodeEditor/CodeEditor/CodeEditor.xcodeproj">
       </FileRef>
       <FileRef
