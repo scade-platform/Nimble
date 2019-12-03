@@ -12,15 +12,15 @@ public class Folder: FileSystemElement {
   
   public var observers = ObserverSet<FolderObserver>() {
     didSet {
-      guard !observers.isEmpty, fsObserver == nil else {
+      guard !observers.isEmpty else {
         //stop FS observing if there aren't observers
-        if let filePresenter = fsObserver {
-          NSFileCoordinator.removeFilePresenter(filePresenter)
-          fsObserver = nil
-        }
+        guard let filePresenter = fsObserver  else { return }
+        NSFileCoordinator.removeFilePresenter(filePresenter)
+        fsObserver = nil
         return
       }
       //begin FS observing only if there is at least one observer
+      guard fsObserver == nil else { return }
       let filePresenter = FSFolderObserver(self)
       self.fsObserver = filePresenter
       NSFileCoordinator.addFilePresenter(filePresenter)
@@ -65,10 +65,12 @@ fileprivate class FSFolderObserver: NSObject, NSFilePresenter  {
   
   init(_ presentedElement: Folder) {
     self.presentedElement = presentedElement
+    super.init()
   }
   
   func presentedSubitemDidChange(at url: URL) {
-    presentedElement.observers.notify{$0.subitemDidChange(presentedElement, subitem: url)}
+    guard let path = Path(url: url), let child = FileSystemElement.of(path: path) else { return }
+    presentedElement.observers.notify{$0.childDidChange(presentedElement, child: child)}
   }
   
   func presentedItemDidChange() {
@@ -79,7 +81,12 @@ fileprivate class FSFolderObserver: NSObject, NSFilePresenter  {
 
 public protocol FolderObserver  {
   func folderDidChange(_ folder: Folder)
-  func subitemDidChange(_ folder: Folder, subitem: URL)
+  func childDidChange(_ folder: Folder, child: FileSystemElement)
 }
 
+public extension FolderObserver {
+  //default implementation
+  func folderDidChange(_ folder: Folder) {}
+  func childDidChange(_ folder: Folder, child: FileSystemElement) {}
+}
 

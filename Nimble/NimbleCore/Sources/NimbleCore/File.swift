@@ -14,15 +14,15 @@ public class File: FileSystemElement {
   
   public var observers = ObserverSet<FileObserver>() {
     didSet {
-      guard !observers.isEmpty, fsObserver == nil else {
+      guard !observers.isEmpty else {
         //stop FS observing if there aren't observers
-        if let filePresenter = fsObserver {
-          NSFileCoordinator.removeFilePresenter(filePresenter)
-          fsObserver = nil
-        }
+        guard let filePresenter = fsObserver  else { return }
+        NSFileCoordinator.removeFilePresenter(filePresenter)
+        fsObserver = nil
         return
       }
       //begin FS observing only if there is at least one observer
+      guard fsObserver == nil else { return }
       let filePresenter = FSFileObserver(self)
       self.fsObserver = filePresenter
       NSFileCoordinator.addFilePresenter(filePresenter)
@@ -55,6 +55,10 @@ public class FileSystemElement {
     return path.exists
   }
   
+  public lazy var parent: FileSystemElement?  = {
+    return FileSystemElement.of(path: path.parent)
+  }()
+  
   public init?(path: Path) {
     self.path = path
   }
@@ -82,6 +86,16 @@ extension FileSystemElement: Hashable {
   }
 }
 
+extension FileSystemElement {
+  static func of(path: Path) -> FileSystemElement? {
+    if path.isDirectory, let folder = Folder(path: path) {
+      return folder
+    } else if path.isFile, let file = File(path: path) {
+      return file
+    }
+    return nil
+  }
+}
 fileprivate class FSFileObserver: NSObject, NSFilePresenter {
   let presentedElement: File
   
