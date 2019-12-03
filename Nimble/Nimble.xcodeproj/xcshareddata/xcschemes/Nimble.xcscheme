@@ -84,10 +84,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0CE4E1FA234EE94400114287"
-               BuildableName = "NimbleConsole.plugin"
-               BlueprintName = "NimbleConsole"
-               ReferencedContainer = "container:../Plugins/NimbleConsole/NimbleConsole.xcodeproj">
+               BlueprintIdentifier = "0C92E51723950DEE00B073DE"
+               BuildableName = "BuildSystem.plugin"
+               BlueprintName = "BuildSystem"
+               ReferencedContainer = "container:../Plugins/BuildSystem/BuildSystem.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

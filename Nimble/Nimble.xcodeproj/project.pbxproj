@@ -11,6 +11,8 @@
 		0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */; };
 		0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */; };
 		0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */; };
+		0CEE0F0C239659FC002E69D6 /* BuildSystem.plugin in Resources */ = {isa = PBXBuildFile; fileRef = 0CEE0F0A239659FC002E69D6 /* BuildSystem.plugin */; };
+		0CEE0F0D23965A11002E69D6 /* BuildSystem.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 0CEE0F0A239659FC002E69D6 /* BuildSystem.plugin */; };
 		D721CFA72385EC3200FD1B00 /* NSOpenPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */; };
 		D724C5E2237A21D100E80958 /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5E1237A21D100E80958 /* Observer.swift */; };
 		D724C5E4237B18A900E80958 /* WeakRef.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5E3237B18A900E80958 /* WeakRef.swift */; };
@@ -78,6 +80,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				0CEE0F0D23965A11002E69D6 /* BuildSystem.plugin in Embed PlugIns */,
 				E42DC0C322D26C3100486CC1 /* ImageViewer.plugin in Embed PlugIns */,
 				E42DC07A22CFA02500486CC1 /* InterfaceBuilder.plugin in Embed PlugIns */,
 				E42DC05C22CE49A700486CC1 /* CodeEditor.plugin in Embed PlugIns */,
@@ -105,6 +108,7 @@
 		0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedPane.swift; sourceTree = "<group>"; };
 		0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnsupportedPane.xib; sourceTree = "<group>"; };
 		0CB6607722F41D1500CBB386 /* NimbleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleController.swift; sourceTree = "<group>"; };
+		0CEE0F0A239659FC002E69D6 /* BuildSystem.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = BuildSystem.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSOpenPanel.swift; sourceTree = "<group>"; };
 		D724C5E1237A21D100E80958 /* Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
 		D724C5E3237B18A900E80958 /* WeakRef.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeakRef.swift; sourceTree = "<group>"; };
@@ -191,6 +195,7 @@
 		D722326A22CC10E900E471C2 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				0CEE0F0A239659FC002E69D6 /* BuildSystem.plugin */,
 				E42DC0C222D26C1200486CC1 /* ImageViewer.plugin */,
 				E42DC07922CFA01100486CC1 /* InterfaceBuilder.plugin */,
 				E42DC05B22CE498200486CC1 /* CodeEditor.plugin */,
@@ -498,6 +503,7 @@
 				D724C5F3237C418B00E80958 /* ConsoleView.xib in Resources */,
 				0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */,
 				D724C5EE237C418B00E80958 /* TabbedEditor.xib in Resources */,
+				0CEE0F0C239659FC002E69D6 /* BuildSystem.plugin in Resources */,
 				0C238B12233E4E3D004F87E7 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
