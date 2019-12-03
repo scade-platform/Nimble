@@ -55,6 +55,10 @@ public class FileSystemElement {
     return path.exists
   }
   
+  public lazy var parent: FileSystemElement?  = {
+    return FileSystemElement.of(path: path.parent)
+  }()
+  
   public init?(path: Path) {
     self.path = path
   }
@@ -82,6 +86,16 @@ extension FileSystemElement: Hashable {
   }
 }
 
+extension FileSystemElement {
+  static func of(path: Path) -> FileSystemElement? {
+    if path.isDirectory, let folder = Folder(path: path) {
+      return folder
+    } else if path.isFile, let file = File(path: path) {
+      return file
+    }
+    return nil
+  }
+}
 fileprivate class FSFileObserver: NSObject, NSFilePresenter {
   let presentedElement: File
   

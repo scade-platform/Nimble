@@ -120,10 +120,9 @@ class FolderItem {
 
 extension FolderItem : FolderObserver {
   
-  func childDidChange(_ folder: Folder, child url: URL) {
-    guard let path = Path(url: url) else { return }
+  func childDidChange(_ folder: Folder, child: FileSystemElement) {
     //update only the parent of the changed item, not all hierarchy
-    if folder.path == path.parent {
+    if folder == child.parent {
       update()
       reload()
     }

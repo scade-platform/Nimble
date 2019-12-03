@@ -69,7 +69,8 @@ fileprivate class FSFolderObserver: NSObject, NSFilePresenter  {
   }
   
   func presentedSubitemDidChange(at url: URL) {
-    presentedElement.observers.notify{$0.childDidChange(presentedElement, child: url)}
+    guard let path = Path(url: url), let child = FileSystemElement.of(path: path) else { return }
+    presentedElement.observers.notify{$0.childDidChange(presentedElement, child: child)}
   }
   
   func presentedItemDidChange() {
@@ -80,12 +81,12 @@ fileprivate class FSFolderObserver: NSObject, NSFilePresenter  {
 
 public protocol FolderObserver  {
   func folderDidChange(_ folder: Folder)
-  func childDidChange(_ folder: Folder, child: URL)
+  func childDidChange(_ folder: Folder, child: FileSystemElement)
 }
 
 public extension FolderObserver {
   //default implementation
   func folderDidChange(_ folder: Folder) {}
-  func childDidChange(_ folder: Folder, child: URL) {}
+  func childDidChange(_ folder: Folder, child: FileSystemElement) {}
 }
 
