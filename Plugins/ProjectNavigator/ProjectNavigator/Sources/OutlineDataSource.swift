@@ -60,7 +60,7 @@ class ProjectFoldersItem: OutlineRootItem {
 
   func update(){
     let folders = workbench?.project?.folders ?? []
-    folderItems = folders.map{FolderItem($0, observer: outline)}
+    folderItems = folders.map{FolderItem($0, outline: outline)}
   }
 
 }
@@ -72,7 +72,7 @@ class FolderItem {
   private var files : [File] = []
   private var items: [FolderItem] = []
   
-  private let observer: FolderItemObserver?
+  weak var outline: NSOutlineView?
   
   var data: [Any] {
     if items.isEmpty, files.isEmpty {
@@ -81,9 +81,9 @@ class FolderItem {
     return items + files
   }
   
-  init(_ folder: Folder, observer: FolderItemObserver?){
+  init(_ folder: Folder, outline: NSOutlineView?){
     self.folder = folder
-    self.observer = observer
+    self.outline = outline
   }
   
   func update() {
@@ -96,7 +96,7 @@ class FolderItem {
     for subfolder in subfolders  {
       guard let item = previousItems.first(where: {$0.folder == subfolder}) else {
         //add new items
-        items.append(FolderItem(subfolder, observer: observer))
+        items.append(FolderItem(subfolder, outline: outline))
         continue
       }
       //save not changed items
@@ -112,26 +112,22 @@ class FolderItem {
     folder.observers.remove(observer: self)
   }
   
-  deinit {
-    stopMonitoring()
+  func reload() {
+    outline?.reloadItem(self, reloadChildren: true)
+    outline?.expandItem(self)
   }
 }
 
 extension FolderItem : FolderObserver {
   
-  func subitemDidChange(_ folder: Folder, subitem url: URL) {
-    let path = Path(url : url)
-    let relativePath = path?.relative(to: folder.path)
+  func childDidChange(_ folder: Folder, child url: URL) {
+    guard let path = Path(url: url) else { return }
     //update only the parent of the changed item, not all hierarchy
-    if !(relativePath?.contains("/") ?? true) {
+    if folder.path == path.parent {
       update()
-      observer?.folderItemDidChange(self)
+      reload()
     }
   }
-}
-
-protocol FolderItemObserver {
-  func folderItemDidChange(_ folderItem: FolderItem)
 }
 
 
@@ -192,13 +188,6 @@ extension OutlineDataSource: ProjectObserver {
 extension OutlineDataSource: DocumentObserver {
   func documentDidChange(_ document: Document) {
     outline?.reloadItem(document)
-  }
-}
-
-extension NSOutlineView : FolderItemObserver {
-  func folderItemDidChange(_ folderItem: FolderItem) {
-    reloadItem(folderItem, reloadChildren: true)
-    expandItem(folderItem)
   }
 }
 
