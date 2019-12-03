@@ -154,4 +154,4 @@ settings:
   - name: Preprocessor punctuation
     scope: punctuation.definition.preprocessor.swift
     settings:
-      foreground: "#FD8F3F"
+      foreground: "#643820"

@@ -58,7 +58,7 @@ final class LineNumberView: NSRulerView {
   func drawLineNumber(_ lineNumberString: String, in lineRect: NSRect, selected: Bool = false) {
     //let scale = textView.scale
     
-    let numberColor = selected ? NSColor.white : NSColor.gray
+    let numberColor = selected ? (textView?.insertionPointColor ?? NSColor.gray) : NSColor.gray
     
     let relativePoint = self.convert(NSZeroPoint, from: textView)
     let lineNumberAttributes: [NSAttributedString.Key : Any] =
