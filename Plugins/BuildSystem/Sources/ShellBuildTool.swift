@@ -11,32 +11,87 @@ import NimbleCore
 
 
 class ShellBuildTool: BuildTool {
-  static var name: String {
+  var name: String {
     return "Shell"
   }
   
-  static func run(with config: [BuildConfigField : Any]) throws -> BuildProcess? {
-    guard let file = config[.file] as? String,
-          let working_dir = config[.working_dir] as? String
-    else { return nil }
+  func run(in workbench: Workbench) -> BuildProgress {
+    guard let fileURL = workbench.currentDocument?.fileURL else {
+      return FailureBuild()
+    }
     let shellProc = Process()
-    shellProc.currentDirectoryPath = working_dir
+    shellProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
     shellProc.executableURL = URL(fileURLWithPath: "/bin/sh")
-    shellProc.arguments = [file]
-    let result = SimpleBuildProcess(process: shellProc)
-    try shellProc.run()
-    return result
+    shellProc.arguments = [fileURL.path]
+    var progress = ShellBuildProgress(status: .running)
+    
+    //reaction of the build on status changes
+    progress.subscribe(handler: { status in
+      if status == .cancelled, shellProc.isRunning {
+        shellProc.terminate()
+      } else if status == .paused, shellProc.isRunning {
+        shellProc.suspend()
+      } else if status == .running {
+        shellProc.resume()
+      }
+    })
+    
+    //build finish
+    shellProc.terminationHandler = { process in
+      if process.terminationReason == .exit {
+        progress.status = .finished
+      } else {
+        progress.status = .failure
+      }
+    }
+    try? shellProc.run()
+    return progress
   }
 }
 
-struct SimpleBuildProcess : BuildProcess {
-  let process: Process
-  
-  public var isRunning: Bool {
-    return process.isRunning
+public struct ShellBuildProgress: MutableBuildProgress {
+  private var subscribers: [(BuildProgressStatus) -> Void] = []
+  public internal(set) var status: BuildProgressStatus {
+    didSet {
+      subscribers.forEach{ $0(self.status)}
+      if status == .cancelled || status == .finished || status == .failure {
+        //last status for this progress
+        subscribers.removeAll()
+      }
+    }
   }
   
-  public func cancel() {
-    process.terminate()
+  public var isCancellable: Bool {
+    return true
+  }
+  
+  public var isPausable: Bool {
+    return true
+  }
+  
+  public mutating func subscribe(handler: @escaping (BuildProgressStatus) -> Void) {
+    subscribers.append(handler)
+  }
+  
+  init(status: BuildProgressStatus) {
+    self.status = status
+  }
+  
+  public mutating func cancel() {
+    if isCancellable {
+      status = .cancelled
+    }
+  }
+  
+  public mutating func pause() {
+    if isPausable {
+       status = .paused
+    }
+  }
+  
+  public mutating func resume() {
+    if status == .paused {
+      status = .running
+    }
   }
 }
