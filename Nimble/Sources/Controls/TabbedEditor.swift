@@ -50,18 +50,17 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
     
   private(set) var currentItem: TabItem? = nil {
     didSet {
+      defer {
+        workbench?.currentDocumentDidChange(currentItem?.document)
+      }
+      
       guard let item = currentItem else { return }
       guard let editor = item.editor else { return }
       
       editor.view.frame = tabViewContainer.frame
+      
       addChild(editor)
       tabViewContainer.addSubview(editor.view)
-      
-      editor.focus()
-      
-      workbench?.observers.notify {
-        $0.workbenchActiveDocumentDidChange(workbench!, document: currentDocument)
-      }
     }
     willSet {
       guard let editor = currentItem?.editor else { return }

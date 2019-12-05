@@ -93,7 +93,8 @@ public protocol WorkbenchPart: class {
 
 
 public protocol WorkbenchEditor: NSViewController {
-  var menu: NSMenu? { get }
+  // Shown within the app's main menu
+  var editorMenu: NSMenu? { get }
   
   @discardableResult
   func focus() -> Bool
@@ -101,7 +102,7 @@ public protocol WorkbenchEditor: NSViewController {
 
 
 public extension WorkbenchEditor {
-  var menu: NSMenu? { nil }
+  var editorMenu: NSMenu? { nil }
     
   func focus() -> Bool {
     return view.window?.makeFirstResponder(view) ?? false

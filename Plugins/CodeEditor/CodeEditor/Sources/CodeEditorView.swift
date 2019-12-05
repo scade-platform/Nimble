@@ -22,6 +22,7 @@ class CodeEditorView: NSViewController, NSTextViewDelegate, NSTextStorageDelegat
   
   private weak var highlightProgress: Progress? = nil
   
+    
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -59,9 +60,17 @@ class CodeEditorView: NSViewController, NSTextViewDelegate, NSTextStorageDelegat
   
   
   public func highlightSyntax() {
-    highlightProgress = document?.syntaxParser?.highlightAll()
+    if let doc = document {
+      guard let syntaxParser = doc.syntaxParser else {
+        doc.textStorage.layoutManagers.forEach {
+          $0.removeTemporaryAttribute(.foregroundColor, forCharacterRange: doc.textStorage.range)
+        }
+        return
+      }
+      highlightProgress = syntaxParser.highlightAll()
+    }
   }
-  
+    
   
   override func textStorageDidProcessEditing(_ notification: Notification) {
     guard
@@ -100,7 +109,14 @@ extension CodeEditorView: ColorThemeObserver {
 }
 
 extension CodeEditorView: WorkbenchEditor {
+  var editorMenu: NSMenu? {
+    CodeEditorMenu.shared.codeEditor = self
+    return CodeEditorMenu.shared.nsMenu
+  }
+  
   func focus() -> Bool {
     return view.window?.makeFirstResponder(textView) ?? false
   }
 }
+
+

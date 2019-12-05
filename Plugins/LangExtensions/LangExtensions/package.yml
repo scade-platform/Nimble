@@ -604,13 +604,15 @@ extensions:
       extensions:
       - .tsx
       id: typescriptreact
-    - filenamePatterns:
-      - tsconfig.*.json
-      - tsconfig-*.json
-      filenames:
-      - tsconfig.json
-      - jsconfig.json
-      id: jsonc
+      
+    # - filenamePatterns:
+    #   - tsconfig.*.json
+    #   - tsconfig-*.json
+    #   filenames:
+    #   - tsconfig.json
+    #   - jsconfig.json
+    #   id: jsonc
+
     - aliases:
       - Ini
       - ini
@@ -858,9 +860,11 @@ extensions:
       id: javascript
       mimetypes:
       - text/javascript
-    - aliases: []
-      configuration: javascript/tags-language-configuration.json
-      id: jsx-tags
+
+    # - aliases: []
+    #   configuration: javascript/tags-language-configuration.json
+    #   id: jsx-tags
+
     - aliases:
       - HLSL
       - hlsl

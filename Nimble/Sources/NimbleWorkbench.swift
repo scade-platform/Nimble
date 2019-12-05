@@ -15,6 +15,7 @@ import NimbleCore
 public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   public var observers = ObserverSet<WorkbenchObserver>()
   
+  // Document property of the WindowController always refer to the project
   public override var document: AnyObject? {
     get { super.document }
     set {
@@ -60,6 +61,18 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     
   public func windowWillClose(_ notification: Notification) {
     PluginManager.shared.deactivate(in: self)
+  }
+  
+  func currentDocumentDidChange(_ document: Document?) {
+    let editorMenu = document?.editor?.editorMenu
+    editorMenu?.title = "Editor"
+    NSApplication.shared.mainMenu?.findItem(with: "Editor")?.submenu = editorMenu
+
+    document?.editor?.focus()
+    
+    observers.notify {
+      $0.workbenchActiveDocumentDidChange(self, document: document)
+    }
   }
 }
 

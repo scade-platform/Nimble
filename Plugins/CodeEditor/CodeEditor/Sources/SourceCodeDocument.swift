@@ -15,8 +15,11 @@ public final class SourceCodeDocument: NimbleDocument {
   
   public var language: Language? {
     didSet {
-      guard let grammar = language?.grammar else { return }
-      self.syntaxParser = SyntaxParser(textStorage: textStorage, grammar: grammar)
+      if let grammar = language?.grammar {
+        self.syntaxParser = SyntaxParser(textStorage: textStorage, grammar: grammar)
+      } else {
+        self.syntaxParser = nil
+      }      
     }
   }
     
