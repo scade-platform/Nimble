@@ -286,5 +286,83 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     self.lineNumberView?.needsDisplay = true
   }
   
+  
+  // ------------
+  
+  
+  let autoClosingPairs = ["()", "[]", "{}"]
+
+  var selectedIndex: String.Index {
+    string.index(at: selectedRange().location)
+  }
+  
+  var currentLine: String {
+    return String(string[string.lineRange(at: selectedIndex)])
+  }
+  
+  func surroundRange(_ index: String.Index) -> Range<String.Index> {
+    let lineRange = string.lineRange(at: selectedIndex)
+    let from = (index > lineRange.lowerBound) ? string.index(before: index) : lineRange.lowerBound
+    let to = (index < lineRange.upperBound) ? string.index(after: index) : lineRange.upperBound
+    return from..<to
+  }
+  
+  func surroundString(_ index: String.Index) -> String {
+    return String(string[surroundRange(index)])
+  }
+    
+  
+  override func insertText(_ string: Any, replacementRange: NSRange) {
+    super.insertText(string, replacementRange: replacementRange)
+    guard let input = string as? String else { return }
+    
+    switch input {
+    case "(":
+      super.insertText(")", replacementRange: replacementRange)
+      super.moveBackward(self)
+      
+    case "[":
+      super.insertText("]", replacementRange: replacementRange)
+      super.moveBackward(self)
+      
+    case "{":
+      super.insertText("}", replacementRange: replacementRange)
+      super.moveBackward(self)
+      
+    default:
+      break
+    }
+  }
+  
+  override func insertNewline(_ sender: Any?) {
+    let currentLine = self.currentLine
+    
+    let autoIndentLine = autoClosingPairs.contains(surroundString(selectedIndex))
+    
+    super.insertNewline(sender)
+    
+    if let regexp = try? NSRegularExpression(pattern: "^(\\t|\\s)+"),
+       let result = regexp.firstMatch(in: currentLine, range: NSRange(0..<currentLine.count)) {
+      
+      let indent = currentLine[result.range.lowerBound..<result.range.upperBound]
+      super.insertText(String(indent), replacementRange: selectedRange())
+    }
+    
+    if autoIndentLine {
+      super.insertTab(sender)
+      super.insertNewline(sender)
+      super.moveBackward(sender)
+    }
+  }
+  
+  override func deleteBackward(_ sender: Any?) {
+    if autoClosingPairs.contains(surroundString(selectedIndex)) {
+      super.deleteForward(sender)
+      super.deleteBackward(sender)
+    } else {
+      super.deleteBackward(sender)
+    }
+  }
+  
 }
 
