@@ -533,7 +533,7 @@
 				},
 				{
 					"begin": "^\\s*(#)(if|elseif)\\s+",
-					"captures": {
+					"beginCaptures": {
 						"1": {
 							"name": "punctuation.definition.preprocessor.swift"
 						},
