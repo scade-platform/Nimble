@@ -39,10 +39,14 @@ public final class SyntaxParser {
     op.main()
     
     guard let res = op.result else { return nil }
-    applyResults(res, range: op.range, offsets: op.offsets.value)
-        
+    let offsets = op.offsets.value
+    
+    applyResults(res, range: op.range, offsets: offsets)
+    
+    let resRange = offsets.map(res.range)
+    
     // Process the rest of the document asynchronously
-    let restRange = NSRange(res.range.upperBound..<textStorage.string.nsRange.upperBound)
+    let restRange = NSRange(resRange.upperBound..<textStorage.string.nsRange.upperBound)
     return highlight(str: textStorage.string, in: restRange)
   }
   
@@ -129,7 +133,7 @@ public final class SyntaxParser {
     
     // Visit and color nodes transforming ranges w.r.t offsets
     nodes.visit { node in
-      node.range = offsets.at(node.range.lowerBound)..<offsets.at(node.range.upperBound)
+      node.range = offsets.map(node.range)
       if let scope = node.scope, let setting = theme?.setting(for: scope), let color = setting.foreground {
         textStorage.layoutManagers.forEach {
           $0.addTemporaryAttribute(.foregroundColor, value: color, forCharacterRange: NSRange(node.range))

@@ -26,6 +26,10 @@ extension String {
       }
       return byteOffset
     }
+    
+    func map(_ range: Range<Int>) -> Range<Int> {
+      return at(range.lowerBound)..<at(range.upperBound)
+    }
   }
   
   /// Creates a mapping table from byte index to UTF8 character index
