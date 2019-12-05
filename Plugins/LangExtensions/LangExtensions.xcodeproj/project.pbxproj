@@ -1,0 +1,462 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D71135A2239437B200A5CE6B /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = D71135A1239437B200A5CE6B /* package.yml */; };
+		D71135AA2394384800A5CE6B /* swift in Resources */ = {isa = PBXBuildFile; fileRef = D71135A92394384800A5CE6B /* swift */; };
+		D73C4FB62396D34300B00066 /* vb in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F8C2396D34000B00066 /* vb */; };
+		D73C4FB72396D34300B00066 /* coffeescript in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F8D2396D34000B00066 /* coffeescript */; };
+		D73C4FB82396D34300B00066 /* go in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F8E2396D34000B00066 /* go */; };
+		D73C4FB92396D34300B00066 /* pug in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F8F2396D34000B00066 /* pug */; };
+		D73C4FBA2396D34300B00066 /* ruby in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F902396D34000B00066 /* ruby */; };
+		D73C4FBB2396D34300B00066 /* markdown-basics in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F912396D34000B00066 /* markdown-basics */; };
+		D73C4FBC2396D34300B00066 /* bat in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F922396D34000B00066 /* bat */; };
+		D73C4FBD2396D34300B00066 /* perl in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F932396D34000B00066 /* perl */; };
+		D73C4FBE2396D34300B00066 /* csharp in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F942396D34000B00066 /* csharp */; };
+		D73C4FBF2396D34300B00066 /* scss in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F952396D34000B00066 /* scss */; };
+		D73C4FC02396D34300B00066 /* rust in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F962396D34000B00066 /* rust */; };
+		D73C4FC12396D34300B00066 /* typescript-basics in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F972396D34000B00066 /* typescript-basics */; };
+		D73C4FC22396D34300B00066 /* handlebars in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F982396D34000B00066 /* handlebars */; };
+		D73C4FC32396D34300B00066 /* log in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F992396D34100B00066 /* log */; };
+		D73C4FC42396D34300B00066 /* shaderlab in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F9A2396D34100B00066 /* shaderlab */; };
+		D73C4FC52396D34300B00066 /* objective-c in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F9B2396D34100B00066 /* objective-c */; };
+		D73C4FC62396D34300B00066 /* fsharp in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F9C2396D34100B00066 /* fsharp */; };
+		D73C4FC72396D34300B00066 /* clojure in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F9D2396D34100B00066 /* clojure */; };
+		D73C4FC82396D34300B00066 /* make in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F9E2396D34100B00066 /* make */; };
+		D73C4FC92396D34300B00066 /* html in Resources */ = {isa = PBXBuildFile; fileRef = D73C4F9F2396D34100B00066 /* html */; };
+		D73C4FCA2396D34300B00066 /* hlsl in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FA02396D34100B00066 /* hlsl */; };
+		D73C4FCB2396D34300B00066 /* javascript in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FA12396D34100B00066 /* javascript */; };
+		D73C4FCC2396D34300B00066 /* json in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FA22396D34100B00066 /* json */; };
+		D73C4FCD2396D34300B00066 /* lua in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FA32396D34100B00066 /* lua */; };
+		D73C4FCE2396D34300B00066 /* git in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FA42396D34100B00066 /* git */; };
+		D73C4FCF2396D34300B00066 /* css in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FA52396D34100B00066 /* css */; };
+		D73C4FD02396D34300B00066 /* java in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FA62396D34100B00066 /* java */; };
+		D73C4FD12396D34300B00066 /* powershell in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FA72396D34100B00066 /* powershell */; };
+		D73C4FD22396D34300B00066 /* python in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FA82396D34200B00066 /* python */; };
+		D73C4FD32396D34300B00066 /* shellscript in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FA92396D34200B00066 /* shellscript */; };
+		D73C4FD42396D34300B00066 /* swift in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FAA2396D34200B00066 /* swift */; };
+		D73C4FD52396D34300B00066 /* groovy in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FAB2396D34200B00066 /* groovy */; };
+		D73C4FD62396D34300B00066 /* r in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FAC2396D34200B00066 /* r */; };
+		D73C4FD72396D34300B00066 /* sql in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FAD2396D34200B00066 /* sql */; };
+		D73C4FD82396D34300B00066 /* less in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FAE2396D34200B00066 /* less */; };
+		D73C4FD92396D34300B00066 /* docker in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FAF2396D34200B00066 /* docker */; };
+		D73C4FDA2396D34300B00066 /* cpp in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FB02396D34200B00066 /* cpp */; };
+		D73C4FDB2396D34300B00066 /* ini in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FB12396D34200B00066 /* ini */; };
+		D73C4FDC2396D34300B00066 /* razor in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FB22396D34300B00066 /* razor */; };
+		D73C4FDD2396D34300B00066 /* xml in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FB32396D34300B00066 /* xml */; };
+		D73C4FDE2396D34300B00066 /* php in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FB42396D34300B00066 /* php */; };
+		D73C4FDF2396D34300B00066 /* yaml in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FB52396D34300B00066 /* yaml */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		D7113594239435E900A5CE6B /* LangExtensions.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LangExtensions.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7113597239435E900A5CE6B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D71135A1239437B200A5CE6B /* package.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = package.yml; sourceTree = "<group>"; };
+		D71135A92394384800A5CE6B /* swift */ = {isa = PBXFileReference; lastKnownFileType = folder; path = swift; sourceTree = "<group>"; };
+		D73C4F8C2396D34000B00066 /* vb */ = {isa = PBXFileReference; lastKnownFileType = folder; path = vb; sourceTree = "<group>"; };
+		D73C4F8D2396D34000B00066 /* coffeescript */ = {isa = PBXFileReference; lastKnownFileType = folder; path = coffeescript; sourceTree = "<group>"; };
+		D73C4F8E2396D34000B00066 /* go */ = {isa = PBXFileReference; lastKnownFileType = folder; path = go; sourceTree = "<group>"; };
+		D73C4F8F2396D34000B00066 /* pug */ = {isa = PBXFileReference; lastKnownFileType = folder; path = pug; sourceTree = "<group>"; };
+		D73C4F902396D34000B00066 /* ruby */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ruby; sourceTree = "<group>"; };
+		D73C4F912396D34000B00066 /* markdown-basics */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "markdown-basics"; sourceTree = "<group>"; };
+		D73C4F922396D34000B00066 /* bat */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bat; sourceTree = "<group>"; };
+		D73C4F932396D34000B00066 /* perl */ = {isa = PBXFileReference; lastKnownFileType = folder; path = perl; sourceTree = "<group>"; };
+		D73C4F942396D34000B00066 /* csharp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = csharp; sourceTree = "<group>"; };
+		D73C4F952396D34000B00066 /* scss */ = {isa = PBXFileReference; lastKnownFileType = folder; path = scss; sourceTree = "<group>"; };
+		D73C4F962396D34000B00066 /* rust */ = {isa = PBXFileReference; lastKnownFileType = folder; path = rust; sourceTree = "<group>"; };
+		D73C4F972396D34000B00066 /* typescript-basics */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "typescript-basics"; sourceTree = "<group>"; };
+		D73C4F982396D34000B00066 /* handlebars */ = {isa = PBXFileReference; lastKnownFileType = folder; path = handlebars; sourceTree = "<group>"; };
+		D73C4F992396D34100B00066 /* log */ = {isa = PBXFileReference; lastKnownFileType = folder; path = log; sourceTree = "<group>"; };
+		D73C4F9A2396D34100B00066 /* shaderlab */ = {isa = PBXFileReference; lastKnownFileType = folder; path = shaderlab; sourceTree = "<group>"; };
+		D73C4F9B2396D34100B00066 /* objective-c */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "objective-c"; sourceTree = "<group>"; };
+		D73C4F9C2396D34100B00066 /* fsharp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fsharp; sourceTree = "<group>"; };
+		D73C4F9D2396D34100B00066 /* clojure */ = {isa = PBXFileReference; lastKnownFileType = folder; path = clojure; sourceTree = "<group>"; };
+		D73C4F9E2396D34100B00066 /* make */ = {isa = PBXFileReference; lastKnownFileType = folder; path = make; sourceTree = "<group>"; };
+		D73C4F9F2396D34100B00066 /* html */ = {isa = PBXFileReference; lastKnownFileType = folder; path = html; sourceTree = "<group>"; };
+		D73C4FA02396D34100B00066 /* hlsl */ = {isa = PBXFileReference; lastKnownFileType = folder; path = hlsl; sourceTree = "<group>"; };
+		D73C4FA12396D34100B00066 /* javascript */ = {isa = PBXFileReference; lastKnownFileType = folder; path = javascript; sourceTree = "<group>"; };
+		D73C4FA22396D34100B00066 /* json */ = {isa = PBXFileReference; lastKnownFileType = folder; path = json; sourceTree = "<group>"; };
+		D73C4FA32396D34100B00066 /* lua */ = {isa = PBXFileReference; lastKnownFileType = folder; path = lua; sourceTree = "<group>"; };
+		D73C4FA42396D34100B00066 /* git */ = {isa = PBXFileReference; lastKnownFileType = folder; path = git; sourceTree = "<group>"; };
+		D73C4FA52396D34100B00066 /* css */ = {isa = PBXFileReference; lastKnownFileType = folder; path = css; sourceTree = "<group>"; };
+		D73C4FA62396D34100B00066 /* java */ = {isa = PBXFileReference; lastKnownFileType = folder; path = java; sourceTree = "<group>"; };
+		D73C4FA72396D34100B00066 /* powershell */ = {isa = PBXFileReference; lastKnownFileType = folder; path = powershell; sourceTree = "<group>"; };
+		D73C4FA82396D34200B00066 /* python */ = {isa = PBXFileReference; lastKnownFileType = folder; path = python; sourceTree = "<group>"; };
+		D73C4FA92396D34200B00066 /* shellscript */ = {isa = PBXFileReference; lastKnownFileType = folder; path = shellscript; sourceTree = "<group>"; };
+		D73C4FAA2396D34200B00066 /* swift */ = {isa = PBXFileReference; lastKnownFileType = folder; path = swift; sourceTree = "<group>"; };
+		D73C4FAB2396D34200B00066 /* groovy */ = {isa = PBXFileReference; lastKnownFileType = folder; path = groovy; sourceTree = "<group>"; };
+		D73C4FAC2396D34200B00066 /* r */ = {isa = PBXFileReference; lastKnownFileType = folder; path = r; sourceTree = "<group>"; };
+		D73C4FAD2396D34200B00066 /* sql */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sql; sourceTree = "<group>"; };
+		D73C4FAE2396D34200B00066 /* less */ = {isa = PBXFileReference; lastKnownFileType = folder; path = less; sourceTree = "<group>"; };
+		D73C4FAF2396D34200B00066 /* docker */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docker; sourceTree = "<group>"; };
+		D73C4FB02396D34200B00066 /* cpp */ = {isa = PBXFileReference; lastKnownFileType = folder; path = cpp; sourceTree = "<group>"; };
+		D73C4FB12396D34200B00066 /* ini */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ini; sourceTree = "<group>"; };
+		D73C4FB22396D34300B00066 /* razor */ = {isa = PBXFileReference; lastKnownFileType = folder; path = razor; sourceTree = "<group>"; };
+		D73C4FB32396D34300B00066 /* xml */ = {isa = PBXFileReference; lastKnownFileType = folder; path = xml; sourceTree = "<group>"; };
+		D73C4FB42396D34300B00066 /* php */ = {isa = PBXFileReference; lastKnownFileType = folder; path = php; sourceTree = "<group>"; };
+		D73C4FB52396D34300B00066 /* yaml */ = {isa = PBXFileReference; lastKnownFileType = folder; path = yaml; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D7113591239435E900A5CE6B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D711358B239435E900A5CE6B = {
+			isa = PBXGroup;
+			children = (
+				D7113596239435E900A5CE6B /* LangExtensions */,
+				D7113595239435E900A5CE6B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D7113595239435E900A5CE6B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D7113594239435E900A5CE6B /* LangExtensions.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D7113596239435E900A5CE6B /* LangExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				D73C4FAD2396D34200B00066 /* sql */,
+				D71135A92394384800A5CE6B /* swift */,
+				D73C4F922396D34000B00066 /* bat */,
+				D73C4F9D2396D34100B00066 /* clojure */,
+				D73C4F8D2396D34000B00066 /* coffeescript */,
+				D73C4FB02396D34200B00066 /* cpp */,
+				D73C4F942396D34000B00066 /* csharp */,
+				D73C4FA52396D34100B00066 /* css */,
+				D73C4FAF2396D34200B00066 /* docker */,
+				D73C4F9C2396D34100B00066 /* fsharp */,
+				D73C4FA42396D34100B00066 /* git */,
+				D73C4F8E2396D34000B00066 /* go */,
+				D73C4FAB2396D34200B00066 /* groovy */,
+				D73C4F982396D34000B00066 /* handlebars */,
+				D73C4FA02396D34100B00066 /* hlsl */,
+				D73C4F9F2396D34100B00066 /* html */,
+				D73C4FB12396D34200B00066 /* ini */,
+				D73C4FA62396D34100B00066 /* java */,
+				D73C4FA12396D34100B00066 /* javascript */,
+				D73C4FA22396D34100B00066 /* json */,
+				D73C4FAE2396D34200B00066 /* less */,
+				D73C4F992396D34100B00066 /* log */,
+				D73C4FA32396D34100B00066 /* lua */,
+				D73C4F9E2396D34100B00066 /* make */,
+				D73C4F912396D34000B00066 /* markdown-basics */,
+				D73C4F9B2396D34100B00066 /* objective-c */,
+				D73C4F932396D34000B00066 /* perl */,
+				D73C4FB42396D34300B00066 /* php */,
+				D73C4FA72396D34100B00066 /* powershell */,
+				D73C4F8F2396D34000B00066 /* pug */,
+				D73C4FA82396D34200B00066 /* python */,
+				D73C4FAC2396D34200B00066 /* r */,
+				D73C4FB22396D34300B00066 /* razor */,
+				D73C4F902396D34000B00066 /* ruby */,
+				D73C4F962396D34000B00066 /* rust */,
+				D73C4F952396D34000B00066 /* scss */,
+				D73C4F9A2396D34100B00066 /* shaderlab */,
+				D73C4FA92396D34200B00066 /* shellscript */,
+				D73C4FAA2396D34200B00066 /* swift */,
+				D73C4F972396D34000B00066 /* typescript-basics */,
+				D73C4F8C2396D34000B00066 /* vb */,
+				D73C4FB32396D34300B00066 /* xml */,
+				D73C4FB52396D34300B00066 /* yaml */,
+				D71135A1239437B200A5CE6B /* package.yml */,
+				D7113597239435E900A5CE6B /* Info.plist */,
+			);
+			path = LangExtensions;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D7113593239435E900A5CE6B /* LangExtensions */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D711359A239435E900A5CE6B /* Build configuration list for PBXNativeTarget "LangExtensions" */;
+			buildPhases = (
+				D7113590239435E900A5CE6B /* Sources */,
+				D7113591239435E900A5CE6B /* Frameworks */,
+				D7113592239435E900A5CE6B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LangExtensions;
+			productName = LangExtensions;
+			productReference = D7113594239435E900A5CE6B /* LangExtensions.plugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D711358C239435E900A5CE6B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1120;
+				ORGANIZATIONNAME = SCADE;
+				TargetAttributes = {
+					D7113593239435E900A5CE6B = {
+						CreatedOnToolsVersion = 11.2.1;
+					};
+				};
+			};
+			buildConfigurationList = D711358F239435E900A5CE6B /* Build configuration list for PBXProject "LangExtensions" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D711358B239435E900A5CE6B;
+			productRefGroup = D7113595239435E900A5CE6B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D7113593239435E900A5CE6B /* LangExtensions */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D7113592239435E900A5CE6B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D73C4FD42396D34300B00066 /* swift in Resources */,
+				D73C4FCE2396D34300B00066 /* git in Resources */,
+				D73C4FCC2396D34300B00066 /* json in Resources */,
+				D73C4FBC2396D34300B00066 /* bat in Resources */,
+				D73C4FC02396D34300B00066 /* rust in Resources */,
+				D73C4FCA2396D34300B00066 /* hlsl in Resources */,
+				D73C4FDD2396D34300B00066 /* xml in Resources */,
+				D73C4FC22396D34300B00066 /* handlebars in Resources */,
+				D73C4FC42396D34300B00066 /* shaderlab in Resources */,
+				D73C4FC62396D34300B00066 /* fsharp in Resources */,
+				D73C4FDA2396D34300B00066 /* cpp in Resources */,
+				D73C4FC92396D34300B00066 /* html in Resources */,
+				D73C4FDB2396D34300B00066 /* ini in Resources */,
+				D73C4FB82396D34300B00066 /* go in Resources */,
+				D73C4FBA2396D34300B00066 /* ruby in Resources */,
+				D73C4FC72396D34300B00066 /* clojure in Resources */,
+				D73C4FD82396D34300B00066 /* less in Resources */,
+				D73C4FC52396D34300B00066 /* objective-c in Resources */,
+				D73C4FB62396D34300B00066 /* vb in Resources */,
+				D73C4FCD2396D34300B00066 /* lua in Resources */,
+				D73C4FBF2396D34300B00066 /* scss in Resources */,
+				D73C4FDE2396D34300B00066 /* php in Resources */,
+				D73C4FB72396D34300B00066 /* coffeescript in Resources */,
+				D73C4FDF2396D34300B00066 /* yaml in Resources */,
+				D73C4FC82396D34300B00066 /* make in Resources */,
+				D73C4FBB2396D34300B00066 /* markdown-basics in Resources */,
+				D73C4FBE2396D34300B00066 /* csharp in Resources */,
+				D73C4FCB2396D34300B00066 /* javascript in Resources */,
+				D73C4FB92396D34300B00066 /* pug in Resources */,
+				D73C4FBD2396D34300B00066 /* perl in Resources */,
+				D71135AA2394384800A5CE6B /* swift in Resources */,
+				D73C4FDC2396D34300B00066 /* razor in Resources */,
+				D73C4FD32396D34300B00066 /* shellscript in Resources */,
+				D73C4FCF2396D34300B00066 /* css in Resources */,
+				D73C4FD92396D34300B00066 /* docker in Resources */,
+				D73C4FD72396D34300B00066 /* sql in Resources */,
+				D73C4FD12396D34300B00066 /* powershell in Resources */,
+				D73C4FD62396D34300B00066 /* r in Resources */,
+				D73C4FD22396D34300B00066 /* python in Resources */,
+				D73C4FC32396D34300B00066 /* log in Resources */,
+				D73C4FD02396D34300B00066 /* java in Resources */,
+				D73C4FC12396D34300B00066 /* typescript-basics in Resources */,
+				D73C4FD52396D34300B00066 /* groovy in Resources */,
+				D71135A2239437B200A5CE6B /* package.yml in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D7113590239435E900A5CE6B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		D7113598239435E900A5CE6B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		D7113599239435E900A5CE6B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		D711359B239435E900A5CE6B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = LangExtensions/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.LangExtensions;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Debug;
+		};
+		D711359C239435E900A5CE6B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = LangExtensions/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.LangExtensions;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D711358F239435E900A5CE6B /* Build configuration list for PBXProject "LangExtensions" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7113598239435E900A5CE6B /* Debug */,
+				D7113599239435E900A5CE6B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D711359A239435E900A5CE6B /* Build configuration list for PBXNativeTarget "LangExtensions" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D711359B239435E900A5CE6B /* Debug */,
+				D711359C239435E900A5CE6B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D711358C239435E900A5CE6B /* Project object */;
+}

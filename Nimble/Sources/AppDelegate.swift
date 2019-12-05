@@ -33,7 +33,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // The default one shows all recent documents without filtering etc.
     openRecentDocumentMenu?.delegate = self
     
-    PluginManager.shared.loadPlugins()
+    // Force plugins loading
+    _ = PluginManager.shared
     
     // Build newDocumentMenu
     let items: [NSMenuItem] = DocumentManager.shared.creatableDocuments.map {

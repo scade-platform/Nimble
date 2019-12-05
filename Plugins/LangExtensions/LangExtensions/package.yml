@@ -1,0 +1,949 @@
+extensions:
+  com.scade.nimble.CodeEditor:
+    grammars:
+    - embeddedLanguages:
+        section.embedded.source.cshtml: csharp
+        source.css: css
+        source.js: javascript
+      language: razor
+      path: razor/cshtml.tmLanguage.json
+      scopeName: text.html.cshtml
+    - language: shaderlab
+      path: shaderlab/shaderlab.tmLanguage.json
+      scopeName: source.shaderlab
+    - language: dockerfile
+      path: docker/docker.tmLanguage.json
+      scopeName: source.dockerfile
+    - language: go
+      path: go/go.tmLanguage.json
+      scopeName: source.go
+    - language: python
+      path: python/MagicPython.tmLanguage.json
+      scopeName: source.python
+    - path: python/MagicRegExp.tmLanguage.json
+      scopeName: source.regexp.python
+    - language: css
+      path: css/css.tmLanguage.json
+      scopeName: source.css
+      tokenTypes:
+        meta.function.url string.quoted: other
+    - language: clojure
+      path: clojure/clojure.tmLanguage.json
+      scopeName: source.clojure
+    - language: less
+      path: less/less.tmLanguage.json
+      scopeName: source.css.less
+    - language: scss
+      path: scss/scss.tmLanguage.json
+      scopeName: source.css.scss
+    - path: scss/sassdoc.tmLanguage.json
+      scopeName: source.sassdoc
+    - language: perl
+      path: perl/perl.tmLanguage.json
+      scopeName: source.perl
+    - language: perl6
+      path: perl/perl6.tmLanguage.json
+      scopeName: source.perl.6
+    - language: rust
+      path: rust/rust.tmLanguage.json
+      scopeName: source.rust
+    - language: jade
+      path: pug/pug.tmLanguage.json
+      scopeName: text.pug
+    - language: fsharp
+      path: fsharp/fsharp.tmLanguage.json
+      scopeName: source.fsharp
+    - language: r
+      path: r/r.tmLanguage.json
+      scopeName: source.r
+    - language: java
+      path: java/java.tmLanguage.json
+      scopeName: source.java
+    - embeddedLanguages:
+        source.css: css
+        source.js: javascript
+        source.python: python
+        source.smarty: smarty
+        text.html: html
+      path: html/html.tmLanguage.json
+      scopeName: text.html.basic
+      tokenTypes:
+        meta.tag string.quoted: other
+    - embeddedLanguages:
+        source.css: css
+        source.js: javascript
+        source.python: python
+        source.smarty: smarty
+        text.html: html
+      language: html
+      path: html/html-derivative.tmLanguage.json
+      scopeName: text.html.derivative
+      tokenTypes:
+        meta.tag string.quoted: other
+    - language: php
+      path: php/php.tmLanguage.json
+      scopeName: source.php
+    - embeddedLanguages:
+        source.css: css
+        source.js: javascript
+        source.json: json
+        source.php: php
+        source.sql: sql
+        text.html: html
+        text.xml: xml
+      language: php
+      path: php/html.tmLanguage.json
+      scopeName: text.html.php
+    - language: lua
+      path: lua/lua.tmLanguage.json
+      scopeName: source.lua
+    - language: xml
+      path: xml/xml.tmLanguage.json
+      scopeName: text.xml
+    - language: xsl
+      path: xml/xsl.tmLanguage.json
+      scopeName: text.xml.xsl
+    - language: vb
+      path: vb/asp-vb-net.tmlanguage.json
+      scopeName: source.asp.vb.net
+    - language: powershell
+      path: powershell/powershell.tmLanguage.json
+      scopeName: source.powershell
+    - language: typescript
+      path: typescript-basics/TypeScript.tmLanguage.json
+      scopeName: source.ts
+      tokenTypes:
+        entity.name.function.tagged-template: other
+        entity.name.type.instance.jsdoc: other
+        meta.import string.quoted: other
+        variable.other.jsdoc: other
+    - embeddedLanguages:
+        meta.embedded.expression.tsx: typescriptreact
+        meta.tag.attributes.tsx: typescriptreact
+        meta.tag.tsx: jsx-tags
+        meta.tag.without-attributes.tsx: jsx-tags
+      language: typescriptreact
+      path: typescript-basics/TypeScriptReact.tmLanguage.json
+      scopeName: source.tsx
+      tokenTypes:
+        entity.name.function.tagged-template: other
+        entity.name.type.instance.jsdoc: other
+        meta.import string.quoted: other
+        variable.other.jsdoc: other
+    - language: ini
+      path: ini/ini.tmLanguage.json
+      scopeName: source.ini
+    - language: properties
+      path: ini/ini.tmLanguage.json
+      scopeName: source.ini
+    - language: json
+      path: json/JSON.tmLanguage.json
+      scopeName: source.json
+    - language: jsonc
+      path: json/JSONC.tmLanguage.json
+      scopeName: source.json.comments
+    - language: handlebars
+      path: handlebars/Handlebars.tmLanguage.json
+      scopeName: text.html.handlebars
+    - language: c
+      path: cpp/c.tmLanguage.json
+      scopeName: source.c
+    - language: cpp
+      path: cpp/cpp.embedded.macro.tmLanguage.json
+      scopeName: source.cpp.embedded.macro
+    - language: cpp
+      path: cpp/cpp.tmLanguage.json
+      scopeName: source.cpp
+    - path: cpp/platform.tmLanguage.json
+      scopeName: source.c.platform
+    - language: swift
+      path: swift/swift.tmLanguage.json
+      scopeName: source.swift
+    - language: makefile
+      path: make/make.tmLanguage.json
+      scopeName: source.makefile
+      tokenTypes:
+        string.interpolated: other
+    - language: shellscript
+      path: shellscript/shell-unix-bash.tmLanguage.json
+      scopeName: source.shell
+    - embeddedLanguages:
+        meta.embedded.block.c: c
+        meta.embedded.block.clojure: clojure
+        meta.embedded.block.coffee: coffee
+        meta.embedded.block.cpp: cpp
+        meta.embedded.block.csharp: csharp
+        meta.embedded.block.css: css
+        meta.embedded.block.diff: diff
+        meta.embedded.block.dockerfile: dockerfile
+        meta.embedded.block.dosbatch: dosbatch
+        meta.embedded.block.frontmatter: yaml
+        meta.embedded.block.fsharp: fsharp
+        meta.embedded.block.go: go
+        meta.embedded.block.groovy: groovy
+        meta.embedded.block.html: html
+        meta.embedded.block.ini: ini
+        meta.embedded.block.java: java
+        meta.embedded.block.javascript: javascript
+        meta.embedded.block.json: json
+        meta.embedded.block.less: less
+        meta.embedded.block.lua: lua
+        meta.embedded.block.makefile: makefile
+        meta.embedded.block.objc: objc
+        meta.embedded.block.perl: perl
+        meta.embedded.block.perl6: perl6
+        meta.embedded.block.php: php
+        meta.embedded.block.powershell: powershell
+        meta.embedded.block.pug: jade
+        meta.embedded.block.python: python
+        meta.embedded.block.r: r
+        meta.embedded.block.ruby: ruby
+        meta.embedded.block.rust: rust
+        meta.embedded.block.scala: scala
+        meta.embedded.block.scss: scss
+        meta.embedded.block.shellscript: shellscript
+        meta.embedded.block.sql: sql
+        meta.embedded.block.typescript: typescript
+        meta.embedded.block.typescriptreact: typescriptreact
+        meta.embedded.block.vs_net: vs_net
+        meta.embedded.block.xml: xml
+        meta.embedded.block.xsl: xsl
+        meta.embedded.block.yaml: yaml
+        source.css: css
+        source.js: javascript
+      language: markdown
+      path: markdown-basics/markdown.tmLanguage.json
+      scopeName: text.html.markdown
+    - language: yaml
+      path: yaml/yaml.tmLanguage.json
+      scopeName: source.yaml
+    - language: log
+      path: log/log.tmLanguage.json
+      scopeName: text.log
+    - language: csharp
+      path: csharp/csharp.tmLanguage.json
+      scopeName: source.cs
+    - language: bat
+      path: bat/batchfile.tmLanguage.json
+      scopeName: source.batchfile
+    - language: groovy
+      path: groovy/groovy.tmLanguage.json
+      scopeName: source.groovy
+    - language: coffeescript
+      path: coffeescript/coffeescript.tmLanguage.json
+      scopeName: source.coffee
+    - embeddedLanguages:
+        meta.embedded.expression.js: javascriptreact
+        meta.tag.attributes.js.jsx: javascriptreact
+        meta.tag.js: jsx-tags
+        meta.tag.without-attributes.js: jsx-tags
+      language: javascriptreact
+      path: javascript/JavaScriptReact.tmLanguage.json
+      scopeName: source.js.jsx
+      tokenTypes:
+        entity.name.function.tagged-template: other
+        entity.name.type.instance.jsdoc: other
+        meta.import string.quoted: other
+        variable.other.jsdoc: other
+    - embeddedLanguages:
+        meta.embedded.expression.js: javascript
+        meta.tag.attributes.js: javascript
+        meta.tag.js: jsx-tags
+        meta.tag.without-attributes.js: jsx-tags
+      language: javascript
+      path: javascript/JavaScript.tmLanguage.json
+      scopeName: source.js
+      tokenTypes:
+        entity.name.function.tagged-template: other
+        entity.name.type.instance.jsdoc: other
+        meta.import string.quoted: other
+        variable.other.jsdoc: other
+    - path: javascript/Regular Expressions (JavaScript).tmLanguage
+      scopeName: source.js.regexp
+    - language: hlsl
+      path: hlsl/hlsl.tmLanguage.json
+      scopeName: source.hlsl
+    - language: objective-c
+      path: objective-c/objective-c.tmLanguage.json
+      scopeName: source.objc
+    - language: objective-cpp
+      path: objective-c/objective-c++.tmLanguage.json
+      scopeName: source.objcpp
+    - language: ruby
+      path: ruby/ruby.tmLanguage.json
+      scopeName: source.ruby
+    - language: git-commit
+      path: git/git-commit.tmLanguage.json
+      scopeName: text.git-commit
+    - language: git-rebase
+      path: git/git-rebase.tmLanguage.json
+      scopeName: text.git-rebase
+    - language: diff
+      path: git/diff.tmLanguage.json
+      scopeName: source.diff
+    - language: ignore
+      path: git/ignore.tmLanguage.json
+      scopeName: source.ignore
+    - language: sql
+      path: sql/sql.tmLanguage.json
+      scopeName: source.sql
+    languages:
+    - aliases:
+      - Razor
+      - razor
+      configuration: razor/language-configuration.json
+      extensions:
+      - .cshtml
+      id: razor
+      mimetypes:
+      - text/x-cshtml
+    - aliases:
+      - ShaderLab
+      - shaderlab
+      configuration: shaderlab/language-configuration.json
+      extensions:
+      - .shader
+      id: shaderlab
+    - aliases:
+      - Dockerfile
+      configuration: docker/language-configuration.json
+      extensions:
+      - .dockerfile
+      filenames:
+      - Dockerfile
+      id: dockerfile
+    - aliases:
+      - Go
+      configuration: go/language-configuration.json
+      extensions:
+      - .go
+      id: go
+    - aliases:
+      - Python
+      - py
+      configuration: python/language-configuration.json
+      extensions:
+      - .py
+      - .rpy
+      - .pyw
+      - .cpy
+      - .gyp
+      - .gypi
+      - .pyi
+      - .ipy
+      filenames:
+      - Snakefile
+      firstLine: ^#!\s*/.*\bpython[0-9.-]*\b
+      id: python
+    - aliases:
+      - CSS
+      - css
+      configuration: css/language-configuration.json
+      extensions:
+      - .css
+      id: css
+      mimetypes:
+      - text/css
+    - aliases:
+      - Clojure
+      - clojure
+      configuration: clojure/language-configuration.json
+      extensions:
+      - .clj
+      - .cljs
+      - .cljc
+      - .cljx
+      - .clojure
+      - .edn
+      id: clojure
+    - aliases:
+      - Less
+      - less
+      configuration: less/language-configuration.json
+      extensions:
+      - .less
+      id: less
+      mimetypes:
+      - text/x-less
+      - text/less
+    - aliases:
+      - SCSS
+      - scss
+      configuration: scss/language-configuration.json
+      extensions:
+      - .scss
+      id: scss
+      mimetypes:
+      - text/x-scss
+      - text/scss
+    - aliases:
+      - Perl
+      - perl
+      configuration: perl/perl.language-configuration.json
+      extensions:
+      - .pl
+      - .pm
+      - .pod
+      - .t
+      - .PL
+      - .psgi
+      firstLine: ^#!.*\bperl\b
+      id: perl
+    - aliases:
+      - Perl 6
+      - perl6
+      configuration: perl/perl6.language-configuration.json
+      extensions:
+      - .p6
+      - .pl6
+      - .pm6
+      - .nqp
+      firstLine: (^#!.*\bperl6\b)|use\s+v6
+      id: perl6
+    - aliases:
+      - Rust
+      - rust
+      configuration: rust/language-configuration.json
+      extensions:
+      - .rs
+      id: rust
+    - aliases:
+      - Pug
+      - Jade
+      - jade
+      configuration: pug/language-configuration.json
+      extensions:
+      - .jade
+      - .pug
+      id: jade
+    - aliases:
+      - F#
+      - FSharp
+      - fsharp
+      configuration: fsharp/language-configuration.json
+      extensions:
+      - .fs
+      - .fsi
+      - .fsx
+      - .fsscript
+      id: fsharp
+    - aliases:
+      - R
+      - r
+      configuration: r/language-configuration.json
+      extensions:
+      - .r
+      - .rhistory
+      - .rprofile
+      - .rt
+      id: r
+    - aliases:
+      - Java
+      - java
+      configuration: java/language-configuration.json
+      extensions:
+      - .java
+      - .jav
+      id: java
+    - aliases:
+      - HTML
+      - htm
+      - html
+      - xhtml
+      configuration: html/language-configuration.json
+      extensions:
+      - .html
+      - .htm
+      - .shtml
+      - .xhtml
+      - .mdoc
+      - .jsp
+      - .asp
+      - .aspx
+      - .jshtm
+      - .volt
+      - .ejs
+      - .rhtml
+      id: html
+      mimetypes:
+      - text/html
+      - text/x-jshtm
+      - text/template
+      - text/ng-template
+      - application/xhtml+xml
+    - aliases:
+      - PHP
+      - php
+      configuration: php/language-configuration.json
+      extensions:
+      - .php
+      - .php4
+      - .php5
+      - .phtml
+      - .ctp
+      firstLine: ^#!\s*/.*\bphp\b
+      id: php
+      mimetypes:
+      - application/x-php
+    - aliases:
+      - Lua
+      - lua
+      configuration: lua/language-configuration.json
+      extensions:
+      - .lua
+      id: lua
+    - aliases:
+      - XML
+      - xml
+      configuration: xml/xml.language-configuration.json
+      extensions:
+      - .xml
+      - .xsd
+      - .ascx
+      - .atom
+      - .axml
+      - .bpmn
+      - .cpt
+      - .csl
+      - .csproj
+      - .csproj.user
+      - .dita
+      - .ditamap
+      - .dtd
+      - .ent
+      - .mod
+      - .dtml
+      - .fsproj
+      - .fxml
+      - .iml
+      - .isml
+      - .jmx
+      - .launch
+      - .menu
+      - .mxml
+      - .nuspec
+      - .opml
+      - .owl
+      - .proj
+      - .props
+      - .pt
+      - .publishsettings
+      - .pubxml
+      - .pubxml.user
+      - .rdf
+      - .rng
+      - .rss
+      - .shproj
+      - .storyboard
+      - .svg
+      - .targets
+      - .tld
+      - .tmx
+      - .vbproj
+      - .vbproj.user
+      - .vcxproj
+      - .vcxproj.filters
+      - .wsdl
+      - .wxi
+      - .wxl
+      - .wxs
+      - .xaml
+      - .xbl
+      - .xib
+      - .xlf
+      - .xliff
+      - .xpdl
+      - .xul
+      - .xoml
+      firstLine: (\<\?xml.*)|(\<svg)|(\<\!doctype\s+svg)
+      id: xml
+    - aliases:
+      - XSL
+      - xsl
+      configuration: xml/xsl.language-configuration.json
+      extensions:
+      - .xsl
+      - .xslt
+      id: xsl
+    - aliases:
+      - Visual Basic
+      - vb
+      configuration: vb/language-configuration.json
+      extensions:
+      - .vb
+      - .brs
+      - .vbs
+      - .bas
+      id: vb
+    - aliases:
+      - PowerShell
+      - powershell
+      - ps
+      - ps1
+      configuration: powershell/language-configuration.json
+      extensions:
+      - .ps1
+      - .psm1
+      - .psd1
+      - .pssc
+      - .psrc
+      firstLine: ^#!\s*/.*\bpwsh\b
+      id: powershell
+    - aliases:
+      - TypeScript
+      - ts
+      - typescript
+      configuration: typescript-basics/language-configuration.json
+      extensions:
+      - .ts
+      id: typescript
+    - aliases:
+      - TypeScript React
+      - tsx
+      configuration: typescript-basics/language-configuration.json
+      extensions:
+      - .tsx
+      id: typescriptreact
+    - filenamePatterns:
+      - tsconfig.*.json
+      - tsconfig-*.json
+      filenames:
+      - tsconfig.json
+      - jsconfig.json
+      id: jsonc
+    - aliases:
+      - Ini
+      - ini
+      configuration: ini/ini.language-configuration.json
+      extensions:
+      - .ini
+      id: ini
+    - aliases:
+      - Properties
+      - properties
+      configuration: ini/properties.language-configuration.json
+      extensions:
+      - .properties
+      - .cfg
+      - .conf
+      - .directory
+      filenamePatterns:
+      - '**/.config/git/config'
+      - '**/.git/config'
+      filenames:
+      - .gitattributes
+      - .gitconfig
+      - gitconfig
+      - .gitmodules
+      - .editorconfig
+      id: properties
+    - aliases:
+      - JSON
+      - json
+      configuration: json/language-configuration.json
+      extensions:
+      - .json
+      - .bowerrc
+      - .jshintrc
+      - .jscsrc
+      - .swcrc
+      - .webmanifest
+      - .js.map
+      - .css.map
+      - .har
+      filenames:
+      - composer.lock
+      - .watchmanconfig
+      - .ember-cli
+      id: json
+      mimetypes:
+      - application/json
+      - application/manifest+json
+    - aliases:
+      - JSON with Comments
+      configuration: json/language-configuration.json
+      extensions:
+      - .hintrc
+      - .babelrc
+      - .jsonc
+      - .eslintrc
+      - .eslintrc.json
+      id: jsonc
+    - aliases:
+      - Handlebars
+      - handlebars
+      configuration: handlebars/language-configuration.json
+      extensions:
+      - .handlebars
+      - .hbs
+      - .hjs
+      id: handlebars
+      mimetypes:
+      - text/x-handlebars-template
+    - aliases:
+      - C
+      - c
+      configuration: cpp/language-configuration.json
+      extensions:
+      - .c
+      - .i
+      id: c
+    - aliases:
+      - C++
+      - Cpp
+      - cpp
+      configuration: cpp/language-configuration.json
+      extensions:
+      - .cpp
+      - .cc
+      - .cxx
+      - .c++
+      - .hpp
+      - .hh
+      - .hxx
+      - .h
+      - .ii
+      - .ino
+      - .inl
+      - .ipp
+      - .hpp.in
+      - .h.in
+      id: cpp
+    - aliases:
+      - Swift
+      - swift
+      configuration: swift/language-configuration.json
+      extensions:
+      - .swift
+      id: swift
+    - aliases:
+      - Makefile
+      - makefile
+      configuration: make/language-configuration.json
+      extensions:
+      - .mk
+      filenames:
+      - Makefile
+      - makefile
+      - GNUmakefile
+      - OCamlMakefile
+      firstLine: ^#!\s*/usr/bin/make
+      id: makefile
+    - aliases:
+      - Shell Script
+      - shellscript
+      - bash
+      - sh
+      - zsh
+      - ksh
+      configuration: shellscript/language-configuration.json
+      extensions:
+      - .sh
+      - .bash
+      - .bashrc
+      - .bash_aliases
+      - .bash_profile
+      - .bash_login
+      - .ebuild
+      - .install
+      - .profile
+      - .bash_logout
+      - .zsh
+      - .zshrc
+      - .zprofile
+      - .zlogin
+      - .zlogout
+      - .zshenv
+      - .zsh-theme
+      - .ksh
+      filenames:
+      - APKBUILD
+      - PKGBUILD
+      firstLine: ^#!.*\b(bash|zsh|sh|tcsh|ksh|ash|qsh).*|^#\s*-\*-[^*]*mode:\s*shell-script[^*]*-\*-
+      id: shellscript
+      mimetypes:
+      - text/x-shellscript
+    - aliases:
+      - Markdown
+      - markdown
+      configuration: markdown-basics/language-configuration.json
+      extensions:
+      - .md
+      - .mkd
+      - .mdwn
+      - .mdown
+      - .markdown
+      - .markdn
+      - .mdtxt
+      - .mdtext
+      - .workbook
+      id: markdown
+    - aliases:
+      - YAML
+      - yaml
+      configuration: yaml/language-configuration.json
+      extensions:
+      - .yml
+      - .eyaml
+      - .eyml
+      - .yaml
+      firstLine: ^#cloud-config
+      id: yaml
+    - aliases:
+      - Log
+      extensions:
+      - .log
+      - '*.log.?'
+      id: log
+    - aliases:
+      - C#
+      - csharp
+      configuration: csharp/language-configuration.json
+      extensions:
+      - .cs
+      - .csx
+      - .cake
+      id: csharp
+    - aliases:
+      - Batch
+      - bat
+      configuration: bat/language-configuration.json
+      extensions:
+      - .bat
+      - .cmd
+      id: bat
+    - aliases:
+      - Groovy
+      - groovy
+      configuration: groovy/language-configuration.json
+      extensions:
+      - .groovy
+      - .gvy
+      - .gradle
+      filenames:
+      - Jenkinsfile
+      firstLine: ^#!.*\bgroovy\b
+      id: groovy
+    - aliases:
+      - CoffeeScript
+      - coffeescript
+      - coffee
+      configuration: coffeescript/language-configuration.json
+      extensions:
+      - .coffee
+      - .cson
+      - .iced
+      id: coffeescript
+    - aliases:
+      - JavaScript React
+      - jsx
+      configuration: javascript/javascript-language-configuration.json
+      extensions:
+      - .jsx
+      id: javascriptreact
+    - aliases:
+      - JavaScript
+      - javascript
+      - js
+      configuration: javascript/javascript-language-configuration.json
+      extensions:
+      - .js
+      - .es6
+      - .mjs
+      - .cjs
+      - .pac
+      filenames:
+      - jakefile
+      firstLine: ^#!.*\bnode
+      id: javascript
+      mimetypes:
+      - text/javascript
+    - aliases: []
+      configuration: javascript/tags-language-configuration.json
+      id: jsx-tags
+    - aliases:
+      - HLSL
+      - hlsl
+      configuration: hlsl/language-configuration.json
+      extensions:
+      - .hlsl
+      - .hlsli
+      - .fx
+      - .fxh
+      - .vsh
+      - .psh
+      - .cginc
+      - .compute
+      id: hlsl
+    - aliases:
+      - Objective-C
+      configuration: objective-c/language-configuration.json
+      extensions:
+      - .m
+      id: objective-c
+    - aliases:
+      - Objective-C++
+      configuration: objective-c/language-configuration.json
+      extensions:
+      - .mm
+      id: objective-cpp
+    - aliases:
+      - Ruby
+      - rb
+      configuration: ruby/language-configuration.json
+      extensions:
+      - .rb
+      - .rbx
+      - .rjs
+      - .gemspec
+      - .rake
+      - .ru
+      - .erb
+      - .podspec
+      - .rbi
+      filenames:
+      - rakefile
+      - gemfile
+      - guardfile
+      - podfile
+      - capfile
+      firstLine: ^#!\s*/.*\bruby\b
+      id: ruby
+    - aliases:
+      - Git Commit Message
+      - git-commit
+      configuration: git/git-commit.language-configuration.json
+      filenames:
+      - COMMIT_EDITMSG
+      - MERGE_MSG
+      id: git-commit
+    - aliases:
+      - Git Rebase Message
+      - git-rebase
+      configuration: git/git-rebase.language-configuration.json
+      filenames:
+      - git-rebase-todo
+      id: git-rebase
+    - aliases:
+      - Diff
+      - diff
+      configuration: git/diff.language-configuration.json
+      extensions:
+      - .patch
+      - .diff
+      - .rej
+      id: diff
+    - aliases:
+      - Ignore
+      - ignore
+      configuration: git/ignore.language-configuration.json
+      filenames:
+      - .gitignore
+      id: ignore
+    - aliases:
+      - SQL
+      configuration: sql/language-configuration.json
+      extensions:
+      - .sql
+      - .dsql
+      id: sql

@@ -36,7 +36,11 @@ settings:
 
 
 #MARK: Entities
-
+  - name: Entity
+    scope: entity
+    settings:
+      foreground: "#326D74"
+    
   - name: Functions
     scope: entity.name.function
     settings:

@@ -24,29 +24,13 @@ open class CodeEditorPlugin: Plugin {
     DocumentManager.shared.registerDocumentClass(SourceCodeDocument.self)
     
     // Load color themes
-    if let path = self.resourcePath {
-      ColorThemeManager.shared.load(from: path/"Themes")
-    }
+    ColorThemeManager.shared.load(from: resources/"Themes")
     
+    // Setup menus
     setupMainMenu()
-    
     
     // Load custom fonts
     loadCustomFonts()
-        
-    
-    // TODO: move to a configuration file
-    if let path = self.resourcePath {
-      let swiftLang = Language(id: "swift", extensions: ["swift"])
-      let swiftGrammar = LanguageGrammar(language: "swift",
-                                         scopeName: "source.swift",
-                                         //path: path/"Syntaxes"/"Swift.tmLanguage")
-                                         path: path/"Syntaxes"/"swift.tmLanguage.json")
-        
-      
-      LanguageManager.shared.add(language: swiftLang)
-      LanguageManager.shared.add(grammar: swiftGrammar)
-    }
   }
   
   

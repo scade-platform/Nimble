@@ -12,7 +12,6 @@
 		428C0F2122BA9EFE002142BD /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 428C0F2022BA9EFE002142BD /* Themes */; };
 		42A56DF722BBD1A600983A9B /* LayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A56DF622BBD1A500983A9B /* LayoutManager.swift */; };
 		42A56DFF22BBD82100983A9B /* TextContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A56DFE22BBD82100983A9B /* TextContainer.swift */; };
-		42D37E5A22BA7E0400A5DDA1 /* Syntaxes in Resources */ = {isa = PBXBuildFile; fileRef = 42D37E5922BA7E0400A5DDA1 /* Syntaxes */; };
 		D722322622C92BC300E471C2 /* LineNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D722322522C92BC300E471C2 /* LineNumberView.swift */; };
 		D722328822CD587700E471C2 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D722328422CD587700E471C2 /* OrderedSet.swift */; };
 		D722328922CD587700E471C2 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D722328522CD587700E471C2 /* Collection.swift */; };
@@ -88,7 +87,6 @@
 		428C0F2022BA9EFE002142BD /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Themes; sourceTree = "<group>"; };
 		42A56DF622BBD1A500983A9B /* LayoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutManager.swift; sourceTree = "<group>"; };
 		42A56DFE22BBD82100983A9B /* TextContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextContainer.swift; sourceTree = "<group>"; };
-		42D37E5922BA7E0400A5DDA1 /* Syntaxes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Syntaxes; sourceTree = "<group>"; };
 		D722322522C92BC300E471C2 /* LineNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineNumberView.swift; sourceTree = "<group>"; };
 		D722328422CD587700E471C2 /* OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrderedSet.swift; path = ../../../CotEditor/CotEditor/Sources/OrderedSet.swift; sourceTree = "<group>"; };
 		D722328522CD587700E471C2 /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Collection.swift; path = ../../../CotEditor/CotEditor/Sources/Collection.swift; sourceTree = "<group>"; };
@@ -165,7 +163,6 @@
 			children = (
 				D7AD216522CA6D760062C835 /* Fonts */,
 				428C0F2022BA9EFE002142BD /* Themes */,
-				42D37E5922BA7E0400A5DDA1 /* Syntaxes */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -424,7 +421,6 @@
 			files = (
 				D7AD216622CA6D760062C835 /* Fonts in Resources */,
 				428C0F2122BA9EFE002142BD /* Themes in Resources */,
-				42D37E5A22BA7E0400A5DDA1 /* Syntaxes in Resources */,
 				D741547E236C99AE00A1B80C /* Info.plist in Resources */,
 				D7D2D59D22B1B9C80017B45D /* CodeEditorController.xib in Resources */,
 			);

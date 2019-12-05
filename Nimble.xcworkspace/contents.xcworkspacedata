@@ -20,6 +20,9 @@
          location = "group:Plugins/InterfaceBuilder/InterfaceBuilder/InterfaceBuilder.xcodeproj">
       </FileRef>
       <FileRef
+         location = "group:Plugins/LangExtensions/LangExtensions.xcodeproj">
+      </FileRef>
+      <FileRef
          location = "group:Plugins/ProjectNavigator/ProjectNavigator/ProjectNavigator.xcodeproj">
       </FileRef>
    </Group>

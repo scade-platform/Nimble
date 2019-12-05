@@ -28,6 +28,8 @@
 		D72F959C222DF2D9009F2EC3 /* WorkbenchSidebar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */; };
 		D72F959F222DF7AF009F2EC3 /* WorkbenchSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F959E222DF7AF009F2EC3 /* WorkbenchSidebar.swift */; };
 		D73C4F842391B55100B00066 /* NSMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73C4F832391B55100B00066 /* NSMenu.swift */; };
+		D74A7F532396D5F1006E0238 /* LangExtensions.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = D74A7F522396D5CC006E0238 /* LangExtensions.plugin */; };
+		D74A7F5523972382006E0238 /* KeyPathDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74A7F5423972382006E0238 /* KeyPathDecodable.swift */; };
 		D7798F9A236F131900CBF9B7 /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7798F75236F12E600CBF9B7 /* NimbleCore.framework */; };
 		D7798F9B236F131900CBF9B7 /* NimbleCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7798F75236F12E600CBF9B7 /* NimbleCore.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D77990DD236F14D100CBF9B7 /* XibView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7799050236F14D100CBF9B7 /* XibView.swift */; };
@@ -80,6 +82,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				D74A7F532396D5F1006E0238 /* LangExtensions.plugin in Embed PlugIns */,
 				0CEE0F0D23965A11002E69D6 /* BuildSystem.plugin in Embed PlugIns */,
 				E42DC0C322D26C3100486CC1 /* ImageViewer.plugin in Embed PlugIns */,
 				E42DC07A22CFA02500486CC1 /* InterfaceBuilder.plugin in Embed PlugIns */,
@@ -123,6 +126,8 @@
 		D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkbenchSidebar.xib; sourceTree = "<group>"; };
 		D72F959E222DF7AF009F2EC3 /* WorkbenchSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchSidebar.swift; sourceTree = "<group>"; };
 		D73C4F832391B55100B00066 /* NSMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSMenu.swift; sourceTree = "<group>"; };
+		D74A7F522396D5CC006E0238 /* LangExtensions.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = LangExtensions.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		D74A7F5423972382006E0238 /* KeyPathDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPathDecodable.swift; sourceTree = "<group>"; };
 		D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KPCTabsControl.xcodeproj; path = Dependencies/KPCTabsControl/KPCTabsControl.xcodeproj; sourceTree = "<group>"; };
 		D7798F75236F12E600CBF9B7 /* NimbleCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D779904B236F14D100CBF9B7 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
@@ -200,6 +205,7 @@
 				E42DC07922CFA01100486CC1 /* InterfaceBuilder.plugin */,
 				E42DC05B22CE498200486CC1 /* CodeEditor.plugin */,
 				E42DC05A22CE497F00486CC1 /* ProjectNavigator.plugin */,
+				D74A7F522396D5CC006E0238 /* LangExtensions.plugin */,
 			);
 			name = Plugins;
 			sourceTree = "<group>";
@@ -292,6 +298,7 @@
 				D7799056236F14D100CBF9B7 /* Atomic.swift */,
 				D724C5E1237A21D100E80958 /* Observer.swift */,
 				D724C5E3237B18A900E80958 /* WeakRef.swift */,
+				D74A7F5423972382006E0238 /* KeyPathDecodable.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -522,6 +529,7 @@
 				D77990DE236F14D100CBF9B7 /* NSViewController.swift in Sources */,
 				D77990E3236F14D100CBF9B7 /* Project.swift in Sources */,
 				D77990E8236F14D100CBF9B7 /* Workbench.swift in Sources */,
+				D74A7F5523972382006E0238 /* KeyPathDecodable.swift in Sources */,
 				D77990DD236F14D100CBF9B7 /* XibView.swift in Sources */,
 				D77990E2236F14D100CBF9B7 /* Atomic.swift in Sources */,
 				D72CEB442371D5C600C13F01 /* RandomAccessCollection.swift in Sources */,

@@ -6,17 +6,36 @@
 //
 
 import AppKit
-
+import NimbleCore
 
 public final class Language: Decodable {
-  public let id: String
-  public let extensions: [String]
-  
-  public init(id: String, extensions: [String]) {
-    self.id = id
-    self.extensions = extensions
+  private enum CodingKeys: String, CodingKey {
+    case id, configuration, extensions, aliases, mimetypes, filenames, filenamePatterns, firstline
   }
   
+  public let id: String
+  public let configpath: Path?
+  public let extensions: [String]
+  public let aliases: [String]
+  public let mimetypes: [String]
+  public let filenames: [String]
+  public let filenamePatterns: [String]
+  public let firstline: String?
+  
+    
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+    
+    self.id = try container.decode(String.self, forKey: .id)
+    self.configpath = try container.decodeIfPresent(Path.self, forKey: .configuration)
+    self.extensions = try container.decodeIfPresent([String].self, forKey: .extensions) ?? []
+    self.aliases = try container.decodeIfPresent([String].self, forKey: .aliases) ?? []
+    self.mimetypes = try container.decodeIfPresent([String].self, forKey: .mimetypes) ?? []
+    self.filenames = try container.decodeIfPresent([String].self, forKey: .filenames) ?? []
+    self.filenamePatterns = try container.decodeIfPresent([String].self, forKey: .filenamePatterns) ?? []
+    self.firstline = try container.decodeIfPresent(String.self, forKey: .firstline)
+  }
+    
   public var grammar: LanguageGrammar? {
     return LanguageManager.shared.findGrammar(forLang: id)
   }
@@ -34,7 +53,7 @@ extension Language: Equatable {
 public final class LanguageGrammar: Decodable, TokenizerRepository {
   public let language: String?
   public let scopeName: String
-  public let path: Path
+  public var path: Path
   
   private static let decoders: [String: GrammarDecoder.Type]  = [
     ".tmGrammar.json": JSONDecoder.self,
@@ -86,7 +105,14 @@ public final class LanguageManager {
   public private(set) var languages: [Language] = []
   public private(set) var grammars: [LanguageGrammar] = []
   
-  public static let shared: LanguageManager = LanguageManager()
+  public static let shared: LanguageManager = {
+    let languageManager = LanguageManager()
+    
+    languageManager.languages = PluginManager.shared.extensions([Language].self, path: "com.scade.nimble.CodeEditor/languages").flatMap{$0}
+    languageManager.grammars = PluginManager.shared.extensions([LanguageGrammar].self, path: "com.scade.nimble.CodeEditor/grammars").flatMap{$0}
+    
+    return languageManager
+  }()
   
   public func add(language: Language) {
     self.languages.append(language)
@@ -114,6 +140,6 @@ public final class LanguageManager {
 
 public extension File {
   var language: Language? {
-    return LanguageManager.shared.findLanguage(forExt: self.extension)
+    return LanguageManager.shared.findLanguage(forExt: ".\(self.extension)")
   }
 }
