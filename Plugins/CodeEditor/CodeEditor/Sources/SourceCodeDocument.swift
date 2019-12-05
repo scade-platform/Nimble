@@ -22,12 +22,12 @@ public final class SourceCodeDocument: NimbleDocument {
     
   public var syntaxParser: SyntaxParser? {
     didSet {
-      editorController.highlightSyntax()
+      codeEditor.highlightSyntax()
     }
   }
   
-  private lazy var editorController: CodeEditorController = {
-    let controller = CodeEditorController.loadFromNib()
+  private lazy var codeEditor: CodeEditorView = {
+    let controller = CodeEditorView.loadFromNib()
     controller.document = self
     return controller
   }()
@@ -73,7 +73,8 @@ public final class SourceCodeDocument: NimbleDocument {
 
 
 extension SourceCodeDocument: Document {
-  public var contentViewController: NSViewController? { return editorController }
+  public var editor: WorkbenchEditor? { codeEditor }
+  
   public static var typeIdentifiers: [String] { ["public.text", "public.data", "public.svg-image"] }
 }
 

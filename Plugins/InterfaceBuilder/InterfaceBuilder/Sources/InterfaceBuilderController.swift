@@ -1,5 +1,6 @@
 import Cocoa
 import ScadeKit
+import NimbleCore
 
 class InterfaceBuilderController: NSViewController {
 
@@ -60,3 +61,7 @@ class InterfaceBuilderController: NSViewController {
     SCDRuntime.renderSvg(root, x: 0, y: 0, size:size);
   }
 }
+
+
+
+extension InterfaceBuilderController: WorkbenchEditor { }

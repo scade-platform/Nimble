@@ -53,7 +53,7 @@
 		D7AD216622CA6D760062C835 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = D7AD216522CA6D760062C835 /* Fonts */; };
 		D7D2D59422B1B59E0017B45D /* CodeEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D59322B1B59E0017B45D /* CodeEditor.swift */; };
 		D7D2D59C22B1B9C80017B45D /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D59A22B1B9C80017B45D /* CodeEditorView.swift */; };
-		D7D2D59D22B1B9C80017B45D /* CodeEditorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7D2D59B22B1B9C80017B45D /* CodeEditorController.xib */; };
+		D7D2D59D22B1B9C80017B45D /* CodeEditorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7D2D59B22B1B9C80017B45D /* CodeEditorView.xib */; };
 		D7D2D5A322B28F020017B45D /* SourceCodeDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D5A222B28F020017B45D /* SourceCodeDocument.swift */; };
 /* End PBXBuildFile section */
 
@@ -131,7 +131,7 @@
 		D7D2D59322B1B59E0017B45D /* CodeEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditor.swift; sourceTree = "<group>"; };
 		D7D2D59622B1B5AD0017B45D /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7D2D59A22B1B9C80017B45D /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
-		D7D2D59B22B1B9C80017B45D /* CodeEditorController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CodeEditorController.xib; sourceTree = "<group>"; };
+		D7D2D59B22B1B9C80017B45D /* CodeEditorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CodeEditorView.xib; sourceTree = "<group>"; };
 		D7D2D5A222B28F020017B45D /* SourceCodeDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceCodeDocument.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -292,7 +292,7 @@
 				D7D2D59A22B1B9C80017B45D /* CodeEditorView.swift */,
 				427E517D22C22C1F008573F1 /* CodeEditorTextView.swift */,
 				D7D2D5A222B28F020017B45D /* SourceCodeDocument.swift */,
-				D7D2D59B22B1B9C80017B45D /* CodeEditorController.xib */,
+				D7D2D59B22B1B9C80017B45D /* CodeEditorView.xib */,
 				D722322522C92BC300E471C2 /* LineNumberView.swift */,
 				D722328122CD4E7A00E471C2 /* CotEditor */,
 				D773AD3122D37DC8003A12A5 /* Extensions */,
@@ -422,7 +422,7 @@
 				D7AD216622CA6D760062C835 /* Fonts in Resources */,
 				428C0F2122BA9EFE002142BD /* Themes in Resources */,
 				D741547E236C99AE00A1B80C /* Info.plist in Resources */,
-				D7D2D59D22B1B9C80017B45D /* CodeEditorController.xib in Resources */,
+				D7D2D59D22B1B9C80017B45D /* CodeEditorView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

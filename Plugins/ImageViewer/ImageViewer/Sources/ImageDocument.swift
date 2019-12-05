@@ -4,7 +4,7 @@ import NimbleCore
 public final class ImageDocument: NimbleDocument {
   var image: NSImage?
   
-  private lazy var builderController: ImageViewerController = {
+  private lazy var viewer: ImageViewerController = {
     let controller = ImageViewerController.loadFromNib()
     controller.doc = self
     return controller
@@ -25,6 +25,6 @@ public final class ImageDocument: NimbleDocument {
 
 
 extension ImageDocument: Document {
-  public var contentViewController: NSViewController? { return builderController }
+  public var editor: WorkbenchEditor? { return viewer }
   public static var typeIdentifiers: [String] { NSImage.imageTypes }
 }

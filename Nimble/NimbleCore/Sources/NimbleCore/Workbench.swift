@@ -91,3 +91,19 @@ public protocol WorkbenchPart: class {
 
 
 
+
+public protocol WorkbenchEditor: NSViewController {
+  var menu: NSMenu? { get }
+  
+  @discardableResult
+  func focus() -> Bool
+}
+
+
+public extension WorkbenchEditor {
+  var menu: NSMenu? { nil }
+    
+  func focus() -> Bool {
+    return view.window?.makeFirstResponder(view) ?? false
+  }
+}

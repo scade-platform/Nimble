@@ -10,9 +10,9 @@ import AppKit
 // MARK: - Document
 
 public protocol Document where Self: NSDocument {
-  var observers: ObserverSet<DocumentObserver> { set get }
+  var observers: ObserverSet<DocumentObserver> { get set }
   
-  var contentViewController: NSViewController? { get }
+  var editor: WorkbenchEditor? { get }
       
   static var typeIdentifiers: [String] { get }
   
@@ -20,12 +20,6 @@ public protocol Document where Self: NSDocument {
   
   static func canOpen(_ file: File) -> Bool
 
-}
-
-
-public protocol DocumentView: class {
-  @discardableResult
-  func focus() -> Bool
 }
 
 
@@ -48,11 +42,6 @@ public extension Document {
       return true
     }
     return typeIdentifiers.contains { file.url.typeIdentifierConforms(to: $0) }
-  }
-  
-  func activate() {
-    guard let docView = contentViewController?.view as? DocumentView else { return }
-    docView.focus()
   }
 }
 

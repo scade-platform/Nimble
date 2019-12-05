@@ -63,7 +63,7 @@ public final class PageDocument: NimbleDocument {
 
 
 extension PageDocument: Document {
-  public var contentViewController: NSViewController? { builderController }
+  public var editor: WorkbenchEditor? { builderController }
   
   /// TODO: register UTIs for the page files
   public static var typeIdentifiers: [String] = []

@@ -10,19 +10,7 @@ import Cocoa
 import CodeEditor
 
 
-class CodeEditorView: NSView {
-  @IBOutlet
-  weak var textView: CodeEditorTextView?
-}
-
-extension CodeEditorView: DocumentView {
-  func focus() -> Bool {
-    return window?.makeFirstResponder(textView) ?? false
-  }
-}
-
-
-class CodeEditorController: NSViewController, NSTextViewDelegate, NSTextStorageDelegate {
+class CodeEditorView: NSViewController, NSTextViewDelegate, NSTextStorageDelegate {
   weak var document: SourceCodeDocument? = nil {
     didSet {
       loadContent()
@@ -104,9 +92,15 @@ class CodeEditorController: NSViewController, NSTextViewDelegate, NSTextStorageD
 }
 
 
-extension CodeEditorController: ColorThemeObserver {
+extension CodeEditorView: ColorThemeObserver {
   func colorThemeDidChanged(_ theme: ColorTheme) {
     self.applyTheme(theme)
     highlightSyntax()
+  }
+}
+
+extension CodeEditorView: WorkbenchEditor {
+  func focus() -> Bool {
+    return view.window?.makeFirstResponder(textView) ?? false
   }
 }
