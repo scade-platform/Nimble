@@ -17,14 +17,14 @@ class ShellBuildTool: BuildTool {
   
   func run(in workbench: Workbench) -> BuildProgress {
     guard let fileURL = workbench.currentDocument?.fileURL else {
-      return EmptyBuildProgress()
+      return ShellBuildProgress()
     }
     let shellProc = Process()
     shellProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
     shellProc.executableURL = URL(fileURLWithPath: "/bin/sh")
     shellProc.arguments = [fileURL.path]
     try? shellProc.run()
-    return EmptyBuildProgress()
+    return ShellBuildProgress()
   }
 }
 
