@@ -7,11 +7,14 @@
 //
 
 import NimbleCore
+import Cocoa
 
 public final class BuildSystem: Module {
   public static var pluginClass: Plugin.Type = BuildSystemPlugin.self
 }
 
 public final class BuildSystemPlugin: Plugin {
-  public init() {}
+  public init() {
+    BuildToolsManager.shared.add(buildTool: ShellBuildTool())
+  }
 }
