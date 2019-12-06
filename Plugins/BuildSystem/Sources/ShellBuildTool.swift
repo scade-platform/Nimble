@@ -29,7 +29,7 @@ class ShellBuildTool: BuildTool {
 }
 
 
-struct EmptyBuildProgress : BuildProgress {
+struct ShellBuildProgress : BuildProgress {
   
 }
 
