@@ -25,6 +25,14 @@ class ContextOutlineView : NSOutlineView {
     }
     return ContextMenuManager.shared.menu(for: clickedItem)
   }
+  
+  private func reloadSelected() {
+    let selectedItem = item(atRow: selectedRow)
+    if let itemParent = parent(forItem: selectedItem) {
+      self.reloadItem(itemParent, reloadChildren: true)
+      self.expandItem(itemParent)
+    }
+  }
 }
 
  // MARK: - ContextMenuProvider
@@ -61,6 +69,7 @@ extension ContextOutlineView : ContextMenuProvider {
     }
     showImputTextAlert(message: "Please enter a new name:", fileSystemElement, handler: {newName in
       try? fileSystemElement.path.rename(to: newName)
+      self.reloadSelected()
     })
   }
   
@@ -71,6 +80,7 @@ extension ContextOutlineView : ContextMenuProvider {
       return
     }
     try? fileSystemElement.path.delete()
+    self.reloadSelected()
   }
   
   @objc func createNewFileAction(_ sender: NSMenuItem?) {
@@ -81,6 +91,7 @@ extension ContextOutlineView : ContextMenuProvider {
       guard !name.isEmpty else { return }
       let parentPath = folder.path
       try? parentPath.join(name).touch()
+      self.reloadSelected()
     })
   }
   
@@ -92,6 +103,7 @@ extension ContextOutlineView : ContextMenuProvider {
       guard !name.isEmpty else { return }
       let parentPath = folder.path
       try? parentPath.join(name).mkdir()
+      self.reloadSelected()
     })
   }
   
