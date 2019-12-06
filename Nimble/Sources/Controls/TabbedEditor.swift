@@ -219,13 +219,16 @@ struct TabTheme: Theme {
     self.selectedTabButtonTheme = SelectedTabButtonTheme(base: DefaultTabButtonTheme(), tabItem: tabItem)
   }
   
+  // MARK: - Defualt tab button theme
   fileprivate struct DefaultTabButtonTheme: KPCTabsControl.TabButtonTheme {
     var backgroundColor: NSColor { return TabTheme.sharedBackgroundColor }
     var borderColor: NSColor { return TabTheme.sharedBorderColor }
     var titleColor: NSColor { return getColorFromAsset("TextColor", defualt: NSColor.selectedTextColor) }
-    var titleFont: NSFont { return NSFontManager.shared.convert(NSFont.systemFont(ofSize: 12), toHaveTrait: .italicFontMask) }
+    var titleFont: NSFont { return NSFont.systemFont(ofSize: 12) } // { return NSFontManager.shared.convert(NSFont.systemFont(ofSize: 12), toHaveTrait: .italicFontMask) }
   }
   
+  
+  // MARK: - Selected tab button theme
   fileprivate struct SelectedTabButtonTheme: KPCTabsControl.TabButtonTheme {
     let base: DefaultTabButtonTheme
     weak var tabItem: TabItem?
@@ -242,9 +245,11 @@ struct TabTheme: Theme {
     
     var borderColor: NSColor { return TabTheme.sharedBorderColor }
     var titleColor: NSColor { return getColorFromAsset("SelectedTextColor", defualt: NSColor.selectedTextColor)  }
-    var titleFont: NSFont { return NSFontManager.shared.convert(NSFont.systemFont(ofSize: 12), toHaveTrait: .italicFontMask) }
+    var titleFont: NSFont { return NSFont.systemFont(ofSize: 12) } // { return NSFontManager.shared.convert(NSFont.systemFont(ofSize: 12), toHaveTrait: .italicFontMask) }
   }
   
+  
+  // MARK: - Unselected tab button theme
   fileprivate struct UnselectableTabButtonTheme: KPCTabsControl.TabButtonTheme {
     let base: DefaultTabButtonTheme
     
@@ -254,6 +259,8 @@ struct TabTheme: Theme {
     var titleFont: NSFont { return base.titleFont }
   }
   
+  
+  // MARK: - Default tabs control theme
   fileprivate struct DefaultTabsControlTheme: KPCTabsControl.TabsControlTheme {
     var backgroundColor: NSColor { return TabTheme.sharedBackgroundColor }
     var borderColor: NSColor { return TabTheme.sharedBorderColor }
