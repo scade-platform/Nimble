@@ -36,6 +36,11 @@ open class OutlineView: NSViewController, WorkbenchPart {
   }
   
   @IBAction func itemClicked(_ sender: Any) {
+    if selectedItem is FolderItem {
+      outlineView?.expandItem(selectedItem)
+      return
+    }
+    
     guard let item = selectedItem as? File else { return }
         
     prevSelectedDocument = workbench?.currentDocument
