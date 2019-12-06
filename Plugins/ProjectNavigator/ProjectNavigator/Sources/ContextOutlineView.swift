@@ -11,6 +11,8 @@ import NimbleCore
 
 class ContextOutlineView : NSOutlineView {
   
+  private var parent: Any?
+  
   open override func menu(for event: NSEvent) -> NSMenu? {
     let point = convert(event.locationInWindow, from: nil)
     let clickedRow = row(at: point)
@@ -20,10 +22,18 @@ class ContextOutlineView : NSOutlineView {
     if clickedRow != selectedRow {
       selectRowIndexes([clickedRow], byExtendingSelection: false)
     }
+    parent = self.parent(forItem: clickedItem)
     if let folderItem = clickedItem as? FolderItem {
       clickedItem = folderItem.folder
     }
     return ContextMenuManager.shared.menu(for: clickedItem)
+  }
+  
+  private func reloadParent() {
+    if let item = self.parent {
+      self.reloadItem(item, reloadChildren: true)
+      self.expandItem(item)
+    }
   }
 }
 
@@ -61,6 +71,7 @@ extension ContextOutlineView : ContextMenuProvider {
     }
     showImputTextAlert(message: "Please enter a new name:", fileSystemElement, handler: {newName in
       try? fileSystemElement.path.rename(to: newName)
+      self.reloadParent()
     })
   }
   
@@ -71,6 +82,7 @@ extension ContextOutlineView : ContextMenuProvider {
       return
     }
     try? fileSystemElement.path.delete()
+    self.reloadParent()
   }
   
   @objc func createNewFileAction(_ sender: NSMenuItem?) {
@@ -81,6 +93,7 @@ extension ContextOutlineView : ContextMenuProvider {
       guard !name.isEmpty else { return }
       let parentPath = folder.path
       try? parentPath.join(name).touch()
+      self.reloadParent()
     })
   }
   
@@ -92,6 +105,7 @@ extension ContextOutlineView : ContextMenuProvider {
       guard !name.isEmpty else { return }
       let parentPath = folder.path
       try? parentPath.join(name).mkdir()
+      self.reloadParent()
     })
   }
   
