@@ -45,6 +45,7 @@ class CodeEditorSyntaxMenuItem: NSObject {
     
     let syntaxMenuItem = NSMenuItem(title: "Syntax", action: nil, keyEquivalent: "")
     syntaxMenuItem.submenu = syntaxMenu
+    syntaxMenuItem.target = self
             
     return syntaxMenuItem
   }()
