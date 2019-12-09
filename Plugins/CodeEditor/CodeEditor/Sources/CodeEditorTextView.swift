@@ -300,6 +300,15 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     return String(string[string.lineRange(at: selectedIndex)])
   }
   
+  var currentIndent: String {
+    let currentLine = self.currentLine
+    guard let regexp = try? NSRegularExpression(pattern: "^(\\t|\\s)+"),
+          let result = regexp.firstMatch(in: currentLine,
+                                         range: NSRange(0..<currentLine.count)) else { return "" }
+      
+    return String(currentLine[result.range.lowerBound..<result.range.upperBound])
+  }
+  
   func surroundRange(_ index: String.Index) -> Range<String.Index> {
     let lineRange = string.lineRange(at: selectedIndex)
     let from = (index > lineRange.lowerBound) ? string.index(before: index) : lineRange.lowerBound
@@ -335,22 +344,18 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   }
   
   override func insertNewline(_ sender: Any?) {
-    let currentLine = self.currentLine
-    
+    let currentIndent = self.currentIndent
     let autoIndentLine = autoClosingPairs.contains(surroundString(selectedIndex))
     
     super.insertNewline(sender)
-    
-    if let regexp = try? NSRegularExpression(pattern: "^(\\t|\\s)+"),
-       let result = regexp.firstMatch(in: currentLine, range: NSRange(0..<currentLine.count)) {
-      
-      let indent = currentLine[result.range.lowerBound..<result.range.upperBound]
-      super.insertText(String(indent), replacementRange: selectedRange())
-    }
-    
+    super.insertText(currentIndent, replacementRange: selectedRange())
+
     if autoIndentLine {
       super.insertTab(sender)
       super.insertNewline(sender)
+      super.insertText(currentIndent, replacementRange: selectedRange())
+      
+      super.moveToLeftEndOfLine(sender)
       super.moveBackward(sender)
     }
   }
