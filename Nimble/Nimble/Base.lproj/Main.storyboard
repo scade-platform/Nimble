@@ -382,7 +382,8 @@
                                                             <action selector="orderFrontFontPanel:" target="YLy-65-1bz" id="WHr-nq-2xA"/>
                                                         </connections>
                                                     </menuItem>
-                                                    <menuItem title="Bold" tag="2" keyEquivalent="b" id="GB9-OM-e27">
+                                                    <menuItem title="Bold" tag="2" id="GB9-OM-e27">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
                                                         <connections>
                                                             <action selector="addFontTrait:" target="YLy-65-1bz" id="hqk-hr-sYV"/>
                                                         </connections>
@@ -633,6 +634,10 @@
                             </menuItem>
                             <menuItem title="Editor" id="YGq-7l-NUo">
                                 <modifierMask key="keyEquivalentModifierMask"/>
+                            </menuItem>
+                            <menuItem title="Tools" id="g8m-kd-EHh">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <menu key="submenu" title="Tools" id="sug-Iv-0V8"/>
                             </menuItem>
                             <menuItem title="Project" id="o6q-mC-Z3O">
                                 <modifierMask key="keyEquivalentModifierMask"/>

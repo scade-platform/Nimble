@@ -23,9 +23,15 @@ public class BuildToolsManager {
   
   public private(set) var tools : [BuildTool] = []
   
+  public var selectedTool: BuildTool? = nil
+  
   private init() {}
   
   public func add(buildTool: BuildTool) {
     tools.append(buildTool)
+    if selectedTool == nil {
+      selectedTool = buildTool
+    }
   }
+ 
 }
