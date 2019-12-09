@@ -24,8 +24,8 @@ public final class BuildSystemPlugin: Plugin {
     guard let mainMenu = NSApplication.shared.mainMenu else { return }
     guard let toolsMenu = mainMenu.findItem(with: "Tools")?.submenu else { return }
     
-    let buildSystemMenuItem = NSMenuItem(title: "Build system", action: nil, keyEquivalent: "")
-    let submenu = NSMenu(title: "Build system")
+    let buildSystemMenuItem = NSMenuItem(title: "Build System", action: nil, keyEquivalent: "")
+    let submenu = NSMenu(title: "Build System")
     buildSystemMenuItem.submenu = submenu
     toolsMenu.addItem(buildSystemMenuItem)
     let tools = BuildToolsManager.shared.tools
