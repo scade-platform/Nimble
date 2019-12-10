@@ -139,6 +139,13 @@ class NimbleController: NSDocumentController {
     guard let url = (sender as? NSMenuItem)?.representedObject as? URL else { return }
     openProject(withContentsOf: url)
   }
+  
+  override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+    if menuItem.tag == 53 {
+      menuItem.title = currentWorkbench?.debugArea?.isHidden ?? true ? "Show Console" : "Hide Console"
+    }
+    return super.validateMenuItem(menuItem)
+  }
 }
 
 
@@ -169,7 +176,7 @@ extension NimbleController {
   }
   
   @IBAction func showConsole(_ sender: Any?) {
-    guard let doc = currentDocument as? ProjectDocument, let workbench = doc.workbench, let debugArea = workbench.debugArea else {
+    guard let workbench = currentWorkbench, let debugArea = workbench.debugArea else {
       return
     }
     let hide: Bool
