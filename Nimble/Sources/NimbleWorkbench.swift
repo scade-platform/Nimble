@@ -63,10 +63,19 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     PluginManager.shared.deactivate(in: self)
   }
   
+  private lazy var editorMenuItem: NSMenuItem? = {
+    let mainMenu = NSApplication.shared.mainMenu
+    guard let index = mainMenu?.items.firstIndex(where: {$0.title == "Editor"}) else { return nil }
+    
+    mainMenu?.removeItem(at: index)
+    return mainMenu?.insertItem(withTitle: "Editor", action: nil, keyEquivalent: "", at: index)
+  }()
+  
   func currentDocumentDidChange(_ document: Document?) {
     let editorMenu = document?.editor?.editorMenu
     editorMenu?.title = "Editor"
-    NSApplication.shared.mainMenu?.findItem(with: "Editor")?.submenu = editorMenu
+    
+    editorMenuItem?.submenu = editorMenu
 
     document?.editor?.focus()
     
