@@ -16,6 +16,7 @@ public final class BuildSystem: Module {
 public final class BuildSystemPlugin: Plugin {
   public init() {
     BuildToolsManager.shared.add(buildTool: ShellBuildTool())
+    BuildToolsManager.shared.add(buildTool: SwiftBuildTool())
     setupMainMenu()
   }
   
