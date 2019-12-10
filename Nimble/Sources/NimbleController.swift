@@ -167,4 +167,22 @@ extension NimbleController {
       }
     }
   }
+  
+  @IBAction func showConsole(_ sender: Any?) {
+    guard let doc = currentDocument as? ProjectDocument, let workbench = doc.workbench, let debugArea = workbench.debugArea else {
+      return
+    }
+    let hide: Bool
+    if let menuItem = sender as? NSMenuItem {
+      hide = menuItem.title != "Show Console"
+      if hide {
+        menuItem.title = "Show Console"
+      } else {
+        menuItem.title = "Hide Console"
+      }
+    } else {
+      hide = true
+    }
+    debugArea.isHidden = hide
+  }
 }
