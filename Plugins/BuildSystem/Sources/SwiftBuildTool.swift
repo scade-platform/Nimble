@@ -33,6 +33,18 @@ class SwiftBuildTool: BuildTool {
     try? swiftcProc.run()
     return SwiftBuildProgress()
   }
+  
+  func canBuild(file url: URL) -> Bool {
+    let fileExtension = url.pathExtension
+    guard !fileExtension.isEmpty, fileExtension == "swift" else {
+      return false
+    }
+    return true
+  }
+  
+  func isDefault(for file: URL) -> Bool {
+    return canBuild(file: file)
+  }
 }
 
 struct SwiftBuildProgress : BuildProgress {

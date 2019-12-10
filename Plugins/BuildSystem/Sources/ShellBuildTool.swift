@@ -26,6 +26,18 @@ class ShellBuildTool: BuildTool {
     try? shellProc.run()
     return ShellBuildProgress()
   }
+  
+  func canBuild(file url: URL) -> Bool {
+    let fileExtension = url.pathExtension
+    guard !fileExtension.isEmpty, fileExtension == "sh" else {
+      return false
+    }
+    return true
+  }
+  
+  func isDefault(for file: URL) -> Bool {
+    return canBuild(file: file)
+  }
 }
 
 

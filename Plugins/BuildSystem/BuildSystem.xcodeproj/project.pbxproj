@@ -10,6 +10,7 @@
 		0C3469CF2397A0E600319613 /* BuildTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3469CE2397A0E600319613 /* BuildTool.swift */; };
 		0C3469D12397D04600319613 /* ShellBuildTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3469D02397D04600319613 /* ShellBuildTool.swift */; };
 		0C3469DF239F5DFF00319613 /* SwiftBuildTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3469DE239F5DFF00319613 /* SwiftBuildTool.swift */; };
+		0C3469E2239FA53E00319613 /* AutomaticBuildTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3469E1239FA53E00319613 /* AutomaticBuildTool.swift */; };
 		0C92E52323950E1300B073DE /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C92E52223950E1300B073DE /* NimbleCore.framework */; };
 		0C92E52823950E3E00B073DE /* BuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C92E52723950E3E00B073DE /* BuildSystem.swift */; };
 /* End PBXBuildFile section */
@@ -18,6 +19,7 @@
 		0C3469CE2397A0E600319613 /* BuildTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildTool.swift; sourceTree = "<group>"; };
 		0C3469D02397D04600319613 /* ShellBuildTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellBuildTool.swift; sourceTree = "<group>"; };
 		0C3469DE239F5DFF00319613 /* SwiftBuildTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBuildTool.swift; sourceTree = "<group>"; };
+		0C3469E1239FA53E00319613 /* AutomaticBuildTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomaticBuildTool.swift; sourceTree = "<group>"; };
 		0C92E51823950DEE00B073DE /* BuildSystem.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BuildSystem.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C92E51B23950DEE00B073DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0C92E52223950E1300B073DE /* NimbleCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +79,7 @@
 				0C3469CE2397A0E600319613 /* BuildTool.swift */,
 				0C3469D02397D04600319613 /* ShellBuildTool.swift */,
 				0C3469DE239F5DFF00319613 /* SwiftBuildTool.swift */,
+				0C3469E1239FA53E00319613 /* AutomaticBuildTool.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -150,6 +153,7 @@
 			files = (
 				0C3469D12397D04600319613 /* ShellBuildTool.swift in Sources */,
 				0C3469CF2397A0E600319613 /* BuildTool.swift in Sources */,
+				0C3469E2239FA53E00319613 /* AutomaticBuildTool.swift in Sources */,
 				0C3469DF239F5DFF00319613 /* SwiftBuildTool.swift in Sources */,
 				0C92E52823950E3E00B073DE /* BuildSystem.swift in Sources */,
 			);

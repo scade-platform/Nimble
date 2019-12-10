@@ -12,6 +12,19 @@ import NimbleCore
 public protocol BuildTool {
   var name: String { get }
   func run(in workbench: Workbench) -> BuildProgress
+  func canBuild(file: URL) -> Bool
+  func isDefault(for file: URL) -> Bool
+}
+
+public extension BuildTool {
+  //default implementation
+  func canBuild(file: URL) -> Bool {
+    return false
+  }
+  
+  func isDefault(for file: URL) -> Bool {
+    return false
+  }
 }
 
 public protocol BuildProgress {
@@ -23,15 +36,11 @@ public class BuildToolsManager {
   
   public private(set) var tools : [BuildTool] = []
   
-  public var selectedTool: BuildTool? = nil
+  public var selectedTool: BuildTool? = AutomaticBuildTool.shared
   
   private init() {}
   
   public func add(buildTool: BuildTool) {
     tools.append(buildTool)
-    if selectedTool == nil {
-      selectedTool = buildTool
-    }
   }
- 
 }
