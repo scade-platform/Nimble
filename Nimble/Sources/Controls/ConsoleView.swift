@@ -41,10 +41,13 @@ class ConsoleView: NSViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.view.setBackgroundColor(.white)
+    if let font = NSFont.init(name: "SFMono-Medium", size: 12) {
+      textView.font = font
+    }
     setControllersHidden(true)
   }
   
-  func setControllersHidden(_ value: Bool){
+  private func setControllersHidden(_ value: Bool){
     DispatchQueue.main.async {
       self.consoleSelectionButton.isHidden = value
       self.clearButton.isHidden = value
@@ -56,14 +59,10 @@ class ConsoleView: NSViewController {
   func createConsole(title: String, show: Bool) -> Console {
     let consoleName = improveName(title)
     let newConsole = NimbleTextConsole(title: consoleName)
-    DispatchQueue.main.async {
-      self.consoleSelectionButton.addItem(withTitle: newConsole.title)
-    }
+    self.consoleSelectionButton.addItem(withTitle: newConsole.title)
     if (show) {
-      DispatchQueue.main.async {
-        self.textView.string = newConsole.contents
-        self.consoleSelectionButton.selectItem(withTitle: newConsole.title)
-      }
+      self.textView.string = newConsole.contents
+      self.consoleSelectionButton.selectItem(withTitle: newConsole.title)
       currentConsole = newConsole
     }
     newConsole.handler = handler(fileHandle:console:)

@@ -23,7 +23,12 @@ class ShellBuildTool: BuildTool {
     shellProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
     shellProc.executableURL = URL(fileURLWithPath: "/bin/sh")
     shellProc.arguments = [fileURL.path]
-    try? shellProc.run()
+    DispatchQueue.main.async {
+      let console = workbench.createConsole(title: "\(fileURL.lastPathComponent)", show: true)
+      shellProc.standardOutput = console?.output
+      shellProc.standardError = console?.output
+      try? shellProc.run()
+    }
     return ShellBuildProgress()
   }
 }
