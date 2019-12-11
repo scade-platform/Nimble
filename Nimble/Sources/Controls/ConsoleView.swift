@@ -41,6 +41,9 @@ class ConsoleView: NSViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.view.setBackgroundColor(.white)
+    if let font = NSFont.init(name: "SFMono-Medium", size: 12) {
+      textView.font = font
+    }
     setControllersHidden(true)
   }
   
