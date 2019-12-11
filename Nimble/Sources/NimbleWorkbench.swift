@@ -163,6 +163,9 @@ extension NimbleWorkbench: Workbench {
   
   
   public func createConsole(title: String, show: Bool) -> Console? {
+    if show, debugView?.isHidden ?? false {
+      debugView?.isHidden = false
+    }
     return debugView?.consoleView.createConsole(title: title, show: show)
   }
 }
