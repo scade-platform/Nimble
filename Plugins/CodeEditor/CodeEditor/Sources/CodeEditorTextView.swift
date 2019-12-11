@@ -74,7 +74,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     self.linkTextAttributes = [.cursor: NSCursor.pointingHand,
                                .underlineStyle: NSUnderlineStyle.single.rawValue]    
 
-    
+    self.isAutomaticQuoteSubstitutionEnabled = false
     
     self.invalidateDefaultParagraphStyle()
     
@@ -287,7 +287,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   }
   
   
-  // ------------
+  // MARK: Auto-closing + auto-indents
   
   
   let autoClosingPairs = ["()", "[]", "{}"]
