@@ -10,7 +10,7 @@ import Foundation
 import NimbleCore
 
 
-class ShellBuildTool: BuildTool {
+class ShellBuildTool: BuildSystem {
   var name: String {
     return "Shell"
   }

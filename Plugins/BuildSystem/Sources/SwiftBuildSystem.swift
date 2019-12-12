@@ -9,9 +9,9 @@
 import Foundation
 import NimbleCore
 
-class SwiftBuildTool: BuildTool {
+class SwiftBuildSystem: BuildSystem {
   var name: String {
-    return "Swift"
+    return "Swift File"
   }
   
   func run(in workbench: Workbench) -> BuildProgress {
