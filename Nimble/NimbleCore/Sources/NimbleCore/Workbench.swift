@@ -28,7 +28,7 @@ public protocol Workbench: class {
   
   var debugArea: WorkbenchArea? { get }
     
-  
+  var statusBar: WorkbenchStatusBar { get }
               
   
   func open(_ doc: Document, show: Bool)
@@ -107,4 +107,21 @@ public extension WorkbenchEditor {
   func focus() -> Bool {
     return view.window?.makeFirstResponder(view) ?? false
   }
+}
+
+public enum WorkbenchStatusBarKind {
+  case left
+  case right
+}
+
+public protocol WorkbenchStatusBar {
+  var leftBar : [WorkbenchStatusBarCell] { get }
+  var rightBar: [WorkbenchStatusBarCell] { get }
+  
+  func addCell(title: String, kind: WorkbenchStatusBarKind)
+}
+
+
+public protocol WorkbenchStatusBarCell {
+  var title: String { set get }
 }

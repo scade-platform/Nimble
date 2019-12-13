@@ -25,16 +25,24 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     }
   }
   
+  var statusBarView: StatusBar? {
+    return workbenchView?.children[1] as? StatusBar
+  }
+  
+  var mainView : NSSplitViewController? {
+     return workbenchView?.children[0] as? NSSplitViewController
+  }
+  
   var workbenchView: NSSplitViewController? {
     contentViewController as? NSSplitViewController
   }
       
   var workbenchCentralView: NSSplitViewController? {
-    workbenchView?.children[1] as? NSSplitViewController
+    mainView?.children[1] as? NSSplitViewController
   }
   
   var navigatorView: NavigatorView? {
-    workbenchView?.children[0] as? NavigatorView
+    mainView?.children[0] as? NavigatorView
   }
   
   var editorView: TabbedEditor? {
@@ -107,6 +115,10 @@ extension NimbleWorkbench: Workbench {
   
   public var debugArea: WorkbenchArea? {
      return debugView
+  }
+  
+  public var statusBar: WorkbenchStatusBar {
+    return statusBarView as! WorkbenchStatusBar
   }
   
 
@@ -251,5 +263,11 @@ extension NimbleWorkbenchView where Self: NSView {
 extension NimbleWorkbenchViewController where Self: NSViewController {
   var workbench: NimbleWorkbench? {
     return view.window?.windowController as? NimbleWorkbench
+  }
+}
+
+extension NimbleWorkbench : NSSplitViewDelegate {
+  public func splitView(_ splitView: NSSplitView, shouldAdjustSizeOfSubview view: NSView) -> Bool {
+    return false
   }
 }

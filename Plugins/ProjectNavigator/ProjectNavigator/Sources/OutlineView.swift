@@ -42,7 +42,6 @@ open class OutlineView: NSViewController, WorkbenchPart {
     }
     
     guard let item = selectedItem as? File else { return }
-        
     prevSelectedDocument = workbench?.currentDocument
     
     NSDocumentController.shared.openDocument(withContentsOf: item.url, display: false) { [weak self] doc, _, _ in
