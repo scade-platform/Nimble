@@ -1,5 +1,5 @@
 //
-//  SwiftBuildTool.swift
+//  SwiftBuildSystem.swift
 //  BuildSystem
 //
 //  Created by Danil Kristalev on 10/12/2019.

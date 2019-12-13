@@ -29,9 +29,9 @@ public final class BuildSystemPlugin: Plugin {
     let submenu = NSMenu(title: "Build System")
     buildSystemMenuItem.submenu = submenu
     toolsMenu.addItem(buildSystemMenuItem)
-    let tools = BuildToolsManager.shared.systems
+    let tools = BuildSystemsManager.shared.buildSystems
     for tool in tools {
-      let toolItem = NSMenuItem(title: tool.name, action: #selector(switchBuildTool(_:)), keyEquivalent: "")
+      let toolItem = NSMenuItem(title: tool.name, action: #selector(switchBuildSystem(_:)), keyEquivalent: "")
       toolItem.target = self
       toolItem.representedObject = tool
       submenu.addItem(toolItem)
@@ -47,18 +47,18 @@ public final class BuildSystemPlugin: Plugin {
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
     guard let item = item else {return true}
     let itemTool = item.representedObject as AnyObject?
-    let currentTool = BuildToolsManager.shared.selectedSystem as AnyObject?
+    let currentTool = BuildSystemsManager.shared.activeBuildSystem as AnyObject?
     item.state = (itemTool === currentTool) ? .on : .off
     return true
   }
   
-  @objc func switchBuildTool(_ item: NSMenuItem?) {
-    BuildToolsManager.shared.selectedSystem = item?.representedObject as? BuildSystem
+  @objc func switchBuildSystem(_ item: NSMenuItem?) {
+    BuildSystemsManager.shared.activeBuildSystem = item?.representedObject as? BuildSystem
   }
   
   @objc func executeBuild(_ item: NSMenuItem?) {
     //Workbench for active window
     guard let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench else { return }
-    BuildToolsManager.shared.selectedSystem?.run(in: currentWorkbench)
+    BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench)
   }
 }
