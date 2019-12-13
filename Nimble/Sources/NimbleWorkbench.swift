@@ -265,9 +265,3 @@ extension NimbleWorkbenchViewController where Self: NSViewController {
     return view.window?.windowController as? NimbleWorkbench
   }
 }
-
-extension NimbleWorkbench : NSSplitViewDelegate {
-  public func splitView(_ splitView: NSSplitView, shouldAdjustSizeOfSubview view: NSView) -> Bool {
-    return false
-  }
-}
