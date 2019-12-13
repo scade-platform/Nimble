@@ -25,8 +25,8 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     }
   }
   
-  var statusBarView: StatusBar? {
-    return workbenchView?.children[1] as? StatusBar
+  var statusBarView: StatusBarView? {
+    return workbenchView?.children[1] as? StatusBarView
   }
   
   var mainView : NSSplitViewController? {

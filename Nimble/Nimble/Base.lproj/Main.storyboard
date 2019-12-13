@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -833,11 +832,11 @@
             </objects>
             <point key="canvasLocation" x="-895.5" y="1290"/>
         </scene>
-        <!--Status Bar-->
+        <!--Status Bar View-->
         <scene sceneID="Zo5-71-nDx">
             <objects>
                 <customObject id="FL0-N8-HNV" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <viewController id="mgA-Mv-mw6" customClass="StatusBar" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="mgA-Mv-mw6" customClass="StatusBarView" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="pAG-nR-ffI">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="25"/>
                         <autoresizingMask key="autoresizingMask"/>

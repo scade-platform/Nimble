@@ -1,5 +1,5 @@
 //
-//  StatusBar.swift
+//  StatusBarView.swift
 //  Nimble
 //
 //  Created by Danil Kristalev on 13/12/2019.
@@ -9,13 +9,14 @@
 import Cocoa
 import NimbleCore
 
-class StatusBar: NSViewController {
+class StatusBarView: NSViewController {
   @IBOutlet weak var leftBarStackView: NSStackView!
   @IBOutlet weak var rightBarStackView: NSStackView!
+
   
 }
 
-extension StatusBar : WorkbenchStatusBar {
+extension StatusBarView : WorkbenchStatusBar {
   var leftBar: [WorkbenchStatusBarCell] {
     return leftBarStackView.subviews.map{$0 as! WorkbenchStatusBarCell}
   }
