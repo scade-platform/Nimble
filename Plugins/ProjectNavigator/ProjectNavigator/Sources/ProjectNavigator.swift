@@ -10,13 +10,13 @@ import NimbleCore
 
 
 public final class ProjectNavigator: Module {
-  public static var pluginClass: Plugin.Type = ProjectNavigatorPlugin.self
+  public static let plugin: Plugin = ProjectNavigatorPlugin()
 }
 
 
-public final class ProjectNavigatorPlugin: Plugin {
+final class ProjectNavigatorPlugin: Plugin {
   
-  public init() {
+  init() {
      ContextMenuManager.shared.registerContextMenuProvider(ContextOutlineView.self)
   }
   

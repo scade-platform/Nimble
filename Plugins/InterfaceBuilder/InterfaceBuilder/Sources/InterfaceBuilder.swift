@@ -11,15 +11,14 @@ import ScadeKit
 
 
 public final class InterfaceBuilder: Module {
-  public static var pluginClass: Plugin.Type = InterfaceBuilderPlugin.self
+  public static let plugin: Plugin = InterfaceBuilderPlugin()
 }
 
 
-open class InterfaceBuilderPlugin: Plugin {
-  required public init() {
+final class InterfaceBuilderPlugin: Plugin {
+  init() {
     DocumentManager.shared.registerDocumentClass(PageDocument.self)
-    SCDRuntime.loadMetaModel()
-    
+    SCDRuntime.loadMetaModel()    
   }
   
   public func activate(in workbench: Workbench) {

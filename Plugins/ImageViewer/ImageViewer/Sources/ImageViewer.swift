@@ -1,12 +1,13 @@
 import NimbleCore
 
+
 public final class ImageViewer: Module {
-  public static var pluginClass: Plugin.Type = ImageViewerPlugin.self
+  public static let plugin: Plugin = ImageViewerPlugin()
 }
 
 
-open class ImageViewerPlugin: Plugin {
-  required public init() {
+final class ImageViewerPlugin: Plugin {
+  init() {
     DocumentManager.shared.registerDocumentClass(ImageDocument.self)
   }
 }

@@ -12,19 +12,23 @@ import Yams
 // MARK: - Module
 
 public protocol Module: class {
-  static var pluginClass: Plugin.Type { get }
+  static var plugin: Plugin { get }
 }
 
-// MARK: - PlugIn
+// MARK: - Plugin
 
 public protocol Plugin: class {
-  init?()
+  var id: String { get }
   func activate(in: Workbench) -> Void
   func deactivate(in: Workbench) -> Void
 }
 
 
 public extension Plugin {
+  var id: String {
+    bundle.bundleIdentifier ?? ""
+  }
+  
   var bundle: Bundle {
     return Bundle(for: type(of: self))
   }
@@ -32,10 +36,14 @@ public extension Plugin {
   var resources: Path {
     return bundle.resources
   }
-  
+      
   func activate(in _: Workbench) -> Void {}
   
   func deactivate(in _: Workbench) -> Void {}
+  
+  func extensions<T: Decodable>(_ type: T.Type, at extensionPoint: String) -> [T] {
+    return PluginManager.shared.getFromPackages(type, at: "extensions/\(id)/\(extensionPoint)")
+  }
 }
 
 
@@ -69,23 +77,24 @@ public class PluginManager {
     let pluginManager = PluginManager()
         
     for path in searchPaths.flatMap({$0.plugins}) {
-      // Use CoreFoundation API to avoid auto-loading bundles without executables
+      // Use CoreFoundation API to avoid auto-loading bundles
       let bundle = CFBundleCreate(kCFAllocatorDefault, NSURL(fileURLWithPath: path.string))
       let info = CFBundleGetInfoDictionary(bundle) as! [String: AnyObject]
       
-      if info.keys.contains(kCFBundleExecutableKey as String),
-          let bundle = Bundle(path: path.string),
-          let module = bundle.principalClass as? Module.Type,
-          let plugin = module.pluginClass.init() {
-        
-        pluginManager.plugins.append(plugin)
-      }
-      
+      // First load packages to be able to resolve dependencies (TBD)
       guard let resources = Path(url: CFBundleCopyResourcesDirectoryURL(bundle)) else {continue}
       let packagePath = resources / "package.yml"
       
       if packagePath.exists {
         pluginManager.packages.append(Package(path: packagePath))
+      }
+      
+      // Load iff a plugin contains a binary
+      if info.keys.contains(kCFBundleExecutableKey as String),
+          let bundle = Bundle(path: path.string),
+          let module = bundle.principalClass as? Module.Type {
+        
+        pluginManager.plugins[module.plugin.id] = module.plugin
       }
     }
         
@@ -94,29 +103,23 @@ public class PluginManager {
   
   
   
-  private var plugins: [Plugin] = []
-  
   private var packages: [Package] = []
-
+    
+  public private(set) var plugins: [String: Plugin] = [:]
+  
   
   
   public func activate(in workbench: Workbench) -> Void {
-    plugins.forEach{ $0.activate(in: workbench) }
+    plugins.forEach{ $0.1.activate(in: workbench) }
   }
   
   public func deactivate(in workbench: Workbench) -> Void {
-    plugins.forEach{ $0.deactivate(in: workbench) }
+    plugins.forEach{ $0.1.deactivate(in: workbench) }
   }
-  
-  public func extensions<T: Decodable>(_ type: T.Type, path: String) -> [T] {
+    
+  public func getFromPackages<T: Decodable>(_ type: T.Type, at path: String) -> [T] {
     return packages.compactMap{
-      do {
-        guard let val = try $0.decode(type, keyPath: "extensions/\(path)") else { return nil }
-        return val
-      } catch {
-        print("\(error)")
-      }
-      return nil
+      try? $0.decode(type, keyPath: path) ?? nil
     }
   }
 }

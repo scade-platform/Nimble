@@ -8,6 +8,7 @@
 import AppKit
 import NimbleCore
 
+
 public final class Language: Decodable {
   private enum CodingKeys: String, CodingKey {
     case id, configuration, extensions, aliases, mimetypes, filenames, filenamePatterns, firstline
@@ -108,9 +109,11 @@ public final class LanguageManager {
   public static let shared: LanguageManager = {
     let languageManager = LanguageManager()
     
-    languageManager.languages = PluginManager.shared.extensions([Language].self, path: "com.scade.nimble.CodeEditor/languages").flatMap{$0}
-    languageManager.grammars = PluginManager.shared.extensions([LanguageGrammar].self, path: "com.scade.nimble.CodeEditor/grammars").flatMap{$0}
-    
+    if let codeEditorPlugin = PluginManager.shared.plugins["com.scade.nimble.CodeEditor"] {
+      languageManager.languages = codeEditorPlugin.extensions([Language].self, at: "languages").flatMap{$0}
+      languageManager.grammars = codeEditorPlugin.extensions([LanguageGrammar].self, at: "grammars").flatMap{$0}
+    }
+      
     return languageManager
   }()
   

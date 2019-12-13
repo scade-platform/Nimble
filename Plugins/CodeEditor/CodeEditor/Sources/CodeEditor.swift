@@ -15,12 +15,12 @@ import CodeEditor
 
 
 public final class CodeEditor: Module {
-  public static var pluginClass: Plugin.Type = CodeEditorPlugin.self
+  public static let plugin: Plugin = CodeEditorPlugin()
 }
 
 
-open class CodeEditorPlugin: Plugin {
-  required public init() {
+final class CodeEditorPlugin: Plugin {
+  init() {
     DocumentManager.shared.registerDocumentClass(SourceCodeDocument.self)
     
     // Load color themes

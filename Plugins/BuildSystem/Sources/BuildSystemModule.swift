@@ -10,17 +10,16 @@ import NimbleCore
 import Cocoa
 
 public final class BuildSystemModule: Module {
-  public static var pluginClass: Plugin.Type = BuildSystemPlugin.self
+  public static let plugin: Plugin = BuildSystemPlugin()
 }
 
-public final class BuildSystemPlugin: Plugin {
-  public init() {
+final class BuildSystemPlugin: Plugin {
+  init() {
     BuildSystemsManager.shared.add(buildSystem: SwiftBuildSystem())
     BuildSystemsManager.shared.add(buildSystem: SPMBuildSystem())
     setupMainMenu()
   }
-  
-  
+    
   private func setupMainMenu() {
     guard let mainMenu = NSApplication.shared.mainMenu else { return }
     guard let toolsMenu = mainMenu.findItem(with: "Tools")?.submenu else { return }
