@@ -21,8 +21,8 @@ class SPMBuildSystem: BuildSystem {
     spmProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
     spmProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
     spmProc.arguments = ["build"]
-    spmProc.terminationHandler = { process in
-      self.run(package: fileURL, in: workbench)
+    spmProc.terminationHandler = { [weak self] process in
+      self?.run(package: fileURL, in: workbench)
     }
     DispatchQueue.main.async {
       workbench.debugArea?.isHidden = false
@@ -61,7 +61,6 @@ class SPMBuildSystem: BuildSystem {
       proc.terminate()
     }
     proc.standardOutput = out
-    try? proc.run()
     proc.terminationHandler = { process in
       out.fileHandleForReading.readabilityHandler = nil
       guard let describtion = buffer, let endOfFirstLine = describtion.firstIndex(of: "\n") else { return }
@@ -79,6 +78,8 @@ class SPMBuildSystem: BuildSystem {
         try? programProc.run()
       }
     }
+    try? proc.run()
+    
   }
   
 }
