@@ -17,24 +17,30 @@ class StatusBarView: NSViewController {
 }
 
 extension StatusBarView : WorkbenchStatusBar {
+  
   var leftBar: [WorkbenchStatusBarCell] {
-    return leftBarStackView.subviews.map{$0 as! WorkbenchStatusBarCell}
+    get {
+      return leftBarStackView.subviews.map{$0 as! WorkbenchStatusBarCell}
+    }
+    set {
+      leftBarStackView.subviews.removeAll()
+      for value in newValue {
+        let textView = NSTextField(labelWithString: value.title)
+        leftBarStackView.addView(textView, in: .trailing)
+      }
+    }
   }
   
   var rightBar: [WorkbenchStatusBarCell] {
-    return rightBarStackView.subviews.map{$0 as! WorkbenchStatusBarCell}
-  }
-  
-  func addCell(title: String, kind: WorkbenchStatusBarKind) {
-    switch kind {
-    case .left:
-      let textView = NSTextField(labelWithString: title)
-      leftBarStackView.addView(textView, in: .trailing)
-      break
-    case .right:
-      let textView = NSTextField(labelWithString: title)
-      rightBarStackView.insertView(textView, at: 0, in: .leading)
-      break
+    get {
+      return rightBarStackView.subviews.map{$0 as! WorkbenchStatusBarCell}
+    }
+    set {
+      rightBarStackView.subviews.removeAll()
+      for value in newValue {
+        let textView = NSTextField(labelWithString: value.title)
+        rightBarStackView.insertView(textView, at: 0, in: .leading)
+      }
     }
   }
 }
@@ -48,8 +54,6 @@ extension NSTextField : WorkbenchStatusBarCell {
       self.stringValue = newValue
     }
   }
-  
-  
 }
 
 

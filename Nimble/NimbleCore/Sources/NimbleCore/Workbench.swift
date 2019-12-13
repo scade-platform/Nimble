@@ -109,19 +109,21 @@ public extension WorkbenchEditor {
   }
 }
 
-public enum WorkbenchStatusBarKind {
-  case left
-  case right
-}
 
 public protocol WorkbenchStatusBar {
-  var leftBar : [WorkbenchStatusBarCell] { get }
-  var rightBar: [WorkbenchStatusBarCell] { get }
-  
-  func addCell(title: String, kind: WorkbenchStatusBarKind)
+  var leftBar : [WorkbenchStatusBarCell] { get set }
+  var rightBar: [WorkbenchStatusBarCell] { get set }
 }
 
 
 public protocol WorkbenchStatusBarCell {
   var title: String { set get }
+}
+
+public struct StatusBarTextCell : WorkbenchStatusBarCell {
+  public var title: String
+  
+  public init(title: String) {
+    self.title = title
+  }
 }
