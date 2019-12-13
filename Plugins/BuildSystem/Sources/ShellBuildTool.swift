@@ -1,5 +1,5 @@
 //
-//  DefaultShellBuildTool.swift
+//  ShellBuildSystem.swift
 //  BuildSystem
 //
 //  Created by Danil Kristalev on 04/12/2019.
@@ -10,7 +10,7 @@ import Foundation
 import NimbleCore
 
 
-class ShellBuildTool: BuildTool {
+class ShellBuildSystem: BuildSystem {
   var name: String {
     return "Shell"
   }
