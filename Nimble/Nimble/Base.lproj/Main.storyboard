@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -763,7 +762,7 @@
                         </connections>
                     </window>
                     <connections>
-                        <segue destination="fjW-vM-mzH" kind="relationship" relationship="window.shadowedContentViewController" id="sby-4e-u2R"/>
+                        <segue destination="Mbw-uZ-9Gt" kind="relationship" relationship="window.shadowedContentViewController" id="xvk-a3-heL"/>
                     </connections>
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -807,6 +806,68 @@
                 <customObject id="f3g-ad-EMA" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="100" y="2449"/>
+        </scene>
+        <!--Root Split View-->
+        <scene sceneID="qZ6-ex-AbS">
+            <objects>
+                <customObject id="X0y-yX-aLW" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <splitViewController id="Mbw-uZ-9Gt" customClass="RootSplitView" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
+                    <splitViewItems>
+                        <splitViewItem id="kgW-mm-cXx"/>
+                        <splitViewItem id="c25-eb-BQw"/>
+                    </splitViewItems>
+                    <splitView key="splitView" dividerStyle="thin" id="7II-bT-Zov">
+                        <rect key="frame" x="-39" y="0.0" width="489" height="276"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <connections>
+                            <outlet property="delegate" destination="Mbw-uZ-9Gt" id="UYZ-yP-8y7"/>
+                        </connections>
+                    </splitView>
+                    <connections>
+                        <outlet property="splitView" destination="7II-bT-Zov" id="Y1P-I0-h5I"/>
+                        <segue destination="fjW-vM-mzH" kind="relationship" relationship="splitItems" id="Ka6-JN-sYf"/>
+                        <segue destination="mgA-Mv-mw6" kind="relationship" relationship="splitItems" id="Zxs-vi-bDV"/>
+                    </connections>
+                </splitViewController>
+            </objects>
+            <point key="canvasLocation" x="-895.5" y="1290"/>
+        </scene>
+        <!--Status Bar View-->
+        <scene sceneID="Zo5-71-nDx">
+            <objects>
+                <customObject id="FL0-N8-HNV" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <viewController id="mgA-Mv-mw6" customClass="StatusBarView" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="pAG-nR-ffI">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="25"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wcX-Xb-8DW">
+                                <rect key="frame" x="5" y="0.0" width="0.0" height="25"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="IgZ-7J-f6p"/>
+                                </constraints>
+                            </stackView>
+                            <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TDe-Nb-ZwZ">
+                                <rect key="frame" x="445" y="0.0" width="0.0" height="25"/>
+                            </stackView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="wcX-Xb-8DW" firstAttribute="top" secondItem="pAG-nR-ffI" secondAttribute="top" id="0th-4A-eSb"/>
+                            <constraint firstAttribute="bottom" secondItem="wcX-Xb-8DW" secondAttribute="bottom" id="36m-Qa-dAO"/>
+                            <constraint firstItem="wcX-Xb-8DW" firstAttribute="height" secondItem="TDe-Nb-ZwZ" secondAttribute="height" id="Ayz-EO-N0g"/>
+                            <constraint firstAttribute="trailing" secondItem="TDe-Nb-ZwZ" secondAttribute="trailing" constant="5" id="ff0-pU-xBN"/>
+                            <constraint firstItem="wcX-Xb-8DW" firstAttribute="leading" secondItem="pAG-nR-ffI" secondAttribute="leading" constant="5" id="jdd-YS-AH4"/>
+                            <constraint firstItem="TDe-Nb-ZwZ" firstAttribute="top" secondItem="pAG-nR-ffI" secondAttribute="top" id="meK-2q-Fco"/>
+                            <constraint firstAttribute="bottom" secondItem="TDe-Nb-ZwZ" secondAttribute="bottom" id="tSj-Sc-d1k"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="leftBarStackView" destination="wcX-Xb-8DW" id="PJJ-zH-Hjh"/>
+                        <outlet property="rightBarStackView" destination="TDe-Nb-ZwZ" id="E7q-r7-saL"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="-921" y="1790"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="wTH-cn-3SB">

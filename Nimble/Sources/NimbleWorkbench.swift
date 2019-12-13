@@ -25,16 +25,24 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     }
   }
   
+  var statusBarView: StatusBarView? {
+    return workbenchView?.children[1] as? StatusBarView
+  }
+  
+  var mainView : NSSplitViewController? {
+     return workbenchView?.children[0] as? NSSplitViewController
+  }
+  
   var workbenchView: NSSplitViewController? {
     contentViewController as? NSSplitViewController
   }
       
   var workbenchCentralView: NSSplitViewController? {
-    workbenchView?.children[1] as? NSSplitViewController
+    mainView?.children[1] as? NSSplitViewController
   }
   
   var navigatorView: NavigatorView? {
-    workbenchView?.children[0] as? NavigatorView
+    mainView?.children[0] as? NavigatorView
   }
   
   var editorView: TabbedEditor? {
@@ -107,6 +115,10 @@ extension NimbleWorkbench: Workbench {
   
   public var debugArea: WorkbenchArea? {
      return debugView
+  }
+  
+  public var statusBar: WorkbenchStatusBar {
+    return statusBarView as! WorkbenchStatusBar
   }
   
 
