@@ -37,7 +37,7 @@ public protocol Console {
   @discardableResult
   func writeLine(data: Data) -> Console
   
-  func close()
+  func stopListening()
 }
 
 

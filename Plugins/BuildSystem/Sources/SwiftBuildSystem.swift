@@ -23,21 +23,27 @@ class SwiftBuildSystem: BuildSystem {
     swiftcProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
     swiftcProc.executableURL = URL(fileURLWithPath: "/usr/bin/swiftc")
     swiftcProc.arguments = [fileURL.path]
+    var swiftcProcConsole: Console?
     swiftcProc.terminationHandler = { process in
+      swiftcProcConsole?.stopListening()
       let programProc = Process()
       programProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
       programProc.executableURL = URL(fileURLWithPath: "\(fileURL.deletingPathExtension())")
+      var programProcConsole: Console?
+      programProc.terminationHandler = { process in
+        programProcConsole?.stopListening()
+      }
       DispatchQueue.main.async {
-        let console = workbench.createConsole(title: "Run: \(fileURL.deletingPathExtension().lastPathComponent)", show: true)
-        programProc.standardOutput = console?.output
-        programProc.standardError = console?.output
+        programProcConsole = workbench.createConsole(title: "Run: \(fileURL.deletingPathExtension().lastPathComponent)", show: true)
+        programProc.standardOutput = programProcConsole?.output
+        programProc.standardError = programProcConsole?.output
         try? programProc.run()
       }
     }
     DispatchQueue.main.async {
       workbench.debugArea?.isHidden = false
-      let console = workbench.createConsole(title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", show: true)
-      swiftcProc.standardError = console?.output
+      swiftcProcConsole = workbench.createConsole(title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", show: true)
+      swiftcProc.standardError = swiftcProcConsole?.output
       try? swiftcProc.run()
     }
     

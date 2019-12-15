@@ -104,7 +104,7 @@ class ConsoleView: NSViewController {
     }
     consolesStorage.removeValue(forKey: currentConsole.title)
     consoleSelectionButton.removeItem(withTitle: currentConsole.title)
-    currentConsole.close()
+    currentConsole.stopListening()
     textView.string = ""
     if !consolesStorage.isEmpty{
        open(console: consolesStorage.keys.first ?? "")
@@ -133,17 +133,15 @@ extension ConsoleView : WorkbenchPart {
 }
 
 class NimbleTextConsole: Console {
-  
-  private let queue = DispatchQueue(label: "com.scade.nimble.consoleBuffer")
-  private var innerContent : String
+  private var innerContent : Atomic<String>
   
   var contents: String {
     get {
-      return queue.sync { innerContent }
+      return innerContent.value
     }
     set {
-      queue.sync { [weak self] in
-        self?.innerContent = newValue
+      innerContent.modify{value in
+        value = newValue
       }
     }
   }
@@ -168,7 +166,7 @@ class NimbleTextConsole: Console {
   
   init(title: String){
     self.title = title
-    self.innerContent = ""
+    self.innerContent = Atomic("")
     // Set up a read handler which fires when data is written to our inputPipe
     inputPipe.fileHandleForReading.readabilityHandler = { [weak self] fileHandle in
       guard let strongSelf = self else { return }
@@ -190,7 +188,7 @@ class NimbleTextConsole: Console {
     return self
   }
   
-  func close() {
+  func stopListening() {
     outputPipe.fileHandleForReading.readabilityHandler = nil
     inputPipe.fileHandleForReading.readabilityHandler = nil
   }
