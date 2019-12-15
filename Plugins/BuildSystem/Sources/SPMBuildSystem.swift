@@ -17,20 +17,22 @@ class SPMBuildSystem: BuildSystem {
   func run(in workbench: Workbench) -> BuildProgress {
     guard let curProject = workbench.project, let package = findPackage(project: curProject) else { return SPMBuildProgress() }
     let fileURL = package.url
-    let spmProc = Process()
-    spmProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
-    spmProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
-    spmProc.arguments = ["build"]
-    spmProc.terminationHandler = { [weak self] process in
-      self?.run(package: fileURL, in: workbench)
-    }
-    DispatchQueue.main.async {
-      workbench.debugArea?.isHidden = false
-      let console = workbench.createConsole(title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", show: true)
-      spmProc.standardError = console?.output
-      spmProc.standardOutput = console?.output
-      try? spmProc.run()
-    }
+    clean(package: fileURL, callBack: { process in
+      let spmProc = Process()
+      spmProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
+      spmProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
+      spmProc.arguments = ["build"]
+      spmProc.terminationHandler = { [weak self] process in
+        self?.run(package: fileURL, in: workbench)
+      }
+      DispatchQueue.main.async {
+        workbench.debugArea?.isHidden = false
+        let console = workbench.createConsole(title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", show: true)
+        spmProc.standardError = console?.output
+        spmProc.standardOutput = console?.output
+        try? spmProc.run()
+      }
+    })
     return SPMBuildProgress()
   }
   
@@ -81,7 +83,16 @@ class SPMBuildSystem: BuildSystem {
     try? proc.run()
     
   }
+ 
   
+  private func clean(package url: URL, callBack: @escaping (Process) -> Void) {
+    let proc = Process()
+    proc.currentDirectoryURL = url.deletingLastPathComponent()
+    proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
+    proc.arguments = ["package", "clean"]
+    proc.terminationHandler = callBack
+    try? proc.run()
+  }
 }
 
 struct SPMBuildProgress : BuildProgress {

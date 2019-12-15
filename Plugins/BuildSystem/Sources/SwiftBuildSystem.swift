@@ -18,8 +18,8 @@ class SwiftBuildSystem: BuildSystem {
     guard let fileURL = workbench.currentDocument?.fileURL else {
       return SwiftBuildProgress()
     }
-    
     workbench.currentDocument?.save(nil)
+    clean(file: fileURL)
     let swiftcProc = Process()
     swiftcProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
     swiftcProc.executableURL = URL(fileURLWithPath: "/usr/bin/swiftc")
@@ -43,6 +43,11 @@ class SwiftBuildSystem: BuildSystem {
     }
     
     return SwiftBuildProgress()
+  }
+  
+  private func clean(file url: URL) {
+    guard let file = File(url: url.deletingPathExtension()), file.exists else { return }
+    try? file.path.delete()
   }
 }
 
