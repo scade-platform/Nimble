@@ -40,7 +40,6 @@ class ConsoleView: NSViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    self.view.setBackgroundColor(.white)
     if let font = NSFont.init(name: "SFMono-Medium", size: 12) {
       textView.font = font
     }
@@ -201,4 +200,24 @@ class NimbleTextConsole: Console {
   
 }
 
-
+class BackgroundView: NSView {
+  
+  override init(frame frameRect: NSRect) {
+    super.init(frame: frameRect)
+    self.wantsLayer = true
+  }
+  
+  required init?(coder: NSCoder) {
+    super.init(coder: coder)
+    self.wantsLayer = true
+  }
+  
+  @IBInspectable var backgrondColor: NSColor = .controlBackgroundColor
+  
+  override func updateLayer() {
+    super.updateLayer()
+    
+    self.layer?.backgroundColor = backgrondColor.cgColor
+  }
+  
+}
