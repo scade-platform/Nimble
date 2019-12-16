@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -777,7 +778,7 @@
                         <splitViewItem id="6CT-wf-mhQ"/>
                         <splitViewItem id="6Es-Wo-iHc"/>
                     </splitViewItems>
-                    <splitView key="splitView" dividerStyle="thin" id="69o-ns-cfo">
+                    <splitView key="splitView" dividerStyle="thin" id="69o-ns-cfo" customClass="EditorSplitView" customModule="Nimble" customModuleProvider="target">
                         <rect key="frame" x="-103" y="0.0" width="683" height="376"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>
