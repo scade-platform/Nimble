@@ -31,22 +31,23 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="489-L5-7Z7">
-                                        <rect key="frame" x="0.0" y="0.0" width="480" height="401"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="470" height="391"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        <size key="minSize" width="480" height="401"/>
+                                        <size key="minSize" width="475" height="391"/>
                                         <size key="maxSize" width="480" height="10000000"/>
                                         <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     </textView>
                                 </subviews>
                             </clipView>
+                            <edgeInsets key="contentInsets" left="0.0" right="5" top="5" bottom="5"/>
                             <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="6yP-W6-vIo">
                                 <rect key="frame" x="-100" y="-100" width="240" height="16"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                             <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="BGL-Ee-E9j">
-                                <rect key="frame" x="464" y="0.0" width="16" height="401"/>
+                                <rect key="frame" x="459" y="5" width="16" height="391"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                         </scrollView>
