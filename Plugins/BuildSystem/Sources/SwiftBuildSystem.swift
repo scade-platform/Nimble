@@ -25,13 +25,13 @@ class SwiftBuildSystem: BuildSystem {
     swiftcProc.arguments = [fileURL.path]
     var swiftcProcConsole: Console?
     swiftcProc.terminationHandler = { process in
-      swiftcProcConsole?.stopListening()
+      swiftcProcConsole?.stopReadingFromBuffer()
       let programProc = Process()
       programProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
       programProc.executableURL = URL(fileURLWithPath: "\(fileURL.deletingPathExtension())")
       var programProcConsole: Console?
       programProc.terminationHandler = { process in
-        programProcConsole?.stopListening()
+        programProcConsole?.stopReadingFromBuffer()
       }
       DispatchQueue.main.async {
         programProcConsole = workbench.createConsole(title: "Run: \(fileURL.deletingPathExtension().lastPathComponent)", show: true)

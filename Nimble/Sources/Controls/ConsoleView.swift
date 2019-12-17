@@ -104,7 +104,7 @@ class ConsoleView: NSViewController {
     }
     consolesStorage.removeValue(forKey: currentConsole.title)
     consoleSelectionButton.removeItem(withTitle: currentConsole.title)
-    currentConsole.stopListening()
+    currentConsole.stopReadingFromBuffer()
     textView.string = ""
     if !consolesStorage.isEmpty{
        open(console: consolesStorage.keys.first ?? "")
@@ -188,7 +188,7 @@ class NimbleTextConsole: Console {
     return self
   }
   
-  func stopListening() {
+  func stopReadingFromBuffer() {
     outputPipe.fileHandleForReading.readabilityHandler = nil
     inputPipe.fileHandleForReading.readabilityHandler = nil
   }

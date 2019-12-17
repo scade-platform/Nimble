@@ -23,7 +23,7 @@ class SPMBuildSystem: BuildSystem {
     spmProc.arguments = ["build"]
     var spmProcConsole : Console?
     spmProc.terminationHandler = { [weak self] process in
-      spmProcConsole?.stopListening()
+      spmProcConsole?.stopReadingFromBuffer()
       self?.run(package: fileURL, in: workbench)
     }
     DispatchQueue.main.async {
@@ -75,7 +75,7 @@ class SPMBuildSystem: BuildSystem {
       programProc.arguments = ["run", "\(name)"]
       var programProcConsole: Console?
       programProc.terminationHandler = { process in
-        programProcConsole?.stopListening()
+        programProcConsole?.stopReadingFromBuffer()
       }
       DispatchQueue.main.async {
         programProcConsole = workbench.createConsole(title: "Run: \(name)", show: true)
