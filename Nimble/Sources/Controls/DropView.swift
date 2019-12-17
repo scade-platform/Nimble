@@ -31,15 +31,45 @@ class DropView: NSSplitView, NimbleWorkbenchView {
   
   override func performDragOperation(_ info: NSDraggingInfo) -> Bool {
     let pasteboard = info.draggingPasteboard
-    
-    guard let nimbleCtrl = (NSDocumentController.shared as? NimbleController) else { return false}
     guard let urls = pasteboard.readObjects(forClasses: [NSURL.self], options: filteringOptions) as? [URL] else { return false }
-    
     urls.forEach{
-      nimbleCtrl.open(url: $0)
+      open(url: $0)
     }
     
     return false
+  }
+  
+  
+  func open(url: URL) {
+    if url.typeIdentifierConforms(to: ProjectDocument.docType) {
+      guard let nimbleCtrl = (NSDocumentController.shared as? NimbleController) else { return }
+      nimbleCtrl.openProject(withContentsOf: url)
+    } else if let path = Path(url: url) {
+      open(path: path)
+    }
+  }
+    
+  func open(path: Path) {
+    if path.isDirectory {
+      guard let currentDocument = self.window?.windowController?.document as? ProjectDocument else {return}
+      guard let folder = Folder(path: path) else { return }
+      currentDocument.project.add(folder)
+    } else if path.isFile {
+      openDocument(withContentsOf: path.url, display: true)
+    }
+  }
+  
+  func openDocument(withContentsOf url: URL, display displayDocument: Bool) {
+    guard let nimbleCtrl = (NSDocumentController.shared as? NimbleController),
+          let currentDocument = self.window?.windowController?.document as? ProjectDocument,
+          let doc = DocumentManager.shared.open(url: url)
+    else {
+      return
+    }
+    nimbleCtrl.noteNewRecentDocument(doc)
+    if let workbench = currentDocument.workbench, displayDocument {
+      workbench.open(doc, show: true)
+    }
   }
 }
 
