@@ -15,6 +15,7 @@ class SPMBuildSystem: BuildSystem {
   }
   
   func run(in workbench: Workbench) -> BuildProgress {
+    workbench.currentDocument?.save(nil)
     guard let curProject = workbench.project, let package = findPackage(project: curProject) else { return SPMBuildProgress() }
     let fileURL = package.url
     let spmProc = Process()

@@ -19,6 +19,7 @@ class SwiftBuildSystem: BuildSystem {
       return SwiftBuildProgress()
     }
     
+    workbench.currentDocument?.save(nil)
     let swiftcProc = Process()
     swiftcProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
     swiftcProc.executableURL = URL(fileURLWithPath: "/usr/bin/swiftc")
