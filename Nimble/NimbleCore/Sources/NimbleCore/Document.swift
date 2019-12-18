@@ -133,7 +133,6 @@ public class DocumentManager {
         }
       }
       if dc.canOpen(file) {
-        print(dc)
         docClass = dc
       }
       if dc.isDefault(for: file) {
