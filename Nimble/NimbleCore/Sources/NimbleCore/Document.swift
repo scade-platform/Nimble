@@ -39,7 +39,7 @@ public extension Document {
   
   static func canOpen(_ file: File) -> Bool {
     guard !file.url.uti.starts(with: "dy") else {
-      return true
+      return false
     }
     return typeIdentifiers.contains { file.url.typeIdentifierConforms(to: $0) }
   }
@@ -124,13 +124,24 @@ public class DocumentManager {
 
   private func selectDocumentClass(for file: File) -> Document.Type? {
     var docClass: Document.Type? = nil
+    var basicDoc : Document.Type? = nil
     for dc in documentClasses {
+      if basicDoc == nil {
+        if dc.typeIdentifiers.count == 2, dc.typeIdentifiers.contains("public.item"), dc.typeIdentifiers.contains("public.content") {
+          basicDoc = dc
+          continue
+        }
+      }
       if dc.canOpen(file) {
+        print(dc)
         docClass = dc
       }
       if dc.isDefault(for: file) {
         break
       }
+    }
+    if docClass == nil {
+      return basicDoc
     }
     return docClass
   }

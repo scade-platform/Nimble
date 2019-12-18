@@ -64,6 +64,8 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     guard let debugView = debugView else { return }
     debugView.isHidden = true
     
+    DocumentManager.shared.registerDocumentClass(BinaryFileDocument.self)
+    
     PluginManager.shared.activate(in: self)
   }
     

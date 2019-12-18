@@ -11,7 +11,7 @@ public final class ImageDocument: NimbleDocument {
   }()
       
   public static func isDefault(for file: File) -> Bool {
-    return canOpen(file)
+    return typeIdentifiers.contains { file.url.typeIdentifierConforms(to: $0) }
   }
   
   public override func read(from data: Data, ofType typeName: String) throws {
