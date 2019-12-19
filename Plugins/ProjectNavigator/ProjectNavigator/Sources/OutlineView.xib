@@ -100,7 +100,7 @@
                                                                     <constraint firstAttribute="width" constant="17" id="0tP-4y-0xE"/>
                                                                     <constraint firstAttribute="width" secondItem="D4P-IE-r5W" secondAttribute="height" multiplier="1:1" id="b5p-2H-6Cm"/>
                                                                 </constraints>
-                                                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="cross" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="D4L-8c-obv">
+                                                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NSStopProgressTemplate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="D4L-8c-obv">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
@@ -171,6 +171,6 @@
     </objects>
     <resources>
         <image name="NSActionTemplate" width="14" height="14"/>
-        <image name="cross" width="128" height="128"/>
+        <image name="NSStopProgressTemplate" width="11" height="11"/>
     </resources>
 </document>
