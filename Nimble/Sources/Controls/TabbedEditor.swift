@@ -81,7 +81,7 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    tabBar?.style = NimbleStyle()
+    tabBar?.style = NimbleStyle(theme: NimbleTheme(), tabButtonWidth: .full)
     tabBar?.delegate = self
     tabBar?.dataSource = self
     
