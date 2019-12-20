@@ -78,7 +78,7 @@ public final class LSPClient {
                                         version: 0,
                                         text: doc.text)
     
-    server.send(DidOpenTextDocument(textDocument: textDocument))
+    server.send(DidOpenTextDocumentNotification(textDocument: textDocument))
     doc.observers.add(observer: self)
   }
   
@@ -90,7 +90,7 @@ public final class LSPClient {
     guard let url = doc.fileURL else { return }
     let textDocument = TextDocumentIdentifier(url.uri)
     
-    server.send(DidCloseTextDocument(textDocument: textDocument))
+    server.send(DidCloseTextDocumentNotification(textDocument: textDocument))
     doc.observers.remove(observer: self)
   }
   
@@ -99,10 +99,10 @@ public final class LSPClient {
 extension LSPClient: MessageHandler {
   public func handle<Notification>(_ notification: Notification, from: ObjectIdentifier) where Notification : NotificationType {
     switch notification {
-    case let log as LogMessage:
+    case let log as LogMessageNotification:
       print(log.message)
       
-    case let diagnostic as PublishDiagnostics:      
+    case let diagnostic as PublishDiagnosticsNotification:
       DispatchQueue.main.async {
         guard let url = diagnostic.uri.fileURL,
               let path = Path(url: url) else { return }

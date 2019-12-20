@@ -39,8 +39,8 @@ public final class LSPServerManager {
   static let communicationProtocol: MessageRegistry = {
     let requests: [_RequestType.Type] = []
     let notifications: [NotificationType.Type] = [
-      LogMessage.self,
-      PublishDiagnostics.self]
+      LogMessageNotification.self,
+      PublishDiagnosticsNotification.self]
     
     return MessageRegistry(requests: requests, notifications: notifications)
   }()
