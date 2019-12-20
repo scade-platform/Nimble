@@ -11,7 +11,9 @@ import CodeEditor
 
 
 class CodeEditorView: NSViewController, NSTextViewDelegate, NSTextStorageDelegate {
-  weak var document: SourceCodeDocument? = nil {
+  var diagnostics: [(NSRange, Diagnostic)] = []
+  
+  weak var document: CodeEditorDocument? = nil {
     didSet {
       loadContent()
     }
@@ -27,8 +29,10 @@ class CodeEditorView: NSViewController, NSTextViewDelegate, NSTextStorageDelegat
     super.viewDidLoad()
     
     ColorThemeManager.shared.observers.add(observer: self)
-    
     loadContent()
+    
+//    let diagnosticView = CodeEditorDiagnosticView()
+//    self.textView?.addSubview(diagnosticView)
   }
   
   private func loadContent() {
@@ -52,7 +56,7 @@ class CodeEditorView: NSViewController, NSTextViewDelegate, NSTextStorageDelegat
 
   private func applyTheme(_ theme: ColorTheme? = nil) {
     guard let theme = theme ?? ColorThemeManager.shared.currentTheme else { return }
-    view.setValue(theme.global.background, forKey: "backgroundColor")
+    textView?.backgroundColor = theme.global.background
     
     guard let textView = self.textView else { return }
     textView.apply(theme: theme)
@@ -73,14 +77,19 @@ class CodeEditorView: NSViewController, NSTextViewDelegate, NSTextStorageDelegat
     
   
   override func textStorageDidProcessEditing(_ notification: Notification) {
-    guard
-      let textStorage = notification.object as? NSTextStorage,
-      textStorage.editedMask.contains(.editedCharacters)
-      else { return }
+    guard let doc = document,
+          let textStorage = notification.object as? NSTextStorage,
+              textStorage.editedMask.contains(.editedCharacters) else { return }
+        
+    doc.updateChangeCount(.changeDone)
     
-    document?.updateChangeCount(.changeDone)
+    doc.observers.notify(as: SourceCodeDocumentObserver.self) {
+      let range = textStorage.editedRange.lowerBound..<textStorage.editedRange.upperBound
+      $0.textDidChange(document: doc, range: range, lengthDelta: textStorage.changeInLength)
+    }
     
-    guard let syntaxParser = document?.syntaxParser else { return }
+    // Update highlighting
+    guard let syntaxParser = doc.syntaxParser else { return }
     let range = textStorage.editedRange
     
     DispatchQueue.main.async { [weak self] in
@@ -95,8 +104,7 @@ class CodeEditorView: NSViewController, NSTextViewDelegate, NSTextStorageDelegat
 
   
   func textView(_ textView: NSTextView, completions words: [String], forPartialWordRange charRange: NSRange, indexOfSelectedItem index: UnsafeMutablePointer<Int>?) -> [String] {
-    guard let completions = document?.delegates.first?.complete() else { return [] }
-    return completions
+    return []
   }
 }
 
@@ -117,6 +125,36 @@ extension CodeEditorView: WorkbenchEditor {
   func focus() -> Bool {
     return view.window?.makeFirstResponder(textView) ?? false
   }
+    
+  func publish(diagnostics: [Diagnostic]) {
+    guard let textStorage = document?.textStorage else { return }
+    
+    for (range, _) in self.diagnostics {
+      textStorage.layoutManagers.forEach {
+        $0.removeTemporaryAttribute(.toolTip, forCharacterRange: range)
+        $0.removeTemporaryAttribute(.underlineColor, forCharacterRange: range)
+        $0.removeTemporaryAttribute(.underlineStyle, forCharacterRange: range)
+      }
+    }
+            
+    let diagnostics = diagnostics.compactMap { return $0 as? SourceCodeDiagnostic }
+        
+    let style = NSNumber(value: NSUnderlineStyle.single.rawValue)
+    
+    for d in diagnostics {
+      let color = d.severity == .error ? NSColor.red : NSColor.yellow
+      let range = textStorage.string.range(for: d.range)
+      let nsRange = range.isEmpty ? NSRange(range.lowerBound..<range.upperBound + 1) : NSRange(range)
+      
+      textStorage.layoutManagers.forEach {
+        $0.addTemporaryAttribute(.toolTip, value: d.message, forCharacterRange: nsRange)
+        $0.addTemporaryAttribute(.underlineColor, value: color, forCharacterRange: nsRange)
+        $0.addTemporaryAttribute(.underlineStyle, value: style, forCharacterRange: nsRange)
+        
+      }
+      
+      self.diagnostics.append((nsRange, d))
+    }
+  }
 }
-
 

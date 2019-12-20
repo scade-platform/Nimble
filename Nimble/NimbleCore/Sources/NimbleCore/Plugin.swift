@@ -100,7 +100,8 @@ public class PluginManager {
         
     return pluginManager
   }()
-  
+    
+  private init() {}
   
   
   private var packages: [Package] = []
@@ -119,7 +120,13 @@ public class PluginManager {
     
   public func getFromPackages<T: Decodable>(_ type: T.Type, at path: String) -> [T] {
     return packages.compactMap{
-      try? $0.decode(type, keyPath: path) ?? nil
+      //try? $0.decode(type, keyPath: path) ?? nil
+      do {
+        return try $0.decode(type, keyPath: path)
+      } catch {
+        print(error)
+      }
+      return nil
     }
   }
 }

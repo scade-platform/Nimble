@@ -15,6 +15,9 @@ import NimbleCore
 public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   public var observers = ObserverSet<WorkbenchObserver>()
   
+  public private(set) var diagnostics: [Path: [Diagnostic]] = [:]
+  
+  
   // Document property of the WindowController always refer to the project
   public override var document: AnyObject? {
     get { super.document }
@@ -179,6 +182,18 @@ extension NimbleWorkbench: Workbench {
       debugView?.isHidden = false
     }
     return debugView?.consoleView.createConsole(title: title, show: show)
+  }
+    
+  public func publishDiagnostics(for path: Path, diagnostics: [Diagnostic]) {
+    if let doc = documents.first(where: {$0.path == path}){
+      doc.editor?.publish(diagnostics: diagnostics)
+    }
+    
+    if diagnostics.isEmpty {
+      self.diagnostics.removeValue(forKey: path)
+    } else {
+      self.diagnostics[path] = diagnostics
+    }
   }
 }
 

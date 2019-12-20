@@ -34,10 +34,12 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
 //      lineHeight = theme.lineHeight
 //      tabWidth = theme.tabWidth
 //    } else {
-      lineHeight = 1.2
-      tabWidth = 4
+    lineHeight = 1.2
+    tabWidth = 4
 //    }
     super.init(coder: coder)
+    
+    self.drawsBackground = true
     
     // workaround for: the text selection highlight can remain between lines (2017-09 macOS 10.13).
     self.scaleUnitSquare(to: NSSize(width: 0.5, height: 0.5))
@@ -101,6 +103,12 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     
     NotificationCenter.default.addObserver(self, selector: #selector(textDidChange), name: NSText.didChangeNotification, object: self)
   }
+  
+//  override var wantsUpdateLayer: Bool { return true }
+//
+//  override func updateLayer() {
+//      layer?.backgroundColor = backgroundColor.cgColor
+//  }
   
   @objc private func frameDidChange(notification: NSNotification) {
     self.lineNumberView?.needsDisplay = true

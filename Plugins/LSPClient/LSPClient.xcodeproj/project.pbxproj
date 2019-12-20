@@ -1,0 +1,369 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 52;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D75DAE5D23A83DA60017DEE2 /* LSPWorkbenchConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75DAE5C23A83DA60017DEE2 /* LSPWorkbenchConnector.swift */; };
+		D75DAE5F23A845A80017DEE2 /* CodeEditor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D75DAE5E23A845A80017DEE2 /* CodeEditor.framework */; };
+		D75DAE6A23AC2D000017DEE2 /* LSPDiagnostic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75DAE6923AC2D000017DEE2 /* LSPDiagnostic.swift */; };
+		D77F337623A2F3ED00E3AFC8 /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77F337523A2F3ED00E3AFC8 /* Plugin.swift */; };
+		D7EC136C239EF6E100DA0DA0 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7EC136A239EF6E100DA0DA0 /* Info.plist */; };
+		D7EC136E239EF70B00DA0DA0 /* LSPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EC136D239EF70B00DA0DA0 /* LSPClient.swift */; };
+		D7EC1371239EF73E00DA0DA0 /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7EC1370239EF73E00DA0DA0 /* NimbleCore.framework */; };
+		D7EC1375239EFB8400DA0DA0 /* LSPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EC1374239EFB8400DA0DA0 /* LSPServer.swift */; };
+		D7EC137A239EFD0200DA0DA0 /* LSPBindings in Frameworks */ = {isa = PBXBuildFile; productRef = D7EC1379239EFD0200DA0DA0 /* LSPBindings */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		D75DAE5C23A83DA60017DEE2 /* LSPWorkbenchConnector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPWorkbenchConnector.swift; sourceTree = "<group>"; };
+		D75DAE5E23A845A80017DEE2 /* CodeEditor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CodeEditor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D75DAE6923AC2D000017DEE2 /* LSPDiagnostic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPDiagnostic.swift; sourceTree = "<group>"; };
+		D77F337523A2F3ED00E3AFC8 /* Plugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
+		D7EC1361239EF4D100DA0DA0 /* LSPClient.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LSPClient.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7EC136A239EF6E100DA0DA0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D7EC136D239EF70B00DA0DA0 /* LSPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPClient.swift; sourceTree = "<group>"; };
+		D7EC1370239EF73E00DA0DA0 /* NimbleCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7EC1374239EFB8400DA0DA0 /* LSPServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPServer.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D7EC135E239EF4D100DA0DA0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7EC137A239EFD0200DA0DA0 /* LSPBindings in Frameworks */,
+				D7EC1371239EF73E00DA0DA0 /* NimbleCore.framework in Frameworks */,
+				D75DAE5F23A845A80017DEE2 /* CodeEditor.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D7EC1358239EF4D100DA0DA0 = {
+			isa = PBXGroup;
+			children = (
+				D7EC136A239EF6E100DA0DA0 /* Info.plist */,
+				D7EC136B239EF6E100DA0DA0 /* Sources */,
+				D7EC1362239EF4D100DA0DA0 /* Products */,
+				D7EC136F239EF73E00DA0DA0 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		D7EC1362239EF4D100DA0DA0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D7EC1361239EF4D100DA0DA0 /* LSPClient.plugin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D7EC136B239EF6E100DA0DA0 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				D7EC136D239EF70B00DA0DA0 /* LSPClient.swift */,
+				D75DAE6923AC2D000017DEE2 /* LSPDiagnostic.swift */,
+				D7EC1374239EFB8400DA0DA0 /* LSPServer.swift */,
+				D75DAE5C23A83DA60017DEE2 /* LSPWorkbenchConnector.swift */,
+				D77F337523A2F3ED00E3AFC8 /* Plugin.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		D7EC136F239EF73E00DA0DA0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D75DAE5E23A845A80017DEE2 /* CodeEditor.framework */,
+				D7EC1370239EF73E00DA0DA0 /* NimbleCore.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D7EC1360239EF4D100DA0DA0 /* LSPClient.plugin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D7EC1367239EF4D100DA0DA0 /* Build configuration list for PBXNativeTarget "LSPClient.plugin" */;
+			buildPhases = (
+				D7EC135D239EF4D100DA0DA0 /* Sources */,
+				D7EC135E239EF4D100DA0DA0 /* Frameworks */,
+				D7EC135F239EF4D100DA0DA0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = LSPClient.plugin;
+			packageProductDependencies = (
+				D7EC1379239EFD0200DA0DA0 /* LSPBindings */,
+			);
+			productName = LanguageServerClient;
+			productReference = D7EC1361239EF4D100DA0DA0 /* LSPClient.plugin */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D7EC1359239EF4D100DA0DA0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1120;
+				ORGANIZATIONNAME = SCADE;
+				TargetAttributes = {
+					D7EC1360239EF4D100DA0DA0 = {
+						CreatedOnToolsVersion = 11.2.1;
+						LastSwiftMigration = 1120;
+					};
+				};
+			};
+			buildConfigurationList = D7EC135C239EF4D100DA0DA0 /* Build configuration list for PBXProject "LSPClient" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D7EC1358239EF4D100DA0DA0;
+			packageReferences = (
+				D7EC1378239EFD0200DA0DA0 /* XCRemoteSwiftPackageReference "sourcekit-lsp" */,
+			);
+			productRefGroup = D7EC1362239EF4D100DA0DA0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D7EC1360239EF4D100DA0DA0 /* LSPClient.plugin */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D7EC135F239EF4D100DA0DA0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7EC136C239EF6E100DA0DA0 /* Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D7EC135D239EF4D100DA0DA0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D77F337623A2F3ED00E3AFC8 /* Plugin.swift in Sources */,
+				D7EC1375239EFB8400DA0DA0 /* LSPServer.swift in Sources */,
+				D7EC136E239EF70B00DA0DA0 /* LSPClient.swift in Sources */,
+				D75DAE5D23A83DA60017DEE2 /* LSPWorkbenchConnector.swift in Sources */,
+				D75DAE6A23AC2D000017DEE2 /* LSPDiagnostic.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		D7EC1365239EF4D100DA0DA0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		D7EC1366239EF4D100DA0DA0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		D7EC1368239EF4D100DA0DA0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.LSPClient;
+				PRODUCT_MODULE_NAME = LSPClientPlugin;
+				PRODUCT_NAME = LSPClient;
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Debug;
+		};
+		D7EC1369239EF4D100DA0DA0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.LSPClient;
+				PRODUCT_MODULE_NAME = LSPClientPlugin;
+				PRODUCT_NAME = LSPClient;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				WRAPPER_EXTENSION = plugin;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D7EC135C239EF4D100DA0DA0 /* Build configuration list for PBXProject "LSPClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7EC1365239EF4D100DA0DA0 /* Debug */,
+				D7EC1366239EF4D100DA0DA0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D7EC1367239EF4D100DA0DA0 /* Build configuration list for PBXNativeTarget "LSPClient.plugin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D7EC1368239EF4D100DA0DA0 /* Debug */,
+				D7EC1369239EF4D100DA0DA0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D7EC1378239EFD0200DA0DA0 /* XCRemoteSwiftPackageReference "sourcekit-lsp" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:apple/sourcekit-lsp.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D7EC1379239EFD0200DA0DA0 /* LSPBindings */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D7EC1378239EFD0200DA0DA0 /* XCRemoteSwiftPackageReference "sourcekit-lsp" */;
+			productName = LSPBindings;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = D7EC1359239EF4D100DA0DA0 /* Project object */;
+}

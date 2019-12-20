@@ -75,10 +75,10 @@
 		0C92E52623950E1D00B073DE /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				0C3C32E723A2A559009A15D1 /* SPMBuildSystem.swift */,
-				0C92E52723950E3E00B073DE /* BuildSystemModule.swift */,
 				0C3469CE2397A0E600319613 /* BuildSystem.swift */,
+				0C92E52723950E3E00B073DE /* BuildSystemModule.swift */,
 				0C3469D02397D04600319613 /* ShellBuildTool.swift */,
+				0C3C32E723A2A559009A15D1 /* SPMBuildSystem.swift */,
 				0C3469DE239F5DFF00319613 /* SwiftBuildSystem.swift */,
 			);
 			path = Sources;

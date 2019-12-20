@@ -23,7 +23,13 @@
          location = "group:Plugins/LangExtensions/LangExtensions.xcodeproj">
       </FileRef>
       <FileRef
+         location = "group:Plugins/LSPClient/LSPClient.xcodeproj">
+      </FileRef>
+      <FileRef
          location = "group:Plugins/ProjectNavigator/ProjectNavigator/ProjectNavigator.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Plugins/SwiftExtensions/SwiftExtensions.xcodeproj">
       </FileRef>
    </Group>
 </Workspace>

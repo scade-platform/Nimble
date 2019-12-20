@@ -24,9 +24,43 @@ public extension String {
     return self[self.index(at: value.lowerBound)..<self.index(at: value.upperBound)]
   }
   
-  func index(at offset: Int) -> String.Index {
+  func index(at offset: Int) -> Index {
     return index(startIndex, offsetBy: offset)
   }
+  
+  func offset(at index: Index) -> Int {
+    return distance(from: startIndex, to: index)
+  }
+  
+  func lineRange(at: Index) -> Range<Index> {
+    return lineRange(for: at..<at)
+  }
+  
+  func lineNumber(at index: Index) -> Int {
+    var line = lineRange(at: startIndex)
+    var number = 0
+    while(index > line.upperBound) {
+      number += 1
+      line = lineRange(at: line.upperBound)
+    }
+    return number
+  }
+  
+  func lineRange(line lineNumber: Int) -> Range<Index> {
+    var line = lineRange(at: startIndex)
+    
+    for _ in 0..<lineNumber {
+      line = lineRange(at: line.upperBound)
+    }
+        
+    return line
+  }
+  
+  func lineRange(line lineNumber: Int) -> Range<Int> {
+    let range: Range<Index> = self.lineRange(line: lineNumber)
+    return self.offset(at: range.lowerBound)..<self.offset(at: range.upperBound)
+  }
+
   
   func utf8(at offset: Int) -> Int {
     return utf8(at: self.index(at: offset))
@@ -66,6 +100,10 @@ public extension String.UTF8View {
   
   func index(at offset: Int) -> String.UTF8View.Index {
     return index(startIndex, offsetBy: offset)
+  }
+  
+  func offset(at index: Index) -> Int {
+    return distance(from: startIndex, to: index)
   }
   
   func lines(from range: Range<Int>) -> [Range<Int>] {
