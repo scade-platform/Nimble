@@ -220,16 +220,23 @@ struct TabTheme: Theme {
   }
   
   // MARK: - Defualt tab button theme
-  fileprivate struct DefaultTabButtonTheme: KPCTabsControl.TabButtonTheme {
+  fileprivate struct DefaultTabButtonTheme: KPCTabsControl.TabButtonTheme, GradientTabButtonTheme {
     var backgroundColor: NSColor { return TabTheme.sharedBackgroundColor }
     var borderColor: NSColor { return TabTheme.sharedBorderColor }
     var titleColor: NSColor { return getColorFromAsset("TextColor", defualt: NSColor.selectedTextColor) }
     var titleFont: NSFont { return NSFont.systemFont(ofSize: 12) } // { return NSFontManager.shared.convert(NSFont.systemFont(ofSize: 12), toHaveTrait: .italicFontMask) }
+    var topBackgroundColor: NSColor  {
+      return getColorFromAsset("InactiveTopBackgroundColor", defualt: backgroundColor)
+    }
+    
+    var bottomBackgroundColor: NSColor  {
+      return getColorFromAsset("InactiveBottomBackgroundColor", defualt: backgroundColor)
+    }
   }
   
   
   // MARK: - Selected tab button theme
-  fileprivate struct SelectedTabButtonTheme: KPCTabsControl.TabButtonTheme {
+  fileprivate struct SelectedTabButtonTheme: KPCTabsControl.TabButtonTheme, GradientTabButtonTheme {
     let base: DefaultTabButtonTheme
     weak var tabItem: TabItem?
     
@@ -246,6 +253,13 @@ struct TabTheme: Theme {
     var borderColor: NSColor { return TabTheme.sharedBorderColor }
     var titleColor: NSColor { return getColorFromAsset("SelectedTextColor", defualt: NSColor.selectedTextColor)  }
     var titleFont: NSFont { return NSFont.systemFont(ofSize: 12) } // { return NSFontManager.shared.convert(NSFont.systemFont(ofSize: 12), toHaveTrait: .italicFontMask) }
+    var topBackgroundColor: NSColor  {
+      return getColorFromAsset("ActiveTopBackgroundColor", defualt: backgroundColor)
+    }
+    
+    var bottomBackgroundColor: NSColor  {
+      return getColorFromAsset("ActiveBottomBackgroundColor", defualt: backgroundColor)
+    }
   }
   
   
