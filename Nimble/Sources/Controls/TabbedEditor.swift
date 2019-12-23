@@ -224,7 +224,7 @@ struct TabTheme: Theme {
     var backgroundColor: NSColor { return TabTheme.sharedBackgroundColor }
     var borderColor: NSColor { return TabTheme.sharedBorderColor }
     var titleColor: NSColor { return getColorFromAsset("TextColor", defualt: NSColor.selectedTextColor) }
-    var titleFont: NSFont { return NSFont.systemFont(ofSize: 12) } // { return NSFontManager.shared.convert(NSFont.systemFont(ofSize: 12), toHaveTrait: .italicFontMask) }
+    var titleFont: NSFont { return NSFont.systemFont(ofSize: 11) } // { return NSFontManager.shared.convert(NSFont.systemFont(ofSize: 12), toHaveTrait: .italicFontMask) }
     var topBackgroundColor: NSColor  {
       return getColorFromAsset("InactiveTopBackgroundColor", defualt: backgroundColor)
     }
@@ -252,7 +252,7 @@ struct TabTheme: Theme {
     
     var borderColor: NSColor { return TabTheme.sharedBorderColor }
     var titleColor: NSColor { return getColorFromAsset("SelectedTextColor", defualt: NSColor.selectedTextColor)  }
-    var titleFont: NSFont { return NSFont.systemFont(ofSize: 12) } // { return NSFontManager.shared.convert(NSFont.systemFont(ofSize: 12), toHaveTrait: .italicFontMask) }
+    var titleFont: NSFont { return NSFont.systemFont(ofSize: 11) } // { return NSFontManager.shared.convert(NSFont.systemFont(ofSize: 12), toHaveTrait: .italicFontMask) }
     var topBackgroundColor: NSColor  {
       return getColorFromAsset("ActiveTopBackgroundColor", defualt: backgroundColor)
     }
