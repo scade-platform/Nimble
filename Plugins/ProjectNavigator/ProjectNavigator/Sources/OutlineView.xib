@@ -95,9 +95,9 @@
                                                         <rect key="frame" x="0.0" y="0.0" width="230" height="17"/>
                                                         <subviews>
                                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="D4P-IE-r5W">
-                                                                <rect key="frame" x="0.0" y="0.0" width="17" height="17"/>
+                                                                <rect key="frame" x="0.0" y="4" width="10" height="10"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="width" constant="17" id="0tP-4y-0xE"/>
+                                                                    <constraint firstAttribute="width" constant="10" id="0tP-4y-0xE"/>
                                                                     <constraint firstAttribute="width" secondItem="D4P-IE-r5W" secondAttribute="height" multiplier="1:1" id="b5p-2H-6Cm"/>
                                                                 </constraints>
                                                                 <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NSStopProgressTemplate" imagePosition="overlaps" alignment="center" imageScaling="proportionallyDown" inset="2" id="D4L-8c-obv">
@@ -106,14 +106,14 @@
                                                                 </buttonCell>
                                                             </button>
                                                             <imageView translatesAutoresizingMaskIntoConstraints="NO" id="3nu-mF-reh">
-                                                                <rect key="frame" x="25" y="2" width="14" height="14"/>
+                                                                <rect key="frame" x="18" y="2" width="14" height="14"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" secondItem="3nu-mF-reh" secondAttribute="height" multiplier="1:1" id="kmO-MZ-Rs2"/>
                                                                 </constraints>
                                                                 <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="NSActionTemplate" id="WHm-jm-A7q"/>
                                                             </imageView>
                                                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="k5t-fd-2sL">
-                                                                <rect key="frame" x="45" y="1" width="187" height="16"/>
+                                                                <rect key="frame" x="38" y="1" width="194" height="16"/>
                                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="R6P-Ki-PvB">
                                                                     <font key="font" metaFont="system"/>
                                                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
