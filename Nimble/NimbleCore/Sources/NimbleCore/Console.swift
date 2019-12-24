@@ -38,6 +38,8 @@ public protocol Console {
   func writeLine(data: Data) -> Console
   
   func stopReadingFromBuffer()
+  
+  func close()
 }
 
 

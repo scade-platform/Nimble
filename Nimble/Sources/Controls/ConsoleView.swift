@@ -26,15 +26,8 @@ class ConsoleView: NSViewController {
     guard console.title == currentConsole?.title else {
       return
     }
-    handler(fileHandle: fileHandle)
-  }
-  
-  private func handler(fileHandle: FileHandle) {
-    let data = fileHandle.availableData
-    if let string = String(data: data, encoding: String.Encoding.utf8) {
-      DispatchQueue.main.async {
-        self.textView.string += string
-      }
+    DispatchQueue.main.async {
+      self.textView.string = console.contents
     }
   }
   
@@ -57,7 +50,7 @@ class ConsoleView: NSViewController {
   
   func createConsole(title: String, show: Bool) -> Console {
     let consoleName = improveName(title)
-    let newConsole = NimbleTextConsole(title: consoleName)
+    let newConsole = NimbleTextConsole(title: consoleName, view: self)
     self.consoleSelectionButton.addItem(withTitle: newConsole.title)
     if (show) {
       self.textView.string = newConsole.contents
@@ -88,6 +81,16 @@ class ConsoleView: NSViewController {
     console.handler = handler(fileHandle:console:)
     consoleSelectionButton.selectItem(withTitle: console.title)
     textView.string = console.contents
+  }
+  
+  func close(console: Console) {
+    guard currentConsole?.title != console.title else {
+      closeCurrentConsole(self)
+      return
+    }
+    consolesStorage.removeValue(forKey: console.title)
+    consoleSelectionButton.removeItem(withTitle: console.title)
+    console.stopReadingFromBuffer()
   }
   
   @IBAction func selectionDidChange(_ sender: NSPopUpButton) {
@@ -128,10 +131,10 @@ extension ConsoleView : WorkbenchPart {
     return nil
   }
   
-  
 }
 
 class NimbleTextConsole: Console {
+  private let view: ConsoleView
   private var innerContent : Atomic<String>
   
   var contents: String {
@@ -163,8 +166,9 @@ class NimbleTextConsole: Console {
     }
   }
   
-  init(title: String){
+  init(title: String, view: ConsoleView){
     self.title = title
+    self.view = view
     self.innerContent = Atomic("")
     // Set up a read handler which fires when data is written to our inputPipe
     inputPipe.fileHandleForReading.readabilityHandler = { [weak self] fileHandle in
@@ -194,6 +198,11 @@ class NimbleTextConsole: Console {
   
   func clear() {
     self.contents = ""
+  }
+  
+  func close() {
+    stopReadingFromBuffer()
+    view.close(console: self)
   }
   
 }
