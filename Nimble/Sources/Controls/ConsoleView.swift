@@ -78,7 +78,9 @@ class ConsoleView: NSViewController {
       return
     }
     currentConsole = console
-    console.handler = handler(fileHandle:console:)
+    if console.isReadingFromBuffer {
+      console.handler = handler(fileHandle:console:)
+    }
     consoleSelectionButton.selectItem(withTitle: console.title)
     textView.string = console.contents
   }
@@ -164,6 +166,10 @@ class NimbleTextConsole: Console {
         self.handler(fh, self)
       }
     }
+  }
+  
+  var isReadingFromBuffer: Bool {
+    return inputPipe.fileHandleForReading.readabilityHandler != nil
   }
   
   init(title: String, view: ConsoleView){
