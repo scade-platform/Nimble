@@ -25,12 +25,18 @@ class SPMBuildSystem: BuildSystem {
     var spmProcConsole : Console?
     spmProc.terminationHandler = { [weak self] process in
       spmProcConsole?.stopReadingFromBuffer()
+      if spmProcConsole?.contents.isEmpty ?? true {
+        DispatchQueue.main.async {
+          spmProcConsole?.close()
+        }
+      } else if let contents = spmProcConsole?.contents, contents.contains("error:") {
+        return
+      }
       self?.run(package: fileURL, in: workbench)
     }
     DispatchQueue.main.async {
       workbench.debugArea?.isHidden = false
       spmProcConsole = workbench.createConsole(title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", show: true)
-      spmProc.standardError = spmProcConsole?.output
       spmProc.standardOutput = spmProcConsole?.output
       try? spmProc.run()
     }
