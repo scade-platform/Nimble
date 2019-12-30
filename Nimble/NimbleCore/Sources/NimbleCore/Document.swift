@@ -19,11 +19,19 @@ public protocol Document where Self: NSDocument {
   static func isDefault(for file: File) -> Bool
   
   static func canOpen(_ file: File) -> Bool
+  
+  static var hierarchyWeight: Int { get }
+  
+  static var usupportedTypes: [String] { get }
 
 }
 
 
 public extension Document {
+  static var usupportedTypes: [String] {
+    return []
+  }
+  
   var path: Path? {
     guard let url = self.fileURL else { return nil }
     return Path(url: url)
@@ -38,10 +46,15 @@ public extension Document {
   }
   
   static func canOpen(_ file: File) -> Bool {
-    guard !file.url.uti.starts(with: "dy") else {
+    //dinamic UTI also can conforms to standart UTI
+    //at the least one of public.item or public.contednt
+    guard typeIdentifiers.contains(where: { file.url.typeIdentifierConforms(to: $0)}) else {
       return false
     }
-    return typeIdentifiers.contains { file.url.typeIdentifierConforms(to: $0) }
+    guard !usupportedTypes.contains(where: { file.url.typeIdentifierConforms(to: $0)}) else {
+      return false
+    }
+    return true
   }
 }
 
@@ -123,26 +136,17 @@ public class DocumentManager {
   
 
   private func selectDocumentClass(for file: File) -> Document.Type? {
-    var docClass: Document.Type? = nil
-    var basicDoc : Document.Type? = nil
+    var docClasses: [Document.Type] = []
     for dc in documentClasses {
-      if basicDoc == nil {
-        if dc.typeIdentifiers.count == 2, dc.typeIdentifiers.contains("public.item"), dc.typeIdentifiers.contains("public.content") {
-          basicDoc = dc
-          continue
+      if dc.canOpen(file) {
+        docClasses.append(dc)
+        if dc.isDefault(for: file) {
+          return dc
         }
       }
-      if dc.canOpen(file) {
-        docClass = dc
-      }
-      if dc.isDefault(for: file) {
-        break
-      }
     }
-    if docClass == nil {
-      return basicDoc
-    }
-    return docClass
+    docClasses.sort(by: {$0.hierarchyWeight > $1.hierarchyWeight})
+    return docClasses.first
   }
     
   private func searchOpenedDocument(_ file: File) -> Document? {

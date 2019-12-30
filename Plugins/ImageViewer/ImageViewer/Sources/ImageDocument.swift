@@ -11,7 +11,7 @@ public final class ImageDocument: NimbleDocument {
   }()
       
   public static func isDefault(for file: File) -> Bool {
-    return typeIdentifiers.contains { file.url.typeIdentifierConforms(to: $0) }
+    return canOpen(file)
   }
   
   public override func read(from data: Data, ofType typeName: String) throws {
@@ -25,6 +25,10 @@ public final class ImageDocument: NimbleDocument {
 
 
 extension ImageDocument: Document {
+  public static var hierarchyWeight: Int {
+    return 2
+  }
+  
   public var editor: WorkbenchEditor? { return viewer }
   public static var typeIdentifiers: [String] { NSImage.imageTypes }
 }

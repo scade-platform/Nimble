@@ -22,6 +22,10 @@ class BinaryFileDocument : NimbleDocument {
 
 
 extension BinaryFileDocument : Document {
+  static var hierarchyWeight: Int {
+    return 0
+  }
+  
   var editor: WorkbenchEditor? {
     return unsupportedPane
   }

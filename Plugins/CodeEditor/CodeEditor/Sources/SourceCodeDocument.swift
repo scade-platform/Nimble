@@ -76,6 +76,17 @@ public final class SourceCodeDocument: NimbleDocument {
 
 
 extension SourceCodeDocument: Document {
+  
+  public static var hierarchyWeight: Int {
+    return 1
+  }
+  
+  public static var usupportedTypes: [String] {
+    //all this UTI in the most cases conforms to public.data
+    return ["public.archive", "public.executable", "public.audiovisual-​content"]
+  }
+  
+  
   public var editor: WorkbenchEditor? { codeEditor }
   
   public static var typeIdentifiers: [String] { ["public.text", "public.data", "public.svg-image"] }
