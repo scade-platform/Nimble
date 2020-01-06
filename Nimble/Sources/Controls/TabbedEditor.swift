@@ -81,7 +81,7 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    tabBar?.style = NimbleStyle(theme: NimbleTheme(), tabButtonWidth: .full)
+    tabBar?.style = NimbleStyle()
     tabBar?.delegate = self
     tabBar?.dataSource = self
     
@@ -220,23 +220,16 @@ struct TabTheme: Theme {
   }
   
   // MARK: - Defualt tab button theme
-  fileprivate struct DefaultTabButtonTheme: KPCTabsControl.TabButtonTheme, GradientTabButtonTheme {
+  fileprivate struct DefaultTabButtonTheme: KPCTabsControl.TabButtonTheme {
     var backgroundColor: NSColor { return TabTheme.sharedBackgroundColor }
     var borderColor: NSColor { return TabTheme.sharedBorderColor }
     var titleColor: NSColor { return getColorFromAsset("TextColor", defualt: NSColor.selectedTextColor) }
-    var titleFont: NSFont { return NSFont.systemFont(ofSize: 11) } // { return NSFontManager.shared.convert(NSFont.systemFont(ofSize: 12), toHaveTrait: .italicFontMask) }
-    var topBackgroundColor: NSColor  {
-      return getColorFromAsset("InactiveTopBackgroundColor", defualt: backgroundColor)
-    }
-    
-    var bottomBackgroundColor: NSColor  {
-      return getColorFromAsset("InactiveBottomBackgroundColor", defualt: backgroundColor)
-    }
+    var titleFont: NSFont { return NSFont.systemFont(ofSize: 12) } // { return NSFontManager.shared.convert(NSFont.systemFont(ofSize: 12), toHaveTrait: .italicFontMask) }
   }
   
   
   // MARK: - Selected tab button theme
-  fileprivate struct SelectedTabButtonTheme: KPCTabsControl.TabButtonTheme, GradientTabButtonTheme {
+  fileprivate struct SelectedTabButtonTheme: KPCTabsControl.TabButtonTheme {
     let base: DefaultTabButtonTheme
     weak var tabItem: TabItem?
     
@@ -252,14 +245,7 @@ struct TabTheme: Theme {
     
     var borderColor: NSColor { return TabTheme.sharedBorderColor }
     var titleColor: NSColor { return getColorFromAsset("SelectedTextColor", defualt: NSColor.selectedTextColor)  }
-    var titleFont: NSFont { return NSFont.systemFont(ofSize: 11) } // { return NSFontManager.shared.convert(NSFont.systemFont(ofSize: 12), toHaveTrait: .italicFontMask) }
-    var topBackgroundColor: NSColor  {
-      return getColorFromAsset("ActiveTopBackgroundColor", defualt: backgroundColor)
-    }
-    
-    var bottomBackgroundColor: NSColor  {
-      return getColorFromAsset("ActiveBottomBackgroundColor", defualt: backgroundColor)
-    }
+    var titleFont: NSFont { return NSFont.systemFont(ofSize: 12) } // { return NSFontManager.shared.convert(NSFont.systemFont(ofSize: 12), toHaveTrait: .italicFontMask) }
   }
   
   
