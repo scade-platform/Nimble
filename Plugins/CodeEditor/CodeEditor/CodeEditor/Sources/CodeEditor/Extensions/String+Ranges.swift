@@ -37,15 +37,8 @@ public extension String {
   }
   
   func lineNumber(at index: Index) -> Int {
-    var number = 0
-    var line = lineRange(at: startIndex)
-    
-    while(index > line.upperBound) {
-      number += 1
-      line = lineRange(at: line.upperBound)
-    }
-        
-    return number
+    ///TODO: consider all possible delimiters (see below)
+    return self[..<index].split(separator: "\n", omittingEmptySubsequences: false).count - 1
   }
   
   func lineRange(line lineNumber: Int) -> Range<Index> {

@@ -63,13 +63,13 @@ public extension String {
   
   func positionRange(for range: Range<Index>) -> Range<SourceCodePosition> {
     let lo = position(at: range.lowerBound)
-    let hi = range.lowerBound < range.upperBound ? position(at: self.index(before: range.upperBound)) : lo
+    let hi = range.lowerBound < range.upperBound ? position(at: range.upperBound) : lo
     return lo..<hi
   }
   
   func positionRange(for range: Range<Int>) -> Range<SourceCodePosition> {
     let lo = position(at: range.lowerBound)
-    let hi = range.lowerBound < range.upperBound ? position(at: range.upperBound - 1) : lo
+    let hi = range.lowerBound < range.upperBound ? position(at: range.upperBound) : lo
     return lo..<hi
   }
 }
