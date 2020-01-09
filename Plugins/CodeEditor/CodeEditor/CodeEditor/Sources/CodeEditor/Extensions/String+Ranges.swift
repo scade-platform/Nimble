@@ -37,12 +37,14 @@ public extension String {
   }
   
   func lineNumber(at index: Index) -> Int {
-    var line = lineRange(at: startIndex)
     var number = 0
+    var line = lineRange(at: startIndex)
+    
     while(index > line.upperBound) {
       number += 1
       line = lineRange(at: line.upperBound)
     }
+        
     return number
   }
   

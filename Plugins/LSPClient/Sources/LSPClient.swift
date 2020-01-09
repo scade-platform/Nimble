@@ -127,24 +127,20 @@ extension LSPClient: MessageHandler {
 
 
 extension LSPClient: SourceCodeDocumentObserver {
-  public func textDidChange(document: SourceCodeDocument, range: Range<Int>, lengthDelta: Int) {
-    /*
+  public func textDidChange(document: SourceCodeDocument, range: Range<Int>, text: String) {
     guard let uri = document.fileURL?.uri else { return }
+    
     let textDocument = VersionedTextDocumentIdentifier(uri, version: 0)
-            
-    //let range = range.lowerBound..<range.upperBound - lengthDelta
     let posRange = document.text.positionRange(for: range)
     let rangeLength = range.upperBound - range.lowerBound
-    let text = String(document.text[range])
-    
+        
     let lo = posRange.lowerBound.position
     let hi = posRange.upperBound.position
     
     let changeEvent = TextDocumentContentChangeEvent(range: lo..<hi, rangeLength: rangeLength, text: text)
-    let textChangeEvent = DidChangeTextDocument(textDocument: textDocument, contentChanges: [changeEvent])
-    print("Send")
+    let textChangeEvent = DidChangeTextDocumentNotification(textDocument: textDocument, contentChanges: [changeEvent])
+        
     server.send(textChangeEvent)
-    */
   }
 }
 

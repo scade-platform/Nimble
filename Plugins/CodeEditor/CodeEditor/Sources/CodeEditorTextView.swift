@@ -52,9 +52,10 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     textContainer.hangingIndentWidth = 2 //defaults[.hangingIndentWidth]
     self.replaceTextContainer(textContainer)
     
-    let layoutManager = LayoutManager()
+    //let layoutManager = LayoutManager()
+    let layoutManager = CodeEditorLayoutManager()
     self.textContainer!.replaceLayoutManager(layoutManager)
-    self.layoutManager?.allowsNonContiguousLayout = true
+    self.layoutManager!.allowsNonContiguousLayout = true
     
     // set layout values (wraps lines)
     self.minSize = self.frame.size
@@ -127,23 +128,16 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   
   /// text font
   override var font: NSFont? {
-    
     get {
-      // make sure to return by user defined font
-      return (self.layoutManager as? LayoutManager)?.textFont ?? super.font
+      return (self.layoutManager as? CodeEditorLayoutManager)?.textFont ?? super.font
     }
     
     set {
       guard let font = newValue else { return }
       
-      // let LayoutManager have the font too to avoid the issue where the line height can be inconsistance by a composite font
-      // -> Because `textView.font` can return a Japanese font
-      //    when the font is for one-bites and the first character of the content is Japanese one,
-      //    LayoutManager should not use `textView.font`.
-      (self.layoutManager as? LayoutManager)?.textFont = font
+      (self.layoutManager as? CodeEditorLayoutManager)?.textFont = font
       
       super.font = font
-      
       self.invalidateDefaultParagraphStyle()
     }
   }
@@ -265,7 +259,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     self.typingAttributes[.paragraphStyle] = paragraphStyle
     
     // tell line height also to scroll view so that scroll view can scroll line by line
-    if let lineHeight = (self.layoutManager as? LayoutManager)?.lineHeight {
+    if let lineHeight = (self.layoutManager as? CodeEditorLayoutManager)?.lineHeight {
       self.enclosingScrollView?.lineScroll = lineHeight
     }
     

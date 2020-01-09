@@ -13,11 +13,11 @@ public protocol SourceCodeDocument: Document {
 }
 
 public protocol SourceCodeDocumentObserver: DocumentObserver {
-  func textDidChange(document: SourceCodeDocument, range: Range<Int>, lengthDelta: Int)
+  func textDidChange(document: SourceCodeDocument, range: Range<Int>, text: String)
 }
 
 public extension SourceCodeDocumentObserver {
-  func textDidChange(document: SourceCodeDocument, range: Range<Int>, lengthDelta: Int) {}
+  func textDidChange(document: SourceCodeDocument, range: Range<Int>, text: String) {}
 }
 
 
@@ -62,12 +62,14 @@ public extension String {
   }
   
   func positionRange(for range: Range<Index>) -> Range<SourceCodePosition> {
-    return position(at: range.lowerBound)..<position(at: range.upperBound)
+    let lo = position(at: range.lowerBound)
+    let hi = range.lowerBound < range.upperBound ? position(at: self.index(before: range.upperBound)) : lo
+    return lo..<hi
   }
   
   func positionRange(for range: Range<Int>) -> Range<SourceCodePosition> {
     let lo = position(at: range.lowerBound)
-    let hi = position(at: range.upperBound)
+    let hi = range.lowerBound < range.upperBound ? position(at: range.upperBound - 1) : lo
     return lo..<hi
   }
 }

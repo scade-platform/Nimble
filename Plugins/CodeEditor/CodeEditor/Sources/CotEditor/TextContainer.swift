@@ -61,7 +61,7 @@ final class TextContainer: NSTextContainer {
         
         guard
             self.isHangingIndentEnabled,
-            let layoutManager = self.layoutManager as? LayoutManager,
+            let layoutManager = self.layoutManager as? CodeEditorLayoutManager,
             let storage = layoutManager.textStorage else {
                 return rect
         }
