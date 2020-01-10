@@ -24,11 +24,7 @@ public final class ImageDocument: NimbleDocument {
 }
 
 
-extension ImageDocument: Document {
-  public static var hierarchyWeight: Int {
-    return 2
-  }
-  
+extension ImageDocument: Document {  
   public var editor: WorkbenchEditor? { return viewer }
   public static var typeIdentifiers: [String] { NSImage.imageTypes }
 }

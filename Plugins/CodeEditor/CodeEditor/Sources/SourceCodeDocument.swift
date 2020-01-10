@@ -76,14 +76,9 @@ public final class SourceCodeDocument: NimbleDocument {
 
 
 extension SourceCodeDocument: Document {
-  
-  public static var hierarchyWeight: Int {
-    return 1
-  }
-  
   public static var usupportedTypes: [String] {
     //all this UTI in the most cases conforms to public.data
-    return ["public.archive", "public.executable", "public.audiovisual-​content"]
+    return ["public.archive", "public.executable", "public.audiovisual-​content", "com.microsoft.excel.xls", "com.microsoft.word.doc", "com.microsoft.powerpoint.​ppt"]
   }
   
   

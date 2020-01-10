@@ -62,11 +62,7 @@ public final class PageDocument: NimbleDocument {
 
 
 
-extension PageDocument: Document {
-  public static var hierarchyWeight: Int {
-    return 2
-  }
-  
+extension PageDocument: Document {  
   public var editor: WorkbenchEditor? { builderController }
   
   /// TODO: register UTIs for the page files
