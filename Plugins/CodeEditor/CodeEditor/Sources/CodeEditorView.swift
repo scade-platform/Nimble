@@ -33,8 +33,15 @@ class CodeEditorView: NSViewController {
     
     loadContent()
     
-//    let diagnosticView = CodeEditorDiagnosticView()
-//    self.textView?.addSubview(diagnosticView)
+    let errorDiagnostic = ErrorMockDiagnostic()
+    let warningDiagnostic = WarningMockDiagnostic()
+    
+    let errorDiagnosticView = CodeEditorDiagnosticView(diagnostic: errorDiagnostic)
+    let warningDiagnosticView = CodeEditorDiagnosticView(diagnostic: warningDiagnostic)
+    
+    
+    self.textView?.addSubview(warningDiagnosticView)
+    self.textView?.addSubview(errorDiagnosticView)
   }
   
   private func loadContent() {
@@ -192,4 +199,28 @@ extension CodeEditorView: NSTextViewDelegate {
   func textView(_ textView: NSTextView, completions words: [String], forPartialWordRange charRange: NSRange, indexOfSelectedItem index: UnsafeMutablePointer<Int>?) -> [String] {
     return []
   }
+}
+
+struct ErrorMockDiagnostic : Diagnostic {
+  var severity: DiagnosticSeverity {
+    return .error
+  }
+  
+  var message: String {
+    return "error message!"
+  }
+  
+  
+}
+
+struct WarningMockDiagnostic : Diagnostic {
+  var severity: DiagnosticSeverity {
+    return .warning
+  }
+  
+  var message: String {
+    return "warning message!"
+  }
+  
+  
 }

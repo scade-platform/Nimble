@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0CF422D123B4BB90000E1921 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CF422D023B4BB90000E1921 /* Assets.xcassets */; };
 		427E517C22C22B55008573F1 /* CurrentLineHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427E517B22C22B54008573F1 /* CurrentLineHighlighting.swift */; };
 		427E517E22C22C1F008573F1 /* CodeEditorTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427E517D22C22C1F008573F1 /* CodeEditorTextView.swift */; };
 		428C0F2122BA9EFE002142BD /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 428C0F2022BA9EFE002142BD /* Themes */; };
@@ -83,6 +84,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0CF422D023B4BB90000E1921 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		427E517B22C22B54008573F1 /* CurrentLineHighlighting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentLineHighlighting.swift; sourceTree = "<group>"; };
 		427E517D22C22C1F008573F1 /* CodeEditorTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorTextView.swift; sourceTree = "<group>"; };
 		428C0F2022BA9EFE002142BD /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Themes; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 		D7D2D58022B1B48C0017B45D = {
 			isa = PBXGroup;
 			children = (
+				0CF422D023B4BB90000E1921 /* Assets.xcassets */,
 				D741547D236C99AE00A1B80C /* Info.plist */,
 				D77990EB236F150C00CBF9B7 /* CodeEditor */,
 				D7D2D59222B1B52D0017B45D /* Sources */,
@@ -426,6 +429,7 @@
 				428C0F2122BA9EFE002142BD /* Themes in Resources */,
 				D741547E236C99AE00A1B80C /* Info.plist in Resources */,
 				D7D2D59D22B1B9C80017B45D /* CodeEditorView.xib in Resources */,
+				0CF422D123B4BB90000E1921 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -670,7 +674,9 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
+				ENABLE_ON_DEMAND_RESOURCES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -700,7 +706,9 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = "";
+				ENABLE_ON_DEMAND_RESOURCES = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
