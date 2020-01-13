@@ -25,12 +25,15 @@ class SPMBuildSystem: BuildSystem {
     var spmProcConsole : Console?
     spmProc.terminationHandler = { [weak self] process in
       spmProcConsole?.stopReadingFromBuffer()
-      if spmProcConsole?.contents.isEmpty ?? true {
-        DispatchQueue.main.async {
-          spmProcConsole?.close()
+      if let console = spmProcConsole {
+        let contents = console.contents
+        if contents.isEmpty {
+          DispatchQueue.main.async {
+            spmProcConsole?.close()
+          }
+        } else if contents.contains("error:") {
+          return
         }
-      } else if let contents = spmProcConsole?.contents, contents.contains("error:") {
-        return
       }
       self?.run(package: fileURL, in: workbench)
     }
