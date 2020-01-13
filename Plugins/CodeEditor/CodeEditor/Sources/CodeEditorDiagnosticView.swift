@@ -110,15 +110,19 @@ extension CodeEditorDiagnosticView: NSTableViewDelegate {
       var img: NSImage?
       switch diagnostic.severity {
       case .warning:
-        img = Bundle(for: type(of: self)).image(forResource: "warning")?.imageWithTint(NSColor(colorCode: "#f1ba01")!)
+        img = Bundle(for: type(of: self)).image(forResource: "warning")?.imageWithTint(.black)
+      case .error:
+        img = Bundle(for: type(of: self)).image(forResource: "error")?.imageWithTint(.black)
       default:
         break
       }
       imgView.image = img
-      //TODO: Improve it to show an image with background color
-      //To see image you should comment next line
-      imgView.setBackgroundColor(iconColumnColor)
-      cellView = imgView
+      imgView.imageScaling = .scaleProportionallyUpOrDown
+      let parentView = NSView()
+      parentView.setBackgroundColor(iconColumnColor)
+      parentView.addSubview(imgView)
+      imgView.layout(into: parentView, insets: NSEdgeInsets(top: 3, left: 3, bottom: 3, right: 3))
+      cellView = parentView
     } else {
       let textField = NSTextField(labelWithString: diagnostic.message)
       if let font = NSFont.init(name: "SFMono-Medium", size: 12) {
@@ -155,4 +159,15 @@ extension NSImage {
         
         return highlightImage;
     }
+}
+
+
+extension NSView {
+  func layout(into: NSView, insets: NSEdgeInsets = NSEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)) {
+    self.translatesAutoresizingMaskIntoConstraints = false
+    self.topAnchor.constraint(equalTo: into.topAnchor, constant: insets.top).isActive = true
+    self.bottomAnchor.constraint(equalTo: into.bottomAnchor, constant: -insets.bottom).isActive = true
+    self.leadingAnchor.constraint(equalTo: into.leadingAnchor, constant: insets.left).isActive = true
+    self.trailingAnchor.constraint(equalTo: into.trailingAnchor, constant: -insets.right).isActive = true
+  }
 }
