@@ -95,7 +95,7 @@ public class DocumentManager {
     
   private var documentClasses: [Document.Type] = []
   private var openedDocuments: [WeakRef<NSDocument>] = []
-  private var defaultDocument: Document.Type?
+  public var defaultDocument: Document.Type? = nil
   
   public var typeIdentifiers: Set<String> {
     documentClasses.reduce(into: []) { $0.formUnion($1.typeIdentifiers) }
@@ -106,16 +106,8 @@ public class DocumentManager {
   }
   
   
-  public func registerDocumentClass<T: Document>(_ docClass: T.Type, isDefault: Bool = false) {
-    if isDefault {
-      guard defaultDocument == nil else {
-        //only one default document
-        return
-      }
-      defaultDocument = docClass
-    } else {
-       documentClasses.append(docClass)
-    }
+  public func registerDocumentClass<T: Document>(_ docClass: T.Type) {
+    documentClasses.append(docClass)
   }
 
   

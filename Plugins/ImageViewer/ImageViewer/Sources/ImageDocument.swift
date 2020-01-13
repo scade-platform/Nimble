@@ -24,7 +24,7 @@ public final class ImageDocument: NimbleDocument {
 }
 
 
-extension ImageDocument: Document {  
+extension ImageDocument: Document {
   public var editor: WorkbenchEditor? { return viewer }
   public static var typeIdentifiers: [String] { NSImage.imageTypes }
 }

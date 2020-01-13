@@ -62,7 +62,7 @@ public final class PageDocument: NimbleDocument {
 
 
 
-extension PageDocument: Document {  
+extension PageDocument: Document {
   public var editor: WorkbenchEditor? { builderController }
   
   /// TODO: register UTIs for the page files
