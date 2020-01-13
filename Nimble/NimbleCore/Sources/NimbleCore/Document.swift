@@ -19,11 +19,17 @@ public protocol Document where Self: NSDocument {
   static func isDefault(for file: File) -> Bool
   
   static func canOpen(_ file: File) -> Bool
+  
+  static var usupportedTypes: [String] { get }
 
 }
 
 
 public extension Document {
+  static var usupportedTypes: [String] {
+    return []
+  }
+  
   var path: Path? {
     guard let url = self.fileURL else { return nil }
     return Path(url: url)
@@ -38,10 +44,15 @@ public extension Document {
   }
   
   static func canOpen(_ file: File) -> Bool {
-    guard !file.url.uti.starts(with: "dy") else {
-      return true
+    //dinamic UTI also can conforms to standart UTI
+    //at the least one of public.item or public.contednt
+    guard typeIdentifiers.contains(where: { file.url.typeIdentifierConforms(to: $0)}) else {
+      return false
     }
-    return typeIdentifiers.contains { file.url.typeIdentifierConforms(to: $0) }
+    guard !usupportedTypes.contains(where: { file.url.typeIdentifierConforms(to: $0)}) else {
+      return false
+    }
+    return true
   }
 }
 
@@ -84,6 +95,7 @@ public class DocumentManager {
     
   private var documentClasses: [Document.Type] = []
   private var openedDocuments: [WeakRef<NSDocument>] = []
+  public var defaultDocument: Document.Type? = nil
   
   public var typeIdentifiers: Set<String> {
     documentClasses.reduce(into: []) { $0.formUnion($1.typeIdentifiers) }
@@ -123,16 +135,16 @@ public class DocumentManager {
   
 
   private func selectDocumentClass(for file: File) -> Document.Type? {
-    var docClass: Document.Type? = nil
+    var docClasses: [Document.Type] = []
     for dc in documentClasses {
       if dc.canOpen(file) {
-        docClass = dc
-      }
-      if dc.isDefault(for: file) {
-        break
+        docClasses.append(dc)
+        if dc.isDefault(for: file) {
+          return dc
+        }
       }
     }
-    return docClass
+    return docClasses.first ?? defaultDocument
   }
     
   private func searchOpenedDocument(_ file: File) -> Document? {

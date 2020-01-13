@@ -66,8 +66,20 @@ public final class CodeEditorDocument: NimbleDocument {
 
 extension CodeEditorDocument: Document {
   public static var typeIdentifiers: [String] { ["public.text", "public.data", "public.svg-image"] }
+  
+  public static var usupportedTypes: [String] {
+    //all this UTI in the most cases conforms to public.data
+    return ["public.archive",
+            "public.executable",
+            "public.audiovisual-​content",
+            "com.microsoft.excel.xls",
+            "com.microsoft.word.doc",
+            "com.microsoft.powerpoint.​ppt"]
+  }
+
   public var editor: WorkbenchEditor? { codeEditor }
 }
+
 
 extension CodeEditorDocument: SourceCodeDocument {
   public var languageId: String {
