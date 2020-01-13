@@ -1,0 +1,8 @@
+extensions:
+  com.scade.nimble.LSPClient:
+    languageServers:
+      - languages: [swift]
+        executable: bin/sourcekit-lsp
+        arguments: []
+        environment:
+          PATH: /usr/bin

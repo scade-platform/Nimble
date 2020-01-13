@@ -49,10 +49,14 @@ final class LineNumberView: NSRulerView {
   }
   
   override func draw(_ dirtyRect: NSRect) {
-    NSColor.clear.setFill()
-    dirtyRect.fill()
-  
+    self.drawBackground(in: dirtyRect)
     self.drawHashMarksAndLabels(in: dirtyRect)
+  }
+  
+  func drawBackground(in rect: NSRect) {
+    let backgroundColor = textView?.backgroundColor ?? NSColor.clear
+    backgroundColor.setFill()
+    rect.fill()
   }
   
   func drawLineNumber(_ lineNumberString: String, in lineRect: NSRect, selected: Bool = false) {

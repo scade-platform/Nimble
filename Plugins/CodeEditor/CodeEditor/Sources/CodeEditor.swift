@@ -21,7 +21,7 @@ public final class CodeEditor: Module {
 
 final class CodeEditorPlugin: Plugin {
   init() {
-    DocumentManager.shared.registerDocumentClass(SourceCodeDocument.self)
+    DocumentManager.shared.registerDocumentClass(CodeEditorDocument.self)
     
     // Load color themes
     ColorThemeManager.shared.load(from: resources/"Themes")

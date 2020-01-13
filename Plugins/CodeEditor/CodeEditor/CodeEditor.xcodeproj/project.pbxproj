@@ -10,7 +10,6 @@
 		427E517C22C22B55008573F1 /* CurrentLineHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427E517B22C22B54008573F1 /* CurrentLineHighlighting.swift */; };
 		427E517E22C22C1F008573F1 /* CodeEditorTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427E517D22C22C1F008573F1 /* CodeEditorTextView.swift */; };
 		428C0F2122BA9EFE002142BD /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 428C0F2022BA9EFE002142BD /* Themes */; };
-		42A56DF722BBD1A600983A9B /* LayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A56DF622BBD1A500983A9B /* LayoutManager.swift */; };
 		42A56DFF22BBD82100983A9B /* TextContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A56DFE22BBD82100983A9B /* TextContainer.swift */; };
 		D722322622C92BC300E471C2 /* LineNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D722322522C92BC300E471C2 /* LineNumberView.swift */; };
 		D722328822CD587700E471C2 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D722328422CD587700E471C2 /* OrderedSet.swift */; };
@@ -31,8 +30,9 @@
 		D72232A422CD5BF200E471C2 /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72232A322CD5BF200E471C2 /* String+Localization.swift */; };
 		D741547E236C99AE00A1B80C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D741547D236C99AE00A1B80C /* Info.plist */; };
 		D74A7F592399ABCD006E0238 /* CodeEditorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74A7F582399ABCD006E0238 /* CodeEditorMenu.swift */; };
+		D75DAE6123AAC1B40017DEE2 /* CodeEditorDiagnosticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75DAE6023AAC1B40017DEE2 /* CodeEditorDiagnosticView.swift */; };
 		D773AD3322D3812A003A12A5 /* CodeEditorTextView+ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773AD3222D3812A003A12A5 /* CodeEditorTextView+ColorTheme.swift */; };
-		D7799107236F150C00CBF9B7 /* TextDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77990F1236F150C00CBF9B7 /* TextDocument.swift */; };
+		D7799107236F150C00CBF9B7 /* SourceCodeDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77990F1236F150C00CBF9B7 /* SourceCodeDocument.swift */; };
 		D7799108236F150C00CBF9B7 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77990F3236F150C00CBF9B7 /* Language.swift */; };
 		D7799109236F150C00CBF9B7 /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77990F4236F150C00CBF9B7 /* Tokenizer.swift */; };
 		D779910A236F150C00CBF9B7 /* Syntax.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77990F5236F150C00CBF9B7 /* Syntax.swift */; };
@@ -43,7 +43,6 @@
 		D779910F236F150C00CBF9B7 /* String+Ranges.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77990FB236F150C00CBF9B7 /* String+Ranges.swift */; };
 		D7799110236F150C00CBF9B7 /* Range.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77990FC236F150C00CBF9B7 /* Range.swift */; };
 		D7799111236F150C00CBF9B7 /* NSTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77990FD236F150C00CBF9B7 /* NSTextView.swift */; };
-		D7799112236F150C00CBF9B7 /* TextDocumentDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77990FE236F150C00CBF9B7 /* TextDocumentDelegate.swift */; };
 		D7799113236F150C00CBF9B7 /* Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77990FF236F150C00CBF9B7 /* Core.swift */; };
 		D7799116236F15E800CBF9B7 /* CodeEditor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7798FA3236F145900CBF9B7 /* CodeEditor.framework */; };
 		D7799117236F15E800CBF9B7 /* CodeEditor.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7798FA3236F145900CBF9B7 /* CodeEditor.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -55,7 +54,8 @@
 		D7D2D59422B1B59E0017B45D /* CodeEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D59322B1B59E0017B45D /* CodeEditor.swift */; };
 		D7D2D59C22B1B9C80017B45D /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D59A22B1B9C80017B45D /* CodeEditorView.swift */; };
 		D7D2D59D22B1B9C80017B45D /* CodeEditorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7D2D59B22B1B9C80017B45D /* CodeEditorView.xib */; };
-		D7D2D5A322B28F020017B45D /* SourceCodeDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D5A222B28F020017B45D /* SourceCodeDocument.swift */; };
+		D7D2D5A322B28F020017B45D /* CodeEditorDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D5A222B28F020017B45D /* CodeEditorDocument.swift */; };
+		D7EC46C223C3D8B5000B4B05 /* CodeEditorLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EC46C123C3D8B5000B4B05 /* CodeEditorLayoutManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,7 +86,6 @@
 		427E517B22C22B54008573F1 /* CurrentLineHighlighting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentLineHighlighting.swift; sourceTree = "<group>"; };
 		427E517D22C22C1F008573F1 /* CodeEditorTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorTextView.swift; sourceTree = "<group>"; };
 		428C0F2022BA9EFE002142BD /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Themes; sourceTree = "<group>"; };
-		42A56DF622BBD1A500983A9B /* LayoutManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutManager.swift; sourceTree = "<group>"; };
 		42A56DFE22BBD82100983A9B /* TextContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextContainer.swift; sourceTree = "<group>"; };
 		D722322522C92BC300E471C2 /* LineNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineNumberView.swift; sourceTree = "<group>"; };
 		D722328422CD587700E471C2 /* OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrderedSet.swift; path = ../../../CotEditor/CotEditor/Sources/OrderedSet.swift; sourceTree = "<group>"; };
@@ -107,11 +106,12 @@
 		D72232A322CD5BF200E471C2 /* String+Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Localization.swift"; path = "../../../CotEditor/CotEditor/Sources/String+Localization.swift"; sourceTree = "<group>"; };
 		D741547D236C99AE00A1B80C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D74A7F582399ABCD006E0238 /* CodeEditorMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorMenu.swift; sourceTree = "<group>"; };
+		D75DAE6023AAC1B40017DEE2 /* CodeEditorDiagnosticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorDiagnosticView.swift; sourceTree = "<group>"; };
 		D773AD3222D3812A003A12A5 /* CodeEditorTextView+ColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorTextView+ColorTheme.swift"; sourceTree = "<group>"; };
 		D7798FA3236F145900CBF9B7 /* CodeEditor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CodeEditor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D77990EC236F150C00CBF9B7 /* CodeEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodeEditor.h; sourceTree = "<group>"; };
 		D77990EE236F150C00CBF9B7 /* Package.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
-		D77990F1236F150C00CBF9B7 /* TextDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextDocument.swift; sourceTree = "<group>"; };
+		D77990F1236F150C00CBF9B7 /* SourceCodeDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SourceCodeDocument.swift; sourceTree = "<group>"; };
 		D77990F3236F150C00CBF9B7 /* Language.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		D77990F4236F150C00CBF9B7 /* Tokenizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
 		D77990F5236F150C00CBF9B7 /* Syntax.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Syntax.swift; sourceTree = "<group>"; };
@@ -122,7 +122,6 @@
 		D77990FB236F150C00CBF9B7 /* String+Ranges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Ranges.swift"; sourceTree = "<group>"; };
 		D77990FC236F150C00CBF9B7 /* Range.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Range.swift; sourceTree = "<group>"; };
 		D77990FD236F150C00CBF9B7 /* NSTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTextView.swift; sourceTree = "<group>"; };
-		D77990FE236F150C00CBF9B7 /* TextDocumentDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextDocumentDelegate.swift; sourceTree = "<group>"; };
 		D77990FF236F150C00CBF9B7 /* Core.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Core.swift; sourceTree = "<group>"; };
 		D7799103236F150C00CBF9B7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D779911A236F15ED00CBF9B7 /* NimbleCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -134,7 +133,8 @@
 		D7D2D59622B1B5AD0017B45D /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7D2D59A22B1B9C80017B45D /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
 		D7D2D59B22B1B9C80017B45D /* CodeEditorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CodeEditorView.xib; sourceTree = "<group>"; };
-		D7D2D5A222B28F020017B45D /* SourceCodeDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SourceCodeDocument.swift; sourceTree = "<group>"; };
+		D7D2D5A222B28F020017B45D /* CodeEditorDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorDocument.swift; sourceTree = "<group>"; };
+		D7EC46C123C3D8B5000B4B05 /* CodeEditorLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorLayoutManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,7 +173,6 @@
 			isa = PBXGroup;
 			children = (
 				42A56DFE22BBD82100983A9B /* TextContainer.swift */,
-				42A56DF622BBD1A500983A9B /* LayoutManager.swift */,
 				427E517B22C22B54008573F1 /* CurrentLineHighlighting.swift */,
 				D722328222CD564B00E471C2 /* Sources */,
 			);
@@ -235,8 +234,7 @@
 			children = (
 				D77990F8236F150C00CBF9B7 /* ColorTheme.swift */,
 				D77990FF236F150C00CBF9B7 /* Core.swift */,
-				D77990F1236F150C00CBF9B7 /* TextDocument.swift */,
-				D77990FE236F150C00CBF9B7 /* TextDocumentDelegate.swift */,
+				D77990F1236F150C00CBF9B7 /* SourceCodeDocument.swift */,
 				D77990F9236F150C00CBF9B7 /* Extensions */,
 				D77990F2236F150C00CBF9B7 /* Language */,
 			);
@@ -291,12 +289,14 @@
 			isa = PBXGroup;
 			children = (
 				D7D2D59322B1B59E0017B45D /* CodeEditor.swift */,
-				D7D2D59A22B1B9C80017B45D /* CodeEditorView.swift */,
+				D75DAE6023AAC1B40017DEE2 /* CodeEditorDiagnosticView.swift */,
+				D7D2D5A222B28F020017B45D /* CodeEditorDocument.swift */,
+				D7EC46C123C3D8B5000B4B05 /* CodeEditorLayoutManager.swift */,
 				D74A7F582399ABCD006E0238 /* CodeEditorMenu.swift */,
 				427E517D22C22C1F008573F1 /* CodeEditorTextView.swift */,
-				D7D2D5A222B28F020017B45D /* SourceCodeDocument.swift */,
-				D7D2D59B22B1B9C80017B45D /* CodeEditorView.xib */,
+				D7D2D59A22B1B9C80017B45D /* CodeEditorView.swift */,
 				D722322522C92BC300E471C2 /* LineNumberView.swift */,
+				D7D2D59B22B1B9C80017B45D /* CodeEditorView.xib */,
 				D722328122CD4E7A00E471C2 /* CotEditor */,
 				D773AD3122D37DC8003A12A5 /* Extensions */,
 			);
@@ -443,11 +443,10 @@
 				D779910F236F150C00CBF9B7 /* String+Ranges.swift in Sources */,
 				D779910E236F150C00CBF9B7 /* String+Encoding.swift in Sources */,
 				D779910C236F150C00CBF9B7 /* SyntaxParser.swift in Sources */,
-				D7799112236F150C00CBF9B7 /* TextDocumentDelegate.swift in Sources */,
 				D7799111236F150C00CBF9B7 /* NSTextView.swift in Sources */,
 				D7799113236F150C00CBF9B7 /* Core.swift in Sources */,
 				D779910D236F150C00CBF9B7 /* ColorTheme.swift in Sources */,
-				D7799107236F150C00CBF9B7 /* TextDocument.swift in Sources */,
+				D7799107236F150C00CBF9B7 /* SourceCodeDocument.swift in Sources */,
 				D779910B236F150C00CBF9B7 /* Grammar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -458,8 +457,7 @@
 			files = (
 				427E517E22C22C1F008573F1 /* CodeEditorTextView.swift in Sources */,
 				D7D2D59422B1B59E0017B45D /* CodeEditor.swift in Sources */,
-				D7D2D5A322B28F020017B45D /* SourceCodeDocument.swift in Sources */,
-				42A56DF722BBD1A600983A9B /* LayoutManager.swift in Sources */,
+				D7D2D5A322B28F020017B45D /* CodeEditorDocument.swift in Sources */,
 				D72232A222CD59E800E471C2 /* NSString.swift in Sources */,
 				D722329622CD595F00E471C2 /* NSTextView+Layout.swift in Sources */,
 				D722329F22CD595F00E471C2 /* String+Constants.swift in Sources */,
@@ -482,6 +480,8 @@
 				D722329922CD595F00E471C2 /* NSLayoutManager+Range.swift in Sources */,
 				42A56DFF22BBD82100983A9B /* TextContainer.swift in Sources */,
 				D74A7F592399ABCD006E0238 /* CodeEditorMenu.swift in Sources */,
+				D75DAE6123AAC1B40017DEE2 /* CodeEditorDiagnosticView.swift in Sources */,
+				D7EC46C223C3D8B5000B4B05 /* CodeEditorLayoutManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

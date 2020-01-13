@@ -15,20 +15,23 @@ class SPMBuildSystem: BuildSystem {
   }
   
   func run(in workbench: Workbench) -> BuildProgress {
+    workbench.currentDocument?.save(nil)
     guard let curProject = workbench.project, let package = findPackage(project: curProject) else { return SPMBuildProgress() }
     let fileURL = package.url
     let spmProc = Process()
     spmProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
     spmProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
     spmProc.arguments = ["build"]
+    var spmProcConsole : Console?
     spmProc.terminationHandler = { [weak self] process in
+      spmProcConsole?.stopReadingFromBuffer()
       self?.run(package: fileURL, in: workbench)
     }
     DispatchQueue.main.async {
       workbench.debugArea?.isHidden = false
-      let console = workbench.createConsole(title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", show: true)
-      spmProc.standardError = console?.output
-      spmProc.standardOutput = console?.output
+      spmProcConsole = workbench.createConsole(title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", show: true)
+      spmProc.standardError = spmProcConsole?.output
+      spmProc.standardOutput = spmProcConsole?.output
       try? spmProc.run()
     }
     return SPMBuildProgress()
@@ -71,10 +74,14 @@ class SPMBuildSystem: BuildSystem {
       programProc.currentDirectoryURL = package.deletingLastPathComponent()
       programProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
       programProc.arguments = ["run", "\(name)"]
+      var programProcConsole: Console?
+      programProc.terminationHandler = { process in
+        programProcConsole?.stopReadingFromBuffer()
+      }
       DispatchQueue.main.async {
-        let console = workbench.createConsole(title: "Run: \(name)", show: true)
-        programProc.standardOutput = console?.output
-        programProc.standardError = console?.output
+        programProcConsole = workbench.createConsole(title: "Run: \(name)", show: true)
+        programProc.standardOutput = programProcConsole?.output
+        programProc.standardError = programProcConsole?.output
         try? programProc.run()
       }
     }

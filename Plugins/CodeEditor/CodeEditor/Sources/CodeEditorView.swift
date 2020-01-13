@@ -10,8 +10,11 @@ import Cocoa
 import CodeEditor
 
 
-class CodeEditorView: NSViewController, NSTextViewDelegate, NSTextStorageDelegate {
-  weak var document: SourceCodeDocument? = nil {
+class CodeEditorView: NSViewController {
+  var diagnostics: [SourceCodeDiagnostic] = []
+  var diagnosticsUpdateTimer: DispatchSourceTimer? = nil
+  
+  weak var document: CodeEditorDocument? = nil {
     didSet {
       loadContent()
     }
@@ -25,10 +28,13 @@ class CodeEditorView: NSViewController, NSTextViewDelegate, NSTextStorageDelegat
     
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+    textView?.delegate = self
     ColorThemeManager.shared.observers.add(observer: self)
     
     loadContent()
+    
+//    let diagnosticView = CodeEditorDiagnosticView()
+//    self.textView?.addSubview(diagnosticView)
   }
   
   private func loadContent() {
@@ -52,12 +58,54 @@ class CodeEditorView: NSViewController, NSTextViewDelegate, NSTextStorageDelegat
 
   private func applyTheme(_ theme: ColorTheme? = nil) {
     guard let theme = theme ?? ColorThemeManager.shared.currentTheme else { return }
-    view.setValue(theme.global.background, forKey: "backgroundColor")
+    textView?.backgroundColor = theme.global.background
     
     guard let textView = self.textView else { return }
     textView.apply(theme: theme)
   }
+      
+  private func showDiagnostics() {
+    guard let textStorage = document?.textStorage else { return }
+    
+    let wholeRange = textStorage.string.nsRange
+    
+    // Clean previous diagnostics
+    textStorage.layoutManagers.forEach {
+      $0.removeTemporaryAttribute(.toolTip, forCharacterRange: wholeRange)
+      $0.removeTemporaryAttribute(.underlineColor, forCharacterRange: wholeRange)
+      $0.removeTemporaryAttribute(.underlineStyle, forCharacterRange: wholeRange)
+    }
+    
+    // Show new diagnostics
+    let style = NSNumber(value: NSUnderlineStyle.thick.rawValue)
+        
+    for d in diagnostics {
+      let color = d.severity == .error ? NSColor.red : NSColor.yellow
+      let range = textStorage.string.range(for: d.range)
+      let nsRange = range.isEmpty ? NSRange(range.lowerBound..<range.upperBound + 1) : NSRange(range)
+            
+      textStorage.layoutManagers.forEach {
+        $0.addTemporaryAttribute(.toolTip, value: d.message, forCharacterRange: nsRange)
+        $0.addTemporaryAttribute(.underlineColor, value: color, forCharacterRange: nsRange)
+        $0.addTemporaryAttribute(.underlineStyle, value: style, forCharacterRange: nsRange)
+      }
+    }
+  }
   
+  private func sheduleDiagnosticsUpdate() {
+    if let timer = diagnosticsUpdateTimer {
+      timer.cancel()
+    }
+    
+    let timer = DispatchSource.makeTimerSource(queue: .main)
+    timer.schedule(deadline:  .now() + 2.0) // 2 seconds delay
+    timer.setEventHandler{[weak self] in
+      self?.showDiagnostics()
+    }
+    timer.resume()
+    
+    diagnosticsUpdateTimer = timer
+  }
   
   public func highlightSyntax() {
     if let doc = document {
@@ -70,17 +118,50 @@ class CodeEditorView: NSViewController, NSTextViewDelegate, NSTextStorageDelegat
       highlightProgress = syntaxParser.highlightAll()
     }
   }
-    
+}
+
+
+// MARK: ColorThemeObserver
+
+extension CodeEditorView: ColorThemeObserver {
+  func colorThemeDidChanged(_ theme: ColorTheme) {
+    self.applyTheme(theme)
+    highlightSyntax()
+  }
+}
+
+
+// MARK: WorkbenchEditor
+
+extension CodeEditorView: WorkbenchEditor {
+  var editorMenu: NSMenu? {
+    CodeEditorMenu.shared.codeEditor = self
+    return CodeEditorMenu.shared.nsMenu
+  }
   
+  func focus() -> Bool {
+    return view.window?.makeFirstResponder(textView) ?? false
+  }
+    
+  func publish(diagnostics: [Diagnostic]) {
+    self.diagnostics = diagnostics.compactMap { return $0 as? SourceCodeDiagnostic }
+    sheduleDiagnosticsUpdate()
+  }
+}
+
+
+// MARK: NSTextStorageDelegate
+
+extension CodeEditorView: NSTextStorageDelegate {
   override func textStorageDidProcessEditing(_ notification: Notification) {
-    guard
-      let textStorage = notification.object as? NSTextStorage,
-      textStorage.editedMask.contains(.editedCharacters)
-      else { return }
+    guard let doc = document,
+          let textStorage = notification.object as? NSTextStorage,
+              textStorage.editedMask.contains(.editedCharacters) else { return }
+        
+    doc.updateChangeCount(.changeDone)
     
-    document?.updateChangeCount(.changeDone)
-    
-    guard let syntaxParser = document?.syntaxParser else { return }
+    // Update highlighting
+    guard let syntaxParser = doc.syntaxParser else { return }
     let range = textStorage.editedRange
     
     DispatchQueue.main.async { [weak self] in
@@ -92,31 +173,23 @@ class CodeEditorView: NSViewController, NSTextViewDelegate, NSTextStorageDelegat
       }
     }
   }
+}
 
+// MARK: NSTextViewDelegate
+
+extension CodeEditorView: NSTextViewDelegate {
+  func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
+    guard let doc = document else { return true }
+    
+    doc.observers.notify(as: SourceCodeDocumentObserver.self) {
+      let range = affectedCharRange.lowerBound..<affectedCharRange.upperBound
+      $0.textDidChange(document: doc, range: range, text: replacementString ?? "")
+    }
+    
+    return true
+  }
   
   func textView(_ textView: NSTextView, completions words: [String], forPartialWordRange charRange: NSRange, indexOfSelectedItem index: UnsafeMutablePointer<Int>?) -> [String] {
-    guard let completions = document?.delegates.first?.complete() else { return [] }
-    return completions
+    return []
   }
 }
-
-
-extension CodeEditorView: ColorThemeObserver {
-  func colorThemeDidChanged(_ theme: ColorTheme) {
-    self.applyTheme(theme)
-    highlightSyntax()
-  }
-}
-
-extension CodeEditorView: WorkbenchEditor {
-  var editorMenu: NSMenu? {
-    CodeEditorMenu.shared.codeEditor = self
-    return CodeEditorMenu.shared.nsMenu
-  }
-  
-  func focus() -> Bool {
-    return view.window?.makeFirstResponder(textView) ?? false
-  }
-}
-
-

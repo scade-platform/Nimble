@@ -8,12 +8,10 @@
 import Cocoa
 
 extension NSView {
-  
   public func setBackgroundColor(_ color: NSColor) {
     if self.layer == .none {
       self.layer = CALayer()
     }
     self.layer?.backgroundColor = color.cgColor
-  }
-  
+  }  
 }

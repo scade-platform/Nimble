@@ -15,8 +15,9 @@ public protocol Workbench: class {
   
   var currentDocument: Document? { get }
   
-  var observers: ObserverSet<WorkbenchObserver> { set get }
-
+  var observers: ObserverSet<WorkbenchObserver> { get set }
+  
+  var diagnostics: [Path: [Diagnostic]] { get }
   
   
   var navigatorArea: WorkbenchArea? { get }
@@ -38,9 +39,11 @@ public protocol Workbench: class {
   @discardableResult
   func close(_ doc: Document) -> Bool
   
-  
+      
   
   func createConsole(title: String, show: Bool) -> Console?
+  
+  func publishDiagnostics(for path: Path, diagnostics: [Diagnostic])
 }
 
 
@@ -98,6 +101,8 @@ public protocol WorkbenchEditor: NSViewController {
   
   @discardableResult
   func focus() -> Bool
+  
+  func publish(diagnostics: [Diagnostic])
 }
 
 
@@ -106,6 +111,10 @@ public extension WorkbenchEditor {
     
   func focus() -> Bool {
     return view.window?.makeFirstResponder(view) ?? false
+  }
+  
+  func publish(diagnostics: [Diagnostic]) {
+    
   }
 }
 

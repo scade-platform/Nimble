@@ -13,6 +13,10 @@ fileprivate struct ObserverRef<T> {
 
 public struct ObserverSet<T> {
   fileprivate var observers: [ObjectIdentifier: ObserverRef<T>] = [:]
+
+  private init(_ observers: [ObjectIdentifier: ObserverRef<T>]) {
+    self.observers = observers
+  }
   
   public init() { }
   
@@ -39,6 +43,13 @@ public struct ObserverSet<T> {
     }
   }
   
+  public mutating func notify<R>(as: R.Type, with notifier: (R) -> Void) {
+    notify {
+      guard let casted = $0 as? R else { return }
+      notifier(casted)
+    }
+  }
+    
   public var isEmpty : Bool {
     return observers.isEmpty
   }
