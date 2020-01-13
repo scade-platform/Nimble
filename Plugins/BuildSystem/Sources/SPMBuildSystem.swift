@@ -25,8 +25,7 @@ class SPMBuildSystem: BuildSystem {
     var spmProcConsole : Console?
     spmProc.terminationHandler = { [weak self] process in
       spmProcConsole?.stopReadingFromBuffer()
-      if let console = spmProcConsole {
-        let contents = console.contents
+      if let contents = spmProcConsole?.contents {        
         if contents.isEmpty {
           DispatchQueue.main.async {
             spmProcConsole?.close()
