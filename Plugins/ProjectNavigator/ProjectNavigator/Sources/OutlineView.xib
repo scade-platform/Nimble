@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -34,7 +34,7 @@
                                 <tableColumns>
                                     <tableColumn width="230" minWidth="16" maxWidth="1000" id="jb6-Gp-aD0">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
-                                            <font key="font" metaFont="smallSystem"/>
+                                            <font key="font" metaFont="menu" size="11"/>
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                         </tableHeaderCell>
@@ -46,14 +46,14 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView identifier="HeaderCell" id="egV-wt-C27">
-                                                <rect key="frame" x="1" y="1" width="230" height="17"/>
+                                                <rect key="frame" x="1" y="1" width="230" height="28"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zwz-Se-ASn">
-                                                        <rect key="frame" x="0.0" y="1" width="230" height="14"/>
+                                                        <rect key="frame" x="0.0" y="12" width="230" height="14"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                                         <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="HEADER CELL" id="5mo-aa-f7H">
-                                                            <font key="font" metaFont="smallSystemBold"/>
+                                                            <font key="font" metaFont="systemBold" size="11"/>
                                                             <color key="textColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                         </textFieldCell>
@@ -100,7 +100,7 @@
                                                                     <constraint firstAttribute="width" constant="17" id="0tP-4y-0xE"/>
                                                                     <constraint firstAttribute="width" secondItem="D4P-IE-r5W" secondAttribute="height" multiplier="1:1" id="b5p-2H-6Cm"/>
                                                                 </constraints>
-                                                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="cross" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="D4L-8c-obv">
+                                                                <buttonCell key="cell" type="bevel" bezelStyle="rounded" image="NSStopProgressTemplate" imagePosition="only" alignment="center" inset="2" id="D4L-8c-obv">
                                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                                     <font key="font" metaFont="system"/>
                                                                 </buttonCell>
@@ -171,6 +171,6 @@
     </objects>
     <resources>
         <image name="NSActionTemplate" width="14" height="14"/>
-        <image name="cross" width="128" height="128"/>
+        <image name="NSStopProgressTemplate" width="11" height="11"/>
     </resources>
 </document>

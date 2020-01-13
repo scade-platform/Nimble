@@ -789,6 +789,7 @@ extensions:
       - .eyaml
       - .eyml
       - .yaml
+      - .nimble-project
       firstLine: ^#cloud-config
       id: yaml
     - aliases:
