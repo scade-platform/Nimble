@@ -27,10 +27,8 @@ class SwiftBuildSystem: BuildSystem {
     var swiftcProcConsole: Console?
     swiftcProc.terminationHandler = { process in
       swiftcProcConsole?.stopReadingFromBuffer()
-      if let console = swiftcProcConsole {
-        guard console.contents.isEmpty else {
-          return
-        }
+      if let contents = swiftcProcConsole?.contents, !contents.isEmpty {
+        return
       }
       let programProc = Process()
       programProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
