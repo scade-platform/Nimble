@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C0DB75A23D04B5400E957DC /* DiagnosticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0DB75923D04B5400E957DC /* DiagnosticView.swift */; };
+		0C0DB75F23D0531700E957DC /* DiagnosticRowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C0DB75E23D0531700E957DC /* DiagnosticRowView.xib */; };
 		0CF422D123B4BB90000E1921 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CF422D023B4BB90000E1921 /* Assets.xcassets */; };
 		427E517C22C22B55008573F1 /* CurrentLineHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427E517B22C22B54008573F1 /* CurrentLineHighlighting.swift */; };
 		427E517E22C22C1F008573F1 /* CodeEditorTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427E517D22C22C1F008573F1 /* CodeEditorTextView.swift */; };
@@ -84,6 +86,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0C0DB75923D04B5400E957DC /* DiagnosticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticView.swift; sourceTree = "<group>"; };
+		0C0DB75E23D0531700E957DC /* DiagnosticRowView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiagnosticRowView.xib; sourceTree = "<group>"; };
 		0CF422D023B4BB90000E1921 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		427E517B22C22B54008573F1 /* CurrentLineHighlighting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentLineHighlighting.swift; sourceTree = "<group>"; };
 		427E517D22C22C1F008573F1 /* CodeEditorTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorTextView.swift; sourceTree = "<group>"; };
@@ -302,6 +306,8 @@
 				D7D2D59B22B1B9C80017B45D /* CodeEditorView.xib */,
 				D722328122CD4E7A00E471C2 /* CotEditor */,
 				D773AD3122D37DC8003A12A5 /* Extensions */,
+				0C0DB75923D04B5400E957DC /* DiagnosticView.swift */,
+				0C0DB75E23D0531700E957DC /* DiagnosticRowView.xib */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -425,6 +431,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C0DB75F23D0531700E957DC /* DiagnosticRowView.xib in Resources */,
 				D7AD216622CA6D760062C835 /* Fonts in Resources */,
 				428C0F2122BA9EFE002142BD /* Themes in Resources */,
 				D741547E236C99AE00A1B80C /* Info.plist in Resources */,
@@ -478,6 +485,7 @@
 				D773AD3322D3812A003A12A5 /* CodeEditorTextView+ColorTheme.swift in Sources */,
 				D722329B22CD595F00E471C2 /* MutableCopying.swift in Sources */,
 				D722329E22CD595F00E471C2 /* String+Additions.swift in Sources */,
+				0C0DB75A23D04B5400E957DC /* DiagnosticView.swift in Sources */,
 				D7D2D59C22B1B9C80017B45D /* CodeEditorView.swift in Sources */,
 				D722329822CD595F00E471C2 /* NSAttributedString.swift in Sources */,
 				D722329A22CD595F00E471C2 /* NSFont+Size.swift in Sources */,

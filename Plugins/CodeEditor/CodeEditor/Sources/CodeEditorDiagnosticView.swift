@@ -197,13 +197,9 @@ private class TableDiagnosticViewDelegate : NSObject, NSTableViewDataSource, NST
   }
   
   func stringWidth(for diagnostic: Diagnostic) -> CGFloat? {
-    for diagnosticType in DiagnosticSeverity.allCases {
-      guard let diagnostic = diagnostics.first(where: {$0.severity == diagnosticType}) else { continue }
-      let font = NSFont.init(name: "SFMono-Medium", size: 12) ?? NSFont.systemFont(ofSize: 12)
-      let atrStr = NSAttributedString(string: diagnostic.message, attributes: [NSAttributedString.Key.font : font])
-      return atrStr.size().width
-    }
-    return nil
+    let font = NSFont.init(name: "SFMono-Medium", size: 12) ?? NSFont.systemFont(ofSize: 12)
+    let atrStr = NSAttributedString(string: diagnostic.message, attributes: [NSAttributedString.Key.font : font])
+    return atrStr.size().width
   }
 }
 
