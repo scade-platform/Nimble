@@ -32,38 +32,6 @@ class CodeEditorView: NSViewController {
     ColorThemeManager.shared.observers.add(observer: self)
     
     loadContent()
-    
-    let errorDiagnostic = ErrorMockDiagnostic()
-    let warningDiagnostic = WarningMockDiagnostic()
-    
-//    let errorDiagnosticView = CodeEditorDiagnosticView(diagnostics: [errorDiagnostic])
-    let warningDiagnosticView = CodeEditorDiagnosticView(diagnostics: [warningDiagnostic, errorDiagnostic])
-    
-    let diagnosticView = DiagnosticView()
-    diagnosticView.diagnostics = [warningDiagnostic, errorDiagnostic]
-//    let table = DiagnosticTableView()
-//    let diagnostics = [warningDiagnostic, warningDiagnostic]
-//    for d in diagnostics {
-//      let row = DiagnosticRowView.loadFromNib()
-//      row.diagnosticDelegate = SingleDiagnosticRowViewDelegate()
-//      row.diagnostics = [d]
-//      table.add(row: row)
-//    }
-//
-//    row.diagnosticDelegate = SingleDiagnosticsRowViewDelegate()
-//    row.diagnostics = [warningDiagnostic, warningDiagnostic, errorDiagnostic]
-    
-    
-    
-//    self.textView?.addSubview(errorDiagnosticView.view)
-    self.textView?.addSubview(diagnosticView)
-    guard let superview = self.textView else { return }
-    diagnosticView.translatesAutoresizingMaskIntoConstraints = false
-    diagnosticView.leftAnchor.constraint(greaterThanOrEqualTo: superview.leftAnchor).isActive = true
-    diagnosticView.rightAnchor.constraint(equalTo: superview.rightAnchor).isActive = true
-//    warningDiagnosticView.view.leftAnchor.constraint(greaterThanOrEqualTo: superview.leftAnchor).isActive = true
-    diagnosticView.topAnchor.constraint(equalTo: superview.topAnchor, constant: 20).isActive = true
-    
   }
   
   private func loadContent() {
@@ -221,28 +189,4 @@ extension CodeEditorView: NSTextViewDelegate {
   func textView(_ textView: NSTextView, completions words: [String], forPartialWordRange charRange: NSRange, indexOfSelectedItem index: UnsafeMutablePointer<Int>?) -> [String] {
     return []
   }
-}
-
-struct ErrorMockDiagnostic : Diagnostic {
-  var severity: DiagnosticSeverity {
-    return .error
-  }
-  
-  var message: String {
-    return "error message!"
-  }
-  
-  
-}
-
-struct WarningMockDiagnostic : Diagnostic {
-  var severity: DiagnosticSeverity {
-    return .warning
-  }
-  
-  var message: String {
-    return "warning message!"
-  }
-  
-  
 }

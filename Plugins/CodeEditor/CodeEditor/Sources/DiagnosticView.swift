@@ -16,7 +16,7 @@ class DiagnosticView: NSStackView {
     didSet {
       guard !diagnostics.isEmpty else { return }
       let collapsedRow = DiagnosticRowView.loadFromNib()
-      collapsedRow.diagnosticDelegate = SeveralDiagnosticsRowViewDelegate()
+      collapsedRow.diagnosticDelegate = SummaryDiagnosticsRowViewDelegate()
       collapsedRow.diagnostics = diagnostics
       let collapsedView = DiagnosticTableView()
       collapsedView.add(row: collapsedRow)
@@ -129,7 +129,7 @@ class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegate {
   }
 }
 
-class SeveralDiagnosticsRowViewDelegate: DiagnosticRowViewDelegate {
+class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegate {
   func show(diagnostics: [Diagnostic], in row : DiagnosticRowView) {
     
     guard !diagnostics.isEmpty else { return }
@@ -271,5 +271,16 @@ class DiagnosticViewUtils {
     default:
       return nil
     }
+  }
+}
+
+
+extension NSView {
+  func layout(into: NSView, insets: NSEdgeInsets = NSEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)) {
+    self.translatesAutoresizingMaskIntoConstraints = false
+    self.topAnchor.constraint(equalTo: into.topAnchor, constant: insets.top).isActive = true
+    self.bottomAnchor.constraint(equalTo: into.bottomAnchor, constant: -insets.bottom).isActive = true
+    self.leadingAnchor.constraint(equalTo: into.leadingAnchor, constant: insets.left).isActive = true
+    self.trailingAnchor.constraint(equalTo: into.trailingAnchor, constant: -insets.right).isActive = true
   }
 }

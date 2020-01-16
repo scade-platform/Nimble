@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C0DB76123D08C1800E957DC /* NSImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0DB76023D08C1800E957DC /* NSImage.swift */; };
 		0C238B12233E4E3D004F87E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D2222878F40088715C /* Assets.xcassets */; };
 		0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */; };
 		0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */; };
@@ -14,7 +15,6 @@
 		0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3523A39503003B01DE /* StatusBarView.swift */; };
 		0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */; };
 		0CD0FB4623A776BD003B01DE /* EditorSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB4523A776BD003B01DE /* EditorSplitView.swift */; };
-		0CEE0F0C239659FC002E69D6 /* BuildSystem.plugin in Resources */ = {isa = PBXBuildFile; fileRef = 0CEE0F0A239659FC002E69D6 /* BuildSystem.plugin */; };
 		0CEE0F0D23965A11002E69D6 /* BuildSystem.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 0CEE0F0A239659FC002E69D6 /* BuildSystem.plugin */; };
 		D721CFA72385EC3200FD1B00 /* NSOpenPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */; };
 		D724C5E2237A21D100E80958 /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5E1237A21D100E80958 /* Observer.swift */; };
@@ -115,6 +115,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0C0DB76023D08C1800E957DC /* NSImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSImage.swift; sourceTree = "<group>"; };
 		0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDocument.swift; sourceTree = "<group>"; };
 		0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedPane.swift; sourceTree = "<group>"; };
 		0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnsupportedPane.xib; sourceTree = "<group>"; };
@@ -300,6 +301,7 @@
 				D7799051236F14D100CBF9B7 /* NSViewController.swift */,
 				D7799052236F14D100CBF9B7 /* NSViewExtensions.swift */,
 				D73C4F832391B55100B00066 /* NSMenu.swift */,
+				0C0DB76023D08C1800E957DC /* NSImage.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -534,6 +536,7 @@
 				D77990E0236F14D100CBF9B7 /* Console.swift in Sources */,
 				D73C4F842391B55100B00066 /* NSMenu.swift in Sources */,
 				D724C5E4237B18A900E80958 /* WeakRef.swift in Sources */,
+				0C0DB76123D08C1800E957DC /* NSImage.swift in Sources */,
 				D77990E5236F14D100CBF9B7 /* Document.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

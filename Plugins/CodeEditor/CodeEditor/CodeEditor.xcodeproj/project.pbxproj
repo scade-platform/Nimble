@@ -33,7 +33,6 @@
 		D72232A422CD5BF200E471C2 /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72232A322CD5BF200E471C2 /* String+Localization.swift */; };
 		D741547E236C99AE00A1B80C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D741547D236C99AE00A1B80C /* Info.plist */; };
 		D74A7F592399ABCD006E0238 /* CodeEditorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74A7F582399ABCD006E0238 /* CodeEditorMenu.swift */; };
-		D75DAE6123AAC1B40017DEE2 /* CodeEditorDiagnosticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75DAE6023AAC1B40017DEE2 /* CodeEditorDiagnosticView.swift */; };
 		D773AD3322D3812A003A12A5 /* CodeEditorTextView+ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773AD3222D3812A003A12A5 /* CodeEditorTextView+ColorTheme.swift */; };
 		D7799107236F150C00CBF9B7 /* SourceCodeDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77990F1236F150C00CBF9B7 /* SourceCodeDocument.swift */; };
 		D7799108236F150C00CBF9B7 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77990F3236F150C00CBF9B7 /* Language.swift */; };
@@ -112,7 +111,6 @@
 		D72232A322CD5BF200E471C2 /* String+Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Localization.swift"; path = "../../../CotEditor/CotEditor/Sources/String+Localization.swift"; sourceTree = "<group>"; };
 		D741547D236C99AE00A1B80C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D74A7F582399ABCD006E0238 /* CodeEditorMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorMenu.swift; sourceTree = "<group>"; };
-		D75DAE6023AAC1B40017DEE2 /* CodeEditorDiagnosticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorDiagnosticView.swift; sourceTree = "<group>"; };
 		D773AD3222D3812A003A12A5 /* CodeEditorTextView+ColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorTextView+ColorTheme.swift"; sourceTree = "<group>"; };
 		D7798FA3236F145900CBF9B7 /* CodeEditor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CodeEditor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D77990EC236F150C00CBF9B7 /* CodeEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodeEditor.h; sourceTree = "<group>"; };
@@ -296,7 +294,6 @@
 			isa = PBXGroup;
 			children = (
 				D7D2D59322B1B59E0017B45D /* CodeEditor.swift */,
-				D75DAE6023AAC1B40017DEE2 /* CodeEditorDiagnosticView.swift */,
 				D7D2D5A222B28F020017B45D /* CodeEditorDocument.swift */,
 				D7EC46C123C3D8B5000B4B05 /* CodeEditorLayoutManager.swift */,
 				D74A7F582399ABCD006E0238 /* CodeEditorMenu.swift */,
@@ -492,7 +489,6 @@
 				D722329922CD595F00E471C2 /* NSLayoutManager+Range.swift in Sources */,
 				42A56DFF22BBD82100983A9B /* TextContainer.swift in Sources */,
 				D74A7F592399ABCD006E0238 /* CodeEditorMenu.swift in Sources */,
-				D75DAE6123AAC1B40017DEE2 /* CodeEditorDiagnosticView.swift in Sources */,
 				D7EC46C223C3D8B5000B4B05 /* CodeEditorLayoutManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
