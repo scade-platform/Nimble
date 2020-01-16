@@ -37,16 +37,18 @@ class CodeEditorView: NSViewController {
     let warningDiagnostic = WarningMockDiagnostic()
     
 //    let errorDiagnosticView = CodeEditorDiagnosticView(diagnostics: [errorDiagnostic])
-    let warningDiagnosticView = CodeEditorDiagnosticView(diagnostics: [warningDiagnostic,errorDiagnostic, errorDiagnostic])
+    let warningDiagnosticView = CodeEditorDiagnosticView(diagnostics: [warningDiagnostic, warningDiagnostic, errorDiagnostic])
     
     
 //    self.textView?.addSubview(errorDiagnosticView.view)
     self.textView?.addSubview(warningDiagnosticView.view)
     guard let superview = self.textView else { return }
     warningDiagnosticView.view.translatesAutoresizingMaskIntoConstraints = false
-//    warningDiagnosticView.view.leftAnchor.constraint(greaterThanOrEqualTo: superview.leftAnchor).isActive = true
+    warningDiagnosticView.view.leftAnchor.constraint(greaterThanOrEqualTo: superview.leftAnchor).isActive = true
     warningDiagnosticView.view.rightAnchor.constraint(equalTo: superview.rightAnchor).isActive = true
+//    warningDiagnosticView.view.leftAnchor.constraint(greaterThanOrEqualTo: superview.leftAnchor).isActive = true
     warningDiagnosticView.view.topAnchor.constraint(equalTo: superview.topAnchor, constant: 20).isActive = true
+    
   }
   
   private func loadContent() {

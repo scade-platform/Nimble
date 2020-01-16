@@ -36,15 +36,53 @@ class CodeEditorDiagnosticView {
   //
   var view: NSStackView
   
+  func mouseDownHandler(_ view: NSView) {
+    (view as? NSStackView)?.arrangedSubviews.forEach{$0.isHidden = !$0.isHidden}
+  }
+  
+  @objc func mouseDownHandler2() {
+    self.view.arrangedSubviews.forEach{$0.isHidden = !$0.isHidden}
+  }
+  
   init(diagnostics: [Diagnostic]) {
     self.diagnostics.append(contentsOf: diagnostics)
-    let tableView = TableDiagnosticView(diagnostics: diagnostics, delegateType: CollapsedTableDiagnosticViewDelegate.self)
-    self.view = NSStackView(views: [tableView])
+    self.view = NSStackView()
+    self.view.orientation = .vertical
+    self.view.alignment = .trailing
+    self.view.distribution = .fillEqually
+
+    
+    let collapsedTableView = TableDiagnosticView(diagnostics: diagnostics, delegateType: CollapsedTableDiagnosticViewDelegate.self)
+    collapsedTableView.mouseDownCallBack = mouseDownHandler
+    self.view.addArrangedSubview(collapsedTableView)
+//    self.view.translatesAutoresizingMaskIntoConstraints = false
+    collapsedTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+    collapsedTableView.leftAnchor.constraint(greaterThanOrEqualTo: self.view.leftAnchor).isActive = true
+    if !errors.isEmpty {
+      let errorsTableView = TableDiagnosticView(diagnostics: errors, delegateType: ExpandedTableDiagnosticViewDelegate.self)
+      errorsTableView.isHidden = true
+      errorsTableView.mouseDownCallBack = mouseDownHandler
+
+      self.view.addArrangedSubview(errorsTableView)
+      errorsTableView.leftAnchor.constraint(greaterThanOrEqualTo: self.view.leftAnchor).isActive = true
+      errorsTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+    }
+    if !warnings.isEmpty {
+      let warningsTableView = TableDiagnosticView(diagnostics: warnings, delegateType: ExpandedTableDiagnosticViewDelegate.self)
+      warningsTableView.isHidden = true
+      warningsTableView.mouseDownCallBack = mouseDownHandler
+      self.view.addArrangedSubview(warningsTableView)
+      warningsTableView.leftAnchor.constraint(greaterThanOrEqualTo: self.view.leftAnchor).isActive = true
+      warningsTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+    }
   }
+  
 }
 
 private class TableDiagnosticView: NSTableView {
   private(set) var diagnostics: [Diagnostic] = []
+  
+  var mouseDownCallBack: ((NSView) -> Void)?
   
   let iconColumn = NSTableColumn()
   let textColumn = NSTableColumn()
@@ -103,6 +141,11 @@ private class TableDiagnosticView: NSTableView {
     //TODO: set right position
 //    topAnchor.constraint(equalTo: superview.topAnchor, constant: 0).isActive = true
   }
+  
+  override func mouseDown(with event: NSEvent) {
+    super.mouseDown(with: event)
+    mouseDownCallBack?(self.superview!)
+  }
 }
 
 private class TableDiagnosticViewDelegate : NSObject, NSTableViewDataSource, NSTableViewDelegate {
@@ -152,6 +195,16 @@ private class TableDiagnosticViewDelegate : NSObject, NSTableViewDataSource, NST
       return nil
     }
   }
+  
+  func stringWidth(for diagnostic: Diagnostic) -> CGFloat? {
+    for diagnosticType in DiagnosticSeverity.allCases {
+      guard let diagnostic = diagnostics.first(where: {$0.severity == diagnosticType}) else { continue }
+      let font = NSFont.init(name: "SFMono-Medium", size: 12) ?? NSFont.systemFont(ofSize: 12)
+      let atrStr = NSAttributedString(string: diagnostic.message, attributes: [NSAttributedString.Key.font : font])
+      return atrStr.size().width
+    }
+    return nil
+  }
 }
 
 private class CollapsedTableDiagnosticViewDelegate : TableDiagnosticViewDelegate {
@@ -163,6 +216,8 @@ private class CollapsedTableDiagnosticViewDelegate : TableDiagnosticViewDelegate
     }
     return nil
   }()
+  
+  
   
   required init(diagnostics: [Diagnostic], iconColumn: NSTableColumn, textColumn: NSTableColumn) {
     super.init(diagnostics: diagnostics, iconColumn: iconColumn, textColumn: textColumn)
@@ -187,14 +242,14 @@ private class CollapsedTableDiagnosticViewDelegate : TableDiagnosticViewDelegate
           countView.font = font
         }
         countView.textColor = ColorThemeManager.shared.currentTheme?.global.foreground
-//        countView.sizeToFit()
+        countView.sizeToFit()
         countView.alignment = .center
         countView.drawsBackground = true
         countView.backgroundColor = currentIconColumnColor
         countView.translatesAutoresizingMaskIntoConstraints = false
 //        countView.heightAnchor.constraint(equalToConstant: iconColumn.tableView?.rowHeight ?? 17).isActive = true
         stackView.addArrangedSubview(countView)
-        width = width + 20
+        width = Int(countView.bounds.width) + 5
       }
       for diagnosticType in DiagnosticSeverity.allCases {
         guard let diagnostic = diagnostics.first(where: {$0.severity == diagnosticType}) else { continue }
@@ -204,8 +259,8 @@ private class CollapsedTableDiagnosticViewDelegate : TableDiagnosticViewDelegate
         let parentView = NSView()
         parentView.setBackgroundColor(currentIconColumnColor!)
         parentView.addSubview(imgView)
-        imgView.layout(into: parentView, insets: NSEdgeInsets(top: 3, left: 3, bottom: 3, right: 3))
-        imgView.widthAnchor.constraint(equalToConstant: 17).isActive = true
+        imgView.layout(into: parentView, insets: NSEdgeInsets(top: 3, left: 0, bottom: 3, right: 0))
+        imgView.widthAnchor.constraint(equalToConstant: 20).isActive = true
         stackView.addArrangedSubview(parentView)
         width = width + 20
       }
@@ -215,6 +270,7 @@ private class CollapsedTableDiagnosticViewDelegate : TableDiagnosticViewDelegate
       cellView?.addSubview(stackView)
       stackView.layout(into: cellView!)
     } else {
+      cellView = NSView()
       for diagnosticType in DiagnosticSeverity.allCases {
         guard let diagnostic = diagnostics.first(where: {$0.severity == diagnosticType}) else { continue }
         let textField = NSTextField(labelWithString: diagnostic.message)
@@ -225,7 +281,10 @@ private class CollapsedTableDiagnosticViewDelegate : TableDiagnosticViewDelegate
         textField.sizeToFit()
         textField.drawsBackground = true
         textField.backgroundColor = textColumnColor(for: diagnostic)
-        cellView = textField
+        cellView?.setBackgroundColor(textField.backgroundColor!)
+        cellView?.addSubview(textField)
+        textField.layout(into: cellView!, insets: NSEdgeInsets(top: 0, left: 3, bottom: 0, right: 10))
+        textColumn.width = stringWidth(for: diagnostic)! + 13
         break
       }
     }
@@ -255,8 +314,10 @@ private class ExpandedTableDiagnosticViewDelegate : TableDiagnosticViewDelegate 
       parentView.setBackgroundColor(iconColumnColor(for: diagnostic))
       parentView.addSubview(imgView)
       imgView.layout(into: parentView, insets: NSEdgeInsets(top: 3, left: 3, bottom: 3, right: 3))
+      iconColumn.width = CGFloat(20)
       cellView = parentView
     } else {
+      cellView = NSView()
       let textField = NSTextField(labelWithString: diagnostic.message)
       if let font = NSFont.init(name: "SFMono-Medium", size: 12) {
         textField.font = font
@@ -265,7 +326,10 @@ private class ExpandedTableDiagnosticViewDelegate : TableDiagnosticViewDelegate 
       textField.sizeToFit()
       textField.drawsBackground = true
       textField.backgroundColor = textColumnColor(for: diagnostic)
-      cellView = textField
+      cellView?.setBackgroundColor(textField.backgroundColor!)
+      cellView?.addSubview(textField)
+      textField.layout(into: cellView!, insets: NSEdgeInsets(top: 0, left: 3, bottom: 0, right: 10))
+      textColumn.width = stringWidth(for: diagnostic)! + 13
     }
     
     return cellView
