@@ -22,29 +22,13 @@ class DiagnosticView: NSStackView {
       collapsedView.add(row: collapsedRow)
       collapsedView.mouseDownCallBack = mouseDownHandler
       self.addArrangedSubview(collapsedView)
-      if !errors.isEmpty {
-        let errorsView = DiagnosticTableView()
-        for error in errors {
-          let row = DiagnosticRowView.loadFromNib()
-          row.diagnosticDelegate = SingleDiagnosticRowViewDelegate()
-          row.diagnostics = [error]
-          errorsView.add(row: row)
+      if diagnostics.count > 1 {
+        if !errors.isEmpty {
+          addTable(for: errors, isHidden: true)
         }
-        errorsView.isHidden = true
-        errorsView.mouseDownCallBack = mouseDownHandler
-        self.addArrangedSubview(errorsView)
-      }
-      if !warnings.isEmpty {
-        let warningsView = DiagnosticTableView()
-        for warning in warnings {
-          let row = DiagnosticRowView.loadFromNib()
-          row.diagnosticDelegate = SingleDiagnosticRowViewDelegate()
-          row.diagnostics = [warning]
-          warningsView.add(row: row)
+        if !warnings.isEmpty {
+          addTable(for: warnings, isHidden: true)
         }
-        warningsView.isHidden = true
-        warningsView.mouseDownCallBack = mouseDownHandler
-        self.addArrangedSubview(warningsView)
       }
     }
   }
@@ -69,9 +53,23 @@ class DiagnosticView: NSStackView {
   }
   
   func mouseDownHandler() {
-     self.arrangedSubviews.forEach{$0.isHidden = !$0.isHidden}
+    if self.subviews.count > 1 {
+      self.arrangedSubviews.forEach{$0.isHidden = !$0.isHidden}
+    }
    }
   
+  private func addTable(for diagnostics: [Diagnostic], isHidden: Bool = false){
+    let tableView = DiagnosticTableView()
+    for diagnostic in diagnostics {
+      let row = DiagnosticRowView.loadFromNib()
+      row.diagnosticDelegate = SingleDiagnosticRowViewDelegate()
+      row.diagnostics = [diagnostic]
+      tableView.add(row: row)
+    }
+    tableView.isHidden = isHidden
+    tableView.mouseDownCallBack = mouseDownHandler
+    self.addArrangedSubview(tableView)
+  }
 }
 
 class DiagnosticRowView: NSView {
