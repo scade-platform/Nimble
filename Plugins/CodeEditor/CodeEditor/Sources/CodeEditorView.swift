@@ -81,6 +81,7 @@ class CodeEditorView: NSViewController {
     var lastLine = -1
     var diagnosticsOnLine: [Diagnostic] = []
     var lastString : String = ""
+    //remove previouse diagnostics view
     textView?.subviews.filter{$0 is DiagnosticView}.forEach{$0.removeFromSuperview()}
     for d in diagnostics {
       let color = d.severity == .error ? NSColor.red : NSColor.yellow
@@ -201,6 +202,7 @@ extension CodeEditorView: NSTextStorageDelegate {
     let range = textStorage.editedRange
     
     DispatchQueue.main.async { [weak self] in
+      self?.textView?.subviews.filter{$0 is DiagnosticView}.forEach{$0.removeFromSuperview()}
       if let progress = self?.highlightProgress {
         progress.cancel()
         self?.highlightProgress = syntaxParser.highlightAll()
