@@ -73,21 +73,60 @@ class CodeEditorView: NSViewController {
       $0.removeTemporaryAttribute(.underlineStyle, forCharacterRange: wholeRange)
     }
     
+    let defaultLineHeight = self.textView?.layoutManager?.defaultLineHeight(for: textView?.font ?? NSFont.systemFont(ofSize: NSFont.systemFontSize))
+    let lineHeight = defaultLineHeight! * (self.textView?.defaultParagraphStyle?.lineHeightMultiple ?? 1)
+    
     // Show new diagnostics
     let style = NSNumber(value: NSUnderlineStyle.thick.rawValue)
-        
+    var lastLine = -1
+    var diagnosticsOnLine: [Diagnostic] = []
+    var lastString : String = ""
+    textView?.subviews.filter{$0 is DiagnosticView}.forEach{$0.removeFromSuperview()}
     for d in diagnostics {
       let color = d.severity == .error ? NSColor.red : NSColor.yellow
       let range = textStorage.string.range(for: d.range)
       let nsRange = range.isEmpty ? NSRange(range.lowerBound..<range.upperBound + 1) : NSRange(range)
-            
+      let line = textStorage.string.lineNumber(at: nsRange.location)
+      let lineRange: Range<Int> = textStorage.string.lineRange(line: line - 1)
+      lastString = String(textStorage.string[lineRange])
+      if line != lastLine {
+        if !diagnosticsOnLine.isEmpty {
+          addDiagnosticsViwe(diagnosticsOnLine: diagnosticsOnLine, lastString: lastString, lineHeight: lineHeight, lastLine: lastLine)
+        }
+        diagnosticsOnLine = [d]
+        lastLine = line
+      } else {
+        diagnosticsOnLine.append(d)
+      }
       textStorage.layoutManagers.forEach {
         $0.addTemporaryAttribute(.toolTip, value: d.message, forCharacterRange: nsRange)
         $0.addTemporaryAttribute(.underlineColor, value: color, forCharacterRange: nsRange)
         $0.addTemporaryAttribute(.underlineStyle, value: style, forCharacterRange: nsRange)
       }
     }
+    if !diagnosticsOnLine.isEmpty {
+      addDiagnosticsViwe(diagnosticsOnLine: diagnosticsOnLine, lastString: lastString, lineHeight: lineHeight, lastLine: lastLine)
+    }
   }
+  
+  private func addDiagnosticsViwe(diagnosticsOnLine: [Diagnostic], lastString: String, lineHeight: CGFloat, lastLine: Int) {
+    let diagnosticView = DiagnosticView()
+    diagnosticView.diagnostics = diagnosticsOnLine
+    self.textView?.addSubview(diagnosticView)
+    guard let superview = self.textView else { return }
+    diagnosticView.translatesAutoresizingMaskIntoConstraints = false
+    diagnosticView.widthAnchor.constraint(equalToConstant: superview.bounds.width - stringWidth(for: lastString)!).isActive = true
+    diagnosticView.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: -10).isActive = true
+    diagnosticView.topAnchor.constraint(equalTo: superview.topAnchor, constant: lineHeight * CGFloat(lastLine - 1)).isActive = true
+  }
+  
+  private func stringWidth(for string: String) -> CGFloat? {
+    let font = self.textView?.font ?? NSFont.systemFont(ofSize: NSFont.systemFontSize)
+    let atrStr = NSAttributedString(string: string, attributes: [NSAttributedString.Key.font : font])
+    let tabsCount = string.filter{$0 == "\t"}.count
+    return atrStr.size().width + CGFloat(((self.textView?.tabWidth ?? 0) * tabsCount)) + 20
+  }
+
   
   private func sheduleDiagnosticsUpdate() {
     if let timer = diagnosticsUpdateTimer {

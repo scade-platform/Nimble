@@ -1,5 +1,5 @@
 //
-//  DiagnosticView.swift
+//  CodeEditorDiagnosticView.swift
 //  CodeEditor.plugin
 //
 //  Created by Danil Kristalev on 16/01/2020.
@@ -44,8 +44,8 @@ class DiagnosticView: NSStackView {
   init() {
     super.init(frame: .zero)
     self.orientation = .vertical
-    self.spacing = 8
     self.alignment = .trailing
+    self.spacing = 8
   }
   
   required init?(coder: NSCoder) {
@@ -54,6 +54,8 @@ class DiagnosticView: NSStackView {
   
   func mouseDownHandler() {
     if self.subviews.count > 1 {
+      //when expand hide other diagnostic view
+      self.superview?.subviews.filter{$0 is DiagnosticView}.filter{$0 !== self}.forEach{$0.isHidden = !$0.isHidden}
       self.arrangedSubviews.forEach{$0.isHidden = !$0.isHidden}
     }
    }
@@ -98,6 +100,7 @@ class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegate {
   func show(diagnostics: [Diagnostic], in row: DiagnosticRowView) {
     guard let diagnostic = diagnostics.first else { return }
     addIcon(for: diagnostic, in: row.iconsView)
+    row.iconsView.superview?.setBackgroundColor(DiagnosticViewUtils.iconColumnColor(for: diagnostic))
     addText(for: diagnostic, in: row.textView)
     row.setBackgroundColor(DiagnosticViewUtils.textColumnColor(for: diagnostic))
   }
@@ -106,12 +109,11 @@ class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegate {
     let imgView = NSImageView()
     imgView.image = DiagnosticViewUtils.icon(for: diagnostic)?.imageWithTint(.black)
     imgView.imageScaling = .scaleProportionallyUpOrDown
-    imgView.heightAnchor.constraint(equalToConstant: 15).isActive = true
+    imgView.heightAnchor.constraint(equalToConstant: 11).isActive = true
     imgView.widthAnchor.constraint(equalTo: imgView.heightAnchor, multiplier: 1).isActive = true
     let parentView = NSView()
-    parentView.setBackgroundColor(DiagnosticViewUtils.iconColumnColor(for: diagnostic))
     parentView.addSubview(imgView)
-    imgView.layout(into: parentView, insets: NSEdgeInsets(top: 3, left: 3, bottom: 3, right: 3))
+    imgView.layout(into: parentView, insets: NSEdgeInsets(top: 3, left: 3, bottom: 3, right: 0))
     iconsView.addArrangedSubview(parentView)
   }
   
@@ -122,8 +124,8 @@ class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegate {
     }
     textView.textColor = ColorThemeManager.shared.currentTheme?.global.foreground
     textView.drawsBackground = true
-    textView.alignment = .center
     textView.backgroundColor = DiagnosticViewUtils.textColumnColor(for: diagnostic)
+    textView.sizeToFit()
   }
 }
 
@@ -145,6 +147,7 @@ class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegate {
       currentIconColumnColor =  DiagnosticViewUtils.iconColumnColor(for: diagnostic)
       break
     }
+    iconsView.superview?.setBackgroundColor(currentIconColumnColor!)
     if diagnostics.count > 1 {
       let countView = NSTextField(labelWithString: "\(diagnostics.count)")
       if let font = DiagnosticViewUtils.font {
@@ -152,18 +155,19 @@ class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegate {
       }
       countView.textColor = ColorThemeManager.shared.currentTheme?.global.foreground
       countView.sizeToFit()
+
       countView.alignment = .center
       countView.drawsBackground = true
       countView.backgroundColor = currentIconColumnColor
       iconsView.addArrangedSubview(countView)
+      countView.setContentCompressionResistancePriority(NSLayoutConstraint.Priority(rawValue: 751), for: .horizontal)
     }
-    iconsView.superview?.setBackgroundColor(currentIconColumnColor!)
     for diagnosticType in DiagnosticSeverity.allCases {
       guard let diagnostic = diagnostics.first(where: {$0.severity == diagnosticType}) else { continue }
       let imgView = NSImageView()
       imgView.imageScaling = .scaleProportionallyUpOrDown
       imgView.image = DiagnosticViewUtils.icon(for: diagnostic)?.imageWithTint(.black)
-      imgView.heightAnchor.constraint(equalToConstant: 15).isActive = true
+      imgView.heightAnchor.constraint(equalToConstant: 11).isActive = true
       imgView.widthAnchor.constraint(equalTo: imgView.heightAnchor, multiplier: 1).isActive = true
       let parentView = NSView()
       parentView.setBackgroundColor(currentIconColumnColor!)
@@ -174,6 +178,8 @@ class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegate {
   }
   
   private func addText(for diagnostics: [Diagnostic], in textView: NSTextField) -> NSColor? {
+    textView.usesSingleLineMode = true
+    textView.lineBreakMode = .byTruncatingTail
     for diagnosticType in DiagnosticSeverity.allCases {
       guard let diagnostic = diagnostics.first(where: {$0.severity == diagnosticType}) else { continue }
       textView.stringValue = diagnostic.message
@@ -190,7 +196,7 @@ class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegate {
   }
 }
 
-class DiagnosticTableView: NSView {
+fileprivate class DiagnosticTableView: NSView {
   let stackView: NSStackView
   var mouseDownCallBack: (() -> Void)?
   
@@ -213,12 +219,13 @@ class DiagnosticTableView: NSView {
     self.addSubview(stackView)
     self.stackView.orientation = .vertical
     self.stackView.spacing = 0
-    self.stackView.alignment = .trailing
     self.stackView.layout(into: self)
   }
   
   func add(row view: DiagnosticRowView) {
     self.stackView.addArrangedSubview(view)
+    view.leadingAnchor.constraint(equalTo: stackView.leadingAnchor).isActive = true
+    view.trailingAnchor.constraint(equalTo: stackView.trailingAnchor).isActive = true
   }
   
   override func mouseDown(with event: NSEvent) {
@@ -226,7 +233,7 @@ class DiagnosticTableView: NSView {
   }
 }
 
-class DiagnosticViewUtils {
+fileprivate class DiagnosticViewUtils {
   static var font: NSFont? = {
     if let f = NSFont.init(name: "SFMono-Medium", size: 12) {
       return f
