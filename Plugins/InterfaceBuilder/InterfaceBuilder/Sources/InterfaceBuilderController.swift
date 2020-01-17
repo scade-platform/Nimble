@@ -2,7 +2,7 @@ import Cocoa
 import ScadeKit
 import NimbleCore
 
-class InterfaceBuilderController: NSViewController {
+class InterfaceBuilderController: NSViewController, DocumentObserver {
 
   var highlighter: WidgetHighlighter?
 
@@ -17,6 +17,8 @@ class InterfaceBuilderController: NSViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    doc?.observers.add(observer: self)
 
     if let view = pageView {
       let size = (pageView?.superview?.frame.size)!
@@ -36,6 +38,10 @@ class InterfaceBuilderController: NSViewController {
       view.phoenixView.frame.size = size
       //Swift.print("set frame: \(size)")
     }
+    loadPage()
+  }
+
+  func documentDidChange(_ document: Document) {
     loadPage()
   }
   
