@@ -10,17 +10,17 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="f6r-XV-X2h" customClass="DiagnosticRowView" customModule="CodeEditorPlugin" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="618" height="110"/>
+            <rect key="frame" x="0.0" y="0.0" width="651" height="110"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="0.0" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZfG-Co-vtF">
-                    <rect key="frame" x="0.0" y="0.0" width="618" height="110"/>
+                    <rect key="frame" x="0.0" y="0.0" width="651" height="110"/>
                     <subviews>
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="j1K-6C-YwF">
-                            <rect key="frame" x="0.0" y="0.0" width="585" height="110"/>
+                            <rect key="frame" x="0.0" y="0.0" width="618" height="110"/>
                             <subviews>
                                 <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="3" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" placeholderIntrinsicWidth="419" placeholderIntrinsicHeight="110" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hze-Sl-jfe">
-                                    <rect key="frame" x="3" y="0.0" width="579" height="110"/>
+                                    <rect key="frame" x="3" y="0.0" width="612" height="110"/>
                                 </stackView>
                             </subviews>
                             <constraints>
@@ -31,7 +31,7 @@
                             </constraints>
                         </customView>
                         <textField verticalHuggingPriority="750" verticalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="uik-Fv-Tn0">
-                            <rect key="frame" x="583" y="0.0" width="37" height="110"/>
+                            <rect key="frame" x="616" y="47" width="37" height="16"/>
                             <textFieldCell key="cell" alignment="left" title="Label" id="hoz-Aa-aKa">
                                 <font key="font" usesAppearanceFont="YES"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -41,9 +41,7 @@
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="j1K-6C-YwF" secondAttribute="bottom" id="5gm-Jv-CcY"/>
-                        <constraint firstAttribute="bottom" secondItem="uik-Fv-Tn0" secondAttribute="bottom" id="5yv-wN-JtC"/>
                         <constraint firstItem="j1K-6C-YwF" firstAttribute="top" secondItem="ZfG-Co-vtF" secondAttribute="top" id="oC8-AS-Oqv"/>
-                        <constraint firstItem="uik-Fv-Tn0" firstAttribute="top" secondItem="ZfG-Co-vtF" secondAttribute="top" id="sxL-lj-zrl"/>
                     </constraints>
                     <visibilityPriorities>
                         <integer value="1000"/>

@@ -108,7 +108,7 @@ class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegate {
   private func addIcon(for diagnostic: Diagnostic, in iconsView: NSStackView) {
     let imgView = NSImageView()
     imgView.image = DiagnosticViewUtils.icon(for: diagnostic)?.imageWithTint(.black)
-    imgView.imageScaling = .scaleProportionallyUpOrDown
+    imgView.imageScaling = .scaleAxesIndependently
     imgView.heightAnchor.constraint(equalToConstant: 11).isActive = true
     imgView.widthAnchor.constraint(equalTo: imgView.heightAnchor, multiplier: 1).isActive = true
     let parentView = NSView()
@@ -165,7 +165,7 @@ class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegate {
     for diagnosticType in DiagnosticSeverity.allCases {
       guard let diagnostic = diagnostics.first(where: {$0.severity == diagnosticType}) else { continue }
       let imgView = NSImageView()
-      imgView.imageScaling = .scaleProportionallyUpOrDown
+      imgView.imageScaling = .scaleAxesIndependently
       imgView.image = DiagnosticViewUtils.icon(for: diagnostic)?.imageWithTint(.black)
       imgView.heightAnchor.constraint(equalToConstant: 11).isActive = true
       imgView.widthAnchor.constraint(equalTo: imgView.heightAnchor, multiplier: 1).isActive = true
@@ -178,7 +178,6 @@ class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegate {
   }
   
   private func addText(for diagnostics: [Diagnostic], in textView: NSTextField) -> NSColor? {
-    textView.usesSingleLineMode = true
     textView.lineBreakMode = .byTruncatingTail
     for diagnosticType in DiagnosticSeverity.allCases {
       guard let diagnostic = diagnostics.first(where: {$0.severity == diagnosticType}) else { continue }
@@ -187,9 +186,9 @@ class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegate {
         textView.font = font
       }
       textView.textColor = ColorThemeManager.shared.currentTheme?.global.foreground
-      textView.sizeToFit()
       textView.drawsBackground = true
       textView.backgroundColor = DiagnosticViewUtils.textColumnColor(for: diagnostic)
+      textView.sizeToFit()
       return textView.backgroundColor
     }
     return nil
