@@ -67,6 +67,15 @@ public protocol CreatableDocument where Self: Document {
 
 open class NimbleDocument: NSDocument {
   public var observers = ObserverSet<DocumentObserver> ()
+
+  override init() {
+    super.init()
+    NSFileCoordinator.addFilePresenter(self)
+  }
+
+  deinit {
+    NSFileCoordinator.removeFilePresenter(self)
+  }
   
   open override func updateChangeCount(_ change: NSDocument.ChangeType) {
     super.updateChangeCount(change)
