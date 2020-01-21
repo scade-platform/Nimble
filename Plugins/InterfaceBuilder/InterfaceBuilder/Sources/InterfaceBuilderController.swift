@@ -2,7 +2,7 @@ import Cocoa
 import ScadeKit
 import NimbleCore
 
-class InterfaceBuilderController: NSViewController, DocumentObserver {
+class InterfaceBuilderController: NSViewController {
 
   var highlighter: WidgetHighlighter?
 
@@ -41,10 +41,6 @@ class InterfaceBuilderController: NSViewController, DocumentObserver {
     loadPage()
   }
 
-  func documentDidChange(_ document: Document) {
-    loadPage()
-  }
-  
   private func loadPage() {
     if let pageDocument = doc {
       if let page = pageDocument.page {
@@ -71,3 +67,9 @@ class InterfaceBuilderController: NSViewController, DocumentObserver {
 
 
 extension InterfaceBuilderController: WorkbenchEditor { }
+
+extension InterfaceBuilderController: DocumentObserver {
+  public func documentDidChange(_ document: Document) {
+    loadPage()
+  }
+}

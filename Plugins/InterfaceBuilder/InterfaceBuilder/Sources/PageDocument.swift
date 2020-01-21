@@ -12,15 +12,6 @@ public final class PageDocument: NimbleDocument {
     return controller
   }()
 
-  override init() {
-    super.init()
-    NSFileCoordinator.addFilePresenter(self)
-  }
-
-  deinit {
-    NSFileCoordinator.removeFilePresenter(self)
-  }
-  
   //  public override func read(from data: Data, ofType typeName: String) throws {
   //    svgRoot = SCDRuntime.parseSvg("") as! SCDSvgBox
   //  }
