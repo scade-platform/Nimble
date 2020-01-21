@@ -5,16 +5,25 @@ import ScadeKit
 public final class PageDocument: NimbleDocument {
   public var svgRoot: SCDSvgBox?
   public var page: SCDWidgetsPage?
-  
+
   private lazy var builderController: InterfaceBuilderController = {
     let controller = InterfaceBuilderController.loadFromNib()
     controller.doc = self
     return controller
   }()
-    
+
   //  public override func read(from data: Data, ofType typeName: String) throws {
   //    svgRoot = SCDRuntime.parseSvg("") as! SCDSvgBox
   //  }
+
+  override public func presentedItemDidChange() {
+    DispatchQueue.main.async {
+      guard let url = self.fileURL, let type = self.fileType  else { return }
+      try! self.read(from: url, ofType: type)
+
+      self.observers.notify { $0.documentDidChange(self) }
+    }
+  }
   
   public override func read(from url: URL, ofType typeName: String) throws {
     if url.pathExtension == "page" {

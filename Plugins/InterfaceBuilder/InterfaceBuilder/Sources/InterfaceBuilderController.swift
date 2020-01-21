@@ -18,6 +18,8 @@ class InterfaceBuilderController: NSViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    doc?.observers.add(observer: self)
+
     if let view = pageView {
       let size = (pageView?.superview?.frame.size)!
 
@@ -38,7 +40,7 @@ class InterfaceBuilderController: NSViewController {
     }
     loadPage()
   }
-  
+
   private func loadPage() {
     if let pageDocument = doc {
       if let page = pageDocument.page {
@@ -65,3 +67,9 @@ class InterfaceBuilderController: NSViewController {
 
 
 extension InterfaceBuilderController: WorkbenchEditor { }
+
+extension InterfaceBuilderController: DocumentObserver {
+  public func documentDidChange(_ document: Document) {
+    loadPage()
+  }
+}
