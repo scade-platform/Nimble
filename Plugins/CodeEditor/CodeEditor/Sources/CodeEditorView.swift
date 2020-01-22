@@ -92,7 +92,7 @@ class CodeEditorView: NSViewController {
       lastString = String(textStorage.string[lineRange])
       if line != lastLine {
         if !diagnosticsOnLine.isEmpty {
-          addDiagnosticsViwe(diagnosticsOnLine: diagnosticsOnLine, lastString: lastString, lineHeight: lineHeight, lastLine: lastLine)
+          addDiagnosticsView(diagnosticsOnLine: diagnosticsOnLine, lastString: lastString, lineHeight: lineHeight, lastLine: lastLine)
         }
         diagnosticsOnLine = [d]
         lastLine = line
@@ -106,28 +106,20 @@ class CodeEditorView: NSViewController {
       }
     }
     if !diagnosticsOnLine.isEmpty {
-      addDiagnosticsViwe(diagnosticsOnLine: diagnosticsOnLine, lastString: lastString, lineHeight: lineHeight, lastLine: lastLine)
+      addDiagnosticsView(diagnosticsOnLine: diagnosticsOnLine, lastString: lastString, lineHeight: lineHeight, lastLine: lastLine)
     }
   }
   
-  private func addDiagnosticsViwe(diagnosticsOnLine: [Diagnostic], lastString: String, lineHeight: CGFloat, lastLine: Int) {
+  private func addDiagnosticsView(diagnosticsOnLine: [Diagnostic], lastString: String, lineHeight: CGFloat, lastLine: Int) {
     let diagnosticView = DiagnosticView()
-    diagnosticView.diagnostics = diagnosticsOnLine
     self.textView?.addSubview(diagnosticView)
+    diagnosticView.diagnostics = diagnosticsOnLine
     guard let superview = self.textView else { return }
     diagnosticView.translatesAutoresizingMaskIntoConstraints = false
-    diagnosticView.widthAnchor.constraint(equalToConstant: superview.bounds.width - stringWidth(for: lastString)!).isActive = true
+    diagnosticView.widthAnchor.constraint(equalToConstant: superview.bounds.width - superview.stringWidth(for: lastString)!).isActive = true
     diagnosticView.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: -10).isActive = true
     diagnosticView.topAnchor.constraint(equalTo: superview.topAnchor, constant: lineHeight * CGFloat(lastLine - 1)).isActive = true
   }
-  
-  private func stringWidth(for string: String) -> CGFloat? {
-    let font = self.textView?.font ?? NSFont.systemFont(ofSize: NSFont.systemFontSize)
-    let atrStr = NSAttributedString(string: string, attributes: [NSAttributedString.Key.font : font])
-    let tabsCount = string.filter{$0 == "\t"}.count
-    return atrStr.size().width + CGFloat(((self.textView?.tabWidth ?? 0) * tabsCount)) + 20
-  }
-
   
   private func sheduleDiagnosticsUpdate() {
     if let timer = diagnosticsUpdateTimer {

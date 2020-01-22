@@ -16,11 +16,10 @@ class DiagnosticView: NSStackView {
     didSet {
       guard !diagnostics.isEmpty else { return }
       let collapsedRow = DiagnosticRowView.loadFromNib()
-      collapsedRow.diagnosticDelegate = SummaryDiagnosticsRowViewDelegate()
-      collapsedRow.diagnostics = diagnostics
-      let collapsedView = DiagnosticTableView()
+      let collapsedView = DiagnosticTableView(delegate: SummaryDiagnosticsRowViewDelegate(font: font))
       collapsedView.add(row: collapsedRow)
       collapsedView.mouseDownCallBack = mouseDownHandler
+      collapsedRow.diagnostics = diagnostics
       self.addArrangedSubview(collapsedView)
       if diagnostics.count > 1 {
         if !errors.isEmpty {
@@ -41,8 +40,16 @@ class DiagnosticView: NSStackView {
     return diagnostics.filter{$0.severity == .warning}
   }()
   
+  lazy var font: NSFont = {
+    guard let textView = self.superview as? NSTextView, let font = textView.font else {
+      return NSFont.systemFont(ofSize: NSFont.systemFontSize)
+    }
+    return font
+  }()
+  
   init() {
     super.init(frame: .zero)
+    ColorThemeManager.shared.observers.add(observer: self)
     self.orientation = .vertical
     self.alignment = .trailing
     self.spacing = 8
@@ -61,16 +68,23 @@ class DiagnosticView: NSStackView {
    }
   
   private func addTable(for diagnostics: [Diagnostic], isHidden: Bool = false){
-    let tableView = DiagnosticTableView()
+    let tableView = DiagnosticTableView(delegate: SingleDiagnosticRowViewDelegate(font: font))
     for diagnostic in diagnostics {
       let row = DiagnosticRowView.loadFromNib()
-      row.diagnosticDelegate = SingleDiagnosticRowViewDelegate()
-      row.diagnostics = [diagnostic]
       tableView.add(row: row)
+      row.diagnostics = [diagnostic]
     }
     tableView.isHidden = isHidden
     tableView.mouseDownCallBack = mouseDownHandler
     self.addArrangedSubview(tableView)
+  }
+}
+
+extension DiagnosticView: ColorThemeObserver {
+  func colorThemeDidChanged(_ theme: ColorTheme) {
+    self.subviews.forEach{$0.removeFromSuperview()}
+    let d = self.diagnostics
+    self.diagnostics = d
   }
 }
 
@@ -95,9 +109,21 @@ protocol DiagnosticRowViewDelegate {
   func show(diagnostics: [Diagnostic], in row: DiagnosticRowView)
 }
 
-class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegate {
+class DiagnosticRowViewDelegateImpl: DiagnosticRowViewDelegate {
+  let font: NSFont
+  
+  init(font: NSFont) {
+    self.font = font
+  }
   
   func show(diagnostics: [Diagnostic], in row: DiagnosticRowView) {
+    fatalError("show(diagnostics:,in:) has not been implemented")
+  }
+}
+
+class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegateImpl {
+  
+  override func show(diagnostics: [Diagnostic], in row: DiagnosticRowView) {
     guard let diagnostic = diagnostics.first else { return }
     addIcon(for: diagnostic, in: row.iconsView)
     row.iconsView.superview?.setBackgroundColor(DiagnosticViewUtils.iconColumnColor(for: diagnostic))
@@ -119,9 +145,7 @@ class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegate {
   
   private func addText(for diagnostic: Diagnostic, in textView: NSTextField) {
     textView.stringValue = diagnostic.message
-    if let font = DiagnosticViewUtils.font {
-      textView.font = font
-    }
+    textView.font = font
     textView.textColor = ColorThemeManager.shared.currentTheme?.global.foreground
     textView.drawsBackground = true
     textView.backgroundColor = DiagnosticViewUtils.textColumnColor(for: diagnostic)
@@ -129,8 +153,8 @@ class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegate {
   }
 }
 
-class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegate {
-  func show(diagnostics: [Diagnostic], in row : DiagnosticRowView) {
+class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegateImpl {
+  override func show(diagnostics: [Diagnostic], in row : DiagnosticRowView) {
     
     guard !diagnostics.isEmpty else { return }
     
@@ -150,9 +174,7 @@ class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegate {
     iconsView.superview?.setBackgroundColor(currentIconColumnColor!)
     if diagnostics.count > 1 {
       let countView = NSTextField(labelWithString: "\(diagnostics.count)")
-      if let font = DiagnosticViewUtils.font {
-        countView.font = font
-      }
+      countView.font = font
       countView.textColor = ColorThemeManager.shared.currentTheme?.global.foreground
       countView.sizeToFit()
 
@@ -182,9 +204,7 @@ class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegate {
     for diagnosticType in DiagnosticSeverity.allCases {
       guard let diagnostic = diagnostics.first(where: {$0.severity == diagnosticType}) else { continue }
       textView.stringValue = diagnostic.message
-      if let font = DiagnosticViewUtils.font {
-        textView.font = font
-      }
+      textView.font = font
       textView.textColor = ColorThemeManager.shared.currentTheme?.global.foreground
       textView.drawsBackground = true
       textView.backgroundColor = DiagnosticViewUtils.textColumnColor(for: diagnostic)
@@ -198,9 +218,11 @@ class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegate {
 fileprivate class DiagnosticTableView: NSView {
   let stackView: NSStackView
   var mouseDownCallBack: (() -> Void)?
+  var diagnosticDelegate: DiagnosticRowViewDelegate? = nil
   
   //Add rounded corners to the target view
-  init() {
+  init(delegate: DiagnosticRowViewDelegate) {
+    self.diagnosticDelegate = delegate
     self.stackView = NSStackView()
     super.init(frame: .zero)
     let layer = CALayer()
@@ -222,6 +244,7 @@ fileprivate class DiagnosticTableView: NSView {
   }
   
   func add(row view: DiagnosticRowView) {
+    view.diagnosticDelegate = diagnosticDelegate
     self.stackView.addArrangedSubview(view)
     view.leadingAnchor.constraint(equalTo: stackView.leadingAnchor).isActive = true
     view.trailingAnchor.constraint(equalTo: stackView.trailingAnchor).isActive = true
@@ -233,34 +256,56 @@ fileprivate class DiagnosticTableView: NSView {
 }
 
 fileprivate class DiagnosticViewUtils {
-  static var font: NSFont? = {
-    if let f = NSFont.init(name: "SFMono-Medium", size: 12) {
-      return f
-    }
-    return nil
-  }()
   
-  //TODO: colores should be moved to themes
-  // these colors for dark theme
+  enum ThemeKind {
+    case dark
+    case light
+  }
+
+  static var themeKind : ThemeKind {
+    guard let backgroundColor = ColorThemeManager.shared.currentTheme?.global.background else {
+      return .dark
+    }
+    return backgroundColor.lightnessComponent > CGFloat(0.5) ? .light : .dark
+  }
+  
   fileprivate static func iconColumnColor(for diagnostic: Diagnostic) -> NSColor {
     switch diagnostic.severity {
     case .error:
-      return NSColor(colorCode: "#853332")!
+      switch themeKind {
+      case .light:
+        return NSColor(colorCode: "#ffc1c0")!
+      default:
+        return NSColor(colorCode: "#853332")!
+      }
     case .warning:
-      return NSColor(colorCode: "#907723")!
+      switch themeKind {
+      case .light:
+        return NSColor(colorCode: "#ffebad")!
+      default:
+        return NSColor(colorCode: "#907723")!
+      }
     default:
       return NSColor(colorCode: "#c9ccc8")!
     }
   }
 
-  //TODO: colores should be moved to themes
-  // these colors for dark theme
   fileprivate static func textColumnColor(for diagnostic: Diagnostic) -> NSColor {
     switch diagnostic.severity {
     case .error:
-      return NSColor(colorCode: "#382829")!
+      switch themeKind {
+      case .light:
+        return NSColor(colorCode: "#f5e3e3")!
+      default:
+        return NSColor(colorCode: "#382829")!
+      }
     case .warning:
-      return NSColor(colorCode: "#382829")!
+      switch themeKind {
+      case .light:
+        return NSColor(colorCode: "#f5efdd")!
+      default:
+        return NSColor(colorCode: "#382829")!
+      }
     default:
       return NSColor(colorCode: "#e7eae6")!
     }
@@ -279,7 +324,7 @@ fileprivate class DiagnosticViewUtils {
 }
 
 
-extension NSView {
+fileprivate extension NSView {
   func layout(into: NSView, insets: NSEdgeInsets = NSEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)) {
     self.translatesAutoresizingMaskIntoConstraints = false
     self.topAnchor.constraint(equalTo: into.topAnchor, constant: insets.top).isActive = true

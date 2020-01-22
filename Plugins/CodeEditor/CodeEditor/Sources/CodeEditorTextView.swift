@@ -321,6 +321,13 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   func surroundString(_ index: String.Index) -> String {
     return String(string[surroundRange(index)])
   }
+  
+  func stringWidth(for string: String) -> CGFloat? {
+    let font = self.font ?? NSFont.systemFont(ofSize: NSFont.systemFontSize)
+    let atrStr = NSAttributedString(string: string, attributes: [NSAttributedString.Key.font : font])
+    let tabsCount = string.filter{$0 == "\t"}.count
+    return atrStr.size().width + CGFloat((self.tabWidth * tabsCount)) + 20
+  }
     
   
   override func insertText(_ string: Any, replacementRange: NSRange) {
