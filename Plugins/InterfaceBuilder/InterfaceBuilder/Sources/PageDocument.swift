@@ -62,14 +62,14 @@ public final class PageDocument: NimbleDocument {
       
       svgRoot = SCDRuntime.parseSvgContent(content) as? SCDSvgBox
     }
+
+    try super.read(from: url, ofType: typeName)
   }
   
   public override func data(ofType typeName: String) throws -> Data {
     return "".data(using: .utf8)!
   }
 }
-
-
 
 extension PageDocument: Document {
   public var editor: WorkbenchEditor? { builderController }

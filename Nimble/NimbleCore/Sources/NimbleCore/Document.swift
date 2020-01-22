@@ -68,15 +68,24 @@ public protocol CreatableDocument where Self: Document {
 open class NimbleDocument: NSDocument {
   public var observers = ObserverSet<DocumentObserver> ()
 
-  override init() {
-    super.init()
-    NSFileCoordinator.addFilePresenter(self)
-  }
+  private var isAddFilePresenter = false
 
-  deinit {
-    NSFileCoordinator.removeFilePresenter(self)
+  open override func write(to url: URL, ofType typeName: String,
+                           for saveOperation: NSDocument.SaveOperationType,
+                           originalContentsURL absoluteOriginalContentsURL: URL?) throws {
+    addFilePrestenter()
+    try super.write(to: url, ofType: typeName, for: saveOperation,
+                originalContentsURL: absoluteOriginalContentsURL)
   }
   
+  open override func read(from data: Data, ofType typeName: String) throws {
+    addFilePrestenter()
+  }
+  
+  open override func close() {
+    removeFilePrestenter()
+  }
+
   open override func updateChangeCount(_ change: NSDocument.ChangeType) {
     super.updateChangeCount(change)
     observers.notify {
@@ -84,8 +93,29 @@ open class NimbleDocument: NSDocument {
       $0.documentDidChange(doc)
     }
   }
+
+  deinit {
+    removeFilePrestenter()
+  }
+  
 }
 
+extension NimbleDocument {
+
+  func addFilePrestenter() {
+    if !isAddFilePresenter {
+      NSFileCoordinator.addFilePresenter(self)
+      isAddFilePresenter.toggle()
+    }
+  }
+
+  func removeFilePrestenter() {
+    if isAddFilePresenter {
+      NSFileCoordinator.removeFilePresenter(self)
+      isAddFilePresenter.toggle()
+    }
+  }
+}
 
 // MARK: - Document Observer
 
