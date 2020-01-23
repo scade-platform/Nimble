@@ -21,8 +21,15 @@ public protocol Document where Self: NSDocument {
   static func canOpen(_ file: File) -> Bool
   
   static var usupportedTypes: [String] { get }
-
 }
+
+
+public protocol DocumentController where Self: NSDocumentController {
+  var currentWorkbench: Workbench? { get }
+    
+  func openDocument(_ doc: Document, display displayDocument: Bool) -> Void
+}
+
 
 
 public extension Document {
@@ -141,7 +148,6 @@ public class DocumentManager {
     openedDocuments.append(WeakRef<NSDocument>(value: doc))
     return doc
   }
-  
 
   private func selectDocumentClass(for file: File) -> Document.Type? {
     var docClasses: [Document.Type] = []

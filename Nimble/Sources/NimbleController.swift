@@ -22,11 +22,6 @@ class NimbleController: NSDocumentController {
     ///TODO: process errors
   }
   
-  
-  var currentWorkbench: Workbench? {
-    return currentProjectDocument?.workbench
-  }
-  
   var currentProjectDocument: ProjectDocument? {
     if currentDocument == nil  {
       self.newDocument(nil)
@@ -70,15 +65,10 @@ class NimbleController: NSDocumentController {
       return completionHandler(nil, false, nil)
     }
     
-    noteNewRecentDocument(doc)
-    
-    if let workbench = currentWorkbench, displayDocument {
-      workbench.open(doc, show: true)
-    }
-    
+    openDocument(doc, display: displayDocument)
     completionHandler(doc, false, nil)
   }
-  
+    
   
   func beginOpenProjectPanel(completionHandler: (URL) -> ()) {
     let openPanel = NSOpenPanel();
@@ -145,6 +135,22 @@ class NimbleController: NSDocumentController {
       menuItem.title = currentWorkbench?.debugArea?.isHidden ?? true ? "Show Console" : "Hide Console"
     }
     return super.validateMenuItem(menuItem)
+  }
+}
+
+// MARK: - DocumentController
+
+extension NimbleController: DocumentController {
+  var currentWorkbench: Workbench? {
+    return currentProjectDocument?.workbench
+  }
+    
+  func openDocument(_ doc: Document, display displayDocument: Bool) {
+    noteNewRecentDocument(doc)
+    
+    if let workbench = currentWorkbench, displayDocument {
+      workbench.open(doc, show: true)
+    }
   }
 }
 
