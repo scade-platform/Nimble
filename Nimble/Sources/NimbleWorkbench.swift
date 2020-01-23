@@ -185,6 +185,13 @@ extension NimbleWorkbench: Workbench {
     }
     return debugView?.consoleView.createConsole(title: title, show: show)
   }
+  
+  public func open(console title: String) -> Console? {
+    if debugView?.isHidden ?? false {
+      debugView?.isHidden = false
+    }
+    return debugView?.consoleView.open(console: title)
+  }
     
   public func publishDiagnostics(for path: Path, diagnostics: [Diagnostic]) {
     if let doc = documents.first(where: {$0.path == path}){

@@ -73,26 +73,42 @@ class ConsoleView: NSViewController {
     return result
   }
   
-  func open(console title: String) {
-    guard let console = consolesStorage[title] else {
-      return
+  @discardableResult
+  func open(console title: String)-> Console? {
+    guard let console = show(console: title) else {
+      return nil
     }
-    currentConsole = console
     if console.isReadingFromBuffer {
       console.handler = handler(fileHandle:console:)
+    }else {
+      console.startReadingFromBuffer()
+      console.handler = handler(fileHandle:console:)
+    }
+    return console
+  }
+  
+  @discardableResult
+  func show(console title: String) -> NimbleTextConsole? {
+    guard let console = consolesStorage[title] else {
+      return nil
     }
     consoleSelectionButton.selectItem(withTitle: console.title)
     textView.string = console.contents
+    currentConsole = console
+    return console
   }
   
-  func close(console: Console) {
+  @discardableResult
+  func close(console: Console) -> Console? {
     guard currentConsole?.title != console.title else {
+      let removedConsole = currentConsole
       closeCurrentConsole(self)
-      return
+      return removedConsole
     }
-    consolesStorage.removeValue(forKey: console.title)
+    let removedConsole = consolesStorage.removeValue(forKey: console.title)
     consoleSelectionButton.removeItem(withTitle: console.title)
     console.stopReadingFromBuffer()
+    return removedConsole
   }
   
   @IBAction func selectionDidChange(_ sender: NSPopUpButton) {
@@ -111,7 +127,7 @@ class ConsoleView: NSViewController {
     currentConsole.stopReadingFromBuffer()
     textView.string = ""
     if !consolesStorage.isEmpty{
-       open(console: consolesStorage.keys.first ?? "")
+       show(console: consolesStorage.keys.first ?? "")
     }else{
       setControllersHidden(true)
     }
@@ -157,8 +173,8 @@ class NimbleTextConsole: Console {
     return inputPipe
   }
   
-  let inputPipe = Pipe()
-  let outputPipe = Pipe()
+  var inputPipe = Pipe()
+  var outputPipe = Pipe()
   
   var handler: (FileHandle, Console) -> Void = {_,_ in} {
     didSet{
@@ -177,15 +193,7 @@ class NimbleTextConsole: Console {
     self.view = view
     self.innerContent = Atomic("")
     // Set up a read handler which fires when data is written to our inputPipe
-    inputPipe.fileHandleForReading.readabilityHandler = { [weak self] fileHandle in
-      guard let strongSelf = self else { return }
-      
-      let data = fileHandle.availableData
-      if let string = String(data: data, encoding: .utf8) {
-        strongSelf.contents += string
-      }
-      strongSelf.outputPipe.fileHandleForWriting.write(data)
-    }
+    startReadingFromBuffer()
   }
   
   
@@ -200,6 +208,23 @@ class NimbleTextConsole: Console {
   func stopReadingFromBuffer() {
     outputPipe.fileHandleForReading.readabilityHandler = nil
     inputPipe.fileHandleForReading.readabilityHandler = nil
+    inputPipe = Pipe()
+    outputPipe = Pipe()
+  }
+  
+  func startReadingFromBuffer() {
+    if !isReadingFromBuffer {
+      contents = ""
+      inputPipe.fileHandleForReading.readabilityHandler = { [weak self] fileHandle in
+        guard let strongSelf = self else { return }
+        
+        let data = fileHandle.availableData
+        if let string = String(data: data, encoding: .utf8) {
+          strongSelf.contents += string
+        }
+        strongSelf.outputPipe.fileHandleForWriting.write(data)
+      }
+    }
   }
   
   func clear() {

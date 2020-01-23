@@ -14,9 +14,20 @@ public protocol BuildSystem {
   func run(in workbench: Workbench) -> BuildProgress
 }
 
-public protocol BuildProgress {
+extension BuildSystem {
+  func openConsole(title: String, in workbench: Workbench) -> Console? {
+    guard let console = workbench.open(console: title) else {
+      if let newConsole = workbench.createConsole(title: title, show: true) {
+        return newConsole
+      }
+      return nil
+    }
+    return console
+  }
 }
 
+public protocol BuildProgress {
+}
 
 public class BuildSystemsManager {
   public static let shared = BuildSystemsManager()

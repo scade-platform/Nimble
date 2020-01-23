@@ -43,6 +43,8 @@ public protocol Workbench: class {
   
   func createConsole(title: String, show: Bool) -> Console?
   
+  func open(console title: String) -> Console? 
+  
   func publishDiagnostics(for path: Path, diagnostics: [Diagnostic])
 }
 
