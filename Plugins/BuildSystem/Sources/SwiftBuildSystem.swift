@@ -28,7 +28,13 @@ class SwiftBuildSystem: BuildSystem {
     swiftcProc.terminationHandler = { process in
       swiftcProcConsole?.stopReadingFromBuffer()
       if let contents = swiftcProcConsole?.contents {
-        guard contents.isEmpty else { return }
+        if contents.isEmpty {
+          DispatchQueue.main.async {
+            swiftcProcConsole?.close()
+          }
+        } else if contents.contains("error:") {
+          return
+        }
       }
       let programProc = Process()
       programProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
@@ -38,7 +44,6 @@ class SwiftBuildSystem: BuildSystem {
         programProcConsole?.stopReadingFromBuffer()
       }
       DispatchQueue.main.async {
-        swiftcProcConsole?.close()
         programProcConsole = self.openConsole(title: "Run: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
         programProc.standardOutput = programProcConsole?.output
         programProc.standardError = programProcConsole?.output
