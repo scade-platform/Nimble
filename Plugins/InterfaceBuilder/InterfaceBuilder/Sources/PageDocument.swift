@@ -17,15 +17,24 @@ public final class PageDocument: NimbleDocument {
   //  }
 
   override public func presentedItemDidChange() {
-    DispatchQueue.main.async {
-      guard let url = self.fileURL, let type = self.fileType  else { return }
-      try! self.read(from: url, ofType: type)
+    guard let url = self.fileURL, let type = self.fileType  else { return }
 
-      self.observers.notify { $0.documentDidChange(self) }
+    DispatchQueue.main.async { [weak self] in
+      self?.readFile(from: url, ofType: type)
+      self?.observers.notify { $0.documentDidChange(self!) }
     }
   }
   
   public override func read(from url: URL, ofType typeName: String) throws {
+    readFile(from: url, ofType: typeName)
+    try super.read(from: url, ofType: typeName)
+  }
+  
+  public override func data(ofType typeName: String) throws -> Data {
+    return "".data(using: .utf8)!
+  }
+
+  func readFile(from url: URL, ofType typeName: String) {
     if url.pathExtension == "page" {
       let resource = SCDRuntime.loadXmiResource(url.path) as! SCDCoreResource
       let resourceContents = resource.contents
@@ -62,12 +71,6 @@ public final class PageDocument: NimbleDocument {
       
       svgRoot = SCDRuntime.parseSvgContent(content) as? SCDSvgBox
     }
-
-    try super.read(from: url, ofType: typeName)
-  }
-  
-  public override func data(ofType typeName: String) throws -> Data {
-    return "".data(using: .utf8)!
   }
 }
 
