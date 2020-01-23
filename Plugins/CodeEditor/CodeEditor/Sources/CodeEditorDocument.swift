@@ -11,8 +11,10 @@ import NimbleCore
 import CodeEditor
 
 public final class CodeEditorDocument: NimbleDocument {
-  let textStorage = NSTextStorage()
-  
+  lazy var textStorage = {
+    return NSTextStorage()
+  }()
+
   public var language: Language? {
     didSet {
       if let grammar = language?.grammar {
