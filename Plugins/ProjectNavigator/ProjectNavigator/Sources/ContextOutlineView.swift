@@ -40,17 +40,21 @@ class ContextOutlineView : NSOutlineView {
 extension ContextOutlineView : ContextMenuProvider {
   
   static func menuItems(for file: File) -> [NSMenuItem] {
-    let openWithItem =
-      createSubMenuItem(title: "Open With",
-                        items: [
-                          createMenuItem(title: "Source Code", selector: #selector(sourceCodeAction), for: file)
-                        ])
+    var supportingDocument = DocumentManager.shared.getSupportingDocumentTypes(of: file)
+    let _ = supportingDocument.partition(by: { !$0.isDefault(for: file)})
 
+    var openAsItems: [NSMenuItem] = supportingDocument.map {
+      createMenuItem(title: title(of: $0), selector: #selector(openAsAction), for: file)
+    }
+
+    if openAsItems.count > 1 {
+      openAsItems.insert(NSMenuItem.separator(), at: 1)
+    }
 
     return [
       createMenuItem(title: "Show in Finder", selector: #selector(showInFinderAction), for: file),
       createMenuItem(title: "Open with External Editor", selector: #selector(openInExternalEditorAction), for: file),
-      openWithItem,
+      createSubMenuItem(title: "Open As", items: openAsItems),
       NSMenuItem.separator(),
       createMenuItem(title: "Rename", selector: #selector(renameAction), for: file),
       NSMenuItem.separator(),
@@ -73,14 +77,20 @@ extension ContextOutlineView : ContextMenuProvider {
   
   // MARK: - Menu actions
   
-  @objc func sourceCodeAction(_ sender: NSMenuItem?) {
-    guard let fileSystemElement = sender?.representedObject as? FileSystemElement else {
-      return
+  @objc func openAsAction(_ sender: NSMenuItem?) {
+    if let menuItem = sender {
+      guard let file = menuItem.representedObject as? File else { return }
+
+      guard let docType = DocumentManager.shared
+              .getSupportingDocumentTypes(of: file)
+              .first(where: { ContextOutlineView.title(of: $0) == menuItem.title} ) else { return }
+
+      guard let doc = DocumentManager.shared.open(file: file, docType: docType) else { return }
+
+      if let docController = NSDocumentController.shared as? DocumentController {
+        docController.openDocument(doc, display: true)
+      }
     }
-    showImputTextAlert(message: "Please enter a new name:", fileSystemElement, handler: {newName in
-      try! fileSystemElement.path.rename(to: newName)
-      self.reloadSelected()
-    })
   }
 
   @objc func showInFinderAction(_ sender: NSMenuItem?) {
@@ -186,6 +196,10 @@ extension ContextOutlineView : ContextMenuProvider {
         handler(enteredString)
       }
     })
+  }
+
+  private static func title(of type: Document.Type) -> String {
+    return String(describing: type)
   }
   
 }

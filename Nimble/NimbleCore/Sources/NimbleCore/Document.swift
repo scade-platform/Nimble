@@ -129,24 +129,36 @@ public class DocumentManager {
   
   public func open(url: URL) -> Document? {
     guard let path = Path(url: url) else { return nil }
+
     return open(path: path)
   }
-  
+
   public func open(path: Path) -> Document? {
     guard let file = File(path: path) else { return nil }
+
     return open(file: file)
   }
-  
+
   public func open(file: File) -> Document? {
+    guard let type = selectDocumentClass(for: file) else { return nil }
+
+    return open(file: file, docType: type)
+  }
+
+  public func open(file: File, docType: Document.Type) -> Document? {
     if let doc = searchOpenedDocument(file) {
       return doc
     }
-      
-    guard let docClass = selectDocumentClass(for: file) else { return nil }
-    guard let doc = try? docClass.init(contentsOf: file.path.url, ofType: file.url.uti) else { return nil }
+
+    guard let doc = try? docType.init(contentsOf: file.path.url, ofType: file.url.uti) else { return nil }
     
     openedDocuments.append(WeakRef<NSDocument>(value: doc))
+
     return doc
+  }
+
+  public func getSupportingDocumentTypes(of file: File) -> [Document.Type] {
+    return documentClasses.filter { $0.canOpen(file) }
   }
 
   private func selectDocumentClass(for file: File) -> Document.Type? {
