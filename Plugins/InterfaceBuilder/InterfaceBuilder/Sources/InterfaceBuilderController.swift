@@ -64,12 +64,11 @@ class InterfaceBuilderController: NSViewController {
   }
 }
 
-
-
 extension InterfaceBuilderController: WorkbenchEditor { }
 
 extension InterfaceBuilderController: DocumentObserver {
-  public func documentDidChange(_ document: Document) {
+
+  func documentFileDidChange(_ document: NimbleDocument) {
     loadPage()
   }
 }
