@@ -184,7 +184,8 @@ extension CodeEditorView: NSTextStorageDelegate {
     let range = textStorage.editedRange
     
     DispatchQueue.main.async { [weak self] in
-      self?.textView?.subviews.filter{$0 is DiagnosticView}.forEach{$0.removeFromSuperview()}
+      //remove all diagnostics view
+      self?.diagnosticViews.forEach{$0.removeFromSuperview()}
       if let progress = self?.highlightProgress {
         progress.cancel()
         self?.highlightProgress = syntaxParser.highlightAll()
