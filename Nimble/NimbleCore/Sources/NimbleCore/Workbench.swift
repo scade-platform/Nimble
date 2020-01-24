@@ -30,6 +30,8 @@ public protocol Workbench: class {
   var debugArea: WorkbenchArea? { get }
     
   var statusBar: WorkbenchStatusBar { get }
+  
+  var openedConsoles: [Console] { get }
               
   
   func open(_ doc: Document, show: Bool)
@@ -39,11 +41,7 @@ public protocol Workbench: class {
   @discardableResult
   func close(_ doc: Document) -> Bool
   
-      
-  
   func createConsole(title: String, show: Bool) -> Console?
-  
-  func open(console title: String) -> Console? 
   
   func publishDiagnostics(for path: Path, diagnostics: [Diagnostic])
 }

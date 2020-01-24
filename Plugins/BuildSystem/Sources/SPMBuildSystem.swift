@@ -38,7 +38,7 @@ class SPMBuildSystem: BuildSystem {
     }
     DispatchQueue.main.async {
       workbench.debugArea?.isHidden = false
-      spmProcConsole = self.openConsole(title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
+      spmProcConsole = self.openConsole(key: fileURL, title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
       spmProc.standardOutput = spmProcConsole?.output
       try? spmProc.run()
     }
@@ -87,7 +87,7 @@ class SPMBuildSystem: BuildSystem {
         programProcConsole?.stopReadingFromBuffer()
       }
       DispatchQueue.main.async {
-        programProcConsole =  self.openConsole(title: "Run: \(name)", in: workbench)
+        programProcConsole =  self.openConsole(key: package, title: "Run: \(name)", in: workbench)
         programProc.standardOutput = programProcConsole?.output
         programProc.standardError = programProcConsole?.output
         try? programProc.run()

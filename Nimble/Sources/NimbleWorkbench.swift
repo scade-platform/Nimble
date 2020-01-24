@@ -102,6 +102,13 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
 // MARK: - Workbench
 
 extension NimbleWorkbench: Workbench {
+  public var openedConsoles: [Console] {
+    guard let debugView = debugView else {
+      return []
+    }
+    return debugView.consoleView.openedConsoles
+  }
+  
   public var project: Project? {
     return (document as? ProjectDocument)?.project
   }
@@ -184,13 +191,6 @@ extension NimbleWorkbench: Workbench {
       debugView?.isHidden = false
     }
     return debugView?.consoleView.createConsole(title: title, show: show)
-  }
-  
-  public func open(console title: String) -> Console? {
-    if debugView?.isHidden ?? false {
-      debugView?.isHidden = false
-    }
-    return debugView?.consoleView.open(console: title)
   }
     
   public func publishDiagnostics(for path: Path, diagnostics: [Diagnostic]) {

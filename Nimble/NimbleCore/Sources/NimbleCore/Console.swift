@@ -16,6 +16,8 @@ public protocol Console {
   
   var contents: String { get }
   
+  var representedObject: Any? { get set }
+  
   @discardableResult
   func writeLine() -> Console
   
@@ -38,6 +40,8 @@ public protocol Console {
   func writeLine(data: Data) -> Console
   
   func stopReadingFromBuffer()
+  
+  func startReadingFromBuffer()
   
   func close()
 }

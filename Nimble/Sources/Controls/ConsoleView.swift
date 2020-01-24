@@ -22,12 +22,25 @@ class ConsoleView: NSViewController {
   
   private var currentConsole: Console? = nil
   
+  var openedConsoles: [Console] {
+    return Array(consolesStorage.values)
+  }
+  
   private func handler(fileHandle: FileHandle, console: Console) {
     guard console.title == currentConsole?.title else {
       return
     }
     DispatchQueue.main.async {
       self.textView.string = console.contents
+    }
+  }
+  
+  private func callback(console: Console) {
+    guard console.title != currentConsole?.title else {
+      return
+    }
+    DispatchQueue.main.async {
+      self.open(console: console.title)
     }
   }
   
@@ -58,6 +71,7 @@ class ConsoleView: NSViewController {
       currentConsole = newConsole
     }
     newConsole.handler = handler(fileHandle:console:)
+    newConsole.callback = callback(console:)
     consolesStorage[newConsole.title] = newConsole
     setControllersHidden(false)
     return newConsole
@@ -73,42 +87,26 @@ class ConsoleView: NSViewController {
     return result
   }
   
-  @discardableResult
-  func open(console title: String)-> Console? {
-    guard let console = show(console: title) else {
-      return nil
+  func open(console title: String) {
+    guard let console = consolesStorage[title] else {
+      return
     }
+    currentConsole = console
     if console.isReadingFromBuffer {
       console.handler = handler(fileHandle:console:)
-    }else {
-      console.startReadingFromBuffer()
-      console.handler = handler(fileHandle:console:)
-    }
-    return console
-  }
-  
-  @discardableResult
-  func show(console title: String) -> NimbleTextConsole? {
-    guard let console = consolesStorage[title] else {
-      return nil
     }
     consoleSelectionButton.selectItem(withTitle: console.title)
     textView.string = console.contents
-    currentConsole = console
-    return console
   }
   
-  @discardableResult
-  func close(console: Console) -> Console? {
+  func close(console: Console) {
     guard currentConsole?.title != console.title else {
-      let removedConsole = currentConsole
       closeCurrentConsole(self)
-      return removedConsole
+      return
     }
-    let removedConsole = consolesStorage.removeValue(forKey: console.title)
+    consolesStorage.removeValue(forKey: console.title)
     consoleSelectionButton.removeItem(withTitle: console.title)
     console.stopReadingFromBuffer()
-    return removedConsole
   }
   
   @IBAction func selectionDidChange(_ sender: NSPopUpButton) {
@@ -127,7 +125,7 @@ class ConsoleView: NSViewController {
     currentConsole.stopReadingFromBuffer()
     textView.string = ""
     if !consolesStorage.isEmpty{
-       show(console: consolesStorage.keys.first ?? "")
+       open(console: consolesStorage.keys.first ?? "")
     }else{
       setControllersHidden(true)
     }
@@ -173,6 +171,8 @@ class NimbleTextConsole: Console {
     return inputPipe
   }
   
+  var representedObject: Any?
+  
   var inputPipe = Pipe()
   var outputPipe = Pipe()
   
@@ -183,6 +183,8 @@ class NimbleTextConsole: Console {
       }
     }
   }
+  
+  var callback: ((Console) -> Void)?
   
   var isReadingFromBuffer: Bool {
     return inputPipe.fileHandleForReading.readabilityHandler != nil
@@ -222,6 +224,7 @@ class NimbleTextConsole: Console {
         if let string = String(data: data, encoding: .utf8) {
           strongSelf.contents += string
         }
+        strongSelf.callback?(strongSelf)
         strongSelf.outputPipe.fileHandleForWriting.write(data)
       }
     }

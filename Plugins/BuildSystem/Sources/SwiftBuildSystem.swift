@@ -44,7 +44,7 @@ class SwiftBuildSystem: BuildSystem {
         programProcConsole?.stopReadingFromBuffer()
       }
       DispatchQueue.main.async {
-        programProcConsole = self.openConsole(title: "Run: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
+        programProcConsole = self.openConsole(key: fileURL, title: "Run: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
         programProc.standardOutput = programProcConsole?.output
         programProc.standardError = programProcConsole?.output
         try? programProc.run()
@@ -52,7 +52,7 @@ class SwiftBuildSystem: BuildSystem {
     }
     DispatchQueue.main.async {
       workbench.debugArea?.isHidden = false
-      swiftcProcConsole = self.openConsole(title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
+      swiftcProcConsole = self.openConsole(key: "Compile: \(fileURL.absoluteString)", title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
       swiftcProc.standardError = swiftcProcConsole?.output
       try? swiftcProc.run()
     }
