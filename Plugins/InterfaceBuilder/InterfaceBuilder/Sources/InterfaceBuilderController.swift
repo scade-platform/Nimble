@@ -68,7 +68,7 @@ extension InterfaceBuilderController: WorkbenchEditor { }
 
 extension InterfaceBuilderController: DocumentObserver {
 
-  func documentFileDidChange(_ document: NimbleDocument) {
+  func documentFileDidChange(_ document: Document) {
     loadPage()
   }
 }

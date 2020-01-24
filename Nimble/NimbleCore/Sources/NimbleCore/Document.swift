@@ -88,14 +88,16 @@ open class NimbleDocument: NSDocument {
 
   open override func updateChangeCount(_ change: NSDocument.ChangeType) {
     super.updateChangeCount(change)
-    observers.notify {
-      guard let doc = self as? Document else { return }
-      $0.documentDidChange(doc)
-    }
+
+    guard let doc = self as? Document else { return }
+
+    observers.notify { $0.documentDidChange(doc) }
   }
 
   open func onFileDidChange() {
-    observers.notify { $0.documentFileDidChange(self) }
+    guard let doc = self as? Document else { return }
+
+    observers.notify { $0.documentFileDidChange(doc) }
   }
 
   deinit {
@@ -109,13 +111,13 @@ open class NimbleDocument: NSDocument {
 public protocol DocumentObserver {
   func documentDidChange(_ document: Document)
 
-  func documentFileDidChange(_ document: NimbleDocument)
+  func documentFileDidChange(_ document: Document)
 }
 
 public extension DocumentObserver {
   func documentDidChange(_ document: Document) {}
 
-  func documentFileDidChange(_ document: NimbleDocument) {}
+  func documentFileDidChange(_ document: Document) {}
 }
 
 // MARK: - Document Manager
