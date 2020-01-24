@@ -13,6 +13,7 @@ import CodeEditor
 class CodeEditorView: NSViewController {
   var diagnostics: [SourceCodeDiagnostic] = []
   var diagnosticsUpdateTimer: DispatchSourceTimer? = nil
+  var diagnosticViews: [DiagnosticView] = []
   
   weak var document: CodeEditorDocument? = nil {
     didSet {
@@ -73,26 +74,20 @@ class CodeEditorView: NSViewController {
       $0.removeTemporaryAttribute(.underlineStyle, forCharacterRange: wholeRange)
     }
     
-    let defaultLineHeight = self.textView?.layoutManager?.defaultLineHeight(for: textView?.font ?? NSFont.systemFont(ofSize: NSFont.systemFontSize))
-    let lineHeight = defaultLineHeight! * (self.textView?.defaultParagraphStyle?.lineHeightMultiple ?? 1)
-    
     // Show new diagnostics
     let style = NSNumber(value: NSUnderlineStyle.thick.rawValue)
     var lastLine = -1
     var diagnosticsOnLine: [Diagnostic] = []
-    var lastString : String = ""
     //remove previouse diagnostics view
-    textView?.subviews.filter{$0 is DiagnosticView}.forEach{$0.removeFromSuperview()}
+    diagnosticViews.forEach{$0.removeFromSuperview()}
     for d in diagnostics {
       let color = d.severity == .error ? NSColor.red : NSColor.yellow
       let range = textStorage.string.range(for: d.range)
       let nsRange = range.isEmpty ? NSRange(range.lowerBound..<range.upperBound + 1) : NSRange(range)
       let line = textStorage.string.lineNumber(at: nsRange.location)
-      let lineRange: Range<Int> = textStorage.string.lineRange(line: line - 1)
-      lastString = String(textStorage.string[lineRange])
       if line != lastLine {
         if !diagnosticsOnLine.isEmpty {
-          addDiagnosticsView(diagnosticsOnLine: diagnosticsOnLine, lastString: lastString, lineHeight: lineHeight, lastLine: lastLine)
+          addDiagnosticsView(diagnosticsOnLine: diagnosticsOnLine, lastLine: lastLine)
         }
         diagnosticsOnLine = [d]
         lastLine = line
@@ -106,19 +101,14 @@ class CodeEditorView: NSViewController {
       }
     }
     if !diagnosticsOnLine.isEmpty {
-      addDiagnosticsView(diagnosticsOnLine: diagnosticsOnLine, lastString: lastString, lineHeight: lineHeight, lastLine: lastLine)
+      addDiagnosticsView(diagnosticsOnLine: diagnosticsOnLine, lastLine: lastLine)
     }
   }
   
-  private func addDiagnosticsView(diagnosticsOnLine: [Diagnostic], lastString: String, lineHeight: CGFloat, lastLine: Int) {
-    let diagnosticView = DiagnosticView()
-    self.textView?.addSubview(diagnosticView)
-    diagnosticView.diagnostics = diagnosticsOnLine
-    guard let superview = self.textView else { return }
-    diagnosticView.translatesAutoresizingMaskIntoConstraints = false
-    diagnosticView.widthAnchor.constraint(equalToConstant: superview.bounds.width - superview.stringWidth(for: lastString)!).isActive = true
-    diagnosticView.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: -10).isActive = true
-    diagnosticView.topAnchor.constraint(equalTo: superview.topAnchor, constant: lineHeight * CGFloat(lastLine - 1)).isActive = true
+  private func addDiagnosticsView(diagnosticsOnLine: [Diagnostic], lastLine: Int) {
+    guard let textView = self.textView else { return }
+    let diagnosticView = DiagnosticView(textView: textView, diagnostics: diagnosticsOnLine, line: lastLine)
+    self.diagnosticViews.append(diagnosticView)
   }
   
   private func sheduleDiagnosticsUpdate() {

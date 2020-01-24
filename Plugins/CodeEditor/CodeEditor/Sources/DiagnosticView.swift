@@ -12,7 +12,10 @@ import CodeEditor
 
 //The target view
 class DiagnosticView: NSStackView {
-  var diagnostics: [Diagnostic] = [] {
+  private weak var textView: NSTextView?
+  private let line: Int
+  
+  private(set) var diagnostics: [Diagnostic] = [] {
     didSet {
       guard !diagnostics.isEmpty else { return }
       let collapsedRow = DiagnosticRowView.loadFromNib()
@@ -41,18 +44,22 @@ class DiagnosticView: NSStackView {
   }()
   
   lazy var font: NSFont = {
-    guard let textView = self.superview as? NSTextView, let font = textView.font else {
+    guard let font = textView?.font else {
       return NSFont.systemFont(ofSize: NSFont.systemFontSize)
     }
     return font
   }()
   
-  init() {
+  init(textView: NSTextView, diagnostics: [Diagnostic], line: Int) {
+    self.textView = textView
+    self.line = line
     super.init(frame: .zero)
     ColorThemeManager.shared.observers.add(observer: self)
     self.orientation = .vertical
     self.alignment = .trailing
     self.spacing = 8
+    set(diagnostics: diagnostics)
+    setupView()
   }
   
   required init?(coder: NSCoder) {
@@ -62,7 +69,9 @@ class DiagnosticView: NSStackView {
   func mouseDownHandler() {
     if self.subviews.count > 1 {
       //when expand hide other diagnostic view
-      self.superview?.subviews.filter{$0 is DiagnosticView}.filter{$0 !== self}.forEach{$0.isHidden = !$0.isHidden}
+      if let textView = textView {
+        textView.subviews.filter{$0 is DiagnosticView}.filter{$0 !== self}.forEach{$0.isHidden = !$0.isHidden}
+      }
       self.arrangedSubviews.forEach{$0.isHidden = !$0.isHidden}
     }
    }
@@ -77,6 +86,25 @@ class DiagnosticView: NSStackView {
     tableView.isHidden = isHidden
     tableView.mouseDownCallBack = mouseDownHandler
     self.addArrangedSubview(tableView)
+  }
+  
+  private func set(diagnostics: [Diagnostic]) {
+    self.diagnostics = diagnostics
+  }
+  
+  private func setupView() {
+    guard let textView = textView, let textStorage = textView.textStorage else {
+      return
+    }
+    textView.addSubview(self)
+    let defaultLineHeight = textView.layoutManager?.defaultLineHeight(for: textView.font ?? NSFont.systemFont(ofSize: NSFont.systemFontSize))
+    let lineHeight = defaultLineHeight! * (textView.defaultParagraphStyle?.lineHeightMultiple ?? 1)
+    let lineRange: Range<Int> = textStorage.string.lineRange(line: line - 1)
+    let string = String(textStorage.string[lineRange])
+    self.translatesAutoresizingMaskIntoConstraints = false
+    self.widthAnchor.constraint(equalToConstant: textView.bounds.width - textView.stringWidth(for: string)!).isActive = true
+    self.trailingAnchor.constraint(equalTo: textView.trailingAnchor, constant: -10).isActive = true
+    self.topAnchor.constraint(equalTo: textView.topAnchor, constant: lineHeight * CGFloat(line - 1)).isActive = true
   }
 }
 
@@ -331,5 +359,14 @@ fileprivate extension NSView {
     self.bottomAnchor.constraint(equalTo: into.bottomAnchor, constant: -insets.bottom).isActive = true
     self.leadingAnchor.constraint(equalTo: into.leadingAnchor, constant: insets.left).isActive = true
     self.trailingAnchor.constraint(equalTo: into.trailingAnchor, constant: -insets.right).isActive = true
+  }
+}
+
+fileprivate extension NSTextView {
+  func stringWidth(for string: String) -> CGFloat? {
+    let font = self.font ?? NSFont.systemFont(ofSize: NSFont.systemFontSize)
+    let atrStr = NSAttributedString(string: string, attributes: [NSAttributedString.Key.font : font])
+    let tabsCount = string.filter{$0 == "\t"}.count
+    return atrStr.size().width + (self.defaultParagraphStyle?.defaultTabInterval ?? 0.0) * CGFloat(tabsCount)
   }
 }
