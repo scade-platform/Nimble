@@ -157,7 +157,7 @@ public class DocumentManager {
     return doc
   }
 
-  public func getSupportingDocumentTypes(of file: File) -> [Document.Type] {
+  public func selectDocumentClasses(for file: File) -> [Document.Type] {
     return documentClasses.filter { $0.canOpen(file) }
   }
 
