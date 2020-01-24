@@ -70,21 +70,20 @@ open class NimbleDocument: NSDocument {
 
   private var isFilePresenter: Bool { NSFileCoordinator.filePresenters.contains { $0 === self } }
 
-  open override func write(to url: URL, ofType typeName: String,
-                           for saveOperation: NSDocument.SaveOperationType,
-                           originalContentsURL absoluteOriginalContentsURL: URL?) throws {
-    try super.write(to: url, ofType: typeName, for: saveOperation,
-                originalContentsURL: absoluteOriginalContentsURL)
+  open override var fileURL: URL? {
+    get { return super.fileURL }
+    set {
+      super.fileURL = newValue
 
-    if !isFilePresenter { NSFileCoordinator.addFilePresenter(self) }
-  }
-  
-  open override func read(from data: Data, ofType typeName: String) throws {
-    if !isFilePresenter { NSFileCoordinator.addFilePresenter(self) }
-  }
-  
-  open override func close() {
-    if isFilePresenter { NSFileCoordinator.removeFilePresenter(self) }
+      if let scheme = newValue?.scheme {
+        if scheme == "file" && !isFilePresenter {
+          NSFileCoordinator.addFilePresenter(self)
+        }
+
+      } else if isFilePresenter {
+        NSFileCoordinator.removeFilePresenter(self)
+      }
+    }
   }
 
   open override func updateChangeCount(_ change: NSDocument.ChangeType) {
@@ -93,6 +92,10 @@ open class NimbleDocument: NSDocument {
       guard let doc = self as? Document else { return }
       $0.documentDidChange(doc)
     }
+  }
+
+  open func onFileDidChange() {
+    observers.notify { $0.documentFileDidChange(self) }
   }
 
   deinit {
@@ -105,10 +108,14 @@ open class NimbleDocument: NSDocument {
 
 public protocol DocumentObserver {
   func documentDidChange(_ document: Document)
+
+  func documentFileDidChange(_ document: NimbleDocument)
 }
 
 public extension DocumentObserver {
   func documentDidChange(_ document: Document) {}
+
+  func documentFileDidChange(_ document: NimbleDocument) {}
 }
 
 // MARK: - Document Manager
