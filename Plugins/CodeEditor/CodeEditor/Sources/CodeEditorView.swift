@@ -13,6 +13,7 @@ import CodeEditor
 class CodeEditorView: NSViewController {
   var diagnostics: [SourceCodeDiagnostic] = []
   var diagnosticsUpdateTimer: DispatchSourceTimer? = nil
+  var diagnosticViews: [DiagnosticView] = []
   
   weak var document: CodeEditorDocument? = nil {
     didSet {
@@ -32,9 +33,6 @@ class CodeEditorView: NSViewController {
     ColorThemeManager.shared.observers.add(observer: self)
     
     loadContent()
-    
-//    let diagnosticView = CodeEditorDiagnosticView()
-//    self.textView?.addSubview(diagnosticView)
   }
   
   private func loadContent() {
@@ -78,18 +76,39 @@ class CodeEditorView: NSViewController {
     
     // Show new diagnostics
     let style = NSNumber(value: NSUnderlineStyle.thick.rawValue)
-        
+    var lastLine = -1
+    var diagnosticsOnLine: [Diagnostic] = []
+    //remove previouse diagnostics view
+    diagnosticViews.forEach{$0.removeFromSuperview()}
     for d in diagnostics {
       let color = d.severity == .error ? NSColor.red : NSColor.yellow
       let range = textStorage.string.range(for: d.range)
       let nsRange = range.isEmpty ? NSRange(range.lowerBound..<range.upperBound + 1) : NSRange(range)
-            
+      let line = textStorage.string.lineNumber(at: nsRange.location)
+      if line != lastLine {
+        if !diagnosticsOnLine.isEmpty {
+          addDiagnosticsView(diagnosticsOnLine: diagnosticsOnLine, lastLine: lastLine)
+        }
+        diagnosticsOnLine = [d]
+        lastLine = line
+      } else {
+        diagnosticsOnLine.append(d)
+      }
       textStorage.layoutManagers.forEach {
         $0.addTemporaryAttribute(.toolTip, value: d.message, forCharacterRange: nsRange)
         $0.addTemporaryAttribute(.underlineColor, value: color, forCharacterRange: nsRange)
         $0.addTemporaryAttribute(.underlineStyle, value: style, forCharacterRange: nsRange)
       }
     }
+    if !diagnosticsOnLine.isEmpty {
+      addDiagnosticsView(diagnosticsOnLine: diagnosticsOnLine, lastLine: lastLine)
+    }
+  }
+  
+  private func addDiagnosticsView(diagnosticsOnLine: [Diagnostic], lastLine: Int) {
+    guard let textView = self.textView else { return }
+    let diagnosticView = DiagnosticView(textView: textView, diagnostics: diagnosticsOnLine, line: lastLine)
+    self.diagnosticViews.append(diagnosticView)
   }
   
   private func sheduleDiagnosticsUpdate() {
@@ -165,6 +184,7 @@ extension CodeEditorView: NSTextStorageDelegate {
     let range = textStorage.editedRange
     
     DispatchQueue.main.async { [weak self] in
+      self?.textView?.subviews.filter{$0 is DiagnosticView}.forEach{$0.removeFromSuperview()}
       if let progress = self?.highlightProgress {
         progress.cancel()
         self?.highlightProgress = syntaxParser.highlightAll()

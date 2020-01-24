@@ -322,7 +322,6 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     return String(string[surroundRange(index)])
   }
     
-  
   override func insertText(_ string: Any, replacementRange: NSRange) {
     super.insertText(string, replacementRange: replacementRange)
     guard let input = string as? String else { return }

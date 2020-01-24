@@ -6,7 +6,7 @@
 //  Copyright © 2019 SCADE. All rights reserved.
 //
 
-public enum DiagnosticSeverity {
+public enum DiagnosticSeverity : CaseIterable {
   case error, warning, information, hint
 }
 

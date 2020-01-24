@@ -69,3 +69,19 @@ extension NibLoadable where Self: NSView {
     return topLevelArray?.first { $0 is NSView} as? NSView
   }
 }
+
+public extension NSView {
+  class func loadFromNib(_ nibName: String? = .none) -> Self {
+    func loadAs<T: NSView>(_ nibName: String? = .none) -> T {
+      let nibBundle = Bundle(for: T.self)
+      var objectsArray: NSArray? = nil
+      nibBundle.loadNibNamed(NSNib.Name(nibName ?? String(describing: T.self)), owner: self, topLevelObjects: &objectsArray)
+      
+      if let view = objectsArray?.first(where: { $0 is T }) as? T {
+        return view
+      }
+      return T()
+    }
+    return loadAs(nibName)
+  }
+}
