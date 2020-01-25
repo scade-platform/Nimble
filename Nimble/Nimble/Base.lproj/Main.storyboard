@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -744,7 +744,23 @@
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="73" y="-488"/>
+            <point key="canvasLocation" x="-921" y="-605"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="cIk-BW-C3M">
+            <objects>
+                <customObject id="tZw-M3-YI2" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <viewController id="vqu-Td-bqq" sceneMemberID="viewController">
+                    <containerView key="view" id="ZvK-9S-uMV">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <connections>
+                            <segue destination="Mbw-uZ-9Gt" kind="embed" id="2cA-wc-HxD"/>
+                        </connections>
+                    </containerView>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="-921" y="818"/>
         </scene>
         <!--Window Controller-->
         <scene sceneID="R2V-B0-nI4">
@@ -763,12 +779,12 @@
                         </connections>
                     </window>
                     <connections>
-                        <segue destination="Mbw-uZ-9Gt" kind="relationship" relationship="window.shadowedContentViewController" id="xvk-a3-heL"/>
+                        <segue destination="vqu-Td-bqq" kind="relationship" relationship="window.shadowedContentViewController" id="zaY-9W-muq"/>
                     </connections>
                 </windowController>
                 <customObject id="Oky-zY-oP4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="100" y="265"/>
+            <point key="canvasLocation" x="-921" y="-25"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="AYH-wU-0K0">
@@ -793,7 +809,7 @@
                 </splitViewController>
                 <customObject id="IXb-F3-JHA" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="101" y="1879"/>
+            <point key="canvasLocation" x="101" y="1932"/>
         </scene>
         <!--Debug View-->
         <scene sceneID="lFy-fe-dBa">
@@ -806,7 +822,7 @@
                 </viewController>
                 <customObject id="f3g-ad-EMA" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="100" y="2449"/>
+            <point key="canvasLocation" x="100" y="2481"/>
         </scene>
         <!--Root Split View-->
         <scene sceneID="qZ6-ex-AbS">
@@ -831,7 +847,7 @@
                     </connections>
                 </splitViewController>
             </objects>
-            <point key="canvasLocation" x="-895.5" y="1290"/>
+            <point key="canvasLocation" x="-921" y="1357"/>
         </scene>
         <!--Status Bar View-->
         <scene sceneID="Zo5-71-nDx">
@@ -868,7 +884,7 @@
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="-921" y="1790"/>
+            <point key="canvasLocation" x="-921" y="1786"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="wTH-cn-3SB">
@@ -893,13 +909,13 @@
                 </splitViewController>
                 <customObject id="PxC-WY-9Ko" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="101" y="1197"/>
+            <point key="canvasLocation" x="101" y="1358"/>
         </scene>
         <!--Navigator View-->
         <scene sceneID="kYI-m9-sar">
             <objects>
                 <viewController id="fbF-er-OZS" customClass="NavigatorView" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
-                    <visualEffectView key="view" appearanceType="inheritedVibrantLight" blendingMode="behindWindow" material="sidebar" state="followsWindowActiveState" id="10S-HM-ZX6">
+                    <visualEffectView key="view" appearanceType="inheritedVibrantLight" blendingMode="behindWindow" material="contentBackground" state="followsWindowActiveState" id="10S-HM-ZX6">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -915,7 +931,7 @@
                 </viewController>
                 <customObject id="VOl-xV-dCT" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="793" y="1080"/>
+            <point key="canvasLocation" x="915" y="1357"/>
         </scene>
         <!--Tabbed Editor-->
         <scene sceneID="dsF-QD-dQD">
@@ -923,7 +939,7 @@
                 <viewController id="UtC-nN-7Sb" customClass="TabbedEditor" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController"/>
                 <customObject id="xi1-Hq-DW4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1541" y="1879"/>
+            <point key="canvasLocation" x="990" y="1932"/>
         </scene>
     </scenes>
 </document>

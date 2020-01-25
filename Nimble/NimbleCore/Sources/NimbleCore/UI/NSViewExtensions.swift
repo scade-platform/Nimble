@@ -8,6 +8,8 @@
 import Cocoa
 
 extension NSView {
+  /// TODO: get rid of this method, some specific NSViews have their own background properties
+  /// and this method confuses as calling it does not make what it's expected in such cases
   public func setBackgroundColor(_ color: NSColor) {
     if self.layer == .none {
       self.layer = CALayer()

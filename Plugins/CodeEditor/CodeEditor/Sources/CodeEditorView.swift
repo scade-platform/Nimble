@@ -21,18 +21,56 @@ class CodeEditorView: NSViewController {
     }
   }
   
-  @IBOutlet
-  weak var textView: CodeEditorTextView?
+  @IBOutlet weak var textView: CodeEditorTextView?
   
   private weak var highlightProgress: Progress? = nil
   
-    
+  private lazy var completionView: CodeEditorCompletionView = {
+    let view = CodeEditorCompletionView.loadFromNib()
+    view.textView = self.textView
+    _ = view.view
+    return view
+  }()
+  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     textView?.delegate = self
     ColorThemeManager.shared.observers.add(observer: self)
     
     loadContent()
+  }
+
+  func handleKeyDown(with event: NSEvent) -> Bool {
+    guard !completionView.isPresented else {
+      return completionView.handleKeyDown(with: event)
+    }
+    
+    if shouldTriggerCompletion(with: event) {
+      if let textView = textView,
+         let newText = event.charactersIgnoringModifiers {
+        textView.insertText(newText, replacementRange: textView.selectedRange())
+      }
+      
+      showCompletion(triggered: true)
+      return true
+    }
+        
+    return false
+  }
+  
+  func handleMouseDown(with event: NSEvent) -> Bool {
+    if completionView.isPresented {
+      completionView.hide()
+    }
+    return false
+  }
+    
+  private func shouldTriggerCompletion(with event: NSEvent) -> Bool {
+    guard event.modifierFlags.intersection(.deviceIndependentFlagsMask).isEmpty else { return false }
+    
+    ///TODO: react to any trigger symbols
+    return Keycode.chars.contains(event.keyCode) || event.keyCode == Keycode.period
   }
   
   private func loadContent() {
@@ -69,7 +107,7 @@ class CodeEditorView: NSViewController {
     
     // Clean previous diagnostics
     textStorage.layoutManagers.forEach {
-      $0.removeTemporaryAttribute(.toolTip, forCharacterRange: wholeRange)
+      //$0.removeTemporaryAttribute(.toolTip, forCharacterRange: wholeRange)
       $0.removeTemporaryAttribute(.underlineColor, forCharacterRange: wholeRange)
       $0.removeTemporaryAttribute(.underlineStyle, forCharacterRange: wholeRange)
     }
@@ -82,7 +120,7 @@ class CodeEditorView: NSViewController {
     diagnosticViews.forEach{$0.removeFromSuperview()}
     for d in diagnostics {
       let color = d.severity == .error ? NSColor.red : NSColor.yellow
-      let range = textStorage.string.range(for: d.range)
+      let range: Range<Int> = textStorage.string.range(for: d.range)
       let nsRange = range.isEmpty ? NSRange(range.lowerBound..<range.upperBound + 1) : NSRange(range)
       let line = textStorage.string.lineNumber(at: nsRange.location)
       if line != lastLine {
@@ -95,7 +133,7 @@ class CodeEditorView: NSViewController {
         diagnosticsOnLine.append(d)
       }
       textStorage.layoutManagers.forEach {
-        $0.addTemporaryAttribute(.toolTip, value: d.message, forCharacterRange: nsRange)
+        //$0.addTemporaryAttribute(.toolTip, value: d.message, forCharacterRange: nsRange)
         $0.addTemporaryAttribute(.underlineColor, value: color, forCharacterRange: nsRange)
         $0.addTemporaryAttribute(.underlineStyle, value: style, forCharacterRange: nsRange)
       }
@@ -111,7 +149,8 @@ class CodeEditorView: NSViewController {
     self.diagnosticViews.append(diagnosticView)
   }
   
-  private func sheduleDiagnosticsUpdate() {
+  
+  private func scheduleDiagnosticsUpdate() {
     if let timer = diagnosticsUpdateTimer {
       timer.cancel()
     }
@@ -137,10 +176,35 @@ class CodeEditorView: NSViewController {
       highlightProgress = syntaxParser.highlightAll()
     }
   }
+  
+  public func showCompletion(triggered: Bool = false) {
+    guard let doc = document,
+          let sel = textView?.selectedRange().lowerBound,
+          let pos = textView?.textStorage?.string.index(at: sel) else { return }
+    
+    ///TODO: filter langServices or merge results
+    for langService in doc.languageServices {
+      langService.complete(doc, at: pos) {[weak self] in
+        guard let string = self?.textView?.textStorage?.string,
+              let cursor = self?.textView?.selectedIndex, cursor >= $0 else { return }
+                
+        self?.completionView.itemsFilter = String(string[$0..<cursor])
+        self?.completionView.completionItems = $1
+        
+        self?.completionView.reload()
+        
+        if $1.count > 0 {
+          self?.completionView.show(at: string.offset(at: $0))
+        } else {
+          self?.completionView.show(at: sel)
+        }
+      }
+    }
+  }
 }
 
 
-// MARK: ColorThemeObserver
+// MARK: - ColorThemeObserver
 
 extension CodeEditorView: ColorThemeObserver {
   func colorThemeDidChanged(_ theme: ColorTheme) {
@@ -150,7 +214,7 @@ extension CodeEditorView: ColorThemeObserver {
 }
 
 
-// MARK: WorkbenchEditor
+// MARK: - WorkbenchEditor
 
 extension CodeEditorView: WorkbenchEditor {
   var editorMenu: NSMenu? {
@@ -164,12 +228,12 @@ extension CodeEditorView: WorkbenchEditor {
     
   func publish(diagnostics: [Diagnostic]) {
     self.diagnostics = diagnostics.compactMap { return $0 as? SourceCodeDiagnostic }
-    sheduleDiagnosticsUpdate()
+    scheduleDiagnosticsUpdate()
   }
 }
 
 
-// MARK: NSTextStorageDelegate
+// MARK: - NSTextStorageDelegate
 
 extension CodeEditorView: NSTextStorageDelegate {
   override func textStorageDidProcessEditing(_ notification: Notification) {
@@ -195,7 +259,7 @@ extension CodeEditorView: NSTextStorageDelegate {
   }
 }
 
-// MARK: NSTextViewDelegate
+// MARK: - NSTextViewDelegate
 
 extension CodeEditorView: NSTextViewDelegate {
   func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
@@ -209,7 +273,20 @@ extension CodeEditorView: NSTextViewDelegate {
     return true
   }
   
-  func textView(_ textView: NSTextView, completions words: [String], forPartialWordRange charRange: NSRange, indexOfSelectedItem index: UnsafeMutablePointer<Int>?) -> [String] {
-    return []
+  func textViewDidChangeSelection(_ notification: Notification) {
+    if completionView.isPresented {
+      let pos = completionView.completionPosition
+      
+      // Don't go behind the position where the completion has started
+      guard let newSel = textView?.selectedRange(), pos <= newSel.lowerBound else {
+        completionView.hide()
+        return
+      }
+      
+      if let filter = textView?.textStorage?.string[pos..<newSel.lowerBound] {
+        completionView.itemsFilter = String(filter)
+        completionView.reload()
+      }
+    }
   }
 }

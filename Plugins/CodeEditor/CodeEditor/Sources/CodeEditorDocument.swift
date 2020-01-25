@@ -11,10 +11,11 @@ import NimbleCore
 import CodeEditor
 
 public final class CodeEditorDocument: NimbleDocument {
+
   lazy var textStorage = {
     return NSTextStorage()
   }()
-
+  
   public var language: Language? {
     didSet {
       if let grammar = language?.grammar {
@@ -24,7 +25,9 @@ public final class CodeEditorDocument: NimbleDocument {
       }      
     }
   }
-    
+  
+  public var languageServices: [LanguageService] = []
+
   public var syntaxParser: SyntaxParser? {
     didSet {
       codeEditor.highlightSyntax()
@@ -84,16 +87,16 @@ extension CodeEditorDocument: Document {
 
 
 extension CodeEditorDocument: SourceCodeDocument {
+  public var text: String {
+    return textStorage.string
+  }
+  
   public var languageId: String {
     if let lang = language {
       return lang.id
     }
     guard let id = fileURL?.file?.language?.id else { return "" }
     return id
-  }
-  
-  public var text: String {
-    return textStorage.string
   }
 }
 

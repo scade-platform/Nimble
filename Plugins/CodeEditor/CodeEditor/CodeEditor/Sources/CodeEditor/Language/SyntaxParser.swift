@@ -54,7 +54,6 @@ public final class SyntaxParser {
   
   public func highlight(around range: NSRange) -> Progress? {
     var highlightRange = range
-    
     if let cache = syntaxCache {
       let dirty = cache.search(in: range)
       if !dirty.isEmpty {

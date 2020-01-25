@@ -88,6 +88,19 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     self.textContainerInset.height = 100.0
   }
   
+  public override func keyDown(with event: NSEvent) {
+    guard let delegate = self.delegate as? CodeEditorView, delegate.handleKeyDown(with: event) else {
+      super.keyDown(with: event)
+      return
+    }
+  }
+  
+  public override func mouseDown(with event: NSEvent) {
+    guard let delegate = self.delegate as? CodeEditorView, delegate.handleMouseDown(with: event) else {
+      super.mouseDown(with: event)
+      return
+    }
+  }
   
   public override func awakeFromNib() {
     if let scrollView = self.enclosingScrollView {

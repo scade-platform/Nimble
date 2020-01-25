@@ -8,9 +8,13 @@
 import NimbleCore
 
 public protocol SourceCodeDocument: Document {
-  var languageId: String { get }
   var text: String { get }
+  
+  var languageId: String { get }
+  
+  var languageServices: [LanguageService] { get set }
 }
+
 
 public protocol SourceCodeDocumentObserver: DocumentObserver {
   func textDidChange(document: SourceCodeDocument, range: Range<Int>, text: String)
@@ -47,7 +51,15 @@ public extension String {
     return lineRange(line: pos.line).lowerBound + pos.offset
   }
   
+  func index(at pos: SourceCodePosition) -> String.Index {
+    return index(lineRange(line: pos.line).lowerBound, offsetBy: pos.offset)
+  }
+  
   func range(for posRange: Range<SourceCodePosition>) -> Range<Int> {
+    return index(at: posRange.lowerBound)..<index(at: posRange.upperBound)
+  }
+  
+  func range(for posRange: Range<SourceCodePosition>) -> Range<String.Index> {
     return index(at: posRange.lowerBound)..<index(at: posRange.upperBound)
   }
   

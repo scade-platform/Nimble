@@ -17,7 +17,7 @@ import CodeEditor
 public final class CodeEditor: Module {
   public static let plugin: Plugin = CodeEditorPlugin()
 }
-
+ 
 
 final class CodeEditorPlugin: Plugin {
   init() {

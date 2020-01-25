@@ -75,7 +75,9 @@ public protocol CreatableDocument where Self: Document {
 open class NimbleDocument: NSDocument {
   public var observers = ObserverSet<DocumentObserver> ()
 
-  private var isFilePresenter: Bool { NSFileCoordinator.filePresenters.contains { $0 === self } }
+  private var isFilePresenter: Bool { 
+    NSFileCoordinator.filePresenters.contains { $0 === self } 
+  }
 
   open override var fileURL: URL? {
     get { return super.fileURL }

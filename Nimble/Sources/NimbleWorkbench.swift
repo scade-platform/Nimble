@@ -27,17 +27,17 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
       observers.notify { $0.workbenchDidChangeProject(self) }
     }
   }
+    
+  var mainView : NSSplitViewController? {
+     return workbenchView?.children[0] as? NSSplitViewController
+  }
   
   var statusBarView: StatusBarView? {
     return workbenchView?.children[1] as? StatusBarView
   }
   
-  var mainView : NSSplitViewController? {
-     return workbenchView?.children[0] as? NSSplitViewController
-  }
-  
   var workbenchView: NSSplitViewController? {
-    contentViewController as? NSSplitViewController
+    contentViewController?.children[0] as? NSSplitViewController
   }
       
   var workbenchCentralView: NSSplitViewController? {

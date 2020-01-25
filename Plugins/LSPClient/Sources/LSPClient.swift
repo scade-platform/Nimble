@@ -18,11 +18,18 @@ public final class LSPClient {
     var capabilities = ClientCapabilities()
     
     capabilities.workspace = WorkspaceClientCapabilities()
+    
+    capabilities.workspace?.configuration = true
     capabilities.workspace?.workspaceFolders = true
     
     capabilities.textDocument = TextDocumentClientCapabilities()
     capabilities.textDocument?.publishDiagnostics =
       TextDocumentClientCapabilities.PublishDiagnostics(relatedInformation: true)
+    
+    capabilities.workspace?.didChangeWatchedFiles = DynamicRegistrationCapability(dynamicRegistration: true)
+    capabilities.workspace?.didChangeConfiguration = DynamicRegistrationCapability(dynamicRegistration: true)
+    
+    
     
     return capabilities
   }()
@@ -80,6 +87,7 @@ public final class LSPClient {
     
     server.send(DidOpenTextDocumentNotification(textDocument: textDocument))
     doc.observers.add(observer: self)
+    doc.languageServices.append(self)
   }
   
   
@@ -92,9 +100,11 @@ public final class LSPClient {
     
     server.send(DidCloseTextDocumentNotification(textDocument: textDocument))
     doc.observers.remove(observer: self)
+    doc.languageServices.removeAll{$0 === self}
   }
-  
 }
+
+// MARK: - MessageHandler
 
 extension LSPClient: MessageHandler {
   public func handle<Notification>(_ notification: Notification, from: ObjectIdentifier) where Notification : NotificationType {
@@ -125,19 +135,18 @@ extension LSPClient: MessageHandler {
   }
 }
 
+// MARK: - SourceCodeDocumentObserver
 
 extension LSPClient: SourceCodeDocumentObserver {
   public func textDidChange(document: SourceCodeDocument, range: Range<Int>, text: String) {
     guard let uri = document.fileURL?.uri else { return }
     
     let textDocument = VersionedTextDocumentIdentifier(uri, version: 0)
-    let posRange = document.text.positionRange(for: range)
-    let rangeLength = range.upperBound - range.lowerBound
-        
-    let lo = posRange.lowerBound.position
-    let hi = posRange.upperBound.position
     
-    let changeEvent = TextDocumentContentChangeEvent(range: lo..<hi, rangeLength: rangeLength, text: text)
+    let length = range.upperBound - range.lowerBound
+    let range = document.text.positionRange(for: range).range
+        
+    let changeEvent = TextDocumentContentChangeEvent(range: range, rangeLength: length, text: text)
     let textChangeEvent = DidChangeTextDocumentNotification(textDocument: textDocument, contentChanges: [changeEvent])
         
     server.send(textChangeEvent)
@@ -145,16 +154,148 @@ extension LSPClient: SourceCodeDocumentObserver {
 }
 
 
+// MARK: - LanguageService
+
+extension LSPClient: LanguageService {
+  public func complete(_ doc: SourceCodeDocument,
+                       at index: String.Index,
+                       handler: @escaping (String.Index, [CodeEditor.CompletionItem]) -> Void) {
+    
+    guard let uri = doc.fileURL?.uri else { return }
+    
+    let textDocument = TextDocumentIdentifier(uri)
+    let position = doc.text.position(at: index).position
+            
+    let (triggerIndex, triggerKind) = trigger(doc, at: index)        
+    
+    var request = CompletionRequest(textDocument: textDocument, position: position)
+    request.context = CompletionContext(triggerKind: triggerKind)
+    
+    _ = server.send(request, queue: DispatchQueue.main) {
+      guard let items = (try? $0.get())?.items else { return }
+      let completions = items.map { CompletionItemWrapper(text: doc.text, item: $0) }
+      handler(triggerIndex, completions)
+    }
+  }
+  
+  private func trigger(_ doc: SourceCodeDocument, at index: String.Index) -> (String.Index, CompletionTriggerKind) {
+//    var stops = [" ", "\n", "\t"]
+    let triggerCharacters = serverCapabilities.completionProvider?.triggerCharacters ?? []
+        
+    var triggerIndex = index
+    var triggerKind = CompletionTriggerKind.invoked
+    
+    while(triggerIndex != doc.text.startIndex) {
+      let isTriggered: (String) -> Bool = {
+        guard let from = doc.text.index(triggerIndex,
+                                        offsetBy: -$0.count,
+                                        limitedBy: doc.text.startIndex) else { return false }
+        return String(doc.text[from..<triggerIndex]) == $0
+      }
+      
+      let isLetter: () -> Bool = {
+        let at = doc.text.index(before: triggerIndex)
+        return CharacterSet.letters.contains(doc.text.unicodeScalars[at])
+      }
+      
+      if triggerCharacters.contains(where: isTriggered) {
+        triggerKind = .triggerCharacter
+        break
+//      } else if stops.contains(where: isTriggered) || !isLetter() {
+      } else if !isLetter() {
+        break
+      }
+      
+      triggerIndex = doc.text.index(before: triggerIndex)
+    }
+    
+   return (triggerIndex, triggerKind)
+  }
+}
 
 
-extension URL {
+// MARK: - CompletionItem
+
+struct CompletionItemWrapper {
+  let text: String
+  let item: LanguageServerProtocol.CompletionItem
+}
+
+struct TextEditWrapper {
+  let text: String
+  let textEdit: TextEdit
+}
+
+extension CompletionItemWrapper: CodeEditor.CompletionItem {
+  var label: String {
+    return item.label
+  }
+  
+  var detail: String? {
+    return item.detail
+  }
+  
+  var documentation: CodeEditor.CompletionItemDocumentation? {
+    guard let doc = item.documentation else { return nil }
+    switch doc {
+    case .string(let val):
+      return .plaintext(val)
+    case .markupContent(let markup):
+      switch markup.kind {
+      case .markdown:
+        return .markdown(markup.value)
+      default:
+        return .plaintext(markup.value)
+      }
+    }
+  }
+  
+  var filterText: String? { item.filterText }
+  
+  var insertText: String? { item.insertText }
+  
+  var textEdit: CodeEditor.CompletionTextEdit? {
+    guard let textEdit = item.textEdit else { return nil }
+    return TextEditWrapper(text: text, textEdit: textEdit)
+  }
+}
+
+extension TextEditWrapper: CodeEditor.CompletionTextEdit {
+  var range: Range<Int> {
+    return text.range(for: textEdit.range.range)
+  }
+  
+  var newText: String { textEdit.newText }
+}
+
+
+// MARK: - Transformations
+
+fileprivate extension URL {
   var uri: DocumentURI { return DocumentURI(self) }
 }
 
 
-extension SourceCodePosition {
+fileprivate extension SourceCodePosition {
   var position: Position {
     return Position(line: line, utf16index: offset)
   }
 }
 
+fileprivate extension Position {
+  var position: SourceCodePosition {
+    return SourceCodePosition(line: line, offset: utf16index)
+  }
+}
+
+fileprivate extension Range where Bound == Position {
+  var range: Range<SourceCodePosition> {
+    return lowerBound.position..<upperBound.position
+  }
+}
+
+fileprivate extension Range where Bound == SourceCodePosition {
+  var range: Range<Position> {
+    return lowerBound.position..<upperBound.position
+  }
+}

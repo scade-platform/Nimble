@@ -14,6 +14,8 @@
 		427E517E22C22C1F008573F1 /* CodeEditorTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 427E517D22C22C1F008573F1 /* CodeEditorTextView.swift */; };
 		428C0F2122BA9EFE002142BD /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = 428C0F2022BA9EFE002142BD /* Themes */; };
 		42A56DFF22BBD82100983A9B /* TextContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42A56DFE22BBD82100983A9B /* TextContainer.swift */; };
+		D703FFEC23CE668700E6E1CE /* CodeEditorCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703FFEB23CE668700E6E1CE /* CodeEditorCompletionView.swift */; };
+		D70FEF2D23D27DDB00FF2D85 /* Keycode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70FEF2C23D27DDB00FF2D85 /* Keycode.swift */; };
 		D722322622C92BC300E471C2 /* LineNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D722322522C92BC300E471C2 /* LineNumberView.swift */; };
 		D722328822CD587700E471C2 /* OrderedSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D722328422CD587700E471C2 /* OrderedSet.swift */; };
 		D722328922CD587700E471C2 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = D722328522CD587700E471C2 /* Collection.swift */; };
@@ -57,6 +59,8 @@
 		D7D2D59C22B1B9C80017B45D /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D59A22B1B9C80017B45D /* CodeEditorView.swift */; };
 		D7D2D59D22B1B9C80017B45D /* CodeEditorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7D2D59B22B1B9C80017B45D /* CodeEditorView.xib */; };
 		D7D2D5A322B28F020017B45D /* CodeEditorDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D5A222B28F020017B45D /* CodeEditorDocument.swift */; };
+		D7E1A4E823CD311300BCAF0B /* LanguageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E1A4E723CD311300BCAF0B /* LanguageService.swift */; };
+		D7E1A4EA23CDE3BC00BCAF0B /* CodeEditorCompletionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7E1A4E923CDE3BC00BCAF0B /* CodeEditorCompletionView.xib */; };
 		D7EC46C223C3D8B5000B4B05 /* CodeEditorLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EC46C123C3D8B5000B4B05 /* CodeEditorLayoutManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -92,6 +96,8 @@
 		427E517D22C22C1F008573F1 /* CodeEditorTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorTextView.swift; sourceTree = "<group>"; };
 		428C0F2022BA9EFE002142BD /* Themes */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Themes; sourceTree = "<group>"; };
 		42A56DFE22BBD82100983A9B /* TextContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextContainer.swift; sourceTree = "<group>"; };
+		D703FFEB23CE668700E6E1CE /* CodeEditorCompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorCompletionView.swift; sourceTree = "<group>"; };
+		D70FEF2C23D27DDB00FF2D85 /* Keycode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keycode.swift; sourceTree = "<group>"; };
 		D722322522C92BC300E471C2 /* LineNumberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineNumberView.swift; sourceTree = "<group>"; };
 		D722328422CD587700E471C2 /* OrderedSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OrderedSet.swift; path = ../../../CotEditor/CotEditor/Sources/OrderedSet.swift; sourceTree = "<group>"; };
 		D722328522CD587700E471C2 /* Collection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Collection.swift; path = ../../../CotEditor/CotEditor/Sources/Collection.swift; sourceTree = "<group>"; };
@@ -138,6 +144,8 @@
 		D7D2D59A22B1B9C80017B45D /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
 		D7D2D59B22B1B9C80017B45D /* CodeEditorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CodeEditorView.xib; sourceTree = "<group>"; };
 		D7D2D5A222B28F020017B45D /* CodeEditorDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorDocument.swift; sourceTree = "<group>"; };
+		D7E1A4E723CD311300BCAF0B /* LanguageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageService.swift; sourceTree = "<group>"; };
+		D7E1A4E923CDE3BC00BCAF0B /* CodeEditorCompletionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CodeEditorCompletionView.xib; sourceTree = "<group>"; };
 		D7EC46C123C3D8B5000B4B05 /* CodeEditorLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorLayoutManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -146,9 +154,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D779911E236F160000CBF9B7 /* NimbleCore.framework in Frameworks */,
 				D7799128236F166500CBF9B7 /* Oniguruma in Frameworks */,
 				D779912A236F166900CBF9B7 /* ColorCode in Frameworks */,
-				D779911E236F160000CBF9B7 /* NimbleCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,6 +179,14 @@
 				428C0F2022BA9EFE002142BD /* Themes */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		D70FEF2B23D27DBB00FF2D85 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				D70FEF2C23D27DDB00FF2D85 /* Keycode.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		D722328122CD4E7A00E471C2 /* CotEditor */ = {
@@ -248,11 +264,12 @@
 		D77990F2236F150C00CBF9B7 /* Language */ = {
 			isa = PBXGroup;
 			children = (
-				D77990F3236F150C00CBF9B7 /* Language.swift */,
-				D77990F4236F150C00CBF9B7 /* Tokenizer.swift */,
-				D77990F5236F150C00CBF9B7 /* Syntax.swift */,
 				D77990F6236F150C00CBF9B7 /* Grammar.swift */,
+				D77990F3236F150C00CBF9B7 /* Language.swift */,
+				D7E1A4E723CD311300BCAF0B /* LanguageService.swift */,
+				D77990F5236F150C00CBF9B7 /* Syntax.swift */,
 				D77990F7236F150C00CBF9B7 /* SyntaxParser.swift */,
+				D77990F4236F150C00CBF9B7 /* Tokenizer.swift */,
 			);
 			path = Language;
 			sourceTree = "<group>";
@@ -294,17 +311,20 @@
 			isa = PBXGroup;
 			children = (
 				D7D2D59322B1B59E0017B45D /* CodeEditor.swift */,
+				D703FFEB23CE668700E6E1CE /* CodeEditorCompletionView.swift */,
 				D7D2D5A222B28F020017B45D /* CodeEditorDocument.swift */,
 				D7EC46C123C3D8B5000B4B05 /* CodeEditorLayoutManager.swift */,
 				D74A7F582399ABCD006E0238 /* CodeEditorMenu.swift */,
 				427E517D22C22C1F008573F1 /* CodeEditorTextView.swift */,
 				D7D2D59A22B1B9C80017B45D /* CodeEditorView.swift */,
+				0C0DB75923D04B5400E957DC /* DiagnosticView.swift */,
 				D722322522C92BC300E471C2 /* LineNumberView.swift */,
+				D7E1A4E923CDE3BC00BCAF0B /* CodeEditorCompletionView.xib */,
 				D7D2D59B22B1B9C80017B45D /* CodeEditorView.xib */,
+				0C0DB75E23D0531700E957DC /* DiagnosticRowView.xib */,
 				D722328122CD4E7A00E471C2 /* CotEditor */,
 				D773AD3122D37DC8003A12A5 /* Extensions */,
-				0C0DB75923D04B5400E957DC /* DiagnosticView.swift */,
-				0C0DB75E23D0531700E957DC /* DiagnosticRowView.xib */,
+				D70FEF2B23D27DBB00FF2D85 /* Utils */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -434,6 +454,7 @@
 				D741547E236C99AE00A1B80C /* Info.plist in Resources */,
 				D7D2D59D22B1B9C80017B45D /* CodeEditorView.xib in Resources */,
 				0CF422D123B4BB90000E1921 /* Assets.xcassets in Resources */,
+				D7E1A4EA23CDE3BC00BCAF0B /* CodeEditorCompletionView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -452,6 +473,7 @@
 				D779910E236F150C00CBF9B7 /* String+Encoding.swift in Sources */,
 				D779910C236F150C00CBF9B7 /* SyntaxParser.swift in Sources */,
 				D7799111236F150C00CBF9B7 /* NSTextView.swift in Sources */,
+				D7E1A4E823CD311300BCAF0B /* LanguageService.swift in Sources */,
 				D7799113236F150C00CBF9B7 /* Core.swift in Sources */,
 				D779910D236F150C00CBF9B7 /* ColorTheme.swift in Sources */,
 				D7799107236F150C00CBF9B7 /* SourceCodeDocument.swift in Sources */,
@@ -463,6 +485,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D703FFEC23CE668700E6E1CE /* CodeEditorCompletionView.swift in Sources */,
 				427E517E22C22C1F008573F1 /* CodeEditorTextView.swift in Sources */,
 				D7D2D59422B1B59E0017B45D /* CodeEditor.swift in Sources */,
 				D7D2D5A322B28F020017B45D /* CodeEditorDocument.swift in Sources */,
@@ -484,6 +507,7 @@
 				D722329E22CD595F00E471C2 /* String+Additions.swift in Sources */,
 				0C0DB75A23D04B5400E957DC /* DiagnosticView.swift in Sources */,
 				D7D2D59C22B1B9C80017B45D /* CodeEditorView.swift in Sources */,
+				D70FEF2D23D27DDB00FF2D85 /* Keycode.swift in Sources */,
 				D722329822CD595F00E471C2 /* NSAttributedString.swift in Sources */,
 				D722329A22CD595F00E471C2 /* NSFont+Size.swift in Sources */,
 				D722329922CD595F00E471C2 /* NSLayoutManager+Range.swift in Sources */,
