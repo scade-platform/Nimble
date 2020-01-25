@@ -28,6 +28,23 @@ public extension ContextMenuProvider {
   static func menuItems(for: Document) -> [NSMenuItem] {
     return []
   }
+
+  static func createMenuItem(title: String, selector: Selector?, for: Any? = nil) -> NSMenuItem {
+    let menuItem = NSMenuItem(title: title, action: selector, keyEquivalent: "")
+    menuItem.representedObject = `for`
+
+    return menuItem
+  }
+
+  static func createSubMenuItem(title: String, items: [NSMenuItem]) -> NSMenuItem {
+    let subMenuItem = NSMenu()
+    items.forEach { subMenuItem.addItem($0) }
+
+    let menuItem = NSMenuItem(title: title, action: nil, keyEquivalent: "")
+    menuItem.submenu = subMenuItem
+
+    return menuItem
+  }
 }
 
 public final class ContextMenuManager {

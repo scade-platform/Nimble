@@ -40,35 +40,81 @@ class ContextOutlineView : NSOutlineView {
 extension ContextOutlineView : ContextMenuProvider {
   
   static func menuItems(for file: File) -> [NSMenuItem] {
-    var items: [NSMenuItem] = []
-    items.append(createMenuItem(title: "Rename...", selector: #selector(renameAction(_:)), representedObject: file))
-    items.append(createMenuItem(title: "Delete file", selector: #selector(deleteAction(_:)), representedObject: file))
-    return items
+    var docClasses = DocumentManager.shared.selectDocumentClasses(for: file)
+    let _ = docClasses.partition(by: { !$0.isDefault(for: file)})
+
+    var openAsItems: [NSMenuItem] = docClasses.map {
+      createMenuItem(title: title(of: $0), selector: #selector(openAsAction), for: file)
+    }
+
+    if openAsItems.count > 1 {
+      openAsItems.insert(NSMenuItem.separator(), at: 1)
+    }
+
+    return [
+      createMenuItem(title: "Show in Finder", selector: #selector(showInFinderAction), for: file),
+      createMenuItem(title: "Open with External Editor", selector: #selector(openInExternalEditorAction), for: file),
+      createSubMenuItem(title: "Open As", items: openAsItems),
+      NSMenuItem.separator(),
+      createMenuItem(title: "Rename", selector: #selector(renameAction), for: file),
+      NSMenuItem.separator(),
+      createMenuItem(title: "Delete", selector: #selector(deleteAction), for: file)
+    ]
   }
   
   static func menuItems(for folder: Folder) -> [NSMenuItem] {
-    var items: [NSMenuItem] = []
-    items.append(createMenuItem(title: "New File", selector: #selector(createNewFileAction(_:)), representedObject: folder))
-    items.append(createMenuItem(title: "Rename...", selector: #selector(renameAction(_:)), representedObject: folder))
-    items.append(createMenuItem(title: "New Folder...", selector: #selector(createNewFolderAction(_:)), representedObject: folder))
-    items.append(createMenuItem(title: "Delete Folder", selector: #selector(deleteAction(_:)), representedObject: folder))
-    return items
-  }
-  
-  private static func createMenuItem(title: String, selector: Selector?, representedObject: Any? = nil) -> NSMenuItem {
-    let menuItem = NSMenuItem(title: title, action: selector, keyEquivalent: "")
-    menuItem.representedObject = representedObject
-    return menuItem
+    return [
+      createMenuItem(title: "Show in Finder", selector: #selector(showInFinderAction), for: folder),
+      NSMenuItem.separator(),
+      createMenuItem(title: "New File...", selector: #selector(createNewFileAction), for: folder),
+      createMenuItem(title: "New Folder...", selector: #selector(createNewFolderAction), for: folder),
+      NSMenuItem.separator(),
+      createMenuItem(title: "Rename", selector: #selector(renameAction), for: folder),
+      NSMenuItem.separator(),
+      createMenuItem(title: "Delete", selector: #selector(deleteAction), for: folder)
+    ]
   }
   
   // MARK: - Menu actions
   
+  @objc func openAsAction(_ sender: NSMenuItem?) {
+    if let menuItem = sender {
+      guard let file = menuItem.representedObject as? File else { return }
+
+      guard let docType = DocumentManager.shared
+              .selectDocumentClasses(for: file)
+              .first(where: { ContextOutlineView.title(of: $0) == menuItem.title} ) else { return }
+
+      guard let doc = DocumentManager.shared.open(file: file, docType: docType) else { return }
+
+      if let docController = NSDocumentController.shared as? DocumentController {
+        docController.openDocument(doc, display: true)
+      }
+    }
+  }
+
+  @objc func showInFinderAction(_ sender: NSMenuItem?) {
+    guard let fileSystemElement = sender?.representedObject as? FileSystemElement else {
+      return
+    }
+
+    NSWorkspace.shared.activateFileViewerSelecting([fileSystemElement.url]);
+  }
+
+  @objc func openInExternalEditorAction(_ sender: NSMenuItem?) {
+    guard let fileSystemElement = sender?.representedObject as? FileSystemElement else {
+      return
+    }
+
+    NSWorkspace.shared.open(fileSystemElement.url);
+  }
+
   @objc func renameAction(_ sender: NSMenuItem?) {
     guard let fileSystemElement = sender?.representedObject as? FileSystemElement else {
       return
     }
     showImputTextAlert(message: "Please enter a new name:", fileSystemElement, handler: {newName in
-      try? fileSystemElement.path.rename(to: newName)
+      try! fileSystemElement.path.rename(to: newName)
       self.reloadSelected()
     })
   }
@@ -150,6 +196,10 @@ extension ContextOutlineView : ContextMenuProvider {
         handler(enteredString)
       }
     })
+  }
+
+  private static func title(of type: Document.Type) -> String {
+    return String(describing: type)
   }
   
 }
