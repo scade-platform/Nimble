@@ -17,11 +17,11 @@ public final class PageDocument: NimbleDocument {
   //  }
 
   override public func presentedItemDidChange() {
-    DispatchQueue.main.async {
-      guard let url = self.fileURL, let type = self.fileType  else { return }
-      try! self.read(from: url, ofType: type)
+    guard let url = self.fileURL, let type = self.fileType  else { return }
 
-      self.observers.notify { $0.documentDidChange(self) }
+    DispatchQueue.main.async { [weak self] in
+      try! self?.read(from: url, ofType: type)
+      self?.onFileDidChange()
     }
   }
   
@@ -68,8 +68,6 @@ public final class PageDocument: NimbleDocument {
     return "".data(using: .utf8)!
   }
 }
-
-
 
 extension PageDocument: Document {
   public var editor: WorkbenchEditor? { builderController }

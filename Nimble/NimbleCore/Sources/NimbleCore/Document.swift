@@ -75,33 +75,56 @@ public protocol CreatableDocument where Self: Document {
 open class NimbleDocument: NSDocument {
   public var observers = ObserverSet<DocumentObserver> ()
 
-  override init() {
-    super.init()
-    NSFileCoordinator.addFilePresenter(self)
+  private var isFilePresenter: Bool { NSFileCoordinator.filePresenters.contains { $0 === self } }
+
+  open override var fileURL: URL? {
+    get { return super.fileURL }
+    set {
+      super.fileURL = newValue
+
+      if let scheme = newValue?.scheme {
+        if scheme == "file" && !isFilePresenter {
+          NSFileCoordinator.addFilePresenter(self)
+        }
+
+      } else if isFilePresenter {
+        NSFileCoordinator.removeFilePresenter(self)
+      }
+    }
+  }
+
+  open override func updateChangeCount(_ change: NSDocument.ChangeType) {
+    super.updateChangeCount(change)
+
+    guard let doc = self as? Document else { return }
+
+    observers.notify { $0.documentDidChange(doc) }
+  }
+
+  open func onFileDidChange() {
+    guard let doc = self as? Document else { return }
+
+    observers.notify { $0.documentFileDidChange(doc) }
   }
 
   deinit {
-    NSFileCoordinator.removeFilePresenter(self)
+    if isFilePresenter { NSFileCoordinator.removeFilePresenter(self) }
   }
   
-  open override func updateChangeCount(_ change: NSDocument.ChangeType) {
-    super.updateChangeCount(change)
-    observers.notify {
-      guard let doc = self as? Document else { return }
-      $0.documentDidChange(doc)
-    }
-  }
 }
-
 
 // MARK: - Document Observer
 
 public protocol DocumentObserver {
   func documentDidChange(_ document: Document)
+
+  func documentFileDidChange(_ document: Document)
 }
 
 public extension DocumentObserver {
   func documentDidChange(_ document: Document) {}
+
+  func documentFileDidChange(_ document: Document) {}
 }
 
 // MARK: - Document Manager
