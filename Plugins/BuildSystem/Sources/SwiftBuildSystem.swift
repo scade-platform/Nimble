@@ -28,7 +28,13 @@ class SwiftBuildSystem: BuildSystem {
     swiftcProc.terminationHandler = { process in
       swiftcProcConsole?.stopReadingFromBuffer()
       if let contents = swiftcProcConsole?.contents {
-        guard contents.isEmpty else { return }
+        if contents.isEmpty {
+          DispatchQueue.main.async {
+            swiftcProcConsole?.close()
+          }
+        } else if contents.contains("error:") {
+          return
+        }
       }
       let programProc = Process()
       programProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
@@ -38,8 +44,7 @@ class SwiftBuildSystem: BuildSystem {
         programProcConsole?.stopReadingFromBuffer()
       }
       DispatchQueue.main.async {
-        swiftcProcConsole?.close()
-        programProcConsole = workbench.createConsole(title: "Run: \(fileURL.deletingPathExtension().lastPathComponent)", show: true)
+        programProcConsole = self.openConsole(key: fileURL, title: "Run: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
         programProc.standardOutput = programProcConsole?.output
         programProc.standardError = programProcConsole?.output
         try? programProc.run()
@@ -47,7 +52,7 @@ class SwiftBuildSystem: BuildSystem {
     }
     DispatchQueue.main.async {
       workbench.debugArea?.isHidden = false
-      swiftcProcConsole = workbench.createConsole(title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", show: true)
+      swiftcProcConsole = self.openConsole(key: "Compile: \(fileURL.absoluteString)", title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
       swiftcProc.standardError = swiftcProcConsole?.output
       try? swiftcProc.run()
     }

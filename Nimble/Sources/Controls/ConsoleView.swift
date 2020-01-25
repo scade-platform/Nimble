@@ -22,12 +22,25 @@ class ConsoleView: NSViewController {
   
   private var currentConsole: Console? = nil
   
+  var openedConsoles: [Console] {
+    return Array(consolesStorage.values)
+  }
+  
   private func handler(fileHandle: FileHandle, console: Console) {
     guard console.title == currentConsole?.title else {
       return
     }
     DispatchQueue.main.async {
       self.textView.string = console.contents
+    }
+  }
+  
+  private func callback(console: Console) {
+    guard console.title != currentConsole?.title else {
+      return
+    }
+    DispatchQueue.main.async {
+      self.open(console: console.title)
     }
   }
   
@@ -58,6 +71,7 @@ class ConsoleView: NSViewController {
       currentConsole = newConsole
     }
     newConsole.handler = handler(fileHandle:console:)
+    newConsole.callback = callback(console:)
     consolesStorage[newConsole.title] = newConsole
     setControllersHidden(false)
     return newConsole
@@ -157,8 +171,10 @@ class NimbleTextConsole: Console {
     return inputPipe
   }
   
-  let inputPipe = Pipe()
-  let outputPipe = Pipe()
+  var representedObject: Any?
+  
+  var inputPipe = Pipe()
+  var outputPipe = Pipe()
   
   var handler: (FileHandle, Console) -> Void = {_,_ in} {
     didSet{
@@ -167,6 +183,8 @@ class NimbleTextConsole: Console {
       }
     }
   }
+  
+  var callback: ((Console) -> Void)?
   
   var isReadingFromBuffer: Bool {
     return inputPipe.fileHandleForReading.readabilityHandler != nil
@@ -177,15 +195,7 @@ class NimbleTextConsole: Console {
     self.view = view
     self.innerContent = Atomic("")
     // Set up a read handler which fires when data is written to our inputPipe
-    inputPipe.fileHandleForReading.readabilityHandler = { [weak self] fileHandle in
-      guard let strongSelf = self else { return }
-      
-      let data = fileHandle.availableData
-      if let string = String(data: data, encoding: .utf8) {
-        strongSelf.contents += string
-      }
-      strongSelf.outputPipe.fileHandleForWriting.write(data)
-    }
+    startReadingFromBuffer()
   }
   
   
@@ -200,6 +210,24 @@ class NimbleTextConsole: Console {
   func stopReadingFromBuffer() {
     outputPipe.fileHandleForReading.readabilityHandler = nil
     inputPipe.fileHandleForReading.readabilityHandler = nil
+    inputPipe = Pipe()
+    outputPipe = Pipe()
+  }
+  
+  func startReadingFromBuffer() {
+    if !isReadingFromBuffer {
+      contents = ""
+      inputPipe.fileHandleForReading.readabilityHandler = { [weak self] fileHandle in
+        guard let strongSelf = self else { return }
+        
+        let data = fileHandle.availableData
+        if let string = String(data: data, encoding: .utf8) {
+          strongSelf.contents += string
+        }
+        strongSelf.callback?(strongSelf)
+        strongSelf.outputPipe.fileHandleForWriting.write(data)
+      }
+    }
   }
   
   func clear() {

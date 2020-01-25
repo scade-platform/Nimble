@@ -102,6 +102,13 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
 // MARK: - Workbench
 
 extension NimbleWorkbench: Workbench {
+  public var openedConsoles: [Console] {
+    guard let debugView = debugView else {
+      return []
+    }
+    return debugView.consoleView.openedConsoles
+  }
+  
   public var project: Project? {
     return (document as? ProjectDocument)?.project
   }
