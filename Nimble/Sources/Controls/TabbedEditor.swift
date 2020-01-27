@@ -141,7 +141,7 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
     let docType = type(of: doc)
 
     return items.firstIndex {
-      if type(of: $0) == docType {
+      if type(of: $0.document) == docType {
         guard let p1 = $0.document.path, let p2 = doc.path else { return false }
 
         return p1 == p2
