@@ -138,9 +138,15 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
   }
   
   func findTab(_ doc: Document) -> Int? {
+    let docType = type(of: doc)
+
     return items.firstIndex {
-      guard let p1 = $0.document.path, let p2 = doc.path else { return false }
-      return p1 == p2
+      if type(of: $0) == docType {
+        guard let p1 = $0.document.path, let p2 = doc.path else { return false }
+
+        return p1 == p2
+      }
+      return false
     }
   }
 }
