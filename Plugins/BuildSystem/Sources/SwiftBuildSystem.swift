@@ -71,7 +71,7 @@ struct SwiftBuildProgress : BuildProgress {
   
 }
 
-extension SwiftBuildSystem : ConsoleSystem {}
+extension SwiftBuildSystem : ConsoleSupport {}
 
 class SwiftLauncher : Launcher {
   func launch(in workbench: Workbench) -> Process? {
@@ -96,4 +96,4 @@ class SwiftLauncher : Launcher {
   }
 }
 
-extension SwiftLauncher : ConsoleSystem {}
+extension SwiftLauncher : ConsoleSupport {}

@@ -64,7 +64,7 @@ class SPMBuildSystem: BuildSystem {
   }
 }
 
-extension SPMBuildSystem : ConsoleSystem {}
+extension SPMBuildSystem : ConsoleSupport {}
 
 struct SPMBuildProgress : BuildProgress {
   
@@ -119,7 +119,7 @@ class SPMLauncher: Launcher {
   }
 }
 
-extension SPMLauncher : ConsoleSystem {}
+extension SPMLauncher : ConsoleSupport {}
 
 
 fileprivate func findPackage(project: Project) -> File? {
