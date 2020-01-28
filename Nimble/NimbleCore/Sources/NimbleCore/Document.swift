@@ -135,7 +135,7 @@ public class DocumentManager {
   public static let shared: DocumentManager = DocumentManager()
     
   private var documentClasses: [Document.Type] = []
-  private var openedDocuments: [WeakRef<NSDocument>] = []
+  private var openedDocuments: [(ref: WeakRef<NSDocument>, type: Document.Type)] = []
   public var defaultDocument: Document.Type? = nil
   
   public var typeIdentifiers: Set<String> {
@@ -171,13 +171,13 @@ public class DocumentManager {
   }
 
   public func open(file: File, docType: Document.Type) -> Document? {
-    if let doc = searchOpenedDocument(file) {
+    if let doc = searchOpenedDocument(file, docType: docType) {
       return doc
     }
 
     guard let doc = try? docType.init(contentsOf: file.path.url, ofType: file.url.uti) else { return nil }
     
-    openedDocuments.append(WeakRef<NSDocument>(value: doc))
+    openedDocuments.append((WeakRef<NSDocument>(value: doc), docType))
 
     return doc
   }
@@ -199,15 +199,19 @@ public class DocumentManager {
     return docClasses.first ?? defaultDocument
   }
     
-  private func searchOpenedDocument(_ file: File) -> Document? {
-    openedDocuments.removeAll{ $0.value == nil }
-    
-    let ref = openedDocuments.first{
-      guard let path = ($0.value as? Document)?.path else { return false}
-      return path == file.path
+  private func searchOpenedDocument(_ file: File, docType: Document.Type) -> Document? {
+    openedDocuments.removeAll{ $0.ref.value == nil }
+
+    let docRef = openedDocuments.first {
+      if $0.type == docType {
+        guard let path = ($0.ref.value as? Document)?.path else { return false}
+
+        return path == file.path
+      } 
+      return false
     }
     
-    return ref?.value as? Document
+    return docRef?.ref.value as? Document
   }
 }
 
