@@ -15,6 +15,10 @@ class ShellBuildSystem: BuildSystem {
     return "Shell"
   }
   
+  var launcher: Launcher? {
+    return nil
+  }
+  
   func run(in workbench: Workbench) -> BuildProgress {
     guard let fileURL = workbench.currentDocument?.fileURL else {
       return ShellBuildProgress()
@@ -30,6 +34,13 @@ class ShellBuildSystem: BuildSystem {
       try? shellProc.run()
     }
     return ShellBuildProgress()
+  }
+}
+
+extension ShellBuildSystem : Launcher {
+  func launch(in workbench: Workbench) -> Process? {
+    run(in: workbench)
+    return nil
   }
 }
 

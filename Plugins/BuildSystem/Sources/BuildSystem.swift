@@ -11,14 +11,19 @@ import NimbleCore
 
 public protocol BuildSystem {
   var name: String { get }
+  var launcher: Launcher? { get }
   func run(in workbench: Workbench) -> BuildProgress
 }
 
-extension BuildSystem {
+protocol ConsoleSystem {
+   func openConsole<T: Equatable>(key: T, title: String, in workbench: Workbench) -> Console?
+}
+
+extension ConsoleSystem {
   func openConsole<T: Equatable>(key: T, title: String, in workbench: Workbench) -> Console? {
     let openedConsoles = workbench.openedConsoles
     guard let console = openedConsoles.filter({$0.representedObject is T}).first(where: {($0.representedObject as! T) == key}) else {
-      if var newConsole = workbench.createConsole(title: title, show: true) {
+      if var newConsole = workbench.createConsole(title: title, show: false) {
         newConsole.representedObject = key
         return newConsole
       }
@@ -29,7 +34,12 @@ extension BuildSystem {
   }
 }
 
+
 public protocol BuildProgress {
+}
+
+public protocol Launcher {
+  func launch(in workbench: Workbench) -> Process?
 }
 
 public class BuildSystemsManager {

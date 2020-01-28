@@ -37,9 +37,14 @@ final class BuildSystemPlugin: Plugin {
     }
     
     let buildMenuItem = NSMenuItem(title: "Build", action: #selector(executeBuild(_:)), keyEquivalent: "b")
-    buildSystemMenuItem.keyEquivalentModifierMask = .command
+    buildMenuItem.keyEquivalentModifierMask = .command
     buildMenuItem.target = self
     toolsMenu.addItem(buildMenuItem)
+    
+    let runMenuItem = NSMenuItem(title: "Run", action: #selector(executeLaunch(_:)), keyEquivalent: "r")
+    runMenuItem.keyEquivalentModifierMask = .command
+    runMenuItem.target = self
+    toolsMenu.addItem(runMenuItem)
   }
   
   
@@ -59,5 +64,11 @@ final class BuildSystemPlugin: Plugin {
     //Workbench for active window
     guard let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench else { return }
     BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench)
+  }
+  
+  @objc func executeLaunch(_ item: NSMenuItem?) {
+    //Workbench for active window
+    guard let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench else { return }
+    BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: currentWorkbench)
   }
 }
