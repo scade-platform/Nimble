@@ -56,20 +56,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D7CD74F622B8CC24004C437B"
-               BuildableName = "InterfaceBuilder.plugin"
-               BlueprintName = "InterfaceBuilder"
-               ReferencedContainer = "container:../Plugins/InterfaceBuilder/InterfaceBuilder/InterfaceBuilder.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "E42DC0A622D269ED00486CC1"
                BuildableName = "ImageViewer.plugin"
                BlueprintName = "ImageViewer"
@@ -88,6 +74,20 @@
                BuildableName = "BuildSystem.plugin"
                BlueprintName = "BuildSystem"
                ReferencedContainer = "container:../Plugins/BuildSystem/BuildSystem.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E43269E523E1AF09005C6105"
+               BuildableName = "SVGEditor.plugin"
+               BlueprintName = "SVGEditor"
+               ReferencedContainer = "container:../Plugins/SVGEditor/SVGEditor.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

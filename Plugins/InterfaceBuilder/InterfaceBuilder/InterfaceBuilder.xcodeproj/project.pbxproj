@@ -26,6 +26,7 @@
 		E42DC11B22D9C73E00486CC1 /* libphoenix.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC0F822D8E73600486CC1 /* libphoenix.dylib */; };
 		E42DC11C22D9C73E00486CC1 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC0F922D8E73600486CC1 /* ScadeKit.framework */; };
 		E42DC11E22D9C7A800486CC1 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E42DC11D22D9C7A800486CC1 /* AppKit.framework */; };
+		E4326A2F23E1C6A1005C6105 /* PageHighlighter.h in Headers */ = {isa = PBXBuildFile; fileRef = E451B30222C4B925006185B7 /* PageHighlighter.h */; };
 		E451B2FE22C0E919006185B7 /* WidgetVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2DD22C0E919006185B7 /* WidgetVisitor.swift */; };
 		E451B30022C4B69F006185B7 /* WidgetHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2FF22C4B69F006185B7 /* WidgetHighlighter.swift */; };
 /* End PBXBuildFile section */
@@ -245,6 +246,7 @@
 				E42DC11822D9C59200486CC1 /* PageView.h in Headers */,
 				E42DC11222D939C100486CC1 /* ScadeKitExtensions.h in Headers */,
 				E42DC11A22D9C59900486CC1 /* InterfaceBuilderBridging.h in Headers */,
+				E4326A2F23E1C6A1005C6105 /* PageHighlighter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -499,7 +501,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Libraries";
 				GCC_PREPROCESSOR_DEFINITIONS = "";
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Libraries/include";
 				INFOPLIST_FILE = InterfaceBuilder/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -529,7 +531,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/Libraries";
 				GCC_PREPROCESSOR_DEFINITIONS = "";
-				HEADER_SEARCH_PATHS = "";
+				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Libraries/include";
 				INFOPLIST_FILE = InterfaceBuilder/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = (
