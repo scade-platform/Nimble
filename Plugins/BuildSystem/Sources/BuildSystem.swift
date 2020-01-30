@@ -36,6 +36,42 @@ extension ConsoleSupport {
 
 
 public protocol BuildProgress {
+  //public clients can't change status directly
+  var status: BuildProgressStatus { get }
+  mutating func subscribe(handler: @escaping (BuildProgressStatus) -> Void)
+}
+
+internal protocol MutableBuildProgress: BuildProgress {
+  //but internal clients can
+  var status: BuildProgressStatus { get set }
+}
+
+public enum BuildProgressStatus {
+  case running
+  case finished
+  case failure
+}
+
+class MutableBuildProgressImpl : MutableBuildProgress {
+  var subscribers: [(BuildProgressStatus) -> Void] = []
+  
+  var status: BuildProgressStatus {
+    didSet {
+      subscribers.forEach{ $0(self.status)}
+      if status == .finished || status == .failure {
+        //last status for this progress
+        subscribers.removeAll()
+      }
+    }
+  }
+  
+  public func subscribe(handler: @escaping (BuildProgressStatus) -> Void) {
+    subscribers.append(handler)
+  }
+  
+  public init(status: BuildProgressStatus = .running){
+    self.status = status
+  }
 }
 
 public protocol Launcher {
