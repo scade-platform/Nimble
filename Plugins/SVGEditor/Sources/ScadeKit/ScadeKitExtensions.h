@@ -2,6 +2,6 @@
 
 @interface ScadeKitExtensions: NSObject
 
-+ (NSView*) createPhoenixView;
++ (NSView*) createScadeKitView;
 
 @end

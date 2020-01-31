@@ -3,7 +3,7 @@
 
 @implementation ScadeKitExtensions
 
-+ (NSView*) createPhoenixView {
++ (NSView*) createScadeKitView {
   using namespace phoenix::display;
   Display::reset();
 
