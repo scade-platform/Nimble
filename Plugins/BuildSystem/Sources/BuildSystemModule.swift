@@ -63,12 +63,12 @@ final class BuildSystemPlugin: Plugin {
   @objc func build(_ item: NSMenuItem?) {
     //Workbench for active window
     guard let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench else { return }
-    BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench)
+    BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench, handler: nil)
   }
   
   @objc func run(_ item: NSMenuItem?) {
     //Workbench for active window
     guard let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench else { return }
-    BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: currentWorkbench)
+    BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: currentWorkbench, handler: nil)
   }
 }

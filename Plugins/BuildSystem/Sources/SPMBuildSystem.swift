@@ -18,16 +18,15 @@ class SPMBuildSystem: BuildSystem {
     return SPMLauncher(builder: self)
   }()
   
-  func run(in workbench: Workbench) -> BuildProgress {
+  func run(in workbench: Workbench, handler: ((ProgressStatus) -> Void)? = nil) -> BuildProgress {
     workbench.currentDocument?.save(nil)
-    guard let curProject = workbench.project, let package = findPackage(project: curProject) else { return SPMBuildProgress(status: .failure) }
+    guard let curProject = workbench.project, let package = findPackage(project: curProject) else { return SPMBuildProgress() }
     let fileURL = package.url
     let spmProc = Process()
     spmProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
     spmProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
     spmProc.arguments = ["build"]
     var spmProcConsole : Console?
-    var progress = SPMBuildProgress()
     spmProc.terminationHandler = { process in
       spmProcConsole?.stopReadingFromBuffer()
       if let contents = spmProcConsole?.contents {        
@@ -35,15 +34,17 @@ class SPMBuildSystem: BuildSystem {
           DispatchQueue.main.async {
             spmProcConsole?.close()
           }
+          handler?(.finished)
         } else {
           DispatchQueue.main.async {
             workbench.debugArea?.isHidden = false
           }
-         if contents.contains("error:"){
-            progress.status = .failure
+          if contents.contains("error:"){
+            handler?(.failure)
+          } else {
+             handler?(.finished)
           }
         }
-        progress.status = .finished
         let cell = StatusBarTextCell(title: "Build done.")
         DispatchQueue.main.async {
           var statusBar = workbench.statusBar
@@ -66,13 +67,13 @@ class SPMBuildSystem: BuildSystem {
       spmProc.standardOutput = spmProcConsole?.output
       try? spmProc.run()
     }
-    return progress
+    return SPMBuildProgress()
   }
 }
 
 extension SPMBuildSystem : ConsoleSupport {}
 
-class SPMBuildProgress : MutableBuildProgressImpl {
+struct SPMBuildProgress : BuildProgress {
 }
 
 class SPMLauncher: Launcher {
@@ -82,29 +83,22 @@ class SPMLauncher: Launcher {
     self.builder = builder
   }
   
-  func launch(in workbench: Workbench) -> Process? {
-    var buildProgress = builder.run(in: workbench)
-    switch buildProgress.status {
-    case .running:
-      var process: Process?
-      buildProgress.subscribe(handler: {[weak self] status in
-        if status == .finished {
-          process = self?.run(in: workbench)
-        }
-      })
-      return process
-    case .finished:
-      return self.run(in: workbench)
-    case .failure:
-      return nil
-    }
+  func launch(in workbench: Workbench, handler: ((ProgressStatus, Process?) -> Void)? = nil) {
+    builder.run(in: workbench, handler: {status in
+      switch status {
+      case .finished:
+        self.run(in: workbench, handler: handler)
+      case .failure:
+        handler?(.failure, nil)
+      default: break
+      }
+    })
   }
   
-  private func run(in workbench: Workbench) -> Process? {
-    var programProc: Process? = Process()
+  private func run(in workbench: Workbench, handler: ((ProgressStatus, Process?) -> Void)?) {
     DispatchQueue.main.async {
       guard let curProject = workbench.project, let package = findPackage(project: curProject) else {
-        programProc = nil
+        handler?(.failure, nil)
         return
       }
       let packageUrl = package.url
@@ -127,29 +121,33 @@ class SPMLauncher: Launcher {
       proc.standardOutput = out
       proc.terminationHandler = { process in
         out.fileHandleForReading.readabilityHandler = nil
-        guard let describtion = buffer, let endOfFirstLine = describtion.firstIndex(of: "\n") else { return }
+        guard let describtion = buffer, let endOfFirstLine = describtion.firstIndex(of: "\n") else {
+          handler?(.failure, nil)
+          return
+        }
         let prefix = describtion.prefix(through: describtion.index(endOfFirstLine, offsetBy: -1))
         let name = prefix.suffix(from: prefix.index(prefix.startIndex, offsetBy: "Name: ".count))
         
-        
-        programProc?.currentDirectoryURL = packageUrl.deletingLastPathComponent()
-        programProc?.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
-        programProc?.arguments = ["run", "\(name)"]
+        let programProc = Process()
+        programProc.currentDirectoryURL = packageUrl.deletingLastPathComponent()
+        programProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
+        programProc.arguments = ["run", "\(name)"]
         var programProcConsole: Console?
-        programProc?.terminationHandler = { process in
+        programProc.terminationHandler = { process in
           programProcConsole?.stopReadingFromBuffer()
+          handler?(.finished, process)
         }
         DispatchQueue.main.async {
           workbench.debugArea?.isHidden = false
           programProcConsole =  self.openConsole(key: package, title: "Run: \(name)", in: workbench)
-          programProc?.standardOutput = programProcConsole?.output
-          programProc?.standardError = programProcConsole?.output
-          try? programProc?.run()
+          programProc.standardOutput = programProcConsole?.output
+          programProc.standardError = programProcConsole?.output
+          try? programProc.run()
+          handler?(.running, programProc)
         }
       }
       try? proc.run()
     }
-    return programProc
   }
 }
 

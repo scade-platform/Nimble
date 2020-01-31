@@ -10,6 +10,7 @@ import Foundation
 import NimbleCore
 
 class SwiftBuildSystem: BuildSystem {
+  
   var name: String {
     return "Swift File"
   }
@@ -18,9 +19,9 @@ class SwiftBuildSystem: BuildSystem {
     return SwiftLauncher(builder: self)
   }()
   
-  func run(in workbench: Workbench) -> BuildProgress {
+  func run(in workbench: Workbench, handler: ((ProgressStatus) -> Void)?) -> BuildProgress {
     guard let fileURL = workbench.currentDocument?.fileURL else {
-      return SwiftBuildProgress(status: .failure)
+      return SwiftBuildProgress()
     }
     
     workbench.currentDocument?.save(nil)
@@ -29,7 +30,6 @@ class SwiftBuildSystem: BuildSystem {
     swiftcProc.executableURL = URL(fileURLWithPath: "/usr/bin/swiftc")
     swiftcProc.arguments = [fileURL.path]
     var swiftcProcConsole: Console?
-    var progress = SwiftBuildProgress()
     swiftcProc.terminationHandler = { process in
       swiftcProcConsole?.stopReadingFromBuffer()
       if let contents = swiftcProcConsole?.contents {
@@ -37,15 +37,17 @@ class SwiftBuildSystem: BuildSystem {
           DispatchQueue.main.async {
             swiftcProcConsole?.close()
           }
+          handler?(.finished)
         } else {
           DispatchQueue.main.async {
             workbench.debugArea?.isHidden = false
           }
           if contents.contains("error:"){
-            progress.status = .failure
+            handler?(.failure)
+          } else {
+            handler?(.finished)
           }
         }
-        progress.status = .finished
         let cell = StatusBarTextCell(title: "Build done.")
         DispatchQueue.main.async {
           var statusBar = workbench.statusBar
@@ -68,11 +70,11 @@ class SwiftBuildSystem: BuildSystem {
       swiftcProc.standardError = swiftcProcConsole?.output
       try? swiftcProc.run()
     }
-    return progress
+    return SwiftBuildProgress()
   }
 }
 
-class SwiftBuildProgress : MutableBuildProgressImpl {
+class SwiftBuildProgress : BuildProgress {
 }
 
 extension SwiftBuildSystem : ConsoleSupport {}
@@ -84,44 +86,39 @@ class SwiftLauncher : Launcher {
     self.builder = builder
   }
   
-  func launch(in workbench: Workbench) -> Process? {
-    var buildProgress = builder.run(in: workbench)
-       switch buildProgress.status {
-       case .running:
-         var process: Process?
-         buildProgress.subscribe(handler: {[weak self] status in
-           if status == .finished {
-             process = self?.run(in: workbench)
-           }
-         })
-         return process
-       case .finished:
-         return self.run(in: workbench)
-       case .failure:
-         return nil
-       }
+  func launch(in workbench: Workbench, handler: ((ProgressStatus, Process?) -> Void)? = nil) {
+    builder.run(in: workbench, handler: {status in
+      switch status {
+      case .finished:
+        self.run(in: workbench, handler: handler)
+      case .failure:
+        handler?(.failure, nil)
+      default: break
+      }
+    })
   }
   
-  private func run(in workbench: Workbench) -> Process? {
-    var programProc: Process? = Process()
+  private func run(in workbench: Workbench, handler: ((ProgressStatus, Process?) -> Void)?) {
     DispatchQueue.main.async {
       guard let fileURL = workbench.currentDocument?.fileURL else {
-        programProc = nil
+        handler?(.failure, nil)
         return
       }
-      programProc?.currentDirectoryURL = fileURL.deletingLastPathComponent()
-      programProc?.executableURL = URL(fileURLWithPath: "\(fileURL.deletingPathExtension())")
+      let programProc = Process()
+      programProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
+      programProc.executableURL = URL(fileURLWithPath: "\(fileURL.deletingPathExtension())")
       var programProcConsole: Console?
-      programProc?.terminationHandler = { process in
+      programProc.terminationHandler = { process in
         programProcConsole?.stopReadingFromBuffer()
+        handler?(.finished, process)
       }
       workbench.debugArea?.isHidden = false
       programProcConsole = self.openConsole(key: fileURL, title: "Run: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
-      programProc?.standardOutput = programProcConsole?.output
-      programProc?.standardError = programProcConsole?.output
-      try? programProc?.run()
+      programProc.standardOutput = programProcConsole?.output
+      programProc.standardError = programProcConsole?.output
+      try? programProc.run()
+      handler?(.running, programProc)
     }
-    return programProc
   }
 }
 

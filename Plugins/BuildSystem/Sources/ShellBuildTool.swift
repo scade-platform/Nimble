@@ -11,6 +11,7 @@ import NimbleCore
 
 
 class ShellBuildSystem: BuildSystem {
+  
   var name: String {
     return "Shell"
   }
@@ -19,9 +20,9 @@ class ShellBuildSystem: BuildSystem {
     return nil
   }
   
-  func run(in workbench: Workbench) -> BuildProgress {
+  func run(in workbench: Workbench, handler: ((ProgressStatus) -> Void)? = nil) -> BuildProgress {
     guard let fileURL = workbench.currentDocument?.fileURL else {
-      return ShellBuildProgress(status: .failure)
+      return ShellBuildProgress()
     }
     let shellProc = Process()
     shellProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
@@ -33,7 +34,7 @@ class ShellBuildSystem: BuildSystem {
       shellProc.standardError = console?.output
       try? shellProc.run()
     }
-    return ShellBuildProgress(status: .finished)
+    return ShellBuildProgress()
   }
 }
 
@@ -42,13 +43,12 @@ extension ShellBuildSystem : Launcher {
     return self
   }
   
-  func launch(in workbench: Workbench) -> Process? {
+  func launch(in workbench: Workbench, handler: ((ProgressStatus, Process?) -> Void)? = nil) {
     run(in: workbench)
-    return nil
   }
 }
 
 
-class ShellBuildProgress : MutableBuildProgressImpl {
+struct ShellBuildProgress : BuildProgress {
 }
 

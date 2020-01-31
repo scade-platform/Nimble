@@ -12,7 +12,7 @@ import NimbleCore
 public protocol BuildSystem {
   var name: String { get }
   var launcher: Launcher? { get }
-  func run(in workbench: Workbench) -> BuildProgress
+  func run(in workbench: Workbench, handler: ((ProgressStatus) -> Void)?) -> BuildProgress
 }
 
 protocol ConsoleSupport {
@@ -35,47 +35,17 @@ extension ConsoleSupport {
 }
 
 
-public protocol BuildProgress {
-  //public clients can't change status directly
-  var status: BuildProgressStatus { get }
-  mutating func subscribe(handler: @escaping (BuildProgressStatus) -> Void)
-}
+public protocol BuildProgress {}
 
-internal protocol MutableBuildProgress: BuildProgress {
-  //but internal clients can
-  var status: BuildProgressStatus { get set }
-}
 
-public enum BuildProgressStatus {
+public enum ProgressStatus {
   case running
   case finished
   case failure
 }
 
-class MutableBuildProgressImpl : MutableBuildProgress {
-  var subscribers: [(BuildProgressStatus) -> Void] = []
-  
-  var status: BuildProgressStatus {
-    didSet {
-      subscribers.forEach{ $0(self.status)}
-      if status == .finished || status == .failure {
-        //last status for this progress
-        subscribers.removeAll()
-      }
-    }
-  }
-  
-  public func subscribe(handler: @escaping (BuildProgressStatus) -> Void) {
-    subscribers.append(handler)
-  }
-  
-  public init(status: BuildProgressStatus = .running){
-    self.status = status
-  }
-}
-
 public protocol Launcher {
-  func launch(in workbench: Workbench) -> Process?
+  func launch(in workbench: Workbench, handler: ((ProgressStatus, Process?) -> Void)?)
 }
 
 public class BuildSystemsManager {
