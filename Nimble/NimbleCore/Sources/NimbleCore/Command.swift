@@ -15,8 +15,24 @@ public protocol Command {
 }
 
 public protocol CommandDelegate {
+  func menuItemPath(for command: Command) -> String?
   func menuItem(for command: Command) -> NSMenuItem?
+  
   func toolbarItem(for command: Command) -> NSToolbarItem?
+}
+
+public extension CommandDelegate {
+  func menuItemPath(for command: Command) -> String? {
+    return nil
+  }
+  
+  func menuItem(for command: Command) -> NSMenuItem? {
+    return nil
+  }
+  
+  func toolbarItem(for command: Command) -> NSToolbarItem? {
+    return nil
+  }
 }
 
 public class CommandManager {
@@ -26,6 +42,17 @@ public class CommandManager {
   
   private init() {}
   
+  var toolbarItems: [NSToolbarItem] {
+    var result : [NSToolbarItem] = []
+    for command in commands {
+      guard let delegate = command.delegate else { continue }
+      if let toolbarItem = delegate.toolbarItem(for: command) {
+        result.append(toolbarItem)
+      }
+    }
+    return result
+  }
+  
   public func registerCommand(command: Command) {
     commands.append(command)
   }
@@ -33,6 +60,20 @@ public class CommandManager {
   public func createCommand(name: String, handler: @escaping () -> Void) -> Command {
     return NimbleCommand(name: name, handler: handler)
   }
+  
+  func initMenu() {
+    for command in commands {
+      guard let delegate = command.delegate else { continue }
+      if let commandMenuItem = delegate.menuItem(for: command) {
+        guard let mainMenu = NSApplication.shared.mainMenu else { continue }
+        let menuPath = delegate.menuItemPath(for: command) ?? ""
+        if let mainMenuItem = mainMenu.findItem(with: menuPath)?.submenu {
+          mainMenuItem.addItem(commandMenuItem)
+        }
+      }
+    }
+  }
+  
 }
 
 

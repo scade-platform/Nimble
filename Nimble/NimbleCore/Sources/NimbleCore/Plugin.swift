@@ -97,7 +97,10 @@ public class PluginManager {
         pluginManager.plugins[module.plugin.id] = module.plugin
       }
     }
-        
+    
+    //The main menu is single and common for every workbench
+    //so initialization should call once after plugins initialization
+    CommandManager.shared.initMenu()
     return pluginManager
   }()
     

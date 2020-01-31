@@ -98,6 +98,25 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   }
 }
 
+extension NimbleWorkbench : NSToolbarDelegate {
+  public func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
+    var result = self.toolbarItems.map{$0.itemIdentifier}
+    result.append(.flexibleSpace)
+    result.append(.space)
+    return result
+  }
+  
+  public func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
+    return self.toolbarItems.map{$0.itemIdentifier}
+  }
+  
+  public func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier, willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
+    return self.toolbarItems.first{$0.itemIdentifier == itemIdentifier}
+  }
+  
+  
+}
+
 
 // MARK: - Workbench
 

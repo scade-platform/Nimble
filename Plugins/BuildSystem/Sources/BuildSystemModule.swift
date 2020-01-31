@@ -18,6 +18,7 @@ final class BuildSystemPlugin: Plugin {
     BuildSystemsManager.shared.add(buildSystem: SwiftBuildSystem())
     BuildSystemsManager.shared.add(buildSystem: SPMBuildSystem())
     setupMainMenu()
+    setupCommands()
   }
     
   private func setupMainMenu() {
@@ -35,11 +36,13 @@ final class BuildSystemPlugin: Plugin {
       toolItem.representedObject = tool
       submenu.addItem(toolItem)
     }
-    
-    let buildMenuItem = NSMenuItem(title: "Build", action: #selector(executeBuild(_:)), keyEquivalent: "b")
-    buildSystemMenuItem.keyEquivalentModifierMask = .command
-    buildMenuItem.target = self
-    toolsMenu.addItem(buildMenuItem)
+  }
+  
+  private func setupCommands() {
+    let buildCommandDelegate = BuildCommandDelegate()
+    var buildCommand = CommandManager.shared.createCommand(name: "Build", handler: {buildCommandDelegate.executeBuild(nil)})
+    buildCommand.delegate = buildCommandDelegate
+    CommandManager.shared.registerCommand(command: buildCommand)
   }
   
   
@@ -55,9 +58,5 @@ final class BuildSystemPlugin: Plugin {
     BuildSystemsManager.shared.activeBuildSystem = item?.representedObject as? BuildSystem
   }
   
-  @objc func executeBuild(_ item: NSMenuItem?) {
-    //Workbench for active window
-    guard let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench else { return }
-    BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench)
-  }
+  
 }
