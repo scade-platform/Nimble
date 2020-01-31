@@ -223,6 +223,9 @@ class NimbleTextConsole: Console {
   func startReadingFromBuffer() {
     if !isReadingFromBuffer {
       contents = ""
+      outputPipe.fileHandleForReading.readabilityHandler = { fh in
+        self.handler(fh, self)
+      }
       inputPipe.fileHandleForReading.readabilityHandler = { [weak self] fileHandle in
         guard let strongSelf = self else { return }
         

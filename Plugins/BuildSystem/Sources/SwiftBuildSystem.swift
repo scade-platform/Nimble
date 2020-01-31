@@ -41,15 +41,19 @@ class SwiftBuildSystem: BuildSystem {
           DispatchQueue.main.async {
             workbench.debugArea?.isHidden = false
           }
-          progress.status = .failure
-          return
+          if contents.contains("error:"){
+            progress.status = .failure
+          }
         }
+        progress.status = .finished
         let cell = StatusBarTextCell(title: "Build done.")
         DispatchQueue.main.async {
           var statusBar = workbench.statusBar
-          statusBar.leftBar.append(cell)
+          if !statusBar.leftBar.contains(where: {$0.title == cell.title}) {
+            statusBar.leftBar.append(cell)
+          }
         }
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
           var statusBar = workbench.statusBar
           if statusBar.leftBar.contains(where: {$0.title == cell.title}) {
             if let index = statusBar.leftBar.firstIndex(where: {$0.title == cell.title}) {
@@ -57,7 +61,6 @@ class SwiftBuildSystem: BuildSystem {
             }
           }
         }
-        progress.status = .finished
       }
     }
     DispatchQueue.main.async {
