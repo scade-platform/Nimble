@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C0809F923E2E31B00E78444 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0809F823E2E31B00E78444 /* Command.swift */; };
 		0C0DB76123D08C1800E957DC /* NSImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0DB76023D08C1800E957DC /* NSImage.swift */; };
 		0C238B12233E4E3D004F87E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D2222878F40088715C /* Assets.xcassets */; };
 		0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */; };
@@ -116,6 +117,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0C0809F823E2E31B00E78444 /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
 		0C0DB76023D08C1800E957DC /* NSImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSImage.swift; sourceTree = "<group>"; };
 		0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDocument.swift; sourceTree = "<group>"; };
 		0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedPane.swift; sourceTree = "<group>"; };
@@ -289,6 +291,7 @@
 				D779905D236F14D100CBF9B7 /* Plugin.swift */,
 				D7799057236F14D100CBF9B7 /* Project.swift */,
 				D779905C236F14D100CBF9B7 /* Workbench.swift */,
+				0C0809F823E2E31B00E78444 /* Command.swift */,
 				D72CEB412371D57600C13F01 /* Extensions */,
 				D779904F236F14D100CBF9B7 /* UI */,
 				D7799055236F14D100CBF9B7 /* Utils */,
@@ -525,6 +528,7 @@
 				D77990E1236F14D100CBF9B7 /* Folder.swift in Sources */,
 				D724C5E2237A21D100E80958 /* Observer.swift in Sources */,
 				D77990E9236F14D100CBF9B7 /* Plugin.swift in Sources */,
+				0C0809F923E2E31B00E78444 /* Command.swift in Sources */,
 				D77990E4236F14D100CBF9B7 /* File.swift in Sources */,
 				D77990DE236F14D100CBF9B7 /* NSViewController.swift in Sources */,
 				D77990E3236F14D100CBF9B7 /* Project.swift in Sources */,
