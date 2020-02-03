@@ -35,15 +35,6 @@ class ConsoleView: NSViewController {
     }
   }
   
-  private func callback(console: Console) {
-    guard console.title != currentConsole?.title else {
-      return
-    }
-    DispatchQueue.main.async {
-      self.open(console: console.title)
-    }
-  }
-  
   override func viewDidLoad() {
     super.viewDidLoad()
     if let font = NSFont.init(name: "SFMono-Medium", size: 12) {
@@ -71,7 +62,7 @@ class ConsoleView: NSViewController {
       currentConsole = newConsole
     }
     newConsole.handler = handler(fileHandle:console:)
-    newConsole.callback = callback(console:)
+    newConsole.delegate = self
     consolesStorage[newConsole.title] = newConsole
     setControllersHidden(false)
     return newConsole
@@ -149,6 +140,21 @@ extension ConsoleView : WorkbenchPart {
   
 }
 
+extension ConsoleView: ConsoleDelegate {
+  func didChangeContents(console: Console){
+    guard console.title != currentConsole?.title else {
+      return
+    }
+    DispatchQueue.main.async {
+      self.open(console: console.title)
+    }
+  }
+}
+
+fileprivate protocol ConsoleDelegate {
+  func didChangeContents(console: Console)
+}
+
 class NimbleTextConsole: Console {
   private let view: ConsoleView
   private var innerContent : Atomic<String>
@@ -184,7 +190,7 @@ class NimbleTextConsole: Console {
     }
   }
   
-  var callback: ((Console) -> Void)?
+  fileprivate var delegate: ConsoleDelegate?
   
   var isReadingFromBuffer: Bool {
     return inputPipe.fileHandleForReading.readabilityHandler != nil
@@ -217,6 +223,9 @@ class NimbleTextConsole: Console {
   func startReadingFromBuffer() {
     if !isReadingFromBuffer {
       contents = ""
+      outputPipe.fileHandleForReading.readabilityHandler = { fh in
+        self.handler(fh, self)
+      }
       inputPipe.fileHandleForReading.readabilityHandler = { [weak self] fileHandle in
         guard let strongSelf = self else { return }
         
@@ -224,7 +233,7 @@ class NimbleTextConsole: Console {
         if let string = String(data: data, encoding: .utf8) {
           strongSelf.contents += string
         }
-        strongSelf.callback?(strongSelf)
+        strongSelf.delegate?.didChangeContents(console: strongSelf)
         strongSelf.outputPipe.fileHandleForWriting.write(data)
       }
     }
