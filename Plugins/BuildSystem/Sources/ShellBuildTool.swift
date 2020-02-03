@@ -20,9 +20,9 @@ class ShellBuildSystem: BuildSystem {
     return nil
   }
   
-  func run(in workbench: Workbench, handler: ((ProgressStatus) -> Void)? = nil) -> BuildProgress {
+  func run(in workbench: Workbench, handler: ((BuildStatus) -> Void)?) {
     guard let fileURL = workbench.currentDocument?.fileURL else {
-      return ShellBuildProgress()
+      return
     }
     let shellProc = Process()
     shellProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
@@ -34,7 +34,6 @@ class ShellBuildSystem: BuildSystem {
       shellProc.standardError = console?.output
       try? shellProc.run()
     }
-    return ShellBuildProgress()
   }
 }
 
@@ -43,12 +42,10 @@ extension ShellBuildSystem : Launcher {
     return self
   }
   
-  func launch(in workbench: Workbench, handler: ((ProgressStatus, Process?) -> Void)? = nil) {
+  func launch(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
     run(in: workbench)
   }
 }
 
 
-struct ShellBuildProgress : BuildProgress {
-}
 

@@ -18,9 +18,9 @@ class SPMBuildSystem: BuildSystem {
     return SPMLauncher(builder: self)
   }()
   
-  func run(in workbench: Workbench, handler: ((ProgressStatus) -> Void)? = nil) -> BuildProgress {
+  func run(in workbench: Workbench, handler: ((BuildStatus) -> Void)?) {
     workbench.currentDocument?.save(nil)
-    guard let curProject = workbench.project, let package = findPackage(project: curProject) else { return SPMBuildProgress() }
+    guard let curProject = workbench.project, let package = findPackage(project: curProject) else { return  }
     let fileURL = package.url
     let spmProc = Process()
     spmProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
@@ -40,7 +40,7 @@ class SPMBuildSystem: BuildSystem {
             workbench.debugArea?.isHidden = false
           }
           if contents.contains("error:"){
-            handler?(.failure)
+            handler?(.failed)
           } else {
              handler?(.finished)
           }
@@ -67,14 +67,10 @@ class SPMBuildSystem: BuildSystem {
       spmProc.standardOutput = spmProcConsole?.output
       try? spmProc.run()
     }
-    return SPMBuildProgress()
   }
 }
 
 extension SPMBuildSystem : ConsoleSupport {}
-
-struct SPMBuildProgress : BuildProgress {
-}
 
 class SPMLauncher: Launcher {
   let builder: BuildSystem
@@ -83,22 +79,22 @@ class SPMLauncher: Launcher {
     self.builder = builder
   }
   
-  func launch(in workbench: Workbench, handler: ((ProgressStatus, Process?) -> Void)? = nil) {
+  func launch(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
     builder.run(in: workbench, handler: {status in
       switch status {
       case .finished:
         self.run(in: workbench, handler: handler)
-      case .failure:
-        handler?(.failure, nil)
+      case .failed:
+        handler?(.failed, nil)
       default: break
       }
     })
   }
   
-  private func run(in workbench: Workbench, handler: ((ProgressStatus, Process?) -> Void)?) {
+  private func run(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
     DispatchQueue.main.async {
       guard let curProject = workbench.project, let package = findPackage(project: curProject) else {
-        handler?(.failure, nil)
+        handler?(.failed, nil)
         return
       }
       let packageUrl = package.url
@@ -122,7 +118,7 @@ class SPMLauncher: Launcher {
       proc.terminationHandler = { process in
         out.fileHandleForReading.readabilityHandler = nil
         guard let describtion = buffer, let endOfFirstLine = describtion.firstIndex(of: "\n") else {
-          handler?(.failure, nil)
+          handler?(.failed, nil)
           return
         }
         let prefix = describtion.prefix(through: describtion.index(endOfFirstLine, offsetBy: -1))

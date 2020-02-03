@@ -19,9 +19,9 @@ class SwiftBuildSystem: BuildSystem {
     return SwiftLauncher(builder: self)
   }()
   
-  func run(in workbench: Workbench, handler: ((ProgressStatus) -> Void)?) -> BuildProgress {
+  func run(in workbench: Workbench, handler: ((BuildStatus) -> Void)?) {
     guard let fileURL = workbench.currentDocument?.fileURL else {
-      return SwiftBuildProgress()
+      return
     }
     
     workbench.currentDocument?.save(nil)
@@ -43,7 +43,7 @@ class SwiftBuildSystem: BuildSystem {
             workbench.debugArea?.isHidden = false
           }
           if contents.contains("error:"){
-            handler?(.failure)
+            handler?(.failed)
           } else {
             handler?(.finished)
           }
@@ -70,11 +70,7 @@ class SwiftBuildSystem: BuildSystem {
       swiftcProc.standardError = swiftcProcConsole?.output
       try? swiftcProc.run()
     }
-    return SwiftBuildProgress()
   }
-}
-
-class SwiftBuildProgress : BuildProgress {
 }
 
 extension SwiftBuildSystem : ConsoleSupport {}
@@ -86,22 +82,22 @@ class SwiftLauncher : Launcher {
     self.builder = builder
   }
   
-  func launch(in workbench: Workbench, handler: ((ProgressStatus, Process?) -> Void)? = nil) {
+  func launch(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
     builder.run(in: workbench, handler: {status in
       switch status {
       case .finished:
         self.run(in: workbench, handler: handler)
-      case .failure:
-        handler?(.failure, nil)
+      case .failed:
+        handler?(.failed, nil)
       default: break
       }
     })
   }
   
-  private func run(in workbench: Workbench, handler: ((ProgressStatus, Process?) -> Void)?) {
+  private func run(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
     DispatchQueue.main.async {
       guard let fileURL = workbench.currentDocument?.fileURL else {
-        handler?(.failure, nil)
+        handler?(.failed, nil)
         return
       }
       let programProc = Process()

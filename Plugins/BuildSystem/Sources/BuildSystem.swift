@@ -12,7 +12,13 @@ import NimbleCore
 public protocol BuildSystem {
   var name: String { get }
   var launcher: Launcher? { get }
-  func run(in workbench: Workbench, handler: ((ProgressStatus) -> Void)?) -> BuildProgress
+  func run(in workbench: Workbench, handler: ((BuildStatus) -> Void)?)
+}
+
+public extension BuildSystem {
+  func run(in workbench: Workbench) {
+    self.run(in: workbench, handler: nil)
+  }
 }
 
 protocol ConsoleSupport {
@@ -35,17 +41,20 @@ extension ConsoleSupport {
 }
 
 
-public protocol BuildProgress {}
-
-
-public enum ProgressStatus {
+public enum BuildStatus {
   case running
   case finished
-  case failure
+  case failed
 }
 
 public protocol Launcher {
-  func launch(in workbench: Workbench, handler: ((ProgressStatus, Process?) -> Void)?)
+  func launch(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?)
+}
+
+public extension Launcher {
+  func launch(in workbench: Workbench) {
+    self.launch(in: workbench, handler: nil)
+  }
 }
 
 public class BuildSystemsManager {
