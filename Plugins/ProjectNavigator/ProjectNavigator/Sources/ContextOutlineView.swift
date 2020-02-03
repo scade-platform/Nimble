@@ -63,19 +63,33 @@ extension ContextOutlineView : ContextMenuProvider {
   }
   
   static func menuItems(for folder: Folder) -> [NSMenuItem] {
-    return [
-      createMenuItem(title: "Show in Finder", selector: #selector(showInFinderAction), for: folder),
-      NSMenuItem.separator(),
-      createMenuItem(title: "New File...", selector: #selector(createNewFileAction), for: folder),
-      createMenuItem(title: "New Folder...", selector: #selector(createNewFolderAction), for: folder),
-      NSMenuItem.separator(),
-      createMenuItem(title: "Rename", selector: #selector(renameAction), for: folder),
-      NSMenuItem.separator(),
-      createMenuItem(title: "Delete", selector: #selector(deleteAction), for: folder)
-    ]
+    var items = [
+    createMenuItem(title: "Show in Finder", selector: #selector(showInFinderAction), for: folder),
+    NSMenuItem.separator(),
+    createMenuItem(title: "New File...", selector: #selector(createNewFileAction), for: folder),
+    createMenuItem(title: "New Folder...", selector: #selector(createNewFolderAction), for: folder),
+    NSMenuItem.separator(),
+    createMenuItem(title: "Rename", selector: #selector(renameAction), for: folder),
+    NSMenuItem.separator(),
+    createMenuItem(title: "Delete", selector: #selector(deleteAction), for: folder)]
+    
+    if let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench, let project = currentWorkbench.project, project.folders.contains(folder) {
+      items.append(createMenuItem(title: "Remove Folder from Project", selector: #selector(removeAction), for: folder))
+    }
+    return items
   }
   
   // MARK: - Menu actions
+  
+  @objc func removeAction(_ sender: NSMenuItem?) {
+    guard let folder = sender?.representedObject as? Folder,
+          let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench
+    else {
+      return
+    }
+    currentWorkbench.project?.remove(folder)
+    self.reloadSelected()
+  }
   
   @objc func openAsAction(_ sender: NSMenuItem?) {
     if let menuItem = sender {
