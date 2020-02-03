@@ -35,6 +35,8 @@
 		D72232A422CD5BF200E471C2 /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72232A322CD5BF200E471C2 /* String+Localization.swift */; };
 		D741547E236C99AE00A1B80C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D741547D236C99AE00A1B80C /* Info.plist */; };
 		D74A7F592399ABCD006E0238 /* CodeEditorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74A7F582399ABCD006E0238 /* CodeEditorMenu.swift */; };
+		D773415523E7811F004BD374 /* SwiftSVG in Frameworks */ = {isa = PBXBuildFile; productRef = D773415423E7811F004BD374 /* SwiftSVG */; };
+		D773415723E8BE13004BD374 /* NSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773415623E8BE13004BD374 /* NSView.swift */; };
 		D773AD3322D3812A003A12A5 /* CodeEditorTextView+ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D773AD3222D3812A003A12A5 /* CodeEditorTextView+ColorTheme.swift */; };
 		D7799107236F150C00CBF9B7 /* SourceCodeDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77990F1236F150C00CBF9B7 /* SourceCodeDocument.swift */; };
 		D7799108236F150C00CBF9B7 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77990F3236F150C00CBF9B7 /* Language.swift */; };
@@ -59,6 +61,9 @@
 		D7D2D59C22B1B9C80017B45D /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D59A22B1B9C80017B45D /* CodeEditorView.swift */; };
 		D7D2D59D22B1B9C80017B45D /* CodeEditorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7D2D59B22B1B9C80017B45D /* CodeEditorView.xib */; };
 		D7D2D5A322B28F020017B45D /* CodeEditorDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D2D5A222B28F020017B45D /* CodeEditorDocument.swift */; };
+		D7D3A8B023E37D0D0094B3DA /* Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D3A8AF23E37D0D0094B3DA /* Completion.swift */; };
+		D7D3A8B223E391470094B3DA /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = D7D3A8B123E391470094B3DA /* Icons */; };
+		D7D3A8B623E39CBD0094B3DA /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = D7D3A8B123E391470094B3DA /* Icons */; };
 		D7E1A4E823CD311300BCAF0B /* LanguageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E1A4E723CD311300BCAF0B /* LanguageService.swift */; };
 		D7E1A4EA23CDE3BC00BCAF0B /* CodeEditorCompletionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7E1A4E923CDE3BC00BCAF0B /* CodeEditorCompletionView.xib */; };
 		D7EC46C223C3D8B5000B4B05 /* CodeEditorLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EC46C123C3D8B5000B4B05 /* CodeEditorLayoutManager.swift */; };
@@ -117,6 +122,7 @@
 		D72232A322CD5BF200E471C2 /* String+Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Localization.swift"; path = "../../../CotEditor/CotEditor/Sources/String+Localization.swift"; sourceTree = "<group>"; };
 		D741547D236C99AE00A1B80C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D74A7F582399ABCD006E0238 /* CodeEditorMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorMenu.swift; sourceTree = "<group>"; };
+		D773415623E8BE13004BD374 /* NSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSView.swift; sourceTree = "<group>"; };
 		D773AD3222D3812A003A12A5 /* CodeEditorTextView+ColorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorTextView+ColorTheme.swift"; sourceTree = "<group>"; };
 		D7798FA3236F145900CBF9B7 /* CodeEditor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CodeEditor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D77990EC236F150C00CBF9B7 /* CodeEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodeEditor.h; sourceTree = "<group>"; };
@@ -144,6 +150,8 @@
 		D7D2D59A22B1B9C80017B45D /* CodeEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorView.swift; sourceTree = "<group>"; };
 		D7D2D59B22B1B9C80017B45D /* CodeEditorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CodeEditorView.xib; sourceTree = "<group>"; };
 		D7D2D5A222B28F020017B45D /* CodeEditorDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorDocument.swift; sourceTree = "<group>"; };
+		D7D3A8AF23E37D0D0094B3DA /* Completion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Completion.swift; sourceTree = "<group>"; };
+		D7D3A8B123E391470094B3DA /* Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Icons; sourceTree = "<group>"; };
 		D7E1A4E723CD311300BCAF0B /* LanguageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageService.swift; sourceTree = "<group>"; };
 		D7E1A4E923CDE3BC00BCAF0B /* CodeEditorCompletionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CodeEditorCompletionView.xib; sourceTree = "<group>"; };
 		D7EC46C123C3D8B5000B4B05 /* CodeEditorLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodeEditorLayoutManager.swift; sourceTree = "<group>"; };
@@ -166,6 +174,7 @@
 			files = (
 				D779911B236F15ED00CBF9B7 /* NimbleCore.framework in Frameworks */,
 				D7799116236F15E800CBF9B7 /* CodeEditor.framework in Frameworks */,
+				D773415523E7811F004BD374 /* SwiftSVG in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,6 +184,7 @@
 		4252B49722BA48E100CFFA3A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D7D3A8B123E391470094B3DA /* Icons */,
 				D7AD216522CA6D760062C835 /* Fonts */,
 				428C0F2022BA9EFE002142BD /* Themes */,
 			);
@@ -257,6 +267,7 @@
 				D77990F1236F150C00CBF9B7 /* SourceCodeDocument.swift */,
 				D77990F9236F150C00CBF9B7 /* Extensions */,
 				D77990F2236F150C00CBF9B7 /* Language */,
+				D7D3A8AE23E37CB70094B3DA /* Services */,
 			);
 			path = CodeEditor;
 			sourceTree = "<group>";
@@ -266,7 +277,6 @@
 			children = (
 				D77990F6236F150C00CBF9B7 /* Grammar.swift */,
 				D77990F3236F150C00CBF9B7 /* Language.swift */,
-				D7E1A4E723CD311300BCAF0B /* LanguageService.swift */,
 				D77990F5236F150C00CBF9B7 /* Syntax.swift */,
 				D77990F7236F150C00CBF9B7 /* SyntaxParser.swift */,
 				D77990F4236F150C00CBF9B7 /* Tokenizer.swift */,
@@ -277,10 +287,11 @@
 		D77990F9236F150C00CBF9B7 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				D77990FD236F150C00CBF9B7 /* NSTextView.swift */,
+				D773415623E8BE13004BD374 /* NSView.swift */,
+				D77990FC236F150C00CBF9B7 /* Range.swift */,
 				D77990FA236F150C00CBF9B7 /* String+Encoding.swift */,
 				D77990FB236F150C00CBF9B7 /* String+Ranges.swift */,
-				D77990FC236F150C00CBF9B7 /* Range.swift */,
-				D77990FD236F150C00CBF9B7 /* NSTextView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -340,6 +351,15 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D7D3A8AE23E37CB70094B3DA /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				D7E1A4E723CD311300BCAF0B /* LanguageService.swift */,
+				D7D3A8AF23E37D0D0094B3DA /* Completion.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -391,6 +411,7 @@
 			);
 			name = CodeEditor.plugin;
 			packageProductDependencies = (
+				D773415423E7811F004BD374 /* SwiftSVG */,
 			);
 			productName = CodeEditor;
 			productReference = D7D2D58922B1B48C0017B45D /* CodeEditor.plugin */;
@@ -425,6 +446,7 @@
 			packageReferences = (
 				D7799121236F163100CBF9B7 /* XCRemoteSwiftPackageReference "oniguruma" */,
 				D7799124236F164D00CBF9B7 /* XCRemoteSwiftPackageReference "WFColorCode" */,
+				D773415323E7811F004BD374 /* XCRemoteSwiftPackageReference "SwiftSVG" */,
 			);
 			productRefGroup = D7D2D58A22B1B48C0017B45D /* Products */;
 			projectDirPath = "";
@@ -441,6 +463,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7D3A8B223E391470094B3DA /* Icons in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -448,6 +471,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7D3A8B623E39CBD0094B3DA /* Icons in Resources */,
 				0C0DB75F23D0531700E957DC /* DiagnosticRowView.xib in Resources */,
 				D7AD216622CA6D760062C835 /* Fonts in Resources */,
 				428C0F2122BA9EFE002142BD /* Themes in Resources */,
@@ -468,6 +492,7 @@
 				D7799108236F150C00CBF9B7 /* Language.swift in Sources */,
 				D7799110236F150C00CBF9B7 /* Range.swift in Sources */,
 				D779910A236F150C00CBF9B7 /* Syntax.swift in Sources */,
+				D7D3A8B023E37D0D0094B3DA /* Completion.swift in Sources */,
 				D7799109236F150C00CBF9B7 /* Tokenizer.swift in Sources */,
 				D779910F236F150C00CBF9B7 /* String+Ranges.swift in Sources */,
 				D779910E236F150C00CBF9B7 /* String+Encoding.swift in Sources */,
@@ -477,6 +502,7 @@
 				D7799113236F150C00CBF9B7 /* Core.swift in Sources */,
 				D779910D236F150C00CBF9B7 /* ColorTheme.swift in Sources */,
 				D7799107236F150C00CBF9B7 /* SourceCodeDocument.swift in Sources */,
+				D773415723E8BE13004BD374 /* NSView.swift in Sources */,
 				D779910B236F150C00CBF9B7 /* Grammar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -791,6 +817,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		D773415323E7811F004BD374 /* XCRemoteSwiftPackageReference "SwiftSVG" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "git@github.com:gr-markin/SwiftSVG.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		D7799121236F163100CBF9B7 /* XCRemoteSwiftPackageReference "oniguruma" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/FLORG1/oniguruma.git";
@@ -810,6 +844,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		D773415423E7811F004BD374 /* SwiftSVG */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D773415323E7811F004BD374 /* XCRemoteSwiftPackageReference "SwiftSVG" */;
+			productName = SwiftSVG;
+		};
 		D7799127236F166500CBF9B7 /* Oniguruma */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D7799121236F163100CBF9B7 /* XCRemoteSwiftPackageReference "oniguruma" */;

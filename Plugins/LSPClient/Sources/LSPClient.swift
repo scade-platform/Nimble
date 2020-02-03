@@ -26,10 +26,20 @@ public final class LSPClient {
     capabilities.textDocument?.publishDiagnostics =
       TextDocumentClientCapabilities.PublishDiagnostics(relatedInformation: true)
     
+    
+    let completionItemCapabilities = TextDocumentClientCapabilities.Completion.CompletionItem (
+      snippetSupport: true,
+      commitCharactersSupport: true,
+      documentationFormat: [.markdown, .plaintext],
+      deprecatedSupport: true,
+      preselectSupport: true)
+      
+    capabilities.textDocument?.completion =
+      TextDocumentClientCapabilities.Completion(completionItem: completionItemCapabilities,
+                                                contextSupport: true)
+    
     capabilities.workspace?.didChangeWatchedFiles = DynamicRegistrationCapability(dynamicRegistration: true)
     capabilities.workspace?.didChangeConfiguration = DynamicRegistrationCapability(dynamicRegistration: true)
-    
-    
     
     return capabilities
   }()
@@ -157,7 +167,7 @@ extension LSPClient: SourceCodeDocumentObserver {
 // MARK: - LanguageService
 
 extension LSPClient: LanguageService {
-  public func complete(_ doc: SourceCodeDocument,
+  public func complete(in doc: SourceCodeDocument,
                        at index: String.Index,
                        handler: @escaping (String.Index, [CodeEditor.CompletionItem]) -> Void) {
     
@@ -257,6 +267,10 @@ extension CompletionItemWrapper: CodeEditor.CompletionItem {
   var textEdit: CodeEditor.CompletionTextEdit? {
     guard let textEdit = item.textEdit else { return nil }
     return TextEditWrapper(text: text, textEdit: textEdit)
+  }
+  
+  var kind: CodeEditor.CompletionItemKind {    
+    return CodeEditor.CompletionItemKind(rawValue: item.kind.rawValue) ?? .unknown
   }
 }
 

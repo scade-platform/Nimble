@@ -59,6 +59,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   public override func windowDidLoad() {
     super.windowDidLoad()
     window?.delegate = self
+    window?.contentView?.wantsLayer = true
     
     // Restore window position
     window?.setFrameUsingName("NimbleWindow")
