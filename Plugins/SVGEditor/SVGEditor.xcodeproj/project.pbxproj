@@ -14,7 +14,6 @@
 		E4326A0423E1B0FB005C6105 /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4326A0323E1B0FB005C6105 /* NimbleCore.framework */; };
 		E4326A1C23E1B2F3005C6105 /* SVGDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4326A1323E1B2F3005C6105 /* SVGDocument.swift */; };
 		E4326A2E23E1C63B005C6105 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4326A2D23E1C63B005C6105 /* AppKit.framework */; };
-		E4326A3123E1C6B4005C6105 /* ScadeKitExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = E4326A0F23E1B2F3005C6105 /* ScadeKitExtensions.h */; };
 		E4326A3A23E1C8AF005C6105 /* ScadeKitExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4326A2523E1C4ED005C6105 /* ScadeKitExtension.framework */; };
 		E4326A3B23E1C8AF005C6105 /* ScadeKitExtension.framework in Embed Libraries */ = {isa = PBXBuildFile; fileRef = E4326A2523E1C4ED005C6105 /* ScadeKitExtension.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E4326A3E23E1CA67005C6105 /* libphoenix.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E43269F223E1B051005C6105 /* libphoenix.dylib */; };
@@ -23,8 +22,9 @@
 		E4326A4823E1CF9E005C6105 /* SVGEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4326A4423E1CF9E005C6105 /* SVGEditor.swift */; };
 		E4326A4A23E1CFA9005C6105 /* SVGEditorBridging.h in Headers */ = {isa = PBXBuildFile; fileRef = E4326A4923E1CFA9005C6105 /* SVGEditorBridging.h */; };
 		E4326A4D23E1D10C005C6105 /* ScadeKitExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = E4326A2723E1C4ED005C6105 /* ScadeKitExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E4326A4F23E2FA36005C6105 /* ScadeKitExtensions.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4326A4E23E2FA36005C6105 /* ScadeKitExtensions.mm */; };
 		E4326A6223E4517B005C6105 /* SVGEditorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E4326A6123E4517B005C6105 /* SVGEditorController.xib */; };
+		E4909EA123E9975D00C1DFE2 /* SVGView.h in Headers */ = {isa = PBXBuildFile; fileRef = E4909E9F23E9975D00C1DFE2 /* SVGView.h */; };
+		E4909EA223E9975D00C1DFE2 /* SVGView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4909EA023E9975D00C1DFE2 /* SVGView.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,7 +68,6 @@
 		E43269FC23E1B090005C6105 /* NativeView.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NativeView.hpp; sourceTree = "<group>"; };
 		E43269FD23E1B090005C6105 /* display.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = display.hpp; sourceTree = "<group>"; };
 		E4326A0323E1B0FB005C6105 /* NimbleCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E4326A0F23E1B2F3005C6105 /* ScadeKitExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScadeKitExtensions.h; sourceTree = "<group>"; };
 		E4326A1323E1B2F3005C6105 /* SVGDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGDocument.swift; sourceTree = "<group>"; };
 		E4326A2523E1C4ED005C6105 /* ScadeKitExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ScadeKitExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4326A2723E1C4ED005C6105 /* ScadeKitExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScadeKitExtension.h; sourceTree = "<group>"; };
@@ -77,8 +76,9 @@
 		E4326A4323E1CF9E005C6105 /* SVGEditorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGEditorController.swift; sourceTree = "<group>"; };
 		E4326A4423E1CF9E005C6105 /* SVGEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGEditor.swift; sourceTree = "<group>"; };
 		E4326A4923E1CFA9005C6105 /* SVGEditorBridging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGEditorBridging.h; sourceTree = "<group>"; };
-		E4326A4E23E2FA36005C6105 /* ScadeKitExtensions.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ScadeKitExtensions.mm; sourceTree = "<group>"; };
 		E4326A6123E4517B005C6105 /* SVGEditorController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SVGEditorController.xib; sourceTree = "<group>"; };
+		E4909E9F23E9975D00C1DFE2 /* SVGView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGView.h; sourceTree = "<group>"; };
+		E4909EA023E9975D00C1DFE2 /* SVGView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SVGView.mm; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -202,9 +202,9 @@
 		E4326A0B23E1B2F3005C6105 /* ScadeKit */ = {
 			isa = PBXGroup;
 			children = (
-				E4326A4E23E2FA36005C6105 /* ScadeKitExtensions.mm */,
+				E4909E9F23E9975D00C1DFE2 /* SVGView.h */,
+				E4909EA023E9975D00C1DFE2 /* SVGView.mm */,
 				E4326A4923E1CFA9005C6105 /* SVGEditorBridging.h */,
-				E4326A0F23E1B2F3005C6105 /* ScadeKitExtensions.h */,
 			);
 			path = ScadeKit;
 			sourceTree = "<group>";
@@ -225,8 +225,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4326A3123E1C6B4005C6105 /* ScadeKitExtensions.h in Headers */,
 				E4326A4A23E1CFA9005C6105 /* SVGEditorBridging.h in Headers */,
+				E4909EA123E9975D00C1DFE2 /* SVGView.h in Headers */,
 				E4326A4D23E1D10C005C6105 /* ScadeKitExtension.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -342,7 +342,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4326A4F23E2FA36005C6105 /* ScadeKitExtensions.mm in Sources */,
+				E4909EA223E9975D00C1DFE2 /* SVGView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

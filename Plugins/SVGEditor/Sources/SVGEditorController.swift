@@ -13,7 +13,7 @@ class SVGEditorController: NSViewController {
 
     doc?.observers.add(observer: self)
 
-    guard let svgView = ScadeKitExtensions.createScadeKitView() else { return }
+    let svgView = SVGView()
     
     view.addSubview(svgView)
 
