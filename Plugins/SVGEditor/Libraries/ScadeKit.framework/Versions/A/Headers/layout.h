@@ -2,8 +2,8 @@
 
 
 typedef NS_ENUM(NSInteger, SCDLayoutLayoutSizeConstraint) {
-  SCDLayoutLayoutSizeConstraintWrap_content = 0,
-  SCDLayoutLayoutSizeConstraintMatch_parent = 1
+  SCDLayoutLayoutSizeConstraintWrapContent = 0,
+  SCDLayoutLayoutSizeConstraintMatchParent = 1
 };
 typedef NS_ENUM(NSInteger, SCDLayoutHorizontalAlignment) {
   SCDLayoutHorizontalAlignmentLeft = 0,
@@ -20,8 +20,8 @@ typedef NS_ENUM(NSInteger, SCDLayoutAnchor) {
   SCDLayoutAnchorRight = 1,
   SCDLayoutAnchorTop = 2,
   SCDLayoutAnchorBottom = 3,
-  SCDLayoutAnchorCenter_x = 4,
-  SCDLayoutAnchorCenter_y = 5,
+  SCDLayoutAnchorCenterX = 4,
+  SCDLayoutAnchorCenterY = 5,
   SCDLayoutAnchorHeight = 6,
   SCDLayoutAnchorWidth = 7
 };

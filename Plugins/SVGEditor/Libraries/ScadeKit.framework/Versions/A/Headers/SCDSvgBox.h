@@ -2,16 +2,14 @@
 
 #import <ScadeKit/SCDLayoutNode.h>
 #import <ScadeKit/SCDSvgAlignmentElement.h>
-#import <ScadeKit/SCDSvgContainerElement.h>
-#import <ScadeKit/SCDSvgDrawable.h>
+#import <ScadeKit/SCDSvgGroup.h>
 
 
-@protocol SCDSvgDrawable;
 @protocol SCDSvgAlignmentElement;
 @protocol SCDLayoutNode;
 
 @class SCDSvgUnit;
-@class SCDSvgContainerElement;
+@class SCDSvgGroup;
 
 
 /*PROTECTED REGION ID(0ae0de62c6f9adf228ed93d1d643c2d6) START*/
@@ -21,9 +19,7 @@
 
 
 SCADE_API
-@interface SCDSvgBox
-    : SCDSvgContainerElement <SCDSvgDrawable, SCDSvgAlignmentElement,
-                              SCDLayoutNode>
+@interface SCDSvgBox : SCDSvgGroup <SCDSvgAlignmentElement, SCDLayoutNode>
 
 
 @property(nonatomic) NSString* _Nonnull viewBox;

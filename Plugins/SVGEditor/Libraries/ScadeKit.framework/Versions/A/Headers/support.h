@@ -54,6 +54,8 @@ SCADE_API
 
 - (void)onOpenWith:(NSString* _Nonnull)url;
 
+- (void)onKeyboardAction:(BOOL)isShow;
+
 - (void)launch;
 @end
 
@@ -80,6 +82,8 @@ SCADE_API
 + (void)saveFile:(NSString* _Nonnull)relativePath data:(NSData* _Nonnull)data;
 
 + (NSData* _Nullable)loadFile:(NSString* _Nonnull)relativePath;
+
++ (NSString* _Nullable)loadContent:(NSString* _Nonnull)relativePath;
 
 + (void)callWithDelay:(double)seconds closure:(void (^_Nonnull)())block;
 

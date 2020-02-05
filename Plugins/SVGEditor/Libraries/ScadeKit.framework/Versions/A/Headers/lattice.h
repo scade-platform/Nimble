@@ -1,14 +1,16 @@
 #import <Foundation/Foundation.h>
 
 
-typedef NS_ENUM(NSInteger, SCDLatticePageTransition) {
-  SCDLatticePageTransitionForward_push = 0,
-  SCDLatticePageTransitionBackward_push = 1
-};
-
 typedef NS_ENUM(NSInteger, SCDLatticeScreenOrientation) {
   SCDLatticeScreenOrientationPortrait = 0,
   SCDLatticeScreenOrientationLandscape = 1
+};
+
+typedef NS_ENUM(NSInteger, SCDLatticeTransition) {
+  SCDLatticeTransitionFromLeft = 0,
+  SCDLatticeTransitionFromRight = 1,
+  SCDLatticeTransitionFromTop = 2,
+  SCDLatticeTransitionFromBottom = 3
 };
 
 

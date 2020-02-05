@@ -32,6 +32,9 @@ SCADE_API
 @property(nonatomic)
     SCDLatticeApplicationEventHandler* _Nullable onEnterForeground;
 
+@property(nonatomic)
+    SCDLatticeApplicationEventHandler* _Nullable onKeyboardShow;
+
 
 - (NSString* _Nonnull)pathForResource:(NSString* _Nonnull)resourceName;
 

@@ -7,6 +7,8 @@
 @class SCDLatticeEntryPoint;
 @class SCDLatticeExitPoint;
 
+typedef NS_ENUM(NSInteger, SCDLatticeTransition);
+
 
 /*PROTECTED REGION ID(aef05a273263a514b366d5ea66b86a7b) START*/
 // Please, enable the protected region if you add manually written code.
@@ -27,13 +29,13 @@ SCADE_API
 
 - (void)go:(NSString* _Nonnull)page;
 
-- (void)go:(NSString* _Nonnull)page transition:(NSString* _Nonnull)transition;
+- (void)go:(NSString* _Nonnull)page transition:(SCDLatticeTransition)transition;
 
 - (void)goWith:(NSString* _Nonnull)page data:(id _Nullable)data;
 
 - (void)goWith:(NSString* _Nonnull)page
           data:(id _Nullable)data
-    transition:(NSString* _Nonnull)transition;
+    transition:(SCDLatticeTransition)transition;
 
 - (SCDLatticeEntryPoint* _Nullable)getEntryPoint:(NSString* _Nonnull)name;
 
