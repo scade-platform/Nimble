@@ -5,7 +5,7 @@ import ScadeKit
 public final class SVGDocument: NimbleDocument {
   public var rootSvg: SCDSvgBox?
 
-  private lazy var builderController: SVGEditorController = {
+  private lazy var documentController: SVGEditorController = {
     let controller = SVGEditorController.loadFromNib()
     controller.doc = self
 
@@ -38,7 +38,7 @@ public final class SVGDocument: NimbleDocument {
 }
 
 extension SVGDocument: Document {
-  public var editor: WorkbenchEditor? { builderController }
+  public var editor: WorkbenchEditor? { documentController }
   
   public static var typeIdentifiers: [String] = ["public.svg-image"]
 
