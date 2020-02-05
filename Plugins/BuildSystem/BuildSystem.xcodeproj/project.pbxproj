@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0C0809FE23E414F000E78444 /* BuildSystemCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0809FD23E414F000E78444 /* BuildSystemCommand.swift */; };
 		0C080A0023E433E500E78444 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0C0809FF23E433E500E78444 /* Assets.xcassets */; };
 		0C3469CF2397A0E600319613 /* BuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3469CE2397A0E600319613 /* BuildSystem.swift */; };
 		0C3469D12397D04600319613 /* ShellBuildTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3469D02397D04600319613 /* ShellBuildTool.swift */; };
@@ -18,7 +17,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0C0809FD23E414F000E78444 /* BuildSystemCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildSystemCommand.swift; sourceTree = "<group>"; };
 		0C0809FF23E433E500E78444 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0C3469CE2397A0E600319613 /* BuildSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildSystem.swift; sourceTree = "<group>"; };
 		0C3469D02397D04600319613 /* ShellBuildTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellBuildTool.swift; sourceTree = "<group>"; };
@@ -85,7 +83,6 @@
 				0C3469D02397D04600319613 /* ShellBuildTool.swift */,
 				0C3C32E723A2A559009A15D1 /* SPMBuildSystem.swift */,
 				0C3469DE239F5DFF00319613 /* SwiftBuildSystem.swift */,
-				0C0809FD23E414F000E78444 /* BuildSystemCommand.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -161,7 +158,6 @@
 				0C3469D12397D04600319613 /* ShellBuildTool.swift in Sources */,
 				0C3469CF2397A0E600319613 /* BuildSystem.swift in Sources */,
 				0C3C32E823A2A559009A15D1 /* SPMBuildSystem.swift in Sources */,
-				0C0809FE23E414F000E78444 /* BuildSystemCommand.swift in Sources */,
 				0C3469DF239F5DFF00319613 /* SwiftBuildSystem.swift in Sources */,
 				0C92E52823950E3E00B073DE /* BuildSystemModule.swift in Sources */,
 			);

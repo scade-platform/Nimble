@@ -17,6 +17,12 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   
   public private(set) var diagnostics: [Path: [Diagnostic]] = [:]
   
+  private lazy var toolbarItems: [NSToolbarItem.Identifier] = {
+    return CommandManager.shared.commands
+                                .filter{$0.image != nil}
+                                .map{NSToolbarItem.Identifier($0.name)}
+   }()
+  
   
   // Document property of the WindowController always refer to the project
   public override var document: AnyObject? {
@@ -100,21 +106,47 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
 
 extension NimbleWorkbench : NSToolbarDelegate {
   public func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-    var result = self.toolbarItems.map{$0.itemIdentifier}
+    var result = toolbarItems
     result.append(.flexibleSpace)
     result.append(.space)
     return result
   }
   
   public func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-    return self.toolbarItems.map{$0.itemIdentifier}
+    return toolbarItems
   }
   
   public func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier, willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
-    return self.toolbarItems.first{$0.itemIdentifier == itemIdentifier}
+    let commands = CommandManager.shared.commands
+    for command in commands {
+      if command.name == itemIdentifier.rawValue {
+        return toolbarPushButton(identifier: itemIdentifier, for: command)
+      }
+    }
+    return nil
   }
   
   
+  private func toolbarPushButton(identifier: NSToolbarItem.Identifier, for command: Command) -> NSToolbarItem {
+    let item = NSToolbarItem(itemIdentifier: identifier)
+    item.label = command.name
+    item.paletteLabel = command.name
+    let button = NSButton()
+    button.cell = ButtonCell()
+    button.image = command.image
+    button.action = #selector(command.execute)
+    button.target = command
+    let width: CGFloat = 38.0
+    let height: CGFloat = 28.0
+    button.widthAnchor.constraint(equalToConstant: width).isActive = true
+    button.heightAnchor.constraint(equalToConstant: height).isActive = true
+    button.title = ""
+    button.imageScaling = .scaleProportionallyDown
+    button.bezelStyle = .texturedRounded
+    button.focusRingType = .none
+    item.view = button
+    return item
+  }
 }
 
 
@@ -307,4 +339,13 @@ extension NimbleWorkbenchViewController where Self: NSViewController {
   var workbench: NimbleWorkbench? {
     return view.window?.windowController as? NimbleWorkbench
   }
+}
+
+
+fileprivate class ButtonCell: NSButtonCell {
+  
+  override func drawImage(_ image: NSImage, withFrame frame: NSRect, in controlView: NSView) {
+    super.drawImage(image, withFrame: frame.insetBy(dx: 0, dy: 2), in: controlView)
+  }
+  
 }

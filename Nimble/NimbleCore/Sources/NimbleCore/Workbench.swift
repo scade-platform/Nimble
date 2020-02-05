@@ -51,10 +51,6 @@ public extension Workbench {
   func open(_ doc: Document, show: Bool) {
     open(doc, show: show, openNewEditor: true)
   }
-  
-  var toolbarItems: [NSToolbarItem] {
-    return CommandManager.shared.toolbarItems
-  }
 }
 
 

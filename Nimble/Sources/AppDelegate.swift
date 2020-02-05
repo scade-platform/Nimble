@@ -49,6 +49,42 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Enable iff. there are document creators
     fileMenu?.items.first?.isEnabled = !items.isEmpty
     newDocumentMenu?.items = items
+    initCommandsMenu()
+  }
+  
+  func initCommandsMenu() {
+    guard let mainMenu = NSApplication.shared.mainMenu else { return }
+    for command in CommandManager.shared.commands {
+      guard let commandMenuItem = createMenuItem(for: command) else {
+        continue
+      }
+      if let mainMenuItem = mainMenu.findItem(with: command.menuPath!)?.submenu {
+        mainMenuItem.addItem(commandMenuItem)
+      }
+    }
+  }
+  
+  func createMenuItem(for command: Command) -> NSMenuItem? {
+    guard command.menuPath != nil else { return nil }
+    let (key, mask) = getKeyEquivalent(for: command)
+    let menuItem = NSMenuItem(title: command.name, action: #selector(command.execute), keyEquivalent: key)
+    menuItem.keyEquivalentModifierMask = mask
+    menuItem.target = command
+    return menuItem
+  }
+  
+  func getKeyEquivalent(for command: Command) -> (String, NSEvent.ModifierFlags) {
+    guard let keyEquivalent = command.keyEquivalent else {
+      return ("", [])
+    }
+    let char = keyEquivalent.last ?? Character("")
+    var flags: NSEvent.ModifierFlags = []
+    for flagCase in ModifierFlags.allCases {
+      if keyEquivalent.lowercased().contains(flagCase.rawValue) {
+        flags.insert(flagCase.flag)
+      }
+    }
+    return (String(char), flags)
   }
   
   func applicationWillTerminate(_ aNotification: Notification) {
@@ -74,6 +110,59 @@ extension AppDelegate: NSMenuDelegate {
       documentController.updateOpenRecentMenu(menu)
     default:
       return
+    }
+  }
+}
+
+fileprivate enum ModifierFlags: CaseIterable {
+  case capsLock
+  case shift
+  case control
+  case option
+  case command
+  case numericPad
+  case help
+  case function
+  
+  var rawValue: String {
+    switch self {
+    case .capsLock:
+      return "capslock"
+    case .shift:
+      return "shift"
+    case .control:
+      return "ctrl"
+    case .option:
+      return "option"
+    case .command:
+      return "cmd"
+    case .numericPad:
+      return "num"
+    case .help:
+      return "help"
+    case .function:
+      return "fn"
+    }
+  }
+  
+  var flag: NSEvent.ModifierFlags {
+    switch self {
+    case .capsLock:
+      return .capsLock
+    case .shift:
+      return .shift
+    case .control:
+      return .control
+    case .option:
+      return .option
+    case .command:
+      return .command
+    case .numericPad:
+      return .numericPad
+    case .help:
+      return .help
+    case .function:
+      return .function
     }
   }
 }

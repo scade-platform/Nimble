@@ -39,12 +39,21 @@ final class BuildSystemPlugin: Plugin {
   }
   
   private func setupCommands() {
-    let buildCommandDelegate = BuildCommandDelegate()
-    var buildCommand = CommandManager.shared.createCommand(name: "Build", handler: {buildCommandDelegate.executeBuild(nil)})
-    buildCommand.delegate = buildCommandDelegate
+    let image = Bundle(for: BuildSystemPlugin.self).image(forResource: "run")?.imageWithTint(.darkGray)
+
+    
+    //This is an example of using builder but we can use simple constructor here
+    let buildCommand = Command.builder(name: "Build", handler: executeBuild)
+                              .menu(path: "Tools", keyEquivalent: "cmd+b")
+                              .pushButtonToolbarItem(with: image!)
+                              .build()
     CommandManager.shared.registerCommand(command: buildCommand)
   }
   
+  func executeBuild() {
+    guard let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench else { return }
+    BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench)
+  }
   
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
     guard let item = item else {return true}
