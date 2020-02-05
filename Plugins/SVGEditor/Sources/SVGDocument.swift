@@ -3,7 +3,7 @@ import NimbleCore
 import ScadeKit
 
 public final class SVGDocument: NimbleDocument {
-  public var svgRoot: SCDSvgBox?
+  public var rootSvg: SCDSvgBox?
 
   private lazy var builderController: SVGEditorController = {
     let controller = SVGEditorController.loadFromNib()
@@ -29,7 +29,7 @@ public final class SVGDocument: NimbleDocument {
       </svg>
       """
     
-    svgRoot = SCDRuntime.parseSvgContent(content) as? SCDSvgBox
+    rootSvg = SCDRuntime.parseSvgContent(content) as? SCDSvgBox
   }
   
   public override func data(ofType typeName: String) throws -> Data {

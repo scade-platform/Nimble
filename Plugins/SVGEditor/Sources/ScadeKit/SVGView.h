@@ -1,9 +1,12 @@
 #import <Cocoa/Cocoa.h>
 #import <ScadeKit/ScadeKit.h>
 
-@interface SVGView: NSView
+@interface SVGView: NSView {
+  SCDSvgBox* __weak rootSvg;
+  BOOL isRendered;
+}
 
--(void) render:(SCDSvgBox*)svg;
+- (void)setSvg:(SCDSvgBox*)svg;
 
 @end
 

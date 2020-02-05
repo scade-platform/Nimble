@@ -1,10 +1,9 @@
 import Cocoa
-import ScadeKit
 import NimbleCore
 
 class SVGEditorController: NSViewController {
 
-  let maxSize: CGFloat = 400
+  private let sizeMultiplier: CGFloat = 0.8
 
   weak var doc: SVGDocument? = nil
 
@@ -14,6 +13,7 @@ class SVGEditorController: NSViewController {
     doc?.observers.add(observer: self)
 
     let svgView = SVGView()
+    svgView.setSvg(doc?.rootSvg)
     
     view.addSubview(svgView)
 
@@ -22,12 +22,11 @@ class SVGEditorController: NSViewController {
     svgView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     svgView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
 
-    svgView.widthAnchor.constraint(equalToConstant: maxSize).isActive = true
-    svgView.heightAnchor.constraint(equalToConstant: maxSize).isActive = true
 
-    if let root = doc?.svgRoot {
-      SCDRuntime.renderSvg(root, x: 0, y: 0, size: NSMakeSize(maxSize, maxSize))
-    }
+    svgView.widthAnchor.constraint(equalTo: view.widthAnchor,
+                                   multiplier: sizeMultiplier).isActive = true
+    svgView.heightAnchor.constraint(equalTo: view.heightAnchor,
+                                    multiplier: sizeMultiplier).isActive = true
   }
 }
 
