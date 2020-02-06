@@ -215,8 +215,12 @@ public final class ColorThemeManager {
   public var colorThemes: [ColorTheme] = []
   
   public var defaultTheme: ColorTheme? {
-    let style = UserDefaults.standard.string(forKey: "AppleInterfaceStyle") ?? "Light"
-    return colorThemes.first{$0.name == "Default(\(style))"}
+    switch NSView.systemInterfaceStlye {
+    case .dark:
+      return colorThemes.first{$0.name == "Default(Dark)"}
+    default:
+      return colorThemes.first{$0.name == "Default(Light)"}
+    }    
   }
     
   public var selectedTheme: ColorTheme? {

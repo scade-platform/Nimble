@@ -42,7 +42,7 @@ class CodeEditorView: NSViewController {
   }
 
   func handleKeyDown(with event: NSEvent) -> Bool {
-    guard !completionView.isPresented else {
+    if completionView.isActive {
       return completionView.handleKeyDown(with: event)
     }
     
@@ -60,8 +60,8 @@ class CodeEditorView: NSViewController {
   }
   
   func handleMouseDown(with event: NSEvent) -> Bool {
-    if completionView.isPresented {
-      completionView.hide()
+    if completionView.isActive {
+      completionView.close()
     }
     return false
   }
@@ -184,19 +184,19 @@ class CodeEditorView: NSViewController {
     
     ///TODO: filter langServices or merge results
     for langService in doc.languageServices {
-      langService.complete(doc, at: pos) {[weak self] in
+      langService.complete(in: doc, at: pos) {[weak self] in
         guard let string = self?.textView?.textStorage?.string,
               let cursor = self?.textView?.selectedIndex, cursor >= $0 else { return }
                 
         self?.completionView.itemsFilter = String(string[$0..<cursor])
-        self?.completionView.completionItems = $1
         
+        self?.completionView.completionItems = $1
         self?.completionView.reload()
         
         if $1.count > 0 {
-          self?.completionView.show(at: string.offset(at: $0))
+          self?.completionView.open(at: string.offset(at: $0), triggered: triggered)
         } else {
-          self?.completionView.show(at: sel)
+          self?.completionView.open(at: sel, triggered: triggered)
         }
       }
     }
@@ -274,16 +274,17 @@ extension CodeEditorView: NSTextViewDelegate {
   }
   
   func textViewDidChangeSelection(_ notification: Notification) {
-    if completionView.isPresented {
+    if completionView.isActive {
       let pos = completionView.completionPosition
       
       // Don't go behind the position where the completion has started
       guard let newSel = textView?.selectedRange(), pos <= newSel.lowerBound else {
-        completionView.hide()
+        completionView.close()
         return
       }
       
-      if let filter = textView?.textStorage?.string[pos..<newSel.lowerBound] {
+      if let str = textView?.textStorage?.string {
+        let filter = str[str.index(at: pos)..<str.index(at: newSel.lowerBound)]
         completionView.itemsFilter = String(filter)
         completionView.reload()
       }

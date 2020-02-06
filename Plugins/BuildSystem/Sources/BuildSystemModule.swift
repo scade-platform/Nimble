@@ -43,13 +43,13 @@ final class BuildSystemPlugin: Plugin {
 
     
     //This is an example of using builder but we can use simple constructor here
-    let buildCommand = Command(name: "Build", menuPath: "Tools", keyEquivalent: "cmd+b", toolbarIcon: image) { self.executeBuild() }
+    let buildCommand = Command(name: "Build", menuPath: "Tools", keyEquivalent: "cmd+b", toolbarIcon: image) { self.build() }
     CommandManager.shared.registerCommand(command: buildCommand)
-  }
-  
-  func executeBuild() {
-    guard let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench else { return }
-    BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench)
+    
+//    let runMenuItem = NSMenuItem(title: "Run", action: #selector(run(_:)), keyEquivalent: "r")
+//    runMenuItem.keyEquivalentModifierMask = .command
+//    runMenuItem.target = self
+//    toolsMenu.addItem(runMenuItem)
   }
   
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
@@ -64,5 +64,15 @@ final class BuildSystemPlugin: Plugin {
     BuildSystemsManager.shared.activeBuildSystem = item?.representedObject as? BuildSystem
   }
   
+  func build() {
+    //Workbench for active window
+    guard let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench else { return }
+    BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench)
+  }
   
+  func run() {
+    //Workbench for active window
+    guard let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench else { return }
+    BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: currentWorkbench)
+  }
 }

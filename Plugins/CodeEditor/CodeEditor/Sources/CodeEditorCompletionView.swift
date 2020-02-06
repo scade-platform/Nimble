@@ -9,19 +9,33 @@
 import Cocoa
 import CodeEditor
 
+import SwiftSVG
 
 class CodeEditorCompletionView: NSViewController {
   
   weak var textView: CodeEditorTextView? = nil
   
-  @IBOutlet weak var tableView: NSTableView?
+  weak var currentView: NSView? = nil
+  
+  
+  
+  @IBOutlet weak var tableView: NSTableView!
     
-  @IBOutlet weak var docView: NSView?
+  @IBOutlet weak var docView: NSView!
+  
+  @IBOutlet weak var emptyView: NSView!
+    
+    
   
   var itemsFilter: String = ""
   
   var completionItems: [CompletionItem] = []
+      
   
+  private(set) var isActive: Bool = false
+    
+  
+  private var wasTriggered: Bool = false
   
   private var completions: [CompletionItem] = []
     
@@ -29,51 +43,44 @@ class CodeEditorCompletionView: NSViewController {
   
   private var completionOrigin = CGPoint()
       
-  
-  var isPresented: Bool {
-    return view.superview != nil
+    
+    
+  private var tableScrollView: NSScrollView! {
+    tableView.superview?.superview as? NSScrollView
   }
   
-  private var backgroundColor: NSColor {
-    NSColor.underPageBackgroundColor //withAlphaComponent(0.95)
-  }
-  
-  private var tableScrollView: NSScrollView? {
-    tableView?.superview?.superview as? NSScrollView
-  }
-  
-  private var tableViewHeightConstraint: NSLayoutConstraint? {
-    return tableScrollView?.constraints.first(where: { $0.identifier == .some("tableViewHeight")})
+  private var tableViewHeightConstraint: NSLayoutConstraint! {
+    return tableScrollView.constraints.first(where: { $0.identifier == .some("tableViewHeight")})
   }
     
   private var anchorPositionOffset: CGFloat {
-    guard let columns = tableView?.tableColumns,
-          let spacing = tableView?.intercellSpacing.width,
-          columns.count > 0 else { return 0.0 }
-          
-    return columns[0..<columns.count-1].reduce(spacing) {$0 + $1.width + spacing}
+    guard completions.count > 0 else {
+      return emptyView.frame.size.width / 2
+    }
+        
+    return tableView.tableColumns[0].width + (2 * tableView.intercellSpacing.width)
+  }
+  
+  private var selection: CompletionItem? {
+    guard completions.count > 0 else { return nil }
+    return completions[tableView.selectedRow]
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
-
-    tableView?.makeRounded()
-    tableScrollView?.makeRounded()
     
-    view.setBackgroundColor(backgroundColor)
-    tableView?.backgroundColor = NSColor.clear
+    setup(view: self.view)
+    setup(view: self.emptyView)
     
-    docView?.setBackgroundColor(NSColor.red)
+    (emptyView.subviews[0].subviews[0] as? NSTextField)?.font = textView?.font
     
-    tableView?.delegate = self
-    tableView?.dataSource = self
+    tableView.backgroundColor = NSColor.clear
+    docView.setBackgroundColor(NSColor.red)
+    
+    tableView.delegate = self
+    tableView.dataSource = self
   }
-  
-  override func updateViewConstraints() {
-    resizeToFitContent()
-    super.updateViewConstraints()
-  }
-    
+      
   func handleKeyDown(with event: NSEvent) -> Bool {
     switch event.keyCode {
     // Navigate
@@ -83,7 +90,7 @@ class CodeEditorCompletionView: NSViewController {
     // Select
     case Keycode.returnKey:
       insertCompletion()
-      hide()
+      close()
       return true
     // Update
     case Keycode.delete:
@@ -93,19 +100,22 @@ class CodeEditorCompletionView: NSViewController {
       return false
     // Skip (but return true, to mark as processed)
     case Keycode.escape:
-      hide()
+      close()
       return true      
     // Skip
     default:
-      hide()
+      close()
       return false
     }
   }
-  
-  func show(at pos: Int) {
+    
+  func open(at pos: Int, triggered: Bool) {
     guard let textView = self.textView,
           let window = textView.window else { return }
-            
+    
+    self.isActive = true
+    self.wasTriggered = triggered
+        
     let screenRect = textView.firstRect(forCharacterRange: NSMakeRange(pos, 0), actualRange: nil)
     let windowRect = window.convertFromScreen(screenRect)
     
@@ -113,36 +123,150 @@ class CodeEditorCompletionView: NSViewController {
     completionOrigin = windowRect.origin
     
     updateViews()
-        
-    if(!isPresented) {
-      window.contentViewController?.addChild(self)
-      window.contentView?.addSubview(view, positioned: .above, relativeTo: nil)
-    }
   }
-    
-  func hide() {
-    removeFromParent()
-    view.removeFromSuperview()
+  
+  func close() {
+    currentView?.removeFromSuperview()
+    isActive = false
   }
-    
+  
   func reload() {
     ///TODO: optimize filtering by e.g. filtering already filtered collection if the new filter is an extension of the old one
     completions = completionItems.filter {
       $0.label.starts(with: itemsFilter)
     }
     
-    tableView?.reloadData()
-    updateViews()
+    if completions.count > 0 {
+      tableView.reloadData()
+      resizeToFitContent()
+    }
+    
+    if isActive {
+      updateViews()
+    }
+  }
+    
+  private func setup(view: NSView) {
+    view.wantsLayer = true
+    view.shadow = NSShadow()
+    view.layer?.shadowOpacity = 0.2
+    view.layer?.shadowColor = NSColor.shadowColor.cgColor
+    view.layer?.shadowOffset = NSMakeSize(0, 0)
+    view.layer?.shadowRadius = 5.0
+    
+    let content = view.subviews[0]
+    
+    content.wantsLayer = true
+    content.layer?.borderWidth = 1.0
+    content.layer?.borderColor =  NSColor.gridColor.cgColor
+    content.layer?.cornerRadius = 8.0
+    content.layer?.masksToBounds = true
   }
   
-  
-  private func insertCompletion() {
-    guard completions.count > 0,
-          let row = tableView?.selectedRow,
-          let cursor = textView?.selectedRange().location else { return }
+  private func show(view: NSView) {
+    guard let windowView = textView?.window?.contentView else { return }
     
-          
-    let item = completions[row]
+    if currentView !== view {
+      currentView?.removeFromSuperview()
+      currentView = view
+    }
+    
+    let origin = completionOrigin.offsetBy( dx: -anchorPositionOffset,
+                                            dy: -currentView!.frame.size.height)
+    
+    currentView?.setFrameOrigin(origin)
+    if currentView?.superview != windowView {
+      windowView.addSubview(currentView!, positioned: .above, relativeTo: nil)
+    }
+  }
+  
+  private func updateViews() {
+    if completions.count > 0 {
+      tableView.selectRowIndexes([0], byExtendingSelection: false)
+      
+      tableScrollView.contentView.scroll(to: .zero)
+      tableScrollView.reflectScrolledClipView(tableScrollView.contentView)
+      tableScrollView.verticalScrollElasticity = .automatic
+      
+      show(view: self.view)
+      
+    } else if !wasTriggered {
+      show(view: self.emptyView)
+      
+    } else {
+      currentView?.removeFromSuperview()
+      currentView = nil
+    }
+  }
+  
+  private func updateSelection() {
+    ///TODO: implement
+    ///
+//    var viewSize = view.frame.size
+//
+//    if let doc = selection?.documentation {
+//      print(doc)
+//
+//    } else if docView.frame.height > 0 {
+//      viewSize.height = tableViewHeightConstraint.constant
+//    }
+//
+//    view.setFrameSize(viewSize)
+  }
+  
+  private func columnWidth(atColumn col: Int, row: Int) -> CGFloat {
+    guard let cellView = tableView.view(atColumn: col, row: row, makeIfNecessary: true) as? NSTableCellView,
+          let textSize = cellView.textField?.cell?.cellSize else { return 0.0 }
+    
+    return ceil(textSize.width)
+  }
+  
+  private func resizeToFitContent() {
+    guard let tableView = self.tableView else { return }
+    
+    var typeIcon: Bool = false
+    var typeMaxChars: (count: Int, row: Int) = (0, 0)
+    var labelMaxChars: (count: Int, row: Int) = (0, 0)
+    
+    for (i, item) in completions.enumerated() {
+      typeIcon = typeIcon || item.hasIcon
+      
+      if let type = item.detail, type.count > typeMaxChars.count {
+        typeMaxChars = (type.count, i)
+      }
+      
+      if item.label.count > labelMaxChars.count {
+        labelMaxChars = (item.label.count, i)
+      }
+    }
+    
+    let typeColumn = tableView.tableColumns[0]
+    let labelColumn = tableView.tableColumns[1]
+        
+    
+    typeColumn.width = columnWidth(atColumn: 0, row: typeMaxChars.row) + 30.0
+    labelColumn.width = columnWidth(atColumn: 1, row: labelMaxChars.row)
+    
+
+    let spacing = tableView.intercellSpacing
+    
+    
+    // View width
+    let width = typeColumn.width + labelColumn.width + (3 * spacing.width)
+        
+    // View height
+    let numberOfRows = CGFloat(max(1, min(tableView.numberOfRows, 8)))
+    let rowHeight = tableView.rowHeight + spacing.height
+    let height = numberOfRows * rowHeight + spacing.height
+    tableViewHeightConstraint.constant = height
+            
+    view.setFrameSize(NSMakeSize(width, height))
+  }
+    
+  private func insertCompletion() {
+    guard let item = selection,
+          let cursor = textView?.selectedRange().location else { return }
+                      
     let range = NSRange(completionPosition..<cursor)
     
     if let textEdit = item.textEdit {
@@ -155,65 +279,83 @@ class CodeEditorCompletionView: NSViewController {
       textView?.insertText(item.label, replacementRange: range)
     }
   }
-  
-  private func updateViews() {
-    if completions.count == 0 {
-      tableView?.intercellSpacing = NSMakeSize(5.0, 2.0)
-      tableView?.selectRowIndexes([], byExtendingSelection: false)
-      
-      tableScrollView?.verticalScrollElasticity = .none
-      
-    } else {
-      tableView?.intercellSpacing = NSMakeSize(3.0, 2.0)
-      tableView?.selectRowIndexes([0], byExtendingSelection: false)
-      
-      if let scrollView = tableScrollView {
-        scrollView.contentView.scroll(to: .zero)
-        scrollView.reflectScrolledClipView(scrollView.contentView)
-        scrollView.verticalScrollElasticity = .automatic
-      }
-    }
-    
-    updateViewConstraints()
-    
-    let origin = completionOrigin.offsetBy(dx: -anchorPositionOffset,
-                                           dy: -view.frame.size.height)
-    view.setFrameOrigin(origin)
+}
+
+//MARK: - CompletionItem
+
+fileprivate extension CompletionItem {
+  var hasIcon: Bool {
+//    if iconName == nil {
+//      print("\(self.label) - \(self.kind)")
+//    }
+    return iconName != nil
   }
   
-  private func resizeToFitContent() {
-    guard let tableView = self.tableView else { return }
-        
-    var columnsWidth = [CGFloat](repeating: 0.0, count: tableView.numberOfColumns)
-    
-    for row in 0..<tableView.numberOfRows {
-      for col in 0..<tableView.numberOfColumns {
-        guard let view = tableView.view(atColumn: col, row: row, makeIfNecessary: true) as? NSTableCellView,
-              let cellSize = view.textField?.cell?.cellSize else { continue }
-        let maxWidth = tableView.tableColumns[col].maxWidth
-        columnsWidth[col] = min(maxWidth, max(columnsWidth[col], cellSize.width))
-      }
+  var iconName: String? {
+    switch(self.kind) {
+    case .class:
+      return "c.square"
+    case .struct:
+      return "s.square"
+    case .interface:
+      return "p.square"
+    case .typeParameter:
+      return "t.square"
+    case .variable:
+      return "v.square"
+    case .function:
+      return "fun.square"
+    case .method:
+      return "m.square"
+    default:
+      return nil
     }
-    
-    
-    let spacing = tableView.intercellSpacing
-    
-    // Setup width
-    var width = spacing.width * CGFloat(columnsWidth.count + 1)
-    for (i, column) in tableView.tableColumns.enumerated() {
-      column.width = ceil(columnsWidth[i])
-      width += column.width
-    }
-    
-    // Setup height
-    let numberOfRows = CGFloat(max(1, min(tableView.numberOfRows, 8)))
-    let rowHeight = tableView.rowHeight + spacing.height
-    let height = numberOfRows * rowHeight + spacing.height
-    tableViewHeightConstraint?.constant = height
-            
-    view.setFrameSize(NSMakeSize(width, height))
+  }
+  
+  var icon: URL? {
+    guard let name = iconName else { return nil }
+    return Bundle(for: CodeEditorCompletionView.self).url(forResource: "Icons/\(name)", withExtension: "svg")
   }
 }
+
+
+//MARK: - CompletionView
+
+class CompletionView: NSView {
+  override func draw(_ dirtyRect: NSRect) {
+    super.draw(dirtyRect)
+        
+    switch NSView.systemInterfaceStlye {
+    case .dark:
+      NSColor.underPageBackgroundColor.withAlphaComponent(0.95).setFill()
+    default:
+      NSColor.textBackgroundColor.withAlphaComponent(0.95).setFill()
+    }
+    
+    dirtyRect.fill()
+  }
+}
+
+
+//MARK: - CompletionIconView
+
+class SVGIconView: NSView {
+  override var isFlipped: Bool { true }
+}
+
+class CompletionIconView: NSTableCellView {
+  @IBOutlet weak var iconView: NSView! = nil
+  
+  var iconUrl: URL? {
+    didSet {
+      guard let url = iconUrl else { return }
+      iconView.layer = CALayer(svgURL: url) {svgLayer in
+        svgLayer.resizeToFit(self.iconView.bounds)
+      }
+    }
+  }
+}
+
 
 //MARK: - CompletionTableView
 
@@ -227,8 +369,7 @@ class CompletionTableView: NSTableView {
 
 extension CodeEditorCompletionView: NSTableViewDataSource {
   func numberOfRows(in tableView: NSTableView) -> Int {
-    // Return a dummy row presenting "No completions"
-    return completions.count > 0 ? completions.count : 1
+    return completions.count
   }
 }
 
@@ -238,18 +379,23 @@ extension CodeEditorCompletionView: NSTableViewDelegate {
   func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
     var cell: NSTableCellView? = nil
     
-    let completion = completions.count > 0 ? completions[row] : nil
-        
-    if tableColumn == tableView.tableColumns[0], let detail = completion?.detail {
-      cell = tableView.makeTypeCell()
-      cell?.textField?.stringValue = detail
+    let item = completions[row]
+          
+    if tableColumn == tableView.tableColumns[0], item.hasIcon ||  item.detail != nil {
+      let typeCell = tableView.makeTypeCell()
+      
+      cell = typeCell
+      cell?.textField?.stringValue = item.detail ?? ""
+      cell?.textField?.textColor = NSColor.systemGray
+      
+      typeCell?.iconUrl = item.icon
       
     } else if tableColumn == tableView.tableColumns[1] {
       cell = tableView.makeLabelCell()
-      cell?.textField?.stringValue = completion?.label ?? "No completions"
-    }
+      cell?.textField?.stringValue = item.label
+      
+    }    
     
-    ///FIX: turn-on reuse of cells
     cell?.identifier = nil
     cell?.textField?.font = textView?.font
     cell?.textField?.isEnabled = false
@@ -258,10 +404,11 @@ extension CodeEditorCompletionView: NSTableViewDelegate {
   }
   
   func tableViewSelectionDidChange(_ notification: Notification) {
-    guard let sel = tableView?.selectedRow, sel >= 0,
-          let row = tableView?.rowView(atRow: sel, makeIfNecessary: true) else { return }
+    guard tableView.selectedRow >= 0,
+          let row = tableView?.rowView(atRow: tableView.selectedRow, makeIfNecessary: true) else { return }
     
     row.isEmphasized = true
+    updateSelection()
   }
     
   func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
@@ -270,8 +417,8 @@ extension CodeEditorCompletionView: NSTableViewDelegate {
 }
 
 fileprivate extension NSTableView {
-  func makeTypeCell() -> NSTableCellView? {
-    return makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "TypeCell"), owner: nil) as? NSTableCellView
+  func makeTypeCell() -> CompletionIconView? {
+    return makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "TypeCell"), owner: nil) as? CompletionIconView
   }
   
   func makeLabelCell() -> NSTableCellView? {
@@ -279,10 +426,4 @@ fileprivate extension NSTableView {
   }
 }
 
-fileprivate extension NSView {
-  func makeRounded(_ cornerRadius: CGFloat = 8.0) {
-    self.wantsLayer = true
-    self.layer?.cornerRadius = cornerRadius
-    self.layer?.masksToBounds = true
-  }
-}
+
