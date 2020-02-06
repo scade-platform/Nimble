@@ -11,8 +11,11 @@ using Display_ptr = std::shared_ptr<Display>;
 class Display final {
 public:
   NativeView_ptr getDisplayView();
+
   void setDisplayView(void* view);
+
   static Display_ptr instance();
+
   static void reset();
 };
 

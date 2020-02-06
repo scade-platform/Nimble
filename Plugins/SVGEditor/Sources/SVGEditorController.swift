@@ -3,6 +3,8 @@ import NimbleCore
 
 class SVGEditorController: NSViewController {
 
+  private let elementSelector = SVGLayerSelector()
+
   private let sizeMultiplier: CGFloat = 0.8
 
   weak var doc: SVGDocument? = nil
@@ -11,6 +13,10 @@ class SVGEditorController: NSViewController {
     super.viewDidLoad()
 
     doc?.observers.add(observer: self)
+
+    if let rootSvg = doc?.rootSvg {
+      elementSelector.visit(rootSvg)
+    }
 
     let svgView = SVGView()
     svgView.setSvg(doc?.rootSvg)

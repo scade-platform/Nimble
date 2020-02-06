@@ -22,14 +22,17 @@ public final class SVGDocument: NimbleDocument {
   }
   
   public override func read(from url: URL, ofType typeName: String) throws {
-    let content = """
-      <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:scade="http://www.scade.io/v0.1" contentScriptType="text/ecmascript" zoomAndPan="magnify" contentStyleType="text/css" preserveAspectRatio="xMidYMid meet" version="1.0">
-      <image id="image" preserveAspectRatio="xMidYMid meet" width="100%" height="100%" xlink:href="\(url.path)"/>
-      </svg>
-      """
-    
-    rootSvg = SCDRuntime.parseSvgContent(content) as? SCDSvgBox
+    if let svg = SCDRuntime.parseSvg(url.path) as? SCDSvgBox {
+
+      //TODO: add usage of the visitor of SVG elements from ScadeKit
+      //      and don't change the source of the svg document.
+      svg.x = 0
+      svg.y = 0
+      svg.width = 100%
+      svg.height = 100%
+
+      rootSvg = svg
+    }
   }
   
   public override func data(ofType typeName: String) throws -> Data {
