@@ -19,7 +19,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   
   private lazy var toolbarItems: [NSToolbarItem.Identifier] = {
     return CommandManager.shared.commands
-                                .filter{$0.image != nil}
+                                .filter{$0.toolbarIcon != nil}
                                 .map{NSToolbarItem.Identifier($0.name)}
    }()
   
@@ -133,7 +133,7 @@ extension NimbleWorkbench : NSToolbarDelegate {
     item.paletteLabel = command.name
     let button = NSButton()
     button.cell = ButtonCell()
-    button.image = command.image
+    button.image = command.toolbarIcon
     button.action = #selector(command.execute)
     button.target = command
     let width: CGFloat = 38.0

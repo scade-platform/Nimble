@@ -43,10 +43,7 @@ final class BuildSystemPlugin: Plugin {
 
     
     //This is an example of using builder but we can use simple constructor here
-    let buildCommand = Command.builder(name: "Build", handler: executeBuild)
-                              .menu(path: "Tools", keyEquivalent: "cmd+b")
-                              .pushButtonToolbarItem(with: image!)
-                              .build()
+    let buildCommand = Command(name: "Build", menuPath: "Tools", keyEquivalent: "cmd+b", toolbarIcon: image) { self.executeBuild() }
     CommandManager.shared.registerCommand(command: buildCommand)
   }
   
