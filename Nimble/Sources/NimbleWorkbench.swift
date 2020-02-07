@@ -20,6 +20,10 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   public private(set) var diagnostics: [Path: [Diagnostic]] = [:]
   
   private lazy var toolbarItems: [NSToolbarItem.Identifier] = {
+    if CommandManager.shared.commands.isEmpty {
+      // Force plugins loading
+       _ = PluginManager.shared
+    }
     let toolbarCommands = CommandManager.shared.commands
       .filter{$0.toolbarIcon != nil}
     toolbarCommands.forEach{$0.observers.add(observer: self)}
