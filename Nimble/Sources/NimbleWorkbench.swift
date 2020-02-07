@@ -159,7 +159,7 @@ extension NimbleWorkbench : NSToolbarDelegate {
 
 
 extension NimbleWorkbench : CommandObserver {
-  public func enableDidChange(_ command: Command) {
+  public func commandDidChange(_ command: Command) {
     for item in toolbar.items {
       guard item.itemIdentifier.rawValue == command.name else { continue }
       DispatchQueue.main.async {

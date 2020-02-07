@@ -16,7 +16,7 @@ public class Command {
   public var isEnable: Bool {
     didSet {
       observers.notify {
-        $0.enableDidChange(self)
+        $0.commandDidChange(self)
       }
     }
   }
@@ -47,7 +47,7 @@ public class Command {
 }
 
 public protocol CommandObserver: class {
-  func enableDidChange(_ command: Command)
+  func commandDidChange(_ command: Command)
 }
 
 public class CommandManager {
