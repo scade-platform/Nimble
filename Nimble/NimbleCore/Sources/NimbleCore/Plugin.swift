@@ -97,7 +97,7 @@ public class PluginManager {
         pluginManager.plugins[module.plugin.id] = module.plugin
       }
     }
-        
+    
     return pluginManager
   }()
     

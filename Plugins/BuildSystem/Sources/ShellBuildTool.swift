@@ -35,6 +35,10 @@ class ShellBuildSystem: BuildSystem {
       try? shellProc.run()
     }
   }
+  
+  func clean(in workbench: Workbench, handler: (() -> Void)?) {
+    handler?()
+  }
 }
 
 extension ShellBuildSystem : Launcher {
