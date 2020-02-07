@@ -71,6 +71,15 @@ class SwiftBuildSystem: BuildSystem {
       try? swiftcProc.run()
     }
   }
+  
+  func clean(in workbench: Workbench, handler: (() -> Void)?) {
+    guard let fileURL = workbench.currentDocument?.fileURL else {
+      return
+    }
+    guard let file = File(url: fileURL.deletingPathExtension()), file.exists else { return }
+    try? file.path.delete()
+    handler?()
+  }
 }
 
 extension SwiftBuildSystem : ConsoleSupport {}
@@ -117,5 +126,4 @@ class SwiftLauncher : Launcher {
     }
   }
 }
-
 extension SwiftLauncher : ConsoleSupport {}

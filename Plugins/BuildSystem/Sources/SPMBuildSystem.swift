@@ -68,6 +68,21 @@ class SPMBuildSystem: BuildSystem {
       try? spmProc.run()
     }
   }
+  
+  func clean(in workbench: Workbench, handler: (() -> Void)?) {
+    guard let fileURL = workbench.currentDocument?.fileURL else {
+      return
+    }
+    let proc = Process()
+    proc.currentDirectoryURL = fileURL.deletingLastPathComponent()
+    proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
+    proc.arguments = ["package", "clean"]
+    proc.terminationHandler = { process in
+      handler?()
+    }
+    try? proc.run()
+
+  }
 }
 
 extension SPMBuildSystem : ConsoleSupport {}

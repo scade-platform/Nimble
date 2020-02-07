@@ -15,13 +15,16 @@ import NimbleCore
 public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   public var observers = ObserverSet<WorkbenchObserver>()
   
+  @IBOutlet weak var toolbar: NSToolbar!
+  
   public private(set) var diagnostics: [Path: [Diagnostic]] = [:]
   
   private lazy var toolbarItems: [NSToolbarItem.Identifier] = {
-    return CommandManager.shared.commands
-                                .filter{$0.toolbarIcon != nil}
-                                .map{NSToolbarItem.Identifier($0.name)}
-   }()
+    let toolbarCommands = CommandManager.shared.commands
+      .filter{$0.toolbarIcon != nil}
+    toolbarCommands.forEach{$0.observers.add(observer: self)}
+    return toolbarCommands.map{NSToolbarItem.Identifier($0.name)}
+  }()
   
   
   // Document property of the WindowController always refer to the project
@@ -127,7 +130,6 @@ extension NimbleWorkbench : NSToolbarDelegate {
     return nil
   }
   
-  
   private func toolbarPushButton(identifier: NSToolbarItem.Identifier, for command: Command) -> NSToolbarItem {
     let item = NSToolbarItem(itemIdentifier: identifier)
     item.label = command.name
@@ -146,10 +148,25 @@ extension NimbleWorkbench : NSToolbarDelegate {
     button.bezelStyle = .texturedRounded
     button.focusRingType = .none
     item.view = button
+    item.isEnabled = command.isEnable
     return item
   }
 }
 
+
+extension NimbleWorkbench : CommandObserver {
+  public func enableDidChange(_ command: Command) {
+    for item in toolbar.items {
+      guard item.itemIdentifier.rawValue == command.name else { continue }
+      DispatchQueue.main.async {
+        item.isEnabled = command.isEnable
+      }
+      return
+    }
+  }
+  
+  
+}
 
 // MARK: - Workbench
 

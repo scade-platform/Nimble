@@ -14,6 +14,9 @@ public final class BuildSystemModule: Module {
 }
 
 final class BuildSystemPlugin: Plugin {
+  private var stopCommand: Command? = nil
+  private var currentProcess: Process?
+  
   init() {
     BuildSystemsManager.shared.add(buildSystem: SwiftBuildSystem())
     BuildSystemsManager.shared.add(buildSystem: SPMBuildSystem())
@@ -39,17 +42,17 @@ final class BuildSystemPlugin: Plugin {
   }
   
   private func setupCommands() {
-    let image = Bundle(for: BuildSystemPlugin.self).image(forResource: "run")?.imageWithTint(.darkGray)
+    let runImage = Bundle(for: BuildSystemPlugin.self).image(forResource: "run")?.imageWithTint(.darkGray)
+    let stopImage = Bundle(for: BuildSystemPlugin.self).image(forResource: "stop")?.imageWithTint(.darkGray)
 
-    
-    //This is an example of using builder but we can use simple constructor here
-    let buildCommand = Command(name: "Build", menuPath: "Tools", keyEquivalent: "cmd+b", toolbarIcon: image) { self.build() }
+    let runCommand = Command(name: "Run", menuPath: "Tools", keyEquivalent: "cmd+r", toolbarIcon: runImage) { self.run() }
+    CommandManager.shared.registerCommand(command: runCommand)
+    stopCommand = Command(name: "Stop", menuPath: "Tools", keyEquivalent: "cmd+.", toolbarIcon: stopImage, isEnable: false) { self.stop() }
+    CommandManager.shared.registerCommand(command: stopCommand!)
+    let claenCommand = Command(name: "Clean", menuPath: "Tools", keyEquivalent: "cmd+K") { self.clean() }
+    CommandManager.shared.registerCommand(command: claenCommand)
+    let buildCommand = Command(name: "Build", menuPath: "Tools", keyEquivalent: "cmd+b") { self.build() }
     CommandManager.shared.registerCommand(command: buildCommand)
-    
-//    let runMenuItem = NSMenuItem(title: "Run", action: #selector(run(_:)), keyEquivalent: "r")
-//    runMenuItem.keyEquivalentModifierMask = .command
-//    runMenuItem.target = self
-//    toolsMenu.addItem(runMenuItem)
   }
   
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
@@ -73,6 +76,32 @@ final class BuildSystemPlugin: Plugin {
   func run() {
     //Workbench for active window
     guard let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench else { return }
-    BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: currentWorkbench)
+    BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: currentWorkbench, handler: launcherHandler(status:process:))
+  }
+  
+  func clean() {
+    guard let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench else { return }
+    BuildSystemsManager.shared.activeBuildSystem?.clean(in: currentWorkbench)
+  }
+  
+  func launcherHandler(status: BuildStatus, process: Process?) -> Void {
+    guard let process = process else {
+      stopCommand?.isEnable = false
+      return
+    }
+    if status == .running && process.isRunning {
+      stopCommand?.isEnable = true
+      currentProcess = process
+    } else {
+      stopCommand?.isEnable = false
+      currentProcess = nil
+    }
+  }
+  
+  func stop() {
+    guard let process = currentProcess else { return }
+    if process.isRunning {
+      process.terminate()
+    }
   }
 }

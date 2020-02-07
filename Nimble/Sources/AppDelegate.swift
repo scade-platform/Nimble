@@ -67,9 +67,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   func createMenuItem(for command: Command) -> NSMenuItem? {
     guard command.menuPath != nil else { return nil }
     let (key, mask) = getKeyEquivalent(for: command)
-    let menuItem = NSMenuItem(title: command.name, action: #selector(command.execute), keyEquivalent: key)
+    let commandWrapper = NSObjectCommandWrapper(wrapperedCommand: command)
+    let menuItem = NSMenuItem(title: command.name, action: #selector(commandWrapper.execute), keyEquivalent: key)
     menuItem.keyEquivalentModifierMask = mask
-    menuItem.target = command
+    menuItem.target = commandWrapper
+    menuItem.representedObject = commandWrapper
     return menuItem
   }
   
@@ -164,5 +166,32 @@ fileprivate enum ModifierFlags: CaseIterable {
     case .function:
       return .function
     }
+  }
+}
+
+
+fileprivate class NSObjectCommandWrapper: NSObject {
+  private let wrapperedCommand: Command
+  
+  var isEnable: Bool {
+    return wrapperedCommand.isEnable
+  }
+  
+  init(wrapperedCommand: Command) {
+    self.wrapperedCommand = wrapperedCommand
+    super.init()
+  }
+  
+  @objc func execute(){
+    wrapperedCommand.execute()
+  }
+}
+
+extension NSObjectCommandWrapper : NSMenuItemValidation {
+  public func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
+    if let command = menuItem.representedObject as? NSObjectCommandWrapper, command === self {
+      return command.isEnable
+    }
+    return true
   }
 }

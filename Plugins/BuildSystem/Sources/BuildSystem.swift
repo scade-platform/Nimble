@@ -13,11 +13,16 @@ public protocol BuildSystem {
   var name: String { get }
   var launcher: Launcher? { get }
   func run(in workbench: Workbench, handler: ((BuildStatus) -> Void)?)
+  func clean(in workbench: Workbench, handler: (() -> Void)?)
 }
 
 public extension BuildSystem {
   func run(in workbench: Workbench) {
     self.run(in: workbench, handler: nil)
+  }
+  
+  func clean(in workbench: Workbench) {
+    self.clean(in: workbench, handler: nil)
   }
 }
 
