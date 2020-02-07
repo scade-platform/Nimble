@@ -113,6 +113,10 @@ SCADE_API
 
 + (void)writeSvgDocument:(NSString* _Nonnull)relativePath svg:(EObject* _Nonnull)object;
 
+#if defined(__APPLE__)
++ (NativeView_ptr _Nullable)extractIntoLayer:(EObject* _Nonnull)object;
+#endif //__APPLE__
+
 @end
 
 

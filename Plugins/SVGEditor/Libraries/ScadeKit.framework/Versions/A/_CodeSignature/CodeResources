@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		4tpXvedhgiDMo05/pDLiCdZqVR4=
+		DiMSXAPp3ccqFnyJkMjZPrK8QBY=
 		</data>
 		<key>Resources/templates/AlphabeticalList.xmi</key>
 		<data>
@@ -105,10 +105,6 @@
 	<dict>
 		<key>Headers/EAnnotation.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			LeyiJxmQ0nd7kdWb7wm6exN5Owc=
-			</data>
 			<key>hash2</key>
 			<data>
 			HRKsLOmjW5xIo6PR8mD2CQcamfvUWU06VaLFQwB51Ks=
@@ -116,10 +112,6 @@
 		</dict>
 		<key>Headers/EAttribute.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			tKFHkBW+lekG20WAhzSQ6UfVdjE=
-			</data>
 			<key>hash2</key>
 			<data>
 			MIyy+k9hTtQ2JMdH8IKWetJUHxvQXIgcSGV1/RvKt+g=
@@ -127,10 +119,6 @@
 		</dict>
 		<key>Headers/EClass.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Z2USGuZmItBv1lZHWEDiwJsc67o=
-			</data>
 			<key>hash2</key>
 			<data>
 			UkAIZX5J+PUnuOEuNFaZxBIGuBJLO1W9L7Pfpuz1iAc=
@@ -138,10 +126,6 @@
 		</dict>
 		<key>Headers/EClassifier.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			8fCBmTR59+feUQpoU9aDirJxeq0=
-			</data>
 			<key>hash2</key>
 			<data>
 			TETWwi+5HVhYjtaQH7Tdp9VedvHIqMrO1L+gd8ItHlA=
@@ -149,10 +133,6 @@
 		</dict>
 		<key>Headers/EDataType.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Q7YtSMFsv3APA2vLg0uiUO5Nhxk=
-			</data>
 			<key>hash2</key>
 			<data>
 			ud7N55scgHA9489Djikc7IQZQpxkHkKcdSkQeoU2fTU=
@@ -160,10 +140,6 @@
 		</dict>
 		<key>Headers/EEnum.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			h6yVHAN5pszM4OqF1ntXdZfYtcI=
-			</data>
 			<key>hash2</key>
 			<data>
 			8SQIkX/zU2HHU2eCYvR8PuL6nF/4AHAtl7oUt5C2BeQ=
@@ -171,10 +147,6 @@
 		</dict>
 		<key>Headers/EEnumLiteral.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			n9BxAGwaif8g+CIh2dHLFuIzoM4=
-			</data>
 			<key>hash2</key>
 			<data>
 			XtsQqJVUzj4xVM/n/ObNL5HUWxnQsmViUzOwKmDlg+U=
@@ -182,10 +154,6 @@
 		</dict>
 		<key>Headers/EFactory.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			wezRstqGpr8ld8EtziQS5zRQ+3M=
-			</data>
 			<key>hash2</key>
 			<data>
 			IAWje6mAX6tZAsIJfWKqfwb4/1MLWt4wfmOdQFDmKDE=
@@ -193,10 +161,6 @@
 		</dict>
 		<key>Headers/EGenericType.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			/VCrUZgjyooFsJF3TkThsWGRYLE=
-			</data>
 			<key>hash2</key>
 			<data>
 			23qFUu8sJvyDwYWWxRjg5mMbPhsUuO7NGjgopr3nY6U=
@@ -204,10 +168,6 @@
 		</dict>
 		<key>Headers/EModelElement.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			nuNh7fv3whh4O95Q17wb2JkuKNQ=
-			</data>
 			<key>hash2</key>
 			<data>
 			sTqnpWlSGR9BmmqMAIPV0Bh1hTqvFUNo4KD/iugce5o=
@@ -215,10 +175,6 @@
 		</dict>
 		<key>Headers/ENamedElement.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			R1cAil/QefAmj/084JEsk5rsbLY=
-			</data>
 			<key>hash2</key>
 			<data>
 			eOo0RW93dzjs1vLOdMmGLkEobEfWPopULrxKFZTXGt4=
@@ -226,10 +182,6 @@
 		</dict>
 		<key>Headers/EObject.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			iyCTexwHl8zzDpZ9qXHBmgrBMhk=
-			</data>
 			<key>hash2</key>
 			<data>
 			xhtwmdX7p/DZYO4vcUuzOEnmXE+LeOE9il0B0tZ7hAI=
@@ -237,10 +189,6 @@
 		</dict>
 		<key>Headers/EOperation.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			SmD/hX+oPpD/2PY56IWCMRaj1jQ=
-			</data>
 			<key>hash2</key>
 			<data>
 			dKrJF4OTpchaqS5eK7Yff638jnZ3in2+ybmjUMIpLpY=
@@ -248,10 +196,6 @@
 		</dict>
 		<key>Headers/EPackage.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			2RSOiswAhTVXSi0AVL3n/nwiFeY=
-			</data>
 			<key>hash2</key>
 			<data>
 			5j/cQmX+ucsSWBjJsIzDn1FAxoCEJRuHbM+mLTqCP2c=
@@ -259,10 +203,6 @@
 		</dict>
 		<key>Headers/EParameter.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			PPfVwdzeIka6CRprpAUXLkVWnGM=
-			</data>
 			<key>hash2</key>
 			<data>
 			rE8oWIduiTPZgA8vGia39pJk1hk/drHI58F0sTJ627g=
@@ -270,10 +210,6 @@
 		</dict>
 		<key>Headers/EReference.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			R+ncu1BSiwKVQH9I3pVzmu7yjtk=
-			</data>
 			<key>hash2</key>
 			<data>
 			8WGOl7ZW6Bu8DSMkAXgG/URLX76XVPUjcY78dyPPu3U=
@@ -281,10 +217,6 @@
 		</dict>
 		<key>Headers/EStructuralFeature.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			jnYYy0kGISZMhSaRAuiWc0/fdDw=
-			</data>
 			<key>hash2</key>
 			<data>
 			UqgGs7NJezQDzswPeDf0Iy/PrLfKqrQezX8UhOvVy+A=
@@ -292,10 +224,6 @@
 		</dict>
 		<key>Headers/ETypeParameter.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			pMcWZtypuDQRToWBuzW8+NNUkXw=
-			</data>
 			<key>hash2</key>
 			<data>
 			U7EbMzf9RrZ5k0lhEJL9c3pGjznYVWaauaEmN+uo21Y=
@@ -303,10 +231,6 @@
 		</dict>
 		<key>Headers/ETypedElement.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			A915070AUseqeqn6kQgwbnALdk8=
-			</data>
 			<key>hash2</key>
 			<data>
 			tYg3xvE2yR9N1NDn2u4xRZoxFr1QM5+6d1axYQq//Po=
@@ -314,10 +238,6 @@
 		</dict>
 		<key>Headers/SCDBindingBinding.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			aEG5WhtYXFr59x/+YtLNQc2ZyeE=
-			</data>
 			<key>hash2</key>
 			<data>
 			kvPlokRoB6v264/cYb3vEKPTV/CsuMgyEAuowVVNIgM=
@@ -325,10 +245,6 @@
 		</dict>
 		<key>Headers/SCDBindingBindingModel.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			OvRg6aKZwBG799mEV4duQQUx7nE=
-			</data>
 			<key>hash2</key>
 			<data>
 			w4sIr5kIDfbUdPFQZrtPf62oqb6hbGSgEITsZ5wxnZ8=
@@ -336,10 +252,6 @@
 		</dict>
 		<key>Headers/SCDBindingBindingSelector.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			j/+qDdL+cqHStzHva51GumAlAAg=
-			</data>
 			<key>hash2</key>
 			<data>
 			A1sWZAgrNy6txubZdPGFCag39CX7AoM9KqburIGUmIs=
@@ -347,10 +259,6 @@
 		</dict>
 		<key>Headers/SCDBindingBindingSyncPoint.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			yo7qiaGpMa852Ki3c83vBYv3aI0=
-			</data>
 			<key>hash2</key>
 			<data>
 			IEJt2vn/RklM6E55ZkifwWRsWhCXHOzSPzgTj6nJ9Qw=
@@ -358,10 +266,6 @@
 		</dict>
 		<key>Headers/SCDBindingBindingValue.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			o5uZ6s9bsZMG7szUA9eOthgeBlY=
-			</data>
 			<key>hash2</key>
 			<data>
 			U55w9X7YCmbhpIYaFfZcOB7GtLq8lAd0fDMEWMGX+Lc=
@@ -369,10 +273,6 @@
 		</dict>
 		<key>Headers/SCDBindingBindingValueTransformer.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			jo2xMWo/4M+AUk1ME20Q1+esWqY=
-			</data>
 			<key>hash2</key>
 			<data>
 			kkhIAvp0rhO69Z0tXgwAPXT5WeIDvlbKswIXPe2TBwE=
@@ -380,10 +280,6 @@
 		</dict>
 		<key>Headers/SCDBindingCollectionSelector.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			NEuXxqPzlg82JiUxv7SIctBCVuM=
-			</data>
 			<key>hash2</key>
 			<data>
 			W5dtgsg2suacen1cN4Qb3WhIa3EBoIqeKaJKb/36ilQ=
@@ -391,10 +287,6 @@
 		</dict>
 		<key>Headers/SCDCommonFileType.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			An4IHE17iiZ8ijWpe8j68/fyPck=
-			</data>
 			<key>hash2</key>
 			<data>
 			lGXGrw1EO4ASiCSng6MSNf2lt8bC6qlvdI6oO3JU4Es=
@@ -402,10 +294,6 @@
 		</dict>
 		<key>Headers/SCDCommonHeader.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			3VJn7FQk5IXwMTcbONqIlukTkWM=
-			</data>
 			<key>hash2</key>
 			<data>
 			015pCBKJd+DzQ2XvwLpmvx4QLagatVcxI4c2PLBjBls=
@@ -413,10 +301,6 @@
 		</dict>
 		<key>Headers/SCDCommonJsonType.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			GqtTZAeoMJ8YXHMkN32+bwyZbXA=
-			</data>
 			<key>hash2</key>
 			<data>
 			XGLdcpNHYPnBqs50w2rKxZ68ilL622JLcXMvgheZtpI=
@@ -424,10 +308,6 @@
 		</dict>
 		<key>Headers/SCDCommonRange.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			xUgs15oarmp5omw+47MWWreqHHA=
-			</data>
 			<key>hash2</key>
 			<data>
 			f5UbQfKPQciuT4dqpymSXDz9AEx3Y7BLVPSSqlovu2U=
@@ -435,10 +315,6 @@
 		</dict>
 		<key>Headers/SCDCommonRawType.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			26dV+EjhA+VFpVF6pbkPkr03U/Y=
-			</data>
 			<key>hash2</key>
 			<data>
 			LL3mLgRDCPhdudhkMZXnILBs0UJ4G4HBN2Jt42hOOzg=
@@ -446,10 +322,6 @@
 		</dict>
 		<key>Headers/SCDCoreResource.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			uYqf7XxOmnh7Crac34DdryEeii0=
-			</data>
 			<key>hash2</key>
 			<data>
 			1e7+jbAcR29YwVUqqopBf4aifJqxpxZJYW57Sxo6kCQ=
@@ -457,10 +329,6 @@
 		</dict>
 		<key>Headers/SCDCoreResourceSet.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			MVW189BECFUPcST5z9UIp3YTUts=
-			</data>
 			<key>hash2</key>
 			<data>
 			5u+eexXLz6q0Kp9/wyb5cAtpMdBkmAl9HRrbAlQYgmM=
@@ -468,10 +336,6 @@
 		</dict>
 		<key>Headers/SCDCoreXmiResource.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			dslXscaJK0FGUzEmeRJjObswmE0=
-			</data>
 			<key>hash2</key>
 			<data>
 			W1j6EzNAVjHeGAQ3Q8P9XV+9+KQVU/c5Alj9l3dv/UU=
@@ -479,10 +343,6 @@
 		</dict>
 		<key>Headers/SCDExprDivision.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			tfV0JVAA4c6+eIKag86KyDdD2Ww=
-			</data>
 			<key>hash2</key>
 			<data>
 			o3FcGaRr6EjPtxWH77qe9h8c8ys+/rip1VUvckucg7g=
@@ -490,10 +350,6 @@
 		</dict>
 		<key>Headers/SCDExprExpression.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			DQS+WNO8NeKaiZHdQoPwNwmqcjw=
-			</data>
 			<key>hash2</key>
 			<data>
 			/Mya5SYl/XlnrA/oetbUSQodB2Wc4ejCMZ2QfKetOks=
@@ -501,10 +357,6 @@
 		</dict>
 		<key>Headers/SCDExprLeftRightExpression.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			dlzKnkNu1K8ZUn1tmiV4gqajiIs=
-			</data>
 			<key>hash2</key>
 			<data>
 			Ivo1sBZ5DCa0Mx2Y22iUgw7sUxR5rtNWmMTYL2xbocA=
@@ -512,10 +364,6 @@
 		</dict>
 		<key>Headers/SCDExprMinus.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			QYy/pSdYqBRgA2BVc7DliNsamQo=
-			</data>
 			<key>hash2</key>
 			<data>
 			g0xSogqzY1zEP8Hob1FJ8w43Xji0eaWr3BKV9tnXqxA=
@@ -523,10 +371,6 @@
 		</dict>
 		<key>Headers/SCDExprMultiplication.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			JIH8/Bw/qD015iUybDm1hsQoZK0=
-			</data>
 			<key>hash2</key>
 			<data>
 			9F/yEleXJd8IVtmjuZY8lU/6OJHF86ul1+X0WPcSzCw=
@@ -534,10 +378,6 @@
 		</dict>
 		<key>Headers/SCDExprNegativeExpression.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			InD3ZGIanhMuJOTU3pH5NCDYdYQ=
-			</data>
 			<key>hash2</key>
 			<data>
 			upPUeUTZpCLEtFXnYtlESPG6NMkz6cDn58vJqfzz5xA=
@@ -545,10 +385,6 @@
 		</dict>
 		<key>Headers/SCDExprNumber.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			c/w/ZiDXIoXdP+MEQshNgunT5Es=
-			</data>
 			<key>hash2</key>
 			<data>
 			hw8rXHQa0/jjxSuZnLoRpv4FqW/ZdHqxi1P7wHcxxT0=
@@ -556,10 +392,6 @@
 		</dict>
 		<key>Headers/SCDExprPositiveExpression.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			erGQMmtjos929GjF62I9Y6eNtoo=
-			</data>
 			<key>hash2</key>
 			<data>
 			KhxwEgktxyt4xM8ejnbmIDmP8IZuaRA6o+PqK6NySRE=
@@ -567,10 +399,6 @@
 		</dict>
 		<key>Headers/SCDExprSum.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			8KYnZsBIGjfsklFCHZ+YhOkQ9aI=
-			</data>
 			<key>hash2</key>
 			<data>
 			cDsuHlSx++g9biLFliixSsiIDncQyN0lOReVqe5GKj8=
@@ -578,10 +406,6 @@
 		</dict>
 		<key>Headers/SCDExprUnaryExpression.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			WA9tkve4jrdimCFvid9DdO5y5E0=
-			</data>
 			<key>hash2</key>
 			<data>
 			CMDWGBVrZicY8zbADmG1EK4Go5KhUMh3OfY4/ZjyxOQ=
@@ -589,10 +413,6 @@
 		</dict>
 		<key>Headers/SCDExprVariable.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			KWTvr3M56vm48kIVEO1J/BHzIe0=
-			</data>
 			<key>hash2</key>
 			<data>
 			SPwB1XZGdQBJeCJlHj8cRFdTYxDXW3nIVzGjU47UG88=
@@ -600,10 +420,6 @@
 		</dict>
 		<key>Headers/SCDGraphicsDimension.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Q6dGCRzuJisWrqqh6GnXa543TIs=
-			</data>
 			<key>hash2</key>
 			<data>
 			geRx7bbhL7+ru4A6cUtngSy9DYkKiwEH7K7j34X1Rxw=
@@ -611,10 +427,6 @@
 		</dict>
 		<key>Headers/SCDGraphicsFont.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			TfMqB3pQ1IAvhRWc767xxOVuTxI=
-			</data>
 			<key>hash2</key>
 			<data>
 			5nnyy2/J+HwAAjSmC5Uv6HE7eyfVpxYvEE4oOF5Itbk=
@@ -622,10 +434,6 @@
 		</dict>
 		<key>Headers/SCDGraphicsImageData.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			rpkn0Do0a4FujwqmTXPe3xfRR2s=
-			</data>
 			<key>hash2</key>
 			<data>
 			+WAZRVG3ApaMm3zTgyrXm7Z84LiJ+zN2heFAlsrI+ew=
@@ -633,10 +441,6 @@
 		</dict>
 		<key>Headers/SCDGraphicsPoint.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			e1xtgqmE/x2bIwCbJmq9p/qYj70=
-			</data>
 			<key>hash2</key>
 			<data>
 			AvO5XU7wLGxAB1RvapgwPKNl+oB/Gcmp1RcwH709gUc=
@@ -644,10 +448,6 @@
 		</dict>
 		<key>Headers/SCDGraphicsPointF.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			SGrz1YoodA+jcLg4oEPOm+YIcq8=
-			</data>
 			<key>hash2</key>
 			<data>
 			xEYMDXHQrq+4ZULVNikbN5ey3XDci4omMxQN9+lbU/A=
@@ -655,10 +455,6 @@
 		</dict>
 		<key>Headers/SCDGraphicsRGB.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Xn5kiEwtJNrZGPvPB6ZymI8EYZw=
-			</data>
 			<key>hash2</key>
 			<data>
 			xnmn/HIzZM6vzICwXo9YdjJg4b5tqRrC2DCByATMwrk=
@@ -666,10 +462,6 @@
 		</dict>
 		<key>Headers/SCDGraphicsRectangle.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			1rg5fD7hlSaRVSDq+FV2I0a2MbU=
-			</data>
 			<key>hash2</key>
 			<data>
 			yGT/OmKVhjI+/G73EbfHE9ZmCK4B5UTEHZ7rUEKzwq0=
@@ -677,10 +469,6 @@
 		</dict>
 		<key>Headers/SCDLatticeApplicationEventHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			SVjKdapxuXB6fs0TlO3+U+kqoDo=
-			</data>
 			<key>hash2</key>
 			<data>
 			LFmAUS+srSL1Lwo3mXvZnAnXCYJBs7zbYRusg7F2//Y=
@@ -688,10 +476,6 @@
 		</dict>
 		<key>Headers/SCDLatticeChanel.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			tCz+OojEyAEID3GdQwHq6o5aR98=
-			</data>
 			<key>hash2</key>
 			<data>
 			aEZAmwUMOrUCrU8VvCNqaDrUdEM1XgPmWmX6B/psIVw=
@@ -699,10 +483,6 @@
 		</dict>
 		<key>Headers/SCDLatticeEntryPoint.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			LjSpuRWCk7i1ZLQpsrbYktjpIZw=
-			</data>
 			<key>hash2</key>
 			<data>
 			KWtkENFsC1sFCVKjY+t1foVFNNbKftLZM51xnnLnXWM=
@@ -710,10 +490,6 @@
 		</dict>
 		<key>Headers/SCDLatticeExitPoint.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			ZTcaI+aawYyWA9dy+JoIcVn/2po=
-			</data>
 			<key>hash2</key>
 			<data>
 			QHtT+B2JNiSuQOWKcjpFwoltS97CtGT1PD2xAufs548=
@@ -721,10 +497,6 @@
 		</dict>
 		<key>Headers/SCDLatticeNavigation.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Wt5qJSZjOhT5y6koxRVHZo5fKP0=
-			</data>
 			<key>hash2</key>
 			<data>
 			/NKLnkEs4rCDKi6FEAw+F4ia7XxH6u91UBTcWse4VtM=
@@ -732,10 +504,6 @@
 		</dict>
 		<key>Headers/SCDLatticeOpenUrlHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Wx9n4ArrAyT9PeOI4M7s4qRIFAk=
-			</data>
 			<key>hash2</key>
 			<data>
 			27R8LnzaSZzzdzVvNRx3vyW62UFnh+LaKE8M43EVwLw=
@@ -743,10 +511,6 @@
 		</dict>
 		<key>Headers/SCDLatticePageAdapter.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			G/HRuOfjelHPkflctkuXdxCM52o=
-			</data>
 			<key>hash2</key>
 			<data>
 			2G5UM7sY0EYhUiPBKbGnxgnHjOD0AaMbiUzfBDfjDVY=
@@ -754,10 +518,6 @@
 		</dict>
 		<key>Headers/SCDLatticePageContainer.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			G1NyR/SI2n4PBoabdmy7KvrFOeE=
-			</data>
 			<key>hash2</key>
 			<data>
 			nN0GK73897FU4i0Wlrey48qcmWNa3adeQcUUD6qsY1Q=
@@ -765,10 +525,6 @@
 		</dict>
 		<key>Headers/SCDLatticePoint.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			rMW5kp3jcPEhDDDuKHJlDK25H1Y=
-			</data>
 			<key>hash2</key>
 			<data>
 			MD5msFtTbuuPhbDQdv2mUXiB2SxjzZreLgrOO/71tm8=
@@ -776,10 +532,6 @@
 		</dict>
 		<key>Headers/SCDLatticeSizeChangeHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			a/TWlckW11/iGROTNk7QxtpQDA4=
-			</data>
 			<key>hash2</key>
 			<data>
 			7go0AqBuYb2TKY+of4EaOtEa5fr3qDFBjjruzoeyqrY=
@@ -787,10 +539,6 @@
 		</dict>
 		<key>Headers/SCDLatticeSizeChangedEvent.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			rwiMXV/8u8F3/sekM1mTfSCn2e8=
-			</data>
 			<key>hash2</key>
 			<data>
 			7XXxx+XeFukwm8Xh3s1/X3W82dPhA4rELL46ZGb7MOk=
@@ -798,10 +546,6 @@
 		</dict>
 		<key>Headers/SCDLatticeSystem.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			ptXZKmVlNkmtnWoQsZIKtnHjP18=
-			</data>
 			<key>hash2</key>
 			<data>
 			lsr9R2A5LZY/O/PYlGTptNdbZEvSg91BKREXmN2L7qE=
@@ -809,10 +553,6 @@
 		</dict>
 		<key>Headers/SCDLatticeView.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			FWFCPbHw1V1Y1xNXESwpUC53dNY=
-			</data>
 			<key>hash2</key>
 			<data>
 			umE9n8JGVXuORIecAKibuUGejVlr38ZjAP6Ru0UKp2w=
@@ -820,10 +560,6 @@
 		</dict>
 		<key>Headers/SCDLatticeWindow.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			j53ZNLycYYbCvPFTnb7To5UQT84=
-			</data>
 			<key>hash2</key>
 			<data>
 			rYGHlPOx3Me1SvT/m0V2EVJzvFWkhCvFroep829A3W8=
@@ -831,10 +567,6 @@
 		</dict>
 		<key>Headers/SCDLayoutAutoLayout.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			rm8WOcDNXfasiVXyFazBP+slaMc=
-			</data>
 			<key>hash2</key>
 			<data>
 			vOtlycUbtXmvJ0Yg2JLoJ4YsgSQUgNdoP1OurpPYVMc=
@@ -842,10 +574,6 @@
 		</dict>
 		<key>Headers/SCDLayoutAutoLayoutData.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			LH7jffo8tIli4q8/MKm7mokKy54=
-			</data>
 			<key>hash2</key>
 			<data>
 			wTmkyFk8YbpDBaTS4oJxsswotLp3YE3IZdPK3lYcYsg=
@@ -853,10 +581,6 @@
 		</dict>
 		<key>Headers/SCDLayoutConstraint.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			+AYerhROrjTZwldaV/6o8WPyQzM=
-			</data>
 			<key>hash2</key>
 			<data>
 			RRjUjRVB2mIdUjCPTQetkhmso+5oGjqKLYXNpYAq93Q=
@@ -864,10 +588,6 @@
 		</dict>
 		<key>Headers/SCDLayoutGridData.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			qowfM9xKu2vWRtgwzAQ16dJgzfU=
-			</data>
 			<key>hash2</key>
 			<data>
 			Snsd81Qupghj9WbfOEetDBFZVqJk8y6mFYWJyTBoJu0=
@@ -875,10 +595,6 @@
 		</dict>
 		<key>Headers/SCDLayoutGridLayout.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			upFnwtKordpjVuGIEDlhQkoTRIg=
-			</data>
 			<key>hash2</key>
 			<data>
 			5q6+7ce0Rb3dc05HhVa2aZXOwCQNKEKJjszJzEcl5Kg=
@@ -886,10 +602,6 @@
 		</dict>
 		<key>Headers/SCDLayoutGridStyle.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			bq6H/cqwlEWM2HfrLTGMmK8AwRM=
-			</data>
 			<key>hash2</key>
 			<data>
 			aW7/WQYxnjGF7qwjVi7IBSiIkdArdpquGHC3GG3VMnA=
@@ -897,10 +609,6 @@
 		</dict>
 		<key>Headers/SCDLayoutILayoutable.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			KpMg75xmsE+gpjOoDNJ2AxToigc=
-			</data>
 			<key>hash2</key>
 			<data>
 			wm2+0sucvXN6llDVhhi4//JsRh8SRswz3vuc5hJceLw=
@@ -908,10 +616,6 @@
 		</dict>
 		<key>Headers/SCDLayoutLayout.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			SSWyVQSEIETT7aFKS7r6J+TZhJg=
-			</data>
 			<key>hash2</key>
 			<data>
 			3olbP/29wKvhIXedcstlo4/LUJCKma4PiMYMjSxJaT0=
@@ -919,10 +623,6 @@
 		</dict>
 		<key>Headers/SCDLayoutLayoutData.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			8z2XAr5aEJ21Vr4HmQYYsGh+C9A=
-			</data>
 			<key>hash2</key>
 			<data>
 			7jMTPyOG9gDn26sZxa61ELwh+3bv+XlvmAx7IeZDzCI=
@@ -930,10 +630,6 @@
 		</dict>
 		<key>Headers/SCDLayoutNode.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			bPyvGQW/77kfd+fu9r+0G7A/3PY=
-			</data>
 			<key>hash2</key>
 			<data>
 			uODjWAZwE3SG3pe0UANO71tldB7dtVv7+xC1LE9tBlI=
@@ -941,10 +637,6 @@
 		</dict>
 		<key>Headers/SCDLayoutStackLayout.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			SFfCr4zxiEVcte8DhwAtHs+lBb4=
-			</data>
 			<key>hash2</key>
 			<data>
 			GPqJKXVF8ykoZYx8TakSlbqwGXvAgs2TLkQdFvpbknc=
@@ -952,10 +644,6 @@
 		</dict>
 		<key>Headers/SCDNetworkAsyncCallback.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			ohiBOM1FFlBBBFyNZSb4fYsjMi0=
-			</data>
 			<key>hash2</key>
 			<data>
 			TX5YnjCXqUirkTfR7sEBsrtNaItRv//al0d74Ggar2M=
@@ -963,10 +651,6 @@
 		</dict>
 		<key>Headers/SCDNetworkAuth.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			a0tNhijIeOK2ZmUKYKa9pnUnDyQ=
-			</data>
 			<key>hash2</key>
 			<data>
 			4StK35GadrqvTslahFrIuOtw6maZXOHo7CUKCT+aDI0=
@@ -974,10 +658,6 @@
 		</dict>
 		<key>Headers/SCDNetworkBasicAuth.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			oqEBDOif01UMS+HZQ6zEmRlC4B4=
-			</data>
 			<key>hash2</key>
 			<data>
 			mVvbsNWE1VSB4iTioIUERq8aBQdQpIXyCBEFQ0tPWJs=
@@ -985,10 +665,6 @@
 		</dict>
 		<key>Headers/SCDNetworkByteContentPart.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			zbrnlYupGj2m7bRaydy+hXSDZz0=
-			</data>
 			<key>hash2</key>
 			<data>
 			Yx+rOeXleC/dATmdiFIxxKZmDnFVypn39968TU+Om+g=
@@ -996,10 +672,6 @@
 		</dict>
 		<key>Headers/SCDNetworkContentPart.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			xhhP60dCFXCnS7K9byuqKlrjVc8=
-			</data>
 			<key>hash2</key>
 			<data>
 			GFKdjuby/ucQABzkkqo55a7hgdHkUebOnBN6hgjNysY=
@@ -1007,10 +679,6 @@
 		</dict>
 		<key>Headers/SCDNetworkErrorHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			+pHrbeVqv7KKK1d8+vTVLxBPrbU=
-			</data>
 			<key>hash2</key>
 			<data>
 			iOAVrUAjiDcm2hKcVMyBDsmOgVunjTxGjQIIJSuYyoQ=
@@ -1018,10 +686,6 @@
 		</dict>
 		<key>Headers/SCDNetworkRequest.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			oA/Coez+xmBqNgnbt4dPPbVpZqE=
-			</data>
 			<key>hash2</key>
 			<data>
 			2LdaxgP/VhA8klTkZYcvKGKD7D7Jf+g/aPa22SPO+es=
@@ -1029,10 +693,6 @@
 		</dict>
 		<key>Headers/SCDNetworkResponse.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			3pZliyuUkTrhBZEcqmCCIqJCLkY=
-			</data>
 			<key>hash2</key>
 			<data>
 			Rk/0RNEAGPh8qQL2GTN7t/po4KfBVgznSfITyoScdS8=
@@ -1040,10 +700,6 @@
 		</dict>
 		<key>Headers/SCDNetworkResponseError.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			d1f4Ano0hKfpzsbzZx7GCP2wisI=
-			</data>
 			<key>hash2</key>
 			<data>
 			JcvILUVDChzea5rkldHCOgyotjcMYbi8QrhEWti14sA=
@@ -1051,10 +707,6 @@
 		</dict>
 		<key>Headers/SCDNotification.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			2riEa0gcI2wtm11HvSvGbY/D5gM=
-			</data>
 			<key>hash2</key>
 			<data>
 			hUBD9vkJLaujYHjPFHxL9uNRn1n1g++PQJJXdk3Lk6A=
@@ -1062,10 +714,6 @@
 		</dict>
 		<key>Headers/SCDObserver.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			FAcedsf8t/yrUQdgccMwntFPOvA=
-			</data>
 			<key>hash2</key>
 			<data>
 			J0ovEdTHZ+YJd36TByR151m9/OLI/vApC8VXwfRzi18=
@@ -1073,10 +721,6 @@
 		</dict>
 		<key>Headers/SCDPlatformCamera.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			LVwf2Ew9Nt5USh0/zphjgzNvf5Q=
-			</data>
 			<key>hash2</key>
 			<data>
 			aZKpzkzbBlevvqI1JelRbjhnTS1gdxACX1cXcxjbklc=
@@ -1084,10 +728,6 @@
 		</dict>
 		<key>Headers/SCDPlatformCameraErrorHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			c6Y8yK3hYptOWh0poe21uIXKAZg=
-			</data>
 			<key>hash2</key>
 			<data>
 			1y4vyzxfqW4EnZgFsb1gzi2eovrUyKP1ksY1R/gTE1E=
@@ -1095,10 +735,6 @@
 		</dict>
 		<key>Headers/SCDPlatformCameraOptions.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			KnKoMlsGjBqWrLClX4fWRLAnME4=
-			</data>
 			<key>hash2</key>
 			<data>
 			zPe9p1wmeoLG4Spo6DEv6J7SFPEvaZYGbvhpx19B4h8=
@@ -1106,10 +742,6 @@
 		</dict>
 		<key>Headers/SCDPlatformCameraSuccessHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			BAA8wAybDzpNFHfXEhKDkUB52I0=
-			</data>
 			<key>hash2</key>
 			<data>
 			GJxOCszQL25fhcgAYxO1nPjnUKQRF8V/xOSgRa9i1Hs=
@@ -1117,10 +749,6 @@
 		</dict>
 		<key>Headers/SCDPlatformContact.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			n+ojJf11Ny6VFvvMPIiB65taKjA=
-			</data>
 			<key>hash2</key>
 			<data>
 			ebDTauxsxC+CSJ+zHgHnt94M5zz2zinVTUOI3I0+9xw=
@@ -1128,10 +756,6 @@
 		</dict>
 		<key>Headers/SCDPlatformContactAddress.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			bYOoWHe9UX+bLlizbNsFCvITtkk=
-			</data>
 			<key>hash2</key>
 			<data>
 			SyDfTborK8LJiZu8un0JAfjVrtvK7YkaVM4G/tbgCPU=
@@ -1139,10 +763,6 @@
 		</dict>
 		<key>Headers/SCDPlatformContactEmail.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			oN9Fc4IqnUjnB5n92PMjYWp6ZbE=
-			</data>
 			<key>hash2</key>
 			<data>
 			f7f+YY8ZR0gSPlI0cpMEicHgrnXdwjnDzqZjlm8++yc=
@@ -1150,10 +770,6 @@
 		</dict>
 		<key>Headers/SCDPlatformContactIM.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Lt6jIWzYGvVFIBMCAQGgB8F1AqI=
-			</data>
 			<key>hash2</key>
 			<data>
 			8bcTTuAD55yF67/Qi6mcr3fGDeNQegA7zEZH++sh4r0=
@@ -1161,10 +777,6 @@
 		</dict>
 		<key>Headers/SCDPlatformContactLabel.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			ENbAbldHYyZeAFrTk0j4w1dbaiA=
-			</data>
 			<key>hash2</key>
 			<data>
 			/SlRzM5qJSbx2wxhiqZ+CiSbWTU24ygfsabSOaQJ0D0=
@@ -1172,10 +784,6 @@
 		</dict>
 		<key>Headers/SCDPlatformContactPhone.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Ybffi1Cag+ubhCsWhJDOWgwY+so=
-			</data>
 			<key>hash2</key>
 			<data>
 			kzA1AELD4XagkryY9FAydUUW8HAJuXTPyxLlVbrahf8=
@@ -1183,10 +791,6 @@
 		</dict>
 		<key>Headers/SCDPlatformContactSearchResult.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			//gqOXFgkJ2flKr5AQR3IHTpHBI=
-			</data>
 			<key>hash2</key>
 			<data>
 			8sPMQqC9A+PUnhsU1oY85jOmwZgKtvLqwakGqsTnnqw=
@@ -1194,10 +798,6 @@
 		</dict>
 		<key>Headers/SCDPlatformContactUrl.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			jmOpWopc3rXiOf2lmCQqjXC6ogY=
-			</data>
 			<key>hash2</key>
 			<data>
 			StaeoyjzYvzFmhZ4ZWf+aV/0PVp8vlJ1gk2rr936q3E=
@@ -1205,10 +805,6 @@
 		</dict>
 		<key>Headers/SCDPlatformContacts.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			50ZqPGkri/slNKVVxitYomqvvcc=
-			</data>
 			<key>hash2</key>
 			<data>
 			7glpuvj99C0Vwyak85h9MLkTt2dnpbkK9CE2itNRhmY=
@@ -1216,10 +812,6 @@
 		</dict>
 		<key>Headers/SCDPlatformLocationCoordinate.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Cb+yk9+2d3SU8Pr76mKWekE9gsA=
-			</data>
 			<key>hash2</key>
 			<data>
 			vb0s5VPj/NA37o+HHakX477z8rUdiCF7SePQU1Fzeak=
@@ -1227,10 +819,6 @@
 		</dict>
 		<key>Headers/SCDServiceAuth.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			CLkVXK7ahELjXPGOSBQ/mk2X0BM=
-			</data>
 			<key>hash2</key>
 			<data>
 			DWMJSEtEeNFKE9/G8oQS5lbwcSGlwZ9u7JdqoMF4WoQ=
@@ -1238,10 +826,6 @@
 		</dict>
 		<key>Headers/SCDServiceContentParam.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			ZbAhRiDuFblPaBREQnYYOKcZUO0=
-			</data>
 			<key>hash2</key>
 			<data>
 			4wC04K9hFRB0KvCgbP3oXY7eQg3rgW49dtMX4CqbpNg=
@@ -1249,10 +833,6 @@
 		</dict>
 		<key>Headers/SCDServiceHeaderParam.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			2gKdsqQWFvH8zI54lD7+Qonk9/w=
-			</data>
 			<key>hash2</key>
 			<data>
 			sxFzxqm4eIdfq05kyWcNo/tA6zWl//Xkd/k6YFUH7g4=
@@ -1260,10 +840,6 @@
 		</dict>
 		<key>Headers/SCDServiceHttpBasicAuth.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			xEJ6svzpdvYzUi7gmbh3jfo8iR8=
-			</data>
 			<key>hash2</key>
 			<data>
 			BijtR29PffZGP+CrI931yWpdCRFKenCmoZJzipE24J0=
@@ -1271,10 +847,6 @@
 		</dict>
 		<key>Headers/SCDServiceHttpCredential.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			cVdCDxzyA3URrqILpMd5dmFiigw=
-			</data>
 			<key>hash2</key>
 			<data>
 			9fuB27QSMKlaADmQvxX3lnKlIssfvvuTlB+8wqf8Wvk=
@@ -1282,10 +854,6 @@
 		</dict>
 		<key>Headers/SCDServiceHttpRequest.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			6fbe3a+Mi7pQVGYlD5oa2Mzgm50=
-			</data>
 			<key>hash2</key>
 			<data>
 			tz/IMJdYzgtqDSncZcEtF0FQ7UcRxo0xXTRnXsdvvF8=
@@ -1293,10 +861,6 @@
 		</dict>
 		<key>Headers/SCDServiceInvocation.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			ZrXiCeO/D4mu6chzhRl4l4MSwNM=
-			</data>
 			<key>hash2</key>
 			<data>
 			QhCzzbTnM1e97UatWbNFnoi3/sloQjo8SCb8gz2BXqQ=
@@ -1304,10 +868,6 @@
 		</dict>
 		<key>Headers/SCDServiceNoAuth.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			6wq/vuJi8Nj5EEc1HaPovE6ChQ8=
-			</data>
 			<key>hash2</key>
 			<data>
 			OjNLCmVSMbgaHitglWmjMmQa4uMvGr8EI6oVsVq4e64=
@@ -1315,10 +875,6 @@
 		</dict>
 		<key>Headers/SCDServiceOAuth.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			IiXHoj3B/7XE+XjKRJUhBN1jHNA=
-			</data>
 			<key>hash2</key>
 			<data>
 			hqA2cY8XFzXOCGHQKuqR9GzRoflkujx3zstjcBCT5t8=
@@ -1326,10 +882,6 @@
 		</dict>
 		<key>Headers/SCDServiceOAuth1Flow.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			GqypvCZr4oAmepgkWz+iguF8Cag=
-			</data>
 			<key>hash2</key>
 			<data>
 			dTbtJZCWwpfyCp8gJTQREwUEiGRie3IJxM1OEdHs21k=
@@ -1337,10 +889,6 @@
 		</dict>
 		<key>Headers/SCDServiceOAuth2Flow.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			IrjhWzKZi35I13yTimagVDRpjGU=
-			</data>
 			<key>hash2</key>
 			<data>
 			j4/730WBWdZaS3qBmC8ghlZzwszlv9Yg+232JStC1XA=
@@ -1348,10 +896,6 @@
 		</dict>
 		<key>Headers/SCDServiceOAuthCredential.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			WsOwP+Hws7D77JWLAfabR3z4LgU=
-			</data>
 			<key>hash2</key>
 			<data>
 			oGApJPoC2FvdPge6nA/IiV6ls79oI1aobwZlslP5/+Q=
@@ -1359,10 +903,6 @@
 		</dict>
 		<key>Headers/SCDServiceOAuthFlow.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			2KfS9EwsuEqlHhSetNybj8xuQiI=
-			</data>
 			<key>hash2</key>
 			<data>
 			4iw0jhDuK9xcCAfHf/UUHXd1qusHTHqNK6UVvvMwPH8=
@@ -1370,10 +910,6 @@
 		</dict>
 		<key>Headers/SCDServiceOAuthToken.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			W45edtV6pqK9r+hKNzFCXXy7ghI=
-			</data>
 			<key>hash2</key>
 			<data>
 			JPqGfCPc2FMg6hjdVc+u1osLWlFYVwI3g1qju0EnqC4=
@@ -1381,10 +917,6 @@
 		</dict>
 		<key>Headers/SCDServiceParam.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			hJu2MYMP/cVFctFNaRLTWVfbQD8=
-			</data>
 			<key>hash2</key>
 			<data>
 			fvq7kVnsZlEUvnieUQVqJatUQNZpoTiUG6FSOgGXcvo=
@@ -1392,10 +924,6 @@
 		</dict>
 		<key>Headers/SCDServiceParamBinding.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			L+dx5/UhVZabf8WBtSVwpOPszCk=
-			</data>
 			<key>hash2</key>
 			<data>
 			jP5+XQh13dgbYNKH8oXqsF9038LwCqzXInO2Io/9UGk=
@@ -1403,10 +931,6 @@
 		</dict>
 		<key>Headers/SCDServiceRequest.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			V3q6ji9L0xRbyTjYWQH4PAknAXU=
-			</data>
 			<key>hash2</key>
 			<data>
 			InzqLcd9qSUvhtxWSWi/swOi1z0A4ki/vrijVMX1GFo=
@@ -1414,10 +938,6 @@
 		</dict>
 		<key>Headers/SCDServiceResponse.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			O7rIrxjKuO1N11bxC6l/ROam2bc=
-			</data>
 			<key>hash2</key>
 			<data>
 			UWZEBrqd4gqP9cyzQHVz/zaVkaGmNAeg3N5GRB4d0G4=
@@ -1425,10 +945,6 @@
 		</dict>
 		<key>Headers/SCDServiceService.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			eEV0dEMzULBaeF6YxXRY00jtA6o=
-			</data>
 			<key>hash2</key>
 			<data>
 			qsRbz3+KdSc30rRvRr5rRQv7SxdSBKZ/491/5BpQpMI=
@@ -1436,10 +952,6 @@
 		</dict>
 		<key>Headers/SCDServiceUrlParam.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			trL8dCP5s9gr+TIJVh80nwZ0yIg=
-			</data>
 			<key>hash2</key>
 			<data>
 			8taAsNt2hy2nSkcbRoMc2zfr1U2wXcQT4uWVGJ1aW5M=
@@ -1447,10 +959,6 @@
 		</dict>
 		<key>Headers/SCDSvgAccessibility.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			a60VCA4AYvv8HE5z4uRxfPmnN2I=
-			</data>
 			<key>hash2</key>
 			<data>
 			I29TaQ+jNcpqpEVb+A4wm2xd8+nfqZpoWPu8deirpWY=
@@ -1458,10 +966,6 @@
 		</dict>
 		<key>Headers/SCDSvgAlignmentElement.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			smmaqvPpE+qT2/iTnBTnv16JFfs=
-			</data>
 			<key>hash2</key>
 			<data>
 			zy09C0sHhPhG7GgElGZVfmg0T7MKI/QQIegpmy+ioVo=
@@ -1469,10 +973,6 @@
 		</dict>
 		<key>Headers/SCDSvgAnimatable.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			sEzZP/bofhv02h3HNPt2j78upT0=
-			</data>
 			<key>hash2</key>
 			<data>
 			VJGLwDznp7vMUMjktMC+lM8DWaE/tcxJWmsfFswtMZo=
@@ -1480,10 +980,6 @@
 		</dict>
 		<key>Headers/SCDSvgAnimation.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Sq8Fx+wB463YpLAdFWlDIWSr7no=
-			</data>
 			<key>hash2</key>
 			<data>
 			xuXjbioYQSMsi7rtKIFI15vSzhVfRzC5t/NzP8LfBNE=
@@ -1491,10 +987,6 @@
 		</dict>
 		<key>Headers/SCDSvgBaseAnimation.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			6tZTxQKJl+Jqh2B+z1tqQyTSIgo=
-			</data>
 			<key>hash2</key>
 			<data>
 			U7tB6yBUjnejPXGuYEHD+O4A7io0WNCaKV4y+Ji8O1g=
@@ -1502,10 +994,6 @@
 		</dict>
 		<key>Headers/SCDSvgBox.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			v+CvmDZ3nqAtNuV9pJK1stzInlw=
-			</data>
 			<key>hash2</key>
 			<data>
 			icxSImNgNAF1Lp1j+FzlSuybtfAvF68OlHZE1gvvC6Y=
@@ -1513,10 +1001,6 @@
 		</dict>
 		<key>Headers/SCDSvgCircle.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			UrTaHtuPgWtUh/aqqy+1qcLIpJo=
-			</data>
 			<key>hash2</key>
 			<data>
 			Re8cgfZ+GYog77jNem+cWPoC6lQACFkcG31MM5vPuYU=
@@ -1524,10 +1008,6 @@
 		</dict>
 		<key>Headers/SCDSvgClipPath.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			kDbKbcYnV3zObqe0mtZkAGYHbuA=
-			</data>
 			<key>hash2</key>
 			<data>
 			HA8wNHqfxIPJDziyalYfPLMct9kgufl0oUMuY86IY64=
@@ -1535,10 +1015,6 @@
 		</dict>
 		<key>Headers/SCDSvgColor.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			dPlIMHVIYw5DRAi+8C3ctA2Iaf4=
-			</data>
 			<key>hash2</key>
 			<data>
 			z8SnwnH2/e2lJQyYoV06L+wGIdS/iDOVypQYqdPeqVs=
@@ -1546,10 +1022,6 @@
 		</dict>
 		<key>Headers/SCDSvgConstraint.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			+ddae0RqXFDtJezu65tw9hrpXNw=
-			</data>
 			<key>hash2</key>
 			<data>
 			yxCi8wf+OBe0ncTJq4NLZ+Mq22aN/QrucdzPYFq1T4s=
@@ -1557,10 +1029,6 @@
 		</dict>
 		<key>Headers/SCDSvgContainerElement.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			KaJk1e4wIJ87SJ8cxqeKWCiELuU=
-			</data>
 			<key>hash2</key>
 			<data>
 			hR3YRsBTpQF4A+HmdRr1c72ltqs8aq6XMf9qhTxW1uk=
@@ -1568,10 +1036,6 @@
 		</dict>
 		<key>Headers/SCDSvgCubicTimeFunction.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			ayRfXgIdJ+elhj3vcqHlVUXjvi8=
-			</data>
 			<key>hash2</key>
 			<data>
 			jARiaVDWBTg6Js9UUGsA/s8s4jkpBwq6/4uTrGgCVYw=
@@ -1579,10 +1043,6 @@
 		</dict>
 		<key>Headers/SCDSvgCustomTimeFunction.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			bgrwdWL/e49uD2lS0tE1pQBwa2k=
-			</data>
 			<key>hash2</key>
 			<data>
 			j6McZ7Tik7oA9QwdNHTT+fn/PXjqhV6tdt/mRhLNsOg=
@@ -1590,10 +1050,6 @@
 		</dict>
 		<key>Headers/SCDSvgCustomValueFunction.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			mODohFOFTSvRmEIaca+4iNmBxUM=
-			</data>
 			<key>hash2</key>
 			<data>
 			nOtGOl7gZwak6MKKxFZjSiglZ4zJu/Z7gLP9DweYKMY=
@@ -1601,10 +1057,6 @@
 		</dict>
 		<key>Headers/SCDSvgDirectConstraint.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			YlrH/+GS9Pt+nCDIQ+i/VXLejxs=
-			</data>
 			<key>hash2</key>
 			<data>
 			rYEi1Qqkz5lzuxl+ONbMlAqz4gDvxqMpD6mxENeSL7w=
@@ -1612,10 +1064,6 @@
 		</dict>
 		<key>Headers/SCDSvgDrawable.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			xhgABuTLLMYAwuC4BKxafiI2mDQ=
-			</data>
 			<key>hash2</key>
 			<data>
 			0O4oaEYsuOFXTHtBvDWyetPuqjzMebFgqZ/u8Lo+xw0=
@@ -1623,10 +1071,6 @@
 		</dict>
 		<key>Headers/SCDSvgDrawableHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			9pusWcb3unUFb49LnuUHfK48SgM=
-			</data>
 			<key>hash2</key>
 			<data>
 			UONh1PIu9izy7qMPomwPPR6L3EO/LiX6gk3euiAF8a8=
@@ -1634,10 +1078,6 @@
 		</dict>
 		<key>Headers/SCDSvgElement.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			0/3ugHzkvr50erho33xGWdS/FLQ=
-			</data>
 			<key>hash2</key>
 			<data>
 			GuiQYRVyv91PtSD6EXsCLnR0m0QiYTX/ft+3ZHDyG2w=
@@ -1645,10 +1085,6 @@
 		</dict>
 		<key>Headers/SCDSvgEllipse.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			uw/balcMFQcz4vJaNT9vatMLbK4=
-			</data>
 			<key>hash2</key>
 			<data>
 			dezXMc4dSMs4xffm99iezRl6J7Cg1Kc9G71Sh8Kk0kI=
@@ -1656,10 +1092,6 @@
 		</dict>
 		<key>Headers/SCDSvgFontStyleable.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			/lK0gQh4frBffSPzLHRVy15qHJ4=
-			</data>
 			<key>hash2</key>
 			<data>
 			n0u4bAIBAuzIQnHLMa0qKBTydB+KK51hV0BUrp1QRx4=
@@ -1667,10 +1099,6 @@
 		</dict>
 		<key>Headers/SCDSvgGestureRecognizer.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			MT0bkF2Xh59BnrFRBNUuhtKtAEU=
-			</data>
 			<key>hash2</key>
 			<data>
 			oLIJ3rgq/RfVp8xf0mjRdxIgV4Sr8DnNZT+HjxtXcTg=
@@ -1678,10 +1106,6 @@
 		</dict>
 		<key>Headers/SCDSvgGroup.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			JpZrIz1qQEjXMu2GeQqtC7Xmnw0=
-			</data>
 			<key>hash2</key>
 			<data>
 			TDQcPOtJxnfp9E4+yusImZs70R76wt0XF7G1U7azSzg=
@@ -1689,10 +1113,6 @@
 		</dict>
 		<key>Headers/SCDSvgGroupAnimation.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			hwkvrZqvckh2EGoxyBNElAwMP6M=
-			</data>
 			<key>hash2</key>
 			<data>
 			bWEIQH9utFJedIJ1cdT2rCzXtQlFn/vpg5Du+j2yA2Y=
@@ -1700,10 +1120,6 @@
 		</dict>
 		<key>Headers/SCDSvgImage.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			32JMfdUXMMyidFv/7nE5SNvDzpQ=
-			</data>
 			<key>hash2</key>
 			<data>
 			UDIWaUYs2zfgYMvYa6K6gRg26jUCGSW3iIQejIa3G/g=
@@ -1711,10 +1127,6 @@
 		</dict>
 		<key>Headers/SCDSvgLine.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			XjjR5CJzomZo1yXmGnbTIRk4Q8o=
-			</data>
 			<key>hash2</key>
 			<data>
 			kUVHChpU6ssz3/sE/2ab/hwhaxMfvlyyjp0AB8ChVcg=
@@ -1722,10 +1134,6 @@
 		</dict>
 		<key>Headers/SCDSvgLinearGradient.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Yq2zwCElI/zi/1lP9x0klytrbxQ=
-			</data>
 			<key>hash2</key>
 			<data>
 			/O1ZEfw7eVRrce9PApSKef9mTyqcLgDexmO3XEl4f4U=
@@ -1733,10 +1141,6 @@
 		</dict>
 		<key>Headers/SCDSvgMatrix.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			2JU9782FMJw0DfVwhRjDMpWwh2I=
-			</data>
 			<key>hash2</key>
 			<data>
 			2dXztHG8mLoc5cSIqWhqGh72HUjpSer9997fI4YrFUs=
@@ -1744,10 +1148,6 @@
 		</dict>
 		<key>Headers/SCDSvgMatrixConstraint.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			cdHCZN5s0oLtfxbQKa12asv3PPc=
-			</data>
 			<key>hash2</key>
 			<data>
 			huboLmuHYhctj1Ug4+Xfo5lK2lXewIBl4fWOr5vDjJM=
@@ -1755,10 +1155,6 @@
 		</dict>
 		<key>Headers/SCDSvgMatrixTransform.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			XUBc2X9gtkoYas0DbuBOtAgwz1U=
-			</data>
 			<key>hash2</key>
 			<data>
 			i8GX/vreYT65eJNwzdQR2Ho6deIeK/NOpp+6/G8pUhA=
@@ -1766,10 +1162,6 @@
 		</dict>
 		<key>Headers/SCDSvgMotionAnimation.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			raEjewByqVsxnXJu+NP7PAJmMXQ=
-			</data>
 			<key>hash2</key>
 			<data>
 			R0kcqcUwwwbt4mQoDGdqBxTVZfgJd3tL8DQYsdNbQCo=
@@ -1777,10 +1169,6 @@
 		</dict>
 		<key>Headers/SCDSvgNoneColor.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			0eiJ76Oqt/ieldaxuxRZTwAXsfU=
-			</data>
 			<key>hash2</key>
 			<data>
 			ukNfvDOlwQPhsIP4UCx1vecXw1bmGNM8xea403tzEto=
@@ -1788,10 +1176,6 @@
 		</dict>
 		<key>Headers/SCDSvgOnCompleteHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			0tEiVfrRbCERh350OsTdG4Au4mg=
-			</data>
 			<key>hash2</key>
 			<data>
 			BG95Lumy0h11DxeSiVVn+SLDqYjURLKtJlkhF5djGW0=
@@ -1799,10 +1183,6 @@
 		</dict>
 		<key>Headers/SCDSvgPanGestureRecognizer.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Mt/+t2FruSzMqrs7WHbcCDQAjEI=
-			</data>
 			<key>hash2</key>
 			<data>
 			eQ0URM6Cuhc8p8+AlVa0aNOkCtkYSCUfAS3SRAm03tM=
@@ -1810,10 +1190,6 @@
 		</dict>
 		<key>Headers/SCDSvgPath.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			XwFbD6XKWGtDE4QSi1+DvQHzfl0=
-			</data>
 			<key>hash2</key>
 			<data>
 			idQqTdl9O9Cx8iyNVAxUhqaEaRiy+nn3TCGJ6j9+OM4=
@@ -1821,10 +1197,6 @@
 		</dict>
 		<key>Headers/SCDSvgPathClose.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			uPpYu6elptdUHtm88iS0taNaAxA=
-			</data>
 			<key>hash2</key>
 			<data>
 			eUABS0nf58NHf1cN/HWadfYn+90K2g12o4uFCxZab8A=
@@ -1832,10 +1204,6 @@
 		</dict>
 		<key>Headers/SCDSvgPathCubic.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			tCLQ1HX6NfKI8B6ZmfD5RTl8PoE=
-			</data>
 			<key>hash2</key>
 			<data>
 			vAuvch3UMQoqXG524H5/d/h6byHkt4PcoEKkb6vogxY=
@@ -1843,10 +1211,6 @@
 		</dict>
 		<key>Headers/SCDSvgPathElement.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			6+/A8YxS350CNGJ3UsTTBQCYQCY=
-			</data>
 			<key>hash2</key>
 			<data>
 			i7xrtG67xA08a8NSKlEHKIJni4+ILE5FKKqyD7gkM0o=
@@ -1854,10 +1218,6 @@
 		</dict>
 		<key>Headers/SCDSvgPathElliptical.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			DOCx38dMmmIqLw8hBrMpo7jBJFc=
-			</data>
 			<key>hash2</key>
 			<data>
 			zpblpWDRqeowOlG+EE5RQj0C7XsB4liUIrdlibrLl3k=
@@ -1865,10 +1225,6 @@
 		</dict>
 		<key>Headers/SCDSvgPathHLine.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			p2CSvHinrMqGB1BE3G60JiqeYqI=
-			</data>
 			<key>hash2</key>
 			<data>
 			mbUhMi1QxKAddLLUmjw8WOREd6TG3nenIyLp5TKwjaM=
@@ -1876,10 +1232,6 @@
 		</dict>
 		<key>Headers/SCDSvgPathLine.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			jXPDaHXX2m/3H9OxOYerEKUHwNQ=
-			</data>
 			<key>hash2</key>
 			<data>
 			lcg75hNhsG/Em0tqgQrYws9R7hU1MvemXlJEueQ0oRI=
@@ -1887,10 +1239,6 @@
 		</dict>
 		<key>Headers/SCDSvgPathMove.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			kQVErP52sDEEB7+x16/fMDEpXmM=
-			</data>
 			<key>hash2</key>
 			<data>
 			b3kF8YlxWMqJ7GbOMbuUr/ofqUgqtltYUbRMxy48MoQ=
@@ -1898,10 +1246,6 @@
 		</dict>
 		<key>Headers/SCDSvgPathQuadratic.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Ta2KwU6N9wJaGpHJg1sqcefgIVU=
-			</data>
 			<key>hash2</key>
 			<data>
 			VMqEhH9oR2HCFHTmizUCxYb70IWRoPcG7uP+PF1OWq4=
@@ -1909,10 +1253,6 @@
 		</dict>
 		<key>Headers/SCDSvgPathSCubic.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			+0Kne3cX2KIV6Nl9683q6rv7L9Y=
-			</data>
 			<key>hash2</key>
 			<data>
 			PceyRMOzb7XO8YvFqgNOYlOMShiZBZ08BloQOlET6oE=
@@ -1920,10 +1260,6 @@
 		</dict>
 		<key>Headers/SCDSvgPathSQuadratic.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			wIxzzPtAX5ulwz+iwEJ/Ppd1RxI=
-			</data>
 			<key>hash2</key>
 			<data>
 			AFBiF3L4S+XUnHqQnFW2dJqMUN3rfiRddVK1AAOnAU8=
@@ -1931,10 +1267,6 @@
 		</dict>
 		<key>Headers/SCDSvgPathVLine.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			GpsVajI/suVzgrXvG5CGqyOXvEk=
-			</data>
 			<key>hash2</key>
 			<data>
 			j58OOuyidcUKQwwlSjfeDS1AiL/g2DcKTKEAqlsEEII=
@@ -1942,10 +1274,6 @@
 		</dict>
 		<key>Headers/SCDSvgPattern.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			SympCgLzu4lpGK5aznhfUXvQETU=
-			</data>
 			<key>hash2</key>
 			<data>
 			X5x8iAnm1Zwne8rpOn51CZpCl3+Y7i+w/lG79Hls71E=
@@ -1953,10 +1281,6 @@
 		</dict>
 		<key>Headers/SCDSvgPolyline.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			atr1IHWHrk4dzb+6eEOrC+G5HjU=
-			</data>
 			<key>hash2</key>
 			<data>
 			GA4+JufEMltGt8WGMKA6+KKZBy9hpmSI17oIFVo7kuY=
@@ -1964,10 +1288,6 @@
 		</dict>
 		<key>Headers/SCDSvgPropertyAnimation.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			G0z06mlyNjauvvT9Eyiopk9uApI=
-			</data>
 			<key>hash2</key>
 			<data>
 			9fJFxagMZ36wa9mtBs3q2Dv//whXXi65otUoXEkQA+8=
@@ -1975,10 +1295,6 @@
 		</dict>
 		<key>Headers/SCDSvgRGBColor.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			fBg0roAf5j6exOsKlVi6mpv35ZU=
-			</data>
 			<key>hash2</key>
 			<data>
 			9u2f1Ayw1ZKHWD2BIfPqQfykrhLTLOodCM4bf4BZKMk=
@@ -1986,10 +1302,6 @@
 		</dict>
 		<key>Headers/SCDSvgRect.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			FU4sql+CBJkfzsPGWl1W157sTeg=
-			</data>
 			<key>hash2</key>
 			<data>
 			jHKwMObH+R+ZS9vCMVqPevRxo+7MdKjLrrPsztvz9zA=
@@ -1997,10 +1309,6 @@
 		</dict>
 		<key>Headers/SCDSvgRotate.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			0riX4pPqxEEV7XN5ljVeePEPjw8=
-			</data>
 			<key>hash2</key>
 			<data>
 			9DjpzMjF++Ll5qjYBbo/zQi8aiLiax0H2Kye0Ytg69E=
@@ -2008,10 +1316,6 @@
 		</dict>
 		<key>Headers/SCDSvgRotateAnimation.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			m5CB5ps1m40EyQ6a31/cBkkJmOg=
-			</data>
 			<key>hash2</key>
 			<data>
 			U1igBqGfEXBw57bzBkcYKAJtYjPWbpt7nfI3s1jRSbE=
@@ -2019,10 +1323,6 @@
 		</dict>
 		<key>Headers/SCDSvgScale.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			hjrV22k/LNfhBdZk/h1/qZLQiCg=
-			</data>
 			<key>hash2</key>
 			<data>
 			2M17AVc3qyOLkqOlDH+TiWIqqTI03EBrSE8NT7lhT68=
@@ -2030,10 +1330,6 @@
 		</dict>
 		<key>Headers/SCDSvgScrollEvent.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			vXLOGWtHCLrPeAGB6n0Vke9485w=
-			</data>
 			<key>hash2</key>
 			<data>
 			3H/m1w9FNc9PdpIlI2MQOdiSKHRQlV4wwHIu+LMVCWM=
@@ -2041,10 +1337,6 @@
 		</dict>
 		<key>Headers/SCDSvgScrollGroup.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			hmnSIAMsnkyagJVbsiE9VRcPk48=
-			</data>
 			<key>hash2</key>
 			<data>
 			DMwfwBIX9HD7qnTs95ESxPHlOQ1gpOJBsF+W8szmW3k=
@@ -2052,10 +1344,6 @@
 		</dict>
 		<key>Headers/SCDSvgScrollHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			h29tDlnU6HvuHZ6xgzxIVDcAud0=
-			</data>
 			<key>hash2</key>
 			<data>
 			fxvD8N+7IFaCpwDCtSPuZik+BGJ6XgIPwMQJ3wXEjng=
@@ -2063,10 +1351,6 @@
 		</dict>
 		<key>Headers/SCDSvgScrollSizeConstraint.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			JUR2VyY/yUcOIH3mf+UdKnK1Rgs=
-			</data>
 			<key>hash2</key>
 			<data>
 			a+AMddH+HTmm68OzPuTzEDAuBgglIQe9G73DGqefIxo=
@@ -2074,10 +1358,6 @@
 		</dict>
 		<key>Headers/SCDSvgShape.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			qgNfFTBC5ZsPNebjRF8z6uAms7E=
-			</data>
 			<key>hash2</key>
 			<data>
 			DwDIGHsaJnrCSqyJ4DeiTdf0wiOCihWf/232Xq/dmBI=
@@ -2085,10 +1365,6 @@
 		</dict>
 		<key>Headers/SCDSvgSkewX.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			r+g72HsCCVvsaZl4BOfOa/StIBs=
-			</data>
 			<key>hash2</key>
 			<data>
 			M8pQXXAQ2a+cg3pBU7WtdFg5DWHSIMvfEIzKrJMCZ7Y=
@@ -2096,10 +1372,6 @@
 		</dict>
 		<key>Headers/SCDSvgSkewY.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			CfbdA273DhEMYO5GAiWDD/HrcC8=
-			</data>
 			<key>hash2</key>
 			<data>
 			sO7T7LJO57WHq9zOGBEwGBzgZM3T8KHIk7kFj+DMGRQ=
@@ -2107,10 +1379,6 @@
 		</dict>
 		<key>Headers/SCDSvgSplineTimeFunction.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Er0RIoaNP0uGewSmv5mUaZiCS+E=
-			</data>
 			<key>hash2</key>
 			<data>
 			Ewhci9eW1hyg5pGWo02zx1Ht7AqAqxi5djPl9j2j6JQ=
@@ -2118,10 +1386,6 @@
 		</dict>
 		<key>Headers/SCDSvgStop.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			6nydSEJVYjVVRUnfyctvopMpNx0=
-			</data>
 			<key>hash2</key>
 			<data>
 			eDXgsFaI1pia6ci9/pHn+SUbbGT6AgMbOzPf0Hb31fw=
@@ -2129,10 +1393,6 @@
 		</dict>
 		<key>Headers/SCDSvgStylable.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			0P1nM8KCrmfa/EMa3idHvT6SXzI=
-			</data>
 			<key>hash2</key>
 			<data>
 			AXPxqsaaa47NEndKBEYROjuEtU/gKSSn7x64QuDwonQ=
@@ -2140,10 +1400,6 @@
 		</dict>
 		<key>Headers/SCDSvgSvgResource.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			mxbw2cMy2SN78C21kk9R6BHkm2I=
-			</data>
 			<key>hash2</key>
 			<data>
 			uTEbFKCS/jeh9jnycs1pUFIDk1ke1fBb2Ks/tlRYOkc=
@@ -2151,10 +1407,6 @@
 		</dict>
 		<key>Headers/SCDSvgSwipeGestureRecognizer.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			IUmeU0YyLr4crvfqE5XYPzs+43M=
-			</data>
 			<key>hash2</key>
 			<data>
 			IQlm6hruGDwUuyNYobwzs28dzkg52+lJS7EJJOeEcNk=
@@ -2162,10 +1414,6 @@
 		</dict>
 		<key>Headers/SCDSvgSymbol.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			FQ8Y68eEp4a3cFEeRU9uXXGOmi0=
-			</data>
 			<key>hash2</key>
 			<data>
 			zIfy8vxTlPllu+WZMN7nYeexLyU8Ro//KIXYveKdrmw=
@@ -2173,10 +1421,6 @@
 		</dict>
 		<key>Headers/SCDSvgTapGestureRecognizer.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			ZnNPX2bINATaINzvSRdVkrM+FrE=
-			</data>
 			<key>hash2</key>
 			<data>
 			EXn7u3m6Ray9Ol3vbUrq2/P5eFV2FpS7bnt+YHZy2rA=
@@ -2184,10 +1428,6 @@
 		</dict>
 		<key>Headers/SCDSvgText.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			AyybfjV85AhiAPO+X22d4o4PF5A=
-			</data>
 			<key>hash2</key>
 			<data>
 			50DewU5stzRXSF1vA6fzx4vZSBixlunDwKmbKY98YDc=
@@ -2195,10 +1435,6 @@
 		</dict>
 		<key>Headers/SCDSvgTextElement.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			QMwoQ9z1WZAxT9etW2UqSCjF0bc=
-			</data>
 			<key>hash2</key>
 			<data>
 			Yp1clHqWUFrH6CF2OGZ5OGZuIcbRl2L++hdPd8A0+4A=
@@ -2206,10 +1442,6 @@
 		</dict>
 		<key>Headers/SCDSvgTextSegment.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			EGsL78tPNntnpNrt2SA9WmJKjeY=
-			</data>
 			<key>hash2</key>
 			<data>
 			KVfXYmaa0dd0HPva/motObzn51fwBFoh0Cjc9/+1m9M=
@@ -2217,10 +1449,6 @@
 		</dict>
 		<key>Headers/SCDSvgTextSpan.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			8jEiXNqfAquSrHRAwEeYxiCFnM0=
-			</data>
 			<key>hash2</key>
 			<data>
 			PstI1H1Ruxxd3KIF1hGdWponaek5JWp1JOdO3VeWqo8=
@@ -2228,10 +1456,6 @@
 		</dict>
 		<key>Headers/SCDSvgTimeFunction.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			m72+p6HBR+ZcTlAmC8cMTkYl15Q=
-			</data>
 			<key>hash2</key>
 			<data>
 			iGv/8sWhFevS8RcifmW5KdCW1Xys1QNP9Zp1eDyj/eY=
@@ -2239,10 +1463,6 @@
 		</dict>
 		<key>Headers/SCDSvgTouchEvent.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			4ri8cvSjtMsE3EFBFpWJmAUZcS8=
-			</data>
 			<key>hash2</key>
 			<data>
 			/oSFKS/fFNTm/ASgFgdh1AT5c6igLX+bRDcshu4nuFc=
@@ -2250,10 +1470,6 @@
 		</dict>
 		<key>Headers/SCDSvgTouchGestureRecognizer.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			lTL1hFW7txennm56jfxcR/fJPo4=
-			</data>
 			<key>hash2</key>
 			<data>
 			fWAeKPaYQesE+2v6wvJlWUaoSiV9Jc13s/oH8jlIKwA=
@@ -2261,10 +1477,6 @@
 		</dict>
 		<key>Headers/SCDSvgTouchHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			3O7FtboOo46k3i+F/p5tqpv53TU=
-			</data>
 			<key>hash2</key>
 			<data>
 			Rdr26yLGzQDyHzaLAPAN31aNQmZbs4/WKawzclQUPDw=
@@ -2272,10 +1484,6 @@
 		</dict>
 		<key>Headers/SCDSvgTouchReceiver.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			6kZXuqtKgAvcAErBwo4Gl+ayixY=
-			</data>
 			<key>hash2</key>
 			<data>
 			mD9mW7VtuAm8D8dTd6i7gjYds6w6DZ/ZYM9oNwSGBI0=
@@ -2283,10 +1491,6 @@
 		</dict>
 		<key>Headers/SCDSvgTransform.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			ELsNy7N1Xi/h5Gqa5NzMHVBPvvY=
-			</data>
 			<key>hash2</key>
 			<data>
 			D5vnKttppDyNYVD3HVmkBGF6FIsy7Fu/brAnR3F3vYU=
@@ -2294,10 +1498,6 @@
 		</dict>
 		<key>Headers/SCDSvgTransformable.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			EUZW3zoVN9bGtSSYh8lTTyZGFf8=
-			</data>
 			<key>hash2</key>
 			<data>
 			IY6cGt1y7028IcheiaICxNBaoz1Rz8LGAoUsh3zZ880=
@@ -2305,10 +1505,6 @@
 		</dict>
 		<key>Headers/SCDSvgTranslate.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			yePNj2sqcTIVp4mo6MyHIbfVQC4=
-			</data>
 			<key>hash2</key>
 			<data>
 			gHYTto0KiK4E0+cSjD5aUhPh3HEkRAdWWDFFWa6FOy8=
@@ -2316,10 +1512,6 @@
 		</dict>
 		<key>Headers/SCDSvgTranslateAnimation.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			t/Fr6r0BoapAy2SWx+fJeUdHz74=
-			</data>
 			<key>hash2</key>
 			<data>
 			Mb5o1aFWQJNjzvBjxNPQKCIa/A7hFpK9B3u6mXY/3vI=
@@ -2327,10 +1519,6 @@
 		</dict>
 		<key>Headers/SCDSvgUnit.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			h2oI35oRCpsUoIGN6FfJMR2Txlg=
-			</data>
 			<key>hash2</key>
 			<data>
 			2L6m0uFkcwsgwXWJjQx0cU/uWwWYZLN/xSo3jN3AUbM=
@@ -2338,10 +1526,6 @@
 		</dict>
 		<key>Headers/SCDSvgUse.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			uh19pFE25Howb7kPTXCFTqY/QbI=
-			</data>
 			<key>hash2</key>
 			<data>
 			Q9lrIbW0BfzLHUSvZgAFaYIqsF8jhsmYldTuWQJ+tEE=
@@ -2349,10 +1533,6 @@
 		</dict>
 		<key>Headers/SCDSvgValueFunction.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			LosNAc/GcNlWu9UrfS1hPJM/tTw=
-			</data>
 			<key>hash2</key>
 			<data>
 			2UDV9dbtnpSmfk1q7aKLPfM0WRLOtjRFPZM3VTjR4nc=
@@ -2360,10 +1540,6 @@
 		</dict>
 		<key>Headers/SCDSvgValueInterpolator.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			0gb3X+K0bTjkm5J4n5QVkKT2Lgg=
-			</data>
 			<key>hash2</key>
 			<data>
 			DF22Ta4qwBNlf/I+/b+gNw2/H4FvDg5HawFgVA2P2Ss=
@@ -2371,10 +1547,6 @@
 		</dict>
 		<key>Headers/SCDSvgViewBoxConstraint.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			r6kdrXfMARQUMPZmrxAXAt6TItw=
-			</data>
 			<key>hash2</key>
 			<data>
 			4pOs7dsE/KX7WRqqJ8GSYymBASWMYiMf9eu9+NK0CRY=
@@ -2382,10 +1554,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsAlphabeticalList.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			DXeY6J5V2bcsbIEFoKesNTcItwc=
-			</data>
 			<key>hash2</key>
 			<data>
 			fSTY4gohO0uBNBw8bi/jPFO8FwVchMIIY6foJCXZNWs=
@@ -2393,10 +1561,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsButton.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			QC7PUr9wYrf3MJ0jhSE8Sz0vHHY=
-			</data>
 			<key>hash2</key>
 			<data>
 			6gSIP7UJggdG9EES4ljxfKaMy9yHgYwbD9mz+/TZ0MM=
@@ -2404,10 +1568,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsCheckbox.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			3fwgZw/had7lEI+Raz2aft8jGLA=
-			</data>
 			<key>hash2</key>
 			<data>
 			g2HXKxG33Oe3kLt8hi30hr1wJMyl5By+OOA9zVFQd3E=
@@ -2415,10 +1575,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsClickable.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			b4uHeGB1zGWL7vlEtJ1JcBiC914=
-			</data>
 			<key>hash2</key>
 			<data>
 			ov+9iDFG+9oHJuKXkFx65Xct0AhqZd5S83CMdpcVvrQ=
@@ -2426,10 +1582,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsContainer.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			uiPAri0RXQy2gk60j2PpFzDDl0g=
-			</data>
 			<key>hash2</key>
 			<data>
 			sFd4a2qzq9XDimsNceyoYy/uxwpRLG7ot7qBhaoUrnY=
@@ -2437,10 +1589,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsCustomWidget.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			D+hl6bwSNm40Hbb2LQGZRAoe61E=
-			</data>
 			<key>hash2</key>
 			<data>
 			6tRVRtWa8S6AvsrSur997qyApmNSN4mUKchuR8CaR4I=
@@ -2448,10 +1596,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsDataPicker.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Bi/kSzDKKBoA5nMwqQ/tJPun2JQ=
-			</data>
 			<key>hash2</key>
 			<data>
 			6Pb9oUhvjePCmNKyMdjhP2IV+vokW3soLzVHA5NvAys=
@@ -2459,10 +1603,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsDataWheel.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Ij2KfqmwCraMpG0UYNJgq7du2IU=
-			</data>
 			<key>hash2</key>
 			<data>
 			4GLuH7lX6roVBYvLPe4pqIreZZfXeyj3u5vQZLz8TqQ=
@@ -2470,10 +1610,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsDatePicker.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			sDN+7beevod4eRaJ+arzyhfGD+c=
-			</data>
 			<key>hash2</key>
 			<data>
 			ZepuQX+xQHj3SToieL7n5pKMODdkw8h5V+OVXtACBtg=
@@ -2481,10 +1617,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsDatePickerEvent.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Sx//t+PbY4EmrIa/geJow7DXNIE=
-			</data>
 			<key>hash2</key>
 			<data>
 			M6aWeL+QhSK770Lcw2+QpPIy9Ux4ZLecayjYPKRedhc=
@@ -2492,10 +1624,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsDatePickerEventHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			N59TLtwLREKFIt8tivqaoa2zqSU=
-			</data>
 			<key>hash2</key>
 			<data>
 			aKmW6N60jzpsADamKZPc2kUfFTf7wVFG/jf4oB+Umyk=
@@ -2503,10 +1631,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsEditFinishEvent.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			uEMIZw4pCwCl6vzj+jLFrEUe0Oo=
-			</data>
 			<key>hash2</key>
 			<data>
 			G5wfoUwMcfxmoEtvzXSPnoPicIp0Qxmfmp9d0EWYoI4=
@@ -2514,10 +1638,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsEditFinishEventHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			QsBxIUS8ZRLgl4hxrYhZZvPA31g=
-			</data>
 			<key>hash2</key>
 			<data>
 			dQsDGM4+OeqlAJguPuW+nVguJfOXCEHqriKxIS8GI3g=
@@ -2525,10 +1645,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsEnterEvent.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			VlEbSPuXTfagee7ZJ7Z13Qn9bNE=
-			</data>
 			<key>hash2</key>
 			<data>
 			OYQLvZS6rkZnyPG2Dw4Cokgmj+KmxiWg9TJ209BKDOw=
@@ -2536,10 +1652,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsEnterEventHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			rlTVHgRUz37jElnpxX1WIkCpu70=
-			</data>
 			<key>hash2</key>
 			<data>
 			4V86k0QupD+l3KiQDLxoUBveBQV9anzLNhNcIZz5bUU=
@@ -2547,10 +1659,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsEvent.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			yTluUWomKL4CESly+TF9gPiZvwU=
-			</data>
 			<key>hash2</key>
 			<data>
 			FKQQ0m3zkouWFlOBuAd6ovwTUxRU9iD4hFqAHU6rOkA=
@@ -2558,10 +1666,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsEventHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			QOFtx/79mySZQ93dkXFYhQyH0ns=
-			</data>
 			<key>hash2</key>
 			<data>
 			PZKAzhk0hYvEBEMqHDNryTAlWVlmWA+tgrNJ4dVsVCM=
@@ -2569,10 +1673,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsExitEvent.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			LOOVWf+WSegBPQWnorUqz0E9z9U=
-			</data>
 			<key>hash2</key>
 			<data>
 			JTjA9K6uTOKsUAK7jzAJaCMRIwaE8h8RPbt5eNQwUsQ=
@@ -2580,10 +1680,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsExitEventHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			OKjBxONZ9y/FGF8l5JKyjp/3y6M=
-			</data>
 			<key>hash2</key>
 			<data>
 			wCYAadhFQgc4naVn+oTRIs55aH0LlM94Ou8p4bINTQw=
@@ -2591,10 +1687,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsGridView.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			7CVkiloqVd/g+8sRvbV89uYP70k=
-			</data>
 			<key>hash2</key>
 			<data>
 			AkLEPdBSWy//XrZds3Gy61bxcYbsVquX2G3z/XupdsU=
@@ -2602,10 +1694,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsIContainer.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			zLk5h12F2UkLmuLDMvIMIa5unGE=
-			</data>
 			<key>hash2</key>
 			<data>
 			xrKW6ugwi0/ePd0nWbBT4okLH/9t5XT2r4mX15E0Bn8=
@@ -2613,10 +1701,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsIControl.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			7DV2WBVU0y7vlFUHVLO9LO1Cwuo=
-			</data>
 			<key>hash2</key>
 			<data>
 			18U4sZlinHl+7qDJfooZmB6jPSikeoeXzOiPyAhoAvs=
@@ -2624,10 +1708,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsIVisualControl.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			DpdZNhTAJWTPQacwlISqf/inJa0=
-			</data>
 			<key>hash2</key>
 			<data>
 			HZ5W84OAxIEqXGiYMYpMktobJxB3dowhFibknz8EuQk=
@@ -2635,10 +1715,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsImage.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			AbSKYozv0gBywX9jrTfdWzfO+3A=
-			</data>
 			<key>hash2</key>
 			<data>
 			GYDmR+FwIfe6hWNpjSVwEnzKVPv3tJeDsEg4p3sEJmc=
@@ -2646,10 +1722,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsItemEvent.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			J1Zam/nzlqkpkzAxvV0JvIINfAg=
-			</data>
 			<key>hash2</key>
 			<data>
 			LqoPT1xGi5+b7yw5ZEw4voYBdlDXur3KbZCu6Fr5Szc=
@@ -2657,10 +1729,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsItemSelectedEvent.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			xEmoYcwKfcp/1Z80bpgfSUtUiao=
-			</data>
 			<key>hash2</key>
 			<data>
 			1eDuypOdeUxc19iew46fAj370SrDKEFB9/MuAw3sxM8=
@@ -2668,10 +1736,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsItemSelectedEventHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			sejjr4Nf7b9wBuxCtNvRxygnBb0=
-			</data>
 			<key>hash2</key>
 			<data>
 			pwpCBtsn+e3S1f+XkY3PWBhG961ktpZVVyzgN9Qjtkc=
@@ -2679,10 +1743,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsLabel.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			IjtBoJ+FJKetaqQE11rBBtav9nk=
-			</data>
 			<key>hash2</key>
 			<data>
 			cpFF1yq3X/kq1/se4P+kHO+Z1clWdvlnlHvDHcSsU3k=
@@ -2690,10 +1750,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsLayoutable.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			dFEkSnl0YyRyV5cCzJFJn/a4ztI=
-			</data>
 			<key>hash2</key>
 			<data>
 			+eYjcoa3ey+uwcV9GgU1t8UL40Mp43Ab5XtgThrYN4E=
@@ -2701,10 +1757,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsList.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			IphklhvDZzmsn4wGJGEPjaz3lJ4=
-			</data>
 			<key>hash2</key>
 			<data>
 			jHMcbAY9CzuNbk6+/Ful6lDwGTs9JTQfcDuKcODKHic=
@@ -2712,10 +1764,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsListElement.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			GtQkz5xFNAEULwUHKipH+vyCa/0=
-			</data>
 			<key>hash2</key>
 			<data>
 			fgJZ1ESSFq3d+TGaoc4yB3wAZQu++83xVodkWbZ42QU=
@@ -2723,10 +1771,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsListElementProvider.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			CuovFIufSLqpdDYRsYpWsXDCB+M=
-			</data>
 			<key>hash2</key>
 			<data>
 			QgZX3e211aGN5WGkG8LPDeKKEFeOSJGeGJS1s9mu/HA=
@@ -2734,10 +1778,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsListLayout.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			uZZBBpQXpjb7w7bWz8qikSi/dzU=
-			</data>
 			<key>hash2</key>
 			<data>
 			6n3QE9vJ8//lmNfBxHwBhdiEBTW8NOW1gOdufMZgv3k=
@@ -2745,10 +1785,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsListTemplate.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			JKB19YsHueAip7Fm3HiUpOAgK/c=
-			</data>
 			<key>hash2</key>
 			<data>
 			xI1kSK55vUKdXUbipwjgkAzDsqKRbZP1n/oKLyZZrW0=
@@ -2756,10 +1792,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsListView.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			+MHqc6P+/AkIKCgEukQs6i9KJAo=
-			</data>
 			<key>hash2</key>
 			<data>
 			1kEOgOr9tomJKwRz1pmPzXHnI2/OhLh2zPghAIGbuMs=
@@ -2767,10 +1799,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsLoadEvent.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			+f+Z4wvtjTKXDMzJxS1n3ksuLSw=
-			</data>
 			<key>hash2</key>
 			<data>
 			0sL2UdakSmI1yIkXR7KephDnxFuc0aBhsTh/vw+k5OY=
@@ -2778,10 +1806,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsLoadEventHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			PbXETHG/0AXD6jzPx8D+dqX9mQo=
-			</data>
 			<key>hash2</key>
 			<data>
 			i6dUpi4ziW35e+jj4gHaz7cjWF1YchwPSvSy14xSE8E=
@@ -2789,10 +1813,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsLoadFailedEvent.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			wRHXwFQao+0VEk0zCEzzaa9Y82M=
-			</data>
 			<key>hash2</key>
 			<data>
 			rkw8D6eB0euBAx7VYQo4oMC8ZHZ9KoWwyFjU7HXJShU=
@@ -2800,10 +1820,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsLoadFailedEventHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			TSPFDNLdAbTX6i6k4K46ku5lo8Y=
-			</data>
 			<key>hash2</key>
 			<data>
 			R0EmhQVnmqk68IDfYqMB6HDtzgonxxaPAcYpCVLDfv0=
@@ -2811,10 +1827,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsMapAnnotation.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			+sgeQGjwrd4coYQlgeK6ALY5UsQ=
-			</data>
 			<key>hash2</key>
 			<data>
 			uyUBUMZg+Qo2oiwrxMXEBpiCo61aJEVhd+7RKF6Y++0=
@@ -2822,10 +1834,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsMapOverlay.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			uMXs3jwwNuo4NpM91aaQg+nE/kE=
-			</data>
 			<key>hash2</key>
 			<data>
 			Od86H7hFSy9u7+JiWCS4tgaKDkLXluXUBO/WVd8Mvm0=
@@ -2833,10 +1841,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsMapRegion.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			ii+yPvbBLRls7uzoVCfJJ1cx2jA=
-			</data>
 			<key>hash2</key>
 			<data>
 			zqHkz4sg+dvBRS50Ewf1LlIWVurmQhW1kUEzXfLdBBE=
@@ -2844,10 +1848,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsMapWidget.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			35HPGMvBHKesvKVG2C+kudoY/w0=
-			</data>
 			<key>hash2</key>
 			<data>
 			TvzRHUixGNsYRtPEl9/MBN7POEwMBUeNF+/xkpzaaNg=
@@ -2855,10 +1855,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsNativeWidget.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			rCU5q5/R4r1rIBZ2mbBfBS9WpBk=
-			</data>
 			<key>hash2</key>
 			<data>
 			4NKKetd5+uNf2fyOP7al1UzucDE5foGAnFwB7C6fA+U=
@@ -2866,10 +1862,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsNavigationBar.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			zT/hrSNvNKT0hhNUtlxwL+SSHjA=
-			</data>
 			<key>hash2</key>
 			<data>
 			QE1Zdm+B8RmF3wdobryGHMJkAxSb3D+/q/zN1qKYhic=
@@ -2877,10 +1869,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsNavigationEvent.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			rVjj/nJ0HLKS1GgKIPifaoox9+c=
-			</data>
 			<key>hash2</key>
 			<data>
 			6rY7xq+kzqzL0CKAmjThCWISb49BzAKWq7M2NHHStoo=
@@ -2888,10 +1876,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsPage.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			lmSrKD74B7qRoPjzBvLtqcV9VpE=
-			</data>
 			<key>hash2</key>
 			<data>
 			ceHH422f++Zfma4l0+vGbJMsa53+6ikyrOm9ypn7dow=
@@ -2899,10 +1883,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsRowView.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			pMORiHqI52UBMfkMt8eu46YGEDE=
-			</data>
 			<key>hash2</key>
 			<data>
 			SjuzVndOXYuFkcRX3rbjRAiIDMLtqOlA9rVdNToy0Tg=
@@ -2910,10 +1890,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsShouldLoadEventHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			+5w9ry+Ic7UZdPC/pAC7HDNYEh4=
-			</data>
 			<key>hash2</key>
 			<data>
 			T5AYxHZoRjMEdYL150NCJFUW/lxjn8/h89cnGaLJ7tU=
@@ -2921,10 +1897,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsSidebar.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			YXYHd49JpHP0uHV6PDhHSLYiCY8=
-			</data>
 			<key>hash2</key>
 			<data>
 			N8zqhyzmklZx7Q1g75xWnDe8KNxCE1r0Rf3OOYL9OaA=
@@ -2932,10 +1904,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsSlideEvent.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			37Ixxhce2tfl83vRbeE62GKvfXs=
-			</data>
 			<key>hash2</key>
 			<data>
 			shJooRTx9wJKRRnhvNMNfv3LAXPUdXxh67DNsBrt20M=
@@ -2943,10 +1911,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsSlideEventHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			U4DtZc/3wuRTVb0ocBGEMxZBUpw=
-			</data>
 			<key>hash2</key>
 			<data>
 			G8z6sUWiqZxVNOBRO4Z+QJb0jZZAdzxlw2NBVcDnwNM=
@@ -2954,10 +1918,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsSlideLineEvent.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Du3GzzR3rRvWkQltqs5uzZAP/Is=
-			</data>
 			<key>hash2</key>
 			<data>
 			6Ye/CIr8yCrRLNPprbdxiQTO5Hha7xL7/8fkAfyGlgo=
@@ -2965,10 +1925,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsSlideLineEventHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			/0nkhKIHHP99ZMsL7sTi9TKIuPE=
-			</data>
 			<key>hash2</key>
 			<data>
 			II6Jd3elihXNDr7IrKg5xJ4Cv2rMvZ8WV4EEifITUY0=
@@ -2976,10 +1932,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsSlider.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			R3G0m2Ju8+rf9RrnzI/riA8VSN0=
-			</data>
 			<key>hash2</key>
 			<data>
 			PniZdrPGmn02JPSoyDVaNWqrSIx1wvAVmmITq1zBq6I=
@@ -2987,10 +1939,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsSliderLayout.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Ed12E81pbqMsfqqQOL+/JiOnG/Y=
-			</data>
 			<key>hash2</key>
 			<data>
 			2dYXcCOyAPTPdoGZ6Ll21P4m7mXROG8gtVMJXc/w+N8=
@@ -2998,10 +1946,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsSliderLine.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			++XYZLiJ6oQwK2bfeDtWX7hoe9E=
-			</data>
 			<key>hash2</key>
 			<data>
 			7SeOInqA7jRwB8MQa6Q1sF6vlycfz+oBZZ95vnbHOB4=
@@ -3009,10 +1953,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsStringTransformer.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			9Zmu55Vsqpmb+FOm0J00Thm7fD8=
-			</data>
 			<key>hash2</key>
 			<data>
 			5bouUsB/slJM9N7BkXn31s5KpTOZiyF37IjCCj0opG0=
@@ -3020,10 +1960,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsTabButton.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			/AL732El+JxYnAKDtC+accddOeg=
-			</data>
 			<key>hash2</key>
 			<data>
 			6e6ZBRDwYcWZvYhEfnPqD1CdFb7riC+sRabtFIW2sEI=
@@ -3031,10 +1967,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsTabButtonsPanel.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			+NgutD2f5wmqLwqQr6galu2qqY0=
-			</data>
 			<key>hash2</key>
 			<data>
 			BPDF9YmsakItrtRxYMHHb8e+GGD6jfzOMRZbpvTAMYo=
@@ -3042,10 +1974,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsTabContentPanel.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Bq2ZDGy9qLnKafu41s0oxOUGDJY=
-			</data>
 			<key>hash2</key>
 			<data>
 			7Zp9YlZj1jd+9NUGXHXaJ35vU5p+H6Hyy8snalZk/Ms=
@@ -3053,10 +1981,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsTabbedView.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			m4+BenAl2Sc5XNiuiSfCy2SaPQg=
-			</data>
 			<key>hash2</key>
 			<data>
 			Lh3+u5vmZU6RrbCZG8lDmfqq2bsX/m5f2IzulKfe0Ds=
@@ -3064,10 +1988,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsTabbedViewLayout.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			25RqPzY1OGAgshZW6HAEk/21HYg=
-			</data>
 			<key>hash2</key>
 			<data>
 			Er+nt00WKDYQcPqN/p+wmo6cDvDlo0IF9aAvl3gUmhA=
@@ -3075,10 +1995,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsTextChangeEvent.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			H5Z6BZjJswCfL8UMaNR7SSJKIR8=
-			</data>
 			<key>hash2</key>
 			<data>
 			/jsHAoXmeieNCSXKVHXBPNMI9j8uVF85c06DICBXPXg=
@@ -3086,10 +2002,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsTextChangeEventHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			YpwsE4GPNrMm3nPQxfwwNQl565Q=
-			</data>
 			<key>hash2</key>
 			<data>
 			PxLuoaPANDhb8VukcUpaNvdYnD8Tb6jlPb4JHf5oTPw=
@@ -3097,10 +2009,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsTextWidget.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			BlN51I/7pmMEgLSw5343MNJ00Dg=
-			</data>
 			<key>hash2</key>
 			<data>
 			6pteaBf3MDdy/mleGzQFLCMGC/iezgyKLxLvCm0cCVQ=
@@ -3108,10 +2016,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsTextbox.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			pcRZnuvag9C3CTQSzul5ErNqCXE=
-			</data>
 			<key>hash2</key>
 			<data>
 			mQ+spANqCaYe9Cbe+IBsrqAVev6X/g3Lf4yFz7ETxVE=
@@ -3119,10 +2023,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsToolBar.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			ylFwSXWCZyCmCbBkhHTtYdWgxig=
-			</data>
 			<key>hash2</key>
 			<data>
 			JdGytPYN++S+JFiykoJSkQcOuzPt5rkGW9PN/mu79IE=
@@ -3130,10 +2030,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsToolBarItem.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Hq/dD+pQ0JdRvY1SoUoVt2GK5s4=
-			</data>
 			<key>hash2</key>
 			<data>
 			2R2zVF7QNWu1NKbJQviLGetDxshgCHB8ZXtehPBE7QU=
@@ -3141,10 +2037,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsVideoCaptureHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			ANk5BOs1rmU/y+4Wien69jfzkxo=
-			</data>
 			<key>hash2</key>
 			<data>
 			zFBKdM7Yd8d9LWbT5AdHNdGu8Yo0a5Y9hPMQSaozVyk=
@@ -3152,10 +2044,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsVideoCaptureView.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			kgeip2rcXJ0yzS+CFml5mbu+iUc=
-			</data>
 			<key>hash2</key>
 			<data>
 			T9hwhrD7xFaXh1OkCetfzZIClsSkp+7Td/M11/nA+1Y=
@@ -3163,10 +2051,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsWebView.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			qdZi9UIt2wjOXukwd4V1Og2fJlg=
-			</data>
 			<key>hash2</key>
 			<data>
 			e+qAT3KkyQQLZrU547pyvrpp6OStfT8G8AQExlVanhU=
@@ -3174,10 +2058,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsWebViewEvalHandler.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			/SsfKU1cDiN0FO9KfotjZJOEQb4=
-			</data>
 			<key>hash2</key>
 			<data>
 			cFYuEslc1mHsNkNacKBi9oPg04JdWJEHc+d39PKQqVY=
@@ -3185,10 +2065,6 @@
 		</dict>
 		<key>Headers/SCDWidgetsWidget.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			dOi0fvR89C+GARvIiCUa6mcGeuI=
-			</data>
 			<key>hash2</key>
 			<data>
 			It9Hww2Oaiw4CnUvh1/cCgelPDhRzIAfi5t25dvz8RE=
@@ -3196,10 +2072,6 @@
 		</dict>
 		<key>Headers/ScadeKit-Defs.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			cFQbvc2O8YhULvlTs4EzmYHMFCs=
-			</data>
 			<key>hash2</key>
 			<data>
 			KeDuA/B9uC+TIhso8JSicha5x6+Y06wzuhpjZgaCMoU=
@@ -3207,10 +2079,6 @@
 		</dict>
 		<key>Headers/ScadeKit-Swift.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			wwrtquUyPM7wDzencDwoNpmS/YM=
-			</data>
 			<key>hash2</key>
 			<data>
 			ShqYGJfjpqTB/mKV891hwbuSJ7icZ6cNVyW1dpS/rKY=
@@ -3218,10 +2086,6 @@
 		</dict>
 		<key>Headers/ScadeKit.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			jR59D05LEMWccN9NdjICm2QMFRs=
-			</data>
 			<key>hash2</key>
 			<data>
 			iKBS33gZbXxcbpM1cIFWN+EggBNT9eM4KFV96NEf/xY=
@@ -3229,10 +2093,6 @@
 		</dict>
 		<key>Headers/binding.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			0+Hl5ArLhUrGxDhX/f4pfSpE0YY=
-			</data>
 			<key>hash2</key>
 			<data>
 			AwR6Bu+i5wPL6d/isXKF3fKnSAgbW3KgaM/rYeZoT5E=
@@ -3240,10 +2100,6 @@
 		</dict>
 		<key>Headers/common.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			vs/D5dNS8sRDbEr0s/nnDHdzpiE=
-			</data>
 			<key>hash2</key>
 			<data>
 			AH/gzHF0SNMPBqCVcN9/SAbF77km3M3LNpY0aVHevkk=
@@ -3251,10 +2107,6 @@
 		</dict>
 		<key>Headers/core.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			kdRSJe5wuD98zBRtmyCGge1nchw=
-			</data>
 			<key>hash2</key>
 			<data>
 			sU9Ef3T2LuGX+8oBNDl3/VPFZOQNV62gbk/UQ+hy6yY=
@@ -3262,10 +2114,6 @@
 		</dict>
 		<key>Headers/ecore.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			sK0ZTLFI27Qb1R8zMnzeoOfvg1M=
-			</data>
 			<key>hash2</key>
 			<data>
 			R8HM8wk5jmGqaAc+Ea7htyHULjPKTABQ2E9A6OaSlOM=
@@ -3273,10 +2121,6 @@
 		</dict>
 		<key>Headers/expr.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			qg+CmcfKMaoc0XudZ29mkOel80E=
-			</data>
 			<key>hash2</key>
 			<data>
 			sE0BgcSK6luccluU352Hp/VlDPzqboA72d6Cxt1hY8Q=
@@ -3284,10 +2128,6 @@
 		</dict>
 		<key>Headers/graphics.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			dVy8gCtrtZI8NoXSJ14hQJuuPQo=
-			</data>
 			<key>hash2</key>
 			<data>
 			ws58EkTx6EBhehH0Zkaep5Dd99Dw8o47o8G/9094/bE=
@@ -3295,10 +2135,6 @@
 		</dict>
 		<key>Headers/lattice.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			87o69RrkxeIWuCyx1wQxgC1PS9M=
-			</data>
 			<key>hash2</key>
 			<data>
 			J36SoNXvsqqFLnprzMqed8WMYDi8+R+jYWO0u1ZapxM=
@@ -3306,10 +2142,6 @@
 		</dict>
 		<key>Headers/layout.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			2Y1s2CL7JIBpRc+9QIZrbzfr6a0=
-			</data>
 			<key>hash2</key>
 			<data>
 			eMDnn1IThoW8eJ8oAuAHnBetnOufYRPPlGk9PUyOW0M=
@@ -3317,10 +2149,6 @@
 		</dict>
 		<key>Headers/network.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			jjvqR9O5m6gQ8oMLkuignSeZz3k=
-			</data>
 			<key>hash2</key>
 			<data>
 			FkQWqyjj3nAiK33OIQMSWctDzdV/46BaLi4xyl2vdFc=
@@ -3328,10 +2156,6 @@
 		</dict>
 		<key>Headers/platform.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			/SswqR5Z6DKWP7IHw7FfLW2s6UE=
-			</data>
 			<key>hash2</key>
 			<data>
 			U3+VVXOV024VoJIbXG4vx+cnTBuS31XM+Qn9ovBEbl0=
@@ -3339,10 +2163,6 @@
 		</dict>
 		<key>Headers/service.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			cVgqwKHqZ2o3menk9kX2T3HXhO8=
-			</data>
 			<key>hash2</key>
 			<data>
 			8yg2wRutKUqjTJQGwoo+GINRUVpeTw6MOfWZ9SzxOVM=
@@ -3350,21 +2170,13 @@
 		</dict>
 		<key>Headers/support.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			CwXeKSKmeBNslt3SJffQWkqblNU=
-			</data>
 			<key>hash2</key>
 			<data>
-			Q0WrssvRh9qiQDzUCMgQKpMiITM8oq3w4sq+j/GKXgw=
+			+CviyD4FwfieMMhBEXyClHd97yAtsliHqTUsx7cqcGI=
 			</data>
 		</dict>
 		<key>Headers/svg.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			ElWKcAO9qZm1J7qHitfYeDqOFf0=
-			</data>
 			<key>hash2</key>
 			<data>
 			Q4rNGmeesD9/dQMZl+nIIQTcmKu/ihc0Kew+TyEfVuk=
@@ -3372,10 +2184,6 @@
 		</dict>
 		<key>Headers/widgets.h</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			aP367EGz6T3T1UExBxzqjEwn9ic=
-			</data>
 			<key>hash2</key>
 			<data>
 			TU0ItB9kLD7BKsA7RXFwcaT/VAdSMtHxtaZ7diuC4Ko=
@@ -3383,21 +2191,13 @@
 		</dict>
 		<key>Modules/ScadeKit.swiftmodule/x86_64.swiftmodule</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			+jHT/WbHkGtDFTzkNvzucjCfVv4=
-			</data>
 			<key>hash2</key>
 			<data>
-			1t/CbPkjGSS6Hhwhzp9dK8dTaUnjCKXxybBI76XJghc=
+			rGVH8m/lPqlEvtmgReWxlkaagKXJELsJbor/6gPPPCs=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			R8qsSe9IbUybhPLDoc8aHrpWAsc=
-			</data>
 			<key>hash2</key>
 			<data>
 			1tMyyW87YpFrJsQCCDsj5m7+dth1X2Ek2ZsroHg61/M=
@@ -3405,21 +2205,13 @@
 		</dict>
 		<key>Resources/Info.plist</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			4tpXvedhgiDMo05/pDLiCdZqVR4=
-			</data>
 			<key>hash2</key>
 			<data>
-			U2Pr5kxFw787sRGHwi60MZqrK9iyjoJ4Av1eZploncE=
+			FKaGdaPpAB9c1dtMYdTuT36A3CsJXT+YiysJNvXINxk=
 			</data>
 		</dict>
 		<key>Resources/templates/AlphabeticalList.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Um/ECQaTu6xOcrNbBTxYpn+JSZM=
-			</data>
 			<key>hash2</key>
 			<data>
 			bqFMU7GqBcYqqQ1QN+yJcwT7cJzw59sIpHpbk8GnA6E=
@@ -3427,10 +2219,6 @@
 		</dict>
 		<key>Resources/templates/Button.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			JIMjlufoyepqKBybwI3rAz/8ZCc=
-			</data>
 			<key>hash2</key>
 			<data>
 			/mFOksVwSzgpWLpNiq5NTYnFc/GyFHvYe7rmcUqwngM=
@@ -3438,10 +2226,6 @@
 		</dict>
 		<key>Resources/templates/Checkbox.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			6OO4rhCLzmII/CI2jJbvW8mhKN4=
-			</data>
 			<key>hash2</key>
 			<data>
 			XRDoFT4P4YOnT6lV+DQBEJ1tQGlb6/cXJBRHT6h6kfU=
@@ -3449,10 +2233,6 @@
 		</dict>
 		<key>Resources/templates/Container.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			aaZok1M/XfEDnNfjlKOf6mWoBsw=
-			</data>
 			<key>hash2</key>
 			<data>
 			onltyvfqJJnG9gHVNEXtJja/FxkEMvC8GlfpCDwtzQM=
@@ -3460,10 +2240,6 @@
 		</dict>
 		<key>Resources/templates/CustomWidget.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Le/OiuGQqm7kHonKbdlA7WE1nlM=
-			</data>
 			<key>hash2</key>
 			<data>
 			QlRx5Kf+Sz7cpajAOvb9v+Aq5qjTnLETesm5maAL0DE=
@@ -3471,10 +2247,6 @@
 		</dict>
 		<key>Resources/templates/DataPicker.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Ba1r9ScJtqnQBMSWH8/oqTt0o1E=
-			</data>
 			<key>hash2</key>
 			<data>
 			hoGkW54zMBYMpZY9tV+QUc3C4VfxIXPvufTvbAWaR8g=
@@ -3482,10 +2254,6 @@
 		</dict>
 		<key>Resources/templates/DatePicker.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			AZMJLMsvko7G8xRdEvzdjto3Sd0=
-			</data>
 			<key>hash2</key>
 			<data>
 			Zqgq+jy5jxCqzHXURK77MImeJxLV6A2wMo7j3EwsCnI=
@@ -3493,10 +2261,6 @@
 		</dict>
 		<key>Resources/templates/GridView.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			U9ahtZUGsePs2ofGa1aKDo9l2mM=
-			</data>
 			<key>hash2</key>
 			<data>
 			VZWItPIPTMILK631/V8wKSDLqR6OaOQmDIOIBoj5yI8=
@@ -3504,10 +2268,6 @@
 		</dict>
 		<key>Resources/templates/Image.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			K2SCMNtyHfwGksEJrBUPYkOqw68=
-			</data>
 			<key>hash2</key>
 			<data>
 			CV4cv5rSrBiPey6dT3bgZKzm+wwokYAAU+n/KOghDrY=
@@ -3515,10 +2275,6 @@
 		</dict>
 		<key>Resources/templates/Label.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			hutkF7i+CFYTBgpoR5NqNDNVqEA=
-			</data>
 			<key>hash2</key>
 			<data>
 			MDR+IDlpfxxzpuBtEV9l4nVY17NAKeDTF3jmgkshhus=
@@ -3526,10 +2282,6 @@
 		</dict>
 		<key>Resources/templates/List.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			GcNCkqhnrMqqJC37AwfIHCYP8VM=
-			</data>
 			<key>hash2</key>
 			<data>
 			3LJL0tt8a79pWU6LQImdMYza3c4YWUMqQgj89nNs5nI=
@@ -3537,10 +2289,6 @@
 		</dict>
 		<key>Resources/templates/ListElement.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			LxxGu22Z81S3p4Mywdy6lZTWd0o=
-			</data>
 			<key>hash2</key>
 			<data>
 			4Wdp5c6peQVCTiwNjZ0fDaJobOJFepzse6DzdGPSXho=
@@ -3548,10 +2296,6 @@
 		</dict>
 		<key>Resources/templates/ListView.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			21dchzg2uQo3XCKV/MPED4e8rYU=
-			</data>
 			<key>hash2</key>
 			<data>
 			lRObgbjMe6vFc35JeigyX2QBWe6uZlwZnSG9b38XcQM=
@@ -3559,10 +2303,6 @@
 		</dict>
 		<key>Resources/templates/MapWidget.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			OSyFujrba2rTV/B1y6aEI3JAlYQ=
-			</data>
 			<key>hash2</key>
 			<data>
 			KYaFfOb2JUOf1QCDYnVgBtSB48eZnpAege5arc8sk4o=
@@ -3570,10 +2310,6 @@
 		</dict>
 		<key>Resources/templates/NavigationBar.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			aKWd7Rh7BHbc8Q37VFwgXcgObNg=
-			</data>
 			<key>hash2</key>
 			<data>
 			9uivmKrQ/6tL0Kt6691ToxIMexu8o0xIOmgqLZIUowc=
@@ -3581,10 +2317,6 @@
 		</dict>
 		<key>Resources/templates/RowView.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			tqJFMYRKTNYTg4Y5oZ/WufIXinc=
-			</data>
 			<key>hash2</key>
 			<data>
 			JDuwkLvwoLTLl9K+NEJ7S95nCl4Tj3a6Zvqd6yjTmeI=
@@ -3592,10 +2324,6 @@
 		</dict>
 		<key>Resources/templates/SliderLine.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			QWZdVcceQey30d+7H14MHiWAHGo=
-			</data>
 			<key>hash2</key>
 			<data>
 			yu0IIA8TZtN/qpR44NN8aqDITguaqYVRKu32BKTbHMg=
@@ -3603,10 +2331,6 @@
 		</dict>
 		<key>Resources/templates/TabbedView.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			d2AtTQOxG6mFgQtoKPJangQCids=
-			</data>
 			<key>hash2</key>
 			<data>
 			cOHNLTbHC1c5xkEU23j6RcXQlOzkoJTA4kSkcb38ej0=
@@ -3614,10 +2338,6 @@
 		</dict>
 		<key>Resources/templates/Textbox.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			/nxwPw2i0G1ECnBzsCpMESuktm4=
-			</data>
 			<key>hash2</key>
 			<data>
 			grytEylK1KgA6Xbw7GtXc9UiDtdKLJnWkoxOvqW36RM=
@@ -3625,10 +2345,6 @@
 		</dict>
 		<key>Resources/templates/ToolBar.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			ld2vov4o8ODN5DOX00zg6PMNjKo=
-			</data>
 			<key>hash2</key>
 			<data>
 			uL/HF0Fwl8gctxq903p9KMKusQy7X/plc1GzNNKPCu8=
@@ -3636,10 +2352,6 @@
 		</dict>
 		<key>Resources/templates/ToolBarItem.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			GiT5SQGf0PgzT8Qq0viTQXo8tfA=
-			</data>
 			<key>hash2</key>
 			<data>
 			c421h7mFA2zd45g50Hd+YnRb9HXjJVUgqpgE2dJOe2A=
@@ -3647,10 +2359,6 @@
 		</dict>
 		<key>Resources/templates/VideoCaptureView.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			f0e9cH4GB19pviQccau3Omb4gcQ=
-			</data>
 			<key>hash2</key>
 			<data>
 			TSVtswv1jSPJZw8dGzHv/KeNgkwYNfgAMMeswO/cj/c=
@@ -3658,10 +2366,6 @@
 		</dict>
 		<key>Resources/templates/WebView.xmi</key>
 		<dict>
-			<key>hash</key>
-			<data>
-			Jc9Utna7kBWylqK5UpuiYiehwik=
-			</data>
 			<key>hash2</key>
 			<data>
 			tnlzT6XzzAPkW6AkTgcqdmtKTw5dea6VvZBf/+Ryr2A=
