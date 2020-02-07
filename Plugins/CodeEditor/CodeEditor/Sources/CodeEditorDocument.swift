@@ -17,12 +17,13 @@ public final class CodeEditorDocument: NimbleDocument {
   }()
   
   public var language: Language? {
-    didSet {
-      if let grammar = language?.grammar {
-        self.syntaxParser = SyntaxParser(textStorage: textStorage, grammar: grammar)
-      } else {
+    willSet(lang) {
+      guard lang != self.language else { return }
+      guard let grammar = lang?.grammar else {
         self.syntaxParser = nil
-      }      
+        return
+      }
+      self.syntaxParser = SyntaxParser(textStorage: textStorage, grammar: grammar)
     }
   }
   
@@ -40,7 +41,22 @@ public final class CodeEditorDocument: NimbleDocument {
     return controller
   }()
     
-
+  
+  public override var fileURL: URL? {
+    get { return super.fileURL }
+    set {
+      super.fileURL = newValue
+      self.language = fileURL?.file?.language
+    }
+  }
+  
+//  public override func save(withDelegate delegate: Any?,
+//                            didSave didSaveSelector: Selector?,
+//                            contextInfo: UnsafeMutableRawPointer?) {
+//
+//    super.save(withDelegate: delegate, didSave: didSaveSelector, contextInfo: contextInfo)
+//    self.language = fileURL?.file?.language
+//  }
     
   public override func read(from url: URL, ofType typeName: String) throws {
     self.language = url.file?.language
@@ -58,28 +74,18 @@ public final class CodeEditorDocument: NimbleDocument {
   public override func data(ofType typeName: String) throws -> Data {
     return textStorage.string.data(using: .utf8)!
   }
-  
-  public override func updateChangeCount(_ change: NSDocument.ChangeType) {
-    let lang = fileURL?.file?.language
-    if change == .changeCleared, self.language != lang {
-      self.language = lang
-    }
-    super.updateChangeCount(change)
-  }
 }
 
 
 extension CodeEditorDocument: Document {
-  public static var typeIdentifiers: [String] { ["public.text", "public.data", "public.svg-image"] }
+  public static var typeIdentifiers: [String] {
+    ["public.text", "public.data", "public.svg-image"]
+  }
   
   public static var usupportedTypes: [String] {
-    //all this UTI in the most cases conforms to public.data
-    return ["public.archive",
-            "public.executable",
-            "public.audiovisual-​content",
-            "com.microsoft.excel.xls",
-            "com.microsoft.word.doc",
-            "com.microsoft.powerpoint.​ppt"]
+    //all these UTIs in the most cases conforms to public.data
+    [ "public.archive", "public.executable", "public.audiovisual-​content",
+      "com.microsoft.excel.xls", "com.microsoft.word.doc", "com.microsoft.powerpoint.​ppt"]
   }
 
   public var editor: WorkbenchEditor? { codeEditor }

@@ -51,6 +51,18 @@ public extension Workbench {
   func open(_ doc: Document, show: Bool) {
     open(doc, show: show, openNewEditor: true)
   }
+  
+  func willSaveDocument(_ doc: Document) {
+    observers.notify {
+      $0.workbenchWillSaveDocument(self, document: doc)
+    }
+  }
+  
+  func didSaveDocument(_ doc: Document) {
+    observers.notify {
+      $0.workbenchDidSaveDocument(self, document: doc)
+    }
+  }
 }
 
 
@@ -59,6 +71,8 @@ public protocol WorkbenchObserver: class {
   func workbenchDidChangeProject(_ workbench: Workbench)
   func workbenchDidOpenDocument(_ workbench: Workbench, document: Document)
   func workbenchDidCloseDocument(_ workbench: Workbench, document: Document)
+  func workbenchWillSaveDocument(_ workbench: Workbench, document: Document)
+  func workbenchDidSaveDocument(_ workbench: Workbench, document: Document)
   func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?)
 }
 
@@ -67,6 +81,8 @@ public extension WorkbenchObserver {
   func workbenchDidChangeProject(_ workbench: Workbench) { return }
   func workbenchDidOpenDocument(_ workbench: Workbench, document: Document) { return }
   func workbenchDidCloseDocument(_ workbench: Workbench, document: Document) { return }
+  func workbenchWillSaveDocument(_ workbench: Workbench, document: Document) { return }
+  func workbenchDidSaveDocument(_ workbench: Workbench, document: Document) { return }
   func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) { return }
 }
 
@@ -94,8 +110,11 @@ public protocol WorkbenchPart: class {
 
 
 
-
+///TODO: avoid constraining the protocol to the NSViewController
 public protocol WorkbenchEditor: NSViewController {
+  var workbench: Workbench? { get }
+  
+  ///TODO: replace by Commands
   // Shown within the app's main menu
   var editorMenu: NSMenu? { get }
   
@@ -107,15 +126,17 @@ public protocol WorkbenchEditor: NSViewController {
 
 
 public extension WorkbenchEditor {
+  var workbench: Workbench? {
+    return view.window?.windowController as? Workbench
+  }
+  
   var editorMenu: NSMenu? { nil }
     
   func focus() -> Bool {
     return view.window?.makeFirstResponder(view) ?? false
   }
   
-  func publish(diagnostics: [Diagnostic]) {
-    
-  }
+  func publish(diagnostics: [Diagnostic]) { }
 }
 
 

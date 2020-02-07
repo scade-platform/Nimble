@@ -130,6 +130,7 @@ class NimbleController: NSDocumentController {
     openProject(withContentsOf: url)
   }
   
+  ///TODO: move to commands
   override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
     if menuItem.tag == 53 {
       menuItem.title = currentWorkbench?.debugArea?.isHidden ?? true ? "Show Console" : "Hide Console"

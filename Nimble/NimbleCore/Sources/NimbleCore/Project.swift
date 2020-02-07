@@ -7,6 +7,8 @@
 //
 
 import Yams
+import Foundation
+
 
 public final class Project {
   struct RawData: Codable {
@@ -60,7 +62,14 @@ public final class Project {
     let content = try YAMLEncoder().encode(RawData(folders: folders))
     try content.write(to: path)
   }
-      
+  
+  private func save() {
+    guard let path = path else { return }
+    do {
+      try save(to: path)
+    } catch {}
+  }
+  
   public func add(_ folder: Folder) {
     guard let path = self.path else {
       projectFolders.append(ProjectFolder(folder: folder))
@@ -84,13 +93,13 @@ public final class Project {
     }
     save()
   }
-  
-  private func save() {
-    guard let path = path else { return }
-    do {
-      try save(to: path)
-    } catch {}
+    
+  public func folder(containing url: URL) -> Folder? {
+    return folders.first {
+      url.absoluteString.starts(with: $0.path.url.absoluteString)
+    }
   }
+
 }
 
 

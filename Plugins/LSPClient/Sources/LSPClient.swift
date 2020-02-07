@@ -14,105 +14,124 @@ import LanguageServerProtocol
 
 
 public final class LSPClient {
-  static let clientCapabilities: ClientCapabilities = {
-    var capabilities = ClientCapabilities()
+  enum State {
+    case ready, initializing, initialized, failed
+  }
     
-    capabilities.workspace = WorkspaceClientCapabilities()
-    
-    capabilities.workspace?.configuration = true
-    capabilities.workspace?.workspaceFolders = true
-    
-    capabilities.textDocument = TextDocumentClientCapabilities()
-    capabilities.textDocument?.publishDiagnostics =
-      TextDocumentClientCapabilities.PublishDiagnostics(relatedInformation: true)
-    
-    
-    let completionItemCapabilities = TextDocumentClientCapabilities.Completion.CompletionItem (
-      snippetSupport: true,
-      commitCharactersSupport: true,
-      documentationFormat: [.markdown, .plaintext],
-      deprecatedSupport: true,
-      preselectSupport: true)
-      
-    capabilities.textDocument?.completion =
-      TextDocumentClientCapabilities.Completion(completionItem: completionItemCapabilities,
-                                                contextSupport: true)
-    
-    capabilities.workspace?.didChangeWatchedFiles = DynamicRegistrationCapability(dynamicRegistration: true)
-    capabilities.workspace?.didChangeConfiguration = DynamicRegistrationCapability(dynamicRegistration: true)
-    
-    return capabilities
-  }()
+  let connection: Connection
   
+  var openedDocuments: [ObjectIdentifier] = []
+  
+  weak var connector: LSPConnector? = nil
+
     
-  let server: Connection
+  private var initializing = DispatchGroup()
   
-  weak var connector: LSPWorkbenchConnector? = nil
-  
-  
-  var initializing = DispatchGroup()
-  
-  
-  private(set) var isInitialized: Bool = false
+  private(set) var state: State = .ready
+  private(set) var workspaceFolders: [URL] = []
   
   private(set) var serverCapabilities = ServerCapabilities()
+      
   
   
-  
-  public init(server: Connection) {
-    self.server = server
+  public init(_ connection: Connection) {
+    self.connection = connection
   }
   
-  public func initialize(workspaceFolders: [URL]) {
+  public func initialize(workspaceFolders: [URL], onComplete: (() -> Void)? = nil) {
     // The LSP servers supporting workspace folders, ignore rootURI, hence pass all forlder URLs
     // For the servers without such support only rootURI is used, hence we set
     // the first folder as the root folder per default
-    guard !isInitialized, let rootURL = workspaceFolders.first else { return }
+    guard state == .ready, let rootURL = workspaceFolders.first else { return }
     let initRequest = InitializeRequest(rootURI: DocumentURI(rootURL),
                                         capabilities: LSPClient.clientCapabilities,
                                         workspaceFolders: workspaceFolders.map{WorkspaceFolder(uri: DocumentURI($0))})
     
+    state = .initializing
     initializing.enter()
-    
-    _ = server.send(initRequest, queue: DispatchQueue.global(qos: .userInitiated)) {[weak self] in
-      guard let response = try? $0.get() else { return }
+
+    _ = connection.send(initRequest, queue: DispatchQueue.main) {[weak self] in
+      guard let response = try? $0.get() else {
+        self?.state = .failed
+        self?.initializing.leave()
+        
+        onComplete?()
+        return
+      }
       
+      self?.workspaceFolders = workspaceFolders
       self?.serverCapabilities = response.capabilities
-      self?.server.send(InitializedNotification())
-      self?.isInitialized = true
+      
+      self?.connection.send(InitializedNotification())
+      
+      self?.state = .initialized
       self?.initializing.leave()
     }
   }
-  
-  
+    
   public func openDocument(doc: SourceCodeDocument) {
-    initializing.wait()
-    assert(isInitialized)
-    
     guard let url = doc.fileURL else { return }
-    let textDocument = TextDocumentItem(uri: url.uri,
-                                        language: Language(rawValue: doc.languageId),
-                                        version: 0,
-                                        text: doc.text)
-    
-    server.send(DidOpenTextDocumentNotification(textDocument: textDocument))
-    doc.observers.add(observer: self)
-    doc.languageServices.append(self)
+    waitInitAndExecute {
+      $0.open(url: url, with: doc.text, as: doc.languageId)
+      $0.connect(to: doc)
+    }
   }
-  
+    
   
   public func closeDocument(doc: SourceCodeDocument) {
-    initializing.wait()
-    assert(isInitialized)
-    
     guard let url = doc.fileURL else { return }
+    waitInitAndExecute {
+      $0.close(url: url)
+      $0.disconnect(from: doc)
+    }
+  }
+  
+  public func saveDocument(doc: SourceCodeDocument) {
+    ///TODO: implement
+  }
+  
+  
+  public func hasOpened(doc: SourceCodeDocument) -> Bool {
+    return openedDocuments.contains{ $0 == ObjectIdentifier(doc) }
+  }
+  
+  private func open(url: URL, with text: String, as lang: String) {
+    let textDocument = TextDocumentItem(uri: url.uri,
+                                        language: Language(rawValue: lang),
+                                        version: 0,
+                                        text: text)
+    connection.send(DidOpenTextDocumentNotification(textDocument: textDocument))
+  }
+  
+  private func close(url: URL) {
     let textDocument = TextDocumentIdentifier(url.uri)
+    connection.send(DidCloseTextDocumentNotification(textDocument: textDocument))
+  }
     
-    server.send(DidCloseTextDocumentNotification(textDocument: textDocument))
+  private func connect(to doc: SourceCodeDocument) {
+    doc.observers.add(observer: self)
+    doc.languageServices.append(self)
+    openedDocuments.append(ObjectIdentifier(doc))
+  }
+  
+  private func disconnect(from doc: SourceCodeDocument) {
     doc.observers.remove(observer: self)
-    doc.languageServices.removeAll{$0 === self}
+    doc.languageServices.removeAll{ $0 === self }
+    openedDocuments.removeAll { $0 == ObjectIdentifier(doc) }
+  }
+  
+  private func waitInitAndExecute(_ handler: @escaping (LSPClient) -> Void) {
+    DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+      self?.initializing.wait()
+      DispatchQueue.main.async { [weak self] in
+        guard self?.state == .initialized else {return }
+        handler(self!)
+      }
+    }
   }
 }
+
+
 
 // MARK: - MessageHandler
 
@@ -147,7 +166,22 @@ extension LSPClient: MessageHandler {
 
 // MARK: - SourceCodeDocumentObserver
 
+
 extension LSPClient: SourceCodeDocumentObserver {
+  public func documentFileDidChange(_ document: Document) {
+    ///TODO: implement ???
+  }
+  
+  public func documentFileUrlDidChange(_ document: Document, oldFileUrl: URL?) {
+    guard let doc = document as? SourceCodeDocument,
+          let url = oldFileUrl else { return }
+    
+    waitInitAndExecute {
+      $0.close(url: url)
+      $0.disconnect(from: doc)
+    }
+  }
+  
   public func textDidChange(document: SourceCodeDocument, range: Range<Int>, text: String) {
     guard let uri = document.fileURL?.uri else { return }
     
@@ -159,7 +193,7 @@ extension LSPClient: SourceCodeDocumentObserver {
     let changeEvent = TextDocumentContentChangeEvent(range: range, rangeLength: length, text: text)
     let textChangeEvent = DidChangeTextDocumentNotification(textDocument: textDocument, contentChanges: [changeEvent])
         
-    server.send(textChangeEvent)
+    connection.send(textChangeEvent)
   }
 }
 
@@ -181,7 +215,7 @@ extension LSPClient: LanguageService {
     var request = CompletionRequest(textDocument: textDocument, position: position)
     request.context = CompletionContext(triggerKind: triggerKind)
     
-    _ = server.send(request, queue: DispatchQueue.main) {
+    _ = connection.send(request, queue: DispatchQueue.main) {
       guard let items = (try? $0.get())?.items else { return }
       let completions = items.map { CompletionItemWrapper(text: doc.text, item: $0) }
       handler(triggerIndex, completions)

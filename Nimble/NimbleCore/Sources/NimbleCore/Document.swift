@@ -16,23 +16,23 @@ public protocol Document where Self: NSDocument {
       
   static var typeIdentifiers: [String] { get }
   
+  static var usupportedTypes: [String] { get }
+  
   static func isDefault(for file: File) -> Bool
   
   static func canOpen(_ file: File) -> Bool
-  
-  static var usupportedTypes: [String] { get }
 }
 
 
+
 public protocol DocumentController where Self: NSDocumentController {
-  var currentWorkbench: Workbench? { get }
-    
+  var currentWorkbench: Workbench? { get }    
   func openDocument(_ doc: Document, display displayDocument: Bool) -> Void
 }
 
 
 
-public extension Document {
+public extension Document {  
   static var usupportedTypes: [String] {
     return []
   }
@@ -70,74 +70,30 @@ public protocol CreatableDocument where Self: Document {
 }
 
 
-// MARK: - Default document
-
-open class NimbleDocument: NSDocument {
-  public var observers = ObserverSet<DocumentObserver> ()
-
-  private var isFilePresenter: Bool { 
-    NSFileCoordinator.filePresenters.contains { $0 === self } 
-  }
-
-  open override var fileURL: URL? {
-    get { return super.fileURL }
-    set {
-      super.fileURL = newValue
-
-      if let scheme = newValue?.scheme {
-        if scheme == "file" && !isFilePresenter {
-          NSFileCoordinator.addFilePresenter(self)
-        }
-
-      } else if isFilePresenter {
-        NSFileCoordinator.removeFilePresenter(self)
-      }
-    }
-  }
-
-  open override func updateChangeCount(_ change: NSDocument.ChangeType) {
-    super.updateChangeCount(change)
-
-    guard let doc = self as? Document else { return }
-
-    observers.notify { $0.documentDidChange(doc) }
-  }
-
-  open func onFileDidChange() {
-    guard let doc = self as? Document else { return }
-
-    observers.notify { $0.documentFileDidChange(doc) }
-  }
-
-  deinit {
-    if isFilePresenter { NSFileCoordinator.removeFilePresenter(self) }
-  }
-  
-}
-
 // MARK: - Document Observer
 
 public protocol DocumentObserver {
   func documentDidChange(_ document: Document)
-
   func documentFileDidChange(_ document: Document)
+  func documentFileUrlDidChange(_ document: Document, oldFileUrl: URL?)
 }
 
 public extension DocumentObserver {
   func documentDidChange(_ document: Document) {}
-
   func documentFileDidChange(_ document: Document) {}
+  func documentFileUrlDidChange(_ document: Document, oldFileUrl: URL?) {}
 }
 
 // MARK: - Document Manager
 
 public class DocumentManager {
   public static let shared: DocumentManager = DocumentManager()
-    
-  private var documentClasses: [Document.Type] = []
-  private var openedDocuments: [(ref: WeakRef<NSDocument>, type: Document.Type)] = []
+  
   public var defaultDocument: Document.Type? = nil
   
+  private var documentClasses: [Document.Type] = []
+  private var openedDocuments: [(ref: WeakRef<NSDocument>, type: Document.Type)] = []
+    
   public var typeIdentifiers: Set<String> {
     documentClasses.reduce(into: []) { $0.formUnion($1.typeIdentifiers) }
   }

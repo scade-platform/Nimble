@@ -32,6 +32,7 @@
 		D72F9587222CAC3C009F2EC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78BCB05222B4DE300AE0A9C /* AppDelegate.swift */; };
 		D72F959C222DF2D9009F2EC3 /* WorkbenchSidebar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */; };
 		D72F959F222DF7AF009F2EC3 /* WorkbenchSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F959E222DF7AF009F2EC3 /* WorkbenchSidebar.swift */; };
+		D73BFD8123EB0DBD0096FA99 /* NimbleDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73BFD8023EB0DBD0096FA99 /* NimbleDocument.swift */; };
 		D73C4F842391B55100B00066 /* NSMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D73C4F832391B55100B00066 /* NSMenu.swift */; };
 		D74A7F532396D5F1006E0238 /* LangExtensions.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = D74A7F522396D5CC006E0238 /* LangExtensions.plugin */; };
 		D74A7F5523972382006E0238 /* KeyPathDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74A7F5423972382006E0238 /* KeyPathDecodable.swift */; };
@@ -141,6 +142,7 @@
 		D72CEB432371D5C600C13F01 /* RandomAccessCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomAccessCollection.swift; sourceTree = "<group>"; };
 		D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkbenchSidebar.xib; sourceTree = "<group>"; };
 		D72F959E222DF7AF009F2EC3 /* WorkbenchSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchSidebar.swift; sourceTree = "<group>"; };
+		D73BFD8023EB0DBD0096FA99 /* NimbleDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleDocument.swift; sourceTree = "<group>"; };
 		D73C4F832391B55100B00066 /* NSMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSMenu.swift; sourceTree = "<group>"; };
 		D74A7F522396D5CC006E0238 /* LangExtensions.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = LangExtensions.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D74A7F5423972382006E0238 /* KeyPathDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyPathDecodable.swift; sourceTree = "<group>"; };
@@ -252,6 +254,14 @@
 			path = Controls;
 			sourceTree = "<group>";
 		};
+		D73BFD8323EB0DE40096FA99 /* Impl */ = {
+			isa = PBXGroup;
+			children = (
+				D73BFD8023EB0DBD0096FA99 /* NimbleDocument.swift */,
+			);
+			path = Impl;
+			sourceTree = "<group>";
+		};
 		D751F28622F8818300D33972 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
@@ -293,6 +303,7 @@
 				D779905C236F14D100CBF9B7 /* Workbench.swift */,
 				0C0809F823E2E31B00E78444 /* Command.swift */,
 				D72CEB412371D57600C13F01 /* Extensions */,
+				D73BFD8323EB0DE40096FA99 /* Impl */,
 				D779904F236F14D100CBF9B7 /* UI */,
 				D7799055236F14D100CBF9B7 /* Utils */,
 			);
@@ -535,6 +546,7 @@
 				D75DAE6523ABBD260017DEE2 /* Diagnostic.swift in Sources */,
 				D77990E8236F14D100CBF9B7 /* Workbench.swift in Sources */,
 				D74A7F5523972382006E0238 /* KeyPathDecodable.swift in Sources */,
+				D73BFD8123EB0DBD0096FA99 /* NimbleDocument.swift in Sources */,
 				D77990DD236F14D100CBF9B7 /* XibView.swift in Sources */,
 				D77990E2236F14D100CBF9B7 /* Atomic.swift in Sources */,
 				D72CEB442371D5C600C13F01 /* RandomAccessCollection.swift in Sources */,

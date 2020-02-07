@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D75DAE5D23A83DA60017DEE2 /* LSPWorkbenchConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75DAE5C23A83DA60017DEE2 /* LSPWorkbenchConnector.swift */; };
+		D75DAE5D23A83DA60017DEE2 /* LSPConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75DAE5C23A83DA60017DEE2 /* LSPConnector.swift */; };
 		D75DAE5F23A845A80017DEE2 /* CodeEditor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D75DAE5E23A845A80017DEE2 /* CodeEditor.framework */; };
 		D75DAE6A23AC2D000017DEE2 /* LSPDiagnostic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75DAE6923AC2D000017DEE2 /* LSPDiagnostic.swift */; };
 		D77F337623A2F3ED00E3AFC8 /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77F337523A2F3ED00E3AFC8 /* Plugin.swift */; };
+		D7AC82C723EC343E00BE3A53 /* LSPClient+Capabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7AC82C623EC343E00BE3A53 /* LSPClient+Capabilities.swift */; };
 		D7EC136C239EF6E100DA0DA0 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7EC136A239EF6E100DA0DA0 /* Info.plist */; };
 		D7EC136E239EF70B00DA0DA0 /* LSPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EC136D239EF70B00DA0DA0 /* LSPClient.swift */; };
 		D7EC1371239EF73E00DA0DA0 /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7EC1370239EF73E00DA0DA0 /* NimbleCore.framework */; };
@@ -19,10 +20,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D75DAE5C23A83DA60017DEE2 /* LSPWorkbenchConnector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPWorkbenchConnector.swift; sourceTree = "<group>"; };
+		D75DAE5C23A83DA60017DEE2 /* LSPConnector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPConnector.swift; sourceTree = "<group>"; };
 		D75DAE5E23A845A80017DEE2 /* CodeEditor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CodeEditor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D75DAE6923AC2D000017DEE2 /* LSPDiagnostic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPDiagnostic.swift; sourceTree = "<group>"; };
 		D77F337523A2F3ED00E3AFC8 /* Plugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
+		D7AC82C623EC343E00BE3A53 /* LSPClient+Capabilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LSPClient+Capabilities.swift"; sourceTree = "<group>"; };
 		D7EC1361239EF4D100DA0DA0 /* LSPClient.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LSPClient.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7EC136A239EF6E100DA0DA0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7EC136D239EF70B00DA0DA0 /* LSPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPClient.swift; sourceTree = "<group>"; };
@@ -44,6 +46,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D7AC82C823EC344D00BE3A53 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D7AC82C623EC343E00BE3A53 /* LSPClient+Capabilities.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		D7EC1358239EF4D100DA0DA0 = {
 			isa = PBXGroup;
 			children = (
@@ -66,10 +76,11 @@
 			isa = PBXGroup;
 			children = (
 				D7EC136D239EF70B00DA0DA0 /* LSPClient.swift */,
+				D75DAE5C23A83DA60017DEE2 /* LSPConnector.swift */,
 				D75DAE6923AC2D000017DEE2 /* LSPDiagnostic.swift */,
 				D7EC1374239EFB8400DA0DA0 /* LSPServer.swift */,
-				D75DAE5C23A83DA60017DEE2 /* LSPWorkbenchConnector.swift */,
 				D77F337523A2F3ED00E3AFC8 /* Plugin.swift */,
+				D7AC82C823EC344D00BE3A53 /* Extensions */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -160,8 +171,9 @@
 			files = (
 				D77F337623A2F3ED00E3AFC8 /* Plugin.swift in Sources */,
 				D7EC1375239EFB8400DA0DA0 /* LSPServer.swift in Sources */,
+				D7AC82C723EC343E00BE3A53 /* LSPClient+Capabilities.swift in Sources */,
 				D7EC136E239EF70B00DA0DA0 /* LSPClient.swift in Sources */,
-				D75DAE5D23A83DA60017DEE2 /* LSPWorkbenchConnector.swift in Sources */,
+				D75DAE5D23A83DA60017DEE2 /* LSPConnector.swift in Sources */,
 				D75DAE6A23AC2D000017DEE2 /* LSPDiagnostic.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -16,7 +16,7 @@ import LanguageServerProtocolJSONRPC
 
 // MARK: - LSPServer
 
-public protocol LSPServer {
+public protocol LSPServer: class {
   var client: LSPClient { get }
   var isRunning: Bool { get }
   
@@ -62,11 +62,11 @@ public final class LSPServerManager {
   
   private var externalProviders: [String: LSPServerProvider] = [:]
   
-  private var workbenchConnectors: [ObjectIdentifier: LSPWorkbenchConnector] = [:]
+  private var workbenchConnectors: [ObjectIdentifier: LSPConnector] = [:]
   
       
   func connect(to workbench: Workbench) {
-    workbenchConnectors[ObjectIdentifier(workbench)] = LSPWorkbenchConnector(workbench)
+    workbenchConnectors[ObjectIdentifier(workbench)] = LSPConnector(workbench)
   }
   
   func disconnect(from workbench: Workbench) {
@@ -115,7 +115,7 @@ public final class LSPExternalServer: LSPServer {
                                    inFD: pipeOut.fileHandleForReading.fileDescriptor,
                                    outFD: pipeIn.fileHandleForWriting.fileDescriptor)
         
-    client = LSPClient(server: connection)
+    client = LSPClient(connection)
     
     proc.terminationHandler = {[weak self] proc in
       self?.connection.close()

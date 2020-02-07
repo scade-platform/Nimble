@@ -203,7 +203,7 @@ extension NimbleWorkbench: Workbench {
   }
   
   public var statusBar: WorkbenchStatusBar {
-    return statusBarView as! WorkbenchStatusBar
+    return statusBarView!
   }
   
 
