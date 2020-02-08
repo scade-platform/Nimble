@@ -36,11 +36,11 @@ class SVGLayerSelector: SVGElementSelector {
   }
 
   public func onUnselect(_ element: SCDSvgElement) {
-    Swift.print("unselect: \(element.id)")
+    getLayer(of: element)?.borderWidth = 0
   }
 
   public func onSelect(_ element: SCDSvgElement) {
-    Swift.print("select: \(element) \(element.id)")
+    getLayer(of: element)?.borderWidth = 1
   }
 
   private func select(_ element: SCDSvgElement) {
@@ -57,6 +57,10 @@ class SVGLayerSelector: SVGElementSelector {
   private func doSelect(_ element: SCDSvgElement) {
     onSelect(element)
     selected = element
+  }
+
+  private func getLayer(of element: SCDSvgElement) -> CALayer? {
+    return SCDRuntime.extract(intoLayer: element as! EObject)?.layer
   }
   
 }
