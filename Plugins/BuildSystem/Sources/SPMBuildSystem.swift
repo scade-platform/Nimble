@@ -6,7 +6,7 @@
 //  Copyright © 2019 Scade. All rights reserved.
 //
 
-import Foundation
+import Cocoa
 import NimbleCore
 
 class SPMBuildSystem: BuildSystem {
@@ -34,35 +34,24 @@ class SPMBuildSystem: BuildSystem {
           DispatchQueue.main.async {
             spmProcConsole?.close()
           }
+          self.updateAndRemoveStatus(currentStatus: "Building", newStatus: "Build done", newColor: .systemGreen, workbench: workbench)
           handler?(.finished)
         } else {
           DispatchQueue.main.async {
             workbench.debugArea?.isHidden = false
           }
           if contents.contains("error:"){
+            self.updateAndRemoveStatus(currentStatus: "Building", newStatus: "Build failed", workbench: workbench)
             handler?(.failed)
           } else {
-             handler?(.finished)
-          }
-        }
-        let cell = StatusBarTextCell(title: "Build done.")
-        DispatchQueue.main.async {
-          var statusBar = workbench.statusBar
-          if !statusBar.leftBar.contains(where: {$0.title == cell.title}) {
-            statusBar.leftBar.append(cell)
-          }
-        }
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-          var statusBar = workbench.statusBar
-          if statusBar.leftBar.contains(where: {$0.title == cell.title}) {
-            if let index = statusBar.leftBar.firstIndex(where: {$0.title == cell.title}) {
-              statusBar.leftBar.remove(at: index)
-            }
+            self.updateAndRemoveStatus(currentStatus: "Building", newStatus: "Build done", newColor: .systemGreen, workbench: workbench)
+            handler?(.finished)
           }
         }
       }
     }
     DispatchQueue.main.async {
+      self.addStatus(status: "Building", color: .systemRed, workbench: workbench)
       spmProcConsole = self.openConsole(key: fileURL, title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
       spmProc.standardOutput = spmProcConsole?.output
       try? spmProc.run()
@@ -78,14 +67,18 @@ class SPMBuildSystem: BuildSystem {
     proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
     proc.arguments = ["package", "clean"]
     proc.terminationHandler = { process in
+      self.updateAndRemoveStatus(currentStatus: "Cleaning", newStatus: "Clean done", newColor: .systemGreen, workbench: workbench)
       handler?()
     }
-    try? proc.run()
-
+    DispatchQueue.main.async {
+      self.addStatus(status: "Cleaning", color: .systemRed, workbench: workbench)
+      try? proc.run()
+    }
   }
 }
 
 extension SPMBuildSystem : ConsoleSupport {}
+extension SPMBuildSystem : StatusBarSupport {}
 
 class SPMLauncher: Launcher {
   let builder: BuildSystem
@@ -109,6 +102,7 @@ class SPMLauncher: Launcher {
   private func run(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
     DispatchQueue.main.async {
       guard let curProject = workbench.project, let package = findPackage(project: curProject) else {
+        self.addAndRemoveStatus(status: "Run failed", color: .systemRed, workbench: workbench)
         handler?(.failed, nil)
         return
       }
@@ -133,6 +127,7 @@ class SPMLauncher: Launcher {
       proc.terminationHandler = { process in
         out.fileHandleForReading.readabilityHandler = nil
         guard let describtion = buffer, let endOfFirstLine = describtion.firstIndex(of: "\n") else {
+          self.updateAndRemoveStatus(currentStatus: "Starting", newStatus: "Run failed", workbench: workbench)
           handler?(.failed, nil)
           return
         }
@@ -154,16 +149,18 @@ class SPMLauncher: Launcher {
           programProc.standardOutput = programProcConsole?.output
           programProc.standardError = programProcConsole?.output
           try? programProc.run()
+          self.updateAndRemoveStatus(currentStatus: "Starting", newStatus: "Running", workbench: workbench)
           handler?(.running, programProc)
         }
       }
+      self.addStatus(status: "Starting", color: .systemRed, workbench: workbench)
       try? proc.run()
     }
   }
 }
 
 extension SPMLauncher : ConsoleSupport {}
-
+extension SPMLauncher : StatusBarSupport {}
 
 fileprivate func findPackage(project: Project) -> File? {
   for folder in project.folders {

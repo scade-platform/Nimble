@@ -37,35 +37,24 @@ class SwiftBuildSystem: BuildSystem {
           DispatchQueue.main.async {
             swiftcProcConsole?.close()
           }
+          self.updateAndRemoveStatus(currentStatus: "Building", newStatus: "Build done", newColor: .systemGreen, workbench: workbench)
           handler?(.finished)
         } else {
           DispatchQueue.main.async {
             workbench.debugArea?.isHidden = false
           }
           if contents.contains("error:"){
+            self.updateAndRemoveStatus(currentStatus: "Building", newStatus: "Build failed", workbench: workbench)
             handler?(.failed)
           } else {
+            self.updateAndRemoveStatus(currentStatus: "Building", newStatus: "Build done", newColor: .systemGreen, workbench: workbench)
             handler?(.finished)
-          }
-        }
-        let cell = StatusBarTextCell(title: "Build done.")
-        DispatchQueue.main.async {
-          var statusBar = workbench.statusBar
-          if !statusBar.leftBar.contains(where: {$0.title == cell.title}) {
-            statusBar.leftBar.append(cell)
-          }
-        }
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-          var statusBar = workbench.statusBar
-          if statusBar.leftBar.contains(where: {$0.title == cell.title}) {
-            if let index = statusBar.leftBar.firstIndex(where: {$0.title == cell.title}) {
-              statusBar.leftBar.remove(at: index)
-            }
           }
         }
       }
     }
     DispatchQueue.main.async {
+      self.addStatus(status: "Building", color: .systemRed, workbench: workbench)
       swiftcProcConsole = self.openConsole(key: "Compile: \(fileURL.absoluteString)", title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
       swiftcProc.standardError = swiftcProcConsole?.output
       try? swiftcProc.run()
@@ -78,11 +67,13 @@ class SwiftBuildSystem: BuildSystem {
     }
     guard let file = File(url: fileURL.deletingPathExtension()), file.exists else { return }
     try? file.path.delete()
+    self.addAndRemoveStatus(status: "Clean done", color: .systemGreen, workbench: workbench)
     handler?()
   }
 }
 
 extension SwiftBuildSystem : ConsoleSupport {}
+extension SwiftBuildSystem : StatusBarSupport {}
 
 class SwiftLauncher : Launcher {
   let builder : BuildSystem
@@ -106,6 +97,7 @@ class SwiftLauncher : Launcher {
   private func run(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
     DispatchQueue.main.async {
       guard let fileURL = workbench.currentDocument?.fileURL else {
+        self.addAndRemoveStatus(status: "Run failed", color: .systemRed, workbench: workbench)
         handler?(.failed, nil)
         return
       }
@@ -122,8 +114,11 @@ class SwiftLauncher : Launcher {
       programProc.standardOutput = programProcConsole?.output
       programProc.standardError = programProcConsole?.output
       try? programProc.run()
+      self.addAndRemoveStatus(status: "Running", color: .systemRed, workbench: workbench)
       handler?(.running, programProc)
     }
   }
 }
+
 extension SwiftLauncher : ConsoleSupport {}
+extension SwiftLauncher : StatusBarSupport {}

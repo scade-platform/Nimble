@@ -45,6 +45,56 @@ extension ConsoleSupport {
   }
 }
 
+protocol StatusBarSupport {}
+
+extension StatusBarSupport {
+  func updateAndRemoveStatus(currentStatus: String, newStatus: String, newColor: NSColor? = nil, workbench: Workbench) {
+    DispatchQueue.main.async {
+      let statusBar = workbench.statusBar
+      guard var cell = statusBar.leftBar.first(where: {$0.title == currentStatus}) else { return }
+      if let newColor = newColor, var colorableCell = cell as? Colorable {
+        colorableCell.color = newColor
+      }
+      cell.title = newStatus
+    }
+    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+      var statusBar = workbench.statusBar
+      guard let cellIndex = statusBar.leftBar.firstIndex(where: {$0.title == newStatus}) else { return }
+      statusBar.leftBar.remove(at: cellIndex)
+    }
+  }
+
+  func addAndRemoveStatus(status: String, color: NSColor? = nil, workbench: Workbench) {
+    DispatchQueue.main.async {
+      let cell: StatusBarTextCell
+      if let color = color {
+        cell = StatusBarTextCell(title: status, color: color)
+      } else {
+        cell = StatusBarTextCell(title: status)
+      }
+      var statusBar = workbench.statusBar
+      statusBar.leftBar.append(cell)
+    }
+    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+      var statusBar = workbench.statusBar
+      guard let cellIndex = statusBar.leftBar.firstIndex(where: {$0.title == status}) else { return }
+      statusBar.leftBar.remove(at: cellIndex)
+    }
+  }
+  
+  func addStatus(status: String, color: NSColor? = nil, workbench: Workbench) {
+    DispatchQueue.main.async {
+      let cell: StatusBarTextCell
+      if let color = color {
+        cell = StatusBarTextCell(title: status, color: color)
+      } else {
+        cell = StatusBarTextCell(title: status)
+      }
+      var statusBar = workbench.statusBar
+      statusBar.leftBar.append(cell)
+    }
+  }
+}
 
 public enum BuildStatus {
   case running

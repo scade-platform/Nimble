@@ -26,6 +26,9 @@ extension StatusBarView : WorkbenchStatusBar {
       leftBarStackView.subviews.removeAll()
       for value in newValue {
         let textView = NSTextField(labelWithString: value.title)
+        if let colorableValue = value as? Colorable {
+          textView.textColor = colorableValue.color
+        }
         leftBarStackView.addView(textView, in: .trailing)
       }
     }
@@ -39,6 +42,9 @@ extension StatusBarView : WorkbenchStatusBar {
       rightBarStackView.subviews.removeAll()
       for value in newValue {
         let textView = NSTextField(labelWithString: value.title)
+        if let colorableValue = value as? Colorable {
+          textView.textColor = colorableValue.color
+        }
         rightBarStackView.insertView(textView, at: 0, in: .leading)
       }
     }
@@ -52,6 +58,17 @@ extension NSTextField : WorkbenchStatusBarCell {
     }
     set(newValue) {
       self.stringValue = newValue
+    }
+  }
+}
+
+extension NSTextField : Colorable {
+  public var color: NSColor {
+    get {
+      return self.textColor!
+    }
+    set(newValue) {
+      self.textColor = newValue
     }
   }
 }

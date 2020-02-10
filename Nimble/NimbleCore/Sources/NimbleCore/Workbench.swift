@@ -150,10 +150,16 @@ public protocol WorkbenchStatusBarCell {
   var title: String { set get }
 }
 
-public struct StatusBarTextCell : WorkbenchStatusBarCell {
+public protocol Colorable {
+  var color: NSColor { set get }
+}
+
+public struct StatusBarTextCell: WorkbenchStatusBarCell, Colorable {
   public var title: String
+  public var color: NSColor
   
-  public init(title: String) {
+  public init(title: String, color: NSColor = .black) {
     self.title = title
+    self.color = color
   }
 }
