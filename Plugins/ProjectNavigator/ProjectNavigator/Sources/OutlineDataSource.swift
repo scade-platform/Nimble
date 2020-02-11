@@ -334,6 +334,14 @@ extension OutlineDataSource: NSOutlineViewDelegate {
     //update folder icon
     outlineView.reloadItem(item, reloadChildren: false)
   }
+ 
+
   
+  func outlineViewSelectionDidChange(_ notification: Notification) {
+    guard let outlineView = notification.object as? NSOutlineView,
+          let item = outlineView.item(atRow: outlineView.selectedRow),
+          let openedDocument = item as? Document else { return }
+    workbench?.open(openedDocument, show: true)
+  }
 }
 
