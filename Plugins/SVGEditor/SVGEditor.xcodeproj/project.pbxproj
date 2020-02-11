@@ -18,14 +18,15 @@
 		E4326A3B23E1C8AF005C6105 /* ScadeKitExtension.framework in Embed Libraries */ = {isa = PBXBuildFile; fileRef = E4326A2523E1C4ED005C6105 /* ScadeKitExtension.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E4326A3E23E1CA67005C6105 /* libphoenix.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E43269F223E1B051005C6105 /* libphoenix.dylib */; };
 		E4326A3F23E1CA6B005C6105 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E43269F423E1B051005C6105 /* ScadeKit.framework */; };
-		E4326A4723E1CF9E005C6105 /* SVGEditorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4326A4323E1CF9E005C6105 /* SVGEditorController.swift */; };
+		E4326A4723E1CF9E005C6105 /* SVGEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4326A4323E1CF9E005C6105 /* SVGEditorView.swift */; };
 		E4326A4823E1CF9E005C6105 /* SVGEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4326A4423E1CF9E005C6105 /* SVGEditor.swift */; };
 		E4326A4A23E1CFA9005C6105 /* SVGEditorBridging.h in Headers */ = {isa = PBXBuildFile; fileRef = E4326A4923E1CFA9005C6105 /* SVGEditorBridging.h */; };
 		E4326A4D23E1D10C005C6105 /* ScadeKitExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = E4326A2723E1C4ED005C6105 /* ScadeKitExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E4326A6223E4517B005C6105 /* SVGEditorController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E4326A6123E4517B005C6105 /* SVGEditorController.xib */; };
+		E4326A6223E4517B005C6105 /* SVGEditorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E4326A6123E4517B005C6105 /* SVGEditorView.xib */; };
 		E4909EA123E9975D00C1DFE2 /* SVGView.h in Headers */ = {isa = PBXBuildFile; fileRef = E4909E9F23E9975D00C1DFE2 /* SVGView.h */; };
 		E4909EA223E9975D00C1DFE2 /* SVGView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4909EA023E9975D00C1DFE2 /* SVGView.mm */; };
 		E4909ECF23EC49C400C1DFE2 /* SVGElementSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4909ECD23EC49C400C1DFE2 /* SVGElementSelector.swift */; };
+		E4909EE223F3340C00C1DFE2 /* SVGElementVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4909EE123F3340C00C1DFE2 /* SVGElementVisitor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,13 +75,14 @@
 		E4326A2723E1C4ED005C6105 /* ScadeKitExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScadeKitExtension.h; sourceTree = "<group>"; };
 		E4326A2823E1C4ED005C6105 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E4326A2D23E1C63B005C6105 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		E4326A4323E1CF9E005C6105 /* SVGEditorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGEditorController.swift; sourceTree = "<group>"; };
+		E4326A4323E1CF9E005C6105 /* SVGEditorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGEditorView.swift; sourceTree = "<group>"; };
 		E4326A4423E1CF9E005C6105 /* SVGEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGEditor.swift; sourceTree = "<group>"; };
 		E4326A4923E1CFA9005C6105 /* SVGEditorBridging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGEditorBridging.h; sourceTree = "<group>"; };
-		E4326A6123E4517B005C6105 /* SVGEditorController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SVGEditorController.xib; sourceTree = "<group>"; };
+		E4326A6123E4517B005C6105 /* SVGEditorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SVGEditorView.xib; sourceTree = "<group>"; };
 		E4909E9F23E9975D00C1DFE2 /* SVGView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGView.h; sourceTree = "<group>"; };
 		E4909EA023E9975D00C1DFE2 /* SVGView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SVGView.mm; sourceTree = "<group>"; };
 		E4909ECD23EC49C400C1DFE2 /* SVGElementSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGElementSelector.swift; sourceTree = "<group>"; };
+		E4909EE123F3340C00C1DFE2 /* SVGElementVisitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGElementVisitor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,12 +152,13 @@
 		E43269F023E1AF9B005C6105 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				E4909ECD23EC49C400C1DFE2 /* SVGElementSelector.swift */,
 				E4326A0B23E1B2F3005C6105 /* ScadeKit */,
-				E4326A4423E1CF9E005C6105 /* SVGEditor.swift */,
-				E4326A4323E1CF9E005C6105 /* SVGEditorController.swift */,
 				E4326A1323E1B2F3005C6105 /* SVGDocument.swift */,
-				E4326A6123E4517B005C6105 /* SVGEditorController.xib */,
+				E4326A4423E1CF9E005C6105 /* SVGEditor.swift */,
+				E4326A4323E1CF9E005C6105 /* SVGEditorView.swift */,
+				E4326A6123E4517B005C6105 /* SVGEditorView.xib */,
+				E4909ECD23EC49C400C1DFE2 /* SVGElementSelector.swift */,
+				E4909EE123F3340C00C1DFE2 /* SVGElementVisitor.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -317,7 +320,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E4326A6223E4517B005C6105 /* SVGEditorController.xib in Resources */,
+				E4326A6223E4517B005C6105 /* SVGEditorView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -337,7 +340,8 @@
 			files = (
 				E4326A1C23E1B2F3005C6105 /* SVGDocument.swift in Sources */,
 				E4909ECF23EC49C400C1DFE2 /* SVGElementSelector.swift in Sources */,
-				E4326A4723E1CF9E005C6105 /* SVGEditorController.swift in Sources */,
+				E4909EE223F3340C00C1DFE2 /* SVGElementVisitor.swift in Sources */,
+				E4326A4723E1CF9E005C6105 /* SVGEditorView.swift in Sources */,
 				E4326A4823E1CF9E005C6105 /* SVGEditor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

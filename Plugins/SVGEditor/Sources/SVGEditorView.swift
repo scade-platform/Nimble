@@ -1,7 +1,7 @@
 import Cocoa
 import NimbleCore
 
-class SVGEditorController: NSViewController {
+class SVGEditorView: NSViewController {
 
   private let elementSelector = SVGLayerSelector()
 
@@ -36,9 +36,9 @@ class SVGEditorController: NSViewController {
   }
 }
 
-extension SVGEditorController: WorkbenchEditor { }
+extension SVGEditorView: WorkbenchEditor { }
 
-extension SVGEditorController: DocumentObserver {
+extension SVGEditorView: DocumentObserver {
 
   func documentFileDidChange(_ document: Document) {
     //loadPage()
