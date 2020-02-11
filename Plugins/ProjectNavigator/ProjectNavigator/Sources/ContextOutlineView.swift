@@ -140,6 +140,10 @@ extension ContextOutlineView : ContextMenuProvider {
       return
     }
     try? fileSystemElement.path.delete()
+    if fileSystemElement is Folder {
+      //if deleted element is folder try to remove from project
+      removeAction(sender)
+    }
     self.reloadSelected()
   }
   
