@@ -65,6 +65,7 @@
 		E42DC05D22CE49A700486CC1 /* ProjectNavigator.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC05A22CE497F00486CC1 /* ProjectNavigator.plugin */; };
 		E42DC0C322D26C3100486CC1 /* ImageViewer.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC0C222D26C1200486CC1 /* ImageViewer.plugin */; };
 		E4326A6023E305F2005C6105 /* SVGEditor.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E4326A5F23E305A0005C6105 /* SVGEditor.plugin */; };
+		E460BE2D23F494C6003317AC /* Algorithms.swift in Sources */ = {isa = PBXBuildFile; fileRef = E460BE2B23F494C6003317AC /* Algorithms.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -178,6 +179,7 @@
 		E42DC07922CFA01100486CC1 /* InterfaceBuilder.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = InterfaceBuilder.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42DC0C222D26C1200486CC1 /* ImageViewer.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = ImageViewer.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4326A5F23E305A0005C6105 /* SVGEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = SVGEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		E460BE2B23F494C6003317AC /* Algorithms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Algorithms.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -327,6 +329,7 @@
 		D7799055236F14D100CBF9B7 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				E460BE2B23F494C6003317AC /* Algorithms.swift */,
 				D7799056236F14D100CBF9B7 /* Atomic.swift */,
 				D724C5E1237A21D100E80958 /* Observer.swift */,
 				D724C5E3237B18A900E80958 /* WeakRef.swift */,
@@ -555,6 +558,7 @@
 				D77990E3236F14D100CBF9B7 /* Project.swift in Sources */,
 				D75DAE6523ABBD260017DEE2 /* Diagnostic.swift in Sources */,
 				D77990E8236F14D100CBF9B7 /* Workbench.swift in Sources */,
+				E460BE2D23F494C6003317AC /* Algorithms.swift in Sources */,
 				D74A7F5523972382006E0238 /* KeyPathDecodable.swift in Sources */,
 				D73BFD8123EB0DBD0096FA99 /* NimbleDocument.swift in Sources */,
 				D77990DD236F14D100CBF9B7 /* XibView.swift in Sources */,
