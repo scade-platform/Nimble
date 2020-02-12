@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:com.scade.sdk.view="http://scade.com/sdk/view/widgets" xmlns:svg="http://scade.com/svg/draw">
+  <com.scade.sdk.view:CustomWidget name="customWidget" drawing="/1">
+    <size width="100" height="100"/>
+  </com.scade.sdk.view:CustomWidget>
+  <svg:Group/>
+</xmi:XMI>

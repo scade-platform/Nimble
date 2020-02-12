@@ -63,8 +63,8 @@
 		D7D461652390083C0090FC34 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D461642390083C0090FC34 /* Document.swift */; };
 		E42DC05C22CE49A700486CC1 /* CodeEditor.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC05B22CE498200486CC1 /* CodeEditor.plugin */; };
 		E42DC05D22CE49A700486CC1 /* ProjectNavigator.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC05A22CE497F00486CC1 /* ProjectNavigator.plugin */; };
-		E42DC07A22CFA02500486CC1 /* InterfaceBuilder.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC07922CFA01100486CC1 /* InterfaceBuilder.plugin */; };
 		E42DC0C322D26C3100486CC1 /* ImageViewer.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC0C222D26C1200486CC1 /* ImageViewer.plugin */; };
+		E4326A6023E305F2005C6105 /* SVGEditor.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E4326A5F23E305A0005C6105 /* SVGEditor.plugin */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,12 +91,12 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				E4326A6023E305F2005C6105 /* SVGEditor.plugin in Embed PlugIns */,
 				D77F338123A4645100E3AFC8 /* LSPClient.plugin in Embed PlugIns */,
 				D77F338223A4645100E3AFC8 /* SwiftExtensions.plugin in Embed PlugIns */,
 				D74A7F532396D5F1006E0238 /* LangExtensions.plugin in Embed PlugIns */,
 				0CEE0F0D23965A11002E69D6 /* BuildSystem.plugin in Embed PlugIns */,
 				E42DC0C322D26C3100486CC1 /* ImageViewer.plugin in Embed PlugIns */,
-				E42DC07A22CFA02500486CC1 /* InterfaceBuilder.plugin in Embed PlugIns */,
 				E42DC05C22CE49A700486CC1 /* CodeEditor.plugin in Embed PlugIns */,
 				E42DC05D22CE49A700486CC1 /* ProjectNavigator.plugin in Embed PlugIns */,
 			);
@@ -177,6 +177,7 @@
 		E42DC05B22CE498200486CC1 /* CodeEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = CodeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42DC07922CFA01100486CC1 /* InterfaceBuilder.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = InterfaceBuilder.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42DC0C222D26C1200486CC1 /* ImageViewer.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = ImageViewer.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		E4326A5F23E305A0005C6105 /* SVGEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = SVGEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +214,7 @@
 		D722326A22CC10E900E471C2 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				E4326A5F23E305A0005C6105 /* SVGEditor.plugin */,
 				0CEE0F0A239659FC002E69D6 /* BuildSystem.plugin */,
 				E42DC05B22CE498200486CC1 /* CodeEditor.plugin */,
 				E42DC0C222D26C1200486CC1 /* ImageViewer.plugin */,
@@ -342,6 +344,7 @@
 				D7CBF7CC222878F10088715C /* Products */,
 				D722326A22CC10E900E471C2 /* Plugins */,
 				D751F28622F8818300D33972 /* Dependencies */,
+				E4326A5223E3043C005C6105 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -384,6 +387,13 @@
 				D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E4326A5223E3043C005C6105 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

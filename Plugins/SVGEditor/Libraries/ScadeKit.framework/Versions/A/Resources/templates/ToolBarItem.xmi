@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.scade.sdk.expr="com.scade.sdk.expr" xmlns:com.scade.sdk.layout="http://scade.com/sdk/layout" xmlns:com.scade.sdk.view="http://scade.com/sdk/view/widgets" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:svg="http://scade.com/svg/draw" xmlns:svg_1="http://scade.com/svg/constraints" xmlns:svg_2="http://scade.com/svg/style/color">
+  <com.scade.sdk.view:ToolBarItem name="item" drawing="/1">
+    <size width="45" height="52"/>
+    <layout xsi:type="com.scade.sdk.layout:GridLayout" rows="2"/>
+    <minArea width="45" height="52"/>
+    <maxArea width="-1" height="-1"/>
+    <children xsi:type="com.scade.sdk.view:Image" name="icon" drawing="/1/@children.1/@children.0" content="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFQAAABRCAMAAAB7eHFAAAACiFBMVEUAAAAAAACAgIBVVVWAgIBmZmaAgICSkpKAgICOjo6AgICLi4uAgICJiYmSkpKIiIiPj4+Hh4eOjo6GhoaMjIySkpKLi4uQkJCKioqPj4+JiYmOjo6SkpKNjY2MjIyPj4+Pj4+SkpKOjo6RkZGNjY2QkJCMjIyPj4+SkpKOjo6RkZGOjo6NjY2Pj4+Pj4+RkZGOjo6QkJCOjo6SkpKPj4+RkZGPj4+QkJCSkpKPj4+RkZGRkZGPj4+QkJCSkpKQkJCRkZGPj4+RkZGPj4+QkJCSkpKQkJCRkZGRkZGSkpKQkJCRkZGQkJCRkZGPj4+SkpKRkZGQkJCRkZGPj4+RkZGQkJCRkZGQkJCRkZGRkZGSkpKQkJCRkZGQkJCRkZGQkJCRkZGQkJCRkZGQkJCRkZGSkpKRkZGQkJCSkpKRkZGRkZGRkZGQkJCRkZGSkpKSkpKRkZGQkJCRkZGSkpKRkZGSkpKRkZGQkJCRkZGSkpKRkZGSkpKRkZGRkZGRkZGSkpKRkZGSkpKRkZGRkZGSkpKRkZGSkpKRkZGRkZGRkZGRkZGRkZGSkpKRkZGRkZGSkpKRkZGRkZGSkpKRkZGRkZGRkZGSkpKRkZGSkpKRkZGRkZGSkpKRkZGRkZGSkpKRkZGRkZGSkpKRkZGSkpKRkZGRkZGSkpKRkZGSkpKRkZGSkpKRkZGSkpKRkZGSkpKRkZGRkZGSkpKRkZGSkpKRkZGSkpKRkZGRkZGRkZGSkpKRkZGSkpKRkZGRkZGSkpKRkZGSkpKRkZGSkpKRkZGRkZGSkpKRkZGRkZGSkpKRkZGRkZGSkpKRkZGSkpKRkZGSkpKRkZGRkZGSkpKRkZGSkpKRkZGSkpKSkpIWRJMCAAAA13RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0fICIjJCUmJygpKissLS8wMjM0NTY4OTo7Pj9AQUNERUZHSElKS0xNTk9RVFVWV1hZW11eX2BhY2RlZmhpamtsbW5vcXR1dnd4enx9f4CBgoOFh4iJiouMjY+QkZKTlJWXmJmam52foKGjpKWnqaqrrK2usLGys7W2t7i5uru8vr/Aw8TFxsfIyczNz9DR0tPU1dbX2Nna29zd3+Dh4uPk5ebn6Onq6+zt7/Dx8vP09fb3+Pn6+/z9/mBbZ+MAAAQJSURBVHgBvdfpd1NVF8fxX5NAAoWHPAwCWtQKalUGkAKKIii0QFWgigoqKChYQXAQKdQiteDAICgyWFEUQUBFBgcBRRlKW6BD04bk+++49K6VJl3JHZqz/Lw6L89vn+zsfeXagAky76lKmVfzV45M6xulUKbNhVUybReckmF92oARMmsOwEqZtQPguIzqHQHgVpk0C6JReEkmbYdPd8JhGZTbAjNLgBtlTgk0BEOXYZHM2QLrpSr4Wsb0aILx0niIDZIpM7Ba9BTMlymbYJkkLYfPZUjwKuRLUj5E/y8zihIPtB8ekxnvwzzrNA92yIhuDUTC1jEcobWXTHgQtkqWj+BhmbABpiWVd4sMCNRTG0iUopbGkLI3CdYqYS0UKXtVMEoJo+E9Zc1fmzpFTlAfULYmwhIlWQr3K1vriOUpSV6Md+SkeLG9i+xVii+4uNhesXKrcVCqFKU4eDdXUnEtdppylaJXE3YuTde/Bu4C4LOqtBaok4VVaVVfAdjTMRqebQEaZioL138JtC5UktuOAFT3VFcV1QHfFShFt9djwMkR6pJgBRBf1V2dTTgDRJ7PkXe3/wCcnag0+nwIsPs6efVkM7Al0/B6tAE4/4A8CW8FrpQqoyH7ErVxa9wZYP9NsuF7oQ04PFQu+cquQbTML3sjjgONj8uVG/YBv4yRo1BFHNjcR86m11mt7sbkc8DpQjkIVVqt7lK/j4FomU92Co5are7eE43AV3nKbF6L1epe5B8E6mcog/A2q9U98q8AapRBIbC6uzy7B5irDHLOdm3+rYG2sDIp79r8P2O7NhbC1R7yaiQwS7LL/4i8WgnNvZRZOeyUV8cclsZCaO8nb24BZkj2+Z+RNy/ClaDslMMBeXOw808m+MbW/ko2DrhZXgyOwxQlGX4ULkzrnP9lefE01AWU4FvaBkB179T8P8mLGlivhPxvsHB6Qmr+MXIv3A73dvzLNQGRRQubgdhbweT8a+TebDjnk2XwboDjw6WhBwCOjUzKf8Ev17Z13KGkHmBdD0nyLYkA7WX+jvxT5FaoCcZaddgEUJt49juPABwalsj/gdwqhtP6x6Q/AfYMVEJgeRRoWZBj5bdWYlc2wmuSer4dT7OzjToGsHeIlZ/ZcsdfB8Olu38G+PEudRJ8MwZcnmPl3+3+0+mkuq24BlARSrc//Qqwvb/KIepyS6yAZQVHAC4+pLR6VsaBC0XjgOfkyh+wvhVgV+Zb3Pc7wMYGOCQ3RmNpXSAb/9uAhaFy4VUAOHqH7E09BwCvyIUTAPE1QTnpuxmA3+RsGMD5yXKj5BLAWDlaCuwcIHcGfgJUytG3tHgZaKWXuRRw3Ljj3xfIi7wapjoOktVBeTS/2rFK8m6Q/gN/A0O640AHZc9eAAAAAElFTkSuQmCC">
+      <layoutData xsi:type="com.scade.sdk.layout:GridData" horizontalAlignment="CENTER" verticalAlignment="MIDDLE" grabHorizontalSpace="true" grabVerticalSpace="true">
+        <minSize width="28" height="28"/>
+        <maxSize width="-1" height="-1"/>
+      </layoutData>
+      <location/>
+    </children>
+    <children xsi:type="com.scade.sdk.view:Label" name="caption" drawing="/1/@children.1/@children.1" text="item" horizontalAlignment="CENTER">
+      <layoutData xsi:type="com.scade.sdk.layout:GridData" row="1" horizontalAlignment="CENTER" grabHorizontalSpace="true">
+        <minSize width="32" height="19"/>
+        <maxSize width="-1" height="-1"/>
+      </layoutData>
+      <location/>
+      <font fontFamily="HelveticaNeue" size="11"/>
+    </children>
+  </com.scade.sdk.view:ToolBarItem>
+  <svg:Group>
+    <children xsi:type="svg:Box" attributes="{&quot;template-id&quot;:&quot;background&quot;}">
+      <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.h">
+        <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Box/height"/>
+        <expression xsi:type="com.scade.sdk.expr:Variable" name="size">
+          <path>h</path>
+        </expression>
+      </constraints>
+      <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w">
+        <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Box/width"/>
+        <expression xsi:type="com.scade.sdk.expr:Variable" name="size">
+          <path>w</path>
+        </expression>
+      </constraints>
+    </children>
+    <children xsi:type="svg:Group" attributes="{&quot;template-id&quot;:&quot;content&quot;}">
+      <children xsi:type="svg:Group">
+        <children xsi:type="svg:Image" attributes="{&quot;template-id&quot;:&quot;node-image&quot;}" xhref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFQAAABRCAMAAAB7eHFAAAACiFBMVEUAAAAAAACAgIBVVVWAgIBmZmaAgICSkpKAgICOjo6AgICLi4uAgICJiYmSkpKIiIiPj4+Hh4eOjo6GhoaMjIySkpKLi4uQkJCKioqPj4+JiYmOjo6SkpKNjY2MjIyPj4+Pj4+SkpKOjo6RkZGNjY2QkJCMjIyPj4+SkpKOjo6RkZGOjo6NjY2Pj4+Pj4+RkZGOjo6QkJCOjo6SkpKPj4+RkZGPj4+QkJCSkpKPj4+RkZGRkZGPj4+QkJCSkpKQkJCRkZGPj4+RkZGPj4+QkJCSkpKQkJCRkZGRkZGSkpKQkJCRkZGQkJCRkZGPj4+SkpKRkZGQkJCRkZGPj4+RkZGQkJCRkZGQkJCRkZGRkZGSkpKQkJCRkZGQkJCRkZGQkJCRkZGQkJCRkZGQkJCRkZGSkpKRkZGQkJCSkpKRkZGRkZGRkZGQkJCRkZGSkpKSkpKRkZGQkJCRkZGSkpKRkZGSkpKRkZGQkJCRkZGSkpKRkZGSkpKRkZGRkZGRkZGSkpKRkZGSkpKRkZGRkZGSkpKRkZGSkpKRkZGRkZGRkZGRkZGRkZGSkpKRkZGRkZGSkpKRkZGRkZGSkpKRkZGRkZGRkZGSkpKRkZGSkpKRkZGRkZGSkpKRkZGRkZGSkpKRkZGRkZGSkpKRkZGSkpKRkZGRkZGSkpKRkZGSkpKRkZGSkpKRkZGSkpKRkZGSkpKRkZGRkZGSkpKRkZGSkpKRkZGSkpKRkZGRkZGRkZGSkpKRkZGSkpKRkZGRkZGSkpKRkZGSkpKRkZGSkpKRkZGRkZGSkpKRkZGRkZGSkpKRkZGRkZGSkpKRkZGSkpKRkZGSkpKRkZGRkZGSkpKRkZGSkpKRkZGSkpKSkpIWRJMCAAAA13RSTlMAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0fICIjJCUmJygpKissLS8wMjM0NTY4OTo7Pj9AQUNERUZHSElKS0xNTk9RVFVWV1hZW11eX2BhY2RlZmhpamtsbW5vcXR1dnd4enx9f4CBgoOFh4iJiouMjY+QkZKTlJWXmJmam52foKGjpKWnqaqrrK2usLGys7W2t7i5uru8vr/Aw8TFxsfIyczNz9DR0tPU1dbX2Nna29zd3+Dh4uPk5ebn6Onq6+zt7/Dx8vP09fb3+Pn6+/z9/mBbZ+MAAAQJSURBVHgBvdfpd1NVF8fxX5NAAoWHPAwCWtQKalUGkAKKIii0QFWgigoqKChYQXAQKdQiteDAICgyWFEUQUBFBgcBRRlKW6BD04bk+++49K6VJl3JHZqz/Lw6L89vn+zsfeXagAky76lKmVfzV45M6xulUKbNhVUybReckmF92oARMmsOwEqZtQPguIzqHQHgVpk0C6JReEkmbYdPd8JhGZTbAjNLgBtlTgk0BEOXYZHM2QLrpSr4Wsb0aILx0niIDZIpM7Ba9BTMlymbYJkkLYfPZUjwKuRLUj5E/y8zihIPtB8ekxnvwzzrNA92yIhuDUTC1jEcobWXTHgQtkqWj+BhmbABpiWVd4sMCNRTG0iUopbGkLI3CdYqYS0UKXtVMEoJo+E9Zc1fmzpFTlAfULYmwhIlWQr3K1vriOUpSV6Md+SkeLG9i+xVii+4uNhesXKrcVCqFKU4eDdXUnEtdppylaJXE3YuTde/Bu4C4LOqtBaok4VVaVVfAdjTMRqebQEaZioL138JtC5UktuOAFT3VFcV1QHfFShFt9djwMkR6pJgBRBf1V2dTTgDRJ7PkXe3/wCcnag0+nwIsPs6efVkM7Al0/B6tAE4/4A8CW8FrpQqoyH7ErVxa9wZYP9NsuF7oQ04PFQu+cquQbTML3sjjgONj8uVG/YBv4yRo1BFHNjcR86m11mt7sbkc8DpQjkIVVqt7lK/j4FomU92Co5are7eE43AV3nKbF6L1epe5B8E6mcog/A2q9U98q8AapRBIbC6uzy7B5irDHLOdm3+rYG2sDIp79r8P2O7NhbC1R7yaiQwS7LL/4i8WgnNvZRZOeyUV8cclsZCaO8nb24BZkj2+Z+RNy/ClaDslMMBeXOw808m+MbW/ko2DrhZXgyOwxQlGX4ULkzrnP9lefE01AWU4FvaBkB179T8P8mLGlivhPxvsHB6Qmr+MXIv3A73dvzLNQGRRQubgdhbweT8a+TebDjnk2XwboDjw6WhBwCOjUzKf8Ev17Z13KGkHmBdD0nyLYkA7WX+jvxT5FaoCcZaddgEUJt49juPABwalsj/gdwqhtP6x6Q/AfYMVEJgeRRoWZBj5bdWYlc2wmuSer4dT7OzjToGsHeIlZ/ZcsdfB8Olu38G+PEudRJ8MwZcnmPl3+3+0+mkuq24BlARSrc//Qqwvb/KIepyS6yAZQVHAC4+pLR6VsaBC0XjgOfkyh+wvhVgV+Zb3Pc7wMYGOCQ3RmNpXSAb/9uAhaFy4VUAOHqH7E09BwCvyIUTAPE1QTnpuxmA3+RsGMD5yXKj5BLAWDlaCuwcIHcGfgJUytG3tHgZaKWXuRRw3Ljj3xfIi7wapjoOktVBeTS/2rFK8m6Q/gN/A0O640AHZc9eAAAAAElFTkSuQmCC">
+          <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.h">
+            <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Image/height"/>
+            <expression xsi:type="com.scade.sdk.expr:Variable" name="size">
+              <path>h</path>
+            </expression>
+          </constraints>
+          <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w">
+            <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Image/width"/>
+            <expression xsi:type="com.scade.sdk.expr:Variable" name="size">
+              <path>w</path>
+            </expression>
+          </constraints>
+        </children>
+      </children>
+      <children xsi:type="svg:Group">
+        <children xsi:type="svg:Box" attributes="{&quot;template-id&quot;:&quot;background&quot;}">
+          <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.h">
+            <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Box/height"/>
+            <expression xsi:type="com.scade.sdk.expr:Variable" name="size">
+              <path>h</path>
+            </expression>
+          </constraints>
+          <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w">
+            <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Box/width"/>
+            <expression xsi:type="com.scade.sdk.expr:Variable" name="size">
+              <path>w</path>
+            </expression>
+          </constraints>
+        </children>
+        <children xsi:type="svg:Text" attributes="{&quot;template-id&quot;:&quot;node-text&quot;}" fillOpacity="1.0" strokeOpacity="1.0" opacity="1.0" fontSize="17" fontName="HelveticaNeue" text="label">
+          <fill xsi:type="svg_2:RGBColor" r="0.27450982" g="0.27450982" b="0.27450982"/>
+          <x value="5.0"/>
+          <y value="22.0"/>
+        </children>
+      </children>
+    </children>
+  </svg:Group>
+</xmi:XMI>
