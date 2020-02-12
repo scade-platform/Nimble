@@ -152,7 +152,6 @@
 		E43269F023E1AF9B005C6105 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				E4326A0B23E1B2F3005C6105 /* ScadeKit */,
 				E4326A1323E1B2F3005C6105 /* SVGDocument.swift */,
 				E4326A4423E1CF9E005C6105 /* SVGEditor.swift */,
 				E4326A4323E1CF9E005C6105 /* SVGEditorView.swift */,
@@ -205,19 +204,12 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		E4326A0B23E1B2F3005C6105 /* ScadeKit */ = {
-			isa = PBXGroup;
-			children = (
-				E4909E9F23E9975D00C1DFE2 /* SVGView.h */,
-				E4909EA023E9975D00C1DFE2 /* SVGView.mm */,
-				E4326A4923E1CFA9005C6105 /* SVGEditorBridging.h */,
-			);
-			path = ScadeKit;
-			sourceTree = "<group>";
-		};
 		E4326A2623E1C4ED005C6105 /* ScadeKitExtension */ = {
 			isa = PBXGroup;
 			children = (
+				E4326A4923E1CFA9005C6105 /* SVGEditorBridging.h */,
+				E4909E9F23E9975D00C1DFE2 /* SVGView.h */,
+				E4909EA023E9975D00C1DFE2 /* SVGView.mm */,
 				E4326A2723E1C4ED005C6105 /* ScadeKitExtension.h */,
 				E4326A2823E1C4ED005C6105 /* Info.plist */,
 			);
@@ -506,7 +498,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.SVGEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = Sources/ScadeKit/SVGEditorBridging.h;
+				SWIFT_OBJC_BRIDGING_HEADER = ScadeKitExtension/SVGEditorBridging.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = plugin;
@@ -540,7 +532,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.SVGEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = Sources/ScadeKit/SVGEditorBridging.h;
+				SWIFT_OBJC_BRIDGING_HEADER = ScadeKitExtension/SVGEditorBridging.h;
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = plugin;
 			};
