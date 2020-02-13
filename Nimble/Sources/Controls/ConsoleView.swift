@@ -26,12 +26,15 @@ class ConsoleView: NSViewController {
     return Array(consolesStorage.values)
   }
   
+  var delegate: ConsoleDelegate?
+  
   private func handler(fileHandle: FileHandle, console: Console) {
     guard console.title == currentConsole?.title else {
       return
     }
     DispatchQueue.main.async {
       self.textView.string = console.contents
+      self.textView.scrollToEndOfDocument(nil)
     }
   }
   
@@ -41,6 +44,7 @@ class ConsoleView: NSViewController {
       textView.font = font
     }
     setControllersHidden(true)
+    self.textView.layoutManager?.allowsNonContiguousLayout = false
   }
   
   private func setControllersHidden(_ value: Bool){
@@ -142,6 +146,7 @@ extension ConsoleView : WorkbenchPart {
 
 extension ConsoleView: ConsoleDelegate {
   func didChangeContents(console: Console){
+    delegate?.didChangeContents(console: console)
     guard console.title != currentConsole?.title else {
       return
     }
@@ -151,7 +156,7 @@ extension ConsoleView: ConsoleDelegate {
   }
 }
 
-fileprivate protocol ConsoleDelegate {
+protocol ConsoleDelegate {
   func didChangeContents(console: Console)
 }
 
@@ -185,7 +190,9 @@ class NimbleTextConsole: Console {
   var handler: (FileHandle, Console) -> Void = {_,_ in} {
     didSet{
       outputPipe.fileHandleForReading.readabilityHandler = { fh in
-        self.handler(fh, self)
+        if !fh.availableData.isEmpty {
+          self.handler(fh, self)
+        }
       }
     }
   }
