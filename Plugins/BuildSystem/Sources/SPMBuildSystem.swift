@@ -24,8 +24,10 @@ class SPMBuildSystem: BuildSystem {
     let fileURL = package.url
     let spmProc = Process()
     spmProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
+    spmProc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
     spmProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
     spmProc.arguments = ["build"]
+    
     var spmProcConsole : Console?
     spmProc.terminationHandler = { process in
       spmProcConsole?.stopReadingFromBuffer()
@@ -65,6 +67,7 @@ class SPMBuildSystem: BuildSystem {
     DispatchQueue.main.async {
       spmProcConsole = self.openConsole(key: fileURL, title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
       spmProc.standardOutput = spmProcConsole?.output
+      spmProc.standardError = spmProcConsole?.output
       try? spmProc.run()
     }
   }
