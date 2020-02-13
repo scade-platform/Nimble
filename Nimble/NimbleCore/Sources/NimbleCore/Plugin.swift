@@ -59,6 +59,10 @@ public struct Package {
                                                      .relativePath: path.parent])
     return result.value
   }
+
+  public var dependencies: [String] {
+    return (try? decode([String].self, keyPath: "dependencies")) ?? []
+  }
 }
 
 
@@ -75,26 +79,44 @@ public class PluginManager {
   
   public static let shared: PluginManager = {
     let pluginManager = PluginManager()
+
+    var bundles = [String : (path: Path, bundle: CFBundle?)]()
+    var dependenciesGraph = [ArraySlice<String>]()
         
     for path in searchPaths.flatMap({$0.plugins}) {
       // Use CoreFoundation API to avoid auto-loading bundles
       let bundle = CFBundleCreate(kCFAllocatorDefault, NSURL(fileURLWithPath: path.string))
-      let info = CFBundleGetInfoDictionary(bundle) as! [String: AnyObject]
+      let bundleId = CFBundleGetIdentifier(bundle) as String? ?? "empty-bundle-id"
+
+      bundles[bundleId] = (path, bundle)
       
       // First load packages to be able to resolve dependencies (TBD)
       guard let resources = Path(url: CFBundleCopyResourcesDirectoryURL(bundle)) else {continue}
       let packagePath = resources / "package.yml"
       
       if packagePath.exists {
-        pluginManager.packages.append(Package(path: packagePath))
+        let package = Package(path: packagePath)
+        pluginManager.packages.append(package)
+
+        dependenciesGraph.append([bundleId] + package.dependencies)
+      } else {
+        dependenciesGraph.append([bundleId])
       }
-      
-      // Load iff a plugin contains a binary
-      if info.keys.contains(kCFBundleExecutableKey as String),
-          let bundle = Bundle(path: path.string),
-          let module = bundle.principalClass as? Module.Type {
-        
-        pluginManager.plugins[module.plugin.id] = module.plugin
+    }
+
+    let sortedBundleIds = Array(Algorithms.c3Merge(dependenciesGraph).reversed())
+
+    for bundleId in (sortedBundleIds.isEmpty ? Array(bundles.keys) : sortedBundleIds) {
+      if let (path, bundle) = bundles[bundleId] {
+
+        let info = CFBundleGetInfoDictionary(bundle) as! [String: AnyObject]
+        // Load iff a plugin contains a binary
+        if info.keys.contains(kCFBundleExecutableKey as String),
+           let bundle = Bundle(path: path.string),
+           let module = bundle.principalClass as? Module.Type {
+          
+          pluginManager.plugins[module.plugin.id] = module.plugin
+        }
       }
     }
     
@@ -102,8 +124,7 @@ public class PluginManager {
   }()
     
   private init() {}
-  
-  
+
   private var packages: [Package] = []
     
   public private(set) var plugins: [String: Plugin] = [:]
