@@ -10,6 +10,7 @@
 		D75DAE5D23A83DA60017DEE2 /* LSPConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75DAE5C23A83DA60017DEE2 /* LSPConnector.swift */; };
 		D75DAE5F23A845A80017DEE2 /* CodeEditor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D75DAE5E23A845A80017DEE2 /* CodeEditor.framework */; };
 		D75DAE6A23AC2D000017DEE2 /* LSPDiagnostic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75DAE6923AC2D000017DEE2 /* LSPDiagnostic.swift */; };
+		D770F89523F4BE180010C2BB /* String+Position.swift in Sources */ = {isa = PBXBuildFile; fileRef = D770F89423F4BE180010C2BB /* String+Position.swift */; };
 		D77F337623A2F3ED00E3AFC8 /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77F337523A2F3ED00E3AFC8 /* Plugin.swift */; };
 		D7AC82C723EC343E00BE3A53 /* LSPClient+Capabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7AC82C623EC343E00BE3A53 /* LSPClient+Capabilities.swift */; };
 		D7EC136C239EF6E100DA0DA0 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7EC136A239EF6E100DA0DA0 /* Info.plist */; };
@@ -23,6 +24,7 @@
 		D75DAE5C23A83DA60017DEE2 /* LSPConnector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPConnector.swift; sourceTree = "<group>"; };
 		D75DAE5E23A845A80017DEE2 /* CodeEditor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CodeEditor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D75DAE6923AC2D000017DEE2 /* LSPDiagnostic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPDiagnostic.swift; sourceTree = "<group>"; };
+		D770F89423F4BE180010C2BB /* String+Position.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Position.swift"; sourceTree = "<group>"; };
 		D77F337523A2F3ED00E3AFC8 /* Plugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
 		D7AC82C623EC343E00BE3A53 /* LSPClient+Capabilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LSPClient+Capabilities.swift"; sourceTree = "<group>"; };
 		D7EC1361239EF4D100DA0DA0 /* LSPClient.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LSPClient.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,6 +51,7 @@
 		D7AC82C823EC344D00BE3A53 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				D770F89423F4BE180010C2BB /* String+Position.swift */,
 				D7AC82C623EC343E00BE3A53 /* LSPClient+Capabilities.swift */,
 			);
 			path = Extensions;
@@ -171,6 +174,7 @@
 			files = (
 				D77F337623A2F3ED00E3AFC8 /* Plugin.swift in Sources */,
 				D7EC1375239EFB8400DA0DA0 /* LSPServer.swift in Sources */,
+				D770F89523F4BE180010C2BB /* String+Position.swift in Sources */,
 				D7AC82C723EC343E00BE3A53 /* LSPClient+Capabilities.swift in Sources */,
 				D7EC136E239EF70B00DA0DA0 /* LSPClient.swift in Sources */,
 				D75DAE5D23A83DA60017DEE2 /* LSPConnector.swift in Sources */,

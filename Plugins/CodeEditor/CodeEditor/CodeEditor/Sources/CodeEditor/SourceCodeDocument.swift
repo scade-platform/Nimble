@@ -26,62 +26,6 @@ public extension SourceCodeDocumentObserver {
 
 
 public protocol SourceCodeDiagnostic: Diagnostic {
-  var range: Range<SourceCodePosition> { get }
+  func range(`in`: String) -> Range<Int>
 }
 
-
-public struct SourceCodePosition: Comparable {
-  public let line: Int
-  // UTF-16 offset from the line beginning
-  public let offset: Int
-  
-  public init(line: Int, offset: Int) {
-    self.line = line
-    self.offset = offset
-  }
-  
-  public static func < (lhs: SourceCodePosition, rhs: SourceCodePosition) -> Bool {
-    return (lhs.line, lhs.offset) < (rhs.line, rhs.offset)
-  }
-}
-
-
-public extension String {
-  func index(at pos: SourceCodePosition) -> Int {
-    return lineRange(line: pos.line).lowerBound + pos.offset
-  }
-  
-  func index(at pos: SourceCodePosition) -> String.Index {
-    return index(lineRange(line: pos.line).lowerBound, offsetBy: pos.offset)
-  }
-  
-  func range(for posRange: Range<SourceCodePosition>) -> Range<Int> {
-    return index(at: posRange.lowerBound)..<index(at: posRange.upperBound)
-  }
-  
-  func range(for posRange: Range<SourceCodePosition>) -> Range<String.Index> {
-    return index(at: posRange.lowerBound)..<index(at: posRange.upperBound)
-  }
-  
-  func position(at index: Index) -> SourceCodePosition {
-    let line = lineNumber(at: index)
-    let range = lineRange(at: index)
-    return SourceCodePosition(line: line, offset: distance(from: range.lowerBound, to: index))
-  }
-  
-  func position(at offset: Int) -> SourceCodePosition {
-    return position(at: index(at: offset))
-  }
-  
-  func positionRange(for range: Range<Index>) -> Range<SourceCodePosition> {
-    let lo = position(at: range.lowerBound)
-    let hi = range.lowerBound < range.upperBound ? position(at: range.upperBound) : lo
-    return lo..<hi
-  }
-  
-  func positionRange(for range: Range<Int>) -> Range<SourceCodePosition> {
-    let lo = position(at: range.lowerBound)
-    let hi = range.lowerBound < range.upperBound ? position(at: range.upperBound) : lo
-    return lo..<hi
-  }
-}

@@ -25,7 +25,7 @@ class CodeEditorMenu: NSObject {
   }()
 }
 
-// MARK: Syntax menu
+// MARK: - Syntax menu
 
 class CodeEditorSyntaxMenuItem: NSObject {
   private static let shared = CodeEditorSyntaxMenuItem()
@@ -68,7 +68,7 @@ class CodeEditorSyntaxMenuItem: NSObject {
   }
 }
 
-// MARK: Show Completion
+// MARK: - Show Completion
 
 class CodeEditorShowCompletionMenuItem: NSObject {
   static let shared = CodeEditorShowCompletionMenuItem()

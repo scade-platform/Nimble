@@ -188,7 +188,7 @@ extension LSPClient: SourceCodeDocumentObserver {
     let textDocument = VersionedTextDocumentIdentifier(uri, version: 0)
     
     let length = range.upperBound - range.lowerBound
-    let range = document.text.positionRange(for: range).range
+    let range = document.text.positionRange(for: range)
         
     let changeEvent = TextDocumentContentChangeEvent(range: range, rangeLength: length, text: text)
     let textChangeEvent = DidChangeTextDocumentNotification(textDocument: textDocument, contentChanges: [changeEvent])
@@ -208,7 +208,7 @@ extension LSPClient: LanguageService {
     guard let uri = doc.fileURL?.uri else { return }
     
     let textDocument = TextDocumentIdentifier(uri)
-    let position = doc.text.position(at: index).position
+    let position = doc.text.position(at: index)
             
     let (triggerIndex, triggerKind) = trigger(doc, at: index)        
     
@@ -310,7 +310,7 @@ extension CompletionItemWrapper: CodeEditor.CompletionItem {
 
 extension TextEditWrapper: CodeEditor.CompletionTextEdit {
   var range: Range<Int> {
-    return text.range(for: textEdit.range.range)
+    return text.range(for: text.range(for: textEdit.range))
   }
   
   var newText: String { textEdit.newText }
@@ -321,29 +321,4 @@ extension TextEditWrapper: CodeEditor.CompletionTextEdit {
 
 fileprivate extension URL {
   var uri: DocumentURI { return DocumentURI(self) }
-}
-
-
-fileprivate extension SourceCodePosition {
-  var position: Position {
-    return Position(line: line, utf16index: offset)
-  }
-}
-
-fileprivate extension Position {
-  var position: SourceCodePosition {
-    return SourceCodePosition(line: line, offset: utf16index)
-  }
-}
-
-fileprivate extension Range where Bound == Position {
-  var range: Range<SourceCodePosition> {
-    return lowerBound.position..<upperBound.position
-  }
-}
-
-fileprivate extension Range where Bound == SourceCodePosition {
-  var range: Range<Position> {
-    return lowerBound.position..<upperBound.position
-  }
 }

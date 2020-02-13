@@ -103,7 +103,8 @@ class CodeEditorView: NSViewController {
   private func showDiagnostics() {
     guard let textStorage = document?.textStorage else { return }
     
-    let wholeRange = textStorage.string.nsRange
+    let text = textStorage.string
+    let wholeRange = text.nsRange
     
     // Clean previous diagnostics
     textStorage.layoutManagers.forEach {
@@ -116,13 +117,15 @@ class CodeEditorView: NSViewController {
     let style = NSNumber(value: NSUnderlineStyle.thick.rawValue)
     var lastLine = -1
     var diagnosticsOnLine: [Diagnostic] = []
+    
     //remove previouse diagnostics view
-    diagnosticViews.forEach{$0.removeFromSuperview()}
+    diagnosticViews.forEach{ $0.removeFromSuperview() }
     for d in diagnostics {
       let color = d.severity == .error ? NSColor.red : NSColor.yellow
-      let range: Range<Int> = textStorage.string.range(for: d.range)
-      let nsRange = range.isEmpty ? NSRange(range.lowerBound..<range.upperBound + 1) : NSRange(range)
-      let line = textStorage.string.lineNumber(at: nsRange.location)
+      
+      let range = d.range(in: text)
+      
+      let line = text.lineNumber(at: range.lowerBound)
       if line != lastLine {
         if !diagnosticsOnLine.isEmpty {
           addDiagnosticsView(diagnosticsOnLine: diagnosticsOnLine, lastLine: lastLine)
@@ -132,6 +135,11 @@ class CodeEditorView: NSViewController {
       } else {
         diagnosticsOnLine.append(d)
       }
+      
+      let lb = text.utf16(at: range.lowerBound)
+      let ub = text.utf16(at: range.upperBound) + 1
+      let nsRange = range.isEmpty ? NSRange(lb..<ub) : NSRange(range)
+      
       textStorage.layoutManagers.forEach {
         //$0.addTemporaryAttribute(.toolTip, value: d.message, forCharacterRange: nsRange)
         $0.addTemporaryAttribute(.underlineColor, value: color, forCharacterRange: nsRange)
@@ -179,8 +187,7 @@ class CodeEditorView: NSViewController {
   
   public func showCompletion(triggered: Bool = false) {
     guard let doc = document,
-          let sel = textView?.selectedRange().lowerBound,
-          let pos = textView?.textStorage?.string.index(at: sel) else { return }
+          let pos = textView?.selectedIndex else { return }
     
     ///TODO: filter langServices or merge results
     for langService in doc.languageServices {
@@ -194,9 +201,9 @@ class CodeEditorView: NSViewController {
         self?.completionView.reload()
         
         if $1.count > 0 {
-          self?.completionView.open(at: string.offset(at: $0), triggered: triggered)
+          self?.completionView.open(at: string.utf16.offset(at: $0), triggered: triggered)
         } else {
-          self?.completionView.open(at: sel, triggered: triggered)
+          self?.completionView.open(at: string.utf16.offset(at: pos), triggered: triggered)
         }
       }
     }
@@ -266,7 +273,8 @@ extension CodeEditorView: NSTextViewDelegate {
     guard let doc = document else { return true }
     
     doc.observers.notify(as: SourceCodeDocumentObserver.self) {
-      let range = affectedCharRange.lowerBound..<affectedCharRange.upperBound
+      guard let text = textView.textStorage?.string else { return }            
+      let range = text.range(for: text.utf16.range(for: affectedCharRange))
       $0.textDidChange(document: doc, range: range, text: replacementString ?? "")
     }
     
@@ -284,7 +292,7 @@ extension CodeEditorView: NSTextViewDelegate {
       }
       
       if let str = textView?.textStorage?.string {
-        let filter = str[str.index(at: pos)..<str.index(at: newSel.lowerBound)]
+        let filter = str[str.utf16.index(at: pos)..<str.utf16.index(at: newSel.lowerBound)]
         completionView.itemsFilter = String(filter)
         completionView.reload()
       }

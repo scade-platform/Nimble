@@ -196,7 +196,7 @@ class SyntaxParseOperation: Operation, ProgressReporting {
       defer {
         offsetsComputed.signal()
       }
-      guard let table = self?.str.createUTF8OffsetTable() else { return }
+      guard let table = self?.str.createUTF16OffsetTable() else { return }
       $0 = table
     }
     result = parse()

@@ -88,6 +88,11 @@ settings:
     scope: keyword.other.condition
     settings:
       foreground: "#FD8F3F"
+      
+  - name: Operators
+    scope: keyword.operator
+    settings:
+      foreground: "#FFFFFF"
 
 
 #MARK: Storage (types, modifiers)

@@ -265,7 +265,7 @@ extension NimbleWorkbench: Workbench {
     }
     return debugView?.consoleView.createConsole(title: title, show: show)
   }
-    
+  
   public func publishDiagnostics(for path: Path, diagnostics: [Diagnostic]) {
     if let doc = documents.first(where: {$0.path == path}){
       doc.editor?.publish(diagnostics: diagnostics)

@@ -51,4 +51,23 @@ extension String {
     }
     return OffsetTable(table)
   }
+  
+  /// Creates a mapping table from byte index to UTF16 character index
+  func createUTF16OffsetTable() -> OffsetTable {
+    var offset: Int = 0
+    var table: [(Int, Int)] = []
+    for (i, s) in self.unicodeScalars.enumerated() {
+      let cur = i + offset
+      if s.value > 128 && s.value <= 65536 {
+        offset += 1
+        table.append((cur, offset))
+      } else if s.value > 65536 {
+        offset += 2
+        table.append((cur, offset))
+      }
+    }
+    return OffsetTable(table)
+  }
+  
+  
 }

@@ -308,7 +308,9 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   let autoClosingPairs = ["()", "[]", "{}"]
 
   var selectedIndex: String.Index {
-    string.index(at: selectedRange().location)
+    // Use UTF-16 view as NSTextView returns index in UTF-16
+    let utf16 = string.utf16
+    return utf16.index(utf16.startIndex, offsetBy: selectedRange().location)
   }
   
   var currentLine: String {
