@@ -1,7 +1,7 @@
 import Cocoa
 import NimbleCore
 
-class SVGEditorView: NSViewController {
+public class SVGEditorView: NSViewController {
 
   @IBOutlet weak var scrollView: NSScrollView!
 
@@ -11,7 +11,7 @@ class SVGEditorView: NSViewController {
 
   weak var doc: SVGDocument? = nil
 
-  override func viewDidLoad() {
+  override public func viewDidLoad() {
     super.viewDidLoad()
 
     doc?.observers.add(observer: self)
@@ -39,6 +39,14 @@ class SVGEditorView: NSViewController {
                                     multiplier: sizeMultiplier).isActive = true
   }
 
+  public func zoomIn() {
+    scrollView.magnification += 0.25
+  }
+
+  public func zoomOut() {
+    scrollView.magnification -= 0.25
+  }
+
   private func setupScrollView() {    
     scrollView.hasHorizontalRuler = true
     scrollView.hasVerticalRuler = true
@@ -52,7 +60,7 @@ class SVGEditorView: NSViewController {
     scrollView.horizontalRulerView?.measurementUnits = .points
     scrollView.verticalRulerView?.measurementUnits = .points
     
-    //scrollView.allowsMagnification = true
+    scrollView.allowsMagnification = true
     //scrollView.magnification = 10
   }
 }
@@ -61,7 +69,7 @@ extension SVGEditorView: WorkbenchEditor { }
 
 extension SVGEditorView: DocumentObserver {
 
-  func documentFileDidChange(_ document: Document) {
+  public func documentFileDidChange(_ document: Document) {
     //loadPage()
   }
 }

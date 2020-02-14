@@ -5,7 +5,7 @@ import ScadeKit
 public final class SVGDocument: NimbleDocument {
   public var rootSvg: SCDSvgBox?
 
-  private lazy var documentController: SVGEditorView = {
+  public lazy var documentController: SVGEditorView = {
     let controller = SVGEditorView.loadFromNib()
     controller.doc = self
 
