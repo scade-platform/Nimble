@@ -14,6 +14,7 @@
 		D7CD750B22B8CDCC004C437B /* InterfaceBuilderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7CD750922B8CDCC004C437B /* InterfaceBuilderController.xib */; };
 		E451B2FE22C0E919006185B7 /* WidgetVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2DD22C0E919006185B7 /* WidgetVisitor.swift */; };
 		E451B30022C4B69F006185B7 /* WidgetHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2FF22C4B69F006185B7 /* WidgetHighlighter.swift */; };
+		E460BE3923F6E7DD003317AC /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = E460BE3823F6E7DC003317AC /* package.yml */; };
 		E4909E7523E4773200C1DFE2 /* ScadeKitExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4909E7423E4773200C1DFE2 /* ScadeKitExtension.framework */; };
 		E4909E7923E478C000C1DFE2 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4909E7823E478C000C1DFE2 /* ScadeKit.framework */; };
 /* End PBXBuildFile section */
@@ -30,6 +31,7 @@
 		E42DC11D22D9C7A800486CC1 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E451B2DD22C0E919006185B7 /* WidgetVisitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetVisitor.swift; sourceTree = "<group>"; };
 		E451B2FF22C4B69F006185B7 /* WidgetHighlighter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetHighlighter.swift; sourceTree = "<group>"; };
+		E460BE3823F6E7DC003317AC /* package.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = package.yml; sourceTree = "<group>"; };
 		E4909E7423E4773200C1DFE2 /* ScadeKitExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ScadeKitExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4909E7823E478C000C1DFE2 /* ScadeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScadeKit.framework; path = ../../SVGEditor/Libraries/ScadeKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -51,6 +53,7 @@
 		D7CD74EE22B8CC24004C437B = {
 			isa = PBXGroup;
 			children = (
+				E460BE3A23F6E85C003317AC /* Resources */,
 				D7CD750022B8CC37004C437B /* Sources */,
 				D7CD74F922B8CC24004C437B /* InterfaceBuilder */,
 				D7CD74F822B8CC24004C437B /* Products */,
@@ -97,6 +100,14 @@
 				D7CD750422B8CC6F004C437B /* NimbleCore.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E460BE3A23F6E85C003317AC /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				E460BE3823F6E7DC003317AC /* package.yml */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -159,6 +170,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7CD750B22B8CDCC004C437B /* InterfaceBuilderController.xib in Resources */,
+				E460BE3923F6E7DD003317AC /* package.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,7 +326,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.scade.InterfaceBuilder;
+				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.InterfaceBuilder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
@@ -347,7 +359,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "";
 				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
-				PRODUCT_BUNDLE_IDENTIFIER = com.scade.InterfaceBuilder;
+				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.InterfaceBuilder;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
