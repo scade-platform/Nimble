@@ -8,6 +8,8 @@ class SVGEditorView: NSViewController, SVGViewProtocol {
 
   weak var doc: SVGDocumentProtocol? = nil
 
+  @IBOutlet weak var scrollView: NSScrollView!
+
   func createElementSelector() -> SVGElementSelector {
     let selector = SVGLayerSelector()
 
@@ -22,9 +24,28 @@ class SVGEditorView: NSViewController, SVGViewProtocol {
     super.viewDidLoad()
 
     setupDocument()
-    setupSVGView(for: view)
+    let svgView = setupSVGView(for: view)
+    scrollView.documentView = svgView
+    setupScrollView()
 
     elementSelector = createElementSelector()
+  }
+
+  private func setupScrollView() {    
+    scrollView.hasHorizontalRuler = true
+    scrollView.hasVerticalRuler = true
+    scrollView.rulersVisible = true
+    
+    scrollView.verticalScrollElasticity = .none
+    scrollView.horizontalScrollElasticity = .none
+    
+    scrollView.borderType = .lineBorder
+    
+    scrollView.horizontalRulerView?.measurementUnits = .points
+    scrollView.verticalRulerView?.measurementUnits = .points
+    
+    //scrollView.allowsMagnification = true
+    //scrollView.magnification = 10
   }
 }
 
@@ -36,3 +57,4 @@ extension SVGEditorView: DocumentObserver {
     //loadPage()
   }
 }
+

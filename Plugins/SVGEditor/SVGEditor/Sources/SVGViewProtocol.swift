@@ -12,7 +12,7 @@ public protocol SVGViewProtocol {
 
   func createElementSelector() -> SVGElementSelector
 
-  func setupSVGView(for view: NSView) -> Void
+  func setupSVGView(for view: NSView) -> NSView
 }
 
 public extension SVGViewProtocol where Self: DocumentObserver {
@@ -23,7 +23,7 @@ public extension SVGViewProtocol where Self: DocumentObserver {
     doc?.observers.add(observer: self)
   }
 
-  func setupSVGView(for view: NSView) {
+  func setupSVGView(for view: NSView) -> NSView {
     let svgView = SVGView()
     svgView.setSvg(doc?.rootSvg)
     
@@ -39,5 +39,7 @@ public extension SVGViewProtocol where Self: DocumentObserver {
                                    multiplier: sizeMultiplier).isActive = true
     svgView.heightAnchor.constraint(equalTo: view.heightAnchor,
                                     multiplier: sizeMultiplier).isActive = true
+
+    return svgView
   }
 }
