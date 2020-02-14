@@ -8,6 +8,6 @@ public final class SVGEditor: Module {
 final class SVGEditorPlugin: Plugin {
   func load() {
     DocumentManager.shared.registerDocumentClass(SVGDocument.self)
-    SCDRuntime.loadMetaModel()    
+    SCDRuntime.loadMetaModel()
   }
 }
