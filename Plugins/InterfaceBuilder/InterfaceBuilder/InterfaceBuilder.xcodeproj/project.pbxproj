@@ -10,11 +10,11 @@
 		D7799136236F16DF00CBF9B7 /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7799135236F16DF00CBF9B7 /* NimbleCore.framework */; };
 		D7CD750222B8CC5B004C437B /* InterfaceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CD750122B8CC5B004C437B /* InterfaceBuilder.swift */; };
 		D7CD750722B8CCF5004C437B /* PageDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CD750622B8CCF5004C437B /* PageDocument.swift */; };
-		D7CD750A22B8CDCC004C437B /* InterfaceBuilderController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CD750822B8CDCC004C437B /* InterfaceBuilderController.swift */; };
-		D7CD750B22B8CDCC004C437B /* InterfaceBuilderController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7CD750922B8CDCC004C437B /* InterfaceBuilderController.xib */; };
 		E451B2FE22C0E919006185B7 /* WidgetVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2DD22C0E919006185B7 /* WidgetVisitor.swift */; };
 		E451B30022C4B69F006185B7 /* WidgetHighlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2FF22C4B69F006185B7 /* WidgetHighlighter.swift */; };
 		E460BE3923F6E7DD003317AC /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = E460BE3823F6E7DC003317AC /* package.yml */; };
+		E460BE3C23F6F26F003317AC /* InterfaceBuilderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E460BE3B23F6F26F003317AC /* InterfaceBuilderView.xib */; };
+		E460BE3E23F6F2CD003317AC /* InterfaceBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E460BE3D23F6F2CD003317AC /* InterfaceBuilderView.swift */; };
 		E4909E7523E4773200C1DFE2 /* ScadeKitExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4909E7423E4773200C1DFE2 /* ScadeKitExtension.framework */; };
 		E4909E7923E478C000C1DFE2 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4909E7823E478C000C1DFE2 /* ScadeKit.framework */; };
 /* End PBXBuildFile section */
@@ -26,12 +26,12 @@
 		D7CD750122B8CC5B004C437B /* InterfaceBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceBuilder.swift; sourceTree = "<group>"; };
 		D7CD750422B8CC6F004C437B /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7CD750622B8CCF5004C437B /* PageDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDocument.swift; sourceTree = "<group>"; };
-		D7CD750822B8CDCC004C437B /* InterfaceBuilderController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceBuilderController.swift; sourceTree = "<group>"; };
-		D7CD750922B8CDCC004C437B /* InterfaceBuilderController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InterfaceBuilderController.xib; sourceTree = "<group>"; };
 		E42DC11D22D9C7A800486CC1 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E451B2DD22C0E919006185B7 /* WidgetVisitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetVisitor.swift; sourceTree = "<group>"; };
 		E451B2FF22C4B69F006185B7 /* WidgetHighlighter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetHighlighter.swift; sourceTree = "<group>"; };
 		E460BE3823F6E7DC003317AC /* package.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = package.yml; sourceTree = "<group>"; };
+		E460BE3B23F6F26F003317AC /* InterfaceBuilderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InterfaceBuilderView.xib; sourceTree = "<group>"; };
+		E460BE3D23F6F2CD003317AC /* InterfaceBuilderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterfaceBuilderView.swift; sourceTree = "<group>"; };
 		E4909E7423E4773200C1DFE2 /* ScadeKitExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ScadeKitExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4909E7823E478C000C1DFE2 /* ScadeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScadeKit.framework; path = ../../SVGEditor/Libraries/ScadeKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -81,11 +81,11 @@
 			isa = PBXGroup;
 			children = (
 				D7CD750122B8CC5B004C437B /* InterfaceBuilder.swift */,
-				D7CD750822B8CDCC004C437B /* InterfaceBuilderController.swift */,
+				E460BE3D23F6F2CD003317AC /* InterfaceBuilderView.swift */,
+				E460BE3B23F6F26F003317AC /* InterfaceBuilderView.xib */,
 				D7CD750622B8CCF5004C437B /* PageDocument.swift */,
 				E451B2FF22C4B69F006185B7 /* WidgetHighlighter.swift */,
 				E451B2DD22C0E919006185B7 /* WidgetVisitor.swift */,
-				D7CD750922B8CDCC004C437B /* InterfaceBuilderController.xib */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -169,8 +169,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7CD750B22B8CDCC004C437B /* InterfaceBuilderController.xib in Resources */,
 				E460BE3923F6E7DD003317AC /* package.yml in Resources */,
+				E460BE3C23F6F26F003317AC /* InterfaceBuilderView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,8 +181,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7CD750A22B8CDCC004C437B /* InterfaceBuilderController.swift in Sources */,
 				E451B30022C4B69F006185B7 /* WidgetHighlighter.swift in Sources */,
+				E460BE3E23F6F2CD003317AC /* InterfaceBuilderView.swift in Sources */,
 				D7CD750222B8CC5B004C437B /* InterfaceBuilder.swift in Sources */,
 				D7CD750722B8CCF5004C437B /* PageDocument.swift in Sources */,
 				E451B2FE22C0E919006185B7 /* WidgetVisitor.swift in Sources */,
