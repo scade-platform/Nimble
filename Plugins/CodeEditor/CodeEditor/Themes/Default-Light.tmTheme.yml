@@ -92,7 +92,7 @@ settings:
   - name: Operators
     scope: keyword.operator
     settings:
-      foreground: "#FFFFFF"
+      foreground: "#000000"
 
 #MARK: Storage (types, modifiers)
 
