@@ -76,7 +76,7 @@ extension PageDocument: Document {
   public static var typeIdentifiers: [String] = []
   
   public static func canOpen(_ file: File) -> Bool {
-    return file.path.extension == "page" || file.path.extension == "svg"
+    return file.path.extension == "page"
   }
   
   public static func isDefault(for file: File) -> Bool {

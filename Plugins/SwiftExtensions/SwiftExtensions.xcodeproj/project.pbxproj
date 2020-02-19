@@ -3,32 +3,24 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D77F337A23A4619500E3AFC8 /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = D77F337823A4619500E3AFC8 /* package.yml */; };
 		D77F337B23A4619500E3AFC8 /* bin in Resources */ = {isa = PBXBuildFile; fileRef = D77F337923A4619500E3AFC8 /* bin */; };
+		D79601A423FB5C7F00F87B44 /* LocalServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79601A323FB5C7F00F87B44 /* LocalServer.swift */; };
 		D7BEC81722B915D100A8F48B /* SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEC81622B915D100A8F48B /* SwiftExtensions.swift */; };
-		D7BEC82622B9191D00A8F48B /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7BEC82522B9191D00A8F48B /* NimbleCore.framework */; };
+		D7D4BD2B23FCA7A70063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD2A23FCA7A70063BD8F /* NimbleCore */; };
+		D7D4BD4B23FCAEA50063BD8F /* LSPClient in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD4A23FCAEA50063BD8F /* LSPClient */; };
+		D7D4BD4E23FCAFEC0063BD8F /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = D7D4BD4D23FCAFEC0063BD8F /* package.yml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D75508F322BB8E6A0092F7F7 /* SKCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SKCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D75508F522BB8E710092F7F7 /* SourceKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SourceKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D75508F722BB8E770092F7F7 /* LanguageServerProtocol.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LanguageServerProtocol.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D7550AF722BB940A0092F7F7 /* IndexStoreDB_CIndexStoreDB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = IndexStoreDB_CIndexStoreDB.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D77F337823A4619500E3AFC8 /* package.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = package.yml; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.yaml; };
 		D77F337923A4619500E3AFC8 /* bin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bin; sourceTree = "<group>"; };
+		D79601A323FB5C7F00F87B44 /* LocalServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalServer.swift; sourceTree = "<group>"; };
 		D7BEC80C22B9158B00A8F48B /* SwiftExtensions.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftExtensions.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7BEC81622B915D100A8F48B /* SwiftExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftExtensions.swift; sourceTree = "<group>"; };
-		D7BEC82322B9180100A8F48B /* CodeEditorCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CodeEditorCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D7BEC82522B9191D00A8F48B /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D7BECA2822BA426600A8F48B /* LanguageServerProtocol.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = LanguageServerProtocol.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D7BECA2B22BA459400A8F48B /* clibc.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = clibc.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D7BECC1922BB58B600A8F48B /* SKCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SKCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D7BECC1B22BB59A600A8F48B /* SourceKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SourceKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D7BECD2622BB5C6900A8F48B /* SwiftExtensionsCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftExtensionsCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7D4BD4D23FCAFEC0063BD8F /* package.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = package.yml; sourceTree = "<group>"; };
 		D7EC1376239EFC6D00DA0DA0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -37,7 +29,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7BEC82622B9191D00A8F48B /* NimbleCore.framework in Frameworks */,
+				D7D4BD2B23FCA7A70063BD8F /* NimbleCore in Frameworks */,
+				D7D4BD4B23FCAEA50063BD8F /* LSPClient in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -48,10 +41,10 @@
 			isa = PBXGroup;
 			children = (
 				D7EC1376239EFC6D00DA0DA0 /* Info.plist */,
-				D7BEC81522B915BB00A8F48B /* Sources */,
-				D7EC1388239F0D6200DA0DA0 /* Resources */,
+				D7D4BD4D23FCAFEC0063BD8F /* package.yml */,
 				D7BEC80D22B9158B00A8F48B /* Products */,
-				D7BEC82222B9180100A8F48B /* Frameworks */,
+				D7EC1388239F0D6200DA0DA0 /* Resources */,
+				D7BEC81522B915BB00A8F48B /* Sources */,
 			);
 			sourceTree = "<group>";
 		};
@@ -66,34 +59,16 @@
 		D7BEC81522B915BB00A8F48B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				D79601A323FB5C7F00F87B44 /* LocalServer.swift */,
 				D7BEC81622B915D100A8F48B /* SwiftExtensions.swift */,
 			);
 			path = Sources;
-			sourceTree = "<group>";
-		};
-		D7BEC82222B9180100A8F48B /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				D7550AF722BB940A0092F7F7 /* IndexStoreDB_CIndexStoreDB.framework */,
-				D75508F722BB8E770092F7F7 /* LanguageServerProtocol.framework */,
-				D75508F522BB8E710092F7F7 /* SourceKit.framework */,
-				D75508F322BB8E6A0092F7F7 /* SKCore.framework */,
-				D7BECD2622BB5C6900A8F48B /* SwiftExtensionsCore.framework */,
-				D7BECC1B22BB59A600A8F48B /* SourceKit.framework */,
-				D7BECC1922BB58B600A8F48B /* SKCore.framework */,
-				D7BECA2B22BA459400A8F48B /* clibc.framework */,
-				D7BECA2822BA426600A8F48B /* LanguageServerProtocol.framework */,
-				D7BEC82522B9191D00A8F48B /* NimbleCore.framework */,
-				D7BEC82322B9180100A8F48B /* CodeEditorCore.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		D7EC1388239F0D6200DA0DA0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				D77F337923A4619500E3AFC8 /* bin */,
-				D77F337823A4619500E3AFC8 /* package.yml */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -114,6 +89,10 @@
 			dependencies = (
 			);
 			name = SwiftExtensions;
+			packageProductDependencies = (
+				D7D4BD2A23FCA7A70063BD8F /* NimbleCore */,
+				D7D4BD4A23FCAEA50063BD8F /* LSPClient */,
+			);
 			productName = SwiftExtensions;
 			productReference = D7BEC80C22B9158B00A8F48B /* SwiftExtensions.plugin */;
 			productType = "com.apple.product-type.bundle";
@@ -158,7 +137,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D77F337B23A4619500E3AFC8 /* bin in Resources */,
-				D77F337A23A4619500E3AFC8 /* package.yml in Resources */,
+				D7D4BD4E23FCAFEC0063BD8F /* package.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +148,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D79601A423FB5C7F00F87B44 /* LocalServer.swift in Sources */,
 				D7BEC81722B915D100A8F48B /* SwiftExtensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -358,6 +338,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D7D4BD2A23FCA7A70063BD8F /* NimbleCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NimbleCore;
+		};
+		D7D4BD4A23FCAEA50063BD8F /* LSPClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LSPClient;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D7BEC80422B9158B00A8F48B /* Project object */;
 }

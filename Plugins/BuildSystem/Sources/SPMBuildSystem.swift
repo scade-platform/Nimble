@@ -22,6 +22,7 @@ class SPMBuildSystem: BuildSystem {
   func run(in workbench: Workbench, handler: ((BuildStatus) -> Void)?) {
     workbench.currentDocument?.save(nil)
     guard let curProject = workbench.project, let package = findPackage(project: curProject) else { return  }
+    
     let fileURL = package.url
     
     let spmProc = Process()
@@ -35,8 +36,9 @@ class SPMBuildSystem: BuildSystem {
     spmProc.terminationHandler = { process in
       
       spmProcConsole?.stopReadingFromBuffer()
+
       
-      if let contents = spmProcConsole?.contents {        
+      if let contents = spmProcConsole?.contents {
         if contents.isEmpty {
           DispatchQueue.main.async {
             spmProcConsole?.close()
@@ -51,6 +53,7 @@ class SPMBuildSystem: BuildSystem {
         }
       }
     }
+    
     spmProcConsole = self.openConsole(key: fileURL, title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
     spmProc.standardOutput = spmProcConsole?.output
     spmProc.standardError = spmProcConsole?.output

@@ -50,6 +50,7 @@ class SwiftBuildSystem: BuildSystem {
         }
       }
     }
+    
     swiftcProcConsole = self.openConsole(key: "Compile: \(fileURL.absoluteString)", title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
     swiftcProc.standardOutput = swiftcProcConsole?.output
     swiftcProc.standardError = swiftcProcConsole?.output

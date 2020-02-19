@@ -7,29 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D75DAE5D23A83DA60017DEE2 /* LSPConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75DAE5C23A83DA60017DEE2 /* LSPConnector.swift */; };
-		D75DAE5F23A845A80017DEE2 /* CodeEditor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D75DAE5E23A845A80017DEE2 /* CodeEditor.framework */; };
-		D75DAE6A23AC2D000017DEE2 /* LSPDiagnostic.swift in Sources */ = {isa = PBXBuildFile; fileRef = D75DAE6923AC2D000017DEE2 /* LSPDiagnostic.swift */; };
-		D77F337623A2F3ED00E3AFC8 /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77F337523A2F3ED00E3AFC8 /* Plugin.swift */; };
-		D7AC82C723EC343E00BE3A53 /* LSPClient+Capabilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7AC82C623EC343E00BE3A53 /* LSPClient+Capabilities.swift */; };
+		D70AA4D123FC5449007367E7 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70AA4D023FC5449007367E7 /* main.swift */; };
+		D70AA4D423FC5479007367E7 /* LSPClient in Frameworks */ = {isa = PBXBuildFile; productRef = D70AA4D323FC5479007367E7 /* LSPClient */; };
+		D70AA4D523FC5479007367E7 /* LSPClient in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D70AA4D323FC5479007367E7 /* LSPClient */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D7D4BD2323FCA6250063BD8F /* CodeEditor in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD2223FCA6250063BD8F /* CodeEditor */; };
+		D7D4BD2723FCA6A90063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD2623FCA6A90063BD8F /* NimbleCore */; };
+		D7D4BD5023FCB2010063BD8F /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = D7D4BD4F23FCB2010063BD8F /* package.yml */; };
 		D7EC136C239EF6E100DA0DA0 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7EC136A239EF6E100DA0DA0 /* Info.plist */; };
-		D7EC136E239EF70B00DA0DA0 /* LSPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EC136D239EF70B00DA0DA0 /* LSPClient.swift */; };
-		D7EC1371239EF73E00DA0DA0 /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7EC1370239EF73E00DA0DA0 /* NimbleCore.framework */; };
-		D7EC1375239EFB8400DA0DA0 /* LSPServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7EC1374239EFB8400DA0DA0 /* LSPServer.swift */; };
-		D7EC137A239EFD0200DA0DA0 /* LSPBindings in Frameworks */ = {isa = PBXBuildFile; productRef = D7EC1379239EFD0200DA0DA0 /* LSPBindings */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		D79601D323FB693D00F87B44 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D70AA4D523FC5479007367E7 /* LSPClient in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		D75DAE5C23A83DA60017DEE2 /* LSPConnector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPConnector.swift; sourceTree = "<group>"; };
-		D75DAE5E23A845A80017DEE2 /* CodeEditor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CodeEditor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D75DAE6923AC2D000017DEE2 /* LSPDiagnostic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPDiagnostic.swift; sourceTree = "<group>"; };
-		D77F337523A2F3ED00E3AFC8 /* Plugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
-		D7AC82C623EC343E00BE3A53 /* LSPClient+Capabilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LSPClient+Capabilities.swift"; sourceTree = "<group>"; };
+		D70AA4D023FC5449007367E7 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		D7D4BD4F23FCB2010063BD8F /* package.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = package.yml; sourceTree = "<group>"; };
 		D7EC1361239EF4D100DA0DA0 /* LSPClient.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LSPClient.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7EC136A239EF6E100DA0DA0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D7EC136D239EF70B00DA0DA0 /* LSPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPClient.swift; sourceTree = "<group>"; };
-		D7EC1370239EF73E00DA0DA0 /* NimbleCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D7EC1374239EFB8400DA0DA0 /* LSPServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LSPServer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,30 +42,30 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7EC137A239EFD0200DA0DA0 /* LSPBindings in Frameworks */,
-				D7EC1371239EF73E00DA0DA0 /* NimbleCore.framework in Frameworks */,
-				D75DAE5F23A845A80017DEE2 /* CodeEditor.framework in Frameworks */,
+				D7D4BD2323FCA6250063BD8F /* CodeEditor in Frameworks */,
+				D7D4BD2723FCA6A90063BD8F /* NimbleCore in Frameworks */,
+				D70AA4D423FC5479007367E7 /* LSPClient in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D7AC82C823EC344D00BE3A53 /* Extensions */ = {
+		D70AA4CF23FC5449007367E7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				D7AC82C623EC343E00BE3A53 /* LSPClient+Capabilities.swift */,
+				D70AA4D023FC5449007367E7 /* main.swift */,
 			);
-			path = Extensions;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 		D7EC1358239EF4D100DA0DA0 = {
 			isa = PBXGroup;
 			children = (
 				D7EC136A239EF6E100DA0DA0 /* Info.plist */,
-				D7EC136B239EF6E100DA0DA0 /* Sources */,
+				D7D4BD4F23FCB2010063BD8F /* package.yml */,
 				D7EC1362239EF4D100DA0DA0 /* Products */,
-				D7EC136F239EF73E00DA0DA0 /* Frameworks */,
+				D70AA4CF23FC5449007367E7 /* Sources */,
 			);
 			sourceTree = "<group>";
 		};
@@ -70,28 +75,6 @@
 				D7EC1361239EF4D100DA0DA0 /* LSPClient.plugin */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		D7EC136B239EF6E100DA0DA0 /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				D7EC136D239EF70B00DA0DA0 /* LSPClient.swift */,
-				D75DAE5C23A83DA60017DEE2 /* LSPConnector.swift */,
-				D75DAE6923AC2D000017DEE2 /* LSPDiagnostic.swift */,
-				D7EC1374239EFB8400DA0DA0 /* LSPServer.swift */,
-				D77F337523A2F3ED00E3AFC8 /* Plugin.swift */,
-				D7AC82C823EC344D00BE3A53 /* Extensions */,
-			);
-			path = Sources;
-			sourceTree = "<group>";
-		};
-		D7EC136F239EF73E00DA0DA0 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				D75DAE5E23A845A80017DEE2 /* CodeEditor.framework */,
-				D7EC1370239EF73E00DA0DA0 /* NimbleCore.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -104,6 +87,7 @@
 				D7EC135D239EF4D100DA0DA0 /* Sources */,
 				D7EC135E239EF4D100DA0DA0 /* Frameworks */,
 				D7EC135F239EF4D100DA0DA0 /* Resources */,
+				D79601D323FB693D00F87B44 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -111,7 +95,9 @@
 			);
 			name = LSPClient.plugin;
 			packageProductDependencies = (
-				D7EC1379239EFD0200DA0DA0 /* LSPBindings */,
+				D70AA4D323FC5479007367E7 /* LSPClient */,
+				D7D4BD2223FCA6250063BD8F /* CodeEditor */,
+				D7D4BD2623FCA6A90063BD8F /* NimbleCore */,
 			);
 			productName = LanguageServerClient;
 			productReference = D7EC1361239EF4D100DA0DA0 /* LSPClient.plugin */;
@@ -142,7 +128,6 @@
 			);
 			mainGroup = D7EC1358239EF4D100DA0DA0;
 			packageReferences = (
-				D7EC1378239EFD0200DA0DA0 /* XCRemoteSwiftPackageReference "sourcekit-lsp" */,
 			);
 			productRefGroup = D7EC1362239EF4D100DA0DA0 /* Products */;
 			projectDirPath = "";
@@ -159,6 +144,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7EC136C239EF6E100DA0DA0 /* Info.plist in Resources */,
+				D7D4BD5023FCB2010063BD8F /* package.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,12 +155,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D77F337623A2F3ED00E3AFC8 /* Plugin.swift in Sources */,
-				D7EC1375239EFB8400DA0DA0 /* LSPServer.swift in Sources */,
-				D7AC82C723EC343E00BE3A53 /* LSPClient+Capabilities.swift in Sources */,
-				D7EC136E239EF70B00DA0DA0 /* LSPClient.swift in Sources */,
-				D75DAE5D23A83DA60017DEE2 /* LSPConnector.swift in Sources */,
-				D75DAE6A23AC2D000017DEE2 /* LSPDiagnostic.swift in Sources */,
+				D70AA4D123FC5449007367E7 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,22 +339,18 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		D7EC1378239EFD0200DA0DA0 /* XCRemoteSwiftPackageReference "sourcekit-lsp" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "git@github.com:apple/sourcekit-lsp.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
-		D7EC1379239EFD0200DA0DA0 /* LSPBindings */ = {
+		D70AA4D323FC5479007367E7 /* LSPClient */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D7EC1378239EFD0200DA0DA0 /* XCRemoteSwiftPackageReference "sourcekit-lsp" */;
-			productName = LSPBindings;
+			productName = LSPClient;
+		};
+		D7D4BD2223FCA6250063BD8F /* CodeEditor */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CodeEditor;
+		};
+		D7D4BD2623FCA6A90063BD8F /* NimbleCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NimbleCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
