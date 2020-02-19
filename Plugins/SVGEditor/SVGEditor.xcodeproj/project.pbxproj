@@ -3,15 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D7D4BD3023FCACC90063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD2F23FCACC90063BD8F /* NimbleCore */; };
 		E43269F523E1B051005C6105 /* libphoenix.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E43269F223E1B051005C6105 /* libphoenix.dylib */; };
 		E43269FE23E1B0E3005C6105 /* libphoenix.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = E43269F223E1B051005C6105 /* libphoenix.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		E4326A0023E1B0EF005C6105 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E43269F423E1B051005C6105 /* ScadeKit.framework */; };
 		E4326A0123E1B0EF005C6105 /* ScadeKit.framework in Embed Libraries */ = {isa = PBXBuildFile; fileRef = E43269F423E1B051005C6105 /* ScadeKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		E4326A0423E1B0FB005C6105 /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4326A0323E1B0FB005C6105 /* NimbleCore.framework */; };
 		E4326A1C23E1B2F3005C6105 /* SVGDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4326A1323E1B2F3005C6105 /* SVGDocument.swift */; };
 		E4326A2E23E1C63B005C6105 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4326A2D23E1C63B005C6105 /* AppKit.framework */; };
 		E4326A3A23E1C8AF005C6105 /* ScadeKitExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4326A2523E1C4ED005C6105 /* ScadeKitExtension.framework */; };
@@ -69,7 +69,6 @@
 		E43269F423E1B051005C6105 /* ScadeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ScadeKit.framework; sourceTree = "<group>"; };
 		E43269FC23E1B090005C6105 /* NativeView.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NativeView.hpp; sourceTree = "<group>"; };
 		E43269FD23E1B090005C6105 /* display.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = display.hpp; sourceTree = "<group>"; };
-		E4326A0323E1B0FB005C6105 /* NimbleCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4326A1323E1B2F3005C6105 /* SVGDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGDocument.swift; sourceTree = "<group>"; };
 		E4326A2523E1C4ED005C6105 /* ScadeKitExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ScadeKitExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4326A2723E1C4ED005C6105 /* ScadeKitExtension.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScadeKitExtension.h; sourceTree = "<group>"; };
@@ -92,8 +91,8 @@
 			files = (
 				E4326A3A23E1C8AF005C6105 /* ScadeKitExtension.framework in Frameworks */,
 				E4326A0023E1B0EF005C6105 /* ScadeKit.framework in Frameworks */,
+				D7D4BD3023FCACC90063BD8F /* NimbleCore in Frameworks */,
 				E43269F523E1B051005C6105 /* libphoenix.dylib in Frameworks */,
-				E4326A0423E1B0FB005C6105 /* NimbleCore.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,12 +112,12 @@
 		E43269DD23E1AF09005C6105 = {
 			isa = PBXGroup;
 			children = (
-				E43269EF23E1AF48005C6105 /* Libraries */,
-				E4326A2623E1C4ED005C6105 /* ScadeKitExtension */,
-				E43269E723E1AF09005C6105 /* Products */,
-				E43269E823E1AF09005C6105 /* SVGEditor */,
-				E43269F023E1AF9B005C6105 /* Sources */,
+				E43269E923E1AF09005C6105 /* Info.plist */,
 				E4326A0223E1B0FB005C6105 /* Frameworks */,
+				E43269EF23E1AF48005C6105 /* Libraries */,
+				E43269E723E1AF09005C6105 /* Products */,
+				E4326A2623E1C4ED005C6105 /* ScadeKitExtension */,
+				E43269F023E1AF9B005C6105 /* Sources */,
 			);
 			sourceTree = "<group>";
 		};
@@ -129,14 +128,6 @@
 				E4326A2523E1C4ED005C6105 /* ScadeKitExtension.framework */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		E43269E823E1AF09005C6105 /* SVGEditor */ = {
-			isa = PBXGroup;
-			children = (
-				E43269E923E1AF09005C6105 /* Info.plist */,
-			);
-			path = SVGEditor;
 			sourceTree = "<group>";
 		};
 		E43269EF23E1AF48005C6105 /* Libraries */ = {
@@ -199,7 +190,6 @@
 			isa = PBXGroup;
 			children = (
 				E4326A2D23E1C63B005C6105 /* AppKit.framework */,
-				E4326A0323E1B0FB005C6105 /* NimbleCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -248,6 +238,9 @@
 				E4326A3D23E1C8AF005C6105 /* PBXTargetDependency */,
 			);
 			name = SVGEditor;
+			packageProductDependencies = (
+				D7D4BD2F23FCACC90063BD8F /* NimbleCore */,
+			);
 			productName = SVGEditor;
 			productReference = E43269E623E1AF09005C6105 /* SVGEditor.plugin */;
 			productType = "com.apple.product-type.bundle";
@@ -484,7 +477,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Libraries/include";
-				INFOPLIST_FILE = SVGEditor/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -518,7 +511,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				HEADER_SEARCH_PATHS = "$(PROJECT_DIR)/Libraries/include";
-				INFOPLIST_FILE = SVGEditor/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -653,6 +646,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D7D4BD2F23FCACC90063BD8F /* NimbleCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NimbleCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E43269DE23E1AF09005C6105 /* Project object */;
 }

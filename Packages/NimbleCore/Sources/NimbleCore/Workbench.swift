@@ -8,6 +8,8 @@
 
 import Cocoa
 
+// MARK: - Workbench
+
 public protocol Workbench: class {
   var project: Project? { get }
   
@@ -86,6 +88,7 @@ public extension WorkbenchObserver {
   func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) { return }
 }
 
+// MARK: - Area
 
 public protocol WorkbenchArea: class {
   var isHidden: Bool { get set }
@@ -100,6 +103,8 @@ public extension WorkbenchArea {
 }
 
 
+// MARK: - Part
+
 public protocol WorkbenchPart: class {
   var view: NSView { get }
   
@@ -109,6 +114,7 @@ public protocol WorkbenchPart: class {
 }
 
 
+// MARK: - Editor
 
 ///TODO: avoid constraining the protocol to the NSViewController
 public protocol WorkbenchEditor: NSViewController {
@@ -117,6 +123,8 @@ public protocol WorkbenchEditor: NSViewController {
   ///TODO: replace by Commands
   // Shown within the app's main menu
   var editorMenu: NSMenu? { get }
+  
+  var statusBarItems: [WorkbenchStatusBarItem] { get }
   
   @discardableResult
   func focus() -> Bool
@@ -130,8 +138,10 @@ public extension WorkbenchEditor {
     return view.window?.windowController as? Workbench
   }
   
-  var editorMenu: NSMenu? { nil }
-    
+  var editorMenu: NSMenu? { return nil }
+  
+  var statusBarItems: [WorkbenchStatusBarItem] { return [] }
+  
   func focus() -> Bool {
     return view.window?.makeFirstResponder(view) ?? false
   }
@@ -140,20 +150,11 @@ public extension WorkbenchEditor {
 }
 
 
+// MARK: - StatusBar
+
 public protocol WorkbenchStatusBar {
-  var leftBar : [WorkbenchStatusBarCell] { get set }
-  var rightBar: [WorkbenchStatusBarCell] { get set }
+  var leftBar : [WorkbenchStatusBarItem] { get set }
+  var rightBar: [WorkbenchStatusBarItem] { get set }
 }
 
-
-public protocol WorkbenchStatusBarCell {
-  var title: String { set get }
-}
-
-public struct StatusBarTextCell : WorkbenchStatusBarCell {
-  public var title: String
-  
-  public init(title: String) {
-    self.title = title
-  }
-}
+public protocol WorkbenchStatusBarItem { }

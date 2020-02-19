@@ -61,11 +61,13 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
       
       addChild(editor)
       tabViewContainer.addSubview(editor.view)
-    }
+    }     
     willSet {
       guard let editor = currentItem?.editor else { return }
       editor.view.removeFromSuperview()
       editor.removeFromParent()
+      
+      workbench?.currentDocumentWillChange(currentItem?.document)
     }
   }
   

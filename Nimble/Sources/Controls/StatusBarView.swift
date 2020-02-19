@@ -12,46 +12,46 @@ import NimbleCore
 class StatusBarView: NSViewController {
   @IBOutlet weak var leftBarStackView: NSStackView!
   @IBOutlet weak var rightBarStackView: NSStackView!
-
+  @IBOutlet weak var editorBarStackView: NSStackView!
   
+  var editorBar: [WorkbenchStatusBarItem] {
+    get {
+      return editorBarStackView.subviews.compactMap {$0 as? WorkbenchStatusBarItem}
+    }
+    set {
+      editorBarStackView.subviews.forEach{ $0.removeFromSuperview() }
+      newValue.forEach{
+        guard let view = $0 as? NSView else { return }
+        editorBarStackView.insertView(view, at: 0, in: .leading)
+      }
+    }
+  }
 }
 
 extension StatusBarView : WorkbenchStatusBar {
-  
-  var leftBar: [WorkbenchStatusBarCell] {
+  var leftBar: [WorkbenchStatusBarItem] {
     get {
-      return leftBarStackView.subviews.map{$0 as! WorkbenchStatusBarCell}
+      return leftBarStackView.subviews.compactMap {$0 as? WorkbenchStatusBarItem}
     }
     set {
-      leftBarStackView.subviews.removeAll()
-      for value in newValue {
-        let textView = NSTextField(labelWithString: value.title)
-        leftBarStackView.addView(textView, in: .trailing)
+      leftBarStackView.subviews.forEach{ $0.removeFromSuperview() }
+      newValue.forEach{
+        guard let view = $0 as? NSView else { return }
+        leftBarStackView.addView(view, in: .trailing)
       }
     }
   }
-  
-  var rightBar: [WorkbenchStatusBarCell] {
+    
+  var rightBar: [WorkbenchStatusBarItem] {
     get {
-      return rightBarStackView.subviews.map{$0 as! WorkbenchStatusBarCell}
+      return rightBarStackView.subviews.compactMap {$0 as? WorkbenchStatusBarItem}
     }
     set {
-      rightBarStackView.subviews.removeAll()
-      for value in newValue {
-        let textView = NSTextField(labelWithString: value.title)
-        rightBarStackView.insertView(textView, at: 0, in: .leading)
+      rightBarStackView.subviews.forEach{ $0.removeFromSuperview() }
+      newValue.forEach{
+        guard let view = $0 as? NSView else { return }
+        rightBarStackView.insertView(view, at: 0, in: .leading)
       }
-    }
-  }
-}
-
-extension NSTextField : WorkbenchStatusBarCell {
-  public var title: String {
-    get {
-      return self.stringValue
-    }
-    set(newValue) {
-      self.stringValue = newValue
     }
   }
 }

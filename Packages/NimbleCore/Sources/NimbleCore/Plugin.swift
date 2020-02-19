@@ -61,7 +61,11 @@ public struct Package {
   }
 
   public var dependencies: [String] {
-    return (try? decode([String].self, keyPath: "dependencies")) ?? []
+    do {
+      return (try decode([String].self, keyPath: "dependencies")) ?? []
+    } catch {
+      return []
+    }
   }
 }
 

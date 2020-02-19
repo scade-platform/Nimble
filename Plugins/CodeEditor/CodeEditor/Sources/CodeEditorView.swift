@@ -11,31 +11,39 @@ import CodeEditor
 
 
 class CodeEditorView: NSViewController {
-  var diagnostics: [SourceCodeDiagnostic] = []
-  var diagnosticsUpdateTimer: DispatchSourceTimer? = nil
-  var diagnosticViews: [DiagnosticView] = []
+  @IBOutlet weak var textView: CodeEditorTextView!
   
   weak var document: CodeEditorDocument? = nil {
     didSet {
+      guard isViewLoaded else { return }
       loadContent()
     }
   }
   
-  @IBOutlet weak var textView: CodeEditorTextView?
+  var diagnostics: [SourceCodeDiagnostic] = []
+  var diagnosticViews: [DiagnosticView] = []
+  var diagnosticsUpdateTimer: DispatchSourceTimer? = nil
+  
   
   private weak var highlightProgress: Progress? = nil
+  
+  private lazy var statusBarView: StatusBarView = {
+    let view = StatusBarView.loadFromNib()
+    view.textView = self.textView
+    return view
+  }()
   
   private lazy var completionView: CodeEditorCompletionView = {
     let view = CodeEditorCompletionView.loadFromNib()
     view.textView = self.textView
-    _ = view.view
+    _ = view.view    
     return view
   }()
   
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    textView?.delegate = self
+    textView.delegate = self
     ColorThemeManager.shared.observers.add(observer: self)
     
     loadContent()
@@ -47,8 +55,7 @@ class CodeEditorView: NSViewController {
     }
     
     if shouldTriggerCompletion(with: event) {
-      if let textView = textView,
-         let newText = event.charactersIgnoringModifiers {
+      if let newText = event.charactersIgnoringModifiers {
         textView.insertText(newText, replacementRange: textView.selectedRange())
       }
       
@@ -74,8 +81,7 @@ class CodeEditorView: NSViewController {
   }
   
   private func loadContent() {
-    guard let textView = self.textView,
-          let layoutManager = textView.layoutManager,
+    guard let layoutManager = textView.layoutManager,
           let doc = document else { return }
     
     layoutManager.replaceTextStorage(doc.textStorage)
@@ -94,9 +100,8 @@ class CodeEditorView: NSViewController {
 
   private func applyTheme(_ theme: ColorTheme? = nil) {
     guard let theme = theme ?? ColorThemeManager.shared.currentTheme else { return }
-    textView?.backgroundColor = theme.global.background
     
-    guard let textView = self.textView else { return }
+    textView.backgroundColor = theme.global.background
     textView.apply(theme: theme)
   }
       
@@ -152,7 +157,6 @@ class CodeEditorView: NSViewController {
   }
   
   private func addDiagnosticsView(diagnosticsOnLine: [Diagnostic], lastLine: Int) {
-    guard let textView = self.textView else { return }
     let diagnosticView = DiagnosticView(textView: textView, diagnostics: diagnosticsOnLine, line: lastLine)
     self.diagnosticViews.append(diagnosticView)
   }
@@ -186,14 +190,15 @@ class CodeEditorView: NSViewController {
   }
   
   public func showCompletion(triggered: Bool = false) {
-    guard let doc = document,
-          let pos = textView?.selectedIndex else { return }
+    guard let doc = document else { return }
+    
+    let pos = textView.selectedIndex
     
     ///TODO: filter langServices or merge results
     for langService in doc.languageServices {
       langService.complete(in: doc, at: pos) {[weak self] in
-        guard let string = self?.textView?.textStorage?.string,
-              let cursor = self?.textView?.selectedIndex, cursor >= $0 else { return }
+        guard let string = self?.textView.textStorage?.string,
+              let cursor = self?.textView.selectedIndex, cursor >= $0 else { return }
                 
         self?.completionView.itemsFilter = String(string[$0..<cursor])
         
@@ -229,6 +234,10 @@ extension CodeEditorView: WorkbenchEditor {
     return CodeEditorMenu.shared.nsMenu
   }
   
+  var statusBarItems: [WorkbenchStatusBarItem] {
+    return [statusBarView.view as! EditorStatusBar]
+  }
+  
   func focus() -> Bool {
     return view.window?.makeFirstResponder(textView) ?? false
   }
@@ -255,7 +264,7 @@ extension CodeEditorView: NSTextStorageDelegate {
     let range = textStorage.editedRange
     
     DispatchQueue.main.async { [weak self] in
-      self?.textView?.subviews.filter{$0 is DiagnosticView}.forEach{$0.removeFromSuperview()}
+      self?.textView.subviews.filter{$0 is DiagnosticView}.forEach{$0.removeFromSuperview()}
       if let progress = self?.highlightProgress {
         progress.cancel()
         self?.highlightProgress = syntaxParser.highlightAll()
@@ -282,16 +291,20 @@ extension CodeEditorView: NSTextViewDelegate {
   }
   
   func textViewDidChangeSelection(_ notification: Notification) {
+    let pos = textView.selectedPosition
+    statusBarView.setCursorPosition(pos.line, pos.column)
+    
     if completionView.isActive {
       let pos = completionView.completionPosition
+      let newSel = textView.selectedRange()
       
       // Don't go behind the position where the completion has started
-      guard let newSel = textView?.selectedRange(), pos <= newSel.lowerBound else {
+      if pos > newSel.lowerBound {
         completionView.close()
         return
       }
       
-      if let str = textView?.textStorage?.string {
+      if let str = textView.textStorage?.string {
         let filter = str[str.utf16.index(at: pos)..<str.utf16.index(at: newSel.lowerBound)]
         completionView.itemsFilter = String(filter)
         completionView.reload()

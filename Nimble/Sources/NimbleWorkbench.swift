@@ -98,16 +98,22 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     return mainMenu?.insertItem(withTitle: "Editor", action: nil, keyEquivalent: "", at: index)
   }()
   
-  func currentDocumentDidChange(_ document: Document?) {
-    let editorMenu = document?.editor?.editorMenu
+  func currentDocumentWillChange(_ doc: Document?) {
+    editorMenuItem?.submenu = nil
+    statusBarView?.editorBar = []
+  }
+  
+  func currentDocumentDidChange(_ doc: Document?) {
+    let editorMenu = doc?.editor?.editorMenu
     editorMenu?.title = "Editor"
-    
+             
     editorMenuItem?.submenu = editorMenu
-
-    document?.editor?.focus()
-    
+    statusBarView?.editorBar = doc?.editor?.statusBarItems ?? []
+      
+    doc?.editor?.focus()
+        
     observers.notify {
-      $0.workbenchActiveDocumentDidChange(self, document: document)
+      $0.workbenchActiveDocumentDidChange(self, document: doc)
     }
   }
 }

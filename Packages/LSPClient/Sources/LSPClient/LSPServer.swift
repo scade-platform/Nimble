@@ -47,39 +47,45 @@ public final class LSPServerManager {
   
   public static let shared: LSPServerManager = {
     let manager = LSPServerManager()
-    
-    let providers = LSPClientModule.plugin.extensions([LSPExternalServerProvider].self, at: "languageServers").flatMap{$0}
-    for provider in providers {
-      provider.languages.forEach {
-        manager.externalProviders[$0] = provider
+    if let LSPClientPlugin = PluginManager.shared.plugins["com.scade.nimble.LSPClient"] {
+      let providers = LSPClientPlugin.extensions([LSPExternalServerProvider].self,
+                                                 at: "languageServers").flatMap{$0}
+          
+      providers.forEach {
+        manager.registerProvider($0)
       }
     }
-    
     return manager
   }()
   
   private init() {}
   
-  private var externalProviders: [String: LSPServerProvider] = [:]
+  private var providers: [String: LSPServerProvider] = [:]
   
-  private var workbenchConnectors: [ObjectIdentifier: LSPConnector] = [:]
+  private var connectors: [ObjectIdentifier: LSPConnector] = [:]
   
       
-  func connect(to workbench: Workbench) {
-    workbenchConnectors[ObjectIdentifier(workbench)] = LSPConnector(workbench)
+  public func connect(to workbench: Workbench) {
+    connectors[ObjectIdentifier(workbench)] = LSPConnector(workbench)
   }
   
-  func disconnect(from workbench: Workbench) {
+  public func disconnect(from workbench: Workbench) {
     let key = ObjectIdentifier(workbench)
-    workbenchConnectors[key]?.disconnect()
-    workbenchConnectors.removeValue(forKey: key)
+    connectors[key]?.disconnect()
+    connectors.removeValue(forKey: key)
   }
-
+  
+  public func registerProvider(_ provider: LSPServerProvider) {
+    provider.languages.forEach {
+      providers[$0] = provider
+    }
+  }
   
   public func createServer(for lang: String) -> LSPServer? {
-    guard let provider = externalProviders[lang] else { return nil }
+    guard let provider = providers[lang] else { return nil }
     return provider.createServer()
   }
+    
 }
 
 

@@ -313,6 +313,19 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     return utf16.index(utf16.startIndex, offsetBy: selectedRange().location)
   }
   
+  var selectedPosition: (line: Int, column: Int) {
+    let sel = selectedIndex
+    if let str = textStorage?.string {
+      let line = str.lineNumber(at: sel)
+      let lineStart = str.lineRange(at: sel).lowerBound
+      let column = str.utf16.distance(from: lineStart, to: sel)
+      
+      return (line, column)
+    }
+    
+    return (0, 0)
+  }
+    
   var currentLine: String {
     return String(string[string.lineRange(at: selectedIndex)])
   }

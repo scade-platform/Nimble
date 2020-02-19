@@ -6,6 +6,7 @@
 //  Copyright © 2019 SCADE. All rights reserved.
 //
 
+import LSPClient
 import NimbleCore
 
 
@@ -14,12 +15,12 @@ public final class LSPClientModule: Module {
 }
 
 
-final class LSPClientPlugin: Plugin {
-  func activate(in workbench: Workbench) {
+final class LSPClientPlugin: Plugin {  
+  public func activate(in workbench: Workbench) {
     LSPServerManager.shared.connect(to: workbench)
   }
   
-  func deactivate(in workbench: Workbench) {
+  public func deactivate(in workbench: Workbench) {
     LSPServerManager.shared.disconnect(from: workbench)
   }
 }

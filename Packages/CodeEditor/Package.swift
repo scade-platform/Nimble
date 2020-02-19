@@ -3,15 +3,15 @@
 import PackageDescription
 
 let package = Package(
-    name: "CodeEditor",
+    name: "CodeEditor",    
     platforms: [
-        .macOS(.v10_13),
+        .macOS(.v10_14),
     ],
     products: [        
         .library(name: "CodeEditor", type: .dynamic, targets: ["CodeEditor"]),
     ],
     dependencies: [
-        .package(path: "../../../../Nimble/NimbleCore"),
+        .package(path: "../../NimbleCore"),
         .package(url: "https://github.com/FLORG1/oniguruma.git", .branch("master")),
         .package(url: "https://github.com/1024jp/WFColorCode.git", from: "2.5.0")
     ],
