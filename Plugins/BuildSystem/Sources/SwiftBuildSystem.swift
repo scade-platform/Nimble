@@ -25,11 +25,14 @@ class SwiftBuildSystem: BuildSystem {
     }
     
     workbench.currentDocument?.save(nil)
+    
     let swiftcProc = Process()
     swiftcProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
     swiftcProc.executableURL = URL(fileURLWithPath: "/usr/bin/swiftc")
     swiftcProc.arguments = [fileURL.path]
+    
     var swiftcProcConsole: Console?
+    
     swiftcProc.terminationHandler = { process in
       swiftcProcConsole?.stopReadingFromBuffer()
       if let contents = swiftcProcConsole?.contents {
@@ -48,25 +51,14 @@ class SwiftBuildSystem: BuildSystem {
             handler?(.finished)
           }
         }
-        let cell = StatusBarTextCell(title: "Build done.")
-        DispatchQueue.main.async {
-          var statusBar = workbench.statusBar
-          if !statusBar.leftBar.contains(where: {$0.title == cell.title}) {
-            statusBar.leftBar.append(cell)
-          }
-        }
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-          var statusBar = workbench.statusBar
-          if statusBar.leftBar.contains(where: {$0.title == cell.title}) {
-            if let index = statusBar.leftBar.firstIndex(where: {$0.title == cell.title}) {
-              statusBar.leftBar.remove(at: index)
-            }
-          }
-        }
       }
     }
+    
     DispatchQueue.main.async {
-      swiftcProcConsole = self.openConsole(key: "Compile: \(fileURL.absoluteString)", title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
+      swiftcProcConsole = self.openConsole (
+        key: "Compile: \(fileURL.absoluteString)",
+        title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)",
+        in: workbench )
       swiftcProc.standardError = swiftcProcConsole?.output
       try? swiftcProc.run()
     }

@@ -21,15 +21,18 @@ class SPMBuildSystem: BuildSystem {
   func run(in workbench: Workbench, handler: ((BuildStatus) -> Void)?) {
     workbench.currentDocument?.save(nil)
     guard let curProject = workbench.project, let package = findPackage(project: curProject) else { return  }
+    
     let fileURL = package.url
+    
     let spmProc = Process()
     spmProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
     spmProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
     spmProc.arguments = ["build"]
+    
     var spmProcConsole : Console?
     spmProc.terminationHandler = { process in
       spmProcConsole?.stopReadingFromBuffer()
-      if let contents = spmProcConsole?.contents {        
+      if let contents = spmProcConsole?.contents {
         if contents.isEmpty {
           DispatchQueue.main.async {
             spmProcConsole?.close()
@@ -45,21 +48,7 @@ class SPMBuildSystem: BuildSystem {
              handler?(.finished)
           }
         }
-        let cell = StatusBarTextCell(title: "Build done.")
-        DispatchQueue.main.async {
-          var statusBar = workbench.statusBar
-          if !statusBar.leftBar.contains(where: {$0.title == cell.title}) {
-            statusBar.leftBar.append(cell)
-          }
-        }
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-          var statusBar = workbench.statusBar
-          if statusBar.leftBar.contains(where: {$0.title == cell.title}) {
-            if let index = statusBar.leftBar.firstIndex(where: {$0.title == cell.title}) {
-              statusBar.leftBar.remove(at: index)
-            }
-          }
-        }
+        
       }
     }
     DispatchQueue.main.async {
