@@ -84,8 +84,6 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     DocumentManager.shared.defaultDocument = BinaryFileDocument.self
     
     PluginManager.shared.activate(in: self)
-    
-    debugView.consoleView.delegate = self
   }
     
   public func windowWillClose(_ notification: Notification) {
@@ -347,7 +345,7 @@ extension NimbleWorkbenchArea {
 
 
 
-// MARK: - NimbleWorkbenchWiew
+// MARK: - NimbleWorkbenchView
 
 protocol NimbleWorkbenchView { }
 protocol NimbleWorkbenchViewController {}
@@ -372,14 +370,4 @@ fileprivate class ButtonCell: NSButtonCell {
     super.drawImage(image, withFrame: frame.insetBy(dx: 0, dy: 2), in: controlView)
   }
   
-}
-
-extension NimbleWorkbench : ConsoleDelegate {
-  func didChangeContents(console: Console) {
-    DispatchQueue.main.async { [weak self] in
-      if self?.debugView?.isHidden ?? false {
-        self?.debugView?.isHidden = false
-      }
-    }
-  }
 }

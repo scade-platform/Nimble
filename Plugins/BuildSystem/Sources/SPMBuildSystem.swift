@@ -15,13 +15,15 @@ class SPMBuildSystem: BuildSystem {
   }
   
   lazy var launcher: Launcher? = {
-    return SPMLauncher(builder: self)
+    return SPMLauncher()
   }()
+  
   
   func run(in workbench: Workbench, handler: ((BuildStatus) -> Void)?) {
     workbench.currentDocument?.save(nil)
     guard let curProject = workbench.project, let package = findPackage(project: curProject) else { return  }
     let fileURL = package.url
+    
     let spmProc = Process()
     spmProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
     spmProc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
@@ -29,8 +31,11 @@ class SPMBuildSystem: BuildSystem {
     spmProc.arguments = ["build"]
     
     var spmProcConsole : Console?
+    
     spmProc.terminationHandler = { process in
+      
       spmProcConsole?.stopReadingFromBuffer()
+      
       if let contents = spmProcConsole?.contents {        
         if contents.isEmpty {
           DispatchQueue.main.async {
@@ -38,44 +43,25 @@ class SPMBuildSystem: BuildSystem {
           }
           handler?(.finished)
         } else {
-          DispatchQueue.main.async {
-            workbench.debugArea?.isHidden = false
-          }
           if contents.contains("error:"){
             handler?(.failed)
           } else {
-             handler?(.finished)
-          }
-        }
-        let cell = StatusBarTextCell(title: "Build done.")
-        DispatchQueue.main.async {
-          var statusBar = workbench.statusBar
-          if !statusBar.leftBar.contains(where: {$0.title == cell.title}) {
-            statusBar.leftBar.append(cell)
-          }
-        }
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
-          var statusBar = workbench.statusBar
-          if statusBar.leftBar.contains(where: {$0.title == cell.title}) {
-            if let index = statusBar.leftBar.firstIndex(where: {$0.title == cell.title}) {
-              statusBar.leftBar.remove(at: index)
-            }
+            handler?(.finished)
           }
         }
       }
     }
-    DispatchQueue.main.async {
-      spmProcConsole = self.openConsole(key: fileURL, title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
-      spmProc.standardOutput = spmProcConsole?.output
-      spmProc.standardError = spmProcConsole?.output
-      try? spmProc.run()
-    }
+    spmProcConsole = self.openConsole(key: fileURL, title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
+    spmProc.standardOutput = spmProcConsole?.output
+    spmProc.standardError = spmProcConsole?.output
+    try? spmProc.run()
   }
   
   func clean(in workbench: Workbench, handler: (() -> Void)?) {
     guard let fileURL = workbench.currentDocument?.fileURL else {
       return
     }
+    
     let proc = Process()
     proc.currentDirectoryURL = fileURL.deletingLastPathComponent()
     proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
@@ -83,85 +69,41 @@ class SPMBuildSystem: BuildSystem {
     proc.terminationHandler = { process in
       handler?()
     }
+    
     try? proc.run()
-
   }
 }
 
 extension SPMBuildSystem : ConsoleSupport {}
 
 class SPMLauncher: Launcher {
-  let builder: BuildSystem
-  
-  init(builder: BuildSystem) {
-    self.builder = builder
-  }
   
   func launch(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
-    builder.run(in: workbench, handler: {status in
-      switch status {
-      case .finished:
-        self.run(in: workbench, handler: handler)
-      case .failed:
-        handler?(.failed, nil)
-      default: break
-      }
-    })
-  }
-  
-  private func run(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
-    DispatchQueue.main.async {
-      guard let curProject = workbench.project, let package = findPackage(project: curProject) else {
-        handler?(.failed, nil)
-        return
-      }
-      let packageUrl = package.url
-      //get package name from package describtion
-      let proc = Process()
-      proc.currentDirectoryURL = packageUrl.deletingLastPathComponent()
-      proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
-      proc.arguments = ["package", "describe"]
-      let out = Pipe()
-      var buffer : String? = nil
-      out.fileHandleForReading.readabilityHandler = {fh in
-        let data = fh.availableData
-        if let str = String(data: data, encoding: .utf8), str.hasPrefix("Name: ") {
-          buffer = str
-          proc.terminate()
-        }
-        proc.terminate()
-      }
-      
-      proc.standardOutput = out
-      proc.terminationHandler = { process in
-        out.fileHandleForReading.readabilityHandler = nil
-        guard let describtion = buffer, let endOfFirstLine = describtion.firstIndex(of: "\n") else {
-          handler?(.failed, nil)
-          return
-        }
-        let prefix = describtion.prefix(through: describtion.index(endOfFirstLine, offsetBy: -1))
-        let name = prefix.suffix(from: prefix.index(prefix.startIndex, offsetBy: "Name: ".count))
-        
-        let programProc = Process()
-        programProc.currentDirectoryURL = packageUrl.deletingLastPathComponent()
-        programProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
-        programProc.arguments = ["run", "\(name)"]
-        var programProcConsole: Console?
-        programProc.terminationHandler = { process in
-          programProcConsole?.stopReadingFromBuffer()
-          handler?(.finished, process)
-        }
-        DispatchQueue.main.async {
-          workbench.debugArea?.isHidden = false
-          programProcConsole =  self.openConsole(key: package, title: "Run: \(name)", in: workbench)
-          programProc.standardOutput = programProcConsole?.output
-          programProc.standardError = programProcConsole?.output
-          try? programProc.run()
-          handler?(.running, programProc)
-        }
-      }
-      try? proc.run()
+    guard let curProject = workbench.project, let package = findPackage(project: curProject) else {
+      handler?(.failed, nil)
+      return
     }
+    let packageUrl = package.url
+      
+    let programProc = Process()
+    programProc.currentDirectoryURL = packageUrl.deletingLastPathComponent()
+    programProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
+    programProc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
+    programProc.arguments = ["run"]
+    
+    var programProcConsole: Console?
+    programProc.terminationHandler = { process in
+      programProcConsole?.stopReadingFromBuffer()
+      handler?(.finished, process)
+    }
+    
+    let name = packageUrl.deletingLastPathComponent().lastPathComponent
+    programProcConsole = openConsole(key: package, title: "Run: \(name)", in: workbench)
+    programProc.standardOutput = programProcConsole?.output
+    programProc.standardError = programProcConsole?.output
+    
+    try? programProc.run()
+    handler?(.running, programProc)
   }
 }
 

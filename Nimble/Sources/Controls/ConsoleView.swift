@@ -26,13 +26,9 @@ class ConsoleView: NSViewController {
     return Array(consolesStorage.values)
   }
   
-  var delegate: ConsoleDelegate?
-  
   private func handler(fileHandle: FileHandle, console: Console) {
-    guard console.title == currentConsole?.title else {
-      return
-    }
     DispatchQueue.main.async {
+      self.open(console: console.title)
       self.textView.string = console.contents
       self.textView.scrollToEndOfDocument(nil)
     }
@@ -66,9 +62,9 @@ class ConsoleView: NSViewController {
       currentConsole = newConsole
     }
     newConsole.handler = handler(fileHandle:console:)
-    newConsole.delegate = self
     consolesStorage[newConsole.title] = newConsole
     setControllersHidden(false)
+    
     return newConsole
   }
   
@@ -83,7 +79,7 @@ class ConsoleView: NSViewController {
   }
   
   func open(console title: String) {
-    guard let console = consolesStorage[title] else {
+    guard let console = consolesStorage[title], console.title != currentConsole?.title else {
       return
     }
     currentConsole = console
@@ -144,22 +140,6 @@ extension ConsoleView : WorkbenchPart {
   
 }
 
-extension ConsoleView: ConsoleDelegate {
-  func didChangeContents(console: Console){
-    delegate?.didChangeContents(console: console)
-    guard console.title != currentConsole?.title else {
-      return
-    }
-    DispatchQueue.main.async {
-      self.open(console: console.title)
-    }
-  }
-}
-
-protocol ConsoleDelegate {
-  func didChangeContents(console: Console)
-}
-
 class NimbleTextConsole: Console {
   private let view: ConsoleView
   private var innerContent : Atomic<String>
@@ -196,8 +176,6 @@ class NimbleTextConsole: Console {
       }
     }
   }
-  
-  fileprivate var delegate: ConsoleDelegate?
   
   var isReadingFromBuffer: Bool {
     return inputPipe.fileHandleForReading.readabilityHandler != nil
@@ -240,7 +218,6 @@ class NimbleTextConsole: Console {
         if let string = String(data: data, encoding: .utf8) {
           strongSelf.contents += string
         }
-        strongSelf.delegate?.didChangeContents(console: strongSelf)
         strongSelf.outputPipe.fileHandleForWriting.write(data)
       }
     }
