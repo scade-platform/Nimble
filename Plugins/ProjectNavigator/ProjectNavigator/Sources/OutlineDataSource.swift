@@ -335,13 +335,16 @@ extension OutlineDataSource: NSOutlineViewDelegate {
     outlineView.reloadItem(item, reloadChildren: false)
   }
  
-
   
   func outlineViewSelectionDidChange(_ notification: Notification) {
     guard let outlineView = notification.object as? NSOutlineView,
           let item = outlineView.item(atRow: outlineView.selectedRow),
-          let openedDocument = item as? Document else { return }
-    workbench?.open(openedDocument, show: true)
+          let openingDocument = item as? Document,
+          let currentDocument = workbench?.currentDocument,
+          currentDocument.fileURL != openingDocument.fileURL else { return }
+    let index = outlineView.selectedRow
+    workbench?.open(openingDocument, show: true)
+    outlineView.selectRowIndexes([index], byExtendingSelection: false)
   }
 }
 
