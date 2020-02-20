@@ -488,7 +488,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.scade.SVGEditor;
+				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.SVGEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = ScadeKitExtension/SVGEditorBridging.h;
@@ -522,7 +522,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.scade.SVGEditor;
+				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.SVGEditor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = ScadeKitExtension/SVGEditorBridging.h;
