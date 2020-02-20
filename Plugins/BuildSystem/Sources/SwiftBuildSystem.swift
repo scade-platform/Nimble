@@ -28,7 +28,7 @@ class SwiftBuildSystem: BuildSystem {
     let swiftcProc = Process()
     swiftcProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
     swiftcProc.executableURL = URL(fileURLWithPath: "/usr/bin/swiftc")
-    swiftcProc.arguments = [fileURL.path]
+    swiftcProc.arguments = [fileURL.path, "-Xfrontend", "-color-diagnostics"]
     
     var swiftcProcConsole: Console?
     

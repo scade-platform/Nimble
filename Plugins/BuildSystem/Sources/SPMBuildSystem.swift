@@ -29,7 +29,7 @@ class SPMBuildSystem: BuildSystem {
     spmProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
     spmProc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
     spmProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
-    spmProc.arguments = ["build"]
+    spmProc.arguments = ["build", "-Xswiftc", "-Xfrontend", "-Xswiftc", "-color-diagnostics"]
     
     var spmProcConsole : Console?
     

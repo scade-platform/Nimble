@@ -15,6 +15,8 @@
 		0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3523A39503003B01DE /* StatusBarView.swift */; };
 		0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */; };
 		0CD0FB4623A776BD003B01DE /* EditorSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB4523A776BD003B01DE /* EditorSplitView.swift */; };
+		0CED75D923FEF65200E13F68 /* Ansi in Frameworks */ = {isa = PBXBuildFile; productRef = 0CED75D823FEF65200E13F68 /* Ansi */; };
+		0CED75DA23FEF65200E13F68 /* Ansi in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 0CED75D823FEF65200E13F68 /* Ansi */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0CEE0F0D23965A11002E69D6 /* BuildSystem.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 0CEE0F0A239659FC002E69D6 /* BuildSystem.plugin */; };
 		D721CFA72385EC3200FD1B00 /* NSOpenPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */; };
 		D724C5EE237C418B00E80958 /* TabbedEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = D724C5E7237C418B00E80958 /* TabbedEditor.xib */; };
@@ -80,6 +82,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				D7C9528923FC3AF400AE7E5D /* NimbleCore in Embed Frameworks */,
+				0CED75DA23FEF65200E13F68 /* Ansi in Embed Frameworks */,
 				D7D46163238ED16B0090FC34 /* KPCTabsControl.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -131,6 +134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7C9528823FC3AF400AE7E5D /* NimbleCore in Frameworks */,
+				0CED75D923FEF65200E13F68 /* Ansi in Frameworks */,
 				D7D46162238ED16B0090FC34 /* KPCTabsControl.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -271,6 +275,7 @@
 			name = Nimble;
 			packageProductDependencies = (
 				D7C9528723FC3AF400AE7E5D /* NimbleCore */,
+				0CED75D823FEF65200E13F68 /* Ansi */,
 			);
 			productName = Nimble;
 			productReference = D7CBF7CB222878F10088715C /* Nimble.app */;
@@ -309,6 +314,7 @@
 			);
 			mainGroup = D7CBF7C2222878F10088715C;
 			packageReferences = (
+				0CED75D723FEF65200E13F68 /* XCRemoteSwiftPackageReference "Ansi" */,
 			);
 			productRefGroup = D7CBF7CC222878F10088715C /* Products */;
 			projectDirPath = "";
@@ -578,7 +584,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		0CED75D723FEF65200E13F68 /* XCRemoteSwiftPackageReference "Ansi" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Kristalev/Ansi";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		0CED75D823FEF65200E13F68 /* Ansi */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0CED75D723FEF65200E13F68 /* XCRemoteSwiftPackageReference "Ansi" */;
+			productName = Ansi;
+		};
 		D7C9528723FC3AF400AE7E5D /* NimbleCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NimbleCore;

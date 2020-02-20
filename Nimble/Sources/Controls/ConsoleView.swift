@@ -8,6 +8,7 @@
 
 import Cocoa
 import NimbleCore
+import Ansi
 
 class ConsoleView: NSViewController {
   
@@ -22,23 +23,30 @@ class ConsoleView: NSViewController {
   
   private var currentConsole: Console? = nil
   
+  private lazy var font = {
+    return NSFont.init(name: "SFMono-Medium", size: 12) ?? NSFont.systemFont(ofSize: NSFont.systemFontSize)
+  }()
+
+  
   var openedConsoles: [Console] {
     return Array(consolesStorage.values)
   }
   
   private func handler(fileHandle: FileHandle, console: Console) {
-    DispatchQueue.main.async { [weak self] in
-      self?.open(console: console.title)
-      self?.textView.string = console.contents
-      self?.textView.scrollToEndOfDocument(nil)
+    let data = fileHandle.availableData
+    if let string = String(data: data, encoding: .utf8) {
+      DispatchQueue.main.async { [weak self] in
+        guard let strongSelf = self else { return }
+        strongSelf.textView.textStorage?.append(strongSelf.convertToAttributedString(string))
+        strongSelf.textView.scrollToEndOfDocument(nil)
+      }
     }
+    
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    if let font = NSFont.init(name: "SFMono-Medium", size: 12) {
-      textView.font = font
-    }
+    textView.font = font
     setControllersHidden(true)
     self.textView.layoutManager?.allowsNonContiguousLayout = false
   }
@@ -51,14 +59,27 @@ class ConsoleView: NSViewController {
     }
   }
   
+  private func convertToAttributedString(_ string: String) -> NSAttributedString {
+    let attributedString: NSAttributedString
+    do {
+      attributedString = try string.ansified(using: self.font)
+    } catch {
+      attributedString = NSAttributedString(string: string)
+    }
+    return attributedString
+  }
   
   func createConsole(title: String, show: Bool) -> Console {
     let consoleName = improveName(title)
     let newConsole = NimbleTextConsole(title: consoleName, view: self)
     self.consoleSelectionButton.addItem(withTitle: newConsole.title)
     if (show) {
-      self.textView.string = newConsole.contents
+      self.textView.string = ""
+      self.textView.textStorage?.append(convertToAttributedString(newConsole.contents))
       self.consoleSelectionButton.selectItem(withTitle: newConsole.title)
+      currentConsole = newConsole
+    }
+    if currentConsole == nil {
       currentConsole = newConsole
     }
     newConsole.handler = handler(fileHandle:console:)
@@ -87,7 +108,8 @@ class ConsoleView: NSViewController {
       console.handler = handler(fileHandle:console:)
     }
     consoleSelectionButton.selectItem(withTitle: console.title)
-    textView.string = console.contents
+    textView.string = ""
+    self.textView.textStorage?.append(convertToAttributedString(console.contents))
   }
   
   func close(console: Console) {
@@ -155,7 +177,6 @@ class NimbleTextConsole: Console {
     }
   }
   
-  
   var title: String
   
   var output: Pipe {
@@ -169,10 +190,9 @@ class NimbleTextConsole: Console {
   
   var handler: (FileHandle, Console) -> Void = {_,_ in} {
     didSet{
-      outputPipe.fileHandleForReading.readabilityHandler = { fh in
-        if !fh.availableData.isEmpty {
-          self.handler(fh, self)
-        }
+      outputPipe.fileHandleForReading.readabilityHandler = { [weak self] fh in
+        guard let strongSelf = self else { return }
+        self?.handler(fh, strongSelf)
       }
     }
   }
@@ -208,8 +228,9 @@ class NimbleTextConsole: Console {
   func startReadingFromBuffer() {
     if !isReadingFromBuffer {
       contents = ""
-      outputPipe.fileHandleForReading.readabilityHandler = { fh in
-        self.handler(fh, self)
+      outputPipe.fileHandleForReading.readabilityHandler = { [weak self] fh in
+        guard let strongSelf = self else { return }
+        self?.handler(fh, strongSelf)
       }
       inputPipe.fileHandleForReading.readabilityHandler = { [weak self] fileHandle in
         guard let strongSelf = self else { return }
