@@ -3,9 +3,15 @@ import NimbleCore
 import ScadeKit
 
 public final class PageDocument: NimbleDocument {
-  public var page: SCDWidgetsPage?
+  private var resource: SCDCoreResource?
 
-  public var rootSvg: SCDSvgBox?
+  public var rootSvg: SCDSvgBox? {
+    return resource?.contents.last as? SCDSvgBox
+  }
+
+  public var page: SCDWidgetsPage? {
+    return resource?.contents.first as? SCDWidgetsPage
+  }
 
   private lazy var builderController: InterfaceBuilderView = {
     let controller = InterfaceBuilderView.loadFromNib()
@@ -24,13 +30,7 @@ public final class PageDocument: NimbleDocument {
   }
   
   public override func read(from url: URL, ofType typeName: String) throws {
-    if let resource = SCDRuntime.loadXmiResource(url.path) as? SCDCoreResource {
-      let resourceContents = resource.contents
-
-      if !resourceContents.isEmpty {
-        rootSvg = resourceContents[resourceContents.count - 1] as? SCDSvgBox
-      }
-    }
+    self.resource = SCDRuntime.loadXmiResource(url.path) as? SCDCoreResource
   }
   
   public override func data(ofType typeName: String) throws -> Data {
