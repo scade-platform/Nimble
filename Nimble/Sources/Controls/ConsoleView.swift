@@ -27,10 +27,10 @@ class ConsoleView: NSViewController {
   }
   
   private func handler(fileHandle: FileHandle, console: Console) {
-    DispatchQueue.main.async {
-      self.open(console: console.title)
-      self.textView.string = console.contents
-      self.textView.scrollToEndOfDocument(nil)
+    DispatchQueue.main.async { [weak self] in
+      self?.open(console: console.title)
+      self?.textView.string = console.contents
+      self?.textView.scrollToEndOfDocument(nil)
     }
   }
   
@@ -44,10 +44,10 @@ class ConsoleView: NSViewController {
   }
   
   private func setControllersHidden(_ value: Bool){
-    DispatchQueue.main.async {
-      self.consoleSelectionButton.isHidden = value
-      self.clearButton.isHidden = value
-      self.closeButton.isHidden = value
+    DispatchQueue.main.async { [weak self] in
+      self?.consoleSelectionButton.isHidden = value
+      self?.clearButton.isHidden = value
+      self?.closeButton.isHidden = value
     }
   }
   

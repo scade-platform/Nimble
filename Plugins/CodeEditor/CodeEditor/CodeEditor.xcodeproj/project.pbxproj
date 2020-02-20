@@ -15,7 +15,6 @@
 		D7D4712023FC983E00CC9BAA /* StatusBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7D4710B23FC983E00CC9BAA /* StatusBarView.xib */; };
 		D7D4712123FC983E00CC9BAA /* DiagnosticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4710C23FC983E00CC9BAA /* DiagnosticView.swift */; };
 		D7D4712223FC983E00CC9BAA /* LineNumberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4710D23FC983E00CC9BAA /* LineNumberView.swift */; };
-		D7D4712323FC983E00CC9BAA /* Keycode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4710F23FC983E00CC9BAA /* Keycode.swift */; };
 		D7D4712423FC983E00CC9BAA /* CodeEditorTextView+ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4711123FC983E00CC9BAA /* CodeEditorTextView+ColorTheme.swift */; };
 		D7D4712523FC983E00CC9BAA /* CodeEditorCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4711223FC983E00CC9BAA /* CodeEditorCompletionView.swift */; };
 		D7D4712623FC983E00CC9BAA /* DiagnosticRowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7D4711323FC983E00CC9BAA /* DiagnosticRowView.xib */; };
@@ -76,7 +75,6 @@
 		D7D4710B23FC983E00CC9BAA /* StatusBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StatusBarView.xib; sourceTree = "<group>"; };
 		D7D4710C23FC983E00CC9BAA /* DiagnosticView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiagnosticView.swift; sourceTree = "<group>"; };
 		D7D4710D23FC983E00CC9BAA /* LineNumberView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LineNumberView.swift; sourceTree = "<group>"; };
-		D7D4710F23FC983E00CC9BAA /* Keycode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keycode.swift; sourceTree = "<group>"; };
 		D7D4711123FC983E00CC9BAA /* CodeEditorTextView+ColorTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CodeEditorTextView+ColorTheme.swift"; sourceTree = "<group>"; };
 		D7D4711223FC983E00CC9BAA /* CodeEditorCompletionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeEditorCompletionView.swift; sourceTree = "<group>"; };
 		D7D4711323FC983E00CC9BAA /* DiagnosticRowView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DiagnosticRowView.xib; sourceTree = "<group>"; };
@@ -172,17 +170,8 @@
 				D7D4710B23FC983E00CC9BAA /* StatusBarView.xib */,
 				D7D4711523FC983E00CC9BAA /* CotEditor */,
 				D7D4711023FC983E00CC9BAA /* Extensions */,
-				D7D4710E23FC983E00CC9BAA /* Utils */,
 			);
 			path = Sources;
-			sourceTree = "<group>";
-		};
-		D7D4710E23FC983E00CC9BAA /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				D7D4710F23FC983E00CC9BAA /* Keycode.swift */,
-			);
-			path = Utils;
 			sourceTree = "<group>";
 		};
 		D7D4711023FC983E00CC9BAA /* Extensions */ = {
@@ -322,7 +311,6 @@
 				D7D4715623FC9BBE00CC9BAA /* Comparable.swift in Sources */,
 				D7D4715E23FC9BBE00CC9BAA /* NSFont+Size.swift in Sources */,
 				D7D4715723FC9BBE00CC9BAA /* LineEnding.swift in Sources */,
-				D7D4712323FC983E00CC9BAA /* Keycode.swift in Sources */,
 				D7D4715B23FC9BBE00CC9BAA /* String+Counting.swift in Sources */,
 				D7D4716023FC9BBE00CC9BAA /* NSLayoutManager+Range.swift in Sources */,
 				D7D4715F23FC9BBE00CC9BAA /* Collection.swift in Sources */,

@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import NimbleCore
 import CodeEditor
 
 
