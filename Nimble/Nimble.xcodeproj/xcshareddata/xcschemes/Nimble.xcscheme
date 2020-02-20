@@ -90,6 +90,20 @@
                ReferencedContainer = "container:../Plugins/SVGEditor/SVGEditor.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D7CD74F622B8CC24004C437B"
+               BuildableName = "InterfaceBuilder.plugin"
+               BlueprintName = "InterfaceBuilder"
+               ReferencedContainer = "container:../Plugins/InterfaceBuilder/InterfaceBuilder/InterfaceBuilder.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
