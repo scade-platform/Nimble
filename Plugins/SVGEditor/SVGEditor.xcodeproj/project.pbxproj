@@ -23,7 +23,7 @@
 		E4326A4A23E1CFA9005C6105 /* SVGEditorBridging.h in Headers */ = {isa = PBXBuildFile; fileRef = E4326A4923E1CFA9005C6105 /* SVGEditorBridging.h */; };
 		E4326A4D23E1D10C005C6105 /* ScadeKitExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = E4326A2723E1C4ED005C6105 /* ScadeKitExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4326A6223E4517B005C6105 /* SVGEditorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E4326A6123E4517B005C6105 /* SVGEditorView.xib */; };
-		E4909EA123E9975D00C1DFE2 /* SVGView.h in Headers */ = {isa = PBXBuildFile; fileRef = E4909E9F23E9975D00C1DFE2 /* SVGView.h */; };
+		E4909EA123E9975D00C1DFE2 /* SVGView.h in Headers */ = {isa = PBXBuildFile; fileRef = E4909E9F23E9975D00C1DFE2 /* SVGView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4909EA223E9975D00C1DFE2 /* SVGView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4909EA023E9975D00C1DFE2 /* SVGView.mm */; };
 		E4909ECF23EC49C400C1DFE2 /* SVGElementSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4909ECD23EC49C400C1DFE2 /* SVGElementSelector.swift */; };
 		E4909EE223F3340C00C1DFE2 /* SVGElementVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4909EE123F3340C00C1DFE2 /* SVGElementVisitor.swift */; };
