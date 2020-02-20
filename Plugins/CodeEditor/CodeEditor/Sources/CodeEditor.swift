@@ -20,7 +20,7 @@ public final class CodeEditor: Module {
  
 
 final class CodeEditorPlugin: Plugin {
-  init() {
+  func load() {
     DocumentManager.shared.registerDocumentClass(CodeEditorDocument.self)
     
     // Load color themes

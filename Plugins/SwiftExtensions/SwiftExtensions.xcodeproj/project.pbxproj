@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D775A8EA23FDF15A00D6C1BA /* SourceKitLSP in Frameworks */ = {isa = PBXBuildFile; productRef = D775A8E923FDF15A00D6C1BA /* SourceKitLSP */; };
 		D77F337B23A4619500E3AFC8 /* bin in Resources */ = {isa = PBXBuildFile; fileRef = D77F337923A4619500E3AFC8 /* bin */; };
 		D79601A423FB5C7F00F87B44 /* LocalServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79601A323FB5C7F00F87B44 /* LocalServer.swift */; };
 		D7BEC81722B915D100A8F48B /* SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEC81622B915D100A8F48B /* SwiftExtensions.swift */; };
@@ -29,6 +30,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D775A8EA23FDF15A00D6C1BA /* SourceKitLSP in Frameworks */,
 				D7D4BD2B23FCA7A70063BD8F /* NimbleCore in Frameworks */,
 				D7D4BD4B23FCAEA50063BD8F /* LSPClient in Frameworks */,
 			);
@@ -92,6 +94,7 @@
 			packageProductDependencies = (
 				D7D4BD2A23FCA7A70063BD8F /* NimbleCore */,
 				D7D4BD4A23FCAEA50063BD8F /* LSPClient */,
+				D775A8E923FDF15A00D6C1BA /* SourceKitLSP */,
 			);
 			productName = SwiftExtensions;
 			productReference = D7BEC80C22B9158B00A8F48B /* SwiftExtensions.plugin */;
@@ -121,6 +124,7 @@
 			);
 			mainGroup = D7BEC80322B9158B00A8F48B;
 			packageReferences = (
+				D775A8E823FDF15A00D6C1BA /* XCRemoteSwiftPackageReference "sourcekit-lsp" */,
 			);
 			productRefGroup = D7BEC80D22B9158B00A8F48B /* Products */;
 			projectDirPath = "";
@@ -339,7 +343,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		D775A8E823FDF15A00D6C1BA /* XCRemoteSwiftPackageReference "sourcekit-lsp" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/FLORG1/sourcekit-lsp.git";
+			requirement = {
+				branch = "swift-5.2-branch";
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		D775A8E923FDF15A00D6C1BA /* SourceKitLSP */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D775A8E823FDF15A00D6C1BA /* XCRemoteSwiftPackageReference "sourcekit-lsp" */;
+			productName = SourceKitLSP;
+		};
 		D7D4BD2A23FCA7A70063BD8F /* NimbleCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NimbleCore;

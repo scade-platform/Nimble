@@ -15,9 +15,8 @@ public final class ProjectNavigator: Module {
 
 
 final class ProjectNavigatorPlugin: Plugin {
-  
-  init() {
-     ContextMenuManager.shared.registerContextMenuProvider(ContextOutlineView.self)
+  func load() {
+    ContextMenuManager.shared.registerContextMenuProvider(ContextOutlineView.self)
   }
   
   public func activate(in workbench: Workbench) {

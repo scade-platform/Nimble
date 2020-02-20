@@ -7,7 +7,7 @@ public final class ImageViewer: Module {
 
 
 final class ImageViewerPlugin: Plugin {
-  init() {
+  func load() {
     DocumentManager.shared.registerDocumentClass(ImageDocument.self)
   }
 }

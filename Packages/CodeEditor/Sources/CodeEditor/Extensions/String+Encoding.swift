@@ -18,7 +18,7 @@ extension String {
     }
     
     func at(_ byteOffset: Int) -> Int {
-      //TODO: use binary search here
+      ///TODO: use binary search here
       for (i, r) in table.enumerated() {
         if byteOffset > r.0 && (i == table.count - 1 || byteOffset <= table[i + 1].0) {
           return byteOffset - r.1

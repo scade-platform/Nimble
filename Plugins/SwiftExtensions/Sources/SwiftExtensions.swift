@@ -15,6 +15,8 @@ public final class SwiftExtensions: Module {
 
 
 final class SwiftExtensionsPlugin: Plugin {
-
+  func load() {
+    //LSPServerManager.shared.registerProvider(SKLocalServerProvider())
+  }
 }
 

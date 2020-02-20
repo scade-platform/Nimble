@@ -15,7 +15,9 @@ public final class LSPClientModule: Module {
 }
 
 
-final class LSPClientPlugin: Plugin {  
+final class LSPClientPlugin: Plugin {
+  func load() {}
+  
   public func activate(in workbench: Workbench) {
     LSPServerManager.shared.connect(to: workbench)
   }

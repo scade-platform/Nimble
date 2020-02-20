@@ -19,7 +19,11 @@ public protocol Module: class {
 
 public protocol Plugin: class {
   var id: String { get }
+  
+  func load() -> Void
+  
   func activate(in: Workbench) -> Void
+  
   func deactivate(in: Workbench) -> Void
 }
 
@@ -81,9 +85,10 @@ public class PluginManager {
     return [path]
   }
   
-  public static let shared: PluginManager = {
-    let pluginManager = PluginManager()
-
+  private static func loadBundles() -> (plugins: [String: Plugin], packages: [Package]) {
+    var plugins = [String: Plugin]()
+    var packages = [Package]()
+    
     var bundles = [String : (path: Path, bundle: CFBundle?)]()
     var dependenciesGraph = [ArraySlice<String>]()
         
@@ -100,7 +105,7 @@ public class PluginManager {
       
       if packagePath.exists {
         let package = Package(path: packagePath)
-        pluginManager.packages.append(package)
+        packages.append(package)
 
         dependenciesGraph.append([bundleId] + package.dependencies)
       } else {
@@ -119,21 +124,30 @@ public class PluginManager {
            let bundle = Bundle(path: path.string),
            let module = bundle.principalClass as? Module.Type {
           
-          pluginManager.plugins[module.plugin.id] = module.plugin
+          plugins[module.plugin.id] = module.plugin
         }
       }
     }
-    
-    return pluginManager
-  }()
+        
+    return (plugins, packages)
+  }
+  
+  public static let shared = PluginManager()
     
   private init() {}
 
   private var packages: [Package] = []
     
-  public private(set) var plugins: [String: Plugin] = [:]
+  public lazy var plugins: [String: Plugin] = {
+    let (plugins, packages) = PluginManager.loadBundles()
+    self.packages = packages
+    return plugins
+  }()
   
   
+  public func load() -> Void {
+    plugins.forEach { $0.1.load() }
+  }
   
   public func activate(in workbench: Workbench) -> Void {
     plugins.forEach{ $0.1.activate(in: workbench) }
