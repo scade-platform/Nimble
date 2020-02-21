@@ -351,7 +351,7 @@ extension NimbleWorkbenchArea {
 
 
 
-// MARK: - NimbleWorkbenchWiew
+// MARK: - NimbleWorkbenchView
 
 protocol NimbleWorkbenchView { }
 protocol NimbleWorkbenchViewController {}

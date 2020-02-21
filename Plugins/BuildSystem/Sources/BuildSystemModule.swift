@@ -70,13 +70,47 @@ final class BuildSystemPlugin: Plugin {
   func build() {
     //Workbench for active window
     guard let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench else { return }
+    
+    showConsoleTillFirstEscPress(in: currentWorkbench)
+    
     BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench)
   }
   
   func run() {
     //Workbench for active window
     guard let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench else { return }
-    BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: currentWorkbench, handler: launcherHandler(status:process:))
+    
+    showConsoleTillFirstEscPress(in: currentWorkbench)
+    
+    BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench) {status in
+      switch status {
+      case .finished:
+        DispatchQueue.main.async { [weak self] in
+          self?.showConsoleTillFirstEscPress(in: currentWorkbench)
+          BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: currentWorkbench, handler: self?.launcherHandler(status:process:))
+        }
+      case .failed:
+        self.launcherHandler(status: .failed, process: nil)
+      default: break
+      }
+    }
+  }
+  
+  func showConsoleTillFirstEscPress(in workbench: Workbench) {
+    var escPressMonitor: Any? = nil
+    escPressMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+      if event.keyCode == Keycode.escape {
+        workbench.debugArea?.isHidden = true
+        if let monitor = escPressMonitor {
+          //only for first `esc` press
+          NSEvent.removeMonitor(monitor)
+          escPressMonitor = nil
+        }
+      }
+      return event
+    }
+    
+    workbench.debugArea?.isHidden = false
   }
   
   func clean() {
@@ -102,6 +136,9 @@ final class BuildSystemPlugin: Plugin {
     guard let process = currentProcess else { return }
     if process.isRunning {
       process.terminate()
+    }
+    if let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench {
+      showConsoleTillFirstEscPress(in: currentWorkbench)
     }
   }
 }

@@ -8,6 +8,7 @@
 
 import Cocoa
 import NimbleCore
+import Ansi
 
 class ConsoleView: NSViewController {
   
@@ -22,49 +23,69 @@ class ConsoleView: NSViewController {
   
   private var currentConsole: Console? = nil
   
+  private lazy var font = {
+    return NSFont.init(name: "SFMono-Medium", size: 12) ?? NSFont.systemFont(ofSize: NSFont.systemFontSize)
+  }()
+
+  
   var openedConsoles: [Console] {
     return Array(consolesStorage.values)
   }
   
   private func handler(fileHandle: FileHandle, console: Console) {
-    guard console.title == currentConsole?.title else {
-      return
+    let data = fileHandle.availableData
+    if let string = String(data: data, encoding: .utf8) {
+      DispatchQueue.main.async { [weak self] in
+        guard let strongSelf = self else { return }
+        strongSelf.textView.textStorage?.append(strongSelf.convertToAttributedString(string))
+        strongSelf.textView.scrollToEndOfDocument(nil)
+      }
     }
-    DispatchQueue.main.async {
-      self.textView.string = console.contents
-    }
+    
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    if let font = NSFont.init(name: "SFMono-Medium", size: 12) {
-      textView.font = font
-    }
+    textView.font = font
     setControllersHidden(true)
+    self.textView.layoutManager?.allowsNonContiguousLayout = false
   }
   
   private func setControllersHidden(_ value: Bool){
-    DispatchQueue.main.async {
-      self.consoleSelectionButton.isHidden = value
-      self.clearButton.isHidden = value
-      self.closeButton.isHidden = value
+    DispatchQueue.main.async { [weak self] in
+      self?.consoleSelectionButton.isHidden = value
+      self?.clearButton.isHidden = value
+      self?.closeButton.isHidden = value
     }
   }
   
+  private func convertToAttributedString(_ string: String) -> NSAttributedString {
+    let attributedString: NSAttributedString
+    do {
+      attributedString = try string.ansified(using: self.font)
+    } catch {
+      attributedString = NSAttributedString(string: string)
+    }
+    return attributedString
+  }
   
   func createConsole(title: String, show: Bool) -> Console {
     let consoleName = improveName(title)
     let newConsole = NimbleTextConsole(title: consoleName, view: self)
     self.consoleSelectionButton.addItem(withTitle: newConsole.title)
     if (show) {
-      self.textView.string = newConsole.contents
+      self.textView.string = ""
+      self.textView.textStorage?.append(convertToAttributedString(newConsole.contents))
       self.consoleSelectionButton.selectItem(withTitle: newConsole.title)
       currentConsole = newConsole
     }
+    if currentConsole == nil {
+      currentConsole = newConsole
+    }
     newConsole.handler = handler(fileHandle:console:)
-    newConsole.delegate = self
     consolesStorage[newConsole.title] = newConsole
     setControllersHidden(false)
+    
     return newConsole
   }
   
@@ -79,7 +100,7 @@ class ConsoleView: NSViewController {
   }
   
   func open(console title: String) {
-    guard let console = consolesStorage[title] else {
+    guard let console = consolesStorage[title], console.title != currentConsole?.title else {
       return
     }
     currentConsole = console
@@ -87,7 +108,8 @@ class ConsoleView: NSViewController {
       console.handler = handler(fileHandle:console:)
     }
     consoleSelectionButton.selectItem(withTitle: console.title)
-    textView.string = console.contents
+    textView.string = ""
+    self.textView.textStorage?.append(convertToAttributedString(console.contents))
   }
   
   func close(console: Console) {
@@ -140,21 +162,6 @@ extension ConsoleView : WorkbenchPart {
   
 }
 
-extension ConsoleView: ConsoleDelegate {
-  func didChangeContents(console: Console){
-    guard console.title != currentConsole?.title else {
-      return
-    }
-    DispatchQueue.main.async {
-      self.open(console: console.title)
-    }
-  }
-}
-
-fileprivate protocol ConsoleDelegate {
-  func didChangeContents(console: Console)
-}
-
 class NimbleTextConsole: Console {
   private let view: ConsoleView
   private var innerContent : Atomic<String>
@@ -170,7 +177,6 @@ class NimbleTextConsole: Console {
     }
   }
   
-  
   var title: String
   
   var output: Pipe {
@@ -184,13 +190,12 @@ class NimbleTextConsole: Console {
   
   var handler: (FileHandle, Console) -> Void = {_,_ in} {
     didSet{
-      outputPipe.fileHandleForReading.readabilityHandler = { fh in
-        self.handler(fh, self)
+      outputPipe.fileHandleForReading.readabilityHandler = { [weak self] fh in
+        guard let strongSelf = self else { return }
+        self?.handler(fh, strongSelf)
       }
     }
   }
-  
-  fileprivate var delegate: ConsoleDelegate?
   
   var isReadingFromBuffer: Bool {
     return inputPipe.fileHandleForReading.readabilityHandler != nil
@@ -223,8 +228,9 @@ class NimbleTextConsole: Console {
   func startReadingFromBuffer() {
     if !isReadingFromBuffer {
       contents = ""
-      outputPipe.fileHandleForReading.readabilityHandler = { fh in
-        self.handler(fh, self)
+      outputPipe.fileHandleForReading.readabilityHandler = { [weak self] fh in
+        guard let strongSelf = self else { return }
+        self?.handler(fh, strongSelf)
       }
       inputPipe.fileHandleForReading.readabilityHandler = { [weak self] fileHandle in
         guard let strongSelf = self else { return }
@@ -233,7 +239,6 @@ class NimbleTextConsole: Console {
         if let string = String(data: data, encoding: .utf8) {
           strongSelf.contents += string
         }
-        strongSelf.delegate?.didChangeContents(console: strongSelf)
         strongSelf.outputPipe.fileHandleForWriting.write(data)
       }
     }
