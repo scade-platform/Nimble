@@ -139,7 +139,13 @@ extension ContextOutlineView : ContextMenuProvider {
     else {
       return
     }
+    //TODO: to check the cause if it could not be deleted
     try? fileSystemElement.path.delete()
+    if fileSystemElement is Folder, !fileSystemElement.exists {
+      //if deleted element is folder try to remove from project
+      //if a folder isn't root folder this operation will do nothing
+      removeAction(sender)
+    }
     self.reloadSelected()
   }
   
