@@ -16,7 +16,7 @@ public final class InterfaceBuilder: Module {
 
 
 final class InterfaceBuilderPlugin: Plugin {
-  init() {
+  func load() {
     DocumentManager.shared.registerDocumentClass(PageDocument.self)
     SCDRuntime.loadMetaModel()    
   }

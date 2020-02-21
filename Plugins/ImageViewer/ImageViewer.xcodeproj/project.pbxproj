@@ -3,11 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D7799132236F16CE00CBF9B7 /* NimbleCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7799131236F16CE00CBF9B7 /* NimbleCore.framework */; };
+		D7D4BD4123FCADEF0063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD4023FCADEF0063BD8F /* NimbleCore */; };
 		E42DC0B922D26A7900486CC1 /* ImageViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42DC0B622D26A7900486CC1 /* ImageViewerController.swift */; };
 		E42DC0BA22D26A7900486CC1 /* ImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42DC0B722D26A7900486CC1 /* ImageViewer.swift */; };
 		E42DC0BB22D26A7900486CC1 /* ImageDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42DC0B822D26A7900486CC1 /* ImageDocument.swift */; };
@@ -15,13 +15,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D7799131236F16CE00CBF9B7 /* NimbleCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42DC0A722D269ED00486CC1 /* ImageViewer.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageViewer.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42DC0AA22D269ED00486CC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E42DC0B622D26A7900486CC1 /* ImageViewerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewerController.swift; sourceTree = "<group>"; };
 		E42DC0B722D26A7900486CC1 /* ImageViewer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewer.swift; sourceTree = "<group>"; };
 		E42DC0B822D26A7900486CC1 /* ImageDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageDocument.swift; sourceTree = "<group>"; };
-		E42DC0BD22D26A9F00486CC1 /* NimbleCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = NimbleCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42DC0C422D26DFD00486CC1 /* ImageViewerController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImageViewerController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -30,7 +28,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7799132236F16CE00CBF9B7 /* NimbleCore.framework in Frameworks */,
+				D7D4BD4123FCADEF0063BD8F /* NimbleCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,10 +38,9 @@
 		E42DC09E22D269ED00486CC1 = {
 			isa = PBXGroup;
 			children = (
+				E42DC0AA22D269ED00486CC1 /* Info.plist */,
 				E42DC0B522D26A7900486CC1 /* Sources */,
-				E42DC0A922D269ED00486CC1 /* ImageViewer */,
 				E42DC0A822D269ED00486CC1 /* Products */,
-				E42DC0BC22D26A9F00486CC1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -53,14 +50,6 @@
 				E42DC0A722D269ED00486CC1 /* ImageViewer.plugin */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		E42DC0A922D269ED00486CC1 /* ImageViewer */ = {
-			isa = PBXGroup;
-			children = (
-				E42DC0AA22D269ED00486CC1 /* Info.plist */,
-			);
-			path = ImageViewer;
 			sourceTree = "<group>";
 		};
 		E42DC0B522D26A7900486CC1 /* Sources */ = {
@@ -73,15 +62,6 @@
 			);
 			name = Sources;
 			path = ImageViewer/Sources;
-			sourceTree = "<group>";
-		};
-		E42DC0BC22D26A9F00486CC1 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				D7799131236F16CE00CBF9B7 /* NimbleCore.framework */,
-				E42DC0BD22D26A9F00486CC1 /* NimbleCore.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -101,6 +81,7 @@
 			);
 			name = ImageViewer;
 			packageProductDependencies = (
+				D7D4BD4023FCADEF0063BD8F /* NimbleCore */,
 			);
 			productName = ImageViewer;
 			productReference = E42DC0A722D269ED00486CC1 /* ImageViewer.plugin */;
@@ -278,7 +259,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = ImageViewer/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.ImageViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -293,7 +274,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = ImageViewer/Info.plist;
+				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.ImageViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -325,6 +306,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D7D4BD4023FCADEF0063BD8F /* NimbleCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NimbleCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E42DC09F22D269ED00486CC1 /* Project object */;
 }

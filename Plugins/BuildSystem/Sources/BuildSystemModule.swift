@@ -16,14 +16,14 @@ public final class BuildSystemModule: Module {
 final class BuildSystemPlugin: Plugin {
   private var stopCommand: Command? = nil
   private var currentProcess: Process?
-  
-  init() {
+    
+  func load() {
     BuildSystemsManager.shared.add(buildSystem: SwiftBuildSystem())
     BuildSystemsManager.shared.add(buildSystem: SPMBuildSystem())
     setupMainMenu()
     setupCommands()
   }
-    
+  
   private func setupMainMenu() {
     guard let mainMenu = NSApplication.shared.mainMenu else { return }
     guard let toolsMenu = mainMenu.findItem(with: "Tools")?.submenu else { return }

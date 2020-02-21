@@ -17,7 +17,7 @@ class CodeEditorMenu: NSObject {
   lazy var nsMenu: NSMenu = {
     let menu = NSMenu()
     
-    CodeEditorSyntaxMenuItem.fillMenu(nsMenu: menu)
+    CodeEditorSyntaxMenu.fillMenu(nsMenu: menu)
     menu.addItem(NSMenuItem.separator())
     CodeEditorShowCompletionMenuItem.fillMenu(nsMenu: menu)
     
@@ -25,13 +25,13 @@ class CodeEditorMenu: NSObject {
   }()
 }
 
-// MARK: Syntax menu
+// MARK: - Syntax menu
 
-class CodeEditorSyntaxMenuItem: NSObject {
-  private static let shared = CodeEditorSyntaxMenuItem()
+class CodeEditorSyntaxMenu: NSObject {
+  static let shared = CodeEditorSyntaxMenu()
   
-  static func fillMenu(nsMenu: NSMenu) {
-    let syntaxMenu = NSMenu(title: "Syntax")
+  static let nsMenu: NSMenu = {
+    let menu = NSMenu(title: "Syntax")
     
     let autoLang = NSMenuItem(title: "Plain Text", action: #selector(selectSyntax(_:)), keyEquivalent: "")
     autoLang.target = shared
@@ -46,29 +46,36 @@ class CodeEditorSyntaxMenuItem: NSObject {
     }
     
     items.sort { return $0.title < $1.title }
+    menu.items = items
     
-    syntaxMenu.items = items
-    
+    return menu
+  }()
+  
+  static func fillMenu(nsMenu: NSMenu) {
     let syntaxMenuItem = NSMenuItem(title: "Syntax", action: nil, keyEquivalent: "")
-    syntaxMenuItem.submenu = syntaxMenu
-    
+    syntaxMenuItem.submenu = CodeEditorSyntaxMenu.nsMenu
     nsMenu.addItem(syntaxMenuItem)
   }
-    
+  
+  static func itemState(_ item: NSMenuItem) -> NSControl.StateValue {
+    let lang = item.representedObject as AnyObject?
+    let currentLang = CodeEditorMenu.shared.codeEditor?.document?.language
+    return (lang === currentLang) ? .on : .off
+  }
+  
+  
   @objc func selectSyntax(_ item: NSMenuItem) {
     CodeEditorMenu.shared.codeEditor?.document?.language = item.representedObject as? Language
   }
   
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
     guard let item = item else {return true}
-    let lang = item.representedObject as AnyObject?
-    let currentLang = CodeEditorMenu.shared.codeEditor?.document?.language
-    item.state = (lang === currentLang) ? .on : .off
+    item.state = CodeEditorSyntaxMenu.itemState(item)
     return true
   }
 }
 
-// MARK: Show Completion
+// MARK: - Show Completion
 
 class CodeEditorShowCompletionMenuItem: NSObject {
   static let shared = CodeEditorShowCompletionMenuItem()

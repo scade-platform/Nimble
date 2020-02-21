@@ -109,9 +109,13 @@ class CodeEditorCompletionView: NSViewController {
     }
   }
     
+  /// - Parameters:
+  ///   - pos: UTF-16 index where the view has to appear
+  ///   - triggered: 'true' if it was triggered automatically while typing  
   func open(at pos: Int, triggered: Bool) {
     guard let textView = self.textView,
           let window = textView.window else { return }
+      
     
     self.isActive = true
     self.wasTriggered = triggered

@@ -7,6 +7,7 @@
 //
 
 import NimbleCore
+import LSPClient
 
 public final class SwiftExtensions: Module {
   public static let plugin: Plugin = SwiftExtensionsPlugin()
@@ -14,6 +15,8 @@ public final class SwiftExtensions: Module {
 
 
 final class SwiftExtensionsPlugin: Plugin {
-
+  func load() {
+    //LSPServerManager.shared.registerProvider(SKLocalServerProvider())
+  }
 }
 

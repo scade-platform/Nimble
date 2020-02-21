@@ -89,6 +89,10 @@ settings:
     settings:
       foreground: "#643820"
 
+  - name: Operators
+    scope: keyword.operator
+    settings:
+      foreground: "#000000"
 
 #MARK: Storage (types, modifiers)
 

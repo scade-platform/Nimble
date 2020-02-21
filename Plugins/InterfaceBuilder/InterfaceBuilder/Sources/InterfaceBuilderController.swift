@@ -7,7 +7,7 @@ class InterfaceBuilderController: NSViewController {
   var highlighter: WidgetHighlighter?
 
   @IBOutlet
-  weak var pageView: PageView? = nil
+  weak var pageView: NSView? = nil
   
   weak var doc: PageDocument? = nil {
     didSet {
@@ -35,7 +35,7 @@ class InterfaceBuilderController: NSViewController {
           break
         }
       }
-      view.phoenixView.frame.size = size
+      //view.phoenixView.frame.size = size
       //Swift.print("set frame: \(size)")
     }
     loadPage()
@@ -47,7 +47,7 @@ class InterfaceBuilderController: NSViewController {
         addTouchListeners(page);
       }
       if let svg = pageDocument.svgRoot {
-        render(svg, size: pageView!.phoenixView.frame.size)
+        //render(svg, size: pageView!.phoenixView.frame.size)
       }
     }
   }

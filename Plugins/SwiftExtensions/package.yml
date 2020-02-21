@@ -6,3 +6,7 @@ extensions:
         arguments: []
         environment:
           PATH: /usr/bin
+
+dependencies:
+  - com.scade.nimble.LSPClient
+

@@ -29,7 +29,23 @@
          location = "group:Plugins/ProjectNavigator/ProjectNavigator/ProjectNavigator.xcodeproj">
       </FileRef>
       <FileRef
+         location = "group:Plugins/SVGEditor/SVGEditor.xcodeproj">
+      </FileRef>
+      <FileRef
          location = "group:Plugins/SwiftExtensions/SwiftExtensions.xcodeproj">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
+      name = "Packages">
+      <FileRef
+         location = "group:Packages/CodeEditor">
+      </FileRef>
+      <FileRef
+         location = "group:Packages/LSPClient">
+      </FileRef>
+      <FileRef
+         location = "group:Packages/NimbleCore">
       </FileRef>
    </Group>
 </Workspace>
