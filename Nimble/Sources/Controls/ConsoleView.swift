@@ -60,13 +60,16 @@ class ConsoleView: NSViewController {
   }
   
   private func convertToAttributedString(_ string: String) -> NSAttributedString {
-    let attributedString: NSAttributedString
     do {
-      attributedString = try string.ansified(using: self.font)
+      return try string.ansified(font: self.font, color: NSColor.textColor)
     } catch {
-      attributedString = NSAttributedString(string: string)
+      let attrs = [
+        NSAttributedString.Key.font: self.font,
+        NSAttributedString.Key.foregroundColor: NSColor.textColor
+        
+      ]
+      return NSAttributedString(string: string, attributes: attrs)
     }
-    return attributedString
   }
   
   func createConsole(title: String, show: Bool) -> Console {

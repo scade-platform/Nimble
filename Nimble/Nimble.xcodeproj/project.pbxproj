@@ -15,8 +15,6 @@
 		0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3523A39503003B01DE /* StatusBarView.swift */; };
 		0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */; };
 		0CD0FB4623A776BD003B01DE /* EditorSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB4523A776BD003B01DE /* EditorSplitView.swift */; };
-		0CED75D923FEF65200E13F68 /* Ansi in Frameworks */ = {isa = PBXBuildFile; productRef = 0CED75D823FEF65200E13F68 /* Ansi */; };
-		0CED75DA23FEF65200E13F68 /* Ansi in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 0CED75D823FEF65200E13F68 /* Ansi */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0CEE0F0D23965A11002E69D6 /* BuildSystem.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 0CEE0F0A239659FC002E69D6 /* BuildSystem.plugin */; };
 		D721CFA72385EC3200FD1B00 /* NSOpenPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */; };
 		D724C5EE237C418B00E80958 /* TabbedEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = D724C5E7237C418B00E80958 /* TabbedEditor.xib */; };
@@ -29,6 +27,8 @@
 		D72F9587222CAC3C009F2EC3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78BCB05222B4DE300AE0A9C /* AppDelegate.swift */; };
 		D72F959C222DF2D9009F2EC3 /* WorkbenchSidebar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */; };
 		D72F959F222DF7AF009F2EC3 /* WorkbenchSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F959E222DF7AF009F2EC3 /* WorkbenchSidebar.swift */; };
+		D73FA62424004D31001DB4C3 /* Ansi in Frameworks */ = {isa = PBXBuildFile; productRef = D73FA62324004D31001DB4C3 /* Ansi */; };
+		D73FA62524004D31001DB4C3 /* Ansi in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D73FA62324004D31001DB4C3 /* Ansi */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D74A7F532396D5F1006E0238 /* LangExtensions.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = D74A7F522396D5CC006E0238 /* LangExtensions.plugin */; };
 		D77F338123A4645100E3AFC8 /* LSPClient.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = D77F337F23A4641B00E3AFC8 /* LSPClient.plugin */; };
 		D77F338223A4645100E3AFC8 /* SwiftExtensions.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = D77F337D23A4640300E3AFC8 /* SwiftExtensions.plugin */; };
@@ -82,7 +82,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				D7C9528923FC3AF400AE7E5D /* NimbleCore in Embed Frameworks */,
-				0CED75DA23FEF65200E13F68 /* Ansi in Embed Frameworks */,
+				D73FA62524004D31001DB4C3 /* Ansi in Embed Frameworks */,
 				D7D46163238ED16B0090FC34 /* KPCTabsControl.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -134,7 +134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7C9528823FC3AF400AE7E5D /* NimbleCore in Frameworks */,
-				0CED75D923FEF65200E13F68 /* Ansi in Frameworks */,
+				D73FA62424004D31001DB4C3 /* Ansi in Frameworks */,
 				D7D46162238ED16B0090FC34 /* KPCTabsControl.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -275,7 +275,7 @@
 			name = Nimble;
 			packageProductDependencies = (
 				D7C9528723FC3AF400AE7E5D /* NimbleCore */,
-				0CED75D823FEF65200E13F68 /* Ansi */,
+				D73FA62324004D31001DB4C3 /* Ansi */,
 			);
 			productName = Nimble;
 			productReference = D7CBF7CB222878F10088715C /* Nimble.app */;
@@ -314,7 +314,7 @@
 			);
 			mainGroup = D7CBF7C2222878F10088715C;
 			packageReferences = (
-				0CED75D723FEF65200E13F68 /* XCRemoteSwiftPackageReference "Ansi" */,
+				D73FA62224004D31001DB4C3 /* XCRemoteSwiftPackageReference "Ansi" */,
 			);
 			productRefGroup = D7CBF7CC222878F10088715C /* Products */;
 			projectDirPath = "";
@@ -585,9 +585,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		0CED75D723FEF65200E13F68 /* XCRemoteSwiftPackageReference "Ansi" */ = {
+		D73FA62224004D31001DB4C3 /* XCRemoteSwiftPackageReference "Ansi" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/Kristalev/Ansi";
+			repositoryURL = "https://github.com/FLORG1/Ansi.git";
 			requirement = {
 				branch = master;
 				kind = branch;
@@ -596,9 +596,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		0CED75D823FEF65200E13F68 /* Ansi */ = {
+		D73FA62324004D31001DB4C3 /* Ansi */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 0CED75D723FEF65200E13F68 /* XCRemoteSwiftPackageReference "Ansi" */;
+			package = D73FA62224004D31001DB4C3 /* XCRemoteSwiftPackageReference "Ansi" */;
 			productName = Ansi;
 		};
 		D7C9528723FC3AF400AE7E5D /* NimbleCore */ = {
