@@ -23,10 +23,17 @@
 		E4326A4A23E1CFA9005C6105 /* SVGEditorBridging.h in Headers */ = {isa = PBXBuildFile; fileRef = E4326A4923E1CFA9005C6105 /* SVGEditorBridging.h */; };
 		E4326A4D23E1D10C005C6105 /* ScadeKitExtension.h in Headers */ = {isa = PBXBuildFile; fileRef = E4326A2723E1C4ED005C6105 /* ScadeKitExtension.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4326A6223E4517B005C6105 /* SVGEditorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E4326A6123E4517B005C6105 /* SVGEditorView.xib */; };
-		E4909EA123E9975D00C1DFE2 /* SVGView.h in Headers */ = {isa = PBXBuildFile; fileRef = E4909E9F23E9975D00C1DFE2 /* SVGView.h */; };
+		E46496B723FFFA51000375D1 /* SVGEditor.h in Headers */ = {isa = PBXBuildFile; fileRef = E46496B523FFFA51000375D1 /* SVGEditor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E46496BB23FFFACC000375D1 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E43269F423E1B051005C6105 /* ScadeKit.framework */; };
+		E46496BF23FFFB02000375D1 /* SVGElementVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4909EE123F3340C00C1DFE2 /* SVGElementVisitor.swift */; };
+		E46496C023FFFB05000375D1 /* SVGElementSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4909ECD23EC49C400C1DFE2 /* SVGElementSelector.swift */; };
+		E46496C123FFFB2F000375D1 /* SVGEditor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E46496B323FFFA51000375D1 /* SVGEditor.framework */; };
+		E46496C223FFFB2F000375D1 /* SVGEditor.framework in Embed Libraries */ = {isa = PBXBuildFile; fileRef = E46496B323FFFA51000375D1 /* SVGEditor.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E46496CD2400464E000375D1 /* SVGDocumentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46496CC2400464E000375D1 /* SVGDocumentProtocol.swift */; };
+		E46496D624004958000375D1 /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = E46496D524004958000375D1 /* NimbleCore */; };
+		E46496D924004B78000375D1 /* SVGViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46496D824004B78000375D1 /* SVGViewProtocol.swift */; };
+		E4909EA123E9975D00C1DFE2 /* SVGView.h in Headers */ = {isa = PBXBuildFile; fileRef = E4909E9F23E9975D00C1DFE2 /* SVGView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4909EA223E9975D00C1DFE2 /* SVGView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4909EA023E9975D00C1DFE2 /* SVGView.mm */; };
-		E4909ECF23EC49C400C1DFE2 /* SVGElementSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4909ECD23EC49C400C1DFE2 /* SVGElementSelector.swift */; };
-		E4909EE223F3340C00C1DFE2 /* SVGElementVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4909EE123F3340C00C1DFE2 /* SVGElementVisitor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,12 +44,12 @@
 			remoteGlobalIDString = E4326A2423E1C4ED005C6105;
 			remoteInfo = ScadeKitExtension;
 		};
-		E4326A3C23E1C8AF005C6105 /* PBXContainerItemProxy */ = {
+		E46496C323FFFB2F000375D1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E43269DE23E1AF09005C6105 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = E4326A2423E1C4ED005C6105;
-			remoteInfo = ScadeKitExtension;
+			remoteGlobalIDString = E46496B223FFFA51000375D1;
+			remoteInfo = SVGEditor;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -55,6 +62,7 @@
 			files = (
 				E4326A0123E1B0EF005C6105 /* ScadeKit.framework in Embed Libraries */,
 				E4326A3B23E1C8AF005C6105 /* ScadeKitExtension.framework in Embed Libraries */,
+				E46496C223FFFB2F000375D1 /* SVGEditor.framework in Embed Libraries */,
 				E43269FE23E1B0E3005C6105 /* libphoenix.dylib in Embed Libraries */,
 			);
 			name = "Embed Libraries";
@@ -78,6 +86,11 @@
 		E4326A4423E1CF9E005C6105 /* SVGEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGEditor.swift; sourceTree = "<group>"; };
 		E4326A4923E1CFA9005C6105 /* SVGEditorBridging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGEditorBridging.h; sourceTree = "<group>"; };
 		E4326A6123E4517B005C6105 /* SVGEditorView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SVGEditorView.xib; sourceTree = "<group>"; };
+		E46496B323FFFA51000375D1 /* SVGEditor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SVGEditor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E46496B523FFFA51000375D1 /* SVGEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SVGEditor.h; sourceTree = "<group>"; };
+		E46496B623FFFA51000375D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E46496CC2400464E000375D1 /* SVGDocumentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGDocumentProtocol.swift; sourceTree = "<group>"; };
+		E46496D824004B78000375D1 /* SVGViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGViewProtocol.swift; sourceTree = "<group>"; };
 		E4909E9F23E9975D00C1DFE2 /* SVGView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGView.h; sourceTree = "<group>"; };
 		E4909EA023E9975D00C1DFE2 /* SVGView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SVGView.mm; sourceTree = "<group>"; };
 		E4909ECD23EC49C400C1DFE2 /* SVGElementSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGElementSelector.swift; sourceTree = "<group>"; };
@@ -90,6 +103,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4326A3A23E1C8AF005C6105 /* ScadeKitExtension.framework in Frameworks */,
+				E46496C123FFFB2F000375D1 /* SVGEditor.framework in Frameworks */,
 				E4326A0023E1B0EF005C6105 /* ScadeKit.framework in Frameworks */,
 				D7D4BD3023FCACC90063BD8F /* NimbleCore in Frameworks */,
 				E43269F523E1B051005C6105 /* libphoenix.dylib in Frameworks */,
@@ -106,6 +120,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E46496B023FFFA51000375D1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E46496D624004958000375D1 /* NimbleCore in Frameworks */,
+				E46496BB23FFFACC000375D1 /* ScadeKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -113,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				E43269E923E1AF09005C6105 /* Info.plist */,
+				E46496B423FFFA51000375D1 /* SVGEditor */,
 				E4326A0223E1B0FB005C6105 /* Frameworks */,
 				E43269EF23E1AF48005C6105 /* Libraries */,
 				E43269E723E1AF09005C6105 /* Products */,
@@ -126,6 +150,7 @@
 			children = (
 				E43269E623E1AF09005C6105 /* SVGEditor.plugin */,
 				E4326A2523E1C4ED005C6105 /* ScadeKitExtension.framework */,
+				E46496B323FFFA51000375D1 /* SVGEditor.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -147,8 +172,6 @@
 				E4326A4423E1CF9E005C6105 /* SVGEditor.swift */,
 				E4326A4323E1CF9E005C6105 /* SVGEditorView.swift */,
 				E4326A6123E4517B005C6105 /* SVGEditorView.xib */,
-				E4909ECD23EC49C400C1DFE2 /* SVGElementSelector.swift */,
-				E4909EE123F3340C00C1DFE2 /* SVGElementVisitor.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -206,6 +229,27 @@
 			path = ScadeKitExtension;
 			sourceTree = "<group>";
 		};
+		E46496B423FFFA51000375D1 /* SVGEditor */ = {
+			isa = PBXGroup;
+			children = (
+				E46496BE23FFFAE3000375D1 /* Sources */,
+				E46496B523FFFA51000375D1 /* SVGEditor.h */,
+				E46496B623FFFA51000375D1 /* Info.plist */,
+			);
+			path = SVGEditor;
+			sourceTree = "<group>";
+		};
+		E46496BE23FFFAE3000375D1 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				E4909EE123F3340C00C1DFE2 /* SVGElementVisitor.swift */,
+				E4909ECD23EC49C400C1DFE2 /* SVGElementSelector.swift */,
+				E46496CC2400464E000375D1 /* SVGDocumentProtocol.swift */,
+				E46496D824004B78000375D1 /* SVGViewProtocol.swift */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -219,12 +263,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E46496AE23FFFA51000375D1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E46496B723FFFA51000375D1 /* SVGEditor.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		E43269E523E1AF09005C6105 /* SVGEditor */ = {
+		E43269E523E1AF09005C6105 /* SVGEditor.plugin */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E43269EC23E1AF09005C6105 /* Build configuration list for PBXNativeTarget "SVGEditor" */;
+			buildConfigurationList = E43269EC23E1AF09005C6105 /* Build configuration list for PBXNativeTarget "SVGEditor.plugin" */;
 			buildPhases = (
 				E43269E223E1AF09005C6105 /* Sources */,
 				E43269E323E1AF09005C6105 /* Frameworks */,
@@ -235,9 +287,9 @@
 			);
 			dependencies = (
 				E4326A3923E1C856005C6105 /* PBXTargetDependency */,
-				E4326A3D23E1C8AF005C6105 /* PBXTargetDependency */,
+				E46496C423FFFB2F000375D1 /* PBXTargetDependency */,
 			);
-			name = SVGEditor;
+			name = SVGEditor.plugin;
 			packageProductDependencies = (
 				D7D4BD2F23FCACC90063BD8F /* NimbleCore */,
 			);
@@ -263,6 +315,27 @@
 			productReference = E4326A2523E1C4ED005C6105 /* ScadeKitExtension.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		E46496B223FFFA51000375D1 /* SVGEditor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E46496B823FFFA51000375D1 /* Build configuration list for PBXNativeTarget "SVGEditor" */;
+			buildPhases = (
+				E46496AE23FFFA51000375D1 /* Headers */,
+				E46496AF23FFFA51000375D1 /* Sources */,
+				E46496B023FFFA51000375D1 /* Frameworks */,
+				E46496B123FFFA51000375D1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SVGEditor;
+			packageProductDependencies = (
+				E46496D524004958000375D1 /* NimbleCore */,
+			);
+			productName = SVGEditor;
+			productReference = E46496B323FFFA51000375D1 /* SVGEditor.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -277,6 +350,9 @@
 						LastSwiftMigration = 1130;
 					};
 					E4326A2423E1C4ED005C6105 = {
+						CreatedOnToolsVersion = 11.3;
+					};
+					E46496B223FFFA51000375D1 = {
 						CreatedOnToolsVersion = 11.3;
 					};
 				};
@@ -294,7 +370,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E43269E523E1AF09005C6105 /* SVGEditor */,
+				E43269E523E1AF09005C6105 /* SVGEditor.plugin */,
+				E46496B223FFFA51000375D1 /* SVGEditor */,
 				E4326A2423E1C4ED005C6105 /* ScadeKitExtension */,
 			);
 		};
@@ -316,6 +393,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E46496B123FFFA51000375D1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -324,8 +408,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4326A1C23E1B2F3005C6105 /* SVGDocument.swift in Sources */,
-				E4909ECF23EC49C400C1DFE2 /* SVGElementSelector.swift in Sources */,
-				E4909EE223F3340C00C1DFE2 /* SVGElementVisitor.swift in Sources */,
 				E4326A4723E1CF9E005C6105 /* SVGEditorView.swift in Sources */,
 				E4326A4823E1CF9E005C6105 /* SVGEditor.swift in Sources */,
 			);
@@ -339,6 +421,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E46496AF23FFFA51000375D1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E46496C023FFFB05000375D1 /* SVGElementSelector.swift in Sources */,
+				E46496D924004B78000375D1 /* SVGViewProtocol.swift in Sources */,
+				E46496BF23FFFB02000375D1 /* SVGElementVisitor.swift in Sources */,
+				E46496CD2400464E000375D1 /* SVGDocumentProtocol.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -347,10 +440,10 @@
 			target = E4326A2423E1C4ED005C6105 /* ScadeKitExtension */;
 			targetProxy = E4326A3823E1C856005C6105 /* PBXContainerItemProxy */;
 		};
-		E4326A3D23E1C8AF005C6105 /* PBXTargetDependency */ = {
+		E46496C423FFFB2F000375D1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = E4326A2423E1C4ED005C6105 /* ScadeKitExtension */;
-			targetProxy = E4326A3C23E1C8AF005C6105 /* PBXContainerItemProxy */;
+			target = E46496B223FFFA51000375D1 /* SVGEditor */;
+			targetProxy = E46496C323FFFB2F000375D1 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -488,8 +581,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.scade.SVGEditor;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.SVGEditor;
+				PRODUCT_MODULE_NAME = SVGEditorPlugin;
+				PRODUCT_NAME = SVGEditor;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = ScadeKitExtension/SVGEditorBridging.h;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -522,8 +616,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.scade.SVGEditor;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.SVGEditor;
+				PRODUCT_MODULE_NAME = SVGEditorPlugin;
+				PRODUCT_NAME = SVGEditor;
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = ScadeKitExtension/SVGEditorBridging.h;
 				SWIFT_VERSION = 5.0;
@@ -615,6 +710,72 @@
 			};
 			name = Release;
 		};
+		E46496B923FFFA51000375D1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Libraries",
+				);
+				INFOPLIST_FILE = SVGEditor/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = com.scade.SVGEditor;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		E46496BA23FFFA51000375D1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Libraries",
+				);
+				INFOPLIST_FILE = SVGEditor/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = com.scade.SVGEditor;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -627,7 +788,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E43269EC23E1AF09005C6105 /* Build configuration list for PBXNativeTarget "SVGEditor" */ = {
+		E43269EC23E1AF09005C6105 /* Build configuration list for PBXNativeTarget "SVGEditor.plugin" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E43269ED23E1AF09005C6105 /* Debug */,
@@ -645,10 +806,23 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		E46496B823FFFA51000375D1 /* Build configuration list for PBXNativeTarget "SVGEditor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E46496B923FFFA51000375D1 /* Debug */,
+				E46496BA23FFFA51000375D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		D7D4BD2F23FCACC90063BD8F /* NimbleCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NimbleCore;
+		};
+		E46496D524004958000375D1 /* NimbleCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NimbleCore;
 		};

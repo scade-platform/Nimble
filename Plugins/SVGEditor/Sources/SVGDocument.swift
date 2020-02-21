@@ -1,8 +1,9 @@
 import AppKit
 import NimbleCore
 import ScadeKit
+import SVGEditor
 
-public final class SVGDocument: NimbleDocument {
+public final class SVGDocument: NimbleDocument, SVGDocumentProtocol {
   public var rootSvg: SCDSvgBox?
 
   private lazy var documentController: SVGEditorView = {

@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "E43269E523E1AF09005C6105"
                BuildableName = "SVGEditor.plugin"
-               BlueprintName = "SVGEditor"
+               BlueprintName = "SVGEditor.plugin"
                ReferencedContainer = "container:SVGEditor.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -52,7 +52,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "E43269E523E1AF09005C6105"
             BuildableName = "SVGEditor.plugin"
-            BlueprintName = "SVGEditor"
+            BlueprintName = "SVGEditor.plugin"
             ReferencedContainer = "container:SVGEditor.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

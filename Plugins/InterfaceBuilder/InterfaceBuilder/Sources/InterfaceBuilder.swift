@@ -7,18 +7,15 @@
 //
 
 import NimbleCore
-import ScadeKit
-
+import Foundation
 
 public final class InterfaceBuilder: Module {
   public static let plugin: Plugin = InterfaceBuilderPlugin()
 }
 
-
 final class InterfaceBuilderPlugin: Plugin {
   func load() {
     DocumentManager.shared.registerDocumentClass(PageDocument.self)
-    SCDRuntime.loadMetaModel()    
   }
   
   public func activate(in workbench: Workbench) {
@@ -29,7 +26,7 @@ final class InterfaceBuilderPlugin: Plugin {
     }
   }
   
-  public func deactivate(in workbench: Workbench) {
-    ///TODO: remove defaults
-  }
+  // public func deactivate(in workbench: Workbench) {
+  //   ///TODO: remove defaults
+  // }
 }

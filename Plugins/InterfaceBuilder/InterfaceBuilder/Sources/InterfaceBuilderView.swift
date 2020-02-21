@@ -2,17 +2,18 @@ import Cocoa
 import NimbleCore
 import SVGEditor
 
-class SVGEditorView: NSViewController, SVGViewProtocol {
-  
+class InterfaceBuilderView: NSViewController, SVGViewProtocol {
+
   private var elementSelector: SVGElementSelector? = nil
 
   weak var doc: SVGDocumentProtocol? = nil
 
   func createElementSelector() -> SVGElementSelector {
-    let selector = SVGLayerSelector()
+    let selector = WidgetSelector()
 
-    if let rootSvg = doc?.rootSvg {
-      selector.visit(rootSvg)
+    if let pageDocument = doc as? PageDocument,
+       let page = pageDocument.page {
+      selector.visit(page)
     }
 
     return selector
@@ -28,9 +29,9 @@ class SVGEditorView: NSViewController, SVGViewProtocol {
   }
 }
 
-extension SVGEditorView: WorkbenchEditor { }
+extension InterfaceBuilderView: WorkbenchEditor { }
 
-extension SVGEditorView: DocumentObserver {
+extension InterfaceBuilderView: DocumentObserver {
 
   func documentFileDidChange(_ document: Document) {
     //loadPage()

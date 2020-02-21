@@ -1,12 +1,12 @@
 import ScadeKit
 
-protocol SVGElementVisitor {
+public protocol SVGElementVisitor {
   func visit(_ element: SCDSvgElement)
 
   func apply(_ element: SCDSvgElement)
 }
 
-extension SVGElementVisitor {
+public extension SVGElementVisitor {
 
   //TODO: add usage of the visitor of SVG elements from ScadeKit
   func visit(_ element: SCDSvgElement) {
