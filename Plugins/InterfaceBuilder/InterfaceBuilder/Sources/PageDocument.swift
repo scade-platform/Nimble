@@ -1,8 +1,9 @@
 import AppKit
 import NimbleCore
 import ScadeKit
+import SVGEditor
 
-public final class PageDocument: NimbleDocument {
+public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
   private var resource: SCDCoreResource?
 
   public var rootSvg: SCDSvgBox? {

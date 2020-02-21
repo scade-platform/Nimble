@@ -29,6 +29,9 @@
 		E46496C023FFFB05000375D1 /* SVGElementSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4909ECD23EC49C400C1DFE2 /* SVGElementSelector.swift */; };
 		E46496C123FFFB2F000375D1 /* SVGEditor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E46496B323FFFA51000375D1 /* SVGEditor.framework */; };
 		E46496C223FFFB2F000375D1 /* SVGEditor.framework in Embed Libraries */ = {isa = PBXBuildFile; fileRef = E46496B323FFFA51000375D1 /* SVGEditor.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		E46496CD2400464E000375D1 /* SVGDocumentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46496CC2400464E000375D1 /* SVGDocumentProtocol.swift */; };
+		E46496D624004958000375D1 /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = E46496D524004958000375D1 /* NimbleCore */; };
+		E46496D924004B78000375D1 /* SVGViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46496D824004B78000375D1 /* SVGViewProtocol.swift */; };
 		E4909EA123E9975D00C1DFE2 /* SVGView.h in Headers */ = {isa = PBXBuildFile; fileRef = E4909E9F23E9975D00C1DFE2 /* SVGView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4909EA223E9975D00C1DFE2 /* SVGView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4909EA023E9975D00C1DFE2 /* SVGView.mm */; };
 /* End PBXBuildFile section */
@@ -86,6 +89,8 @@
 		E46496B323FFFA51000375D1 /* SVGEditor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SVGEditor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E46496B523FFFA51000375D1 /* SVGEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SVGEditor.h; sourceTree = "<group>"; };
 		E46496B623FFFA51000375D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E46496CC2400464E000375D1 /* SVGDocumentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGDocumentProtocol.swift; sourceTree = "<group>"; };
+		E46496D824004B78000375D1 /* SVGViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGViewProtocol.swift; sourceTree = "<group>"; };
 		E4909E9F23E9975D00C1DFE2 /* SVGView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGView.h; sourceTree = "<group>"; };
 		E4909EA023E9975D00C1DFE2 /* SVGView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SVGView.mm; sourceTree = "<group>"; };
 		E4909ECD23EC49C400C1DFE2 /* SVGElementSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGElementSelector.swift; sourceTree = "<group>"; };
@@ -119,6 +124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E46496D624004958000375D1 /* NimbleCore in Frameworks */,
 				E46496BB23FFFACC000375D1 /* ScadeKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -238,6 +244,8 @@
 			children = (
 				E4909EE123F3340C00C1DFE2 /* SVGElementVisitor.swift */,
 				E4909ECD23EC49C400C1DFE2 /* SVGElementSelector.swift */,
+				E46496CC2400464E000375D1 /* SVGDocumentProtocol.swift */,
+				E46496D824004B78000375D1 /* SVGViewProtocol.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -321,6 +329,9 @@
 			dependencies = (
 			);
 			name = SVGEditor;
+			packageProductDependencies = (
+				E46496D524004958000375D1 /* NimbleCore */,
+			);
 			productName = SVGEditor;
 			productReference = E46496B323FFFA51000375D1 /* SVGEditor.framework */;
 			productType = "com.apple.product-type.framework";
@@ -415,7 +426,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E46496C023FFFB05000375D1 /* SVGElementSelector.swift in Sources */,
+				E46496D924004B78000375D1 /* SVGViewProtocol.swift in Sources */,
 				E46496BF23FFFB02000375D1 /* SVGElementVisitor.swift in Sources */,
+				E46496CD2400464E000375D1 /* SVGDocumentProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -806,6 +819,10 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		D7D4BD2F23FCACC90063BD8F /* NimbleCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = NimbleCore;
+		};
+		E46496D524004958000375D1 /* NimbleCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NimbleCore;
 		};
