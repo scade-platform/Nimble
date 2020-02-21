@@ -49,7 +49,7 @@ class CodeEditorView: NSViewController {
     
     loadContent()
   }
-
+  
   func handleKeyDown(with event: NSEvent) -> Bool {
     if completionView.isActive {
       return completionView.handleKeyDown(with: event)
@@ -66,7 +66,7 @@ class CodeEditorView: NSViewController {
         
     return false
   }
-  
+
   func handleMouseDown(with event: NSEvent) -> Bool {
     if completionView.isActive {
       completionView.close()
@@ -75,7 +75,7 @@ class CodeEditorView: NSViewController {
   }
     
   private func shouldTriggerCompletion(with event: NSEvent) -> Bool {
-    guard event.modifierFlags.intersection(.deviceIndependentFlagsMask).isEmpty else { return false }
+    guard event.modifierFlags.intersection(.deviceIndependentFlagsMask).isSubset(of: .shift) else { return false }
     
     ///TODO: react to any trigger symbols
     return Keycode.chars.contains(event.keyCode) || event.keyCode == Keycode.period
@@ -194,10 +194,10 @@ class CodeEditorView: NSViewController {
     guard let doc = document else { return }
     
     let pos = textView.selectedIndex
-    
+        
     ///TODO: filter langServices or merge results
     for langService in doc.languageServices {
-      langService.complete(in: doc, at: pos) {[weak self] in
+      langService.complete(in: doc, at: pos) {[weak self] in                
         guard let string = self?.textView.textStorage?.string,
               let cursor = self?.textView.selectedIndex, cursor >= $0 else { return }
                 

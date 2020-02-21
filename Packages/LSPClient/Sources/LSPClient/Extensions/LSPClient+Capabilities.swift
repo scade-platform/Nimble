@@ -6,9 +6,6 @@
 //  Copyright © 2020 SCADE. All rights reserved.
 //
 
-import LanguageServerProtocol
-
-
 extension LSPClient {
  static let clientCapabilities: ClientCapabilities = {
    var capabilities = ClientCapabilities()

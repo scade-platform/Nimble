@@ -10,9 +10,6 @@ import Foundation
 import NimbleCore
 import CodeEditor
 
-import LanguageServerProtocol
-
-
 public final class LSPClient {
   enum State {
     case ready, initializing, initialized, failed

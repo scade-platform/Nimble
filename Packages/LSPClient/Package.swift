@@ -8,7 +8,7 @@ let package = Package(
         .macOS(.v10_14),
     ],
     products: [        
-        .library(name: "LSPClient", type: .dynamic, targets: ["LSPClient"]),
+        .library(name: "LSPClient", type: .dynamic, targets: ["LSPClient", "SKLocalServer"]),
     ],
     dependencies: [
       .package(path: "../../NimbleCore"),
@@ -16,6 +16,20 @@ let package = Package(
       .package(url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("swift-5.2-branch")),
     ],
     targets: [
-        .target(name: "LSPClient", dependencies: ["NimbleCore", "CodeEditor", "LSPBindings"])
+      .target(
+        name: "LSPClient",
+        dependencies: [
+          "NimbleCore",
+          "CodeEditor",
+          "SourceKitLSP"
+        ]
+      ),
+      .target(
+        name: "SKLocalServer",
+        dependencies: [
+          "LSPClient",
+          "SourceKitLSP"
+        ]
+      )
     ]
 )

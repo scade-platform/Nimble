@@ -6,9 +6,9 @@
 //  Copyright © 2019 SCADE. All rights reserved.
 //
 
-import LSPClient
 import NimbleCore
-
+import LSPClient
+import SKLocalServer
 
 public final class LSPClientModule: Module {
   public static let plugin: Plugin = LSPClientPlugin()
@@ -16,7 +16,9 @@ public final class LSPClientModule: Module {
 
 
 final class LSPClientPlugin: Plugin {
-  func load() {}
+  func load() {
+    LSPServerManager.shared.registerProvider(SKLocalServerProvider())
+  }
   
   public func activate(in workbench: Workbench) {
     LSPServerManager.shared.connect(to: workbench)
