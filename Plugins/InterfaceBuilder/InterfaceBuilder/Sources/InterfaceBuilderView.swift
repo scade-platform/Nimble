@@ -4,7 +4,7 @@ import ScadeKitExtension
 
 class InterfaceBuilderView: NSViewController {
 
-  private let svgLayerSelector = SVGLayerSelector()
+  private let widgetSelector = WidgetSelector()
 
   private let sizeMultiplier: CGFloat = 0.8
 
@@ -16,7 +16,7 @@ class InterfaceBuilderView: NSViewController {
     doc?.observers.add(observer: self)
 
     if let page = doc?.page {
-      svgLayerSelector.visit(page)
+      widgetSelector.visit(page)
     }
 
     let svgView = SVGView()

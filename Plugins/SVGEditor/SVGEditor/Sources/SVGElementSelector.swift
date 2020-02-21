@@ -1,19 +1,21 @@
 import ScadeKit
 
-protocol SVGElementSelector: SVGElementVisitor {
+public protocol SVGElementSelector {
   func onSelect(_ element: SCDSvgElement)
 
   func onUnselect(_ element: SCDSvgElement)
 }
 
-class SVGLayerSelector: SVGElementSelector {
+open class SVGLayerSelector: SVGElementSelector, SVGElementVisitor {
   private weak var selected: SCDSvgElement?
+  
+  public init() {}
 
   public func apply(_ element: SCDSvgElement) {
     if let drawable = element as? SCDSvgDrawable {
       drawable.gestureRecognizers.append(
         SCDSvgTapGestureRecognizer(
-          handler: { [unowned self] h in self.select(element)} ))
+          handler: { [unowned self] h in self.select(h?.target as! SCDSvgElement)} ))
     }
   }
 

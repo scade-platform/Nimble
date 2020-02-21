@@ -16,6 +16,7 @@
 		E451B30022C4B69F006185B7 /* WidgetSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2FF22C4B69F006185B7 /* WidgetSelector.swift */; };
 		E46496A623FEC62C000375D1 /* InterfaceBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46496A423FEC62C000375D1 /* InterfaceBuilderView.swift */; };
 		E46496A723FEC62C000375D1 /* InterfaceBuilderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E46496A523FEC62C000375D1 /* InterfaceBuilderView.xib */; };
+		E46496C623FFFFC8000375D1 /* SVGEditor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E46496C523FFFFC8000375D1 /* SVGEditor.framework */; };
 		E4909E7923E478C000C1DFE2 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4909E7823E478C000C1DFE2 /* ScadeKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -31,6 +32,7 @@
 		E451B2FF22C4B69F006185B7 /* WidgetSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetSelector.swift; sourceTree = "<group>"; };
 		E46496A423FEC62C000375D1 /* InterfaceBuilderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterfaceBuilderView.swift; sourceTree = "<group>"; };
 		E46496A523FEC62C000375D1 /* InterfaceBuilderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InterfaceBuilderView.xib; sourceTree = "<group>"; };
+		E46496C523FFFFC8000375D1 /* SVGEditor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SVGEditor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4909E7823E478C000C1DFE2 /* ScadeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScadeKit.framework; path = ../../SVGEditor/Libraries/ScadeKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -41,6 +43,7 @@
 			files = (
 				D7D4BD3A23FCADCD0063BD8F /* ScadeKitExtension.framework in Frameworks */,
 				D7D4BD3C23FCADD30063BD8F /* NimbleCore in Frameworks */,
+				E46496C623FFFFC8000375D1 /* SVGEditor.framework in Frameworks */,
 				E4909E7923E478C000C1DFE2 /* ScadeKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -83,6 +86,7 @@
 		D7CD750322B8CC6F004C437B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E46496C523FFFFC8000375D1 /* SVGEditor.framework */,
 				D7D4BD3923FCADCD0063BD8F /* ScadeKitExtension.framework */,
 				E4909E7823E478C000C1DFE2 /* ScadeKit.framework */,
 				E42DC11D22D9C7A800486CC1 /* AppKit.framework */,

@@ -1,5 +1,6 @@
 import Cocoa
 import NimbleCore
+import SVGEditor
 
 class SVGEditorView: NSViewController {
 

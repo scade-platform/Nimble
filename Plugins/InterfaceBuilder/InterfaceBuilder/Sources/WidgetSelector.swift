@@ -1,50 +1,13 @@
 import ScadeKit
+import SVGEditor
 
-protocol WidgetSelector: WidgetVisitor {
-  func onSelect(_ element: SCDSvgElement)
+class WidgetSelector: SVGLayerSelector, WidgetVisitor {
 
-  func onUnselect(_ element: SCDSvgElement)
-}
-
-class SVGLayerSelector: WidgetSelector {
-  private weak var selected: SCDSvgElement?
+  public override init() {}
 
   public func apply(_ widget: SCDWidgetsWidget) {
     if let drawable = widget.drawing {
-      drawable.gestureRecognizers.append(
-        SCDSvgTapGestureRecognizer(
-          handler: { [unowned self] h in self.select(h?.target as! SCDSvgElement)} ))
+      apply(drawable)
     }
   }
-
-  public func onUnselect(_ element: SCDSvgElement) {
-    getLayer(of: element)?.borderWidth = 0
-  }
-
-  public func onSelect(_ element: SCDSvgElement) {
-    getLayer(of: element)?.borderWidth = 1
-  }
-
-  private func select(_ element: SCDSvgElement) {
-    if let oldSelected = selected {
-      if !(oldSelected === element) {
-        onUnselect(oldSelected)
-        doSelect(element)
-      }
-    } else {
-      doSelect(element)
-    }
-  }
-
-  private func doSelect(_ element: SCDSvgElement) {
-    onSelect(element)
-    selected = element
-  }
-
-  private func getLayer(of element: SCDSvgElement) -> CALayer? {
-    return SCDRuntime.extract(intoLayer: element as! EObject)?.layer
-  }
-  
 }
-
-
