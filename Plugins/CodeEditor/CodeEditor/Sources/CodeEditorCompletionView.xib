@@ -14,11 +14,11 @@
                 <outlet property="view" destination="cj7-GN-9yy" id="SgE-aA-hEU"/>
             </connections>
         </customObject>
-        <customView id="cj7-GN-9yy" customClass="CompletionView" customModule="CodeEditorPlugin" customModuleProvider="target">
+        <customView id="cj7-GN-9yy">
             <rect key="frame" x="0.0" y="0.0" width="536" height="328"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <customView id="fR7-3b-XWo">
+                <customView id="fR7-3b-XWo" customClass="CompletionView" customModule="CodeEditorPlugin" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="536" height="328"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
