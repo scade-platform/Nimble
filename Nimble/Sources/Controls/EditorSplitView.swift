@@ -9,7 +9,4 @@
 import Cocoa
 
 class EditorSplitView: NSSplitView {
-  override var dividerThickness: CGFloat {
-    return self.arrangedSubviews.filter { !isSubviewCollapsed($0) }.count > 1 ? 3 : 0
-  }
 }
