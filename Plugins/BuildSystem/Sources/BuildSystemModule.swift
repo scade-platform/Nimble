@@ -42,8 +42,9 @@ final class BuildSystemPlugin: Plugin {
   }
   
   private func setupCommands() {
-    let runImage = Bundle(for: BuildSystemPlugin.self).image(forResource: "run")?.imageWithTint(.darkGray)
-    let stopImage = Bundle(for: BuildSystemPlugin.self).image(forResource: "stop")?.imageWithTint(.darkGray)
+    let buttonIconColor = getColorFromAsset("ButtonIconColor", defualt: .darkGray)
+    let runImage = Bundle(for: BuildSystemPlugin.self).image(forResource: "run")?.imageWithTint(buttonIconColor)
+    let stopImage = Bundle(for: BuildSystemPlugin.self).image(forResource: "stop")?.imageWithTint(buttonIconColor)
 
     let runCommand = Command(name: "Run", menuPath: "Tools", keyEquivalent: "cmd+r", toolbarIcon: runImage) { self.run() }
     CommandManager.shared.registerCommand(command: runCommand)
@@ -140,5 +141,9 @@ final class BuildSystemPlugin: Plugin {
     if let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench {
       showConsoleTillFirstEscPress(in: currentWorkbench)
     }
+  }
+  
+  fileprivate func getColorFromAsset(_ name: String, defualt: NSColor) -> NSColor {
+     return NSColor.init(named: name, bundle: Bundle.init(for: BuildSystemPlugin.self)) ?? defualt
   }
 }

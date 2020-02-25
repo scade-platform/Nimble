@@ -21,8 +21,8 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   
   private lazy var toolbarItems: [NSToolbarItem.Identifier] = {
     if CommandManager.shared.commands.isEmpty {
-      // Force plugins loading
-       _ = PluginManager.shared
+      //TODO: Fix it. Toolbar should update after plugin loading
+      return []
     }
     let toolbarCommands = CommandManager.shared.commands
       .filter{$0.toolbarIcon != nil}
@@ -144,6 +144,7 @@ extension NimbleWorkbench : NSToolbarDelegate {
     let item = NSToolbarItem(itemIdentifier: identifier)
     item.label = command.name
     item.paletteLabel = command.name
+    //TODO: Change color when system theme is changed
     let button = NSButton()
     button.cell = ButtonCell()
     button.image = command.toolbarIcon
