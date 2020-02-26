@@ -34,13 +34,12 @@ extension ConsoleSupport {
   func openConsole<T: Equatable>(key: T, title: String, in workbench: Workbench) -> Console? {
     let openedConsoles = workbench.openedConsoles
     guard let console = openedConsoles.filter({$0.representedObject is T}).first(where: {($0.representedObject as! T) == key}) else {
-      if var newConsole = workbench.createConsole(title: title, show: false) {
+      if var newConsole = workbench.createConsole(title: title, show: true, startReading: false) {
         newConsole.representedObject = key
         return newConsole
       }
       return nil
     }
-    console.startReadingFromBuffer()
     return console
   }
 }

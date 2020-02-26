@@ -43,7 +43,7 @@ public protocol Workbench: class {
   @discardableResult
   func close(_ doc: Document) -> Bool
   
-  func createConsole(title: String, show: Bool) -> Console?
+  func createConsole(title: String, show: Bool, startReading: Bool) -> Console?
   
   func publishDiagnostics(for path: Path, diagnostics: [Diagnostic])
 }
@@ -64,6 +64,10 @@ public extension Workbench {
     observers.notify {
       $0.workbenchDidSaveDocument(self, document: doc)
     }
+  }
+  
+  func  createConsole(title: String, show: Bool) -> Console? {
+    return createConsole(title: title, show: show, startReading: true)
   }
 }
 

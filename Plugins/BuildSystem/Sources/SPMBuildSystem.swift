@@ -34,7 +34,7 @@ class SPMBuildSystem: BuildSystem {
     var spmProcConsole : Console?
     
     spmProc.terminationHandler = { process in
-      
+      spmProcConsole?.writeLine(string: "Finished building  \(fileURL.deletingLastPathComponent().lastPathComponent)")
       spmProcConsole?.stopReadingFromBuffer()
 
       
@@ -54,9 +54,16 @@ class SPMBuildSystem: BuildSystem {
       }
     }
     
-    spmProcConsole = self.openConsole(key: fileURL, title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
-    spmProc.standardOutput = spmProcConsole?.output
-    spmProc.standardError = spmProcConsole?.output
+    spmProcConsole = self.openConsole(key: fileURL.appendingPathComponent("compile"), title: "Compile: \(fileURL.deletingLastPathComponent().lastPathComponent)", in: workbench)
+    if !(spmProcConsole?.isReadingFromBuffer ?? true) {
+      spmProc.standardOutput = spmProcConsole?.output
+      spmProc.standardError = spmProcConsole?.output
+      spmProcConsole?.startReadingFromBuffer()
+      spmProcConsole?.writeLine(string: "Building: \(fileURL.deletingLastPathComponent().lastPathComponent)")
+    } else {
+      //The console is using by another process with the same representedObject
+      return
+    }
     try? spmProc.run()
   }
   
@@ -102,8 +109,15 @@ class SPMLauncher: Launcher {
     
     let name = packageUrl.deletingLastPathComponent().lastPathComponent
     programProcConsole = openConsole(key: package, title: "Run: \(name)", in: workbench)
-    programProc.standardOutput = programProcConsole?.output
-    programProc.standardError = programProcConsole?.output
+    if !(programProcConsole?.isReadingFromBuffer ?? true) {
+      programProc.standardOutput = programProcConsole?.output
+      programProc.standardError = programProcConsole?.output
+      programProcConsole?.startReadingFromBuffer()
+    } else {
+      //The console is using by another process with the same representedObject
+      return
+    }
+    
     
     try? programProc.run()
     handler?(.running, programProc)

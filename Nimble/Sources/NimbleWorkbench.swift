@@ -265,11 +265,11 @@ extension NimbleWorkbench: Workbench {
   }
   
   
-  public func createConsole(title: String, show: Bool) -> Console? {
+  public func createConsole(title: String, show: Bool, startReading: Bool = true) -> Console? {
     if show, debugView?.isHidden ?? false {
       debugView?.isHidden = false
     }
-    return debugView?.consoleView.createConsole(title: title, show: show)
+    return debugView?.consoleView.createConsole(title: title, show: show, startReading: startReading)
   }
   
   public func publishDiagnostics(for path: Path, diagnostics: [Diagnostic]) {

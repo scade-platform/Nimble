@@ -33,6 +33,7 @@ class SwiftBuildSystem: BuildSystem {
     var swiftcProcConsole: Console?
     
     swiftcProc.terminationHandler = { process in
+      swiftcProcConsole?.writeLine(string: "Finished building \(fileURL.absoluteString)")
       swiftcProcConsole?.stopReadingFromBuffer()
       
       if let contents = swiftcProcConsole?.contents {
@@ -52,8 +53,16 @@ class SwiftBuildSystem: BuildSystem {
     }
     
     swiftcProcConsole = self.openConsole(key: "Compile: \(fileURL.absoluteString)", title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
-    swiftcProc.standardOutput = swiftcProcConsole?.output
-    swiftcProc.standardError = swiftcProcConsole?.output
+    if !(swiftcProcConsole?.isReadingFromBuffer ?? true) {
+      swiftcProc.standardOutput = swiftcProcConsole?.output
+      swiftcProc.standardError = swiftcProcConsole?.output
+      swiftcProcConsole?.startReadingFromBuffer()
+      swiftcProcConsole?.writeLine(string: "Building: \(fileURL.absoluteString)")
+    } else {
+      //The console is using by another process with the same representedObject
+      return
+    }
+    
     try? swiftcProc.run()
   }
   
@@ -84,8 +93,14 @@ class SwiftLauncher : Launcher {
       handler?(.finished, process)
     }
     programProcConsole = self.openConsole(key: fileURL, title: "Run: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
-    programProc.standardOutput = programProcConsole?.output
-    programProc.standardError = programProcConsole?.output
+    if !(programProcConsole?.isReadingFromBuffer ?? true) {
+      programProc.standardOutput = programProcConsole?.output
+      programProc.standardError = programProcConsole?.output
+      programProcConsole?.startReadingFromBuffer()
+    } else {
+      //The console is using by another process with the same representedObject
+      return
+    }
     try? programProc.run()
     handler?(.running, programProc)
   }
