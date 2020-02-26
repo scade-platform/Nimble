@@ -78,11 +78,14 @@ public struct Package {
 
 public class PluginManager {
   private static var searchPaths: [Path] {
-    //TODO: add user folders
-    guard let pluginsPath = Bundle.main.builtInPlugInsPath,
-          let path = Path(pluginsPath) else { return [] }
-    
-    return [path]
+    guard let builtInPath = Bundle.main.builtInPlugInsURL else { return [] }
+
+    let externalPaths = FileManager.default
+      .urls(for: .applicationSupportDirectory, in: .userDomainMask)
+      .map { $0.appendingPathComponent("Nimble", isDirectory: true)
+               .appendingPathComponent("PlugIns", isDirectory: true) }
+
+    return ([builtInPath] + externalPaths).compactMap { Path(url: $0) }
   }
   
   private static func loadBundles() -> (plugins: [String: Plugin], packages: [Package]) {
@@ -91,7 +94,7 @@ public class PluginManager {
     
     var bundles = [String : (path: Path, bundle: CFBundle?)]()
     var dependenciesGraph = [ArraySlice<String>]()
-        
+
     for path in searchPaths.flatMap({$0.plugins}) {
       // Use CoreFoundation API to avoid auto-loading bundles
       let bundle = CFBundleCreate(kCFAllocatorDefault, NSURL(fileURLWithPath: path.string))
