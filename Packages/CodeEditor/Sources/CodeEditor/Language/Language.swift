@@ -57,6 +57,7 @@ public final class LanguageGrammar: Decodable, TokenizerRepository {
   public var path: Path
   
   private static let decoders: [String: GrammarDecoder.Type]  = [
+    ".tmLanguage": PropertyListDecoder.self,
     ".tmGrammar.json": JSONDecoder.self,
     ".tmLanguage.json": JSONDecoder.self
   ]
