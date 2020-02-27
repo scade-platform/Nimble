@@ -158,7 +158,7 @@ public final class SyntaxParser {
 
 
 class SyntaxParseOperation: Operation, ProgressReporting {
-  let str: String
+  let string: String
   var offsets: Atomic<String.OffsetTable>
   
   let range: NSRange
@@ -172,7 +172,7 @@ class SyntaxParseOperation: Operation, ProgressReporting {
     guard let tokenizer = grammar.tokenizer else { return nil }
     self.tokenizer = tokenizer
     
-    self.str = String(utf8String: str.cString(using: .utf8)!)!
+    self.string = String(utf8String: str.cString(using: .utf8)!)!
     self.offsets = Atomic<String.OffsetTable>(String.OffsetTable.empty)
             
     self.range = range
@@ -196,7 +196,7 @@ class SyntaxParseOperation: Operation, ProgressReporting {
       defer {
         offsetsComputed.signal()
       }
-      guard let table = self?.str.createUTF16OffsetTable() else { return }
+      guard let table = self?.string.createOffsetTable(from: UTF8.self, to: UTF16.self) else { return }
       $0 = table
     }
     result = parse()
@@ -205,7 +205,7 @@ class SyntaxParseOperation: Operation, ProgressReporting {
   
   func parse() -> TokenizerResult? {
 //    let t1 = mach_absolute_time()
-    let res = tokenizer.tokenize(str, in: range)
+    let res = tokenizer.tokenize(string, in: range)
 //    let t2 = mach_absolute_time()
         
 //    for t in res?.nodes ?? [] {
