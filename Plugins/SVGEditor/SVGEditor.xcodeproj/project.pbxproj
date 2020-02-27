@@ -34,6 +34,7 @@
 		E46496D924004B78000375D1 /* SVGViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46496D824004B78000375D1 /* SVGViewProtocol.swift */; };
 		E4909EA123E9975D00C1DFE2 /* SVGView.h in Headers */ = {isa = PBXBuildFile; fileRef = E4909E9F23E9975D00C1DFE2 /* SVGView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4909EA223E9975D00C1DFE2 /* SVGView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4909EA023E9975D00C1DFE2 /* SVGView.mm */; };
+		E4E14E622407F2A8006E8D85 /* SVGEditorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4E14E612407F2A8006E8D85 /* SVGEditorMenu.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +96,7 @@
 		E4909EA023E9975D00C1DFE2 /* SVGView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SVGView.mm; sourceTree = "<group>"; };
 		E4909ECD23EC49C400C1DFE2 /* SVGElementSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGElementSelector.swift; sourceTree = "<group>"; };
 		E4909EE123F3340C00C1DFE2 /* SVGElementVisitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGElementVisitor.swift; sourceTree = "<group>"; };
+		E4E14E612407F2A8006E8D85 /* SVGEditorMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGEditorMenu.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +170,7 @@
 		E43269F023E1AF9B005C6105 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				E4E14E612407F2A8006E8D85 /* SVGEditorMenu.swift */,
 				E4326A1323E1B2F3005C6105 /* SVGDocument.swift */,
 				E4326A4423E1CF9E005C6105 /* SVGEditor.swift */,
 				E4326A4323E1CF9E005C6105 /* SVGEditorView.swift */,
@@ -409,6 +412,7 @@
 			files = (
 				E4326A1C23E1B2F3005C6105 /* SVGDocument.swift in Sources */,
 				E4326A4723E1CF9E005C6105 /* SVGEditorView.swift in Sources */,
+				E4E14E622407F2A8006E8D85 /* SVGEditorMenu.swift in Sources */,
 				E4326A4823E1CF9E005C6105 /* SVGEditor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,6 +8,8 @@ class SVGEditorView: NSViewController, SVGViewProtocol {
 
   weak var doc: SVGDocumentProtocol? = nil
 
+  @IBOutlet weak var scrollView: NSScrollView!
+
   func createElementSelector() -> SVGElementSelector {
     let selector = SVGLayerSelector()
 
@@ -18,21 +20,59 @@ class SVGEditorView: NSViewController, SVGViewProtocol {
     return selector
   }
 
-  override func viewDidLoad() {
+  override public func viewDidLoad() {
     super.viewDidLoad()
 
     setupDocument()
-    setupSVGView(for: view)
+    let svgView = setupSVGView(for: view)
+    scrollView.documentView = svgView
+    setupScrollView()
 
     elementSelector = createElementSelector()
   }
+
+  public func zoomIn() {
+    scrollView.magnification += 0.25
+  }
+
+  public func zoomOut() {
+    scrollView.magnification -= 0.25
+  }
+
+  public func actualSize() {
+    scrollView.magnification = 1
+  }
+
+  private func setupScrollView() {    
+    scrollView.hasHorizontalRuler = true
+    scrollView.hasVerticalRuler = true
+    scrollView.rulersVisible = true
+    
+    scrollView.verticalScrollElasticity = .none
+    scrollView.horizontalScrollElasticity = .none
+    
+    scrollView.borderType = .lineBorder
+    
+    scrollView.horizontalRulerView?.measurementUnits = .points
+    scrollView.verticalRulerView?.measurementUnits = .points
+    
+    scrollView.allowsMagnification = true
+    //scrollView.magnification = 10
+  }
 }
 
-extension SVGEditorView: WorkbenchEditor { }
+extension SVGEditorView: WorkbenchEditor {
+  public var editorMenu: NSMenu? {
+    SVGEditorMenu.shared.editor = self
+
+    return SVGEditorMenu.editorMenu
+  }
+}
 
 extension SVGEditorView: DocumentObserver {
 
-  func documentFileDidChange(_ document: Document) {
+  public func documentFileDidChange(_ document: Document) {
     //loadPage()
   }
 }
+
