@@ -19,16 +19,8 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   
   public private(set) var diagnostics: [Path: [Diagnostic]] = [:]
   
-  private lazy var toolbarItems: [NSToolbarItem.Identifier] = {
-    if CommandManager.shared.commands.isEmpty {
-      //TODO: Fix it. Toolbar should update after plugin loading
-      return []
-    }
-    let toolbarCommands = CommandManager.shared.commands
-      .filter{$0.toolbarIcon != nil}
-    toolbarCommands.forEach{$0.observers.add(observer: self)}
-    return toolbarCommands.map{NSToolbarItem.Identifier($0.name)}
-  }()
+  
+  private var toolbarItems: [NSToolbarItem.Identifier] = []
   
   
   // Document property of the WindowController always refer to the project
@@ -82,7 +74,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     debugView.isHidden = true
     
     DocumentManager.shared.defaultDocument = BinaryFileDocument.self
-    
+    PluginManager.shared.observers.add(observer: self)
     PluginManager.shared.activate(in: self)
   }
     
@@ -118,6 +110,8 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   }
 }
 
+//MARK: - NSToolbarDelegate
+
 extension NimbleWorkbench : NSToolbarDelegate {
   public func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
     var result = toolbarItems
@@ -127,6 +121,15 @@ extension NimbleWorkbench : NSToolbarDelegate {
   }
   
   public func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
+    guard !CommandManager.shared.commands.isEmpty else {
+      return []
+    }
+    guard toolbarItems.isEmpty else {
+      return toolbarItems
+    }
+    let toolbarCommands = CommandManager.shared.commands
+      .filter{$0.toolbarIcon != nil}
+    toolbarItems.append(contentsOf: toolbarCommands.map{NSToolbarItem.Identifier($0.name)})
     return toolbarItems
   }
   
@@ -138,6 +141,22 @@ extension NimbleWorkbench : NSToolbarDelegate {
       }
     }
     return nil
+  }
+  
+  public func toolbarWillAddItem(_ notification: Notification) {
+    guard let newItem = notification.userInfo?["item"] as? NSToolbarItem,
+      let command = CommandManager.shared.commands.first(where: {$0.name == newItem.itemIdentifier.rawValue}) else {
+        return
+    }
+    command.observers.add(observer: self)
+  }
+  
+  public func toolbarDidRemoveItem(_ notification: Notification) {
+    guard let newItem = notification.userInfo?["item"] as? NSToolbarItem,
+      let command = CommandManager.shared.commands.first(where: {$0.name == newItem.itemIdentifier.rawValue}) else {
+        return
+    }
+    command.observers.remove(observer: self)
   }
   
   private func toolbarPushButton(identifier: NSToolbarItem.Identifier, for command: Command) -> NSToolbarItem {
@@ -165,6 +184,8 @@ extension NimbleWorkbench : NSToolbarDelegate {
 }
 
 
+//MARK: - CommandObserver
+
 extension NimbleWorkbench : CommandObserver {
   public func commandDidChange(_ command: Command) {
     for item in toolbar.items {
@@ -175,8 +196,24 @@ extension NimbleWorkbench : CommandObserver {
       return
     }
   }
-  
-  
+}
+
+//MARK: - PluginObserver
+
+extension NimbleWorkbench : PluginObserver {
+  public func pluginsDidLoad(_ plugins: [Plugin]) {
+    guard !CommandManager.shared.commands.isEmpty else { return }
+    let commands = CommandManager.shared.commands.filter{ $0.toolbarIcon != nil }
+    for command in commands {
+      guard !toolbarItems.contains(where: {$0.rawValue == command.name}) else {
+        //add only new commands
+        continue
+      }
+      let id = NSToolbarItem.Identifier(command.name)
+      toolbarItems.append(id)
+      self.toolbar.insertItem(withItemIdentifier: id, at: toolbar.items.endIndex)
+    }
+  }
 }
 
 // MARK: - Workbench

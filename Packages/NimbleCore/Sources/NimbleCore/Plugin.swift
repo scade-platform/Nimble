@@ -147,6 +147,8 @@ public class PluginManager {
   
   public func load() -> Void {
     plugins.forEach { $0.1.load() }
+    let loadedPludins = Array(plugins.values)
+    observers.notify{$0.pluginsDidLoad(loadedPludins)}
   }
   
   public func activate(in workbench: Workbench) -> Void {
@@ -168,6 +170,8 @@ public class PluginManager {
       return nil
     }
   }
+  
+  public var observers = ObserverSet<PluginObserver>()
 }
 
 
@@ -176,6 +180,14 @@ fileprivate extension Path {
     let paths = try? ls().directories.filter{$0.basename().hasSuffix("plugin")}
     return paths ?? []
   }
+}
+
+public protocol PluginObserver {
+  func pluginsDidLoad(_ plugins: [Plugin])
+}
+
+public extension PluginObserver {
+  func pluginsDidLoad(_ plugins: [Plugin]) {}
 }
 
 
