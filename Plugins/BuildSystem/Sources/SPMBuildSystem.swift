@@ -92,7 +92,8 @@ class SPMLauncher: Launcher {
     programProc.currentDirectoryURL = packageUrl.deletingLastPathComponent()
     programProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
     programProc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
-    programProc.arguments = ["run"]
+    //we skip build because we always build before run
+    programProc.arguments = ["run", "--skip-build"]
     
     var programProcConsole: Console?
     programProc.terminationHandler = { process in
