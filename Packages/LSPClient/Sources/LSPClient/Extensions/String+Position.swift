@@ -8,7 +8,7 @@
 
 public extension String {
   func index(at pos: Position) -> String.Index {
-    return utf16.index(lineRange(line: pos.line).lowerBound, offsetBy: pos.utf16index)
+    return index(lineRange(line: pos.line).lowerBound, offsetBy: pos.utf16index)
   }
   
   func range(for posRange: Range<Position>) -> Range<String.Index> {

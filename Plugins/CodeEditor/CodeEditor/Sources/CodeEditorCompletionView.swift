@@ -28,22 +28,33 @@ class CodeEditorCompletionView: NSViewController {
     
   
   var itemsFilter: String = ""
-  
+    
   var completionItems: [CompletionItem] = []
-      
+  
   
   private(set) var isActive: Bool = false
-    
-  
+        
   private var wasTriggered: Bool = false
   
-  private var completions: [CompletionItem] = []
+  
+  private var filterResult: [(index: Int, ranges: [Range<Int>])] = []
+  
+  private var completions: [CompletionItem] {
+    return itemsFilter != ""
+      ? filterResult.map { return completionItems[$0.index] }
+      : completionItems
+  }
     
+  private var hasCompletions: Bool {
+    return itemsFilter != ""
+      ? filterResult.count > 0
+      : completionItems.count > 0
+  }
+  
   private(set) var completionPosition = 0
   
   private var completionOrigin = CGPoint()
-      
-    
+  
     
   private var tableScrollView: NSScrollView! {
     tableView.superview?.superview as? NSScrollView
@@ -54,7 +65,7 @@ class CodeEditorCompletionView: NSViewController {
   }
     
   private var anchorPositionOffset: CGFloat {
-    guard completions.count > 0 else {
+    guard hasCompletions else {
       return emptyView.frame.size.width / 2
     }
         
@@ -62,7 +73,7 @@ class CodeEditorCompletionView: NSViewController {
   }
   
   private var selection: CompletionItem? {
-    guard completions.count > 0 else { return nil }
+    guard hasCompletions else { return nil }
     return completions[tableView.selectedRow]
   }
   
@@ -136,13 +147,41 @@ class CodeEditorCompletionView: NSViewController {
   
   func reload() {
     ///TODO: optimize filtering by e.g. filtering already filtered collection if the new filter is an extension of the old one
-    completions = completionItems.filter {
-      $0.label.starts(with: itemsFilter)
+    filterResult = []
+    let filter = itemsFilter.lowercased()
+    
+    var typeIcon: Bool = false
+    var typeMaxChars: (count: Int, row: Int) = (0, 0)
+    var labelMaxChars: (count: Int, row: Int) = (0, 0)
+    
+    func storeResizeData(from item: CompletionItem, at i: Int) {
+      typeIcon = typeIcon || item.hasIcon
+      if let type = item.detail, type.count > typeMaxChars.count {
+        typeMaxChars = (type.count, i)
+      }
+      if item.label.count > labelMaxChars.count {
+        labelMaxChars = (item.label.count, i)
+      }
     }
     
-    if completions.count > 0 {
+    if filter != "" {
+      for (index, item) in completionItems.enumerated() {
+        if item.label.lowercased().starts(with: filter) {
+          filterResult.append((index, [0..<filter.count]))
+          storeResizeData(from: item, at: filterResult.count - 1)
+        } else if !filterResult.isEmpty {
+          break
+        }
+      }
+    } else {
+      completionItems.enumerated().forEach{
+        storeResizeData(from: $0.element, at: $0.offset)
+      }
+    }
+                
+    if hasCompletions {
       tableView.reloadData()
-      resizeToFitContent()
+      resizeToFitContent(typeMaxChars: typeMaxChars, labelMaxChars: labelMaxChars, hasTypeIcon: typeIcon)
     }
     
     if isActive {
@@ -185,7 +224,7 @@ class CodeEditorCompletionView: NSViewController {
   }
   
   private func updateViews() {
-    if completions.count > 0 {
+    if hasCompletions {
       tableView.selectRowIndexes([0], byExtendingSelection: false)
       
       tableScrollView.contentView.scroll(to: .zero)
@@ -225,25 +264,12 @@ class CodeEditorCompletionView: NSViewController {
     return ceil(textSize.width)
   }
   
-  private func resizeToFitContent() {
+  private func resizeToFitContent(typeMaxChars: (count: Int, row: Int),
+                                  labelMaxChars: (count: Int, row: Int),
+                                  hasTypeIcon: Bool) {
+    
     guard let tableView = self.tableView else { return }
-    
-    var typeIcon: Bool = false
-    var typeMaxChars: (count: Int, row: Int) = (0, 0)
-    var labelMaxChars: (count: Int, row: Int) = (0, 0)
-    
-    for (i, item) in completions.enumerated() {
-      typeIcon = typeIcon || item.hasIcon
-      
-      if let type = item.detail, type.count > typeMaxChars.count {
-        typeMaxChars = (type.count, i)
-      }
-      
-      if item.label.count > labelMaxChars.count {
-        labelMaxChars = (item.label.count, i)
-      }
-    }
-    
+        
     let typeColumn = tableView.tableColumns[0]
     let labelColumn = tableView.tableColumns[1]
         
@@ -380,11 +406,26 @@ extension CodeEditorCompletionView: NSTableViewDataSource {
 //MARK: - NSTableViewDelegate
 
 extension CodeEditorCompletionView: NSTableViewDelegate {
+  private func styledLabel(_ label: String, for row: Int) -> NSAttributedString {
+    let label = NSMutableAttributedString(string: label)
+    
+    let color = NSColor.yellow
+    let underlineStyle = NSNumber(value: NSUnderlineStyle.single.rawValue)
+            
+    filterResult[row].ranges.forEach {
+      label.addAttribute(.backgroundColor, value: color.withAlphaComponent(0.3), range: NSRange($0))
+      label.addAttribute(.underlineColor, value: color, range: NSRange($0))
+      label.addAttribute(.underlineStyle, value: underlineStyle, range: NSRange($0))
+    }
+    
+    return label
+  }
+  
   func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
     var cell: NSTableCellView? = nil
     
     let item = completions[row]
-          
+    
     if tableColumn == tableView.tableColumns[0], item.hasIcon ||  item.detail != nil {
       let typeCell = tableView.makeTypeCell()
       
@@ -396,7 +437,14 @@ extension CodeEditorCompletionView: NSTableViewDelegate {
       
     } else if tableColumn == tableView.tableColumns[1] {
       cell = tableView.makeLabelCell()
-      cell?.textField?.stringValue = item.label
+            
+      if filterResult.count > 0 {
+        cell?.textField?.attributedStringValue = styledLabel(item.label, for: row)
+      } else {
+        cell?.textField?.stringValue = item.label
+      }
+      
+      
       
     }    
     
@@ -429,5 +477,3 @@ fileprivate extension NSTableView {
     return makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "LabelCell"), owner: nil) as? NSTableCellView
   }
 }
-
-

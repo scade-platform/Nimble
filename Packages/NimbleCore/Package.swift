@@ -1,9 +1,12 @@
-// swift-tools-version:4.2
+// swift-tools-version:5.1
 
 import PackageDescription
 
 let package = Package(
   name: "NimbleCore",
+  platforms: [
+    .macOS(.v10_14)
+  ],
   products: [
     .library(name: "NimbleCore", type: .dynamic, targets: ["NimbleCore"]),
   ],
