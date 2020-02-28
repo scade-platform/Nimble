@@ -78,14 +78,18 @@ public struct Package {
 
 public class PluginManager {
   private static var searchPaths: [Path] {
-    guard let builtInPath = Bundle.main.builtInPlugInsURL else { return [] }
+    guard let builtInUrl = Bundle.main.builtInPlugInsURL else { return [] }
 
     let externalPaths = FileManager.default
       .urls(for: .applicationSupportDirectory, in: .userDomainMask)
-      .map { $0.appendingPathComponent("Nimble", isDirectory: true)
-               .appendingPathComponent("PlugIns", isDirectory: true) }
+      .map { (externalUrl: URL?) -> Path? in
+        if let url = externalUrl, let path = Path(url: url) {
+          return try? (path/"Nimble"/"PlugIns").mkdir(.p)
+        } 
+        return .none
+      }
 
-    return ([builtInPath] + externalPaths).compactMap { Path(url: $0) }
+    return ([Path(url: builtInUrl)] + externalPaths).compactMap { $0 }
   }
   
   private static func loadBundles() -> (plugins: [String: Plugin], packages: [Package]) {
