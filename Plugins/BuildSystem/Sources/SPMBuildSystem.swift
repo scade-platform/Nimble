@@ -68,12 +68,11 @@ class SPMBuildSystem: BuildSystem {
   }
   
   func clean(in workbench: Workbench, handler: (() -> Void)?) {
-    guard let fileURL = workbench.currentDocument?.fileURL else {
-      return
-    }
+    guard let curProject = workbench.project, let package = findPackage(project: curProject) else { return  }
+    
     
     let proc = Process()
-    proc.currentDirectoryURL = fileURL.deletingLastPathComponent()
+    proc.currentDirectoryURL = package.url.deletingLastPathComponent()
     proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
     proc.arguments = ["package", "clean"]
     proc.terminationHandler = { process in
@@ -99,7 +98,7 @@ class SPMLauncher: Launcher {
     programProc.currentDirectoryURL = packageUrl.deletingLastPathComponent()
     programProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
     programProc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
-    programProc.arguments = ["run"]
+    programProc.arguments = ["run", "--skip-build"]
     
     var programProcConsole: Console?
     programProc.terminationHandler = { process in
