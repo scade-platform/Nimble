@@ -32,16 +32,15 @@ class ConsoleView: NSViewController {
     return Array(consolesStorage.values)
   }
   
-  private func handler(fileHandle: FileHandle, console: Console) {
-    let data = fileHandle.availableData
+  private func handler(data: Data, console: Console) {
     if let string = String(data: data, encoding: .utf8) {
       DispatchQueue.main.async { [weak self] in
         guard let strongSelf = self else { return }
+        strongSelf.open(console: console.title)
         strongSelf.textView.textStorage?.append(strongSelf.convertToAttributedString(string))
         strongSelf.textView.scrollToEndOfDocument(nil)
       }
     }
-    
   }
   
   override func viewDidLoad() {
@@ -72,20 +71,20 @@ class ConsoleView: NSViewController {
     }
   }
   
-  func createConsole(title: String, show: Bool) -> Console {
+  func createConsole(title: String, show: Bool, startReading: Bool) -> Console {
     let consoleName = improveName(title)
-    let newConsole = NimbleTextConsole(title: consoleName, view: self)
+    let newConsole = NimbleTextConsole(title: consoleName, view: self, startReading: startReading)
     self.consoleSelectionButton.addItem(withTitle: newConsole.title)
     if (show) {
       self.textView.string = ""
       self.textView.textStorage?.append(convertToAttributedString(newConsole.contents))
       self.consoleSelectionButton.selectItem(withTitle: newConsole.title)
+      newConsole.handler = handler(data:console:)
       currentConsole = newConsole
     }
     if currentConsole == nil {
       currentConsole = newConsole
     }
-    newConsole.handler = handler(fileHandle:console:)
     consolesStorage[newConsole.title] = newConsole
     setControllersHidden(false)
     
@@ -108,7 +107,7 @@ class ConsoleView: NSViewController {
     }
     currentConsole = console
     if console.isReadingFromBuffer {
-      console.handler = handler(fileHandle:console:)
+      console.handler = handler(data:console:)
     }
     consoleSelectionButton.selectItem(withTitle: console.title)
     textView.string = ""
@@ -144,6 +143,7 @@ class ConsoleView: NSViewController {
        open(console: consolesStorage.keys.first ?? "")
     }else{
       setControllersHidden(true)
+      self.currentConsole = nil
     }
   }
   
@@ -191,11 +191,14 @@ class NimbleTextConsole: Console {
   var inputPipe = Pipe()
   var outputPipe = Pipe()
   
-  var handler: (FileHandle, Console) -> Void = {_,_ in} {
+  var handler: (Data, Console) -> Void = {_,_ in} {
     didSet{
       outputPipe.fileHandleForReading.readabilityHandler = { [weak self] fh in
         guard let strongSelf = self else { return }
-        self?.handler(fh, strongSelf)
+        let data = fh.availableData
+        if !data.isEmpty {
+           self?.handler(data, strongSelf)
+        }
       }
     }
   }
@@ -204,12 +207,13 @@ class NimbleTextConsole: Console {
     return inputPipe.fileHandleForReading.readabilityHandler != nil
   }
   
-  init(title: String, view: ConsoleView){
+  init(title: String, view: ConsoleView, startReading: Bool){
     self.title = title
     self.view = view
     self.innerContent = Atomic("")
-    // Set up a read handler which fires when data is written to our inputPipe
-    startReadingFromBuffer()
+    if startReading {
+      startReadingFromBuffer()
+    }
   }
   
   
@@ -217,7 +221,7 @@ class NimbleTextConsole: Console {
     if let str = String(data: data, encoding: .utf8){
       self.contents += str
     }
-    self.outputPipe.fileHandleForWriting.write(data)
+    handler(data, self)
     return self
   }
   
@@ -233,7 +237,10 @@ class NimbleTextConsole: Console {
       contents = ""
       outputPipe.fileHandleForReading.readabilityHandler = { [weak self] fh in
         guard let strongSelf = self else { return }
-        self?.handler(fh, strongSelf)
+        let data = fh.availableData
+        if !data.isEmpty {
+           self?.handler(data, strongSelf)
+        }
       }
       inputPipe.fileHandleForReading.readabilityHandler = { [weak self] fileHandle in
         guard let strongSelf = self else { return }

@@ -43,6 +43,8 @@ public protocol Console {
   
   func startReadingFromBuffer()
   
+  var isReadingFromBuffer: Bool { get }
+  
   func close()
 }
 

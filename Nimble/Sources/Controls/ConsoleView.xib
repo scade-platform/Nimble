@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -35,7 +35,7 @@
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        <size key="minSize" width="475" height="391"/>
+                                        <size key="minSize" width="470" height="391"/>
                                         <size key="maxSize" width="480" height="10000000"/>
                                         <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     </textView>
@@ -61,7 +61,7 @@
                                     </constraints>
                                     <popUpButtonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" lineBreakMode="truncatingTail" inset="2" id="pHo-q2-rE9">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" metaFont="menu"/>
+                                        <font key="font" size="11" name=".AppleSystemUIFont"/>
                                         <menu key="menu" id="GPz-r8-kCC"/>
                                     </popUpButtonCell>
                                     <connections>
