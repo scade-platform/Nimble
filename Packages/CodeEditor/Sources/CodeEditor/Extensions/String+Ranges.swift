@@ -37,8 +37,18 @@ public extension String {
   }
   
   func lineNumber(at index: Index) -> Int {
-    ///TODO: consider all possible delimiters (see below)
-    return self[..<index].split(separator: "\n", omittingEmptySubsequences: false).count - 1
+    assert(index <= endIndex)
+    
+    var count = 0
+    var cur = self.startIndex
+    while cur < index {
+      if CharacterSet.newlines.contains(unicodeScalars[cur]) {
+        count += 1
+      }
+      cur = self.index(after: cur)
+    }
+    
+    return count
   }
   
   func lineRange(at: Index) -> Range<Index> {
@@ -135,16 +145,7 @@ public extension String.UTF8View {
     return lines
   }
   
-  ///TBD: Support all following delimiters
-  /*
-   U+000A Unicode Character 'LINE FEED (LF)' (\n)
-   U+000D Unicode Character 'CARRIAGE RETURN (CR)' (\r)
-   U+0085 Unicode Character 'NEXT LINE (NEL)'
-   U+2028 Unicode Character 'LINE SEPARATOR'
-   U+2029 Unicode Character 'PARAGRAPH SEPARATOR'
-   \r\n, in that order (also known as CRLF)
-  */
-  
+
   func lineRange(for range: Range<Int>) -> Range<Int> {
     return lineStart(for: range)..<lineEnd(for: range)
   }
@@ -158,7 +159,7 @@ public extension String.UTF8View {
     
     var begin = range.lowerBound
     while(begin > 0 && begin < count) {
-      if self[begin] == 10 || self[begin - 1] == 10 {
+      if isLineEnd(at: begin) || isLineEnd(at: begin - 1) {
         break
       } else {
         begin -= 1
@@ -178,7 +179,7 @@ public extension String.UTF8View {
     
     var end = range.upperBound
     while(end >= 0 && end < count) {
-      if self[end] == 10 {
+      if isLineEnd(at: end) {
         end += 1
         break
       } else {
@@ -191,6 +192,15 @@ public extension String.UTF8View {
   
   func lineEnd(at pos: Int) -> Int {
     return lineEnd(for: pos..<pos)
+  }
+  
+
+  private func isLineEnd(at index: Int) -> Bool {
+///TBD: Support all following delimiters
+//     U+2028 Unicode Character 'LINE SEPARATOR'
+//     U+2029 Unicode Character 'PARAGRAPH SEPARATOR'
+//     \r\n 'CRLN'
+    return CharacterSet.newlines.contains(UnicodeScalar(self[index]))
   }
 }
 
