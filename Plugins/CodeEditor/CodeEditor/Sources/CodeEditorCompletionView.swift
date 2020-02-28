@@ -9,8 +9,6 @@
 import Cocoa
 import CodeEditor
 
-import SwiftSVG
-
 class CodeEditorCompletionView: NSViewController {
   
   weak var textView: CodeEditorTextView? = nil
@@ -369,21 +367,8 @@ class CompletionView: NSView {
 
 //MARK: - CompletionIconView
 
-class SVGIconView: NSView {
-  override var isFlipped: Bool { true }
-}
-
 class CompletionIconView: NSTableCellView {
-  @IBOutlet weak var iconView: NSView! = nil
-  
-  var iconUrl: URL? {
-    didSet {
-      guard let url = iconUrl else { return }
-      iconView.layer = CALayer(svgURL: url) {svgLayer in
-        svgLayer.resizeToFit(self.iconView.bounds)
-      }
-    }
-  }
+  @IBOutlet weak var iconView: SVGImageView! = nil
 }
 
 
@@ -433,7 +418,7 @@ extension CodeEditorCompletionView: NSTableViewDelegate {
       cell?.textField?.stringValue = item.detail ?? ""
       cell?.textField?.textColor = NSColor.systemGray
       
-      typeCell?.iconUrl = item.icon
+      typeCell?.iconView.url = item.icon
       
     } else if tableColumn == tableView.tableColumns[1] {
       cell = tableView.makeLabelCell()
