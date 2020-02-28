@@ -27,7 +27,6 @@ public protocol Plugin: class {
   func deactivate(in: Workbench) -> Void
 }
 
-
 public extension Plugin {
   var id: String {
     bundle.bundleIdentifier ?? ""
@@ -144,11 +143,13 @@ public class PluginManager {
     return plugins
   }()
   
+  private lazy var lazySingleLoad: Void = {
+    plugins.forEach { $0.1.load() }
+    return ()
+  }()
   
   public func load() -> Void {
-    plugins.forEach { $0.1.load() }
-    let loadedPludins = Array(plugins.values)
-    observers.notify{$0.pluginsDidLoad(loadedPludins)}
+    return lazySingleLoad
   }
   
   public func activate(in workbench: Workbench) -> Void {
@@ -170,8 +171,6 @@ public class PluginManager {
       return nil
     }
   }
-  
-  public var observers = ObserverSet<PluginObserver>()
 }
 
 
@@ -180,14 +179,6 @@ fileprivate extension Path {
     let paths = try? ls().directories.filter{$0.basename().hasSuffix("plugin")}
     return paths ?? []
   }
-}
-
-public protocol PluginObserver {
-  func pluginsDidLoad(_ plugins: [Plugin])
-}
-
-public extension PluginObserver {
-  func pluginsDidLoad(_ plugins: [Plugin]) {}
 }
 
 

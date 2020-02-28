@@ -20,7 +20,17 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   public private(set) var diagnostics: [Path: [Diagnostic]] = [:]
   
   
-  private var toolbarItems: [NSToolbarItem.Identifier] = []
+  private lazy var toolbarItems: [NSToolbarItem.Identifier] = {
+    guard !CommandManager.shared.commands.isEmpty else {
+      return []
+    }
+    
+    let toolbarCommands = CommandManager.shared.commands
+      .filter{$0.toolbarIcon != nil}
+    
+    return toolbarCommands.map{NSToolbarItem.Identifier($0.name)}
+  }()
+
   
   
   // Document property of the WindowController always refer to the project
@@ -61,8 +71,15 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     workbenchCentralView?.children[1] as? DebugView
   }
   
+  public override func windowWillLoad() {
+    PluginManager.shared.load()
+    
+    toolbar.delegate = self
+  }
+  
   public override func windowDidLoad() {
     super.windowDidLoad()
+   
     window?.delegate = self
     window?.contentView?.wantsLayer = true
     
@@ -74,7 +91,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     debugView.isHidden = true
     
     DocumentManager.shared.defaultDocument = BinaryFileDocument.self
-    PluginManager.shared.observers.add(observer: self)
+    
     PluginManager.shared.activate(in: self)
   }
     
@@ -121,15 +138,6 @@ extension NimbleWorkbench : NSToolbarDelegate {
   }
   
   public func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-    guard !CommandManager.shared.commands.isEmpty else {
-      return []
-    }
-    guard toolbarItems.isEmpty else {
-      return toolbarItems
-    }
-    let toolbarCommands = CommandManager.shared.commands
-      .filter{$0.toolbarIcon != nil}
-    toolbarItems.append(contentsOf: toolbarCommands.map{NSToolbarItem.Identifier($0.name)})
     return toolbarItems
   }
   
@@ -198,23 +206,6 @@ extension NimbleWorkbench : CommandObserver {
   }
 }
 
-//MARK: - PluginObserver
-
-extension NimbleWorkbench : PluginObserver {
-  public func pluginsDidLoad(_ plugins: [Plugin]) {
-    guard !CommandManager.shared.commands.isEmpty else { return }
-    let commands = CommandManager.shared.commands.filter{ $0.toolbarIcon != nil }
-    for command in commands {
-      guard !toolbarItems.contains(where: {$0.rawValue == command.name}) else {
-        //add only new commands
-        continue
-      }
-      let id = NSToolbarItem.Identifier(command.name)
-      toolbarItems.append(id)
-      self.toolbar.insertItem(withItemIdentifier: id, at: toolbar.items.endIndex)
-    }
-  }
-}
 
 // MARK: - Workbench
 
