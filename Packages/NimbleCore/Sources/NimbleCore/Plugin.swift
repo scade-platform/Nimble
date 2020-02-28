@@ -27,7 +27,6 @@ public protocol Plugin: class {
   func deactivate(in: Workbench) -> Void
 }
 
-
 public extension Plugin {
   var id: String {
     bundle.bundleIdentifier ?? ""
@@ -151,9 +150,13 @@ public class PluginManager {
     return plugins
   }()
   
+  private lazy var lazySingleLoad: Void = {
+    plugins.forEach { $0.1.load() }
+    return ()
+  }()
   
   public func load() -> Void {
-    plugins.forEach { $0.1.load() }
+    return lazySingleLoad
   }
   
   public func activate(in workbench: Workbench) -> Void {

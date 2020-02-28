@@ -19,16 +19,18 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   
   public private(set) var diagnostics: [Path: [Diagnostic]] = [:]
   
+  
   private lazy var toolbarItems: [NSToolbarItem.Identifier] = {
-    if CommandManager.shared.commands.isEmpty {
-      // Force plugins loading
-       _ = PluginManager.shared
+    guard !CommandManager.shared.commands.isEmpty else {
+      return []
     }
+    
     let toolbarCommands = CommandManager.shared.commands
       .filter{$0.toolbarIcon != nil}
-    toolbarCommands.forEach{$0.observers.add(observer: self)}
+    
     return toolbarCommands.map{NSToolbarItem.Identifier($0.name)}
   }()
+
   
   
   // Document property of the WindowController always refer to the project
@@ -69,8 +71,15 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     workbenchCentralView?.children[1] as? DebugView
   }
   
+  public override func windowWillLoad() {
+    PluginManager.shared.load()
+    
+    toolbar.delegate = self
+  }
+  
   public override func windowDidLoad() {
     super.windowDidLoad()
+   
     window?.delegate = self
     window?.contentView?.wantsLayer = true
     
@@ -118,6 +127,8 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   }
 }
 
+//MARK: - NSToolbarDelegate
+
 extension NimbleWorkbench : NSToolbarDelegate {
   public func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
     var result = toolbarItems
@@ -140,10 +151,27 @@ extension NimbleWorkbench : NSToolbarDelegate {
     return nil
   }
   
+  public func toolbarWillAddItem(_ notification: Notification) {
+    guard let newItem = notification.userInfo?["item"] as? NSToolbarItem,
+      let command = CommandManager.shared.commands.first(where: {$0.name == newItem.itemIdentifier.rawValue}) else {
+        return
+    }
+    command.observers.add(observer: self)
+  }
+  
+  public func toolbarDidRemoveItem(_ notification: Notification) {
+    guard let newItem = notification.userInfo?["item"] as? NSToolbarItem,
+      let command = CommandManager.shared.commands.first(where: {$0.name == newItem.itemIdentifier.rawValue}) else {
+        return
+    }
+    command.observers.remove(observer: self)
+  }
+  
   private func toolbarPushButton(identifier: NSToolbarItem.Identifier, for command: Command) -> NSToolbarItem {
     let item = NSToolbarItem(itemIdentifier: identifier)
     item.label = command.name
     item.paletteLabel = command.name
+    //TODO: Change color when system theme is changed
     let button = NSButton()
     button.cell = ButtonCell()
     button.image = command.toolbarIcon
@@ -164,6 +192,8 @@ extension NimbleWorkbench : NSToolbarDelegate {
 }
 
 
+//MARK: - CommandObserver
+
 extension NimbleWorkbench : CommandObserver {
   public func commandDidChange(_ command: Command) {
     for item in toolbar.items {
@@ -174,9 +204,8 @@ extension NimbleWorkbench : CommandObserver {
       return
     }
   }
-  
-  
 }
+
 
 // MARK: - Workbench
 
