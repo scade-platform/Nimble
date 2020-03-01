@@ -29,14 +29,14 @@ public extension NSImage {
     return highlightImage;
   }
 
-  class func createSVG(from url: URL, bounds: NSRect,
+  class func createSVG(from url: URL, size: NSSize,
                        completion: @escaping (NSImage) -> ()) {
 
     CALayer(svgURL: url) { layer in
       guard let btmpImgRep =
       NSBitmapImageRep(bitmapDataPlanes: nil,
-                       pixelsWide: Int(bounds.width),
-                       pixelsHigh: Int(bounds.height),
+                       pixelsWide: Int(size.width),
+                       pixelsHigh: Int(size.height),
                        bitsPerSample: 8,
                        samplesPerPixel: 4,
                        hasAlpha: true,
@@ -47,15 +47,15 @@ public extension NSImage {
 
       guard let context = NSGraphicsContext(bitmapImageRep: btmpImgRep) else { return }
 
-      let xScale = bounds.width / layer.boundingBox.width
-      let yScale = bounds.height / layer.boundingBox.height
+      let xScale = size.width / layer.boundingBox.width
+      let yScale = size.height / layer.boundingBox.height
 
-      context.cgContext.translateBy(x: 0, y: bounds.height)
+      context.cgContext.translateBy(x: 0, y: size.height)
       context.cgContext.scaleBy(x: xScale, y: -1 * yScale)
 
       layer.render(in: context.cgContext)
 
-      let image = NSImage(size: bounds.size)
+      let image = NSImage(size: size)
       image.addRepresentation(btmpImgRep)
 
       completion(image)
