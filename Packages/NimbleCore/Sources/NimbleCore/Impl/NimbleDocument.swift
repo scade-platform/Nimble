@@ -7,15 +7,16 @@
 //
 
 import AppKit
+import Foundation
 
 
 // MARK: - Default document
 
 open class NimbleDocument: NSDocument {
-  public var observers = ObserverSet<DocumentObserver> ()
+  public var observers =  ObserverSet<DocumentObserver> ()
 
-  private var isFilePresenter = false
-    
+  private var filePresenter: DocumentFilePresenter? = nil
+
   open override var fileURL: URL? {
     get { return super.fileURL }
     set {
@@ -27,15 +28,14 @@ open class NimbleDocument: NSDocument {
           $0.documentFileUrlDidChange(doc, oldFileUrl: oldValue)
         }
       }
-      
-      if let scheme = newValue?.scheme, scheme == "file" {
-        if !isFilePresenter {
-          NSFileCoordinator.addFilePresenter(self)
-          isFilePresenter = true
+
+      if newValue?.scheme == .some("file") {
+        if filePresenter == .none {
+          filePresenter = DocumentFilePresenter(self)
         }
-      } else if isFilePresenter {
-        NSFileCoordinator.removeFilePresenter(self)
-        isFilePresenter = false
+        filePresenter?.register()
+      } else {
+        filePresenter?.unregister()
       }
     }
   }
@@ -71,7 +71,41 @@ open class NimbleDocument: NSDocument {
   }
 
   deinit {
-    guard isFilePresenter else { return }
-    NSFileCoordinator.removeFilePresenter(self)
+    filePresenter?.unregister()
+  }
+}
+
+fileprivate class DocumentFilePresenter: NSObject, NSFilePresenter {
+  
+  private weak var doc: NimbleDocument?
+  
+  public var presentedItemURL: URL? { return self.doc?.presentedItemURL }
+  
+  public var presentedItemOperationQueue: OperationQueue
+  { return doc?.presentedItemOperationQueue ?? OperationQueue.main }
+
+  private var isRegistered = false
+
+  public init(_ doc: NimbleDocument) {
+    super.init()
+    self.doc = doc
+  }
+
+  public func register() {
+    if !isRegistered {
+      NSFileCoordinator.addFilePresenter(self)
+      isRegistered = true
+    }
+  }
+
+  public func unregister() {
+    if isRegistered {
+      NSFileCoordinator.removeFilePresenter(self)
+      isRegistered = false
+    }
+  }
+
+  public func presentedItemDidChange() {
+    doc?.presentedItemDidChange()
   }
 }
