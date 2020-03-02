@@ -36,9 +36,15 @@ class ConsoleView: NSViewController {
     if let string = String(data: data, encoding: .utf8) {
       DispatchQueue.main.async { [weak self] in
         guard let strongSelf = self else { return }
-        strongSelf.open(console: console.title)
-        strongSelf.textView.textStorage?.append(strongSelf.convertToAttributedString(string))
-        strongSelf.textView.scrollToEndOfDocument(nil)
+        if string.isEmpty {
+          strongSelf.textView.string = ""
+        }
+        if console.title != strongSelf.currentConsole?.title {
+          strongSelf.open(console: console.title)
+        } else {
+          strongSelf.textView.textStorage?.append(strongSelf.convertToAttributedString(string))
+          strongSelf.textView.scrollToEndOfDocument(nil)
+        }
       }
     }
   }
@@ -106,12 +112,13 @@ class ConsoleView: NSViewController {
       return
     }
     currentConsole = console
+    textView.string = ""
     if console.isReadingFromBuffer {
       console.handler = handler(data:console:)
+    } else {
+      self.textView.textStorage?.append(convertToAttributedString(console.contents))
     }
     consoleSelectionButton.selectItem(withTitle: console.title)
-    textView.string = ""
-    self.textView.textStorage?.append(convertToAttributedString(console.contents))
   }
   
   func close(console: Console) {
@@ -235,6 +242,7 @@ class NimbleTextConsole: Console {
   func startReadingFromBuffer() {
     if !isReadingFromBuffer {
       contents = ""
+      self.handler(Data(), self)
       outputPipe.fileHandleForReading.readabilityHandler = { [weak self] fh in
         guard let strongSelf = self else { return }
         let data = fh.availableData

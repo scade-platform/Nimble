@@ -33,7 +33,7 @@ class SwiftBuildSystem: BuildSystem {
     var swiftcProcConsole: Console?
     
     swiftcProc.terminationHandler = { process in
-      swiftcProcConsole?.writeLine(string: "Finished building \(fileURL.absoluteString)")
+      swiftcProcConsole?.writeLine(string: "Finished building \(fileURL.path)")
       swiftcProcConsole?.stopReadingFromBuffer()
       
       if let contents = swiftcProcConsole?.contents {
@@ -52,12 +52,12 @@ class SwiftBuildSystem: BuildSystem {
       }
     }
     
-    swiftcProcConsole = self.openConsole(key: "Compile: \(fileURL.absoluteString)", title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
+    swiftcProcConsole = self.openConsole(key: "Compile: \(fileURL.relativeString)", title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
     if !(swiftcProcConsole?.isReadingFromBuffer ?? true) {
       swiftcProc.standardOutput = swiftcProcConsole?.output
       swiftcProc.standardError = swiftcProcConsole?.output
       swiftcProcConsole?.startReadingFromBuffer()
-      swiftcProcConsole?.writeLine(string: "Building: \(fileURL.absoluteString)")
+      swiftcProcConsole?.writeLine(string: "Building: \(fileURL.path)")
     } else {
       //The console is using by another process with the same representedObject
       return
