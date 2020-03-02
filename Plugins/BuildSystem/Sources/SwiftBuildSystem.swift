@@ -19,7 +19,7 @@ class SwiftBuildSystem: BuildSystem {
     return SwiftLauncher()
   }()
   
-  func run(in workbench: Workbench, handler: ((BuildStatus) -> Void)?) {
+  func run(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
     workbench.currentDocument?.save(nil)
     guard let fileURL = workbench.currentDocument?.fileURL else {
       return
@@ -41,12 +41,12 @@ class SwiftBuildSystem: BuildSystem {
           DispatchQueue.main.async {
             swiftcProcConsole?.close()
           }
-          handler?(.finished)
+          handler?(.finished, process)
         } else {
           if contents.contains("error:"){
-            handler?(.failed)
+            handler?(.failed, process)
           } else {
-            handler?(.finished)
+            handler?(.finished, process)
           }
         }
       }
@@ -64,6 +64,7 @@ class SwiftBuildSystem: BuildSystem {
     }
     
     try? swiftcProc.run()
+    handler?(.running, swiftcProc)
   }
   
   func clean(in workbench: Workbench, handler: (() -> Void)?) {

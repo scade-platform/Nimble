@@ -19,7 +19,7 @@ class SPMBuildSystem: BuildSystem {
   }()
   
   
-  func run(in workbench: Workbench, handler: ((BuildStatus) -> Void)?) {
+  func run(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
     workbench.currentDocument?.save(nil)
     guard let curProject = workbench.project, let package = findPackage(project: curProject) else { return  }
     
@@ -43,12 +43,12 @@ class SPMBuildSystem: BuildSystem {
           DispatchQueue.main.async {
             spmProcConsole?.close()
           }
-          handler?(.finished)
+          handler?(.finished, process)
         } else {
           if contents.contains("error:"){
-            handler?(.failed)
+            handler?(.failed, process)
           } else {
-            handler?(.finished)
+            handler?(.finished, process)
           }
         }
       }
@@ -65,6 +65,7 @@ class SPMBuildSystem: BuildSystem {
       return
     }
     try? spmProc.run()
+    handler?(.running, spmProc)
   }
   
   func clean(in workbench: Workbench, handler: (() -> Void)?) {
