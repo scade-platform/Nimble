@@ -7,13 +7,11 @@
 //
 
 import AppKit
-import Foundation
-
 
 // MARK: - Default document
 
 open class NimbleDocument: NSDocument {
-  public var observers =  ObserverSet<DocumentObserver> ()
+  public var observers = ObserverSet<DocumentObserver> ()
 
   private var filePresenter: DocumentFilePresenter? = nil
 
