@@ -31,7 +31,6 @@
 		D7D4713323FC986A00CC9BAA /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = D7D4713223FC986A00CC9BAA /* Themes */; };
 		D7D4713623FC98FB00CC9BAA /* CodeEditor in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4713523FC98FB00CC9BAA /* CodeEditor */; };
 		D7D4713723FC98FB00CC9BAA /* CodeEditor in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D7D4713523FC98FB00CC9BAA /* CodeEditor */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		D7D4714323FC99DC00CC9BAA /* SwiftSVG in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4714223FC99DC00CC9BAA /* SwiftSVG */; };
 		D7D4715523FC9BBE00CC9BAA /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4714523FC9BBD00CC9BAA /* Geometry.swift */; };
 		D7D4715623FC9BBE00CC9BAA /* Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4714623FC9BBD00CC9BAA /* Comparable.swift */; };
 		D7D4715723FC9BBE00CC9BAA /* LineEnding.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4714723FC9BBD00CC9BAA /* LineEnding.swift */; };
@@ -114,7 +113,6 @@
 			files = (
 				D7D4713623FC98FB00CC9BAA /* CodeEditor in Frameworks */,
 				D7D4BD1723FCA0F20063BD8F /* NimbleCore in Frameworks */,
-				D7D4714323FC99DC00CC9BAA /* SwiftSVG in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,7 +239,6 @@
 			name = CodeEditor.plugin;
 			packageProductDependencies = (
 				D7D4713523FC98FB00CC9BAA /* CodeEditor */,
-				D7D4714223FC99DC00CC9BAA /* SwiftSVG */,
 				D7D4BD1623FCA0F20063BD8F /* NimbleCore */,
 			);
 			productName = CodeEditor;
@@ -272,7 +269,6 @@
 			);
 			mainGroup = D7D2D58022B1B48C0017B45D;
 			packageReferences = (
-				D7D4714123FC99DB00CC9BAA /* XCRemoteSwiftPackageReference "SwiftSVG" */,
 			);
 			productRefGroup = D7D2D58A22B1B48C0017B45D /* Products */;
 			projectDirPath = "";
@@ -539,26 +535,10 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		D7D4714123FC99DB00CC9BAA /* XCRemoteSwiftPackageReference "SwiftSVG" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/gr-markin/SwiftSVG.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
 /* Begin XCSwiftPackageProductDependency section */
 		D7D4713523FC98FB00CC9BAA /* CodeEditor */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CodeEditor;
-		};
-		D7D4714223FC99DC00CC9BAA /* SwiftSVG */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D7D4714123FC99DB00CC9BAA /* XCRemoteSwiftPackageReference "SwiftSVG" */;
-			productName = SwiftSVG;
 		};
 		D7D4BD1623FCA0F20063BD8F /* NimbleCore */ = {
 			isa = XCSwiftPackageProductDependency;
