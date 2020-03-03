@@ -71,8 +71,17 @@ class SwiftBuildSystem: BuildSystem {
     guard let fileURL = workbench.currentDocument?.fileURL else {
       return
     }
-    guard let file = File(url: fileURL.deletingPathExtension()), file.exists else { return }
+    let cleanConsole = self.openConsole(key: fileURL.appendingPathComponent("clean"), title: "Clean: \(fileURL.lastPathComponent)", in: workbench)
+    guard let file = File(url: fileURL.deletingPathExtension()), file.exists else {
+      cleanConsole?.startReadingFromBuffer()
+      cleanConsole?.writeLine(string: "File not found: \(fileURL.deletingPathExtension().path)")
+      cleanConsole?.stopReadingFromBuffer()
+      return
+    }
     try? file.path.delete()
+    cleanConsole?.startReadingFromBuffer()
+    cleanConsole?.writeLine(string: "File deleted: \(fileURL.deletingPathExtension().path)")
+    cleanConsole?.stopReadingFromBuffer()
     handler?()
   }
 }

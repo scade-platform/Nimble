@@ -42,8 +42,10 @@ class ConsoleView: NSViewController {
         if console.title != strongSelf.currentConsole?.title {
           strongSelf.open(console: console.title)
         } else {
-          strongSelf.textView.textStorage?.append(strongSelf.convertToAttributedString(string))
-          strongSelf.textView.scrollToEndOfDocument(nil)
+          if strongSelf.textView.string.suffix(string.count) != string {
+            strongSelf.textView.textStorage?.append(strongSelf.convertToAttributedString(string))
+            strongSelf.textView.scrollToEndOfDocument(nil)
+          }
         }
       }
     }
@@ -113,11 +115,10 @@ class ConsoleView: NSViewController {
     }
     currentConsole = console
     textView.string = ""
+    self.textView.textStorage?.append(convertToAttributedString(console.contents))
     if console.isReadingFromBuffer {
       console.handler = handler(data:console:)
-    } else {
-      self.textView.textStorage?.append(convertToAttributedString(console.contents))
-    }
+    } 
     consoleSelectionButton.selectItem(withTitle: console.title)
   }
   
