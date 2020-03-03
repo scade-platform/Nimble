@@ -78,6 +78,20 @@ class SwiftBuildSystem: BuildSystem {
 
 extension SwiftBuildSystem : ConsoleSupport {}
 
+extension SwiftBuildSystem : AutoBuildable {
+  func canBuild(file: URL, in workbench: Workbench?) -> Bool {
+    return canBuild(file: file)
+  }
+  
+  func canBuild(file url: URL) -> Bool {
+    let fileExtension = url.pathExtension
+    guard !fileExtension.isEmpty, fileExtension == "swift" else {
+      return false
+    }
+    return true
+  }
+}
+
 class SwiftLauncher : Launcher {
   func launch(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
     guard let fileURL = workbench.currentDocument?.fileURL else {

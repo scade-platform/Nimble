@@ -21,12 +21,12 @@ class SPMBuildSystem: BuildSystem {
   
   func run(in workbench: Workbench, handler: ((BuildStatus) -> Void)?) {
     workbench.currentDocument?.save(nil)
-    guard let curProject = workbench.project, let package = findPackage(project: curProject) else { return  }
+    guard let fileURL = workbench.currentDocument?.fileURL, let file = fileURL.file, let package = findPackage(by: file.path, in: workbench) else { return  }
     
-    let fileURL = package.url
+    let packageURL = package.url
     
     let spmProc = Process()
-    spmProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
+    spmProc.currentDirectoryURL = packageURL.deletingLastPathComponent()
     spmProc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
     spmProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
     spmProc.arguments = ["build", "-Xswiftc", "-Xfrontend", "-Xswiftc", "-color-diagnostics"]
@@ -34,7 +34,7 @@ class SPMBuildSystem: BuildSystem {
     var spmProcConsole : Console?
     
     spmProc.terminationHandler = { process in
-      spmProcConsole?.writeLine(string: "Finished building  \(fileURL.deletingLastPathComponent().lastPathComponent)")
+      spmProcConsole?.writeLine(string: "Finished building  \(packageURL.deletingLastPathComponent().lastPathComponent)")
       spmProcConsole?.stopReadingFromBuffer()
 
       
@@ -54,12 +54,12 @@ class SPMBuildSystem: BuildSystem {
       }
     }
     
-    spmProcConsole = self.openConsole(key: fileURL.appendingPathComponent("compile"), title: "Compile: \(fileURL.deletingLastPathComponent().lastPathComponent)", in: workbench)
+    spmProcConsole = self.openConsole(key: packageURL.appendingPathComponent("compile"), title: "Compile: \(packageURL.deletingLastPathComponent().lastPathComponent)", in: workbench)
     if !(spmProcConsole?.isReadingFromBuffer ?? true) {
       spmProc.standardOutput = spmProcConsole?.output
       spmProc.standardError = spmProcConsole?.output
       spmProcConsole?.startReadingFromBuffer()
-      spmProcConsole?.writeLine(string: "Building: \(fileURL.deletingLastPathComponent().lastPathComponent)")
+      spmProcConsole?.writeLine(string: "Building: \(packageURL.deletingLastPathComponent().lastPathComponent)")
     } else {
       //The console is using by another process with the same representedObject
       return
@@ -68,8 +68,8 @@ class SPMBuildSystem: BuildSystem {
   }
   
   func clean(in workbench: Workbench, handler: (() -> Void)?) {
-    guard let curProject = workbench.project, let package = findPackage(project: curProject) else { return  }
-    
+    guard let fileURL = workbench.currentDocument?.fileURL, let file = fileURL.file, let package = findPackage(by: file.path, in: workbench) else { return  }
+       
     
     let proc = Process()
     proc.currentDirectoryURL = package.url.deletingLastPathComponent()
@@ -81,14 +81,30 @@ class SPMBuildSystem: BuildSystem {
     
     try? proc.run()
   }
+  
 }
 
 extension SPMBuildSystem : ConsoleSupport {}
 
+extension SPMBuildSystem : AutoBuildable {
+  
+  func canBuild(file url: URL, in workbench: Workbench?) -> Bool {
+    guard url.isFileURL, let file = url.file, let workbench = workbench else {
+      return false
+    }
+    return findPackage(by: file.path, in: workbench) != nil
+  }
+  
+  func isDefault(for file: URL, in workbench: Workbench?) -> Bool {
+    return canBuild(file: file, in: workbench)
+  }
+
+}
+
 class SPMLauncher: Launcher {
   
   func launch(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
-    guard let curProject = workbench.project, let package = findPackage(project: curProject) else {
+    guard let fileURL = workbench.currentDocument?.fileURL, let file = fileURL.file, let package = findPackage(by: file.path, in: workbench) else { 
       handler?(.failed, nil)
       return
     }
@@ -126,12 +142,23 @@ class SPMLauncher: Launcher {
 extension SPMLauncher : ConsoleSupport {}
 
 
-fileprivate func findPackage(project: Project) -> File? {
-  for folder in project.folders {
-    guard let files = try? folder.files() else { continue }
-    if let package = files.first(where: {file in file.name.lowercased() == "package.swift"}) {
-      return package
+fileprivate func findPackage(by file: Path, in workbench: Workbench) -> File? {
+  //get parent directory for current file
+  let parent = file.parent
+  
+  //looking for "pakage.swift"
+  for entry in (try? parent.ls()) ?? [] {
+    if entry.path.basename().lowercased() == "package.swift" {
+      //if file was found return it
+      return File(path: entry.path)
     }
   }
-  return nil
+  
+  //if the parent is one of the root folders then stop search
+  if workbench.project?.folders.contains(where: {$0.path == parent}) ?? true {
+    return nil
+  }
+  
+  //else try to find "pakage.swift" on one level up
+  return findPackage(by: parent, in: workbench)
 }
