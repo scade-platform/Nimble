@@ -19,7 +19,7 @@ class SwiftBuildSystem: BuildSystem {
     return SwiftLauncher()
   }()
   
-  func run(in workbench: Workbench, handler: ((BuildStatus) -> Void)?) {
+  func run(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
     workbench.currentDocument?.save(nil)
     guard let fileURL = workbench.currentDocument?.fileURL else {
       return
@@ -33,7 +33,7 @@ class SwiftBuildSystem: BuildSystem {
     var swiftcProcConsole: Console?
     
     swiftcProc.terminationHandler = { process in
-      swiftcProcConsole?.writeLine(string: "Finished building \(fileURL.absoluteString)")
+      swiftcProcConsole?.writeLine(string: "Finished building \(fileURL.path)")
       swiftcProcConsole?.stopReadingFromBuffer()
       
       if let contents = swiftcProcConsole?.contents {
@@ -41,37 +41,47 @@ class SwiftBuildSystem: BuildSystem {
           DispatchQueue.main.async {
             swiftcProcConsole?.close()
           }
-          handler?(.finished)
+          handler?(.finished, process)
         } else {
           if contents.contains("error:"){
-            handler?(.failed)
+            handler?(.failed, process)
           } else {
-            handler?(.finished)
+            handler?(.finished, process)
           }
         }
       }
     }
     
-    swiftcProcConsole = self.openConsole(key: "Compile: \(fileURL.absoluteString)", title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
+    swiftcProcConsole = self.openConsole(key: "Compile: \(fileURL.relativeString)", title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
     if !(swiftcProcConsole?.isReadingFromBuffer ?? true) {
       swiftcProc.standardOutput = swiftcProcConsole?.output
       swiftcProc.standardError = swiftcProcConsole?.output
       swiftcProcConsole?.startReadingFromBuffer()
-      swiftcProcConsole?.writeLine(string: "Building: \(fileURL.absoluteString)")
+      swiftcProcConsole?.writeLine(string: "Building: \(fileURL.path)")
     } else {
       //The console is using by another process with the same representedObject
       return
     }
     
     try? swiftcProc.run()
+    handler?(.running, swiftcProc)
   }
   
   func clean(in workbench: Workbench, handler: (() -> Void)?) {
     guard let fileURL = workbench.currentDocument?.fileURL else {
       return
     }
-    guard let file = File(url: fileURL.deletingPathExtension()), file.exists else { return }
+    let cleanConsole = self.openConsole(key: fileURL.appendingPathComponent("clean"), title: "Clean: \(fileURL.lastPathComponent)", in: workbench)
+    guard let file = File(url: fileURL.deletingPathExtension()), file.exists else {
+      cleanConsole?.startReadingFromBuffer()
+      cleanConsole?.writeLine(string: "File not found: \(fileURL.deletingPathExtension().path)")
+      cleanConsole?.stopReadingFromBuffer()
+      return
+    }
     try? file.path.delete()
+    cleanConsole?.startReadingFromBuffer()
+    cleanConsole?.writeLine(string: "File deleted: \(fileURL.deletingPathExtension().path)")
+    cleanConsole?.stopReadingFromBuffer()
     handler?()
   }
 }

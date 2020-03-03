@@ -12,7 +12,7 @@ import NimbleCore
 public protocol BuildSystem {
   var name: String { get }
   var launcher: Launcher? { get }
-  func run(in workbench: Workbench, handler: ((BuildStatus) -> Void)?)
+  func run(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?)
   func clean(in workbench: Workbench, handler: (() -> Void)?)
 }
 

@@ -20,7 +20,7 @@ class ShellBuildSystem: BuildSystem {
     return nil
   }
   
-  func run(in workbench: Workbench, handler: ((BuildStatus) -> Void)?) {
+  func run(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
     guard let fileURL = workbench.currentDocument?.fileURL else {
       return
     }
