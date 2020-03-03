@@ -1,6 +1,8 @@
 import ScadeKit
 
 public protocol SVGElementSelector {
+  func process(_ element: SCDSvgElement)
+
   func onSelect(_ element: SCDSvgElement)
 
   func onUnselect(_ element: SCDSvgElement)
@@ -10,6 +12,10 @@ open class SVGLayerSelector: SVGElementSelector, SVGElementVisitor {
   private weak var selected: SCDSvgElement?
   
   public init() {}
+
+  public func process(_ element: SCDSvgElement) {
+    visit(element)
+  }
 
   public func apply(_ element: SCDSvgElement) {
     if let drawable = element as? SCDSvgDrawable {

@@ -1,34 +1,28 @@
 import Cocoa
 import NimbleCore
 import SVGEditor
+import ScadeKitExtension
 
 class SVGEditorView: NSViewController, SVGViewProtocol {
-  
-  private var elementSelector: SVGElementSelector? = nil
+
+  var svgView: SVGView? = nil
+
+  let elementSelector: SVGElementSelector = SVGLayerSelector()
 
   weak var doc: SVGDocumentProtocol? = nil
 
   @IBOutlet weak var scrollView: NSScrollView!
 
-  func createElementSelector() -> SVGElementSelector {
-    let selector = SVGLayerSelector()
-
-    if let rootSvg = doc?.rootSvg {
-      selector.visit(rootSvg)
-    }
-
-    return selector
-  }
-
   override public func viewDidLoad() {
     super.viewDidLoad()
 
     setupDocument()
-    let svgView = setupSVGView(for: view)
+
+    svgView = createSVGView(for: view)
+    setupSVGView()
+
     scrollView.documentView = svgView
     setupScrollView()
-
-    elementSelector = createElementSelector()
   }
 
   public func zoomIn() {
@@ -43,7 +37,7 @@ class SVGEditorView: NSViewController, SVGViewProtocol {
     scrollView.magnification = 1
   }
 
-  private func setupScrollView() {    
+  private func setupScrollView() {
     scrollView.hasHorizontalRuler = true
     scrollView.hasVerticalRuler = true
     scrollView.rulersVisible = true
@@ -72,7 +66,7 @@ extension SVGEditorView: WorkbenchEditor {
 extension SVGEditorView: DocumentObserver {
 
   public func documentFileDidChange(_ document: Document) {
-    //loadPage()
+    setupSVGView()
   }
 }
 

@@ -1,8 +1,13 @@
+import Cocoa
 import ScadeKit
 import ScadeKitExtension
 import NimbleCore
 
 public protocol SVGViewProtocol {
+
+  var svgView: SVGView? { get }
+
+  var elementSelector: SVGElementSelector { get }
 
   var sizeMultiplier: CGFloat { get }
 
@@ -10,9 +15,11 @@ public protocol SVGViewProtocol {
 
   func setupDocument() -> Void
 
-  func createElementSelector() -> SVGElementSelector
+  func createSVGView(for view: NSView) -> SVGView
 
-  func setupSVGView(for view: NSView) -> NSView
+  func setupSVGView() -> Void
+
+  func setupElementSelector() -> Void
 }
 
 public extension SVGViewProtocol where Self: DocumentObserver {
@@ -23,23 +30,35 @@ public extension SVGViewProtocol where Self: DocumentObserver {
     doc?.observers.add(observer: self)
   }
 
-  func setupSVGView(for view: NSView) -> NSView {
-    let svgView = SVGView()
-    svgView.setSvg(doc?.rootSvg)
+  func createSVGView(for view: NSView) -> SVGView {
+    let newSVGView = SVGView()
     
-    view.addSubview(svgView)
+    view.addSubview(newSVGView)
 
-    svgView.translatesAutoresizingMaskIntoConstraints = false
+    newSVGView.translatesAutoresizingMaskIntoConstraints = false
 
-    svgView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    svgView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    newSVGView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+    newSVGView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
 
 
-    svgView.widthAnchor.constraint(equalTo: view.widthAnchor,
+    newSVGView.widthAnchor.constraint(equalTo: view.widthAnchor,
                                    multiplier: sizeMultiplier).isActive = true
-    svgView.heightAnchor.constraint(equalTo: view.heightAnchor,
+    newSVGView.heightAnchor.constraint(equalTo: view.heightAnchor,
                                     multiplier: sizeMultiplier).isActive = true
 
-    return svgView
+    return newSVGView
+  }
+
+  func setupSVGView() {
+    if let rootSvg = doc?.rootSvg {
+      svgView?.setSvg(rootSvg)
+    }
+    setupElementSelector()
+  }
+
+  func setupElementSelector() {
+    if let rootSvg = doc?.rootSvg {
+      elementSelector.process(rootSvg)
+    }
   }
 }
