@@ -21,16 +21,20 @@
     if (isRendered) {
       // TODO: Display::instance()->frameChanged()
     } else {
-      [self render: newSize];
+      [self render:newSize];
     }
   }
 }
 
 - (void)setSvg:(SCDSvgBox*)svg {
+  if (rootSvg) {
+    [SCDRuntime resetSvgRender:rootSvg];
+  }
+
   rootSvg = svg;
 
   if (isRendered) {
-      [self render: self.frame.size];
+    [self render:self.frame.size];
   }
 }
 
@@ -39,8 +43,8 @@
 }
 
 - (void)render:(NSSize)size {
-    [SCDRuntime renderSvg:rootSvg x:0 y:0 size:size];
-    isRendered = YES;
+  [SCDRuntime renderSvg:rootSvg x:0 y:0 size:size];
+  isRendered = YES;
 }
 
 @end
