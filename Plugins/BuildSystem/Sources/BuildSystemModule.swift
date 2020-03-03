@@ -73,9 +73,7 @@ final class BuildSystemPlugin: Plugin {
   func build() {
     //Workbench for active window
     guard let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench else { return }
-    if let process = currentProcess, process.isRunning {
-      
-    }
+    
     showConsoleTillFirstEscPress(in: currentWorkbench)
     
     BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench, handler: launcherHandler(status:process:))
