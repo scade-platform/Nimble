@@ -99,6 +99,8 @@ SCADE_API
                 x:(double)xValue
                 y:(double)yValue
              size:(CGSize)sizeValue;
+
++ (void)resetSvgRender:(EObject* _Nonnull)object;
 //#endif //DEBUG
 
 + (EClass* _Nonnull)getEClassFor:(Class _Nonnull)cls;
