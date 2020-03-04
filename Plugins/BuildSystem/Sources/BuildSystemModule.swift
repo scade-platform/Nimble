@@ -14,6 +14,8 @@ public final class BuildSystemModule: Module {
 }
 
 final class BuildSystemPlugin: Plugin {
+  private var runCommand: Command? = nil
+  private var buildCommand: Command? = nil
   private var stopCommand: Command? = nil
   private var currentProcess: Process?
     
@@ -53,14 +55,14 @@ final class BuildSystemPlugin: Plugin {
     let runImage = Bundle(for: BuildSystemPlugin.self).image(forResource: "run")?.imageWithTint(buttonIconColor)
     let stopImage = Bundle(for: BuildSystemPlugin.self).image(forResource: "stop")?.imageWithTint(buttonIconColor)
 
-    let runCommand = Command(name: "Run", menuPath: "Tools", keyEquivalent: "cmd+r", toolbarIcon: runImage) { self.run() }
-    CommandManager.shared.registerCommand(command: runCommand)
+    runCommand = Command(name: "Run", menuPath: "Tools", keyEquivalent: "cmd+r", toolbarIcon: runImage) { self.run() }
+    CommandManager.shared.registerCommand(command: runCommand!)
     stopCommand = Command(name: "Stop", menuPath: "Tools", keyEquivalent: "cmd+.", toolbarIcon: stopImage, isEnable: false) { self.stop() }
     CommandManager.shared.registerCommand(command: stopCommand!)
     let claenCommand = Command(name: "Clean", menuPath: "Tools", keyEquivalent: "cmd+K") { self.clean() }
     CommandManager.shared.registerCommand(command: claenCommand)
-    let buildCommand = Command(name: "Build", menuPath: "Tools", keyEquivalent: "cmd+b") { self.build() }
-    CommandManager.shared.registerCommand(command: buildCommand)
+    buildCommand = Command(name: "Build", menuPath: "Tools", keyEquivalent: "cmd+b") { self.build() }
+    CommandManager.shared.registerCommand(command: buildCommand!)
   }
   
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
@@ -81,7 +83,7 @@ final class BuildSystemPlugin: Plugin {
     
     showConsoleTillFirstEscPress(in: currentWorkbench)
     
-    BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench)
+    BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench, handler: launcherHandler(status:process:))
   }
   
   func run() {
@@ -90,16 +92,15 @@ final class BuildSystemPlugin: Plugin {
     
     showConsoleTillFirstEscPress(in: currentWorkbench)
     
-    BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench) {status in
+    BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench) { [weak self] status, process in
       switch status {
       case .finished:
         DispatchQueue.main.async { [weak self] in
           self?.showConsoleTillFirstEscPress(in: currentWorkbench)
           BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: currentWorkbench, handler: self?.launcherHandler(status:process:))
         }
-      case .failed:
-        self.launcherHandler(status: .failed, process: nil)
-      default: break
+      case .failed, .running:
+        self?.launcherHandler(status: status, process: process)
       }
     }
   }
@@ -128,13 +129,19 @@ final class BuildSystemPlugin: Plugin {
   
   func launcherHandler(status: BuildStatus, process: Process?) -> Void {
     guard let process = process else {
+      runCommand?.isEnable = true
+      buildCommand?.isEnable = true
       stopCommand?.isEnable = false
       return
     }
     if status == .running && process.isRunning {
+      runCommand?.isEnable = false
+      buildCommand?.isEnable = false
       stopCommand?.isEnable = true
       currentProcess = process
     } else {
+      runCommand?.isEnable = true
+      buildCommand?.isEnable = true
       stopCommand?.isEnable = false
       currentProcess = nil
     }

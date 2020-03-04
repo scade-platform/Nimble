@@ -19,7 +19,7 @@ class SPMBuildSystem: BuildSystem {
   }()
   
   
-  func run(in workbench: Workbench, handler: ((BuildStatus) -> Void)?) {
+  func run(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
     workbench.currentDocument?.save(nil)
     guard let fileURL = workbench.currentDocument?.fileURL, let file = fileURL.file, let package = findPackage(by: file.path, in: workbench) else { return  }
     
@@ -34,7 +34,7 @@ class SPMBuildSystem: BuildSystem {
     var spmProcConsole : Console?
     
     spmProc.terminationHandler = { process in
-      spmProcConsole?.writeLine(string: "Finished building  \(packageURL.deletingLastPathComponent().lastPathComponent)")
+      spmProcConsole?.writeLine(string: "Finished building \(packageURL.deletingLastPathComponent().lastPathComponent)")
       spmProcConsole?.stopReadingFromBuffer()
 
       
@@ -43,12 +43,12 @@ class SPMBuildSystem: BuildSystem {
           DispatchQueue.main.async {
             spmProcConsole?.close()
           }
-          handler?(.finished)
+          handler?(.finished, process)
         } else {
           if contents.contains("error:"){
-            handler?(.failed)
+            handler?(.failed, process)
           } else {
-            handler?(.finished)
+            handler?(.finished, process)
           }
         }
       }
@@ -65,6 +65,7 @@ class SPMBuildSystem: BuildSystem {
       return
     }
     try? spmProc.run()
+    handler?(.running, spmProc)
   }
   
   func clean(in workbench: Workbench, handler: (() -> Void)?) {
@@ -75,10 +76,23 @@ class SPMBuildSystem: BuildSystem {
     proc.currentDirectoryURL = package.url.deletingLastPathComponent()
     proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
     proc.arguments = ["package", "clean"]
+    var cleanConsole : Console?
     proc.terminationHandler = { process in
+      cleanConsole?.writeLine(string: "Finished Cleaning \(package.url.deletingLastPathComponent().lastPathComponent)")
+      cleanConsole?.stopReadingFromBuffer()
+      
       handler?()
     }
+    cleanConsole = self.openConsole(key: package.url.appendingPathComponent("clean"), title: "Clean: \(package.url.deletingLastPathComponent().lastPathComponent)", in: workbench)
     
+    if !(cleanConsole?.isReadingFromBuffer ?? true) {
+      proc.standardOutput = cleanConsole?.output
+      proc.standardError = cleanConsole?.output
+      cleanConsole?.startReadingFromBuffer()
+      cleanConsole?.writeLine(string: "Cleaning: \(package.url.deletingLastPathComponent().lastPathComponent)")
+    } else {
+      return
+    }
     try? proc.run()
   }
   
