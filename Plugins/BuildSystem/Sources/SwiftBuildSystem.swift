@@ -84,6 +84,14 @@ class SwiftBuildSystem: BuildSystem {
     cleanConsole?.stopReadingFromBuffer()
     handler?()
   }
+  
+  func canHandle(file: File) -> Bool {
+    let fileExtension = file.path.extension
+    guard !fileExtension.isEmpty, fileExtension == "swift" else {
+      return false
+    }
+    return true
+  }
 }
 
 extension SwiftBuildSystem : ConsoleSupport {}

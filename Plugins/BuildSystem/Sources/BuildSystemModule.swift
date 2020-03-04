@@ -34,6 +34,13 @@ final class BuildSystemPlugin: Plugin {
     let submenu = NSMenu(title: "Build System")
     buildSystemMenuItem.submenu = submenu
     toolsMenu.addItem(buildSystemMenuItem)
+    
+    let autoItem = NSMenuItem(title: "Automatic", action: #selector(switchBuildSystem(_:)), keyEquivalent: "")
+    autoItem.target = self
+    autoItem.representedObject = Automatic.shared
+    submenu.addItem(autoItem)
+    submenu.addItem(.separator())
+
     let tools = BuildSystemsManager.shared.buildSystems
     for tool in tools {
       let toolItem = NSMenuItem(title: tool.name, action: #selector(switchBuildSystem(_:)), keyEquivalent: "")
