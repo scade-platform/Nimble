@@ -21,7 +21,7 @@ class SPMBuildSystem: BuildSystem {
   
   func run(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
     workbench.currentDocument?.save(nil)
-    guard let fileURL = workbench.currentDocument?.fileURL, let file = fileURL.file, let package = findPackage(by: file.path, in: workbench) else { return  }
+    guard let project = workbench.project, let package = findPackage(project: project) else { return  }
     
     let packageURL = package.url
     
@@ -69,8 +69,7 @@ class SPMBuildSystem: BuildSystem {
   }
   
   func clean(in workbench: Workbench, handler: (() -> Void)?) {
-    guard let fileURL = workbench.currentDocument?.fileURL, let file = fileURL.file, let package = findPackage(by: file.path, in: workbench) else { return  }
-       
+    guard let project = workbench.project, let package = findPackage(project: project) else { return  }
     
     let proc = Process()
     proc.currentDirectoryURL = package.url.deletingLastPathComponent()
@@ -96,29 +95,22 @@ class SPMBuildSystem: BuildSystem {
     try? proc.run()
   }
   
+  func canHandle(folder: Folder) -> Bool {
+    guard let files = try? folder.files() else { return false }
+    if files.contains(where: {$0.name.lowercased() == "package.swift"}) {
+      return true
+    }
+    return false
+  }
+  
 }
 
 extension SPMBuildSystem : ConsoleSupport {}
 
-extension SPMBuildSystem : AutoBuildable {
-  
-  func canBuild(file url: URL, in workbench: Workbench?) -> Bool {
-    guard url.isFileURL, let file = url.file, let workbench = workbench else {
-      return false
-    }
-    return findPackage(by: file.path, in: workbench) != nil
-  }
-  
-  func isDefault(for file: URL, in workbench: Workbench?) -> Bool {
-    return canBuild(file: file, in: workbench)
-  }
-
-}
-
 class SPMLauncher: Launcher {
   
   func launch(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
-    guard let fileURL = workbench.currentDocument?.fileURL, let file = fileURL.file, let package = findPackage(by: file.path, in: workbench) else { 
+   guard let project = workbench.project, let package = findPackage(project: project) else { 
       handler?(.failed, nil)
       return
     }
@@ -156,23 +148,12 @@ class SPMLauncher: Launcher {
 extension SPMLauncher : ConsoleSupport {}
 
 
-fileprivate func findPackage(by file: Path, in workbench: Workbench) -> File? {
-  //get parent directory for current file
-  let parent = file.parent
-  
-  //looking for "pakage.swift"
-  for entry in (try? parent.ls()) ?? [] {
-    if entry.path.basename().lowercased() == "package.swift" {
-      //if file was found return it
-      return File(path: entry.path)
+fileprivate func findPackage(project: Project) -> File? {
+  for folder in project.folders {
+    guard let files = try? folder.files() else { continue }
+    if let package = files.first(where: {file in file.name.lowercased() == "package.swift"}) {
+      return package
     }
   }
-  
-  //if the parent is one of the root folders then stop search
-  if workbench.project?.folders.contains(where: {$0.path == parent}) ?? true {
-    return nil
-  }
-  
-  //else try to find "pakage.swift" on one level up
-  return findPackage(by: parent, in: workbench)
+  return nil
 }

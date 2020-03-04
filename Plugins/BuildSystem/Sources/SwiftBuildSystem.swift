@@ -84,23 +84,17 @@ class SwiftBuildSystem: BuildSystem {
     cleanConsole?.stopReadingFromBuffer()
     handler?()
   }
-}
-
-extension SwiftBuildSystem : ConsoleSupport {}
-
-extension SwiftBuildSystem : AutoBuildable {
-  func canBuild(file: URL, in workbench: Workbench?) -> Bool {
-    return canBuild(file: file)
-  }
   
-  func canBuild(file url: URL) -> Bool {
-    let fileExtension = url.pathExtension
+  func canHandle(file: File) -> Bool {
+    let fileExtension = file.path.extension
     guard !fileExtension.isEmpty, fileExtension == "swift" else {
       return false
     }
     return true
   }
 }
+
+extension SwiftBuildSystem : ConsoleSupport {}
 
 class SwiftLauncher : Launcher {
   func launch(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {

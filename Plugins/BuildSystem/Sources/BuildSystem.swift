@@ -14,6 +14,10 @@ public protocol BuildSystem {
   var launcher: Launcher? { get }
   func run(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?)
   func clean(in workbench: Workbench, handler: (() -> Void)?)
+  
+  func canHandle(file: File) -> Bool
+  func canHandle(folder: Folder) -> Bool
+  func canHandle(project: Project) -> Bool
 }
 
 public extension BuildSystem {
@@ -23,6 +27,18 @@ public extension BuildSystem {
   
   func clean(in workbench: Workbench) {
     self.clean(in: workbench, handler: nil)
+  }
+  
+  func canHandle(file: File) -> Bool {
+    return false
+  }
+  
+  func canHandle(folder: Folder) -> Bool {
+    return false
+  }
+  
+  func canHandle(project: Project) -> Bool {
+    return false
   }
 }
 
@@ -66,7 +82,7 @@ public class BuildSystemsManager {
   
   public private(set) var buildSystems : [BuildSystem] = []
   
-  public var activeBuildSystem: BuildSystem? = AutoBuild.shared
+  public var activeBuildSystem: BuildSystem? = Automatic.shared
   
   private init() {}
   
