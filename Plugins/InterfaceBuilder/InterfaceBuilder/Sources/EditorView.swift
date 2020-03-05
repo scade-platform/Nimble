@@ -1,8 +1,7 @@
-import Cocoa
 import NimbleCore
 import SVGEditor
 
-class InterfaceBuilderView: SVGEditorView {
+class EditorView: SVGEditorView {
 
   override func setupElementSelector() {
     if elementSelector == nil {
@@ -18,4 +17,4 @@ class InterfaceBuilderView: SVGEditorView {
   }
 }
 
-extension InterfaceBuilderView: WorkbenchEditor { }
+extension EditorView: WorkbenchEditor { }

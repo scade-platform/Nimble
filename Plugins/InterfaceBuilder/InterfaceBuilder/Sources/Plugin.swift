@@ -6,14 +6,14 @@
 //  Copyright © 2019 SCADE. All rights reserved.
 //
 
-import NimbleCore
 import Foundation
+import NimbleCore
 
-public final class InterfaceBuilder: Module {
-  public static let plugin: Plugin = InterfaceBuilderPlugin()
+public final class Editor: Module {
+  public static let plugin: NimbleCore.Plugin = Plugin()
 }
 
-final class InterfaceBuilderPlugin: Plugin {
+final class Plugin: NimbleCore.Plugin {
 
   func load() {
     DocumentManager.shared.registerDocumentClass(PageDocument.self)
@@ -34,7 +34,7 @@ final class InterfaceBuilderPlugin: Plugin {
   }
 }
 
-extension InterfaceBuilderPlugin: WorkbenchObserver {
+extension Plugin: WorkbenchObserver {
 
   func workbenchWillChangeProject(_ workbench: Workbench) {
     workbench.project?.observers.remove(observer: self)
@@ -49,7 +49,7 @@ extension InterfaceBuilderPlugin: WorkbenchObserver {
 
 }
 
-extension InterfaceBuilderPlugin: ProjectObserver {
+extension Plugin: ProjectObserver {
 
   func projectFoldersDidChange(project: Project) {
     registerResourceFolder(for: project)
