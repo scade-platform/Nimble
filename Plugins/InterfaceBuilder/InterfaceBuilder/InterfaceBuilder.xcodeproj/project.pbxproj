@@ -7,33 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D7CD750222B8CC5B004C437B /* InterfaceBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CD750122B8CC5B004C437B /* InterfaceBuilder.swift */; };
 		D7CD750722B8CCF5004C437B /* PageDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CD750622B8CCF5004C437B /* PageDocument.swift */; };
 		D7D4BD3A23FCADCD0063BD8F /* ScadeKitExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D4BD3923FCADCD0063BD8F /* ScadeKitExtension.framework */; };
 		D7D4BD3C23FCADD30063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD3B23FCADD30063BD8F /* NimbleCore */; };
 		E42F6DD723FEC2B800E5D636 /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = E42F6DD623FEC2B800E5D636 /* package.yml */; };
 		E451B2FE22C0E919006185B7 /* WidgetVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2DD22C0E919006185B7 /* WidgetVisitor.swift */; };
 		E451B30022C4B69F006185B7 /* WidgetSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2FF22C4B69F006185B7 /* WidgetSelector.swift */; };
-		E46496A623FEC62C000375D1 /* InterfaceBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46496A423FEC62C000375D1 /* InterfaceBuilderView.swift */; };
-		E46496A723FEC62C000375D1 /* InterfaceBuilderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E46496A523FEC62C000375D1 /* InterfaceBuilderView.xib */; };
 		E46496C623FFFFC8000375D1 /* SVGEditor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E46496C523FFFFC8000375D1 /* SVGEditor.framework */; };
 		E4909E7923E478C000C1DFE2 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4909E7823E478C000C1DFE2 /* ScadeKit.framework */; };
+		E4D59E0724113876003DAB16 /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D59E0424113876003DAB16 /* Plugin.swift */; };
+		E4D59E0824113876003DAB16 /* EditorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E4D59E0524113876003DAB16 /* EditorView.xib */; };
+		E4D59E0924113876003DAB16 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D59E0624113876003DAB16 /* EditorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		D7CD74F722B8CC24004C437B /* InterfaceBuilder.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InterfaceBuilder.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7CD74FA22B8CC24004C437B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D7CD750122B8CC5B004C437B /* InterfaceBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceBuilder.swift; sourceTree = "<group>"; };
 		D7CD750622B8CCF5004C437B /* PageDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDocument.swift; sourceTree = "<group>"; };
 		D7D4BD3923FCADCD0063BD8F /* ScadeKitExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = ScadeKitExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42DC11D22D9C7A800486CC1 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E42F6DD623FEC2B800E5D636 /* package.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = package.yml; sourceTree = "<group>"; };
 		E451B2DD22C0E919006185B7 /* WidgetVisitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetVisitor.swift; sourceTree = "<group>"; };
 		E451B2FF22C4B69F006185B7 /* WidgetSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetSelector.swift; sourceTree = "<group>"; };
-		E46496A423FEC62C000375D1 /* InterfaceBuilderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterfaceBuilderView.swift; sourceTree = "<group>"; };
-		E46496A523FEC62C000375D1 /* InterfaceBuilderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InterfaceBuilderView.xib; sourceTree = "<group>"; };
 		E46496C523FFFFC8000375D1 /* SVGEditor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SVGEditor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4909E7823E478C000C1DFE2 /* ScadeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScadeKit.framework; path = ../../SVGEditor/Libraries/ScadeKit.framework; sourceTree = "<group>"; };
+		E4D59E0424113876003DAB16 /* Plugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
+		E4D59E0524113876003DAB16 /* EditorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditorView.xib; sourceTree = "<group>"; };
+		E4D59E0624113876003DAB16 /* EditorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,9 +73,9 @@
 		D7CD750022B8CC37004C437B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				E46496A423FEC62C000375D1 /* InterfaceBuilderView.swift */,
-				E46496A523FEC62C000375D1 /* InterfaceBuilderView.xib */,
-				D7CD750122B8CC5B004C437B /* InterfaceBuilder.swift */,
+				E4D59E0624113876003DAB16 /* EditorView.swift */,
+				E4D59E0524113876003DAB16 /* EditorView.xib */,
+				E4D59E0424113876003DAB16 /* Plugin.swift */,
 				D7CD750622B8CCF5004C437B /* PageDocument.swift */,
 				E451B2FF22C4B69F006185B7 /* WidgetSelector.swift */,
 				E451B2DD22C0E919006185B7 /* WidgetVisitor.swift */,
@@ -154,7 +154,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E46496A723FEC62C000375D1 /* InterfaceBuilderView.xib in Resources */,
+				E4D59E0824113876003DAB16 /* EditorView.xib in Resources */,
 				E42F6DD723FEC2B800E5D636 /* package.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -166,10 +166,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4D59E0724113876003DAB16 /* Plugin.swift in Sources */,
 				E451B30022C4B69F006185B7 /* WidgetSelector.swift in Sources */,
-				D7CD750222B8CC5B004C437B /* InterfaceBuilder.swift in Sources */,
+				E4D59E0924113876003DAB16 /* EditorView.swift in Sources */,
 				D7CD750722B8CCF5004C437B /* PageDocument.swift in Sources */,
-				E46496A623FEC62C000375D1 /* InterfaceBuilderView.swift in Sources */,
 				E451B2FE22C0E919006185B7 /* WidgetVisitor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -12,8 +12,8 @@ public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
     return resource?.contents.first as? SCDWidgetsPage
   }
 
-  private lazy var builderController: InterfaceBuilderView = {
-    let controller = InterfaceBuilderView.loadFromNib()
+  private lazy var builderController: EditorView = {
+    let controller = EditorView.loadFromNib()
     controller.doc = self
 
     return controller
