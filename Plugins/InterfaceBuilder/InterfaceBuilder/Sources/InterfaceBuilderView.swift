@@ -1,26 +1,14 @@
 import Cocoa
 import NimbleCore
 import SVGEditor
-import ScadeKitExtension
 
-class InterfaceBuilderView: NSViewController, SVGViewProtocol {
+class InterfaceBuilderView: SVGEditorView {
 
-  var svgView: SVGView? = nil
+  override func setupElementSelector() {
+    if elementSelector == nil {
+      elementSelector = WidgetSelector()
+    }
 
-  let elementSelector: SVGElementSelector = WidgetSelector()
-
-  weak var doc: SVGDocumentProtocol? = nil
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
-
-    setupDocument()
-
-    svgView = createSVGView(for: view)
-    setupSVGView()
-  }
-
-  func setupElementSelector() {
     if let pageDocument = doc as? PageDocument,
        let page = pageDocument.page,
        let selector = elementSelector as? WidgetSelector {
@@ -31,10 +19,3 @@ class InterfaceBuilderView: NSViewController, SVGViewProtocol {
 }
 
 extension InterfaceBuilderView: WorkbenchEditor { }
-
-extension InterfaceBuilderView: DocumentObserver {
-
-  func documentFileDidChange(_ document: Document) {
-    //loadPage()
-  }
-}

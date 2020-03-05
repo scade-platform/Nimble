@@ -2,7 +2,7 @@ import Cocoa
 
 class SVGEditorMenu: NSObject {
 
-  weak var editor: SVGEditorView? = nil
+  weak var editor: PluginView? = nil
 
   static let shared = SVGEditorMenu()
   

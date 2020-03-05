@@ -3,23 +3,12 @@ import NimbleCore
 import SVGEditor
 import ScadeKitExtension
 
-class SVGEditorView: NSViewController, SVGViewProtocol {
-
-  var svgView: SVGView? = nil
-
-  let elementSelector: SVGElementSelector = SVGLayerSelector()
-
-  weak var doc: SVGDocumentProtocol? = nil
+class PluginView: SVGEditorView {
 
   @IBOutlet weak var scrollView: NSScrollView!
-
+  
   override public func viewDidLoad() {
     super.viewDidLoad()
-
-    setupDocument()
-
-    svgView = createSVGView(for: view)
-    setupSVGView()
 
     scrollView.documentView = svgView
     setupScrollView()
@@ -55,18 +44,10 @@ class SVGEditorView: NSViewController, SVGViewProtocol {
   }
 }
 
-extension SVGEditorView: WorkbenchEditor {
+extension PluginView: WorkbenchEditor {
   public var editorMenu: NSMenu? {
     SVGEditorMenu.shared.editor = self
 
     return SVGEditorMenu.editorMenu
   }
 }
-
-extension SVGEditorView: DocumentObserver {
-
-  public func documentFileDidChange(_ document: Document) {
-    setupSVGView()
-  }
-}
-
