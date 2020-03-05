@@ -6,9 +6,7 @@ import SVGEditor
 public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
   private var resource: SCDCoreResource?
 
-  public var rootSvg: SCDSvgBox? {
-    return resource?.contents.last as? SCDSvgBox
-  }
+  public var rootSvg: SCDSvgBox? = nil
 
   public var page: SCDWidgetsPage? {
     return resource?.contents.first as? SCDWidgetsPage
@@ -32,6 +30,10 @@ public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
   
   public override func read(from url: URL, ofType typeName: String) throws {
     self.resource = SCDRuntime.loadXmiResource(url.path) as? SCDCoreResource
+
+    if let svgContent = resource?.contents.last {
+      rootSvg = SCDRuntime.clone(svgContent) as? SCDSvgBox
+    }
   }
   
   public override func data(ofType typeName: String) throws -> Data {
