@@ -21,6 +21,6 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2020 SCADE. All rights reserved.</string>
 	<key>NSPrincipalClass</key>
-	<string>SVGEditorPlugin.SVGEditor</string>
+	<string>SVGEditorPlugin.Editor</string>
 </dict>
 </plist>

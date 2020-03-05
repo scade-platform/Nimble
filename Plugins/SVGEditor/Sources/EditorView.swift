@@ -3,7 +3,7 @@ import NimbleCore
 import SVGEditor
 import ScadeKitExtension
 
-class PluginView: SVGEditorView {
+class EditorView: SVGEditorView {
 
   @IBOutlet weak var scrollView: NSScrollView!
   
@@ -44,10 +44,10 @@ class PluginView: SVGEditorView {
   }
 }
 
-extension PluginView: WorkbenchEditor {
+extension EditorView: WorkbenchEditor {
   public var editorMenu: NSMenu? {
-    SVGEditorMenu.shared.editor = self
+    EditorMenu.shared.editor = self
 
-    return SVGEditorMenu.editorMenu
+    return EditorMenu.editorMenu
   }
 }

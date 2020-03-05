@@ -1,10 +1,10 @@
 import Cocoa
 
-class SVGEditorMenu: NSObject {
+class EditorMenu: NSObject {
 
-  weak var editor: PluginView? = nil
+  weak var editor: EditorView? = nil
 
-  static let shared = SVGEditorMenu()
+  static let shared = EditorMenu()
   
   static let editorMenu: NSMenu = {
     let menu = NSMenu()
@@ -27,15 +27,15 @@ class SVGEditorMenu: NSObject {
   }()
 
   @objc func zoomIn(_ item: NSMenuItem) {
-    SVGEditorMenu.shared.editor?.zoomIn()
+    EditorMenu.shared.editor?.zoomIn()
   }
 
   @objc func zoomOut(_ item: NSMenuItem) {
-    SVGEditorMenu.shared.editor?.zoomOut()
+    EditorMenu.shared.editor?.zoomOut()
   }
 
   @objc func actualSize(_ item: NSMenuItem) {
-    SVGEditorMenu.shared.editor?.actualSize()
+    EditorMenu.shared.editor?.actualSize()
   }
   
 }
