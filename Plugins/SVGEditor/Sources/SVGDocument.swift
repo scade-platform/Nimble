@@ -6,8 +6,8 @@ import SVGEditor
 public final class SVGDocument: NimbleDocument, SVGDocumentProtocol {
   public var rootSvg: SCDSvgBox?
 
-  lazy var documentController: SVGEditorView = {
-    let controller = SVGEditorView.loadFromNib()
+  lazy var documentController: EditorView = {
+    let controller = EditorView.loadFromNib()
     controller.doc = self
 
     return controller
