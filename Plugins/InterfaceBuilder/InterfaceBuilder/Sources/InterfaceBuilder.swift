@@ -18,4 +18,23 @@ final class InterfaceBuilderPlugin: Plugin {
   func load() {
     DocumentManager.shared.registerDocumentClass(PageDocument.self)
   }
+  
+  public func activate(in workbench: Workbench) {
+    workbench.observers.add(observer: self)
+  }
+  
+  public func deactivate(in workbench: Workbench) {
+    workbench.observers.remove(observer: self)
+  }
 }
+
+extension InterfaceBuilderPlugin: WorkbenchObserver {
+
+  func workbenchDidChangeProject(_ workbench: Workbench) {
+    workbench.project?.folders.forEach {
+      UserDefaults.standard.set($0.path.string, forKey: "Resource Folder")
+    }
+  }
+
+}
+
