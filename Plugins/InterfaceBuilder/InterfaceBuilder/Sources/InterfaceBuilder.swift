@@ -14,19 +14,44 @@ public final class InterfaceBuilder: Module {
 }
 
 final class InterfaceBuilderPlugin: Plugin {
+
   func load() {
     DocumentManager.shared.registerDocumentClass(PageDocument.self)
   }
   
   public func activate(in workbench: Workbench) {
-    ///TODO: do this every time a project from the workbench has been changed
-    
-    workbench.project?.folders.forEach {
+    workbench.observers.add(observer: self)
+  }
+  
+  public func deactivate(in workbench: Workbench) {
+    workbench.observers.remove(observer: self)
+  }
+
+  private func registerResourceFolder(for project: Project) {
+    project.folders.forEach {
       UserDefaults.standard.set($0.path.string, forKey: "Resource Folder")
     }
   }
-  
-  // public func deactivate(in workbench: Workbench) {
-  //   ///TODO: remove defaults
-  // }
+}
+
+extension InterfaceBuilderPlugin: WorkbenchObserver {
+
+  func workbenchWillChangeProject(_ workbench: Workbench) {
+    workbench.project?.observers.remove(observer: self)
+  }
+
+  func workbenchDidChangeProject(_ workbench: Workbench) {
+    if let project = workbench.project {
+      project.observers.add(observer: self)
+      registerResourceFolder(for: project)
+    }
+  }
+
+}
+
+extension InterfaceBuilderPlugin: ProjectObserver {
+
+  func projectFoldersDidChange(project: Project) {
+    registerResourceFolder(for: project)
+  }
 }
