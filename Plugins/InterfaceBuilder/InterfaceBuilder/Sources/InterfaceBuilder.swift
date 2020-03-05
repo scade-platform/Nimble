@@ -28,8 +28,6 @@ final class InterfaceBuilderPlugin: Plugin {
   }
 
   private func registerResourceFolder(for project: Project) {
-    Swift.print("register")
-
     project.folders.forEach {
       UserDefaults.standard.set($0.path.string, forKey: "Resource Folder")
     }
