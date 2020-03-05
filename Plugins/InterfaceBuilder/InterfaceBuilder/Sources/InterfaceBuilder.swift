@@ -26,15 +26,34 @@ final class InterfaceBuilderPlugin: Plugin {
   public func deactivate(in workbench: Workbench) {
     workbench.observers.remove(observer: self)
   }
+
+  private func registerResourceFolder(for project: Project) {
+    Swift.print("register")
+
+    project.folders.forEach {
+      UserDefaults.standard.set($0.path.string, forKey: "Resource Folder")
+    }
+  }
 }
 
 extension InterfaceBuilderPlugin: WorkbenchObserver {
 
+  func workbenchWillChangeProject(_ workbench: Workbench) {
+    workbench.project?.observers.remove(observer: self)
+  }
+
   func workbenchDidChangeProject(_ workbench: Workbench) {
-    workbench.project?.folders.forEach {
-      UserDefaults.standard.set($0.path.string, forKey: "Resource Folder")
+    if let project = workbench.project {
+      project.observers.add(observer: self)
+      registerResourceFolder(for: project)
     }
   }
 
 }
 
+extension InterfaceBuilderPlugin: ProjectObserver {
+
+  func projectFoldersDidChange(project: Project) {
+    registerResourceFolder(for: project)
+  }
+}
