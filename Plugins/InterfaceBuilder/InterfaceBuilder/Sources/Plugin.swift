@@ -51,7 +51,7 @@ extension Plugin: WorkbenchObserver {
 
 extension Plugin: ProjectObserver {
 
-  func projectFoldersDidChange(project: Project) {
+  func projectFoldersDidChange(_ project: Project) {
     registerResourceFolder(for: project)
   }
 }

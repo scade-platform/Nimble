@@ -21,6 +21,6 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2019 SCADE. All rights reserved.</string>
 	<key>NSPrincipalClass</key>
-	<string>InterfaceBuilder.InterfaceBuilder</string>
+	<string>InterfaceBuilder.Editor</string>
 </dict>
 </plist>
