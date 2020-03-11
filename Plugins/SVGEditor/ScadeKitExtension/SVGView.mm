@@ -39,9 +39,9 @@
   }
 }
 
-- (BOOL)isFlipped {
-  return YES;
-}
+// - (BOOL)isFlipped {
+//   return YES;
+// }
 
 - (void)render:(NSSize)size {
   [SCDRuntime renderSvg:rootSvg x:0 y:0 size:size];
