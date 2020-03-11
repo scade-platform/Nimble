@@ -27,15 +27,14 @@ open class SVGEditorView: NSViewController {
     view.addSubview(newSVGView)
 
     newSVGView.translatesAutoresizingMaskIntoConstraints = false
+    
+    setPositionConstraint(for: newSVGView.leftAnchor, parentAnchor: view.leftAnchor)
+    setPositionConstraint(for: newSVGView.topAnchor, parentAnchor: view.topAnchor)
 
-    newSVGView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    newSVGView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-
-
-    newSVGView.widthAnchor.constraint(equalTo: view.widthAnchor,
-                                      multiplier: sizeMultiplier).isActive = true
-    newSVGView.heightAnchor.constraint(equalTo: view.heightAnchor,
-                                       multiplier: sizeMultiplier).isActive = true
+    setDimensionConstraint(for: newSVGView.widthAnchor, svgUnit: doc?.svgWidth,
+                           parentAnchor: view.widthAnchor)
+    setDimensionConstraint(for: newSVGView.heightAnchor, svgUnit: doc?.svgHeight,
+                           parentAnchor: view.heightAnchor)
 
     return newSVGView
   }
@@ -54,6 +53,24 @@ open class SVGEditorView: NSViewController {
 
     if let rootSvg = doc?.rootSvg {
       elementSelector.process(rootSvg)
+    }
+  }
+
+  private func setPositionConstraint<T>(for anchor: NSLayoutAnchor<T>,
+                                     parentAnchor: NSLayoutAnchor<T>) {
+    anchor.constraint(equalTo: parentAnchor).isActive = true
+  }
+
+  private func setDimensionConstraint(for anchor: NSLayoutDimension,
+                                      svgUnit: SCDSvgUnit?, parentAnchor: NSLayoutDimension) {
+    guard let unit = svgUnit else { return }
+
+    let value = CGFloat(unit.value)
+
+    if unit.measurement == .percentage {
+      anchor.constraint(equalTo: parentAnchor, multiplier: value * 0.01).isActive = true
+    } else {
+      anchor.constraint(equalToConstant: value).isActive = true
     }
   }
 }
