@@ -1,12 +1,12 @@
 import Cocoa
 
-class EditorMenu: NSObject {
+open class SVGEditorMenu: NSObject {
 
-  weak var editor: EditorView? = nil
+  public weak var editor: SVGEditorViewProtocol? = nil
 
-  static let shared = EditorMenu()
+  public static let shared = SVGEditorMenu()
   
-  static let editorMenu: NSMenu = {
+  public static let editorMenu: NSMenu = {
     let menu = NSMenu()
     menu.items = [
       NSMenuItem(title: "Zoom In",
@@ -16,7 +16,7 @@ class EditorMenu: NSObject {
                  action: #selector(zoomOut(_:)), keyEquivalent: "-"),
 
       NSMenuItem(title: "Actual Size",
-                 action: #selector(actualSize(_:)), keyEquivalent: "o")
+                 action: #selector(zoomActualSize(_:)), keyEquivalent: "o")
     ]
 
     menu.items.forEach {
@@ -27,15 +27,15 @@ class EditorMenu: NSObject {
   }()
 
   @objc func zoomIn(_ item: NSMenuItem) {
-    EditorMenu.shared.editor?.zoomIn()
+    SVGEditorMenu.shared.editor?.zoomIn()
   }
 
   @objc func zoomOut(_ item: NSMenuItem) {
-    EditorMenu.shared.editor?.zoomOut()
+    SVGEditorMenu.shared.editor?.zoomOut()
   }
 
-  @objc func actualSize(_ item: NSMenuItem) {
-    EditorMenu.shared.editor?.actualSize()
+  @objc func zoomActualSize(_ item: NSMenuItem) {
+    SVGEditorMenu.shared.editor?.zoomActualSize()
   }
   
 }

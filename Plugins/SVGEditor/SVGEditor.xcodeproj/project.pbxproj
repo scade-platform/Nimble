@@ -31,10 +31,10 @@
 		E46496CD2400464E000375D1 /* SVGDocumentProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E46496CC2400464E000375D1 /* SVGDocumentProtocol.swift */; };
 		E46496D624004958000375D1 /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = E46496D524004958000375D1 /* NimbleCore */; };
 		E47D69D524192729000F32C1 /* SVGEditorViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D69D424192729000F32C1 /* SVGEditorViewProtocol.swift */; };
+		E47D69D724192B7B000F32C1 /* SVGEditorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E47D69D624192B7A000F32C1 /* SVGEditorMenu.swift */; };
 		E4909EA123E9975D00C1DFE2 /* SVGView.h in Headers */ = {isa = PBXBuildFile; fileRef = E4909E9F23E9975D00C1DFE2 /* SVGView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4909EA223E9975D00C1DFE2 /* SVGView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E4909EA023E9975D00C1DFE2 /* SVGView.mm */; };
 		E4D59DFC2410E14A003DAB16 /* SVGEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D59DFB2410E14A003DAB16 /* SVGEditorView.swift */; };
-		E4D59E02241133D6003DAB16 /* EditorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D59E00241133D6003DAB16 /* EditorMenu.swift */; };
 		E4D59E03241133D6003DAB16 /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D59E01241133D6003DAB16 /* Plugin.swift */; };
 /* End PBXBuildFile section */
 
@@ -92,12 +92,12 @@
 		E46496B623FFFA51000375D1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E46496CC2400464E000375D1 /* SVGDocumentProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGDocumentProtocol.swift; sourceTree = "<group>"; };
 		E47D69D424192729000F32C1 /* SVGEditorViewProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGEditorViewProtocol.swift; sourceTree = "<group>"; };
+		E47D69D624192B7A000F32C1 /* SVGEditorMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGEditorMenu.swift; sourceTree = "<group>"; };
 		E4909E9F23E9975D00C1DFE2 /* SVGView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVGView.h; sourceTree = "<group>"; };
 		E4909EA023E9975D00C1DFE2 /* SVGView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SVGView.mm; sourceTree = "<group>"; };
 		E4909ECD23EC49C400C1DFE2 /* SVGElementSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGElementSelector.swift; sourceTree = "<group>"; };
 		E4909EE123F3340C00C1DFE2 /* SVGElementVisitor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGElementVisitor.swift; sourceTree = "<group>"; };
 		E4D59DFB2410E14A003DAB16 /* SVGEditorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVGEditorView.swift; sourceTree = "<group>"; };
-		E4D59E00241133D6003DAB16 /* EditorMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorMenu.swift; sourceTree = "<group>"; };
 		E4D59E01241133D6003DAB16 /* Plugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -172,7 +172,6 @@
 		E43269F023E1AF9B005C6105 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				E4D59E00241133D6003DAB16 /* EditorMenu.swift */,
 				E4D59E01241133D6003DAB16 /* Plugin.swift */,
 				E4326A1323E1B2F3005C6105 /* SVGDocument.swift */,
 				E4326A4323E1CF9E005C6105 /* EditorView.swift */,
@@ -247,6 +246,7 @@
 		E46496BE23FFFAE3000375D1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				E47D69D624192B7A000F32C1 /* SVGEditorMenu.swift */,
 				E47D69D424192729000F32C1 /* SVGEditorViewProtocol.swift */,
 				E4D59DFB2410E14A003DAB16 /* SVGEditorView.swift */,
 				E4909EE123F3340C00C1DFE2 /* SVGElementVisitor.swift */,
@@ -416,7 +416,6 @@
 				E4D59E03241133D6003DAB16 /* Plugin.swift in Sources */,
 				E4326A1C23E1B2F3005C6105 /* SVGDocument.swift in Sources */,
 				E4326A4723E1CF9E005C6105 /* EditorView.swift in Sources */,
-				E4D59E02241133D6003DAB16 /* EditorMenu.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,6 +433,7 @@
 			files = (
 				E46496C023FFFB05000375D1 /* SVGElementSelector.swift in Sources */,
 				E47D69D524192729000F32C1 /* SVGEditorViewProtocol.swift in Sources */,
+				E47D69D724192B7B000F32C1 /* SVGEditorMenu.swift in Sources */,
 				E46496BF23FFFB02000375D1 /* SVGElementVisitor.swift in Sources */,
 				E46496CD2400464E000375D1 /* SVGDocumentProtocol.swift in Sources */,
 				E4D59DFC2410E14A003DAB16 /* SVGEditorView.swift in Sources */,

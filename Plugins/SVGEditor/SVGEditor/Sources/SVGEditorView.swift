@@ -6,7 +6,7 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
 
   let sizeMultiplier: CGFloat = 0.8
 
-  public var svgView: SVGView? = nil
+  public var svgView = SVGView()
 
   public var elementSelector: SVGElementSelector! = nil
 
@@ -16,35 +16,15 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
     super.viewDidLoad()
 
     setupDocument()
-
-    svgView = createSVGView(for: view)
-    setupSVGView()
-
-    getScrollView()?.documentView = svgView
     setupScrollView()
-  }
 
-  func createSVGView(for view: NSView) -> SVGView {
-    let newSVGView = SVGView()
-    
-    view.addSubview(newSVGView)
-
-    newSVGView.translatesAutoresizingMaskIntoConstraints = false
-    
-    setPositionConstraint(for: newSVGView.leftAnchor, parentAnchor: view.leftAnchor)
-    setPositionConstraint(for: newSVGView.topAnchor, parentAnchor: view.topAnchor)
-
-    setDimensionConstraint(for: newSVGView.widthAnchor, svgUnit: doc?.svgWidth,
-                           parentAnchor: view.widthAnchor)
-    setDimensionConstraint(for: newSVGView.heightAnchor, svgUnit: doc?.svgHeight,
-                           parentAnchor: view.heightAnchor)
-
-    return newSVGView
+    setupSVGViewConstraints()
+    setupSVGView()
   }
 
   public func setupSVGView() {
     if let rootSvg = doc?.rootSvg {
-      svgView?.setSvg(rootSvg)
+      svgView.setSvg(rootSvg)
     }
     setupElementSelector()
   }
@@ -63,20 +43,26 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
     return nil
   }
 
-  public func zoomIn() {
-    getScrollView()?.magnification += 0.25
-  }
+  private func setupSVGViewConstraints() {
+    if let parentView = getScrollView() {
+      
+      svgView.translatesAutoresizingMaskIntoConstraints = false
+      
+      setPositionConstraint(for: svgView.leftAnchor, parentAnchor: parentView.leftAnchor)
+      setPositionConstraint(for: svgView.topAnchor, parentAnchor: parentView.topAnchor)
 
-  public func zoomOut() {
-    getScrollView()?.magnification -= 0.25
-  }
-
-  public func actualSize() {
-    getScrollView()?.magnification = 1
+      setDimensionConstraint(for: svgView.widthAnchor, svgUnit: doc?.svgWidth,
+                             parentAnchor: parentView.widthAnchor)
+      setDimensionConstraint(for: svgView.heightAnchor, svgUnit: doc?.svgHeight,
+                             parentAnchor: parentView.heightAnchor)
+    }
   }
 
   private func setupScrollView() {
     if let scrollView = getScrollView() {
+
+      scrollView.documentView = svgView
+
       scrollView.hasHorizontalRuler = true
       scrollView.hasVerticalRuler = true
       scrollView.rulersVisible = true
@@ -124,3 +110,10 @@ extension SVGEditorView: DocumentObserver {
   }
 }
 
+extension SVGEditorView: WorkbenchEditor {
+  public var editorMenu: NSMenu? {
+    SVGEditorMenu.shared.editor = self
+
+    return SVGEditorMenu.editorMenu
+  }
+}

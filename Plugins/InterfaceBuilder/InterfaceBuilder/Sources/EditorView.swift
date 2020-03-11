@@ -24,4 +24,10 @@ class EditorView: SVGEditorView {
   }
 }
 
-extension EditorView: WorkbenchEditor { }
+// extension EditorView: WorkbenchEditor {
+//   public var editorMenu: NSMenu? {
+//     SVGEditorMenu.shared.editor = self
+
+//     return SVGEditorMenu.editorMenu
+//   }
+// }
