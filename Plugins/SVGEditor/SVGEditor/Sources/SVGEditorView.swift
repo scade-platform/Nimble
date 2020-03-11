@@ -20,6 +20,8 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
 
     setupSVGViewConstraints()
     setupSVGView()
+
+    getScrollView()?.scroll(BackgroundView.center())
   }
 
   public func setupSVGView() {
@@ -44,24 +46,43 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
   }
 
   private func setupSVGViewConstraints() {
-    if let parentView = getScrollView() {
-      
+    if let contentView = getScrollView()?.contentView,
+       let documentView = getScrollView()?.documentView {
+
+      documentView.translatesAutoresizingMaskIntoConstraints = false
+
+      setPositionConstraint(for: documentView.leftAnchor, refAnchor: contentView.leftAnchor)
+      setPositionConstraint(for: documentView.topAnchor, refAnchor: contentView.topAnchor)
+
+      setDimensionConstraint(for: documentView.widthAnchor,
+                             constant: BackgroundView.backgroundViewBound)
+      setDimensionConstraint(for: documentView.heightAnchor,
+                             constant: BackgroundView.backgroundViewBound)
+
+      //--------------------------------------------------------------------------------
+
+
+      documentView.addSubview(svgView)
+
       svgView.translatesAutoresizingMaskIntoConstraints = false
       
-      setPositionConstraint(for: svgView.leftAnchor, parentAnchor: parentView.leftAnchor)
-      setPositionConstraint(for: svgView.topAnchor, parentAnchor: parentView.topAnchor)
+      // setPositionConstraint(for: svgView.leftAnchor, refAnchor: documentView.leftAnchor)
+      // setPositionConstraint(for: svgView.topAnchor, refAnchor: documentView.topAnchor)
+
+      setPositionConstraint(for: svgView.centerXAnchor, refAnchor: documentView.centerXAnchor)
+      setPositionConstraint(for: svgView.centerYAnchor, refAnchor: documentView.centerYAnchor)
 
       setDimensionConstraint(for: svgView.widthAnchor, svgUnit: doc?.svgWidth,
-                             parentAnchor: parentView.widthAnchor)
+                             refAnchor: contentView.widthAnchor)
       setDimensionConstraint(for: svgView.heightAnchor, svgUnit: doc?.svgHeight,
-                             parentAnchor: parentView.heightAnchor)
+                             refAnchor: contentView.heightAnchor)
     }
   }
 
   private func setupScrollView() {
     if let scrollView = getScrollView() {
 
-      scrollView.documentView = svgView
+      scrollView.documentView = BackgroundView()
 
       scrollView.hasHorizontalRuler = true
       scrollView.hasVerticalRuler = true
@@ -81,18 +102,22 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
   }
 
   private func setPositionConstraint<T>(for anchor: NSLayoutAnchor<T>,
-                                     parentAnchor: NSLayoutAnchor<T>) {
-    anchor.constraint(equalTo: parentAnchor).isActive = true
+                                        refAnchor: NSLayoutAnchor<T>) {
+    anchor.constraint(equalTo: refAnchor).isActive = true
+  }
+
+  private func setDimensionConstraint(for anchor: NSLayoutDimension, constant: CGFloat) {
+    anchor.constraint(equalToConstant: constant).isActive = true
   }
 
   private func setDimensionConstraint(for anchor: NSLayoutDimension,
-                                      svgUnit: SCDSvgUnit?, parentAnchor: NSLayoutDimension) {
+                                      svgUnit: SCDSvgUnit?, refAnchor: NSLayoutDimension) {
     guard let unit = svgUnit else { return }
 
     let value = CGFloat(unit.value)
 
     if unit.measurement == .percentage {
-      anchor.constraint(equalTo: parentAnchor, multiplier: value * 0.01).isActive = true
+      anchor.constraint(equalTo: refAnchor, multiplier: value * 0.01).isActive = true
     } else {
       anchor.constraint(equalToConstant: value).isActive = true
     }
@@ -116,4 +141,17 @@ extension SVGEditorView: WorkbenchEditor {
 
     return SVGEditorMenu.editorMenu
   }
+}
+
+class BackgroundView: NSView {
+
+  static let backgroundViewBound: CGFloat = 2000
+
+  static func center() -> NSPoint {
+    let halfBound = backgroundViewBound / 2
+
+    return NSPoint(x: halfBound, y: halfBound)
+  }
+
+  override var isFlipped: Bool {true}
 }
