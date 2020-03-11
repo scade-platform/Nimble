@@ -2,7 +2,7 @@ import Cocoa
 import NimbleCore
 import ScadeKitExtension
 
-open class SVGEditorView: NSViewController {
+open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
 
   let sizeMultiplier: CGFloat = 0.8
 
@@ -19,6 +19,9 @@ open class SVGEditorView: NSViewController {
 
     svgView = createSVGView(for: view)
     setupSVGView()
+
+    getScrollView()?.documentView = svgView
+    setupScrollView()
   }
 
   func createSVGView(for view: NSView) -> SVGView {
@@ -53,6 +56,41 @@ open class SVGEditorView: NSViewController {
 
     if let rootSvg = doc?.rootSvg {
       elementSelector.process(rootSvg)
+    }
+  }
+
+  open func getScrollView() -> NSScrollView? {
+    return nil
+  }
+
+  public func zoomIn() {
+    getScrollView()?.magnification += 0.25
+  }
+
+  public func zoomOut() {
+    getScrollView()?.magnification -= 0.25
+  }
+
+  public func actualSize() {
+    getScrollView()?.magnification = 1
+  }
+
+  private func setupScrollView() {
+    if let scrollView = getScrollView() {
+      scrollView.hasHorizontalRuler = true
+      scrollView.hasVerticalRuler = true
+      scrollView.rulersVisible = true
+      
+      scrollView.verticalScrollElasticity = .none
+      scrollView.horizontalScrollElasticity = .none
+      
+      scrollView.borderType = .lineBorder
+      
+      scrollView.horizontalRulerView?.measurementUnits = .points
+      scrollView.verticalRulerView?.measurementUnits = .points
+      
+      scrollView.allowsMagnification = true
+      //scrollView.magnification = 10
     }
   }
 
