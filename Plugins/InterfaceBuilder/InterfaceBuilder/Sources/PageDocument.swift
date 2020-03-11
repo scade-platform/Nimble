@@ -8,6 +8,10 @@ public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
 
   public var rootSvg: SCDSvgBox? = nil
 
+  public var svgWidth: SCDSvgUnit? { nil }
+  
+  public var svgHeight: SCDSvgUnit? { nil }
+
   public var page: SCDWidgetsPage? {
     return resource?.contents.first as? SCDWidgetsPage
   }
