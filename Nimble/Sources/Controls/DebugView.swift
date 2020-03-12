@@ -9,7 +9,7 @@
 import Cocoa
 import NimbleCore
 
-public class DebugView: NSViewController {
+class DebugView: NSViewController {
   lazy var consoleView: ConsoleView = {
     let console = ConsoleView.loadFromNib()
     self.add(part: console)

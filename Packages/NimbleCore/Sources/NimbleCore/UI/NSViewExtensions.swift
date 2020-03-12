@@ -1,6 +1,6 @@
 //
 //  NSViewExtensions.swift
-//  CYaml
+//  NimbleCore
 //
 //  Created by Danil Kristalev on 10/10/2019.
 //
@@ -16,4 +16,16 @@ extension NSView {
     }
     self.layer?.backgroundColor = color.cgColor
   }  
+}
+
+
+public enum AppleInterfaceStyle {
+  case light, dark
+}
+
+public extension NSView {
+  static var systemInterfaceStlye: AppleInterfaceStyle {
+    let style = UserDefaults.standard.string(forKey: "AppleInterfaceStyle") ?? ""
+    return style == "Dark" ? .dark : .light
+  }
 }

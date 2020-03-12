@@ -1,6 +1,6 @@
 //
 //  Project.swift
-//  StudioCore
+//  NimbleCore
 //
 //  Created by Grigory Markin on 28.02.19.
 //  Copyright © 2019 SCADE. All rights reserved.

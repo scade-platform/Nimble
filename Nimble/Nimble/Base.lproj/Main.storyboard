@@ -798,7 +798,7 @@
                         <splitViewItem id="6CT-wf-mhQ"/>
                         <splitViewItem id="6Es-Wo-iHc"/>
                     </splitViewItems>
-                    <splitView key="splitView" dividerStyle="thin" id="69o-ns-cfo" customClass="EditorSplitView" customModule="Nimble" customModuleProvider="target">
+                    <splitView key="splitView" dividerStyle="thin" id="69o-ns-cfo">
                         <rect key="frame" x="-103" y="0.0" width="683" height="376"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>
@@ -945,10 +945,15 @@
             </objects>
             <point key="canvasLocation" x="915" y="1357"/>
         </scene>
-        <!--Tabbed Editor-->
+        <!--Editor View-->
         <scene sceneID="dsF-QD-dQD">
             <objects>
-                <viewController id="UtC-nN-7Sb" customClass="TabbedEditor" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController"/>
+                <viewController id="UtC-nN-7Sb" customClass="EditorView" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="m13-oA-5RO">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    </view>
+                </viewController>
                 <customObject id="xi1-Hq-DW4" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="990" y="1932"/>

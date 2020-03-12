@@ -8,7 +8,7 @@
 
 import Foundation
 
-private struct RawCodingKey: CodingKey, Equatable {
+struct RawCodingKey: CodingKey, Equatable {
   var intValue: Int? = nil
   let stringValue: String
     
