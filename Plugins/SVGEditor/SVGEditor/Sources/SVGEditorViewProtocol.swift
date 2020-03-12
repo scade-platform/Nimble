@@ -2,7 +2,7 @@ import Cocoa
 
 public protocol SVGEditorViewProtocol: class {
 
-  func getScrollView() -> NSScrollView?
+  var scrollView: NSScrollView! { get }
 
   func zoomIn() -> Void
 
@@ -14,15 +14,15 @@ public protocol SVGEditorViewProtocol: class {
 public extension SVGEditorViewProtocol {
   
   func zoomIn() {
-    getScrollView()?.magnification += 0.25
+    scrollView.magnification += 0.25
   }
 
   func zoomOut() {
-    getScrollView()?.magnification -= 0.25
+    scrollView.magnification -= 0.25
   }
 
   func zoomActualSize() {
-    getScrollView()?.magnification = 1
+    scrollView.magnification = 1
   }
 }
 
