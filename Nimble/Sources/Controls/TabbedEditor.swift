@@ -144,8 +144,6 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
     } else if let curIndex = curIndex, curIndex >= pos {
       selectTab(curIndex + 1)
     }
-
-    doc.editor?.didOpenDocument(doc)
   }
   
   func removeTab(_ doc: Document) {
