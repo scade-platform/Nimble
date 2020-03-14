@@ -12,10 +12,9 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../../NimbleCore"),
-        .package(url: "https://github.com/FLORG1/oniguruma.git", .branch("master")),
-        .package(url: "https://github.com/1024jp/WFColorCode.git", from: "2.5.0")
+        .package(url: "https://github.com/FLORG1/oniguruma.git", .branch("master"))
     ],
     targets: [
-        .target(name: "CodeEditor", dependencies: ["Oniguruma", "ColorCode", "NimbleCore"])
+        .target(name: "CodeEditor", dependencies: ["Oniguruma", "NimbleCore"])
     ]
 )

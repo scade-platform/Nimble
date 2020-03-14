@@ -2,7 +2,8 @@ name: Default(Light)
 settings:
   - settings:
       foreground: "#000000"
-      background: "#FFFFFF"
+      background: "#DDDDDD"
+#      background: "#3C6161"
       caret: "#000000"
       lineHighlight: "#E8F2FF"
       selection: "#A4CDFF"

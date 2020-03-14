@@ -28,14 +28,27 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     documentController.makeUntitledDocument(ofType: docType)
   }
   
-  func applicationDidFinishLaunching(_ notification: Notification) {
-    // Replace the default delegate installed by the NSDocumentController
-    // The default one shows all recent documents without filtering etc.
-    openRecentDocumentMenu?.delegate = self
+  @objc private func switchTheme(_ item: NSMenuItem?) {
+    ThemeManager.shared.selectedTheme = item?.representedObject as? Theme
+  }
     
-    // Loading plugins
-    PluginManager.shared.load()
+  @objc private func validateMenuItem(_ item: NSMenuItem?) -> Bool {
+    guard let item = item else { return true }
     
+    switch item.representedObject {
+    case is Theme, is Theme?:
+      let itemTheme = item.representedObject as AnyObject?
+      let currentTheme = ThemeManager.shared.selectedTheme
+      item.state = (itemTheme === currentTheme) ? .on : .off
+      
+    default:
+      break
+    }
+    
+    return true
+  }
+  
+  private func setupApplicationMenu() {
     // Build newDocumentMenu
     let items: [NSMenuItem] = DocumentManager.shared.creatableDocuments.map {
       let item = NSMenuItem(title: $0.newMenuTitle, action: #selector(newDocument(_:)), keyEquivalent: "")
@@ -49,10 +62,35 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Enable iff. there are document creators
     fileMenu?.items.first?.isEnabled = !items.isEmpty
     newDocumentMenu?.items = items
-    initCommandsMenu()
+  }
+      
+  private func setupPreferencesMenu() {
+    guard let mainMenu = NSApplication.shared.mainMenu else { return }
+    guard let preferencesMenu = mainMenu.findItem(with: "Nimble/Preferences")?.submenu else { return }
+    
+    let colorThemeMenu = NSMenu(title: "Color Theme")
+    let colorThemeMenuItem = NSMenuItem(title: "Color Theme", action: nil, keyEquivalent: "")
+    colorThemeMenuItem.submenu = colorThemeMenu
+    
+    preferencesMenu.addItem(NSMenuItem.separator())
+    preferencesMenu.addItem(colorThemeMenuItem)
+    
+    let defaultThemeItem = NSMenuItem(title: "Default", action: #selector(switchTheme(_:)), keyEquivalent: "")
+    defaultThemeItem.target = self
+    
+    var themeItems = [defaultThemeItem]
+    
+    for theme in ThemeManager.shared.themes {
+      let themeItem = NSMenuItem(title: theme.name, action: #selector(switchTheme(_:)), keyEquivalent: "")
+      themeItem.target = self
+      themeItem.representedObject = theme
+      themeItems.append(themeItem)
+    }
+    
+    colorThemeMenu.items = themeItems
   }
   
-  func initCommandsMenu() {
+  private func setupCommandsMenus() {
     guard let mainMenu = NSApplication.shared.mainMenu else { return }
     for command in CommandManager.shared.commands {
       guard let commandMenuItem = createMenuItem(for: command) else {
@@ -64,7 +102,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
   }
   
-  func createMenuItem(for command: Command) -> NSMenuItem? {
+  ///TODO: move it to the command (e.g. to an extension created in this module)
+  private func createMenuItem(for command: Command) -> NSMenuItem? {
     guard command.menuPath != nil else { return nil }
     let (key, mask) = getKeyEquivalent(for: command)
     let commandWrapper = NSObjectCommandWrapper(wrapperedCommand: command)
@@ -75,7 +114,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     return menuItem
   }
   
-  func getKeyEquivalent(for command: Command) -> (String, NSEvent.ModifierFlags) {
+  ///TODO: move it to the command (e.g. to an extension created in this module)
+  private func getKeyEquivalent(for command: Command) -> (String, NSEvent.ModifierFlags) {
     guard let keyEquivalent = command.keyEquivalent else {
       return ("", [])
     }
@@ -87,6 +127,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       }
     }
     return (String(char), flags)
+  }
+  
+  
+  func applicationDidFinishLaunching(_ notification: Notification) {
+    // Replace the default delegate installed by the NSDocumentController
+    // The default one shows all recent documents without filtering etc.
+    openRecentDocumentMenu?.delegate = self
+    
+    // Loading plugins
+    PluginManager.shared.load()
+    
+
+    setupApplicationMenu()
+    setupPreferencesMenu()
+    setupCommandsMenus()
   }
   
   func applicationWillTerminate(_ aNotification: Notification) {

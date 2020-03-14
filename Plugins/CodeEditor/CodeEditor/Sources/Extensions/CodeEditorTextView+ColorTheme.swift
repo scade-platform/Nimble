@@ -11,19 +11,20 @@ import CodeEditor
 
 extension CodeEditorTextView {
   
-  public func apply(theme: ColorTheme) {
-    self.selectedTextAttributes = [.backgroundColor: theme.global.selection]
-    self.lineHighLightColor = theme.global.lineHighlight    
-    self.insertionPointColor = theme.global.caret
+  public func apply(theme: Theme) {    
+    self.selectedTextAttributes = [.backgroundColor: theme.general.selection]
+    self.lineHighLightColor = theme.general.lineHighlight
+    self.insertionPointColor = theme.general.caret
     
     if let textStorage = self.textStorage {
       for layoutManager in textStorage.layoutManagers {
         //layoutManager.firstTextView?.font = theme.font
-        layoutManager.firstTextView?.textColor = theme.global.foreground
+        layoutManager.firstTextView?.textColor = theme.general.foreground
       }
     }
+    
+    lineNumberView?.needsDisplay = true
   }
-  
 }
 
 

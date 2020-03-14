@@ -49,7 +49,9 @@ final class LineNumberView: NSRulerView {
   }
   
   override func draw(_ dirtyRect: NSRect) {
-    self.drawBackground(in: dirtyRect)
+    if let draws = textView?.drawsBackground, draws {
+      self.drawBackground(in: dirtyRect)
+    }    
     self.drawHashMarksAndLabels(in: dirtyRect)
   }
   

@@ -128,7 +128,7 @@ public final class SyntaxParser {
     
     
     var nodes = res?.nodes ?? []
-    let theme = ColorThemeManager.shared.currentTheme
+    let theme = ThemeManager.shared.currentTheme
     
     // Visit and color nodes transforming ranges w.r.t offsets
     nodes.visit { node in

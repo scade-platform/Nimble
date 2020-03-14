@@ -13,10 +13,15 @@ import KPCTabsControl
 
 // MARK: - Tab Item
 
-class TabItem: СustomizableTabItem {
+class TabItem : СustomizableTabItem {
   let document: Document
-  lazy var tabStyle: Style? = NimbleStyle(theme: TabTheme(self))
-    
+  
+  fileprivate weak var parent: TabbedEditor!
+  
+  lazy var tabStyle: Style? = TabStyle(self)
+  
+  var active: Bool = false
+  
   var edited: Bool {
     return document.isDocumentEdited
   }
@@ -29,8 +34,9 @@ class TabItem: СustomizableTabItem {
     return document.editor
   }
   
-  init(_ document: Document) {
+  init(_ document: Document, parent: TabbedEditor) {
     self.document = document
+    self.parent = parent
   }
 }
 
@@ -39,21 +45,23 @@ class TabItem: СustomizableTabItem {
 
 class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
   
-  @IBOutlet weak var tabBar: TabsControl?
+  @IBOutlet weak var tabBar: TabsControl!
   @IBOutlet weak var tabViewContainer: NSView!
-        
+  
+  private lazy var style: TabControlStyle = TabControlStyle(tabBar)
+  
   var items: [TabItem] = []
   
   var documents: [Document] {
     return items.map {$0.document}
   }
-    
+      
   private(set) var currentItem: TabItem? = nil {
     didSet {
       defer {
         workbench?.currentDocumentDidChange(currentItem?.document)
       }
-      
+      currentItem?.active = true
       guard let item = currentItem else { return }
       guard let editor = item.editor else { return }
       
@@ -63,6 +71,7 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
       tabViewContainer.addSubview(editor.view)
     }     
     willSet {
+      currentItem?.active = false
       guard let editor = currentItem?.editor else { return }
       editor.view.removeFromSuperview()
       editor.removeFromParent()
@@ -83,17 +92,31 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    tabBar?.style = NimbleStyle()
-    tabBar?.delegate = self
-    tabBar?.dataSource = self
-    
-    tabBar?.reloadTabs()
+    tabBar.style = style
+    tabBar.delegate = self
+    tabBar.dataSource = self
+        
+    updateVisuals()
+    ThemeManager.shared.observers.add(observer: self)
   }
-
+  
+  private func updateVisuals() {
+    let tabBarColor = style.theme.unselectableTabButtonTheme.backgroundColor
+    // whole tabbar color
+    tabBar.setBackgroundColor(tabBarColor)
+    // tabs container color -> visible as colored separators between tabs
+    tabBar.setTabsBackgroundColor(tabBarColor.darkerColor())
+    
+    let tabViewColor = style.theme.selectedTabButtonTheme.backgroundColor
+    tabViewContainer.setBackgroundColor(tabViewColor)
+    
+    tabBar.reloadTabs()
+  }
+  
   func show(_ doc: Document) {
     guard let index = currentIndex else { return }
-    items[index] = TabItem(doc)
-    tabBar?.reloadTabs()
+    items[index] = TabItem(doc, parent: self)
+    tabBar.reloadTabs()
     selectTab(index)
   }
   
@@ -104,10 +127,13 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
   func insertTab(_ doc: Document, at pos: Int, select: Bool = true) {
     let curIndex = currentIndex
     
-    items.insert(TabItem(doc), at: pos)
-    doc.observers.add(observer: self)
+    let item = TabItem(doc, parent: self)
     
-    tabBar?.reloadTabs()
+    item.parent = self
+    doc.observers.add(observer: self)
+    items.insert(item, at: pos)
+    
+    tabBar.reloadTabs()
         
     if select {
       selectTab(pos)      
@@ -119,10 +145,11 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
   func removeTab(_ doc: Document) {
     guard let pos = items.firstIndex(where: {$0.document === doc}) else { return }
         
-    items.remove(at: pos)
+    items[pos].parent = nil
     doc.observers.remove(observer: self)
+    items.remove(at: pos)
     
-    tabBar?.reloadTabs()
+    tabBar.reloadTabs()
     
     if let curIndex = currentIndex {
       selectTab(curIndex)
@@ -136,7 +163,7 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
   }
       
   func selectTab(_ index: Int) {
-    tabBar?.selectItemAtIndex(index)
+    tabBar.selectItemAtIndex(index)
   }
   
   func findTab(_ doc: Document) -> Int? {
@@ -157,7 +184,7 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
 
 extension TabbedEditor: DocumentObserver {
   func documentDidChange(_ document: Document) {
-    tabBar?.reloadTabs()
+    tabBar.reloadTabs()
   }
 }
 
@@ -210,71 +237,133 @@ extension TabbedEditor: TabsControlDelegate {
 }
 
 
+// MARK: - ThemeObserver
 
-// MARK: - Themes
+extension TabbedEditor: ThemeObserver {
+  func themeDidChanged(_ theme: NimbleCore.Theme) {
+    self.updateVisuals()
+  }
+}
 
-struct TabTheme: Theme {
-  let tabButtonTheme: TabButtonTheme = DefaultTabButtonTheme()
-  let unselectableTabButtonTheme: TabButtonTheme = UnselectableTabButtonTheme(base: DefaultTabButtonTheme())
-  let tabsControlTheme: TabsControlTheme = DefaultTabsControlTheme()
+// MARK: - Theme & Style
+
+fileprivate struct TabControlStyle: ThemedStyle {
+  private weak var control: TabsControl!
   
-  let selectedTabButtonTheme: TabButtonTheme
-  
-  fileprivate static var sharedBorderColor: NSColor { return getColorFromAsset("BorderColor", defualt: NSColor.separatorColor)}
-  fileprivate static var sharedBackgroundColor: NSColor { return getColorFromAsset("BackgroundColor", defualt: NSColor.windowBackgroundColor) }
-  
-  init(_ tabItem: TabItem?) {
-    self.selectedTabButtonTheme = SelectedTabButtonTheme(base: DefaultTabButtonTheme(), tabItem: tabItem)
+  public let theme: KPCTabsControl.Theme = TabTheme()
+  public let tabButtonWidth: TabWidth = .flexible(min: 70, max: 250)
+  public let tabsControlRecommendedHeight: CGFloat = 24.0
+  public var tabButtonsMargin: (left: CGFloat, right: CGFloat) {
+    if control.numberOfButtons < 1 || control.selectedButtonIndex == control.numberOfButtons - 1 {
+      return (0.0, 0.0)
+    }
+    return (0.0, 1.0)
   }
   
-  // MARK: - Defualt tab button theme
-  fileprivate struct DefaultTabButtonTheme: KPCTabsControl.TabButtonTheme {
-    var backgroundColor: NSColor { return TabTheme.sharedBackgroundColor }
-    var borderColor: NSColor { return TabTheme.sharedBorderColor }
-    var titleColor: NSColor { return getColorFromAsset("TextColor", defualt: NSColor.selectedTextColor) }
-    var titleFont: NSFont { return NSFont.systemFont(ofSize: 12) } // { return NSFontManager.shared.convert(NSFont.systemFont(ofSize: 12), toHaveTrait: .italicFontMask) }
+  init(_ control: TabsControl) {
+    self.control = control
   }
+}
+
+fileprivate struct TabStyle: ThemedStyle {
+  private weak var item: TabItem!
   
+  public let theme: KPCTabsControl.Theme = TabTheme()
   
-  // MARK: - Selected tab button theme
-  fileprivate struct SelectedTabButtonTheme: KPCTabsControl.TabButtonTheme {
-    let base: DefaultTabButtonTheme
-    weak var tabItem: TabItem?
-    
-    var backgroundColor: NSColor {
-//      if let tabView = tabItem?.viewController?.view,
-//          let cgColor = tabView.layer?.backgroundColor,
-//          let color = NSColor(cgColor: cgColor) {
-//
-//          return color
-//      }
-      return getColorFromAsset("SelectedBackgroundColor", defualt: NSColor.white)
+  public let tabButtonWidth: TabWidth = .flexible(min: 70, max: 250)
+  public let tabsControlRecommendedHeight: CGFloat = 24.0
+  
+  init(_ item: TabItem) {
+    self.item = item
+  }
+
+  func tabButtonOffset(index: Int, totalCount: Int) -> Offset {
+    guard index > 0, let selected = item.parent.tabBar.selectedButtonIndex else {
+      return Offset(x: 0)
     }
     
-    var borderColor: NSColor { return TabTheme.sharedBorderColor }
-    var titleColor: NSColor { return getColorFromAsset("SelectedTextColor", defualt: NSColor.selectedTextColor)  }
-    var titleFont: NSFont { return NSFont.systemFont(ofSize: 12) } // { return NSFontManager.shared.convert(NSFont.systemFont(ofSize: 12), toHaveTrait: .italicFontMask) }
+    if index == selected || index == selected + 1 {
+      return Offset(x: 0)
+    }
+        
+    return Offset(x: 1)
+  }
+}
+
+
+fileprivate struct TabTheme: KPCTabsControl.Theme {
+  
+  public init() { }
+  
+  public let tabsControlTheme: TabsControlTheme = DefaultTabsControlTheme()
+
+  public let tabButtonTheme: TabButtonTheme = DefaultTabButtonTheme()
+  public let selectedTabButtonTheme: TabButtonTheme = SelectedTabButtonTheme()
+  public let unselectableTabButtonTheme: TabButtonTheme = DefaultTabButtonTheme()
+      
+  private static var sharedBorderColor: NSColor { .clear }
+  
+  fileprivate static var sharedBackgroundColor: NSColor {
+    ThemeManager.shared.currentTheme?.general.background ?? .clear }
+  
+  private static var sharedTitleFont: NSFont { NSFont.systemFont(ofSize: 12) }
+  private static var sharedTitleColor: NSColor {
+    if sharedBackgroundColor.isDark {
+      return NSColor(calibratedRed: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+    } else {
+      return NSColor(calibratedRed: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
+    }
   }
   
-  
-  // MARK: - Unselected tab button theme
-  fileprivate struct UnselectableTabButtonTheme: KPCTabsControl.TabButtonTheme {
-    let base: DefaultTabButtonTheme
+  // Themes
     
-    var backgroundColor: NSColor { return base.backgroundColor }
-    var borderColor: NSColor { return base.borderColor }
-    var titleColor: NSColor { return base.titleColor }
-    var titleFont: NSFont { return base.titleFont }
+  fileprivate struct DefaultTabButtonTheme: KPCTabsControl.TabButtonTheme {
+    var backgroundColor: NSColor {
+      let color = TabTheme.sharedBackgroundColor
+      if color.isDark {
+        return color.lighterColor()
+      } else {
+        return color.darkerColor()
+      }
+    }
+    
+    var borderColor: NSColor { TabTheme.sharedBorderColor }
+    var titleColor: NSColor {
+      if TabTheme.sharedBackgroundColor.isDark {
+        return TabTheme.sharedTitleColor.darkerColor(by: 0.3)
+      } else {
+        return TabTheme.sharedTitleColor.lighterColor(by: 0.3)
+      }
+    }
+    var titleFont: NSFont { TabTheme.sharedTitleFont }
   }
   
+  fileprivate struct SelectedTabButtonTheme: KPCTabsControl.TabButtonTheme {
+    var backgroundColor: NSColor { TabTheme.sharedBackgroundColor }
+    
+    var borderColor: NSColor { TabTheme.sharedBorderColor }
+    var titleColor: NSColor { TabTheme.sharedTitleColor }
+    var titleFont: NSFont { TabTheme.sharedTitleFont }
+  }
   
-  // MARK: - Default tabs control theme
   fileprivate struct DefaultTabsControlTheme: KPCTabsControl.TabsControlTheme {
     var backgroundColor: NSColor { return TabTheme.sharedBackgroundColor }
     var borderColor: NSColor { return TabTheme.sharedBorderColor }
   }
 }
 
-fileprivate func getColorFromAsset(_ name: String, defualt: NSColor) -> NSColor {
-  return NSColor.init(named: name, bundle: Bundle.init(for: TabsControl.self)) ?? defualt
+
+extension NSColor {
+  func darkerColor(by value: CGFloat = 0.1) -> NSColor {
+    var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+    self.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
+    return NSColor(calibratedHue: h, saturation: s, brightness: max(b - value, 0.0), alpha: a)
+  }
+  
+  func lighterColor(by value: CGFloat = 0.1) -> NSColor {
+    var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+    self.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
+    return NSColor(calibratedHue: h, saturation: s, brightness: min(b + value, 1.0), alpha: a)
+  }
+  
 }

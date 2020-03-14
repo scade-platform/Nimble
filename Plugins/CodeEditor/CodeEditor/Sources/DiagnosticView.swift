@@ -53,13 +53,17 @@ class DiagnosticView: NSStackView {
   init(textView: NSTextView, diagnostics: [Diagnostic], line: Int) {
     self.textView = textView
     self.line = line
+    
     super.init(frame: .zero)
-    ColorThemeManager.shared.observers.add(observer: self)
+    
     self.orientation = .vertical
     self.alignment = .trailing
     self.spacing = 8
+        
     set(diagnostics: diagnostics)
     setupView()
+    
+    ThemeManager.shared.observers.add(observer: self)
   }
   
   required init?(coder: NSCoder) {
@@ -108,8 +112,8 @@ class DiagnosticView: NSStackView {
   }
 }
 
-extension DiagnosticView: ColorThemeObserver {
-  func colorThemeDidChanged(_ theme: ColorTheme) {
+extension DiagnosticView: ThemeObserver {
+  func colorThemeDidChanged(_ theme: Theme) {
     self.subviews.forEach{$0.removeFromSuperview()}
     let d = self.diagnostics
     self.diagnostics = d
@@ -174,7 +178,7 @@ class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegateImpl {
   private func addText(for diagnostic: Diagnostic, in textView: NSTextField) {
     textView.stringValue = diagnostic.message
     textView.font = font
-    textView.textColor = ColorThemeManager.shared.currentTheme?.global.foreground
+    textView.textColor = ThemeManager.shared.currentTheme?.general.foreground
     textView.drawsBackground = true
     textView.backgroundColor = DiagnosticViewUtils.textColumnColor(for: diagnostic)
     textView.sizeToFit()
@@ -203,7 +207,7 @@ class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegateImpl {
     if diagnostics.count > 1 {
       let countView = NSTextField(labelWithString: "\(diagnostics.count)")
       countView.font = font
-      countView.textColor = ColorThemeManager.shared.currentTheme?.global.foreground
+      countView.textColor = ThemeManager.shared.currentTheme?.general.foreground
       countView.sizeToFit()
 
       countView.alignment = .center
@@ -233,7 +237,7 @@ class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegateImpl {
       guard let diagnostic = diagnostics.first(where: {$0.severity == diagnosticType}) else { continue }
       textView.stringValue = diagnostic.message
       textView.font = font
-      textView.textColor = ColorThemeManager.shared.currentTheme?.global.foreground
+      textView.textColor = ThemeManager.shared.currentTheme?.general.foreground
       textView.drawsBackground = true
       textView.backgroundColor = DiagnosticViewUtils.textColumnColor(for: diagnostic)
       textView.sizeToFit()
@@ -291,7 +295,7 @@ fileprivate class DiagnosticViewUtils {
   }
 
   static var themeKind : ThemeKind {
-    guard let backgroundColor = ColorThemeManager.shared.currentTheme?.global.background else {
+    guard let backgroundColor = ThemeManager.shared.currentTheme?.general.background else {
       return .dark
     }
     return backgroundColor.lightnessComponent > CGFloat(0.5) ? .light : .dark

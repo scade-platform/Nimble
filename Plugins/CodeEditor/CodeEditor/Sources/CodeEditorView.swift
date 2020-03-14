@@ -45,8 +45,7 @@ class CodeEditorView: NSViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     textView.delegate = self
-    ColorThemeManager.shared.observers.add(observer: self)
-    
+    ThemeManager.shared.observers.add(observer: self)
     loadContent()
   }
   
@@ -88,22 +87,16 @@ class CodeEditorView: NSViewController {
     layoutManager.replaceTextStorage(doc.textStorage)
     doc.textStorage.delegate = self
     
-    // Need to reapply whole coloring after replacing the textStorage
-    applyTheme()
+    
+    self.textView.drawsBackground = false
     
     ///TODO: read from settings
-    if let font = NSFont.init(name: "SFMono-Medium", size: 12) {
-      textView.font = font
+    self.textView.font = NSFont.init(name: "SFMono-Medium", size: 12)
+        
+    if let theme = ThemeManager.shared.currentTheme {
+      textView.apply(theme: theme)
+      highlightSyntax()
     }
-    
-    highlightSyntax()
-  }
-
-  private func applyTheme(_ theme: ColorTheme? = nil) {
-    guard let theme = theme ?? ColorThemeManager.shared.currentTheme else { return }
-    
-    textView.backgroundColor = theme.global.background
-    textView.apply(theme: theme)
   }
       
   private func showDiagnostics() {
@@ -219,9 +212,9 @@ class CodeEditorView: NSViewController {
 
 // MARK: - ColorThemeObserver
 
-extension CodeEditorView: ColorThemeObserver {
-  func colorThemeDidChanged(_ theme: ColorTheme) {
-    self.applyTheme(theme)
+extension CodeEditorView: ThemeObserver {
+  func themeDidChanged(_ theme: Theme) {
+    textView.apply(theme: theme)
     highlightSyntax()
   }
 }
