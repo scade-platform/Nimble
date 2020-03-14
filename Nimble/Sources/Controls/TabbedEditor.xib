@@ -20,12 +20,12 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <customView horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="G8a-Uv-06z">
-                    <rect key="frame" x="0.0" y="0.0" width="680" height="374"/>
+                    <rect key="frame" x="0.0" y="0.0" width="680" height="375"/>
                 </customView>
                 <customView horizontalHuggingPriority="249" horizontalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="gTU-Ly-qCb" customClass="TabsControl" customModule="KPCTabsControl">
-                    <rect key="frame" x="0.0" y="374" width="680" height="25"/>
+                    <rect key="frame" x="0.0" y="375" width="680" height="24"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="25" id="Vah-b0-t3k"/>
+                        <constraint firstAttribute="height" constant="24" id="Vah-b0-t3k"/>
                     </constraints>
                 </customView>
             </subviews>

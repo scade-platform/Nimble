@@ -252,7 +252,8 @@ fileprivate struct TabControlStyle: ThemedStyle {
   
   public let theme: KPCTabsControl.Theme = TabTheme()
   public let tabButtonWidth: TabWidth = .flexible(min: 70, max: 250)
-  public let tabsControlRecommendedHeight: CGFloat = 24.0
+  public let tabsControlRecommendedHeight: CGFloat = 24.0 // No impact for now
+  
   public var tabButtonsMargin: (left: CGFloat, right: CGFloat) {
     if control.numberOfButtons < 1 || control.selectedButtonIndex == control.numberOfButtons - 1 {
       return (0.0, 0.0)
@@ -271,7 +272,7 @@ fileprivate struct TabStyle: ThemedStyle {
   public let theme: KPCTabsControl.Theme = TabTheme()
   
   public let tabButtonWidth: TabWidth = .flexible(min: 70, max: 250)
-  public let tabsControlRecommendedHeight: CGFloat = 24.0
+  public let tabsControlRecommendedHeight: CGFloat = 24.0 // No impact for now
   
   init(_ item: TabItem) {
     self.item = item
