@@ -9,22 +9,24 @@ import Foundation
 @_exported import Path
 
 
+// MARK: - File
+
 public class File: FileSystemElement {
-  private var fsObserver: FSFileObserver?
+  private var filePresenter: FilePresenter?
   
   public var observers = ObserverSet<FileObserver>() {
     didSet {
       guard !observers.isEmpty else {
         //stop FS observing if there aren't observers
-        guard let filePresenter = fsObserver  else { return }
+        guard let filePresenter = self.filePresenter  else { return }
         NSFileCoordinator.removeFilePresenter(filePresenter)
-        fsObserver = nil
+        self.filePresenter = nil
         return
       }
       //begin FS observing only if there is at least one observer
-      guard fsObserver == nil else { return }
-      let filePresenter = FSFileObserver(self)
-      self.fsObserver = filePresenter
+      guard filePresenter == nil else { return }
+      let filePresenter = FilePresenter(self)
+      self.filePresenter = filePresenter
       NSFileCoordinator.addFilePresenter(filePresenter)
     }
   }
@@ -35,6 +37,7 @@ public class File: FileSystemElement {
   }
 }
 
+// MARK: - FileSystemElement
 
 public class FileSystemElement {
   public let path: Path
@@ -96,7 +99,16 @@ extension FileSystemElement {
     return nil
   }
 }
-fileprivate class FSFileObserver: NSObject, NSFilePresenter {
+
+
+// MARK: - Observers
+
+public protocol FileObserver {
+  func fileDidChange(_ file: File)
+}
+
+
+fileprivate class FilePresenter: NSObject, NSFilePresenter {
   let presentedElement: File
   
   var presentedItemURL: URL? {
@@ -117,10 +129,8 @@ fileprivate class FSFileObserver: NSObject, NSFilePresenter {
   }
 }
 
-public protocol FileObserver {
-  func fileDidChange(_ file: File)
-}
 
+// MARK: - Extensions
 
 public extension URL {
   var file: File? {

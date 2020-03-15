@@ -7,29 +7,26 @@
 
 import Foundation
 
+// MARK: - Folder
+
 public class Folder: FileSystemElement {
-  private var fsObserver: FSFolderObserver?
+  private var filePresenter: FilePresenter?
   
   public var observers = ObserverSet<FolderObserver>() {
     didSet {
       guard !observers.isEmpty else {
         //stop FS observing if there aren't observers
-        guard let filePresenter = fsObserver  else { return }
+        guard let filePresenter = self.filePresenter  else { return }
         NSFileCoordinator.removeFilePresenter(filePresenter)
-        fsObserver = nil
+        self.filePresenter = nil
         return
       }
       //begin FS observing only if there is at least one observer
-      guard fsObserver == nil else { return }
-      let filePresenter = FSFolderObserver(self)
-      self.fsObserver = filePresenter
+      guard filePresenter == nil else { return }
+      let filePresenter = FilePresenter(self)
+      self.filePresenter = filePresenter
       NSFileCoordinator.addFilePresenter(filePresenter)
     }
-  }
-  
-  public override init?(path: Path) {
-    guard path.isDirectory else { return nil }
-    super.init(path: path)
   }
   
   //TODO: sorting, reloading/FS watchig etc.
@@ -41,6 +38,13 @@ public class Folder: FileSystemElement {
     return result
   }
   
+  public var isOpened: Bool = false
+  
+  public override init?(path: Path) {
+    guard path.isDirectory else { return nil }
+    super.init(path: path)
+  }
+    
   public func subfolders() throws -> [Folder] {
     let dirs = try self.path.ls().directories
     return dirs.compactMap{Folder(path: $0)}.sorted{$0.name.lowercased() < $1.name.lowercased()}
@@ -52,7 +56,21 @@ public class Folder: FileSystemElement {
   }
 }
 
-fileprivate class FSFolderObserver: NSObject, NSFilePresenter  {
+
+// MARK: - Observers
+
+public protocol FolderObserver  {
+  func folderDidChange(_ folder: Folder)
+  func childDidChange(_ folder: Folder, child: FileSystemElement)
+}
+
+public extension FolderObserver {
+  //default implementation
+  func folderDidChange(_ folder: Folder) {}
+  func childDidChange(_ folder: Folder, child: FileSystemElement) {}
+}
+
+fileprivate class FilePresenter: NSObject, NSFilePresenter  {
   let presentedElement: Folder
   
   var presentedItemURL: URL? {
@@ -79,14 +97,7 @@ fileprivate class FSFolderObserver: NSObject, NSFilePresenter  {
 }
 
 
-public protocol FolderObserver  {
-  func folderDidChange(_ folder: Folder)
-  func childDidChange(_ folder: Folder, child: FileSystemElement)
-}
 
-public extension FolderObserver {
-  //default implementation
-  func folderDidChange(_ folder: Folder) {}
-  func childDidChange(_ folder: Folder, child: FileSystemElement) {}
-}
+
+
 

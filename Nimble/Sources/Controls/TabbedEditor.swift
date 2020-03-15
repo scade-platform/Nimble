@@ -30,6 +30,10 @@ class TabItem : СustomizableTabItem {
     return edited ? "*\(document.title)" : document.title
   }
   
+  var icon: NSImage? {
+    return document.icon?.image
+  }
+  
   var editor: WorkbenchEditor? {
     return document.editor
   }
@@ -203,6 +207,11 @@ extension TabbedEditor: TabsControlDataSource {
   func tabsControl(_ control: TabsControl, titleForItem item: AnyObject) -> String {
     return (item as! TabItem).title
   }
+  
+  func tabsControl(_ control: TabsControl, iconForItem item:AnyObject) -> NSImage? {
+    return (item as! TabItem).icon
+  }
+  
 }
 
 extension TabbedEditor: TabsControlDelegate {
@@ -289,6 +298,8 @@ fileprivate struct TabStyle: ThemedStyle {
         
     return Offset(x: 1)
   }
+  
+  
 }
 
 
@@ -351,20 +362,4 @@ fileprivate struct TabTheme: KPCTabsControl.Theme {
     var backgroundColor: NSColor { return TabTheme.sharedBackgroundColor }
     var borderColor: NSColor { return TabTheme.sharedBorderColor }
   }
-}
-
-
-extension NSColor {
-  func darkerColor(by value: CGFloat = 0.1) -> NSColor {
-    var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
-    self.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
-    return NSColor(calibratedHue: h, saturation: s, brightness: max(b - value, 0.0), alpha: a)
-  }
-  
-  func lighterColor(by value: CGFloat = 0.1) -> NSColor {
-    var h: CGFloat = 0, s: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
-    self.getHue(&h, saturation: &s, brightness: &b, alpha: &a)
-    return NSColor(calibratedHue: h, saturation: s, brightness: min(b + value, 1.0), alpha: a)
-  }
-  
 }

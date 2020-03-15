@@ -267,21 +267,16 @@ extension OutlineDataSource: NSOutlineViewDelegate {
                                               owner: self) as? NSTableCellView else { return nil }
         
       view.textField?.stringValue = item.name
-      view.imageView?.image = Bundle(for: type(of: self)).image(forResource: "document")
+      view.imageView?.image = item.icon?.image //Bundle(for: type(of: self)).image(forResource: "document")
       
       return view
       
     case let item as FolderItem:
       guard let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "DataCell"),
                                             owner: self) as? NSTableCellView else { return nil }
-      
+
       view.textField?.stringValue = item.folder.name
-      
-      if outlineView.isItemExpanded(item) {
-        view.imageView?.image = Bundle(for: type(of: self)).image(forResource: "folder-open")
-      } else {
-        view.imageView?.image = Bundle(for: type(of: self)).image(forResource: "folder-close")
-      }
+      view.imageView?.image = item.folder.icon?.image
       
       return view
           
@@ -312,26 +307,31 @@ extension OutlineDataSource: NSOutlineViewDelegate {
     guard let outlineView = notification.object as? NSOutlineView,
           let item = notification.userInfo?["NSObject"] else { return }
     
-    //update folder icon
+    // update folder icon
     outlineView.reloadItem(item, reloadChildren: false)
   }
   
   public func outlineViewItemWillExpand(_ notification: Notification) {
     guard let item = notification.userInfo?["NSObject"],
           let folderItem = item as? FolderItem else { return }
-    //update data before expand, because content may be changed
+    
+    // update data before expand, because content may be changed
     folderItem.update()
-    //listening only expanded FolderItem
+    // listening only expanded FolderItem
     folderItem.startMonitoring()
+    // mark as opened
+    folderItem.folder.isOpened = true
   }
   
   public func outlineViewItemDidCollapse(_ notification: Notification) {
     guard let outlineView = notification.object as? NSOutlineView,
           let item = notification.userInfo?["NSObject"],
           let folderItem = item as? FolderItem else { return }
-    //listening only expanded FolderItem
+    // listening only expanded FolderItem
     folderItem.stopMonitoring()
-    //update folder icon
+    // mark as closed
+    folderItem.folder.isOpened = false
+    // update folder icon
     outlineView.reloadItem(item, reloadChildren: false)
   }
  

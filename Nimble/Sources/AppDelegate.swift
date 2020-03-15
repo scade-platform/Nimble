@@ -131,6 +131,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   
   
   func applicationDidFinishLaunching(_ notification: Notification) {
+    IconsManager.shared.register(provider: self)
+    
     // Replace the default delegate installed by the NSDocumentController
     // The default one shows all recent documents without filtering etc.
     openRecentDocumentMenu?.delegate = self
@@ -159,6 +161,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 //  }
   
 }
+
+// MARK: - NSMenuDelegate
 
 extension AppDelegate: NSMenuDelegate {
   func menuNeedsUpdate(_ menu: NSMenu) {
@@ -224,6 +228,33 @@ fileprivate enum ModifierFlags: CaseIterable {
   }
 }
 
+// MARK: - IconsProvider
+
+extension AppDelegate: IconsProvider {
+  func icon(forResource name: String) -> Icon? {
+    guard let image = Bundle(for: type(of: self)).image(forResource: name) else {
+      return nil
+    }
+     
+    return Icon(image: image.imageWithTint(.labelColor))
+  }
+  
+  func icon<T>(for obj: T) -> Icon? {
+    switch obj {
+    case is File, is Document:
+      return icon(forResource: "document")
+      
+    case let folder as Folder:
+      return icon(forResource: folder.isOpened ?  "folder-open": "folder-close")
+      
+    default:
+      return nil
+    }
+  }
+}
+
+
+// MARK: - Command wrapper
 
 fileprivate class NSObjectCommandWrapper: NSObject {
   private let wrapperedCommand: Command
