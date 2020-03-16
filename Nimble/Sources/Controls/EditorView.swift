@@ -24,6 +24,7 @@ class EditorView: NSViewController {
     view.addSubview(editor.view)
     
     editor.view.frame.size = view.frame.size
+    editor.view.layoutSubtreeIfNeeded()
   }
   
   func hideEditor() {
