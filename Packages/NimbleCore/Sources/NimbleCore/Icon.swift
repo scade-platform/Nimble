@@ -31,7 +31,7 @@ public class IconsManager {
   private init() {}
   
   public func register(provider: IconsProvider) {
-    providers.insert(IconsProviderRef(value: provider), at: 0)
+    providers.append(IconsProviderRef(value: provider))
   }
   
   public func icon<T>(for obj: T) -> Icon? {

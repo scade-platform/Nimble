@@ -9,8 +9,46 @@
 import Cocoa
 import SwiftSVG
 
-public extension NSImage {
+public class SVGImage: NSImage {
+  private var layer: SVGLayer?
+  
+  public convenience init(svg: URL) {
+    let layer = SVGLayer.createFrom(url: svg)
+    let size = layer?.viewBox?.size ?? layer?.boundingBox.size ?? NSSize()
+    self.init(size: size)
+    self.layer = layer
+  }
+    
+  public override func cgImage(forProposedRect proposedDestRect: UnsafeMutablePointer<NSRect>?, context referenceContext: NSGraphicsContext?, hints: [NSImageRep.HintKey : Any]?) -> CGImage? {
+    
+    guard let layer = layer else { return nil }
+    
+    let rect = proposedDestRect!.pointee
+    let scale = NSScreen.main?.backingScaleFactor ?? 1.0
+    
+    let width = scale * rect.size.width
+    let height = scale * rect.size.height
+    
+    let colorSpace = CGColorSpace(name: CGColorSpace.genericRGBLinear)
+    let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)
+    
+    guard let context  = CGContext(data: nil, width: Int(width), height: Int(height),
+                                   bitsPerComponent: 8, bytesPerRow: 0,
+                                   space: colorSpace!, bitmapInfo: bitmapInfo.rawValue) else { return nil }
+    
+    let xScale = width / self.size.width
+    let yScale = height / self.size.height
 
+    context.translateBy(x: 0, y: height)
+    context.scaleBy(x: xScale, y: -yScale)
+
+    layer.render(in: context)
+    return context.makeImage()
+  }
+}
+
+
+public extension NSImage {
   func imageWithTint(_ tint: NSColor) -> NSImage {
     var imageRect = NSZeroRect;
     imageRect.size = self.size;
@@ -27,38 +65,5 @@ public extension NSImage {
     highlightImage.unlockFocus()
     
     return highlightImage;
-  }
-
-  class func createSVG(from url: URL, size: NSSize,
-                       completion: @escaping (NSImage) -> ()) {
-
-    CALayer(svgURL: url) { layer in
-      guard let btmpImgRep =
-      NSBitmapImageRep(bitmapDataPlanes: nil,
-                       pixelsWide: Int(size.width),
-                       pixelsHigh: Int(size.height),
-                       bitsPerSample: 8,
-                       samplesPerPixel: 4,
-                       hasAlpha: true,
-                       isPlanar: false,
-                       colorSpaceName: .deviceRGB,
-                       bytesPerRow: 0,
-                       bitsPerPixel: 0) else { return }
-
-      guard let context = NSGraphicsContext(bitmapImageRep: btmpImgRep) else { return }
-
-      let xScale = size.width / layer.boundingBox.width
-      let yScale = size.height / layer.boundingBox.height
-
-      context.cgContext.translateBy(x: 0, y: size.height)
-      context.cgContext.scaleBy(x: xScale, y: -1 * yScale)
-
-      layer.render(in: context.cgContext)
-
-      let image = NSImage(size: size)
-      image.addRepresentation(btmpImgRep)
-
-      completion(image)
-    }
   }
 }

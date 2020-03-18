@@ -12,8 +12,9 @@ import ColorCode
 
 public final class Theme: Decodable {
   public var name: String
+  public var light: Bool?
   public var settings: [ColorSettings]
-  
+    
   public var path: Path? = nil
   
   public lazy var general: GeneralColorSettings =
@@ -81,50 +82,9 @@ protocol ThemeDecoder {
   static func decode(from: Path) -> Theme?
 }
 
-extension YAMLDecoder: ThemeDecoder {
-  static func decode(from file: Path) -> Theme? {
-    guard let content = try? String(contentsOf: file) else { return nil }
-    do {
-      return try YAMLDecoder().decode(Theme.self, from: content)
-    } catch let error as DecodingError {
-      print(error)
-      return nil
-    } catch {
-      return nil
-    }
-  }
-}
-
-extension PropertyListDecoder: ThemeDecoder {
-  static func decode(from file: Path) -> Theme? {
-    guard let content = try? Data(contentsOf: file) else { return nil }
-    
-    do {
-      return try PropertyListDecoder().decode(Theme.self, from: content)
-    } catch let error as DecodingError {
-      print(error)
-      return nil
-    } catch {
-      return nil
-    }
-  }
-}
-
-extension JSONDecoder: ThemeDecoder {
-  static func decode(from file: Path) -> Theme? {
-    guard let content = try? Data(contentsOf: file) else { return nil }
-    
-    do {
-      return try JSONDecoder().decode(Theme.self, from: content)
-    } catch let error as DecodingError {
-      print(error)
-      return nil
-    } catch {
-      return nil
-    }
-  }
-}
-
+extension PropertyListDecoder: ThemeDecoder { }
+extension YAMLDecoder: ThemeDecoder { }
+extension JSONDecoder: ThemeDecoder { }
 
 // MARK: - ThemeManager
 
@@ -171,7 +131,7 @@ public final class ThemeManager {
     do {
       try path.ls().files.forEach { path in
         guard let decoder = decoders.first(where: { path.basename().hasSuffix($0.key) })?.value,
-          let theme = decoder.decode(from: path) else { return }
+              let theme = decoder.decode(from: path) else { return }
         
         theme.path = path
         themes.append(theme)

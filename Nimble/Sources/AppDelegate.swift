@@ -131,15 +131,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   
   
   func applicationDidFinishLaunching(_ notification: Notification) {
-    IconsManager.shared.register(provider: self)
-    
     // Replace the default delegate installed by the NSDocumentController
     // The default one shows all recent documents without filtering etc.
     openRecentDocumentMenu?.delegate = self
     
     // Loading plugins
-    PluginManager.shared.load()
-    
+    PluginManager.shared.load()    
+    IconsManager.shared.register(provider: self)
 
     setupApplicationMenu()
     setupPreferencesMenu()
