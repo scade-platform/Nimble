@@ -279,6 +279,7 @@ extension NimbleWorkbench: Workbench {
       editorView.editor.insertTab(doc, at: editorView.editor.currentIndex!, select: false)
     }
     
+    doc.editor?.didOpenDocument(doc)
     observers.notify { $0.workbenchDidOpenDocument(self, document: doc) }
   }
   

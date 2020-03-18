@@ -2,47 +2,27 @@ import Cocoa
 import NimbleCore
 import ScadeKitExtension
 
-open class SVGEditorView: NSViewController {
+open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
 
-  let sizeMultiplier: CGFloat = 0.8
+  @IBOutlet public weak var scrollView: NSScrollView!
 
-  public var svgView: SVGView? = nil
+  public var svgView = SVGView()
 
   public var elementSelector: SVGElementSelector! = nil
 
   public weak var doc: SVGDocumentProtocol? = nil
-  
+
   open override func viewDidLoad() {
     super.viewDidLoad()
 
     setupDocument()
-
-    svgView = createSVGView(for: view)
+    setupScrollView()
     setupSVGView()
   }
-
-  func createSVGView(for view: NSView) -> SVGView {
-    let newSVGView = SVGView()
-    
-    view.addSubview(newSVGView)
-
-    newSVGView.translatesAutoresizingMaskIntoConstraints = false
-
-    newSVGView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-    newSVGView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-
-
-    newSVGView.widthAnchor.constraint(equalTo: view.widthAnchor,
-                                      multiplier: sizeMultiplier).isActive = true
-    newSVGView.heightAnchor.constraint(equalTo: view.heightAnchor,
-                                       multiplier: sizeMultiplier).isActive = true
-
-    return newSVGView
-  }
-
+  
   public func setupSVGView() {
     if let rootSvg = doc?.rootSvg {
-      svgView?.setSvg(rootSvg)
+      svgView.setSvg(rootSvg)
     }
     setupElementSelector()
   }
@@ -56,6 +36,28 @@ open class SVGEditorView: NSViewController {
       elementSelector.process(rootSvg)
     }
   }
+
+  private func setupScrollView() {
+    let canvasView = CanvasView()
+    canvasView.addSubview(svgView)
+
+    scrollView.documentView = canvasView
+
+    scrollView.hasHorizontalRuler = true
+    scrollView.hasVerticalRuler = true
+    scrollView.rulersVisible = true
+    
+    scrollView.verticalScrollElasticity = .none
+    scrollView.horizontalScrollElasticity = .none
+    
+    scrollView.borderType = .lineBorder
+    
+    scrollView.horizontalRulerView?.measurementUnits = .points
+    scrollView.verticalRulerView?.measurementUnits = .points
+    
+    scrollView.allowsMagnification = true
+  }
+
 }
 
 extension SVGEditorView: DocumentObserver {
@@ -69,3 +71,18 @@ extension SVGEditorView: DocumentObserver {
   }
 }
 
+extension SVGEditorView: WorkbenchEditor {
+  
+  public var editorMenu: NSMenu? {
+    SVGEditorMenu.shared.editor = self
+
+    return SVGEditorMenu.editorMenu
+  }
+  
+  public func didOpenDocument(_ : Document) {
+    guard let canvasView = scrollView.documentView as? CanvasView else { return }
+
+    canvasView.didOpenDocument(doc, scrollView: scrollView, svgView: svgView)
+  }
+
+}

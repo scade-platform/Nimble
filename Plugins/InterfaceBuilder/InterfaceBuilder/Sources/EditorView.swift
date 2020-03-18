@@ -1,4 +1,3 @@
-import NimbleCore
 import SVGEditor
 
 class EditorView: SVGEditorView {
@@ -16,5 +15,3 @@ class EditorView: SVGEditorView {
     }
   }
 }
-
-extension EditorView: WorkbenchEditor { }

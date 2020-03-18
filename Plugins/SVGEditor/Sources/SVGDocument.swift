@@ -6,6 +6,10 @@ import SVGEditor
 public final class SVGDocument: NimbleDocument, SVGDocumentProtocol {
   public var rootSvg: SCDSvgBox?
 
+  public var svgWidth: SCDSvgUnit? { rootSvg?.width }
+  
+  public var svgHeight: SCDSvgUnit? { rootSvg?.height }
+
   lazy var documentController: EditorView = {
     let controller = EditorView.loadFromNib()
     controller.doc = self
@@ -23,17 +27,7 @@ public final class SVGDocument: NimbleDocument, SVGDocumentProtocol {
   }
   
   public override func read(from url: URL, ofType typeName: String) throws {
-    if let svg = SCDRuntime.parseSvg(url.path) as? SCDSvgBox {
-
-      //TODO: add usage of the visitor of SVG elements from ScadeKit
-      //      and don't change the source of the svg document.
-      svg.x = 0
-      svg.y = 0
-      svg.width = 100%
-      svg.height = 100%
-
-      rootSvg = svg
-    }
+    rootSvg = SCDRuntime.parseSvg(url.path) as? SCDSvgBox
   }
   
   public override func data(ofType typeName: String) throws -> Data {

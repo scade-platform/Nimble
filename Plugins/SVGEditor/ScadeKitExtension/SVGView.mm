@@ -8,7 +8,8 @@
   if (self) {
     using namespace phoenix::display;
     Display::instance()->setDisplayView((__bridge void*)self);
-    [self.layer setBackgroundColor:[NSColor clearColor].CGColor];
+    self.wantsLayer = YES;
+    [self.layer setBackgroundColor:[NSColor whiteColor].CGColor];
     isRendered = NO;
   }
   return self;
@@ -38,9 +39,9 @@
   }
 }
 
-- (BOOL)isFlipped {
-  return YES;
-}
+// - (BOOL)isFlipped {
+//   return YES;
+// }
 
 - (void)render:(NSSize)size {
   [SCDRuntime renderSvg:rootSvg x:0 y:0 size:size];
