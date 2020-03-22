@@ -29,7 +29,7 @@ final class Plugin: NimbleCore.Plugin {
 
   private func registerResourceFolder(for project: Project) {
     project.folders.forEach {
-      UserDefaults.standard.set($0.path.string, forKey: "Resource Folder")
+      UserDefaults.standard.set($0.path.string, forKey: "Image Resource Folder")
     }
   }
 }

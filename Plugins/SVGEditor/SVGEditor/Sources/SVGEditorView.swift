@@ -37,7 +37,7 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
     }
   }
 
-  private func setupScrollView() {
+  public func setupScrollView() {
     let canvasView = CanvasView()
     canvasView.addSubview(svgView)
 
@@ -56,6 +56,12 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
     scrollView.verticalRulerView?.measurementUnits = .points
     
     scrollView.allowsMagnification = true
+  }
+
+  open func onOpenDocument() {
+    guard let canvasView = scrollView.documentView as? CanvasView else { return }
+
+    canvasView.didOpenDocument(doc, scrollView: scrollView, svgView: svgView)
   }
 
 }
@@ -80,9 +86,7 @@ extension SVGEditorView: WorkbenchEditor {
   }
   
   public func didOpenDocument(_ : Document) {
-    guard let canvasView = scrollView.documentView as? CanvasView else { return }
-
-    canvasView.didOpenDocument(doc, scrollView: scrollView, svgView: svgView)
+    onOpenDocument()
   }
 
 }

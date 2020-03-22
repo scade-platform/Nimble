@@ -4,7 +4,8 @@ import ScadeKit
 import SVGEditor
 
 public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
-  private var resource: SCDCoreResource?
+
+  let pageApp = PageApp()
 
   public var svgWidth: SCDSvgUnit? {
     guard let width = page?.size.width else { return nil }
@@ -19,11 +20,11 @@ public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
   }
 
   public var rootSvg: SCDSvgBox? {
-    return resource?.contents.last as? SCDSvgBox
+    return page?.drawing as? SCDSvgBox
   }
 
   public var page: SCDWidgetsPage? {
-    return resource?.contents.first as? SCDWidgetsPage
+    return pageApp.adapter.page
   }
 
   private lazy var builderController: EditorView = {
@@ -43,7 +44,7 @@ public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
   }
   
   public override func read(from url: URL, ofType typeName: String) throws {
-    self.resource = SCDRuntime.loadXmiResource(url.path) as? SCDCoreResource
+    pageApp.load(url)
   }
   
   public override func data(ofType typeName: String) throws -> Data {

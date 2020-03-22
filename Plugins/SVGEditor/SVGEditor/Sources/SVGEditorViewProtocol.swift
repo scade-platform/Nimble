@@ -4,6 +4,8 @@ public protocol SVGEditorViewProtocol: class {
 
   var scrollView: NSScrollView! { get }
 
+  func onOpenDocument() -> Void
+
   func zoomIn() -> Void
 
   func zoomOut() -> Void

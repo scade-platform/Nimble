@@ -1,17 +1,20 @@
 import SVGEditor
+import ScadeKit
 
 class EditorView: SVGEditorView {
 
-  override func setupElementSelector() {
-    if elementSelector == nil {
-      elementSelector = WidgetSelector()
-    }
+  let pageApp = PageApp()
 
-    if let pageDocument = doc as? PageDocument,
-       let page = pageDocument.page,
-       let selector = elementSelector as? WidgetSelector {
+  open override func viewDidLoad() {
+    super.viewDidLoad()
 
-      selector.visit(page)
-    }
+    setupScrollView()
+    setupElementSelector()
+  }
+
+  override func onOpenDocument() {
+    super.onOpenDocument()
+
+    (doc as? PageDocument)?.pageApp.launch()
   }
 }

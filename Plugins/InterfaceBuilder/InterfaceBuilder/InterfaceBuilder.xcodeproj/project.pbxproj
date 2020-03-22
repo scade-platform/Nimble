@@ -18,6 +18,7 @@
 		E4D59E0724113876003DAB16 /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D59E0424113876003DAB16 /* Plugin.swift */; };
 		E4D59E0824113876003DAB16 /* EditorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E4D59E0524113876003DAB16 /* EditorView.xib */; };
 		E4D59E0924113876003DAB16 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D59E0624113876003DAB16 /* EditorView.swift */; };
+		E4FFC04024278EC900F04115 /* PageApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4FFC03F24278EC900F04115 /* PageApp.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		E4D59E0424113876003DAB16 /* Plugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
 		E4D59E0524113876003DAB16 /* EditorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditorView.xib; sourceTree = "<group>"; };
 		E4D59E0624113876003DAB16 /* EditorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
+		E4FFC03F24278EC900F04115 /* PageApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 		D7CD750022B8CC37004C437B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				E4FFC03F24278EC900F04115 /* PageApp.swift */,
 				E4D59E0624113876003DAB16 /* EditorView.swift */,
 				E4D59E0524113876003DAB16 /* EditorView.xib */,
 				E4D59E0424113876003DAB16 /* Plugin.swift */,
@@ -166,6 +169,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E4FFC04024278EC900F04115 /* PageApp.swift in Sources */,
 				E4D59E0724113876003DAB16 /* Plugin.swift in Sources */,
 				E451B30022C4B69F006185B7 /* WidgetSelector.swift in Sources */,
 				E4D59E0924113876003DAB16 /* EditorView.swift in Sources */,
