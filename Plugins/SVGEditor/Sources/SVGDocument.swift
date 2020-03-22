@@ -12,7 +12,7 @@ public final class SVGDocument: NimbleDocument, SVGDocumentProtocol {
 
   lazy var documentController: EditorView = {
     let controller = EditorView.loadFromNib()
-    controller.doc = self
+    controller.document = self
 
     return controller
   }()

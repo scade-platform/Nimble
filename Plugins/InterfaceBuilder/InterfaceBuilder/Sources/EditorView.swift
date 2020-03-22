@@ -1,17 +1,25 @@
 import SVGEditor
+import ScadeKit
+import NimbleCore
 
 class EditorView: SVGEditorView {
+  
+  let window = SCDLatticeWindow()
+  
+  var pageDocument: PageDocument? {
+    return document as? PageDocument
+  }
 
-  override func setupElementSelector() {
-    if elementSelector == nil {
-      elementSelector = WidgetSelector()
-    }
+  open override func viewDidLoad() {
+    super.viewDidLoad()
 
-    if let pageDocument = doc as? PageDocument,
-       let page = pageDocument.page,
-       let selector = elementSelector as? WidgetSelector {
+    setupScrollView()
+    setupElementSelector()
+  }
 
-      selector.visit(page)
-    }
+   open override func didOpenDocument(_ document: Document) {
+    super.didOpenDocument(document)
+
+    pageDocument?.adapter.show(window)
   }
 }
