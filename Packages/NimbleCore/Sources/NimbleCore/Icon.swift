@@ -71,3 +71,33 @@ public extension Document {
     return icon ?? IconsManager.shared.icon(for: self)
   }
 }
+
+
+
+// MARK: - Standard icons
+
+public extension IconsManager {
+  
+  private static func icon(name: String) -> Icon {
+    let isLight = ThemeManager.shared.currentTheme?.light ?? false
+    let iconPath = Bundle.main.resources/"Icons/\(name + (isLight ? "-light": "")).svg"
+    return Icon(image: SVGImage(svg: iconPath.url))
+  }
+  
+  enum Icons {
+    public static var cancel = icon(name: "cancel")
+    public static var circleFilled = icon(name: "circle-filled")
+    public static var error = icon(name: "error")
+    public static var file = icon(name: "file")
+    public static var folder = icon(name: "folder")
+    public static var folderOpened = icon(name: "folder-opened")
+    public static var info = icon(name: "info")
+    public static var rootFolder = icon(name: "root-folder")
+    public static var rootFolderOpened = icon(name: "root-folder-opened")
+    public static var run = icon(name: "run")
+    public static var stop = icon(name: "stop")
+    public static var trash = icon(name: "trash")
+    public static var warning = icon(name: "warning")
+  }
+  
+}

@@ -40,6 +40,13 @@ public class Folder: FileSystemElement {
   
   public var isOpened: Bool = false
   
+  public internal(set) var isRoot: Bool = false
+  
+  convenience init?(path: Path, isRoot: Bool = false) {
+    self.init(path: path)
+    self.isRoot = isRoot
+  }
+  
   public override init?(path: Path) {
     guard path.isDirectory else { return nil }
     super.init(path: path)

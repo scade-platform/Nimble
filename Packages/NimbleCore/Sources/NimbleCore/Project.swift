@@ -89,7 +89,11 @@ public final class Project {
   
   public func remove(_ folder: Folder) {
     projectFolders.removeAll {
-      $0.folder == folder
+      if $0.folder == folder {
+        $0.folder.isRoot = false
+        return true
+      }
+      return false
     }
     save()
   }
@@ -109,6 +113,7 @@ fileprivate struct ProjectFolder {
   
   init(folder: Folder, relativePath: String? = nil) {
     self.folder = folder
+    self.folder.isRoot = true
     self.relativePath = relativePath
   }
   

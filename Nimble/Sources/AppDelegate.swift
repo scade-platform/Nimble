@@ -226,24 +226,21 @@ fileprivate enum ModifierFlags: CaseIterable {
   }
 }
 
+
 // MARK: - IconsProvider
 
 extension AppDelegate: IconsProvider {
-  func icon(forResource name: String) -> Icon? {
-    guard let image = Bundle(for: type(of: self)).image(forResource: name) else {
-      return nil
-    }
-     
-    return Icon(image: image.imageWithTint(.labelColor))
-  }
-  
   func icon<T>(for obj: T) -> Icon? {
     switch obj {
     case is File, is Document:
-      return icon(forResource: "document")
+      return IconsManager.Icons.file
       
     case let folder as Folder:
-      return icon(forResource: folder.isOpened ?  "folder-open": "folder-close")
+      if folder.isRoot {
+        return folder.isOpened ?  IconsManager.Icons.rootFolderOpened : IconsManager.Icons.rootFolder
+      } else {
+        return folder.isOpened ?  IconsManager.Icons.folderOpened : IconsManager.Icons.folder
+      }
       
     default:
       return nil

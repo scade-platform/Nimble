@@ -9,12 +9,17 @@
 import AppKit
 import NimbleCore
 
+fileprivate typealias IconInfo = (name: String, light: Bool)
+
 class FileIconsProvider: IconsProvider {
   let iconsPath: Path
 
   private lazy var fileIcons: FileIconsRegistry? =
     JSONDecoder.decode(from: iconsPath/"fileIcons.json")
-    
+  
+  private lazy var folderIcons: FolderIconsRegistry? =
+    JSONDecoder.decode(from: iconsPath/"folderIcons.json")
+  
   init(iconsPath: Path) {
     self.iconsPath = iconsPath
   }
@@ -23,10 +28,15 @@ class FileIconsProvider: IconsProvider {
     let path: Path?
     
     switch obj {
+//    case let folder as Folder:
+//      return icon(for: folder)
+      
     case let file as File:
       path = file.path
+      
     case let url as URL:
       path = Path(url: url)
+      
     default:
       path = nil
     }
@@ -38,41 +48,49 @@ class FileIconsProvider: IconsProvider {
     return nil
   }
   
-  func icon(for path: Path) -> Icon? {
-    if let fileName = fileIcons?.fileNameFor(name: path.basename()) {
-      return icon(from: fileName)
-    } else if let fileName = fileIcons?.fileNameFor(extension: path.extension) {
-      return icon(from: fileName)
+  private func icon(for path: Path) -> Icon? {
+    if let iconInfo = fileIcons?.names[path.basename()] {
+      return icon(from: iconInfo)
+    } else if let iconInfo = fileIcons?.extensions[path.extension] {
+      return icon(from: iconInfo)
     } else {
       return nil
     }
   }
-    
-  func icon(from fileName: FileIconsRegistry.IconFileName) -> Icon? {
-    let iconPath = iconsPath/fileName.dark
+   
+  private func icon(for folder: Folder) -> Icon? {
+    guard let iconInfo = folderIcons?.names[folder.path.basename().lowercased()] else { return nil }
+    return icon(from: iconInfo)
+  }
+  
+  private func icon(from iconInfo: IconInfo) -> Icon? {
+    let filePath: String
+    if iconInfo.light, let themeLight = ThemeManager.shared.currentTheme?.light, themeLight {
+      filePath = "svg/\(iconInfo.name)_light.svg"
+    } else {
+      filePath = "svg/\(iconInfo.name).svg"
+    }
+    let iconPath = iconsPath/filePath
     return Icon(image: SVGImage(svg: iconPath.url))    
   }
 }
 
 
 struct FileIconsRegistry: Decodable {
-  private struct Entry: Decodable {
+  private struct RawEntry: Decodable {
     let name: String
     let light: Bool?
     let fileNames: [String]?
     let fileExtensions: [String]?
   }
-  
-  typealias IconFileName = (dark: String, light: String?)
-  private typealias IconInfo = (name: String, light: Bool)
-  
-  private var names: [String: IconInfo] = [:]
-  private var extensions: [String: IconInfo] = [:]
+      
+  fileprivate var names: [String: IconInfo] = [:]
+  fileprivate var extensions: [String: IconInfo] = [:]
         
   public init(from decoder: Decoder) throws {
     var container = try decoder.unkeyedContainer()
     while !container.isAtEnd {
-      let entry = try container.decode(Entry.self)
+      let entry = try container.decode(RawEntry.self)
       
       let icon = IconInfo(name: entry.name, light: entry.light ?? false)
       
@@ -85,18 +103,29 @@ struct FileIconsRegistry: Decodable {
       }
     }
   }
-  
-  private func fileNameFor(info: IconInfo) -> IconFileName? {
-    return ("svg/\(info.name).svg", info.light ? "svg/\(info.name)_light.svg" : nil)
+}
+
+
+struct FolderIconsRegistry: Decodable {
+  private struct RawEntry: Decodable {
+    let name: String
+    let light: Bool?
+    let folderNames: [String]?
   }
+      
+  fileprivate var names: [String: IconInfo] = [:]
+        
+  public init(from decoder: Decoder) throws {
+    var container = try decoder.unkeyedContainer()
+    while !container.isAtEnd {
+      let entry = try container.decode(RawEntry.self)
+      
+      let icon = IconInfo(name: entry.name, light: entry.light ?? false)
+      
+      if let folderNames = entry.folderNames {
+        folderNames.forEach { names[$0] = icon }
+      }
   
-  func fileNameFor(name: String) -> IconFileName? {
-    guard let info = names[name] else { return nil }
-    return fileNameFor(info: info)
-  }
-  
-  func fileNameFor(extension: String) -> IconFileName? {
-    guard let info = extensions[`extension`] else { return nil }
-    return fileNameFor(info: info)
+    }
   }
 }
