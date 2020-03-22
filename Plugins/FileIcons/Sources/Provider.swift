@@ -65,7 +65,8 @@ class FileIconsProvider: IconsProvider {
   
   private func icon(from iconInfo: IconInfo) -> Icon? {
     let filePath: String
-    if iconInfo.light, let themeLight = ThemeManager.shared.currentTheme?.light, themeLight {
+    let isLight = NSView.systemInterfaceStlye == .light
+    if iconInfo.light, isLight {
       filePath = "svg/\(iconInfo.name)_light.svg"
     } else {
       filePath = "svg/\(iconInfo.name).svg"

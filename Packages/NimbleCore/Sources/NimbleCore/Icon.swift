@@ -79,7 +79,7 @@ public extension Document {
 public extension IconsManager {
   
   private static func icon(name: String) -> Icon {
-    let isLight = ThemeManager.shared.currentTheme?.light ?? false
+    let isLight = NSView.systemInterfaceStlye == .light
     let iconPath = Bundle.main.resources/"Icons/\(name + (isLight ? "-light": "")).svg"
     return Icon(image: SVGImage(svg: iconPath.url))
   }

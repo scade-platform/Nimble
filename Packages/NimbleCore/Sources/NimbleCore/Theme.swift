@@ -12,7 +12,7 @@ import ColorCode
 
 public final class Theme: Decodable {
   public var name: String
-  public var light: Bool?
+  //public var light: Bool?
   public var settings: [ColorSettings]
     
   public var path: Path? = nil
