@@ -1,9 +1,14 @@
 import SVGEditor
 import ScadeKit
+import NimbleCore
 
 class EditorView: SVGEditorView {
-
-  let pageApp = PageApp()
+  
+  let window = SCDLatticeWindow()
+  
+  var pageDocument: PageDocument? {
+    return document as? PageDocument
+  }
 
   open override func viewDidLoad() {
     super.viewDidLoad()
@@ -12,9 +17,9 @@ class EditorView: SVGEditorView {
     setupElementSelector()
   }
 
-  override func onOpenDocument() {
-    super.onOpenDocument()
+   open override func didOpenDocument(_ document: Document) {
+    super.didOpenDocument(document)
 
-    (doc as? PageDocument)?.pageApp.launch()
+    pageDocument?.adapter.show(window)
   }
 }

@@ -10,7 +10,7 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
 
   public var elementSelector: SVGElementSelector! = nil
 
-  public weak var doc: SVGDocumentProtocol? = nil
+  public weak var document: SVGDocumentProtocol? = nil
 
   open override func viewDidLoad() {
     super.viewDidLoad()
@@ -21,7 +21,7 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
   }
   
   public func setupSVGView() {
-    if let rootSvg = doc?.rootSvg {
+    if let rootSvg = document?.rootSvg {
       svgView.setSvg(rootSvg)
     }
     setupElementSelector()
@@ -32,7 +32,7 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
       elementSelector = SVGLayerSelector()
     }
 
-    if let rootSvg = doc?.rootSvg {
+    if let rootSvg = document?.rootSvg {
       elementSelector.process(rootSvg)
     }
   }
@@ -57,11 +57,12 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
     
     scrollView.allowsMagnification = true
   }
-
-  open func onOpenDocument() {
+  
+  open func didOpenDocument(_ document: Document) {
     guard let canvasView = scrollView.documentView as? CanvasView else { return }
 
-    canvasView.didOpenDocument(doc, scrollView: scrollView, svgView: svgView)
+    canvasView.didOpenDocument(self.document,
+                               scrollView: scrollView, svgView: svgView)
   }
 
 }
@@ -69,7 +70,7 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
 extension SVGEditorView: DocumentObserver {
 
   func setupDocument() {
-    doc?.observers.add(observer: self)
+    document?.observers.add(observer: self)
   }
 
   public func documentFileDidChange(_ document: Document) {
@@ -83,10 +84,6 @@ extension SVGEditorView: WorkbenchEditor {
     SVGEditorMenu.shared.editor = self
 
     return SVGEditorMenu.editorMenu
-  }
-  
-  public func didOpenDocument(_ : Document) {
-    onOpenDocument()
   }
 
 }
