@@ -20,7 +20,7 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
     setupSVGView()
   }
   
-  public func setupSVGView() {
+  open func setupSVGView() {
     if let rootSvg = document?.rootSvg {
       svgView.setSvg(rootSvg)
     }
@@ -29,7 +29,7 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
 
   open func setupElementSelector() {
     if elementSelector == nil {
-      elementSelector = SVGLayerSelector()
+      elementSelector = SVGLayerSelector(svgView)
     }
 
     if let rootSvg = document?.rootSvg {

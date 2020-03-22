@@ -10,14 +10,22 @@ class EditorView: SVGEditorView {
     return document as? PageDocument
   }
 
-  open override func viewDidLoad() {
-    super.viewDidLoad()
-
-    setupScrollView()
+  override func setupSVGView() {
     setupElementSelector()
   }
 
-   open override func didOpenDocument(_ document: Document) {
+  override func setupElementSelector() {
+    if elementSelector == nil {
+      let widgetSelector = WidgetSelector(svgView)
+
+      guard let page = pageDocument?.page else { return }
+      widgetSelector.visit(page)
+
+      elementSelector = widgetSelector
+    }
+  }
+
+  open override func didOpenDocument(_ document: Document) {
     super.didOpenDocument(document)
 
     pageDocument?.adapter.show(window)
