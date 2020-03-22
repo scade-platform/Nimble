@@ -1,6 +1,10 @@
 import ScadeKit
+import ScadeKitExtension
 
 public protocol SVGElementSelector {
+
+  var svgView: SVGView? { get set}
+
   func process(_ element: SCDSvgElement)
 
   func onSelect(_ element: SCDSvgElement)
@@ -8,10 +12,36 @@ public protocol SVGElementSelector {
   func onUnselect(_ element: SCDSvgElement)
 }
 
+class SelectionView: NSView {
+
+  override func hitTest(_ point: NSPoint) -> NSView? {
+    let view = super.hitTest(point)
+
+    return view === self ? nil : view
+  }
+
+}
+
 open class SVGLayerSelector: SVGElementSelector, SVGElementVisitor {
   private weak var selected: SCDSvgElement?
+
+  public weak var svgView: SVGView?
+
+  let selectionBorderInset = CGFloat(6)
+
+  lazy var selectView: SelectionView = {
+    let view = SelectionView()
+    view.wantsLayer = true
+    view.layer?.backgroundColor = NSColor.clear.cgColor
+    view.layer?.borderWidth = 3
+    view.layer?.borderColor = NSColor.selectedControlColor.cgColor
+
+    return view
+  }()
   
-  public init() {}
+  public init(_ svgView: SVGView) {
+    self.svgView = svgView
+  }
 
   public func process(_ element: SCDSvgElement) {
     visit(element)
@@ -26,11 +56,27 @@ open class SVGLayerSelector: SVGElementSelector, SVGElementVisitor {
   }
 
   public func onUnselect(_ element: SCDSvgElement) {
-    getLayer(of: element)?.borderWidth = 0
-  }
+    selectView.removeFromSuperview()
+   }
 
   public func onSelect(_ element: SCDSvgElement) {
-    getLayer(of: element)?.borderWidth = 1
+    guard let drawable = element as? SCDSvgDrawable else { return }
+
+    let bbox = drawable.getBoundingBox()
+    var frame = NSRect(x: bbox.location.x,
+                       y: bbox.location.y,
+                       width: bbox.bounds.width,
+                       height: bbox.bounds.height)
+
+
+    frame = frame.insetBy(dx: -selectionBorderInset,
+                          dy: -selectionBorderInset)
+
+    frame = frame.offsetBy(dx: svgView?.frame.origin.x ?? 0.0,
+                           dy: svgView?.frame.origin.y ?? 0.0)
+
+    selectView.frame = frame
+    svgView?.superview?.addSubview(selectView, positioned: .above, relativeTo: nil)
   }
 
   private func select(_ element: SCDSvgElement) {
@@ -49,8 +95,8 @@ open class SVGLayerSelector: SVGElementSelector, SVGElementVisitor {
     selected = element
   }
 
-  private func getLayer(of element: SCDSvgElement) -> CALayer? {
-    return SCDRuntime.extract(intoLayer: element as! EObject)?.layer
+  private func getLayerView(of element: SCDSvgElement) -> NSView? {
+    return SCDRuntime.extract(intoLayer: element as! EObject)
   }
   
 }
