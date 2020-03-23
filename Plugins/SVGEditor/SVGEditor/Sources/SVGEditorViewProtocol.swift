@@ -9,6 +9,8 @@ public protocol SVGEditorViewProtocol: class {
   func zoomOut() -> Void
 
   func zoomActualSize() -> Void
+
+  func toggleGrid() -> Void
 }
 
 public extension SVGEditorViewProtocol {
@@ -25,4 +27,3 @@ public extension SVGEditorViewProtocol {
     scrollView.magnification = 1
   }
 }
-

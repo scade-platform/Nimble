@@ -16,7 +16,11 @@ open class SVGEditorMenu: NSObject {
                  action: #selector(zoomOut(_:)), keyEquivalent: "-"),
 
       NSMenuItem(title: "Actual Size",
-                 action: #selector(zoomActualSize(_:)), keyEquivalent: "o")
+                 action: #selector(zoomActualSize(_:)), keyEquivalent: "o"),
+
+      NSMenuItem(title: "Toggle Grid",
+                 action: #selector(toggleGrid(_:)), keyEquivalent: "g"),
+
     ]
 
     menu.items.forEach {
@@ -37,5 +41,8 @@ open class SVGEditorMenu: NSObject {
   @objc func zoomActualSize(_ item: NSMenuItem) {
     SVGEditorMenu.shared.editor?.zoomActualSize()
   }
-  
+
+  @objc func toggleGrid(_ item: NSMenuItem) {
+    SVGEditorMenu.shared.editor?.toggleGrid()
+  }
 }

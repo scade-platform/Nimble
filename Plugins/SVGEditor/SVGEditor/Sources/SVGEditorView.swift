@@ -5,12 +5,16 @@ import ScadeKitExtension
 open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
 
   @IBOutlet public weak var scrollView: NSScrollView!
-
+  
   public var svgView = SVGView()
 
   public var elementSelector: SVGElementSelector! = nil
 
   public weak var document: SVGDocumentProtocol? = nil
+
+  private var canvasView: CanvasView? {
+    return scrollView.documentView as? CanvasView
+  }
 
   open override func viewDidLoad() {
     super.viewDidLoad()
@@ -59,10 +63,15 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
   }
   
   open func didOpenDocument(_ document: Document) {
-    guard let canvasView = scrollView.documentView as? CanvasView else { return }
+    canvasView?.didOpenDocument(self.document,
+                                scrollView: scrollView, svgView: svgView)
+  }
 
-    canvasView.didOpenDocument(self.document,
-                               scrollView: scrollView, svgView: svgView)
+  public func toggleGrid() {
+    guard let canvasView = self.canvasView else { return }
+
+    canvasView.isShowGrid.toggle()
+    canvasView.setNeedsDisplay(canvasView.bounds)
   }
 
 }
