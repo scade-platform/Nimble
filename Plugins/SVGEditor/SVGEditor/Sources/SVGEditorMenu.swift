@@ -15,11 +15,17 @@ open class SVGEditorMenu: NSObject {
       NSMenuItem(title: "Zoom Out",
                  action: #selector(zoomOut(_:)), keyEquivalent: "-"),
 
+      NSMenuItem(title: "Zoom To Fit",
+                 action: #selector(zoomToFit(_:)), keyEquivalent: "="),
+
       NSMenuItem(title: "Actual Size",
                  action: #selector(zoomActualSize(_:)), keyEquivalent: "o"),
 
       NSMenuItem(title: "Toggle Grid",
                  action: #selector(toggleGrid(_:)), keyEquivalent: "g"),
+
+      NSMenuItem(title: "Toggle Show Rulers",
+                 action: #selector(toggleShowRulers(_:)), keyEquivalent: "r"),
 
     ]
 
@@ -38,11 +44,19 @@ open class SVGEditorMenu: NSObject {
     SVGEditorMenu.shared.editor?.zoomOut()
   }
 
+  @objc func zoomToFit(_ item: NSMenuItem) {
+    SVGEditorMenu.shared.editor?.zoomToFit()
+  }
+
   @objc func zoomActualSize(_ item: NSMenuItem) {
     SVGEditorMenu.shared.editor?.zoomActualSize()
   }
 
   @objc func toggleGrid(_ item: NSMenuItem) {
     SVGEditorMenu.shared.editor?.toggleGrid()
+  }
+
+  @objc func toggleShowRulers(_ item: NSMenuItem) {
+    SVGEditorMenu.shared.editor?.toggleShowRulers()
   }
 }

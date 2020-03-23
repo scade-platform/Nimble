@@ -1,9 +1,9 @@
 import Cocoa
 import ScadeKitExtension
 
-class CanvasView: NSView {
+public class CanvasView: NSView {
 
-  override var isFlipped: Bool { true }
+  public override var isFlipped: Bool { true }
 
   var isShowGrid = false
 
@@ -11,7 +11,7 @@ class CanvasView: NSView {
 
   private let canvasMaxBound = CGFloat(2000)
 
-  private let dotOffset = CGFloat(20)
+  private let dotOffset = CGFloat(10)
 
   private let dotRadius = CGFloat(1)
 
@@ -21,8 +21,8 @@ class CanvasView: NSView {
 
   private var yRulerOffset = CGFloat(0)
 
-  func didOpenDocument(_ doc: SVGDocumentProtocol?,
-                       scrollView: NSScrollView!, svgView: SVGView) {
+  func didOpenDocument(_ doc: SVGDocumentProtocol?, svgView: SVGView) {
+    guard let scrollView = enclosingScrollView else { return }
 
     //let screenSize = NSScreen.main?.frame.size
 
@@ -31,7 +31,6 @@ class CanvasView: NSView {
     self.frame = NSMakeRect(0, 0, canvasWidth, canvasHeight)
 
     let contentView = scrollView.contentView
-    let contentViewOrigin = contentView.bounds.origin
     let contentViewSize = contentView.bounds.size
 
     let svgSize = svgDocumentSize(doc, contentSize: contentViewSize)
@@ -51,15 +50,34 @@ class CanvasView: NSView {
     let resizeSvgHeight = svgHeight * svgSizeMultiplier
     let resizeSvgX = (canvasWidth  - resizeSvgWidth) / 2
     let resizeSvgY = (canvasHeight - resizeSvgHeight) / 2
+
     scrollView.magnify(
       toFit: NSMakeRect(resizeSvgX, resizeSvgY, resizeSvgWidth, resizeSvgHeight))
 
+    scrollToCenter(affectRulers: scrollView.rulersVisible)
+  }
+
+  func zoomToFit() {
+    guard let scrollView = self.enclosingScrollView,
+          let svgView = self.subviews.first else { return }
+
+    scrollView.magnify(toFit: svgView.bounds)
+  }
+
+  func scrollToCenter(affectRulers rulerFlag: Bool) {
+    guard let scrollView = self.enclosingScrollView,
+          let horizontalRulerView = scrollView.horizontalRulerView,
+          let verticalRulerView = scrollView.verticalRulerView else { return }
+
     let magnification = scrollView.magnification
-    let docViewOrigin = scrollView.documentVisibleRect.origin
-    let newDocViewOriginX = docViewOrigin.x + contentViewOrigin.x * 0.5 / magnification
-    let newDocViewOriginY = docViewOrigin.y + contentViewOrigin.y * 0.5 / magnification
-    contentView.scroll(NSPoint(x: newDocViewOriginX, y: newDocViewOriginY))
-    scrollView.reflectScrolledClipView(contentView)
+    let xRulerOffset = rulerFlag ? verticalRulerView.bounds.width    / magnification : 0
+    let yRulerOffset = rulerFlag ? horizontalRulerView.bounds.height / magnification : 0
+    let contentView = scrollView.contentView
+    let newContentX = (self.bounds.width - contentView.bounds.size.width - xRulerOffset) / 2
+    let newContentY = (self.bounds.height - contentView.bounds.size.height - yRulerOffset) / 2
+
+    contentView.scroll(NSPoint(x: newContentX, y: newContentY))
+    //scrollView.reflectScrolledClipView(contentView)
   }
 
   private func svgDocumentSize(_ doc: SVGDocumentProtocol?, contentSize: NSSize) -> NSSize {
@@ -75,9 +93,9 @@ class CanvasView: NSView {
     return CGFloat(unit.value) * (unit.measurement == .percentage ? bound * 0.01 : 1)
   }
 
-  override func draw(_ dirtyRect: NSRect) {
+  public override func draw(_ dirtyRect: NSRect) {
     if isShowGrid {
-      
+
       if let context = NSGraphicsContext.current?.cgContext {
         context.setFillColor(NSColor.labelColor.cgColor)
 
@@ -102,18 +120,22 @@ class CanvasView: NSView {
   }
 
   private func drawHLine(_ context: CGContext, x1:CGFloat, x2: CGFloat, y: CGFloat) {
-    let rect = NSMakeRect(0, 0, dotRadius, dotRadius)
+    let radius = dotRadius / (enclosingScrollView?.magnification ?? 1.0)
+
+    let rect = NSMakeRect(0, 0, radius, radius)
 
     for x in stride(from: x1, to: x2, by: dotOffset) {
-      context.addEllipse(in: rect.offsetBy(dx: x - dotRadius, dy: y - dotRadius))
+      context.addEllipse(in: rect.offsetBy(dx: x - radius, dy: y - radius))
     }
   }
 
   private func drawVLine(_ context: CGContext, y1:CGFloat, y2: CGFloat, x: CGFloat) {
-    let rect = NSMakeRect(0, 0, dotRadius, dotRadius)
+    let radius = dotRadius / (enclosingScrollView?.magnification ?? 1.0)
+
+    let rect = NSMakeRect(0, 0, radius, radius)
 
     for y in stride(from: y1, to: y2, by: dotOffset) {
-      context.addEllipse(in: rect.offsetBy(dx: x - dotRadius, dy :y - dotRadius))
+      context.addEllipse(in: rect.offsetBy(dx: x - radius, dy :y - radius))
     }
   }
 

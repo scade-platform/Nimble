@@ -12,10 +12,6 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
 
   public weak var document: SVGDocumentProtocol? = nil
 
-  private var canvasView: CanvasView? {
-    return scrollView.documentView as? CanvasView
-  }
-
   open override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -63,17 +59,8 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
   }
   
   open func didOpenDocument(_ document: Document) {
-    canvasView?.didOpenDocument(self.document,
-                                scrollView: scrollView, svgView: svgView)
+    canvasView?.didOpenDocument(self.document, svgView: svgView)
   }
-
-  public func toggleGrid() {
-    guard let canvasView = self.canvasView else { return }
-
-    canvasView.isShowGrid.toggle()
-    canvasView.setNeedsDisplay(canvasView.bounds)
-  }
-
 }
 
 extension SVGEditorView: DocumentObserver {
