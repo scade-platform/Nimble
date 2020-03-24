@@ -181,7 +181,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   }
   
   func applicationWillTerminate(_ aNotification: Notification) {
-    
+    //Release plugin's resources
+    PluginManager.shared.unload()
   }
     
   func application(_ sender: NSApplication, openFile filename: String) -> Bool {
