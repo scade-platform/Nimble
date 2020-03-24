@@ -63,6 +63,10 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     mainView?.children[0] as? NavigatorView
   }
   
+  var inspectorView: InspectorView? {
+    mainView?.children[2] as? InspectorView
+  }
+  
   var editorView: EditorView? {
     workbenchCentralView?.children[0] as? EditorView
   }
@@ -231,6 +235,10 @@ extension NimbleWorkbench: Workbench {
     
   public var navigatorArea: WorkbenchArea? {
     return navigatorView
+  }
+  
+  public var inspectorArea: WorkbenchArea? {
+    return inspectorView
   }
   
   public var debugArea: WorkbenchArea? {

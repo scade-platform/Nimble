@@ -946,11 +946,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3cH-oe-q4d" customClass="WorkbenchSidebar" customModule="Nimble" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="150" height="500"/>
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </customView>
                         </subviews>
                     </visualEffectView>
+                    <connections>
+                        <outlet property="sidebar" destination="3cH-oe-q4d" id="xKe-pp-fk1"/>
+                    </connections>
                 </viewController>
             </objects>
             <point key="canvasLocation" x="906" y="876"/>
