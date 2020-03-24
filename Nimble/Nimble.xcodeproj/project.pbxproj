@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C238B12233E4E3D004F87E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D2222878F40088715C /* Assets.xcassets */; };
+		0C2A26D42429E2F800AA8B51 /* InspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2A26D32429E2F800AA8B51 /* InspectorView.swift */; };
 		0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */; };
 		0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */; };
 		0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */; };
@@ -34,7 +35,6 @@
 		D77F338123A4645100E3AFC8 /* LSPClient.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = D77F337F23A4641B00E3AFC8 /* LSPClient.plugin */; };
 		D77F338223A4645100E3AFC8 /* SwiftExtensions.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = D77F337D23A4640300E3AFC8 /* SwiftExtensions.plugin */; };
 		D788ED452239C2750072C21E /* NimbleWorkbench.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */; };
-		D78FFF1924255CE100EB70E2 /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = D78FFF1824255CE100EB70E2 /* Icons */; };
 		D79BE0BD2385AD4000D96619 /* NimbleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6607722F41D1500CBB386 /* NimbleController.swift */; };
 		D7C9528823FC3AF400AE7E5D /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7C9528723FC3AF400AE7E5D /* NimbleCore */; };
 		D7C9528923FC3AF400AE7E5D /* NimbleCore in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D7C9528723FC3AF400AE7E5D /* NimbleCore */; };
@@ -50,6 +50,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0C2A26D82429E2F900AA8B51 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9F45CD901D396D4200149654;
+			remoteInfo = KPCTabsControlDemo;
+		};
+		0C2A26DA2429E2F900AA8B51 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9FC4B5582195ACE7000F2119;
+			remoteInfo = KPCTabsControlTests;
+		};
 		D7D4615C238ECCE20090FC34 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
@@ -96,6 +110,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0C2A26D32429E2F800AA8B51 /* InspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorView.swift; sourceTree = "<group>"; };
 		0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDocument.swift; sourceTree = "<group>"; };
 		0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedPane.swift; sourceTree = "<group>"; };
 		0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnsupportedPane.xib; sourceTree = "<group>"; };
@@ -191,6 +206,7 @@
 				D724C5E7237C418B00E80958 /* TabbedEditor.xib */,
 				0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */,
 				D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */,
+				0C2A26D32429E2F800AA8B51 /* InspectorView.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -258,6 +274,8 @@
 			isa = PBXGroup;
 			children = (
 				D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */,
+				0C2A26D92429E2F900AA8B51 /* KPCTabsControlDemo.app */,
+				0C2A26DB2429E2F900AA8B51 /* KPCTabsControlTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -339,6 +357,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		0C2A26D92429E2F900AA8B51 /* KPCTabsControlDemo.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = KPCTabsControlDemo.app;
+			remoteRef = 0C2A26D82429E2F900AA8B51 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0C2A26DB2429E2F900AA8B51 /* KPCTabsControlTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = KPCTabsControlTests.xctest;
+			remoteRef = 0C2A26DA2429E2F900AA8B51 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -381,6 +413,7 @@
 				0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */,
 				D721CFA72385EC3200FD1B00 /* NSOpenPanel.swift in Sources */,
 				D72F9587222CAC3C009F2EC3 /* AppDelegate.swift in Sources */,
+				0C2A26D42429E2F800AA8B51 /* InspectorView.swift in Sources */,
 				D7D461652390083C0090FC34 /* Document.swift in Sources */,
 				D724C5F1237C418B00E80958 /* NavigatorView.swift in Sources */,
 				D724C5F4237C418B00E80958 /* DebugView.swift in Sources */,
