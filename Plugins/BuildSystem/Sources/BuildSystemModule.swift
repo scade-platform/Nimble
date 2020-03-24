@@ -26,6 +26,13 @@ final class BuildSystemPlugin: Plugin {
     setupCommands()
   }
   
+  func unload() {
+    guard let process = currentProcess else { return }
+    if process.isRunning {
+      process.terminate()
+    }
+  }
+  
   private func setupMainMenu() {
     guard let mainMenu = NSApplication.shared.mainMenu else { return }
     guard let toolsMenu = mainMenu.findItem(with: "Tools")?.submenu else { return }

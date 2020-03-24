@@ -22,6 +22,8 @@ public protocol Plugin: class {
   
   func load() -> Void
   
+  func unload() -> Void
+  
   func activate(in: Workbench) -> Void
   
   func deactivate(in: Workbench) -> Void
@@ -39,6 +41,8 @@ public extension Plugin {
   var resources: Path {
     return bundle.resources
   }
+  
+  func unload() -> Void {}
       
   func activate(in _: Workbench) -> Void {}
   
@@ -156,6 +160,10 @@ public class PluginManager {
   
   public func load() -> Void {
     return lazySingleLoad
+  }
+  
+  public func unload() -> Void {
+    plugins.forEach{ $0.1.unload() }
   }
   
   public func activate(in workbench: Workbench) -> Void {
