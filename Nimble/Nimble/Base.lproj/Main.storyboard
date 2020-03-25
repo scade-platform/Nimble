@@ -357,25 +357,6 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="hB3-LF-h0Y"/>
-                                        <menuItem title="Show Debug Area" tag="53" id="pAJ-j8-Uf8">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="changeConsoleVisability:" target="Ady-hI-5gd" id="KCs-dl-YdZ"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Show Navigator Area" tag="54" id="hi5-PZ-gJ0">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="changeNavigatorVisability:" target="Ady-hI-5gd" id="63a-rZ-hM2"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem title="Show Inspector Area" tag="55" id="CaS-C1-A0B">
-                                            <modifierMask key="keyEquivalentModifierMask"/>
-                                            <connections>
-                                                <action selector="changeInspectorVisability:" target="Ady-hI-5gd" id="cnr-e2-n1q"/>
-                                            </connections>
-                                        </menuItem>
-                                        <menuItem isSeparatorItem="YES" id="Ulx-zl-AcM"/>
                                         <menuItem title="Enter Full Screen" keyEquivalent="f" id="4J7-dP-txa">
                                             <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
                                             <connections>

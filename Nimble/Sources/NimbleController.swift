@@ -129,18 +129,6 @@ class NimbleController: NSDocumentController {
     guard let url = (sender as? NSMenuItem)?.representedObject as? URL else { return }
     openProject(withContentsOf: url)
   }
-  
-  ///TODO: move to commands
-  override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
-    if menuItem.tag == 53 {
-      menuItem.title = currentWorkbench?.debugArea?.isHidden ?? true ? "Show Debug Area" : "Hide Debug Area"
-    } else if menuItem.tag == 54 {
-      menuItem.title = currentWorkbench?.navigatorArea?.isHidden ?? true ? "Show Navigator Area" : "Hide Navigator Area"
-    } else if menuItem.tag == 55 {
-      menuItem.title = currentWorkbench?.inspectorArea?.isHidden ?? true ? "Show Inspector Area" : "Hide Inspector Area"
-    }
-    return super.validateMenuItem(menuItem)
-  }
 }
 
 // MARK: - DocumentController
@@ -184,54 +172,5 @@ extension NimbleController {
         /// TODO: implement
       }
     }
-  }
-  
-  @IBAction func changeConsoleVisability(_ sender: Any?) {
-    guard let workbench = currentWorkbench, let debugArea = workbench.debugArea else {
-      return
-    }
-    if let menuItem = sender as? NSMenuItem {
-      changeAreaVisibility(area: debugArea, menuItem: menuItem)
-    } else {
-      debugArea.isHidden = true
-    }
-  }
-  
-  @IBAction func changeNavigatorVisability(_ sender: Any?) {
-    guard let workbench = currentWorkbench, let navigatorArea = workbench.navigatorArea else {
-      return
-    }
-    
-    if let menuItem = sender as? NSMenuItem {
-      changeAreaVisibility(area: navigatorArea, menuItem: menuItem)
-    } else {
-      navigatorArea.isHidden = true
-    }
-  }
-  
-  @IBAction func changeInspectorVisability(_ sender: Any?) {
-    guard let workbench = currentWorkbench, let inspectorArea = workbench.inspectorArea else {
-      return
-    }
-    
-    if let menuItem = sender as? NSMenuItem {
-      changeAreaVisibility(area: inspectorArea, menuItem: menuItem)
-    } else {
-      inspectorArea.isHidden = true
-    }
-  }
-  
-  
-  
-  func changeAreaVisibility(area: WorkbenchArea, menuItem: NSMenuItem) {
-    let hide: Bool
-    let title = menuItem.title
-    hide = !title.contains("Show")
-    if hide {
-      menuItem.title = title.replace("Hide", "Show")
-    } else {
-      menuItem.title = title.replace("Show", "Hide")
-    }
-    area.isHidden = hide
   }
 }
