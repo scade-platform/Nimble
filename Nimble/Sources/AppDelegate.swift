@@ -92,41 +92,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   
   private func setupCommandsMenus() {
     guard let mainMenu = NSApplication.shared.mainMenu else { return }
+    let handlerRegisteredCommand = { [weak self] (command: Command) in
+      guard let self = self else { return }
+      self.addMenuItem(for: command, into: mainMenu)
+    }
     for command in CommandManager.shared.commands {
-      guard let commandMenuItem = createMenuItem(for: command) else {
-        continue
-      }
-      if let mainMenuItem = mainMenu.findItem(with: command.menuPath!)?.submenu {
-        mainMenuItem.addItem(commandMenuItem)
-      }
+      addMenuItem(for: command, into: mainMenu)
+    }
+    CommandManager.shared.handlerRegisteredCommand = handlerRegisteredCommand
+  }
+  
+  func addMenuItem(for command: Command, into menu: NSMenu) {
+    guard let commandMenuItem = command.createMenuItem() else {
+      return
+    }
+    if let mainMenuItem = menu.findItem(with: command.menuPath!)?.submenu {
+      mainMenuItem.addItem(commandMenuItem)
     }
   }
   
-  ///TODO: move it to the command (e.g. to an extension created in this module)
-  private func createMenuItem(for command: Command) -> NSMenuItem? {
-    guard command.menuPath != nil else { return nil }
-    let (key, mask) = getKeyEquivalent(for: command)
-    let menuItem = NSMenuItem(title: command.name, action: #selector(command.execute), keyEquivalent: key)
-    menuItem.keyEquivalentModifierMask = mask
-    menuItem.target = command
-    menuItem.representedObject = command
-    return menuItem
-  }
-  
-  ///TODO: move it to the command (e.g. to an extension created in this module)
-  private func getKeyEquivalent(for command: Command) -> (String, NSEvent.ModifierFlags) {
-    guard let keyEquivalent = command.keyEquivalent else {
-      return ("", [])
-    }
-    let char = keyEquivalent.last ?? Character("")
-    var flags: NSEvent.ModifierFlags = []
-    for flagCase in ModifierFlags.allCases {
-      if keyEquivalent.lowercased().contains(flagCase.rawValue) {
-        flags.insert(flagCase.flag)
-      }
-    }
-    return (String(char), flags)
-  }
   
   
   func applicationDidFinishLaunching(_ notification: Notification) {
@@ -172,59 +156,6 @@ extension AppDelegate: NSMenuDelegate {
   }
 }
 
-fileprivate enum ModifierFlags: CaseIterable {
-  case capsLock
-  case shift
-  case control
-  case option
-  case command
-  case numericPad
-  case help
-  case function
-  
-  var rawValue: String {
-    switch self {
-    case .capsLock:
-      return "capslock"
-    case .shift:
-      return "shift"
-    case .control:
-      return "ctrl"
-    case .option:
-      return "option"
-    case .command:
-      return "cmd"
-    case .numericPad:
-      return "num"
-    case .help:
-      return "help"
-    case .function:
-      return "fn"
-    }
-  }
-  
-  var flag: NSEvent.ModifierFlags {
-    switch self {
-    case .capsLock:
-      return .capsLock
-    case .shift:
-      return .shift
-    case .control:
-      return .control
-    case .option:
-      return .option
-    case .command:
-      return .command
-    case .numericPad:
-      return .numericPad
-    case .help:
-      return .help
-    case .function:
-      return .function
-    }
-  }
-}
-
 
 // MARK: - IconsProvider
 
@@ -245,16 +176,4 @@ extension AppDelegate: IconsProvider {
       return nil
     }
   }
-}
-
-
-extension Command : NSUserInterfaceValidations {
-  public func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
-    if let menuItem = item as? NSMenuItem, let command = menuItem.representedObject as? Command {
-      return command.isEnable
-    }
-    return true
-  }
-  
-  
 }
