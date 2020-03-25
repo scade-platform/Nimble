@@ -106,11 +106,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   private func createMenuItem(for command: Command) -> NSMenuItem? {
     guard command.menuPath != nil else { return nil }
     let (key, mask) = getKeyEquivalent(for: command)
-    let commandWrapper = NSObjectCommandWrapper(wrapperedCommand: command)
-    let menuItem = NSMenuItem(title: command.name, action: #selector(commandWrapper.execute), keyEquivalent: key)
+    let menuItem = NSMenuItem(title: command.name, action: #selector(command.execute), keyEquivalent: key)
     menuItem.keyEquivalentModifierMask = mask
-    menuItem.target = commandWrapper
-    menuItem.representedObject = commandWrapper
+    menuItem.target = command
+    menuItem.representedObject = command
     return menuItem
   }
   
@@ -249,30 +248,13 @@ extension AppDelegate: IconsProvider {
 }
 
 
-// MARK: - Command wrapper
-
-fileprivate class NSObjectCommandWrapper: NSObject {
-  private let wrapperedCommand: Command
-  
-  var isEnable: Bool {
-    return wrapperedCommand.isEnable
-  }
-  
-  init(wrapperedCommand: Command) {
-    self.wrapperedCommand = wrapperedCommand
-    super.init()
-  }
-  
-  @objc func execute(){
-    wrapperedCommand.execute()
-  }
-}
-
-extension NSObjectCommandWrapper : NSMenuItemValidation {
-  public func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
-    if let command = menuItem.representedObject as? NSObjectCommandWrapper, command === self {
+extension Command : NSUserInterfaceValidations {
+  public func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
+    if let menuItem = item as? NSMenuItem, let command = menuItem.representedObject as? Command {
       return command.isEnable
     }
     return true
   }
+  
+  
 }
