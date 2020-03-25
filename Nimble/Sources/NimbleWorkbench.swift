@@ -92,11 +92,34 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     
     DocumentManager.shared.defaultDocument = BinaryFileDocument.self
     
+    setupCommands()
     PluginManager.shared.activate(in: self)
   }
     
   public func windowWillClose(_ notification: Notification) {
     PluginManager.shared.deactivate(in: self)
+  }
+  
+  private func setupCommands() {
+    //Command to show/hide Debug Area
+    var title: String = debugArea?.isHidden ?? true ? "Show Debug Area" : "Hide Debug Area"
+    let changeDebugAreaVisabilityCommand = Command(name: title, menuPath: "View", keyEquivalent: nil, toolbarIcon: nil, isEnable: true) {[weak self] command in
+      guard let debugArea = self?.debugArea else { return }
+      let title = debugArea.isHidden ? "Hide Debug Area" : "Show Debug Area"
+      command.name = title
+      debugArea.isHidden = !debugArea.isHidden
+    }
+    CommandManager.shared.registerCommand(command: changeDebugAreaVisabilityCommand)
+    
+    //Command to show/hide Navigator Area
+    title = navigatorArea?.isHidden ?? true ? "Show Navigator Area" : "Hide Navigator Area"
+    let changeNavigatorAreaVisabilityCommand = Command(name: title, menuPath: "View", keyEquivalent: nil, toolbarIcon: nil, isEnable: true) { [weak self] command in
+      guard let navigatorArea = self?.navigatorArea else { return }
+      let title = navigatorArea.isHidden  ? "Hide Navigator Area" : "Show Navigator Area"
+      command.name = title
+      navigatorArea.isHidden = !navigatorArea.isHidden
+    }
+    CommandManager.shared.registerCommand(command: changeNavigatorAreaVisabilityCommand)
   }
   
   private lazy var editorMenuItem: NSMenuItem? = {
