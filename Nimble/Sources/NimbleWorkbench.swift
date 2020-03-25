@@ -27,8 +27,10 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     
     let toolbarCommands = CommandManager.shared.commands
       .filter{$0.toolbarIcon != nil}
-    
-    return toolbarCommands.map{NSToolbarItem.Identifier($0.name)}
+      .filter{$0.groupName == nil}
+    var result = toolbarCommands.map{NSToolbarItem.Identifier($0.name)}
+    result.append(contentsOf: CommandManager.shared.groups.values.map{NSToolbarItem.Identifier($0.name)})
+    return result
   }()
 
   
@@ -78,7 +80,11 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   public override func windowWillLoad() {
     PluginManager.shared.load()
     
+    toolbar.displayMode = .default
+    toolbar.allowsUserCustomization = true
     toolbar.delegate = self
+    
+    
   }
   
   public override func windowDidLoad() {
@@ -105,35 +111,43 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   }
   
   private func setupCommands() {
+    var workbenchAreaGroup = CommandGroup(name: "WorkbenchAreaGroup")
     //Command to show/hide Debug Area
     var title: String = debugArea?.isHidden ?? true ? "Show Debug Area" : "Hide Debug Area"
-    let changeDebugAreaVisabilityCommand = Command(name: title, menuPath: "View", keyEquivalent: nil, toolbarIcon: nil, isEnable: true) {[weak self] command in
+    let changeDebugAreaVisabilityCommand = Command(name: title, groupName: workbenchAreaGroup.name, menuPath: "View") {[weak self] command in
       guard let debugArea = self?.debugArea else { return }
       let title = debugArea.isHidden ? "Hide Debug Area" : "Show Debug Area"
       command.name = title
       debugArea.isHidden = !debugArea.isHidden
     }
+    
     CommandManager.shared.registerCommand(command: changeDebugAreaVisabilityCommand)
     
     //Command to show/hide Navigator Area
     title = navigatorArea?.isHidden ?? true ? "Show Navigator Area" : "Hide Navigator Area"
-    let changeNavigatorAreaVisabilityCommand = Command(name: title, menuPath: "View", keyEquivalent: nil, toolbarIcon: nil, isEnable: true) { [weak self] command in
+    let changeNavigatorAreaVisabilityCommand = Command(name: title, groupName: workbenchAreaGroup.name, menuPath: "View") { [weak self] command in
       guard let navigatorArea = self?.navigatorArea else { return }
       let title = navigatorArea.isHidden  ? "Hide Navigator Area" : "Show Navigator Area"
       command.name = title
       navigatorArea.isHidden = !navigatorArea.isHidden
     }
+    
     CommandManager.shared.registerCommand(command: changeNavigatorAreaVisabilityCommand)
     
     //Command to show/hide Inspector Area
     title = inspectorArea?.isHidden ?? true ? "Show Inspector Area" : "Hide Inspector Area"
-    let changeInspectorAreaVisabilityCommand = Command(name: title, menuPath: "View", keyEquivalent: nil, toolbarIcon: nil, isEnable: true) {[weak self] command in
+    let changeInspectorAreaVisabilityCommand = Command(name: title, groupName: workbenchAreaGroup.name, menuPath: "View") {[weak self] command in
       guard let inspectorArea = self?.inspectorArea else { return }
       let title = inspectorArea.isHidden ? "Hide Inspector Area" :  "Show Inspector Area"
       command.name = title
       inspectorArea.isHidden = !inspectorArea.isHidden
     }
+    
     CommandManager.shared.registerCommand(command: changeInspectorAreaVisabilityCommand)
+    
+    
+    workbenchAreaGroup.commands.append(contentsOf: [changeNavigatorAreaVisabilityCommand, changeDebugAreaVisabilityCommand, changeInspectorAreaVisabilityCommand])
+    CommandManager.shared.registerGroup(group: workbenchAreaGroup)
   }
   
   private lazy var editorMenuItem: NSMenuItem? = {
@@ -179,10 +193,15 @@ extension NimbleWorkbench : NSToolbarDelegate {
   }
   
   public func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier, willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
-    let commands = CommandManager.shared.commands
-    for command in commands {
+    for command in CommandManager.shared.commands {
       if command.name == itemIdentifier.rawValue {
         return toolbarPushButton(identifier: itemIdentifier, for: command)
+      }
+    }
+    
+    for (name, group) in CommandManager.shared.groups {
+      if name == itemIdentifier.rawValue {
+        return toolbarSegmentedControl(identifier: itemIdentifier,for: group)
       }
     }
     return nil
@@ -202,6 +221,37 @@ extension NimbleWorkbench : NSToolbarDelegate {
         return
     }
     command.observers.remove(observer: self)
+  }
+  
+  private func toolbarSegmentedControl(identifier: NSToolbarItem.Identifier, for group: CommandGroup) -> NSToolbarItemGroup {
+    let itemGroup = NSToolbarItemGroup(itemIdentifier: identifier)
+    let control = NSSegmentedControl(frame: NSRect(x: 0, y: 0, width: 38.0 * Double(group.commands.count), height: 28.0))
+    control.segmentStyle = .texturedSquare
+    control.trackingMode = .momentary
+    control.segmentCount = group.commands.count
+    control.focusRingType = .none
+    
+    var items = [NSToolbarItem]()
+    var segmentIndex = 0
+    for segment in group.commands {
+      guard segment.toolbarIcon != nil else { continue }
+      let item = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier(segment.name))
+      items.append(item)
+      
+      item.label = segment.name
+      
+      item.action = #selector(segment.execute)
+      item.target = segment
+      
+      control.setImage(segment.toolbarIcon, forSegment: segmentIndex)
+      control.setImageScaling(.scaleProportionallyDown, forSegment: segmentIndex)
+      control.setWidth(38.0, forSegment: segmentIndex)
+      segmentIndex += 1
+    }
+    itemGroup.paletteLabel = group.name
+    itemGroup.subitems = items
+    itemGroup.view = control
+    return itemGroup
   }
   
   private func toolbarPushButton(identifier: NSToolbarItem.Identifier, for command: Command) -> NSToolbarItem {

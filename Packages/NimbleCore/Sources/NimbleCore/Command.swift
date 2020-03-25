@@ -31,18 +31,30 @@ public class Command {
   //toolbar item
   public let toolbarIcon: NSImage?
   
+  public var groupName: String?
+  
   @objc public func execute() {
     guard isEnable else { return }
     handler?(self)
   }
   
-  public init(name: String, menuPath: String? = nil, keyEquivalent: String? = nil , toolbarIcon: NSImage? = nil, isEnable: Bool = true, handler:  @escaping (Command) -> Void) {
+  public init(name: String, groupName: String? = nil, menuPath: String? = nil, keyEquivalent: String? = nil , toolbarIcon: NSImage? = nil, isEnable: Bool = true, handler:  @escaping (Command) -> Void) {
     self.name = name
+    self.groupName = groupName
     self.handler = handler
     self.menuPath = menuPath
     self.keyEquivalent = keyEquivalent
     self.toolbarIcon = toolbarIcon
     self.isEnable = isEnable
+  }
+}
+
+public struct CommandGroup {
+  public let name: String
+  public var commands: [Command] = []
+  
+  public init(name: String){
+    self.name = name
   }
 }
 
@@ -56,6 +68,7 @@ public class CommandManager {
   public var handlerRegisteredCommand : ((Command) -> Void)?
   
   private(set) public var commands: [Command] = []
+  private(set) public var groups: [String: CommandGroup] = [:]
   
   private init() {}
   
@@ -63,5 +76,10 @@ public class CommandManager {
     guard !commands.contains(where: {$0.name == command.name}) else { return }
     commands.append(command)
     handlerRegisteredCommand?(command)
+  }
+  
+  public func registerGroup(group: CommandGroup) {
+    guard groups[group.name] == nil else { return }
+    groups[group.name] = group
   }
 }
