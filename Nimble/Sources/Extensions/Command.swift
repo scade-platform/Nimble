@@ -99,3 +99,103 @@ fileprivate enum ModifierFlags: CaseIterable {
   }
 }
 
+class CommandsToolbarDelegate: ToolbarDelegate {
+  func toolbarDefaultItems(_ toolbar: Toolbar) -> [ToolbarItem] {
+    var result : [ToolbarItem] = []
+    let loadedCommands = CommandManager.shared.commands
+
+    //create for each new command ToolbarItem
+    result.append(contentsOf: loadedCommands.map{$0.createToolbarItem()}.filter{$0.kind != .segment && $0.kind != .indefinite})
+    
+    result.append(.flexibleSpace)
+    
+    //find all new groups
+    let loadedGroups = CommandManager.shared.groups
+    result.append(contentsOf: loadedGroups.map{$0.value.createToolbarItem()})
+    
+    return result
+  }
+  
+  func toolbarItems(_ toolbar: Toolbar) -> [ToolbarItem] {
+    var result : [ToolbarItem] = []
+    let loadedCommands = CommandManager.shared.commands
+
+    //create for each new command ToolbarItem
+    result.append(contentsOf: loadedCommands.map{$0.createToolbarItem()}.filter{$0.kind != .segment && $0.kind != .indefinite})
+    
+    //find all new groups
+    let loadedGroups = CommandManager.shared.groups
+    result.append(contentsOf: loadedGroups.map{$0.value.createToolbarItem()})
+    
+    result.append(.flexibleSpace)
+    result.append(.space)
+    result.append(.separator)
+    
+    return result
+  }
+}
+
+extension CommandsToolbarDelegate: ToolbarItemDelegate {
+  func isEnabled(_ toolbarItem: ToolbarItem) -> Bool {
+    return toolbarItem.command?.isEnable ?? false
+  }
+  
+  func isSelected(_ toolbarItem: ToolbarItem) -> Bool {
+    return toolbarItem.command?.isSelected ?? false
+  }
+  
+  func kind(_ toolbarItem: ToolbarItem) -> ToolbarItemKind {
+    if !toolbarItem.group.isEmpty {
+      return .segmentedControl
+    } else if toolbarItem.command?.groupName != nil {
+      return .segment
+    } else if toolbarItem.image != nil {
+      return .imageButton
+    } else {
+      return .indefinite
+    }
+  }
+}
+
+fileprivate extension Command {
+  func createToolbarItem() -> ToolbarItem {
+    let builder = ToolbarItem.builder(rawIdentifierValue: self.name)
+    builder.lable(self.title)
+      .palleteLable(self.title)
+      .width(38.0)
+      .set(target: self, action: #selector(self.execute))
+    if let img = self.toolbarIcon {
+      builder.image(img)
+    }
+    return builder.build()
+  }
+}
+
+fileprivate extension CommandGroup {
+  func createToolbarItem() -> ToolbarItem {
+    let toolbarSubitems = self.commands.map{$0.createToolbarItem()}
+    
+    let builder = ToolbarItem.builder(rawIdentifierValue: self.name)
+    builder.palleteLable(self.palleteLable ?? self.name)
+      .group(toolbarSubitems)
+    return builder.build()
+  }
+}
+
+fileprivate extension ToolbarItem {
+  var command: Command? {
+    guard group.isEmpty else {return nil}
+    if let c = CommandManager.shared.commands.filter({$0.name == self.identifier.rawValue}).first {
+      return c
+    }
+    return nil
+  }
+  
+  var commandGroup: CommandGroup? {
+    guard !group.isEmpty else {return nil}
+    if let g = CommandManager.shared.groups.filter({$0.key == self.identifier.rawValue}).first {
+      return g.value
+    }
+    return nil
+  }
+}

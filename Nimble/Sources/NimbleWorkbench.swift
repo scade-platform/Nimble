@@ -81,8 +81,6 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     PluginManager.shared.load()
     
     toolbar.delegate = self
-    
-    
   }
   
   public override func windowDidLoad() {
@@ -110,7 +108,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   }
   
   private func setupCommands() {
-    var workbenchAreaGroup = CommandGroup(name: "WorkbenchAreaGroup")
+    let workbenchAreaGroup = CommandGroup(name: "WorkbenchAreaGroup")
     let color = NSColor(named: "ButtonIconColor", bundle: Bundle.main) ?? .darkGray
     
     //Command to show/hide Navigator Area
@@ -290,9 +288,9 @@ extension NimbleWorkbench : NSToolbarDelegate {
     button.action = #selector(command.execute)
     button.target = command
     let width: CGFloat = 38.0
-    let height: CGFloat = 28.0
+//    let height: CGFloat = 28.0
     button.widthAnchor.constraint(equalToConstant: width).isActive = true
-    button.heightAnchor.constraint(equalToConstant: height).isActive = true
+//    button.heightAnchor.constraint(equalToConstant: height).isActive = true
     button.title = ""
     button.imageScaling = .scaleProportionallyDown
     button.bezelStyle = .texturedRounded

@@ -60,12 +60,15 @@ public class Command {
   }
 }
 
-public struct CommandGroup {
+public class CommandGroup {
   public let name: String
+  
+  public var palleteLable: String?
   public var commands: [Command] = []
   
   public init(name: String){
     self.name = name
+    self.palleteLable = name
   }
 }
 
