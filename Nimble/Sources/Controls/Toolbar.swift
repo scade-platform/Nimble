@@ -11,10 +11,10 @@ import NimbleCore
 
 
 class Toolbar: NSObject {
-  var identifier: NSUserInterfaceItemIdentifier?
-  
   var delegate: ToolbarDelegate?
   private(set) var items: [ToolbarItem] = []
+  
+  var nsWindow: NSWindow?
   
   lazy var defaultItems: [ToolbarItem] = {
     let result = self.delegate?.toolbarDefaultItems(self) ?? []
@@ -26,14 +26,15 @@ class Toolbar: NSObject {
     return self.defaultItems.map{$0.identifier}
   }()
   
-  init(_ window: NSWindow) {
+  init(_ window: NSWindow, delegate: ToolbarDelegate? = nil) {
     super.init()
-    self.identifier = NSUserInterfaceItemIdentifier("MainToolbar")
     
     let toolbar = NSToolbar(identifier: NSToolbar.Identifier("MainToolbar"))
     toolbar.allowsUserCustomization = true
     toolbar.displayMode = .default
     toolbar.delegate = self
+    self.delegate = delegate
+    nsWindow = window
     window.toolbar = toolbar
   }
   
@@ -46,12 +47,11 @@ extension Toolbar : NSToolbarDelegate {
   }
   
   func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-    return delegate?.toolbarItems(self).map{ $0.identifier } ?? defaultItemIdentifiers
+    return delegate?.toolbarAllowedItems(self).map{ $0.identifier } ?? defaultItemIdentifiers
   }
   
   func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier, willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
     guard let item = items.first(where: {$0.identifier == itemIdentifier}) else { return nil }
-    
     switch item.kind {
     case .imageButton:
       return item.imagePushButton()
@@ -62,12 +62,19 @@ extension Toolbar : NSToolbarDelegate {
     }
   }
   
+  
+  func toolbarWillAddItem(_ notification: Notification) {
+    guard let newItem = notification.userInfo?["item"] as? NSToolbarItem else { return }
+    if let item = items.first(where: {$0.identifier == newItem.itemIdentifier}) {
+      delegate?.toolbarWillAddItem(self, item: item)
+    }
+  }
 }
 
 protocol ToolbarDelegate {
   func toolbarDefaultItems(_ toolbar: Toolbar) -> [ToolbarItem]
-  
-  func toolbarItems(_ toolbar: Toolbar) -> [ToolbarItem]
+  func toolbarAllowedItems(_ toolbar: Toolbar) -> [ToolbarItem]
+  func toolbarWillAddItem(_ toolbar: Toolbar, item: ToolbarItem)
 }
 
 enum ToolbarItemKind {
@@ -77,8 +84,9 @@ enum ToolbarItemKind {
   case indefinite
 }
 
-struct ToolbarItem {
+class ToolbarItem: NSObject {
   let identifier: NSToolbarItem.Identifier
+  let kind: ToolbarItemKind
   let lable: String
   let palleteLable: String
   let image: NSImage?
@@ -89,92 +97,20 @@ struct ToolbarItem {
   let group: [ToolbarItem]
   var delegate: ToolbarItemDelegate?
   
-  
-  class ToolbarItemBuilder {
-    
-    let identifier: NSToolbarItem.Identifier
-    
-    private var lable: String
-    private var palleteLable: String
-    private var image: NSImage?
-    private var width: CGFloat
-    private var height: CGFloat
-    private var action: Selector?
-    private weak var target: AnyObject?
-    private var group: [ToolbarItem]
-    private var delegate: ToolbarItemDelegate?
-    
-    init(rawIdentifierValue: String) {
-      self.identifier = NSToolbarItem.Identifier(rawIdentifierValue)
-      self.lable = ""
-      self.palleteLable = ""
-      self.width = .zero
-      self.height = .zero
-      self.group = []
-    }
-    
-    init(identifier: NSToolbarItem.Identifier) {
-      self.identifier = identifier
-      self.lable = ""
-      self.palleteLable = ""
-      self.width = .zero
-      self.height = .zero
-      self.group = []
-    }
-    
-    @discardableResult
-    func lable(_ l: String) -> ToolbarItemBuilder {
-      self.lable = l
-      return self
-    }
-    
-    @discardableResult
-    func palleteLable(_ pl: String) -> ToolbarItemBuilder {
-      self.palleteLable = pl
-      return self
-    }
-    
-    @discardableResult
-    func image(_ img: NSImage) -> ToolbarItemBuilder {
-      self.image = img
-      return self
-    }
-    
-    @discardableResult
-    func width(_ w: CGFloat) -> ToolbarItemBuilder {
-      self.width = w
-      return self
-    }
-    
-    @discardableResult
-    func height(_ h: CGFloat) -> ToolbarItemBuilder {
-      self.height = h
-      return self
-    }
-    
-    @discardableResult
-    func set(target: AnyObject, action: Selector) -> ToolbarItemBuilder {
-      self.action = action
-      self.target = target
-      return self
-    }
-    
-    @discardableResult
-    func group(_ items: [ToolbarItem]) -> ToolbarItemBuilder {
-      self.group = items
-      return self
-    }
-    
-    @discardableResult
-    func delegate(_ d: ToolbarItemDelegate) -> ToolbarItemBuilder {
-      self.delegate = d
-      return self
-    }
-    
-    func build() -> ToolbarItem {
-      return ToolbarItem(identifier: self.identifier, lable: self.lable, palleteLable: self.palleteLable, image: self.image, width: self.width, height: self.height, action: self.action, target: self.target, group: self.group, delegate: self.delegate)
-    }
+  init(identifier: NSToolbarItem.Identifier, kind: ToolbarItemKind = .indefinite, lable: String = "", palleteLable: String = "", image: NSImage? = nil, width: CGFloat = .zero, height: CGFloat = .zero, action: Selector? = nil, target: AnyObject? = nil, group: [ToolbarItem] = [], delegate: ToolbarItemDelegate? = nil){
+    self.identifier = identifier
+    self.kind = kind
+    self.lable = lable
+    self.palleteLable = palleteLable
+    self.image = image
+    self.width = width
+    self.height = height
+    self.action = action
+    self.target = target
+    self.group = group
+    self.delegate = delegate
   }
+  
 }
 
 extension ToolbarItem {
@@ -185,19 +121,14 @@ extension ToolbarItem {
   var isSelected: Bool {
     return delegate?.isSelected(self) ?? false
   }
-  
-  var kind: ToolbarItemKind {
-    return delegate?.kind(self) ?? .indefinite
-  }
 }
 
 protocol ToolbarItemDelegate {
   func isEnabled(_ toolbarItem: ToolbarItem) -> Bool
   func isSelected(_ toolbarItem: ToolbarItem) -> Bool
-  func kind(_ toolbarItem: ToolbarItem) -> ToolbarItemKind
 }
 
-extension ToolbarDelegate {
+extension ToolbarItemDelegate {
   func isEnabled(_ toolbarItem: ToolbarItem) -> Bool {
     return false
   }
@@ -205,39 +136,28 @@ extension ToolbarDelegate {
   func isSelected(_ toolbarItem: ToolbarItem) -> Bool {
     return false
   }
-  
-  func kind(_ toolbarItem: ToolbarItem) -> ToolbarItemKind {
-    return .indefinite
-  }
 }
 
 
 extension ToolbarItem {
-  static public func builder(rawIdentifierValue value: String) -> ToolbarItem.ToolbarItemBuilder {
-    return ToolbarItem.ToolbarItemBuilder(rawIdentifierValue: value)
-  }
+  public static let flexibleSpace = ToolbarItem(identifier: .flexibleSpace)
   
-  static public func builder(identifier id: NSToolbarItem.Identifier) -> ToolbarItem.ToolbarItemBuilder {
-    return ToolbarItem.ToolbarItemBuilder(identifier: id)
-  }
-}
-
-extension ToolbarItem {
-  public static let flexibleSpace = ToolbarItem.builder(identifier: .flexibleSpace).build()
+  public static let separator = ToolbarItem(identifier: .separator)
   
-  public static let separator = ToolbarItem.builder(identifier: .separator).build()
-  
-  public static let space = ToolbarItem.builder(identifier: .space).build()
+  public static let space = ToolbarItem(identifier: .space)
 }
 
 extension ToolbarItem {
   func imagePushButton() -> NSToolbarItem {
     let item = NSToolbarItem(itemIdentifier: self.identifier)
     item.label = self.lable
-    item.label = self.palleteLable
     
-    let button = NSButton(image: self.image!, target: self.target, action: self.action)
+    let button = NSButton()
     button.cell = ToolbarItemButtonCell()
+    button.image = self.image
+    button.action = self.action
+    button.target = self.target
+    button.title = ""
     button.imageScaling = .scaleProportionallyDown
     button.bezelStyle = .texturedRounded
     button.focusRingType = .none
@@ -271,9 +191,8 @@ extension ToolbarItem {
     segmentedControl.segmentStyle = .texturedRounded
     
     if self.action == nil, self.target == nil {
-      let wrapper = NSObjectToolbatItemWrapper(self)
-      segmentedControl.target = wrapper
-      segmentedControl.action = #selector(wrapper.execute(_:))
+      segmentedControl.target = self
+      segmentedControl.action = #selector(execute(_:))
     } else {
       segmentedControl.target = self.target
       segmentedControl.action = self.action
@@ -283,7 +202,7 @@ extension ToolbarItem {
     for (index, segment) in group.enumerated() {
       let item = NSToolbarItem(itemIdentifier: segment.identifier)
       item.action = segment.action
-      item.target = segment.target
+      item.target = segment
       subitems.append(item)
       
       segmentedControl.setImage(segment.image, forSegment: index)
@@ -299,21 +218,11 @@ extension ToolbarItem {
     return itemGroup
   }
   
-  private class NSObjectToolbatItemWrapper: NSObject {
-    let wrappedToolbarItem: ToolbarItem
-    
-    init(_ wrapped: ToolbarItem) {
-      self.wrappedToolbarItem = wrapped
-      super.init()
-    }
-    
-    @objc func execute(_ sender: Any?) {
-      //redirect to selected segment
-      guard let segmentedControl = sender as? NSSegmentedControl else { return }
-      let toolbarItem = wrappedToolbarItem.group[segmentedControl.selectedSegment]
-      NSApp.sendAction(toolbarItem.action!, to: toolbarItem.target, from: nil)
-    }
-    
+  @objc func execute(_ sender: Any?) {
+    //redirect to selected segment
+    guard let segmentedControl = sender as? NSSegmentedControl else { return }
+    let toolbarItem = self.group[segmentedControl.selectedSegment]
+    NSApp.sendAction(toolbarItem.action!, to: toolbarItem.target, from: nil)
   }
   
   private class ToolbarItemSegmentedCell: NSSegmentedCell {
@@ -329,7 +238,7 @@ extension ToolbarItem {
       
       if let image = image(forSegment: segment)?.imageWithTint(tintColor) {
         //paddings is equal 2
-        image.draw(in: imageRect.insetBy(dx: 2, dy: 2))
+        image.draw(in: imageRect.insetBy(dx: 3, dy: 3))
       }
     }
     

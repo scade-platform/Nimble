@@ -100,6 +100,8 @@ fileprivate enum ModifierFlags: CaseIterable {
 }
 
 class CommandsToolbarDelegate: ToolbarDelegate {
+  public static var shared = CommandsToolbarDelegate()
+  
   func toolbarDefaultItems(_ toolbar: Toolbar) -> [ToolbarItem] {
     var result : [ToolbarItem] = []
     let loadedCommands = CommandManager.shared.commands
@@ -116,7 +118,7 @@ class CommandsToolbarDelegate: ToolbarDelegate {
     return result
   }
   
-  func toolbarItems(_ toolbar: Toolbar) -> [ToolbarItem] {
+  func toolbarAllowedItems(_ toolbar: Toolbar) -> [ToolbarItem] {
     var result : [ToolbarItem] = []
     let loadedCommands = CommandManager.shared.commands
 
@@ -133,6 +135,10 @@ class CommandsToolbarDelegate: ToolbarDelegate {
     
     return result
   }
+  
+  func toolbarWillAddItem(_ toolbar: Toolbar, item: ToolbarItem) {
+    item.command?.observers.add(observer: toolbar.nsWindow!)
+  }
 }
 
 extension CommandsToolbarDelegate: ToolbarItemDelegate {
@@ -143,13 +149,31 @@ extension CommandsToolbarDelegate: ToolbarItemDelegate {
   func isSelected(_ toolbarItem: ToolbarItem) -> Bool {
     return toolbarItem.command?.isSelected ?? false
   }
+}
+
+extension CommandsToolbarDelegate: CommandObserver {
+  func commandDidChange(_ command: Command) {
+    
+  }
+}
+
+fileprivate extension Command {
+  func createToolbarItem() -> ToolbarItem {
+    return ToolbarItem(identifier: NSToolbarItem.Identifier(rawValue: self.name),
+                kind: self.kind,
+                lable: self.title,
+                palleteLable: self.title,
+                image: self.toolbarIcon,
+                width: 38.0,
+                action:  #selector(self.execute),
+                target: self,
+                delegate: CommandsToolbarDelegate.shared)
+  }
   
-  func kind(_ toolbarItem: ToolbarItem) -> ToolbarItemKind {
-    if !toolbarItem.group.isEmpty {
-      return .segmentedControl
-    } else if toolbarItem.command?.groupName != nil {
+  var kind: ToolbarItemKind {
+    if self.groupName != nil {
       return .segment
-    } else if toolbarItem.image != nil {
+    } else if self.toolbarIcon != nil {
       return .imageButton
     } else {
       return .indefinite
@@ -157,28 +181,15 @@ extension CommandsToolbarDelegate: ToolbarItemDelegate {
   }
 }
 
-fileprivate extension Command {
-  func createToolbarItem() -> ToolbarItem {
-    let builder = ToolbarItem.builder(rawIdentifierValue: self.name)
-    builder.lable(self.title)
-      .palleteLable(self.title)
-      .width(38.0)
-      .set(target: self, action: #selector(self.execute))
-    if let img = self.toolbarIcon {
-      builder.image(img)
-    }
-    return builder.build()
-  }
-}
-
 fileprivate extension CommandGroup {
   func createToolbarItem() -> ToolbarItem {
     let toolbarSubitems = self.commands.map{$0.createToolbarItem()}
     
-    let builder = ToolbarItem.builder(rawIdentifierValue: self.name)
-    builder.palleteLable(self.palleteLable ?? self.name)
-      .group(toolbarSubitems)
-    return builder.build()
+    return ToolbarItem(identifier: NSToolbarItem.Identifier(rawValue: self.name),
+                   kind: .segmentedControl,
+                   palleteLable: self.palleteLable ?? "",
+                   group: toolbarSubitems,
+                   delegate: CommandsToolbarDelegate.shared)
   }
 }
 
@@ -197,5 +208,29 @@ fileprivate extension ToolbarItem {
       return g.value
     }
     return nil
+  }
+}
+
+extension NSWindow : CommandObserver {
+  public func commandDidChange(_ command: Command) {
+    DispatchQueue.main.async { [weak self] in
+      guard let self = self else {return}
+      for item in self.toolbar!.items {
+        if item.itemIdentifier.rawValue == command.name {
+          item.isEnabled = command.isEnable
+          return
+        } else if let groupName = command.groupName, item.itemIdentifier.rawValue == groupName, let segmentedControl = item.view as? NSSegmentedControl, let group = CommandManager.shared.groups[groupName] {
+          for (index, command) in group.commands.enumerated() {
+            if segmentedControl.selectedSegment == index {
+              segmentedControl.setEnabled(command.isEnable, forSegment: index)
+              segmentedControl.setSelected(command.isSelected, forSegment: index)
+            }
+          }
+          return
+        } else {
+          continue
+        }
+      }
+    }
   }
 }

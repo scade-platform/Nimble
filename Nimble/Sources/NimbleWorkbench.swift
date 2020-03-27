@@ -15,25 +15,10 @@ import NimbleCore
 public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   public var observers = ObserverSet<WorkbenchObserver>()
   
-  @IBOutlet weak var toolbar: NSToolbar!
-  
   public private(set) var diagnostics: [Path: [Diagnostic]] = [:]
   
-  private var toolbarGroups: [NSObjectGroupWrapper] = []
+  private var toolbar: Toolbar?
   
-  private lazy var toolbarItems: [NSToolbarItem.Identifier] = {
-    guard !CommandManager.shared.commands.isEmpty else {
-      return []
-    }
-    
-    let toolbarCommands = CommandManager.shared.commands
-      .filter{$0.toolbarIcon != nil}
-      .filter{$0.groupName == nil}
-    var result = toolbarCommands.map{NSToolbarItem.Identifier($0.name)}
-    result.append(.flexibleSpace)
-    result.append(contentsOf: CommandManager.shared.groups.values.map{NSToolbarItem.Identifier($0.name)})
-    return result
-  }()
 
   // Document property of the WindowController always refer to the project
   public override var document: AnyObject? {
@@ -79,8 +64,6 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   
   public override func windowWillLoad() {
     PluginManager.shared.load()
-    
-    toolbar.delegate = self
   }
   
   public override func windowDidLoad() {
@@ -88,6 +71,8 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
    
     window?.delegate = self
     window?.contentView?.wantsLayer = true
+    
+   
     
     // Restore window position
     window?.setFrameUsingName("NimbleWindow")
@@ -99,12 +84,12 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     DocumentManager.shared.defaultDocument = BinaryFileDocument.self
     
     setupCommands()
+    toolbar = Toolbar(window!, delegate: CommandsToolbarDelegate.shared)
     PluginManager.shared.activate(in: self)
   }
     
   public func windowWillClose(_ notification: Notification) {
     PluginManager.shared.deactivate(in: self)
-    toolbarGroups.removeAll()
   }
   
   private func setupCommands() {
@@ -190,140 +175,6 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
         
     observers.notify {
       $0.workbenchActiveDocumentDidChange(self, document: doc)
-    }
-  }
-}
-
-//MARK: - NSToolbarDelegate
-
-extension NimbleWorkbench : NSToolbarDelegate {
-  public func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-    var result = toolbarItems
-    result.append(.flexibleSpace)
-    result.append(.space)
-    return result
-  }
-  
-  public func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-    return toolbarItems
-  }
-  
-  public func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier, willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
-    for command in CommandManager.shared.commands {
-      if command.name == itemIdentifier.rawValue {
-        return toolbarPushButton(identifier: itemIdentifier, for: command)
-      }
-    }
-    for (name, group) in CommandManager.shared.groups {
-      if name == itemIdentifier.rawValue {
-        return toolbarSegmentedControl(identifier: itemIdentifier,for: group)
-      }
-    }
-    return nil
-  }
-  
-  public func toolbarWillAddItem(_ notification: Notification) {
-    guard let newItem = notification.userInfo?["item"] as? NSToolbarItem else { return }
-    if let command = CommandManager.shared.commands.first(where: {$0.name == newItem.itemIdentifier.rawValue}) {
-      command.observers.add(observer: self)
-    } else if let command = CommandManager.shared.commands.first(where: {$0.groupName == newItem.itemIdentifier.rawValue }), let groupName = command.groupName, let group = CommandManager.shared.groups[groupName] {
-      for command in group.commands {
-        command.observers.add(observer: self)
-      }
-    }
-    
-  }
-  
-  public func toolbarDidRemoveItem(_ notification: Notification) {
-    guard let newItem = notification.userInfo?["item"] as? NSToolbarItem else { return }
-    if let command = CommandManager.shared.commands.first(where: {$0.name == newItem.itemIdentifier.rawValue}) {
-      command.observers.remove(observer: self)
-    } else if let command = CommandManager.shared.commands.first(where: {$0.groupName == newItem.itemIdentifier.rawValue }), let groupName = command.groupName, let group = CommandManager.shared.groups[groupName] {
-      for command in group.commands {
-        command.observers.remove(observer: self)
-      }
-    }
-  }
-  
-  private func toolbarSegmentedControl(identifier: NSToolbarItem.Identifier, for group: CommandGroup) -> NSToolbarItemGroup {
-    let control = NSSegmentedControl(frame: NSRect(x:0, y:0, width: 38.0 * Double(group.commands.count), height: 28.0))
-    control.cell = NimbleSegmentedCell()
-    control.trackingMode = .selectAny
-    control.segmentCount = group.commands.count
-    
-    
-    let objcWrapper = NSObjectGroupWrapper(wrapperedGroup: group, control: control)
-    toolbarGroups.append(objcWrapper)
-    control.target = objcWrapper
-    control.action = #selector(objcWrapper.execute)
-    
-    
-    var items = [NSToolbarItem]()
-    for (segmentIndex, segment) in group.commands.enumerated() {
-      guard segment.toolbarIcon != nil else { continue }
-      let item = NSToolbarItem(itemIdentifier: NSToolbarItem.Identifier(segment.name))
-      items.append(item)
-      
-      control.setImage(segment.toolbarIcon, forSegment: segmentIndex)
-      control.setTag(segmentIndex, forSegment: segmentIndex)
-      control.setWidth(38.0, forSegment: segmentIndex)
-      control.setSelected(segment.isSelected, forSegment: segmentIndex)
-    }
-    
-    let itemGroup = NSToolbarItemGroup(itemIdentifier: identifier)
-    itemGroup.paletteLabel = group.name
-    itemGroup.subitems = items
-    itemGroup.view = control
-    return itemGroup
-  }
-  
-  private func toolbarPushButton(identifier: NSToolbarItem.Identifier, for command: Command) -> NSToolbarItem {
-    let item = NSToolbarItem(itemIdentifier: identifier)
-    item.label = command.name
-    item.paletteLabel = command.name
-    //TODO: Change color when system theme is changed
-    let button = NSButton()
-    button.cell = ButtonCell()
-    button.image = command.toolbarIcon
-    button.action = #selector(command.execute)
-    button.target = command
-    let width: CGFloat = 38.0
-//    let height: CGFloat = 28.0
-    button.widthAnchor.constraint(equalToConstant: width).isActive = true
-//    button.heightAnchor.constraint(equalToConstant: height).isActive = true
-    button.title = ""
-    button.imageScaling = .scaleProportionallyDown
-    button.bezelStyle = .texturedRounded
-    button.focusRingType = .none
-    item.view = button
-    item.isEnabled = command.isEnable
-    return item
-  }
-}
-
-
-//MARK: - CommandObserver
-
-extension NimbleWorkbench : CommandObserver {
-  public func commandDidChange(_ command: Command) {
-    for item in toolbar.items {
-      if item.itemIdentifier.rawValue == command.name {
-        DispatchQueue.main.async {
-          item.isEnabled = command.isEnable
-        }
-        return
-      } else if let groupName = command.groupName, item.itemIdentifier.rawValue == groupName, let group = toolbarGroups.first(where: {$0.name == groupName}) {
-          let segmentedControl = group.segmentedControl
-          for (index, command) in group.commands.enumerated() {
-            if segmentedControl.selectedSegment == index {
-              segmentedControl.setEnabled(command.isEnable, forSegment: index)
-              segmentedControl.setSelected(command.isSelected, forSegment: index)
-            }
-          }
-        return
-      } else {
-        continue
-      }
     }
   }
 }
@@ -529,99 +380,5 @@ extension NimbleWorkbenchView where Self: NSView {
 extension NimbleWorkbenchViewController where Self: NSViewController {
   var workbench: NimbleWorkbench? {
     return view.window?.windowController as? NimbleWorkbench
-  }
-}
-
-
-fileprivate class ButtonCell: NSButtonCell {
-  
-  override func drawImage(_ image: NSImage, withFrame frame: NSRect, in controlView: NSView) {
-    super.drawImage(image, withFrame: frame.insetBy(dx: 0, dy: 2), in: controlView)
-  }
-  
-}
-
-fileprivate class NSObjectGroupWrapper: NSObject {
-  private let wrapperedGroup: CommandGroup
-  let segmentedControl: NSSegmentedControl
-  
-  var name : String {
-    return wrapperedGroup.name
-  }
-  
-  var commands: [Command] {
-    return wrapperedGroup.commands
-  }
-  
-  init(wrapperedGroup: CommandGroup, control: NSSegmentedControl) {
-    self.wrapperedGroup = wrapperedGroup
-    self.segmentedControl = control
-    super.init()
-  }
-  
-  @objc func execute(_ sender: Any?) {
-    wrapperedGroup.commands[segmentedControl.selectedSegment].execute()
-  }
-  
-}
-
-
-class NimbleSegmentedCell: NSSegmentedCell {
-  
-  override func drawSegment(_ segment: Int, inFrame frame: NSRect, with controlView: NSView) {
-    guard let imageSize = image(forSegment: segment)?.size else { return }
-    
-    let imageRect = computeImageRect(imageSize: imageSize, in: frame)
-    
-    let selectedColor = NSColor(named: "SelectedSegmentColor", bundle: Bundle.main)
-    let defaulColor = NSColor(named: "BottonIconColor", bundle: Bundle.main)
-    let tintColor: NSColor = (isSelected(forSegment: segment) ? selectedColor : defaulColor) ?? .darkGray
-    
-    if let image = image(forSegment: segment)?.imageWithTint(tintColor) {
-      //paddings is equal 2
-      image.draw(in: imageRect.insetBy(dx: 2, dy: 2))
-    }
-  }
-  
-  func computeImageRect(imageSize: NSSize, in frame: NSRect) -> NSRect {
-    var targetScaleSize = frame.size
-    
-    //Scale proportionally down
-    if targetScaleSize.width > imageSize.width { targetScaleSize.width = imageSize.width }
-    if targetScaleSize.height > imageSize.height { targetScaleSize.height = imageSize.height }
-    
-    let scaledSize = self.sizeByScalingProportianlly(toSize: targetScaleSize, fromSize: imageSize)
-    let drawingSize = NSSize(width: scaledSize.width, height: scaledSize.height)
-    
-    //Image position inside the content frame (center)
-    let drawingPosition = NSPoint(x: frame.origin.x + frame.size.width / 2 - drawingSize.width / 2,
-                                  y: frame.origin.y + frame.size.height / 2 - drawingSize.height / 2)
-
-    return NSRect(x: round(drawingPosition.x), y: round(drawingPosition.y), width: ceil(drawingSize.width), height: ceil(drawingSize.height))
-    
-  }
-  
-  
-  func sizeByScalingProportianlly(toSize newSize: NSSize, fromSize oldSize: NSSize) -> NSSize {
-      let widthHeightDivision = oldSize.width / oldSize.height
-      let heightWidthDivision = oldSize.height / oldSize.width
-
-      var scaledSize = NSSize.zero
-
-      if oldSize.width > oldSize.height {
-          if (widthHeightDivision * newSize.height) >= newSize.width {
-              scaledSize = NSSize(width: newSize.width, height: heightWidthDivision * newSize.width)
-          } else {
-              scaledSize = NSSize(width: widthHeightDivision * newSize.height, height: newSize.height)
-          }
-      } else {
-          if (heightWidthDivision * newSize.width) >= newSize.height {
-              scaledSize = NSSize(width: widthHeightDivision * newSize.height, height: newSize.height)
-          } else {
-              scaledSize = NSSize(width: newSize.width, height: heightWidthDivision * newSize.width)
-          }
-      }
-
-      return scaledSize
   }
 }
