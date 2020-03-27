@@ -15,7 +15,7 @@ import NimbleCore
 public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   public var observers = ObserverSet<WorkbenchObserver>()
   
-  @IBOutlet weak var toolbar: NSToolbar!
+  private var toolbar: Toolbar?
   
   public private(set) var diagnostics: [Path: [Diagnostic]] = [:]
   
@@ -73,8 +73,6 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   
   public override func windowWillLoad() {
     PluginManager.shared.load()
-    
-    toolbar.delegate = self
   }
   
   public override func windowDidLoad() {
@@ -91,6 +89,8 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     debugView.isHidden = true
     
     DocumentManager.shared.defaultDocument = BinaryFileDocument.self
+    
+    toolbar = Toolbar(window!, delegate: CommandsToolbarDelegate.shared)
     
     PluginManager.shared.activate(in: self)
   }
@@ -127,78 +127,16 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   }
 }
 
-//MARK: - NSToolbarDelegate
-
-extension NimbleWorkbench : NSToolbarDelegate {
-  public func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-    var result = toolbarItems
-    result.append(.flexibleSpace)
-    result.append(.space)
-    return result
-  }
-  
-  public func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-    return toolbarItems
-  }
-  
-  public func toolbar(_ toolbar: NSToolbar, itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier, willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
-    let commands = CommandManager.shared.commands
-    for command in commands {
-      if command.name == itemIdentifier.rawValue {
-        return toolbarPushButton(identifier: itemIdentifier, for: command)
-      }
-    }
-    return nil
-  }
-  
-  public func toolbarWillAddItem(_ notification: Notification) {
-    guard let newItem = notification.userInfo?["item"] as? NSToolbarItem,
-      let command = CommandManager.shared.commands.first(where: {$0.name == newItem.itemIdentifier.rawValue}) else {
-        return
-    }
-    command.observers.add(observer: self)
-  }
-  
-  public func toolbarDidRemoveItem(_ notification: Notification) {
-    guard let newItem = notification.userInfo?["item"] as? NSToolbarItem,
-      let command = CommandManager.shared.commands.first(where: {$0.name == newItem.itemIdentifier.rawValue}) else {
-        return
-    }
-    command.observers.remove(observer: self)
-  }
-  
-  private func toolbarPushButton(identifier: NSToolbarItem.Identifier, for command: Command) -> NSToolbarItem {
-    let item = NSToolbarItem(itemIdentifier: identifier)
-    item.label = command.name
-    item.paletteLabel = command.name
-    //TODO: Change color when system theme is changed
-    let button = NSButton()
-    button.cell = ButtonCell()
-    button.image = command.toolbarIcon
-    button.action = #selector(command.execute)
-    button.target = command
-    let width: CGFloat = 38.0
-    let height: CGFloat = 28.0
-    button.widthAnchor.constraint(equalToConstant: width).isActive = true
-    button.heightAnchor.constraint(equalToConstant: height).isActive = true
-    button.title = ""
-    button.imageScaling = .scaleProportionallyDown
-    button.bezelStyle = .texturedRounded
-    button.focusRingType = .none
-    item.view = button
-    item.isEnabled = command.isEnable
-    return item
-  }
-}
-
 
 //MARK: - CommandObserver
 
 extension NimbleWorkbench : CommandObserver {
   public func commandDidChange(_ command: Command) {
+    DispatchQueue.main.async { [weak self] in
+    guard let self = self, let window = self.window, let toolbar = window.toolbar else { return }
     for item in toolbar.items {
       guard item.itemIdentifier.rawValue == command.name else { continue }
-      DispatchQueue.main.async {
+     
         item.isEnabled = command.isEnable
       }
       return
@@ -404,13 +342,4 @@ extension NimbleWorkbenchViewController where Self: NSViewController {
   var workbench: NimbleWorkbench? {
     return view.window?.windowController as? NimbleWorkbench
   }
-}
-
-
-fileprivate class ButtonCell: NSButtonCell {
-  
-  override func drawImage(_ image: NSImage, withFrame frame: NSRect, in controlView: NSView) {
-    super.drawImage(image, withFrame: frame.insetBy(dx: 0, dy: 2), in: controlView)
-  }
-  
 }

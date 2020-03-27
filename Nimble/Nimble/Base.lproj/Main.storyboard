@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -770,19 +770,11 @@
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" texturedBackground="YES"/>
                         <rect key="contentRect" x="193" y="617" width="1200" height="900"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-                        <toolbar key="toolbar" implicitIdentifier="A2DBE7E0-5B84-4A90-B67D-2FDBF38483E4" displayMode="iconAndLabel" sizeMode="regular" id="9J0-oK-8mA">
-                            <allowedToolbarItems/>
-                            <defaultToolbarItems/>
-                            <connections>
-                                <outlet property="delegate" destination="B8D-0N-5wS" id="dGf-7Y-SMn"/>
-                            </connections>
-                        </toolbar>
                         <connections>
                             <outlet property="delegate" destination="B8D-0N-5wS" id="98r-iN-zZc"/>
                         </connections>
                     </window>
                     <connections>
-                        <outlet property="toolbar" destination="9J0-oK-8mA" id="0xp-dz-2G9"/>
                         <segue destination="vqu-Td-bqq" kind="relationship" relationship="window.shadowedContentViewController" id="zaY-9W-muq"/>
                     </connections>
                 </windowController>
