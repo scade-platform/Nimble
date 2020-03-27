@@ -57,7 +57,8 @@ final class BuildSystemPlugin: Plugin {
 
     runCommand = Command(name: "Run", menuPath: "Tools", keyEquivalent: "cmd+r", toolbarIcon: runImage) { _ in self.run() }
     CommandManager.shared.registerCommand(command: runCommand!)
-    stopCommand = Command(name: "Stop", menuPath: "Tools", keyEquivalent: "cmd+.", toolbarIcon: stopImage, isEnable: false) { _ in self.stop() }
+    stopCommand = Command(name: "Stop", menuPath: "Tools", keyEquivalent: "cmd+.", toolbarIcon: stopImage) { _ in self.stop() }
+    stopCommand?.isEnable = false
     CommandManager.shared.registerCommand(command: stopCommand!)
     let claenCommand = Command(name: "Clean", menuPath: "Tools", keyEquivalent: "cmd+K") { _ in self.clean() }
     CommandManager.shared.registerCommand(command: claenCommand)

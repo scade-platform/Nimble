@@ -14,7 +14,7 @@ public extension Command {
   func createMenuItem() -> NSMenuItem? {
     guard menuPath != nil else { return nil }
     let (key, mask) = getKeyEquivalent()
-    let menuItem = NSMenuItem(title: self.name, action: #selector(execute), keyEquivalent: key)
+    let menuItem = NSMenuItem(title: self.title, action: #selector(execute), keyEquivalent: key)
     menuItem.keyEquivalentModifierMask = mask
     menuItem.target = self
     menuItem.representedObject = self
@@ -39,7 +39,7 @@ public extension Command {
 extension Command : NSUserInterfaceValidations {
   public func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
     if let menuItem = item as? NSMenuItem, let command = menuItem.representedObject as? Command {
-      menuItem.title = command.name
+      menuItem.title = command.title
       return command.isEnable
     }
     return true
@@ -95,28 +95,6 @@ fileprivate enum ModifierFlags: CaseIterable {
       return .help
     case .function:
       return .function
-    }
-  }
-}
-
-
-// MARK: - IconsProvider
-
-extension AppDelegate: IconsProvider {
-  func icon<T>(for obj: T) -> Icon? {
-    switch obj {
-    case is File, is Document:
-      return IconsManager.Icons.file
-      
-    case let folder as Folder:
-      if folder.isRoot {
-        return folder.isOpened ?  IconsManager.Icons.rootFolderOpened : IconsManager.Icons.rootFolder
-      } else {
-        return folder.isOpened ?  IconsManager.Icons.folderOpened : IconsManager.Icons.folder
-      }
-      
-    default:
-      return nil
     }
   }
 }
