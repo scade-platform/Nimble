@@ -90,10 +90,9 @@ class CodeEditorView: NSViewController {
     
     self.textView.drawsBackground = false
     
-    ///TODO: read from settings
-    self.textView.font = NSFont.init(name: "SFMono-Medium", size: 12)
-        
     if let theme = ThemeManager.shared.currentTheme {
+      self.textView.font = theme.general.font
+
       textView.apply(theme: theme)
       highlightSyntax()
     }
