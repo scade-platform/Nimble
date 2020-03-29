@@ -5,6 +5,8 @@ import NimbleCore
 class EditorView: SVGEditorView {
   
   let window = SCDLatticeWindow()
+
+  public var observers = ObserverSet<EditorViewObserver>()
   
   var pageDocument: PageDocument? {
     return document as? PageDocument
@@ -16,7 +18,7 @@ class EditorView: SVGEditorView {
 
   override func setupElementSelector() {
     if elementSelector == nil {
-      let widgetSelector = WidgetSelector(svgView)
+      let widgetSelector = WidgetSelector(svgView, editorView: self)
 
       guard let page = pageDocument?.page else { return }
       widgetSelector.visit(page)
@@ -30,4 +32,12 @@ class EditorView: SVGEditorView {
 
     pageDocument?.adapter.show(window)
   }
+}
+
+public protocol EditorViewObserver: class {
+  func didSelectWidget(_ widget: SCDWidgetsWidget)
+}
+
+public extension EditorViewObserver {
+  func didSelectWidget(_ widget: SCDWidgetsWidget) {}
 }
