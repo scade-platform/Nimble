@@ -57,12 +57,28 @@ public final class ColorSettings: Decodable {
     return self.color(key) ?? defaultColor
   }
 
-  public func fontName() -> String? {
-    return settings["fontName"]
+  public var fontName: String? { settings["fontName"] }
+
+  public var fontSize: Float? {
+    settings["fontSize"].flatMap { Float($0) }
   }
 
-  public func fontSize() -> Float? {
-    return settings["fontSize"].flatMap { Float($0) }
+  public var fontStyle: NSFontTraitMask? {
+    guard let rawValue = settings["fontStyle"] else { return nil }
+
+    var styleMask: NSFontTraitMask = []
+
+    for value in rawValue.components(separatedBy: .whitespaces) {
+      switch value {
+      case "bold":
+        styleMask.insert(.boldFontMask)
+      case "italic":
+        styleMask.insert(.italicFontMask)
+      default:
+        break
+      }
+    }
+    return styleMask
   }
 }
 
@@ -83,8 +99,8 @@ public struct GeneralColorSettings {
   public lazy var invisibles: NSColor = settings?.color("invisibles") ?? .clear
 
   public lazy var font: NSFont = {
-    let fontName = settings?.fontName() ?? "SFMono-Medium"
-    let fontSize = CGFloat(settings?.fontSize() ?? 12)
+    let fontName = settings?.fontName ?? "SFMono-Medium"
+    let fontSize = CGFloat(settings?.fontSize ?? 12)
 
     return
       NSFont.init(name: fontName, size: fontSize) ??

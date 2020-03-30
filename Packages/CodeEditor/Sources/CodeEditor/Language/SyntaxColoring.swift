@@ -18,28 +18,14 @@ public struct ScopeColorSetting {
   fileprivate weak var settings: ColorSettings!
   
   public var name: String {settings.parameters["name", default: ""]}
+
   public var scope: SyntaxScope {SyntaxScope(settings.parameters["scope"] ?? "")}
-  
-  public var fontStyle: NSFontTraitMask? {
-    guard let rawValue = settings.settings["fontStyle"] else { return nil }
-
-    var styleMask: NSFontTraitMask = []
-
-    for value in rawValue.components(separatedBy: .whitespaces) {
-      switch value {
-        case "bold":
-          styleMask.insert(.boldFontMask)
-        case "italic":
-        styleMask.insert(.italicFontMask)
-      default:
-        break
-      }
-    }
-    return styleMask
-  }
 
   public var foreground: NSColor? {settings.color("foreground")}
+
   public var background: NSColor? {settings.color("background")}
+
+  public var fontStyle: NSFontTraitMask? { settings.fontStyle }
 }
 
 
