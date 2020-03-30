@@ -135,7 +135,9 @@ public final class ThemeManager {
 
   public var userDefinedThemes: [Theme] = []
   
-  public var themes: [Theme] { defaultThemes + userDefinedThemes }
+  public lazy var themes: [Theme] = {
+    return defaultThemes + userDefinedThemes
+  }()
   
   public var defaultTheme: Theme? {
     switch NSView.systemInterfaceStlye {
