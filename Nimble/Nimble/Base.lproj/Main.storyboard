@@ -25,7 +25,18 @@
                                         <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
                                         <menuItem title="Preferences" id="BOF-NM-1cW">
                                             <modifierMask key="keyEquivalentModifierMask"/>
-                                            <menu key="submenu" id="B9C-Xw-5eB"/>
+                                            <menu key="submenu" id="B9C-Xw-5eB">
+                                                <items>
+                                                    <menuItem title="Settings" id="CT3-bD-ReG">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                    </menuItem>
+                                                    <menuItem isSeparatorItem="YES" id="ltS-9b-he6"/>
+                                                    <menuItem title="Theme" id="o9p-py-anH" userLabel="Theme">
+                                                        <modifierMask key="keyEquivalentModifierMask"/>
+                                                        <menu key="submenu" id="oUh-WH-LnH"/>
+                                                    </menuItem>
+                                                </items>
+                                            </menu>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="wFC-TO-SCJ"/>
                                         <menuItem title="Services" id="NMo-om-nkz">

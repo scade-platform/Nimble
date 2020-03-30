@@ -121,6 +121,7 @@
 		D77F337D23A4640300E3AFC8 /* SwiftExtensions.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = SwiftExtensions.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D77F337F23A4641B00E3AFC8 /* LSPClient.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = LSPClient.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D78BCB05222B4DE300AE0A9C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D78FFF1824255CE100EB70E2 /* Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Icons; sourceTree = "<group>"; };
 		D7CBF7CB222878F10088715C /* Nimble.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nimble.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7CBF7D2222878F40088715C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D7CBF7D5222878F40088715C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -233,9 +234,10 @@
 		D7CBF7CD222878F10088715C /* Nimble */ = {
 			isa = PBXGroup;
 			children = (
+				D78FFF1824255CE100EB70E2 /* Icons */,
+				D7CBF7D7222878F40088715C /* Info.plist */,
 				D7CBF7D2222878F40088715C /* Assets.xcassets */,
 				D7CBF7D4222878F40088715C /* Main.storyboard */,
-				D7CBF7D7222878F40088715C /* Info.plist */,
 			);
 			path = Nimble;
 			sourceTree = "<group>";
@@ -354,6 +356,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D72F959C222DF2D9009F2EC3 /* WorkbenchSidebar.xib in Resources */,
+				D78FFF1924255CE100EB70E2 /* Icons in Resources */,
 				D7CBF7D6222878F40088715C /* Main.storyboard in Resources */,
 				D724C5F3237C418B00E80958 /* ConsoleView.xib in Resources */,
 				0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */,

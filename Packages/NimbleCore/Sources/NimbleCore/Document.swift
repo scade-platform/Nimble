@@ -17,10 +17,10 @@ public protocol Document where Self: NSDocument {
   static var typeIdentifiers: [String] { get }
   
   static var usupportedTypes: [String] { get }
-  
-  static func isDefault(for file: File) -> Bool
-  
-  static func canOpen(_ file: File) -> Bool
+          
+  static func isDefault(for uti: String) -> Bool
+    
+  static func canOpen(_ uti: String) -> Bool
 }
 
 
@@ -46,21 +46,22 @@ public extension Document {
     return path?.basename() ?? "untitled"
   }
   
-  static func isDefault(for file: File) -> Bool {
+  static func isDefault(for uti: String) -> Bool {
     return false
   }
   
-  static func canOpen(_ file: File) -> Bool {
-    //dinamic UTI also can conforms to standart UTI
+  static func canOpen(_ uti: String) -> Bool {
+    //dynamic UTI also can conforms to standard UTI
     //at the least one of public.item or public.contednt
-    guard typeIdentifiers.contains(where: { file.url.typeIdentifierConforms(to: $0)}) else {
+    guard typeIdentifiers.contains(where: { UTTypeConformsTo(uti as CFString , $0 as CFString) }) else {
       return false
     }
-    guard !usupportedTypes.contains(where: { file.url.typeIdentifierConforms(to: $0)}) else {
+    guard !usupportedTypes.contains(where: { UTTypeConformsTo(uti as CFString , $0 as CFString) }) else {
       return false
     }
     return true
   }
+  
 }
 
 
@@ -74,12 +75,18 @@ public protocol CreatableDocument where Self: Document {
 
 public protocol DocumentObserver {
   func documentDidChange(_ document: Document)
+  
+  func documentDidSave(_ document: Document)
+  func documentWillSave(_ document: Document)
+  
   func documentFileDidChange(_ document: Document)
   func documentFileUrlDidChange(_ document: Document, oldFileUrl: URL?)
 }
 
 public extension DocumentObserver {
   func documentDidChange(_ document: Document) {}
+  func documentDidSave(_ document: Document) {}
+  func documentWillSave(_ document: Document) {}
   func documentFileDidChange(_ document: Document) {}
   func documentFileUrlDidChange(_ document: Document, oldFileUrl: URL?) {}
 }
@@ -121,7 +128,7 @@ public class DocumentManager {
   }
 
   public func open(file: File) -> Document? {
-    guard let type = selectDocumentClass(for: file) else { return nil }
+    guard let type = selectDocumentClass(for: file.url.uti) else { return nil }
 
     return open(file: file, docType: type)
   }
@@ -130,24 +137,37 @@ public class DocumentManager {
     if let doc = searchOpenedDocument(file, docType: docType) {
       return doc
     }
-
+            
     guard let doc = try? docType.init(contentsOf: file.path.url, ofType: file.url.uti) else { return nil }
-    
     openedDocuments.append((WeakRef<NSDocument>(value: doc), docType))
-
     return doc
   }
-
-  public func selectDocumentClasses(for file: File) -> [Document.Type] {
-    return documentClasses.filter { $0.canOpen(file) }
+  
+  public func open(withContents contents: Data, ofType uti: String) -> Document? {
+    guard let docType = selectDocumentClass(for: uti) else { return nil }
+    
+    let doc = docType.init()
+    
+    do {
+      try doc.read(from: contents, ofType: uti)
+    } catch {
+      print("\(docType) cannot read data")
+    }
+    
+    openedDocuments.append((WeakRef<NSDocument>(value: doc), docType))
+    return doc
   }
-
-  private func selectDocumentClass(for file: File) -> Document.Type? {
+  
+  public func selectDocumentClasses(for uti: String) -> [Document.Type] {
+    return documentClasses.filter { $0.canOpen(uti) }
+  }
+    
+  private func selectDocumentClass(for uti: String) -> Document.Type? {
     var docClasses: [Document.Type] = []
     for dc in documentClasses {
-      if dc.canOpen(file) {
+      if dc.canOpen(uti) {
         docClasses.append(dc)
-        if dc.isDefault(for: file) {
+        if dc.isDefault(for: uti) {
           return dc
         }
       }

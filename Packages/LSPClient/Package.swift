@@ -27,6 +27,7 @@ let package = Package(
       .target(
         name: "SKLocalServer",
         dependencies: [
+          "NimbleCore",
           "LSPClient",
           "SourceKitLSP"
         ]

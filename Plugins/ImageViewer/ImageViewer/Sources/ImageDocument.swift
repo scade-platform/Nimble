@@ -10,8 +10,8 @@ public final class ImageDocument: NimbleDocument {
     return controller
   }()
       
-  public static func isDefault(for file: File) -> Bool {
-    return canOpen(file)
+  public static func isDefault(for uti: String) -> Bool {
+    return canOpen(uti)
   }
   
   public override func read(from data: Data, ofType typeName: String) throws {

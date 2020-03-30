@@ -44,11 +44,17 @@ open class NimbleDocument: NSDocument {
                           completionHandler: @escaping (Error?) -> Void) {
     
     if let doc = self as? Document {
+      observers.notify{
+        $0.documentWillSave(doc)
+      }
       doc.editor?.workbench?.willSaveDocument(doc)
     }
     
-    super.save(to: url, ofType: typeName, for: saveOperation) {
-      if $0 == nil, let doc = self as? Document {        
+    super.save(to: url, ofType: typeName, for: saveOperation) {[weak self] in
+      if $0 == nil, let doc = self as? Document {
+        self?.observers.notify{
+          $0.documentDidSave(doc)
+        }
         doc.editor?.workbench?.didSaveDocument(doc)
       }
       completionHandler($0)

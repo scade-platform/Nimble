@@ -11,9 +11,13 @@ import NimbleCore
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
+  static let themeMenuId = "themeMenu"
+  static let settingsMenuId = "settingsMenu"
   
   static let openRecentProjectMenuId = "openRecentProjectMenu"
   static let openRecentDocumentMenuId = "openRecentDocumentMenu"
+    
+  weak var settingsDocument: Document? = nil
   
   let documentController = NimbleController()
   
@@ -31,13 +35,33 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   @objc private func switchTheme(_ item: NSMenuItem?) {
     ThemeManager.shared.selectedTheme = item?.representedObject as? Theme
   }
+  
+  @objc private func openSettings(_ sender: Any?) {
+    guard let path = Settings.defaultPath else { return }
+    
+    if !path.exists {
+      _ = try? path.touch()
+    }
+    
+    guard let doc = DocumentManager.shared.open(path: path) else { return }
+    
+    doc.observers.add(observer: self)
+    settingsDocument = doc
+    
+    if let content = Settings.shared.content.data(using: .utf8) {
+      _ = try? doc.read(from: content, ofType: "public.text")
+    }
+        
+    documentController.currentWorkbench?.open(doc, show: true)
+    
+  }
     
   @objc private func validateMenuItem(_ item: NSMenuItem?) -> Bool {
     guard let item = item else { return true }
     
-    switch item.representedObject {
-    case is Theme, is Theme?:
-      let itemTheme = item.representedObject as AnyObject?
+    switch item.identifier?.rawValue {
+    case AppDelegate.themeMenuId:
+      let itemTheme = item.representedObject as? Theme
       let currentTheme = ThemeManager.shared.selectedTheme
       item.state = (itemTheme === currentTheme) ? .on : .off
       
@@ -63,43 +87,44 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     fileMenu?.items.first?.isEnabled = !items.isEmpty
     newDocumentMenu?.items = items
   }
-      
-  private func setupPreferencesMenu() {
-    guard let mainMenu = NSApplication.shared.mainMenu else { return }
-    guard let preferencesMenu = mainMenu.findItem(with: "Nimble/Preferences")?.submenu else { return }
-    
-    let colorThemeMenu = NSMenu(title: "Color Theme")
-    let colorThemeMenuItem = NSMenuItem(title: "Color Theme", action: nil, keyEquivalent: "")
-    colorThemeMenuItem.submenu = colorThemeMenu
-    
-    preferencesMenu.addItem(NSMenuItem.separator())
-    preferencesMenu.addItem(colorThemeMenuItem)
-    
+  
+  private func setupThemesMenu() {
+    guard let themeMenu = NSApplication.shared.mainMenu?.findItem(with: "Nimble/Preferences/Theme")?.submenu else { return }
+        
     let defaultThemeItem = NSMenuItem(title: "Default", action: #selector(switchTheme(_:)), keyEquivalent: "")
     defaultThemeItem.target = self
+    defaultThemeItem.identifier = NSUserInterfaceItemIdentifier(rawValue: AppDelegate.themeMenuId)
     
     var themeItems = [defaultThemeItem]
+    
+    func generateItems(for themes: [Theme]) {
+      guard !themes.isEmpty else { return }
+      themeItems.append(NSMenuItem.separator())
 
-    let themeMenuGenerator = { (_ themes: [Theme]) -> Void in
-      if !themes.isEmpty {
-        themeItems.append(NSMenuItem.separator())
-
-        for theme in themes {
-          let themeItem = NSMenuItem(title: theme.name,
-                                     action: #selector(self.switchTheme(_:)), keyEquivalent: "")
-          themeItem.target = self
-          themeItem.representedObject = theme
-          themeItems.append(themeItem)
-        }
+      for theme in themes {
+        let themeItem = NSMenuItem(title: theme.name,
+                                   action: #selector(self.switchTheme(_:)), keyEquivalent: "")
+        themeItem.target = self
+        themeItem.identifier = NSUserInterfaceItemIdentifier(rawValue: AppDelegate.themeMenuId)
+        themeItem.representedObject = theme
+        themeItems.append(themeItem)
       }
     }
-
-    themeMenuGenerator(ThemeManager.shared.defaultThemes)
-    themeMenuGenerator(ThemeManager.shared.userDefinedThemes)
     
-    colorThemeMenu.items = themeItems
+    generateItems(for: ThemeManager.shared.defaultThemes)
+    generateItems(for: ThemeManager.shared.userDefinedThemes)
+    
+    themeMenu.items = themeItems
   }
   
+  private func setupSettingsMenu() {
+    guard let settingsMenuItem = NSApplication.shared.mainMenu?.findItem(with: "Nimble/Preferences/Settings") else { return }
+    
+    settingsMenuItem.target = self
+    settingsMenuItem.identifier = NSUserInterfaceItemIdentifier(rawValue: AppDelegate.settingsMenuId)
+    settingsMenuItem.action = #selector(openSettings(_:))
+  }
+    
   private func setupCommandsMenus() {
     guard let mainMenu = NSApplication.shared.mainMenu else { return }
     for command in CommandManager.shared.commands {
@@ -150,7 +175,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     IconsManager.shared.register(provider: self)
 
     setupApplicationMenu()
-    setupPreferencesMenu()
+    setupThemesMenu()
+    setupSettingsMenu()
     setupCommandsMenus()
   }
   
@@ -255,6 +281,16 @@ extension AppDelegate: IconsProvider {
     default:
       return nil
     }
+  }
+}
+
+
+// MARK: - DocumentObserver
+
+extension AppDelegate: DocumentObserver {
+  func documentDidSave(_ document: Document) {
+    guard let doc = settingsDocument, doc === document else { return }
+    Settings.shared.reload()
   }
 }
 

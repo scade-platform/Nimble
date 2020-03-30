@@ -18,7 +18,18 @@ import TSCUtility
 import LSPLogging
 // LSPClient
 import LSPClient
+import NimbleCore
 
+
+public extension SKLocalServer {
+  @Setting("swift.toolchain", defaultValue: "")
+  static var swiftToolchain: String
+  
+  private static var swiftToolchainInstallPath: AbsolutePath? {
+    guard !SKLocalServer.$swiftToolchain.isDefault else { return nil }
+    return AbsolutePath(SKLocalServer.swiftToolchain)
+  }
+}
 
 public final class SKLocalServer: LSPServer {
   public var isRunning = false
@@ -36,9 +47,12 @@ public final class SKLocalServer: LSPServer {
     serverConnection = LocalConnection()
     
     client = LSPClient(serverConnection)
+        
+//    let installPath = AbsolutePath(Bundle.main.bundlePath)
+    ToolchainRegistry.shared = ToolchainRegistry(installPath: SKLocalServer.swiftToolchainInstallPath, localFileSystem)
     
-    let installPath = AbsolutePath(Bundle.main.bundlePath)
-    ToolchainRegistry.shared = ToolchainRegistry(installPath: installPath, localFileSystem)
+    let toolchain = ToolchainRegistry.shared.default
+    print(toolchain?.displayName)    
   }
   
   public func start() throws {
@@ -49,7 +63,7 @@ public final class SKLocalServer: LSPServer {
     serverConnection.start(handler: server)
     clientConnection.start(handler: client)
         
-    Logger.shared.disableNSLog = true
+//    Logger.shared.disableNSLog = true
     Logger.shared.disableOSLog = true
     
 //    Logger.shared.setLogLevel("error")

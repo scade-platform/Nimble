@@ -17,6 +17,7 @@ public final class LSPClientModule: Module {
 
 final class LSPClientPlugin: Plugin {
   func load() {
+    Settings.shared.add(SKLocalServer.$swiftToolchain)
     LSPServerManager.shared.registerProvider(SKLocalServerProvider())
   }
   
