@@ -63,6 +63,9 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   }
   
   public override func windowWillLoad() {
+    let workbenchAreaGroup = CommandGroup(name: "WorkbenchAreaGroup")
+    CommandManager.shared.registerGroup(group: workbenchAreaGroup)
+    
     PluginManager.shared.load()
   }
   
@@ -83,7 +86,6 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     
     DocumentManager.shared.defaultDocument = BinaryFileDocument.self
     
-    setupCommands()
     toolbar = Toolbar(window!, delegate: CommandsToolbarDelegate.shared)
     PluginManager.shared.activate(in: self)
   }
@@ -93,62 +95,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   }
   
   private func setupCommands() {
-    let workbenchAreaGroup = CommandGroup(name: "WorkbenchAreaGroup")
-    let color = NSColor(named: "ButtonIconColor", bundle: Bundle.main) ?? .darkGray
     
-    //Command to show/hide Navigator Area
-    let leftSideBarIcon = Bundle.main.image(forResource: "leftSideBar")?.imageWithTint(color)
-    
-    let changeNavigatorAreaVisabilityCommand = Command(name: "ChangeNavigatorAreaVisabilityCommand", menuPath: "View", toolbarIcon: leftSideBarIcon) { [weak self] command in
-      guard let navigatorArea = self?.navigatorArea else { return }
-      let title = navigatorArea.isHidden  ? "Hide Navigator Area" : "Show Navigator Area"
-      command.title = title
-      navigatorArea.isHidden = !navigatorArea.isHidden
-      command.isSelected = !navigatorArea.isHidden
-    }
-    changeNavigatorAreaVisabilityCommand.title = navigatorArea?.isHidden ?? true ? "Show Navigator Area" : "Hide Navigator Area"
-    changeNavigatorAreaVisabilityCommand.groupName = workbenchAreaGroup.name
-    changeNavigatorAreaVisabilityCommand.isSelected = !(navigatorArea?.isHidden ?? true)
-    
-    CommandManager.shared.registerCommand(command: changeNavigatorAreaVisabilityCommand)
-    
-    //Command to show/hide Debug Area
-    let bottomAreaIcon = Bundle.main.image(forResource: "bottomArea")?.imageWithTint(color)
-    
-    let changeDebugAreaVisabilityCommand = Command(name: "ChangeDebugAreaVisabilityCommand", menuPath: "View", toolbarIcon: bottomAreaIcon) {[weak self] command in
-      guard let debugArea = self?.debugArea else { return }
-      let title = debugArea.isHidden ? "Hide Debug Area" : "Show Debug Area"
-      command.title = title
-      debugArea.isHidden = !debugArea.isHidden
-      command.isSelected = !debugArea.isHidden
-    }
-    changeDebugAreaVisabilityCommand.title = debugArea?.isHidden ?? true ? "Show Debug Area" : "Hide Debug Area"
-    changeDebugAreaVisabilityCommand.groupName = workbenchAreaGroup.name
-    changeDebugAreaVisabilityCommand.isSelected = !(debugArea?.isHidden ?? true)
-    
-    CommandManager.shared.registerCommand(command: changeDebugAreaVisabilityCommand)
-    
-    
-    //Command to show/hide Inspector Area
-    let rightSideBarIcon = Bundle.main.image(forResource: "rightSideBar")?.imageWithTint(color)
-    
-    let changeInspectorAreaVisabilityCommand = Command(name: "ChangeInspectorAreaVisabilityCommand", menuPath: "View", toolbarIcon: rightSideBarIcon) { [weak self] command in
-      guard let inspectorArea = self?.inspectorArea else { return }
-      let title = inspectorArea.isHidden ? "Hide Inspector Area" :  "Show Inspector Area"
-      command.title = title
-      inspectorArea.isHidden = !inspectorArea.isHidden
-      command.isSelected = !inspectorArea.isHidden
-    }
-    
-    changeInspectorAreaVisabilityCommand.title = inspectorArea?.isHidden ?? true ? "Show Inspector Area" : "Hide Inspector Area"
-    changeInspectorAreaVisabilityCommand.groupName = workbenchAreaGroup.name
-    changeInspectorAreaVisabilityCommand.isSelected = !(inspectorArea?.isHidden ?? true)
-    
-    CommandManager.shared.registerCommand(command: changeInspectorAreaVisabilityCommand)
-    
-    
-    workbenchAreaGroup.commands.append(contentsOf: [changeNavigatorAreaVisabilityCommand, changeDebugAreaVisabilityCommand, changeInspectorAreaVisabilityCommand])
-    CommandManager.shared.registerGroup(group: workbenchAreaGroup)
   }
 
   private lazy var editorMenuItem: NSMenuItem? = {
@@ -349,16 +296,55 @@ extension NimbleWorkbench {
 
 // MARK: - NimbleWorkbenchArea
 
-protocol NimbleWorkbenchArea: WorkbenchArea where Self: NSViewController { }
+protocol NimbleWorkbenchArea: WorkbenchArea where Self: NSViewController {
+  var changeVisibleCommand: Command? { get }
+  var toolbarIcon: NSImage? { get }
+}
+
 extension NimbleWorkbenchArea {
   public var isHidden: Bool {
     set {
       guard let parent = self.parent as? NSSplitViewController else { return }
       parent.splitViewItem(for: self)?.isCollapsed = newValue
+      
+      
+      changeVisibleCommand?.isSelected = !newValue
+      changeVisibleCommand?.title = self.commandTitle
     }
     get {
       guard let parent = self.parent as? NSSplitViewController else { return true }
       return parent.splitViewItem(for: self)?.isCollapsed ?? true
+    }
+  }
+}
+
+extension NimbleWorkbenchArea {
+
+  var commandTitle: String {
+    let firstWord = isHidden ? "Show" : "Hide"
+    return "\(firstWord) \(self.title ?? "")"
+  }
+  
+  func createCommand() -> Command? {
+    guard let title = self.title else { return nil }
+    let command = Command(name: title, menuPath: "View", toolbarIcon: self.toolbarIcon) {[weak self] command in
+      guard let area = self else { return }
+      area.isHidden = !area.isHidden
+      command.isSelected = !area.isHidden
+      command.title = area.commandTitle
+    }
+    command.title = self.commandTitle
+    command.isSelected = !self.isHidden
+    
+    return command
+  }
+  
+  func registerCommand() {
+    if let group = CommandManager.shared.groups["WorkbenchAreaGroup"] {
+      let command = self.changeVisibleCommand
+      command?.groupName = group.name
+      CommandManager.shared.registerCommand(command: command!)
+      group.commands.append(command!)
     }
   }
 }

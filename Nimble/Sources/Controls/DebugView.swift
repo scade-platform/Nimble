@@ -15,9 +15,39 @@ class DebugView: NSViewController {
     self.add(part: console)
     return console
   }()
+  
+  var command: Command?
+  
+  lazy var icon: NSImage? = {
+    let color = NSColor(named: "ButtonIconColor", bundle: Bundle.main) ?? .darkGray
+    let bottomAreaIcon = Bundle.main.image(forResource: "bottomArea")?.imageWithTint(color)
+    return bottomAreaIcon
+  }()
+  
+  override func viewDidLoad() {
+    self.title = "Debug Area"
+    
+    command = self.createCommand()
+    self.registerCommand()
+//    if let group = CommandManager.shared.groups["WorkbenchAreaGroup"] {
+//      command = self.createCommand()
+//      CommandManager.shared.registerCommand(command: command!)
+//      group.commands.append(command!)
+//    }
+    
+    
+  }
 }
 
 extension DebugView: NimbleWorkbenchArea {
+  var toolbarIcon: NSImage? {
+    return icon
+  }
+  
+  var changeVisibleCommand: Command? {
+    return command
+  }
+  
   public func add(part: WorkbenchPart) {
     ///TODO: improve it, every area should be able to host many views
     self.view.subviews.removeAll()

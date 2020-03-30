@@ -69,12 +69,20 @@ extension Toolbar : NSToolbarDelegate {
       delegate?.toolbarWillAddItem(self, item: item)
     }
   }
+  
+  func toolbarDidRemoveItem(_ notification: Notification) {
+    guard let removedItem = notification.userInfo?["item"] as? NSToolbarItem else { return }
+    if let item = items.first(where: {$0.identifier == removedItem.itemIdentifier}) {
+      delegate?.toolbarDidRemoveItem(self, item: item)
+    }
+  }
 }
 
 protocol ToolbarDelegate {
   func toolbarDefaultItems(_ toolbar: Toolbar) -> [ToolbarItem]
   func toolbarAllowedItems(_ toolbar: Toolbar) -> [ToolbarItem]
   func toolbarWillAddItem(_ toolbar: Toolbar, item: ToolbarItem)
+  func toolbarDidRemoveItem(_ toolbar: Toolbar, item: ToolbarItem)
 }
 
 enum ToolbarItemKind {

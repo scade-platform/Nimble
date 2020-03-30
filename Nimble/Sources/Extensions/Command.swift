@@ -137,7 +137,19 @@ class CommandsToolbarDelegate: ToolbarDelegate {
   }
   
   func toolbarWillAddItem(_ toolbar: Toolbar, item: ToolbarItem) {
-    item.command?.observers.add(observer: toolbar.nsWindow!)
+    if let command = item.command {
+      command.observers.add(observer: toolbar.nsWindow!)
+    } else if let group = item.commandGroup {
+      group.commands.forEach{$0.observers.add(observer: toolbar.nsWindow!)}
+    }
+  }
+  
+  func toolbarDidRemoveItem(_ toolbar: Toolbar, item: ToolbarItem) {
+    if let command = item.command {
+      command.observers.remove(observer: toolbar.nsWindow!)
+    } else if let group = item.commandGroup {
+      group.commands.forEach{$0.observers.remove(observer: toolbar.nsWindow!)}
+    }
   }
 }
 
@@ -221,10 +233,8 @@ extension NSWindow : CommandObserver {
           return
         } else if let groupName = command.groupName, item.itemIdentifier.rawValue == groupName, let segmentedControl = item.view as? NSSegmentedControl, let group = CommandManager.shared.groups[groupName] {
           for (index, command) in group.commands.enumerated() {
-            if segmentedControl.selectedSegment == index {
-              segmentedControl.setEnabled(command.isEnable, forSegment: index)
-              segmentedControl.setSelected(command.isSelected, forSegment: index)
-            }
+            segmentedControl.setEnabled(command.isEnable, forSegment: index)
+            segmentedControl.setSelected(command.isSelected, forSegment: index)
           }
           return
         } else {

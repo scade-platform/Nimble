@@ -363,6 +363,7 @@
                                                 <action selector="toggleFullScreen:" target="Ady-hI-5gd" id="dU3-MA-1Rq"/>
                                             </connections>
                                         </menuItem>
+                                        <menuItem isSeparatorItem="YES" id="IjC-Zo-qQn"/>
                                     </items>
                                 </menu>
                             </menuItem>
