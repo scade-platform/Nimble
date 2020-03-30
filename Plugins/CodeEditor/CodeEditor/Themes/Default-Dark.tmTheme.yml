@@ -1,6 +1,8 @@
 name: Default(Dark)
 settings:
   - settings:
+      fontName: "SFMono-Medium"
+      fontSize: 12
       foreground: "#FFFFFF"
       background: "#1F1F24"
       caret: "#FFFFFF"

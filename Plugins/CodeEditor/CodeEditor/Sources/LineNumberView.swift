@@ -25,7 +25,8 @@ final class LineNumberView: NSRulerView {
   
   private lazy var lineFont: NSFont = {
     let size = self.textFont?.pointSize ?? 12
-    return NSFont.init(name: "XcodeDigits", size: 12) ?? NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .regular)
+
+    return NSFont.init(name: "XcodeDigits", size: size) ?? NSFont.monospacedDigitSystemFont(ofSize: size, weight: .regular)
   }()
   
   init(textView: NSTextView) {
