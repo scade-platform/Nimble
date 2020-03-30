@@ -130,8 +130,12 @@ public final class ThemeManager {
   ]
     
   public var observers = ObserverSet<ThemeObserver>()
+
+  public var defaultThemes: [Theme] = []
+
+  public var userDefinedThemes: [Theme] = []
   
-  public var themes: [Theme] = []
+  public var themes: [Theme] { defaultThemes + userDefinedThemes }
   
   public var defaultTheme: Theme? {
     switch NSView.systemInterfaceStlye {
@@ -157,19 +161,10 @@ public final class ThemeManager {
   }
   
   public static let shared = ThemeManager()
-  
-  public func load(from path: Path) {
-    guard path.isDirectory else { return }
-    
-    do {
-      try path.ls().files.forEach { path in
-        guard let decoder = decoders.first(where: { path.basename().hasSuffix($0.key) })?.value,
-              let theme = decoder.decode(from: path) else { return }
-        
-        theme.path = path
-        themes.append(theme)
-      }
-    } catch {}
+
+  public func load(from path: Path, userDirectories: [Path]) {
+    defaultThemes = load(path)
+    userDefinedThemes = userDirectories.flatMap { load($0) }
     
     if let themeURL = UserDefaults.standard.url(forKey: "colorTheme") {
       selectedTheme = themes.first {
@@ -177,6 +172,21 @@ public final class ThemeManager {
       }
     }
   }
+
+  private func load(_ path: Path) -> [Theme] {
+    guard path.exists && path.isDirectory,
+          let files = try? path.ls().files else { return []}
+
+    return files.compactMap { file in
+      guard let decoder = decoders.first(where: { file.basename().hasSuffix($0.key) })?.value,
+            let theme = decoder.decode(from: file) else { return nil }
+
+        theme.path = file
+
+        return theme
+    }
+  }
+
 }
 
 
