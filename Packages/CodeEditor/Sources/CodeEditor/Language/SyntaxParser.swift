@@ -133,9 +133,21 @@ public final class SyntaxParser {
     // Visit and color nodes transforming ranges w.r.t offsets
     nodes.visit { node in
       node.range = offsets.map(node.range)
-      if let scope = node.scope, let setting = theme?.setting(for: scope), let color = setting.foreground {
-        textStorage.layoutManagers.forEach {
-          $0.addTemporaryAttribute(.foregroundColor, value: color, forCharacterRange: NSRange(node.range))
+      if let scope = node.scope, let setting = theme?.setting(for: scope),
+         let font = theme?.general.font {
+
+        var attributes: [NSAttributedString.Key : Any] = [:]
+
+        if let color = setting.foreground {
+          attributes[.foregroundColor] = color
+        }
+
+        if let fontStyle = setting.fontStyle, !fontStyle.isEmpty {
+          attributes[.font] = NSFontManager.shared.convert(font, toHaveTrait: fontStyle)
+        }
+
+        if !attributes.isEmpty {
+          textStorage.addAttributes(attributes, range: NSRange(node.range))
         }
       }
     }
