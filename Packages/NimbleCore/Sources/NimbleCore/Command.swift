@@ -21,7 +21,16 @@ public class Command {
     }
   }
   
+  public var isSelected: Bool {
+    didSet {
+      observers.notify {
+        $0.commandDidChange(self)
+      }
+    }
+  }
+  
   public let name: String
+  public var title: String
   private let handler: (() -> Void)?
   
   //menu item
@@ -40,12 +49,14 @@ public class Command {
   
   public init(name: String, menuPath: String? = nil, keyEquivalent: String? = nil , toolbarIcon: NSImage? = nil, handler:  @escaping () -> Void) {
     self.name = name
+    self.title = name
     self.groupName = nil
     self.handler = handler
     self.menuPath = menuPath
     self.keyEquivalent = keyEquivalent
     self.toolbarIcon = toolbarIcon
     self.isEnable = true
+    self.isSelected = false
   }
 }
 
