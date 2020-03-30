@@ -2,21 +2,21 @@ import SVGEditor
 import ScadeKit
 import NimbleCore
 
-public class EditorView: SVGEditorView {
+class EditorView: SVGEditorView {
   
   let window = SCDLatticeWindow()
 
-  public var observers = ObserverSet<EditorViewObserver>()
+  var observers = ObserverSet<EditorViewObserver>()
 
   var pageDocument: PageDocument? {
     return document as? PageDocument
   }
 
-  public override func setupSVGView() {
+  override func setupSVGView() {
     setupElementSelector()
   }
 
-  public override func setupElementSelector() {
+  override func setupElementSelector() {
     if elementSelector == nil {
       let widgetSelector = WidgetSelector(svgView, editorView: self)
 
@@ -34,10 +34,10 @@ public class EditorView: SVGEditorView {
   }
 }
 
-public protocol EditorViewObserver: class {
+protocol EditorViewObserver: class {
   func editorDidChangeSelection(editor: EditorView, widget: SCDWidgetsWidget)
 }
 
-public extension EditorViewObserver {
+extension EditorViewObserver {
   func editorDidChangeSelection(editor: EditorView, widget: SCDWidgetsWidget) {}
 }
