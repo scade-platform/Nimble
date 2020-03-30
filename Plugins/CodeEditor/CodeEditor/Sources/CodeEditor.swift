@@ -22,7 +22,8 @@ public final class CodeEditor: Module {
 final class CodeEditorPlugin: Plugin {
   func load() {
     DocumentManager.shared.registerDocumentClass(CodeEditorDocument.self)
-    ThemeManager.shared.load(from: resources/"Themes")
+    ThemeManager.shared.load(from: resources/"Themes",
+                             userDirectories: [Path.applicationSupport/"Nimble"/"Themes"])
     
     loadCustomFonts()
   }

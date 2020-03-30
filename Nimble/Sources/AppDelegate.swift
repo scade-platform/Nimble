@@ -79,13 +79,23 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     defaultThemeItem.target = self
     
     var themeItems = [defaultThemeItem]
-    
-    for theme in ThemeManager.shared.themes {
-      let themeItem = NSMenuItem(title: theme.name, action: #selector(switchTheme(_:)), keyEquivalent: "")
-      themeItem.target = self
-      themeItem.representedObject = theme
-      themeItems.append(themeItem)
+
+    let themeMenuGenerator = { (_ themes: [Theme]) -> Void in
+      if !themes.isEmpty {
+        themeItems.append(NSMenuItem.separator())
+
+        for theme in themes {
+          let themeItem = NSMenuItem(title: theme.name,
+                                     action: #selector(self.switchTheme(_:)), keyEquivalent: "")
+          themeItem.target = self
+          themeItem.representedObject = theme
+          themeItems.append(themeItem)
+        }
+      }
     }
+
+    themeMenuGenerator(ThemeManager.shared.defaultThemes)
+    themeMenuGenerator(ThemeManager.shared.userDefinedThemes)
     
     colorThemeMenu.items = themeItems
   }
