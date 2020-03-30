@@ -84,6 +84,9 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     guard let debugView = debugView else { return }
     debugView.isHidden = true
     
+    guard let inspectorView = inspectorView else { return }
+    inspectorView.isHidden = true
+    
     DocumentManager.shared.defaultDocument = BinaryFileDocument.self
     
     toolbar = Toolbar(window!, delegate: CommandsToolbarDelegate.shared)
