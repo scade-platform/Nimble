@@ -5,6 +5,8 @@ public protocol SVGElementSelector {
 
   var svgView: SVGView? { get set}
 
+  func handleOnTap(with handler: SCDSvgGestureRecognizer?)
+
   func process(_ element: SCDSvgElement)
 
   func onSelect(_ element: SCDSvgElement)
@@ -51,7 +53,7 @@ open class SVGLayerSelector: SVGElementSelector, SVGElementVisitor {
     if let drawable = element as? SCDSvgDrawable {
       drawable.gestureRecognizers.append(
         SCDSvgTapGestureRecognizer(
-          handler: { [unowned self] h in self.select(h?.target as! SCDSvgElement)} ))
+          handler: { [weak self] h in self?.handleOnTap(with: h)}))
     }
   }
 
@@ -77,6 +79,10 @@ open class SVGLayerSelector: SVGElementSelector, SVGElementVisitor {
 
     selectView.frame = frame
     svgView?.superview?.addSubview(selectView, positioned: .above, relativeTo: nil)
+  }
+
+  public func handleOnTap(with handler: SCDSvgGestureRecognizer?) {
+    select(handler?.target as! SCDSvgElement)
   }
 
   private func select(_ element: SCDSvgElement) {
