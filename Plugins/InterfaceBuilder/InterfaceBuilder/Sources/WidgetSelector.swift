@@ -38,7 +38,11 @@ class WidgetSelector: SVGLayerSelector, WidgetVisitor {
   }
 
   private func doSelect(_ widget: SCDWidgetsWidget) {
-    editorView?.observers.notify { $0.didSelectWidget(widget) }
+    if let editorView = self.editorView {
+      editorView.observers.notify {
+        $0.editorDidChangeSelection(editor: editorView, widget: widget)
+      }
+    }
 
     selected = widget
   }
