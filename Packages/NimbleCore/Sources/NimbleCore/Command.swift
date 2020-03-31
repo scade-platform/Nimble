@@ -64,7 +64,7 @@ public class CommandGroup {
   public let name: String
   
   public var palleteLable: String?
-  public var commands: [Command] = []
+  public var commands: [WeakRef<Command>] = []
   
   public init(name: String){
     self.name = name
