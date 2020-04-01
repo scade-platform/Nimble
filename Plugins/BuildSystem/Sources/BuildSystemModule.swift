@@ -29,6 +29,13 @@ final class BuildSystemPlugin: Plugin {
     workbench.buildProcess = nil
   }
   
+  func activate(in workbench: Workbench) {
+    guard let stopCommand = stopCommand else {
+      return
+    }
+    workbench.commandSates[stopCommand]?.isEnable = false
+  }
+  
   private func setupMainMenu() {
     guard let mainMenu = NSApplication.shared.mainMenu else { return }
     guard let toolsMenu = mainMenu.findItem(with: "Tools")?.submenu else { return }
@@ -62,7 +69,7 @@ final class BuildSystemPlugin: Plugin {
     CommandManager.shared.registerCommand(command: runCommand)
     self.runCommand = runCommand
     
-    let stopCommand = Command(name: "Stop", menuPath: "Tools", keyEquivalent: "cmd+.", toolbarIcon: stopImage, isEnable: false) { self.stop() }
+    let stopCommand = Command(name: "Stop", menuPath: "Tools", keyEquivalent: "cmd+.", toolbarIcon: stopImage) { self.stop() }
     CommandManager.shared.registerCommand(command: stopCommand)
     self.stopCommand = stopCommand
     
@@ -137,25 +144,26 @@ final class BuildSystemPlugin: Plugin {
   }
   
   func launcherHandler(status: BuildStatus, process: Process?) -> Void {
+    guard let runCommand = runCommand, let buildCommand = buildCommand, let stopCommand = stopCommand else { return }
     guard let process = process else {
-      runCommand?.isEnable = true
-      buildCommand?.isEnable = true
-      stopCommand?.isEnable = false
+//      runCommand?.isEnable = true
+//      buildCommand?.isEnable = true
+//      stopCommand?.isEnable = false
       return
     }
     switch status {
     case .running(let workbench):
       if process.isRunning {
-        runCommand?.isEnable = false
-        buildCommand?.isEnable = false
-        stopCommand?.isEnable = true
+        workbench.commandSates[runCommand]?.isEnable = false
+        workbench.commandSates[buildCommand]?.isEnable = false
+        workbench.commandSates[stopCommand]?.isEnable = true
         workbench.buildProcess = process
       }
     case .finished(let workbench),
          .failed(let workbench):
-      runCommand?.isEnable = true
-      buildCommand?.isEnable = true
-      stopCommand?.isEnable = false
+      workbench.commandSates[runCommand]?.isEnable = true
+      workbench.commandSates[buildCommand]?.isEnable = true
+      workbench.commandSates[stopCommand]?.isEnable = false
       workbench.buildProcess = nil
     }
   }

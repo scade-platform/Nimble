@@ -11,16 +11,6 @@ import Cocoa
 
 public class Command {
   
-  public var observers = ObserverSet<CommandObserver>()
-  
-  public var isEnable: Bool {
-    didSet {
-      observers.notify {
-        $0.commandDidChange(self)
-      }
-    }
-  }
-  
   public let name: String
   private let handler: (() -> Void)?
   
@@ -32,22 +22,16 @@ public class Command {
   public let toolbarIcon: NSImage?
   
   @objc public func execute() {
-    guard isEnable else { return }
     handler?()
   }
   
-  public init(name: String, menuPath: String? = nil, keyEquivalent: String? = nil , toolbarIcon: NSImage? = nil, isEnable: Bool = true, handler:  @escaping () -> Void) {
+  public init(name: String, menuPath: String? = nil, keyEquivalent: String? = nil , toolbarIcon: NSImage? = nil, handler:  @escaping () -> Void) {
     self.name = name
     self.handler = handler
     self.menuPath = menuPath
     self.keyEquivalent = keyEquivalent
     self.toolbarIcon = toolbarIcon
-    self.isEnable = isEnable
   }
-}
-
-public protocol CommandObserver: class {
-  func commandDidChange(_ command: Command)
 }
 
 extension Command : Hashable {

@@ -302,7 +302,8 @@ fileprivate class NSObjectCommandWrapper: NSObject {
   private let wrapperedCommand: Command
   
   var isEnable: Bool {
-    return wrapperedCommand.isEnable
+    guard let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench else { return false }
+    return currentWorkbench.commandSates[wrapperedCommand]?.isEnable ?? false
   }
   
   init(wrapperedCommand: Command) {

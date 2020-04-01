@@ -165,21 +165,6 @@ extension NimbleWorkbench : NSToolbarDelegate {
     return nil
   }
   
-  public func toolbarWillAddItem(_ notification: Notification) {
-    guard let newItem = notification.userInfo?["item"] as? NSToolbarItem,
-      let command = CommandManager.shared.commands.first(where: {$0.name == newItem.itemIdentifier.rawValue}) else {
-        return
-    }
-    command.observers.add(observer: self)
-  }
-  
-  public func toolbarDidRemoveItem(_ notification: Notification) {
-    guard let newItem = notification.userInfo?["item"] as? NSToolbarItem,
-      let command = CommandManager.shared.commands.first(where: {$0.name == newItem.itemIdentifier.rawValue}) else {
-        return
-    }
-    command.observers.remove(observer: self)
-  }
   
   private func toolbarPushButton(identifier: NSToolbarItem.Identifier, for command: Command) -> NSToolbarItem {
     let item = NSToolbarItem(itemIdentifier: identifier)
@@ -200,25 +185,27 @@ extension NimbleWorkbench : NSToolbarDelegate {
     button.bezelStyle = .texturedRounded
     button.focusRingType = .none
     item.view = button
-    item.isEnabled = command.isEnable
+    if let state = self.commandSates[command] {
+      item.isEnabled = state.isEnable
+    }
     return item
   }
 }
 
 
-//MARK: - CommandObserver
-
-extension NimbleWorkbench : CommandObserver {
-  public func commandDidChange(_ command: Command) {
-    for item in toolbar.items {
-      guard item.itemIdentifier.rawValue == command.name else { continue }
-      DispatchQueue.main.async {
-        item.isEnabled = command.isEnable
-      }
-      return
-    }
-  }
-}
+////MARK: - CommandObserver
+//
+//extension NimbleWorkbench : CommandObserver {
+//  public func commandDidChange(_ command: Command) {
+//    for item in toolbar.items {
+//      guard item.itemIdentifier.rawValue == command.name else { continue }
+//      DispatchQueue.main.async {
+//        item.isEnabled = command.isEnable
+//      }
+//      return
+//    }
+//  }
+//}
 
 
 // MARK: - Workbench
