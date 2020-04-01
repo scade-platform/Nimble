@@ -9,8 +9,10 @@
 /* Begin PBXBuildFile section */
 		0C238B12233E4E3D004F87E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D2222878F40088715C /* Assets.xcassets */; };
 		0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */; };
+		0C65E3CD242DCA6E00552B64 /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C65E3CC242DCA6E00552B64 /* Toolbar.swift */; };
 		0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */; };
 		0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */; };
+		0C85AF6A2432513D00575325 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C85AF692432513D00575325 /* Command.swift */; };
 		0CA297B423A903340025A4EF /* BinaryFileDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA297B323A903340025A4EF /* BinaryFileDocument.swift */; };
 		0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3523A39503003B01DE /* StatusBarView.swift */; };
 		0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */; };
@@ -97,8 +99,10 @@
 
 /* Begin PBXFileReference section */
 		0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDocument.swift; sourceTree = "<group>"; };
+		0C65E3CC242DCA6E00552B64 /* Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
 		0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedPane.swift; sourceTree = "<group>"; };
 		0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnsupportedPane.xib; sourceTree = "<group>"; };
+		0C85AF692432513D00575325 /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
 		0CA297B323A903340025A4EF /* BinaryFileDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryFileDocument.swift; sourceTree = "<group>"; };
 		0CB6607722F41D1500CBB386 /* NimbleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleController.swift; sourceTree = "<group>"; };
 		0CD0FB3523A39503003B01DE /* StatusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
@@ -154,6 +158,7 @@
 			children = (
 				D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */,
 				D7D461642390083C0090FC34 /* Document.swift */,
+				0C85AF692432513D00575325 /* Command.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -192,6 +197,7 @@
 				D724C5E7237C418B00E80958 /* TabbedEditor.xib */,
 				0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */,
 				D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */,
+				0C65E3CC242DCA6E00552B64 /* Toolbar.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -379,6 +385,7 @@
 				0CA297B423A903340025A4EF /* BinaryFileDocument.swift in Sources */,
 				0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */,
 				D788ED452239C2750072C21E /* NimbleWorkbench.swift in Sources */,
+				0C65E3CD242DCA6E00552B64 /* Toolbar.swift in Sources */,
 				0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */,
 				D724C5EF237C418B00E80958 /* ConsoleView.swift in Sources */,
 				0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */,
@@ -386,6 +393,7 @@
 				D72F9587222CAC3C009F2EC3 /* AppDelegate.swift in Sources */,
 				D7D461652390083C0090FC34 /* Document.swift in Sources */,
 				D724C5F1237C418B00E80958 /* NavigatorView.swift in Sources */,
+				0C85AF6A2432513D00575325 /* Command.swift in Sources */,
 				D724C5F4237C418B00E80958 /* DebugView.swift in Sources */,
 				0CD0FB4623A776BD003B01DE /* EditorView.swift in Sources */,
 				D724C5F0237C418B00E80958 /* DropView.swift in Sources */,
