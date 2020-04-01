@@ -21,8 +21,8 @@ public class Command {
     }
   }
   
-  public let name: String
-  private let handler: (() -> Void)?
+  public var name: String
+  private let handler: ((Command) -> Void)?
   
   //menu item
   public let menuPath: String?
@@ -33,10 +33,10 @@ public class Command {
   
   @objc public func execute() {
     guard isEnable else { return }
-    handler?()
+    handler?(self)
   }
   
-  public init(name: String, menuPath: String? = nil, keyEquivalent: String? = nil , toolbarIcon: NSImage? = nil, isEnable: Bool = true, handler:  @escaping () -> Void) {
+  public init(name: String, menuPath: String? = nil, keyEquivalent: String? = nil , toolbarIcon: NSImage? = nil, isEnable: Bool = true, handler:  @escaping (Command) -> Void) {
     self.name = name
     self.handler = handler
     self.menuPath = menuPath
@@ -53,6 +53,8 @@ public protocol CommandObserver: class {
 public class CommandManager {
   public static let shared: CommandManager = CommandManager()
   
+  public var handlerRegisteredCommand : ((Command) -> Void)?
+  
   private(set) public var commands: [Command] = []
   
   private init() {}
@@ -60,5 +62,6 @@ public class CommandManager {
   public func registerCommand(command: Command) {
     guard !commands.contains(where: {$0.name == command.name}) else { return }
     commands.append(command)
+    handlerRegisteredCommand?(command)
   }
 }
