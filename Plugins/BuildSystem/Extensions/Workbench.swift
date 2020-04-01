@@ -10,7 +10,7 @@ import Foundation
 import NimbleCore
 
 extension Workbench {
-  var currentProcess: Process? {
+  var buildProcess: Process? {
     get {
       return ProcessesStorage.shared.process(from: self)
     }

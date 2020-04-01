@@ -14,10 +14,9 @@ public final class BuildSystemModule: Module {
 }
 
 final class BuildSystemPlugin: Plugin {
-  private var runCommand: Command? = nil
-  private var buildCommand: Command? = nil
-  private var stopCommand: Command? = nil
-  private var currentProcess: Process?
+  private weak var runCommand: Command?
+  private weak var buildCommand: Command?
+  private weak var stopCommand: Command?
     
   func load() {
     BuildSystemsManager.shared.add(buildSystem: SwiftBuildSystem())
@@ -26,11 +25,8 @@ final class BuildSystemPlugin: Plugin {
     setupCommands()
   }
   
-  func unload() {
-    guard let process = currentProcess else { return }
-    if process.isRunning {
-      process.terminate()
-    }
+  func deactivate(in workbench: Workbench) {
+    workbench.buildProcess = nil
   }
   
   private func setupMainMenu() {
@@ -62,14 +58,20 @@ final class BuildSystemPlugin: Plugin {
     let runImage = Bundle(for: BuildSystemPlugin.self).image(forResource: "run")?.imageWithTint(buttonIconColor)
     let stopImage = Bundle(for: BuildSystemPlugin.self).image(forResource: "stop")?.imageWithTint(buttonIconColor)
 
-    runCommand = Command(name: "Run", menuPath: "Tools", keyEquivalent: "cmd+r", toolbarIcon: runImage) { self.run() }
-    CommandManager.shared.registerCommand(command: runCommand!)
-    stopCommand = Command(name: "Stop", menuPath: "Tools", keyEquivalent: "cmd+.", toolbarIcon: stopImage, isEnable: false) { self.stop() }
-    CommandManager.shared.registerCommand(command: stopCommand!)
+    let runCommand = Command(name: "Run", menuPath: "Tools", keyEquivalent: "cmd+r", toolbarIcon: runImage) { self.run() }
+    CommandManager.shared.registerCommand(command: runCommand)
+    self.runCommand = runCommand
+    
+    let stopCommand = Command(name: "Stop", menuPath: "Tools", keyEquivalent: "cmd+.", toolbarIcon: stopImage, isEnable: false) { self.stop() }
+    CommandManager.shared.registerCommand(command: stopCommand)
+    self.stopCommand = stopCommand
+    
     let claenCommand = Command(name: "Clean", menuPath: "Tools", keyEquivalent: "cmd+K") { self.clean() }
     CommandManager.shared.registerCommand(command: claenCommand)
-    buildCommand = Command(name: "Build", menuPath: "Tools", keyEquivalent: "cmd+b") { self.build() }
-    CommandManager.shared.registerCommand(command: buildCommand!)
+    
+    let buildCommand = Command(name: "Build", menuPath: "Tools", keyEquivalent: "cmd+b") { self.build() }
+    CommandManager.shared.registerCommand(command: buildCommand)
+    self.buildCommand = buildCommand
   }
   
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
@@ -141,27 +143,31 @@ final class BuildSystemPlugin: Plugin {
       stopCommand?.isEnable = false
       return
     }
-    if status == .running && process.isRunning {
-      runCommand?.isEnable = false
-      buildCommand?.isEnable = false
-      stopCommand?.isEnable = true
-      currentProcess = process
-    } else {
+    switch status {
+    case .running(let workbench):
+      if process.isRunning {
+        runCommand?.isEnable = false
+        buildCommand?.isEnable = false
+        stopCommand?.isEnable = true
+        workbench.buildProcess = process
+      }
+    case .finished(let workbench),
+         .failed(let workbench):
       runCommand?.isEnable = true
       buildCommand?.isEnable = true
       stopCommand?.isEnable = false
-      currentProcess = nil
+      workbench.buildProcess = nil
     }
   }
   
   func stop() {
-    guard let process = currentProcess else { return }
+    guard let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench else { return }
+    
+    guard let process = currentWorkbench.buildProcess else { return }
     if process.isRunning {
       process.terminate()
     }
-    if let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench {
-      showConsoleTillFirstEscPress(in: currentWorkbench)
-    }
+    showConsoleTillFirstEscPress(in: currentWorkbench)
   }
   
   fileprivate func getColorFromAsset(_ name: String, defualt: NSColor) -> NSColor {

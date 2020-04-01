@@ -43,12 +43,12 @@ class SPMBuildSystem: BuildSystem {
           DispatchQueue.main.async {
             spmProcConsole?.close()
           }
-          handler?(.finished, process)
+          handler?(.finished(workbench), process)
         } else {
           if contents.contains("error:"){
-            handler?(.failed, process)
+            handler?(.failed(workbench), process)
           } else {
-            handler?(.finished, process)
+            handler?(.finished(workbench), process)
           }
         }
       }
@@ -65,7 +65,7 @@ class SPMBuildSystem: BuildSystem {
       return
     }
     try? spmProc.run()
-    handler?(.running, spmProc)
+    handler?(.running(workbench), spmProc)
   }
   
   func clean(in workbench: Workbench, handler: (() -> Void)?) {
@@ -111,7 +111,7 @@ class SPMLauncher: Launcher {
   
   func launch(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
    guard let project = workbench.project, let package = findPackage(project: project) else { 
-      handler?(.failed, nil)
+      handler?(.failed(workbench), nil)
       return
     }
     let packageUrl = package.url
@@ -125,7 +125,7 @@ class SPMLauncher: Launcher {
     var programProcConsole: Console?
     programProc.terminationHandler = { process in
       programProcConsole?.stopReadingFromBuffer()
-      handler?(.finished, process)
+      handler?(.finished(workbench), process)
     }
     
     let name = packageUrl.deletingLastPathComponent().lastPathComponent
@@ -141,7 +141,7 @@ class SPMLauncher: Launcher {
     
     
     try? programProc.run()
-    handler?(.running, programProc)
+    handler?(.running(workbench), programProc)
   }
 }
 
