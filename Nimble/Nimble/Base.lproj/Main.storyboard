@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15705"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -916,6 +916,7 @@
                     <splitViewItems>
                         <splitViewItem id="ND0-p8-RRp"/>
                         <splitViewItem holdingPriority="249" id="5X7-a0-fnU"/>
+                        <splitViewItem id="u17-GC-2fT"/>
                     </splitViewItems>
                     <splitView key="splitView" dividerStyle="thin" vertical="YES" id="Kd3-Dd-nrm" customClass="DropView" customModule="Nimble" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="663" height="409"/>
@@ -928,11 +929,31 @@
                         <outlet property="splitView" destination="Kd3-Dd-nrm" id="ois-II-s6c"/>
                         <segue destination="fbF-er-OZS" kind="relationship" relationship="splitItems" id="vBS-nC-6Qu"/>
                         <segue destination="f9f-3t-OXY" kind="relationship" relationship="splitItems" id="ycZ-jr-zzz"/>
+                        <segue destination="vg4-4s-T5h" kind="relationship" relationship="splitItems" id="soG-zS-C16"/>
                     </connections>
                 </splitViewController>
                 <customObject id="PxC-WY-9Ko" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="101" y="1358"/>
+        </scene>
+        <!--Inspector View-->
+        <scene sceneID="133-Ev-DeK">
+            <objects>
+                <customObject id="5Tn-zl-jEV" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <viewController id="vg4-4s-T5h" customClass="InspectorView" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
+                    <visualEffectView key="view" appearanceType="inheritedVibrantLight" blendingMode="behindWindow" material="contentBackground" state="followsWindowActiveState" id="UsA-Xn-Waa">
+                        <rect key="frame" x="0.0" y="0.0" width="300" height="400"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3cH-oe-q4d" customClass="WorkbenchSidebar" customModule="Nimble" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="150" height="500"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </customView>
+                        </subviews>
+                    </visualEffectView>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="906" y="876"/>
         </scene>
         <!--Navigator View-->
         <scene sceneID="kYI-m9-sar">
