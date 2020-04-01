@@ -19,6 +19,21 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   
   public private(set) var diagnostics: [Path: [Diagnostic]] = [:]
   
+  private lazy var commandStateStorage : CommandStateStorage = {
+    return CommandStateStorage{ [weak self] state in
+      guard let self = self,
+        let command = state.command
+      else { return }
+      
+      for item in self.toolbar.items {
+        guard item.itemIdentifier.rawValue == command.name else { continue }
+        DispatchQueue.main.async {
+          item.isEnabled = state.isEnable
+        }
+        return
+      }
+    }
+  }()
   
   private lazy var toolbarItems: [NSToolbarItem.Identifier] = {
     guard !CommandManager.shared.commands.isEmpty else {
@@ -73,7 +88,6 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   
   public override func windowWillLoad() {
     PluginManager.shared.load()
-    
     toolbar.delegate = self
   }
   
@@ -210,6 +224,11 @@ extension NimbleWorkbench : CommandObserver {
 // MARK: - Workbench
 
 extension NimbleWorkbench: Workbench {
+  public var commandSates: CommandStateStorage {
+    commandStateStorage
+  }
+  
+  
   public var openedConsoles: [Console] {
     guard let debugView = debugView else {
       return []
