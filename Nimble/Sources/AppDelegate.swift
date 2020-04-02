@@ -127,43 +127,24 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
   private func setupCommandsMenus() {
     guard let mainMenu = NSApplication.shared.mainMenu else { return }
+    let handlerRegisteredCommand = { [weak self] (command: Command) in
+      guard let self = self else { return }
+      self.addMenuItem(for: command, into: mainMenu)
+    }
     for command in CommandManager.shared.commands {
-      guard let commandMenuItem = createMenuItem(for: command) else {
-        continue
-      }
-      if let mainMenuItem = mainMenu.findItem(with: command.menuPath!)?.submenu {
-        mainMenuItem.addItem(commandMenuItem)
-      }
+      addMenuItem(for: command, into: mainMenu)
     }
+    CommandManager.shared.handlerRegisteredCommand = handlerRegisteredCommand
   }
   
-  ///TODO: move it to the command (e.g. to an extension created in this module)
-  private func createMenuItem(for command: Command) -> NSMenuItem? {
-    guard command.menuPath != nil else { return nil }
-    let (key, mask) = getKeyEquivalent(for: command)
-    let commandWrapper = NSObjectCommandWrapper(wrapperedCommand: command)
-    let menuItem = NSMenuItem(title: command.name, action: #selector(commandWrapper.execute), keyEquivalent: key)
-    menuItem.keyEquivalentModifierMask = mask
-    menuItem.target = commandWrapper
-    menuItem.representedObject = commandWrapper
-    return menuItem
-  }
-  
-  ///TODO: move it to the command (e.g. to an extension created in this module)
-  private func getKeyEquivalent(for command: Command) -> (String, NSEvent.ModifierFlags) {
-    guard let keyEquivalent = command.keyEquivalent else {
-      return ("", [])
+  func addMenuItem(for command: Command, into menu: NSMenu) {
+    guard let commandMenuItem = command.createMenuItem() else {
+      return
     }
-    let char = keyEquivalent.last ?? Character("")
-    var flags: NSEvent.ModifierFlags = []
-    for flagCase in ModifierFlags.allCases {
-      if keyEquivalent.lowercased().contains(flagCase.rawValue) {
-        flags.insert(flagCase.flag)
-      }
+    if let mainMenuItem = menu.findItem(with: command.menuPath!)?.submenu {
+      mainMenuItem.addItem(commandMenuItem)
     }
-    return (String(char), flags)
   }
-  
   
   func applicationDidFinishLaunching(_ notification: Notification) {
     // Replace the default delegate installed by the NSDocumentController
@@ -209,58 +190,6 @@ extension AppDelegate: NSMenuDelegate {
   }
 }
 
-fileprivate enum ModifierFlags: CaseIterable {
-  case capsLock
-  case shift
-  case control
-  case option
-  case command
-  case numericPad
-  case help
-  case function
-  
-  var rawValue: String {
-    switch self {
-    case .capsLock:
-      return "capslock"
-    case .shift:
-      return "shift"
-    case .control:
-      return "ctrl"
-    case .option:
-      return "option"
-    case .command:
-      return "cmd"
-    case .numericPad:
-      return "num"
-    case .help:
-      return "help"
-    case .function:
-      return "fn"
-    }
-  }
-  
-  var flag: NSEvent.ModifierFlags {
-    switch self {
-    case .capsLock:
-      return .capsLock
-    case .shift:
-      return .shift
-    case .control:
-      return .control
-    case .option:
-      return .option
-    case .command:
-      return .command
-    case .numericPad:
-      return .numericPad
-    case .help:
-      return .help
-    case .function:
-      return .function
-    }
-  }
-}
 
 
 // MARK: - IconsProvider
@@ -291,34 +220,5 @@ extension AppDelegate: DocumentObserver {
   func documentDidSave(_ document: Document) {
     guard let doc = settingsDocument, doc === document else { return }
     Settings.shared.reload()
-  }
-}
-
-
-// MARK: - Command wrapper
-
-fileprivate class NSObjectCommandWrapper: NSObject {
-  private let wrapperedCommand: Command
-  
-  var isEnable: Bool {
-    return wrapperedCommand.isEnable
-  }
-  
-  init(wrapperedCommand: Command) {
-    self.wrapperedCommand = wrapperedCommand
-    super.init()
-  }
-  
-  @objc func execute(){
-    wrapperedCommand.execute()
-  }
-}
-
-extension NSObjectCommandWrapper : NSMenuItemValidation {
-  public func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
-    if let command = menuItem.representedObject as? NSObjectCommandWrapper, command === self {
-      return command.isEnable
-    }
-    return true
   }
 }

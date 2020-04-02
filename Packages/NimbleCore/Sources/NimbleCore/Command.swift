@@ -21,6 +21,7 @@ public class Command {
     }
   }
   
+
   public var isSelected: Bool {
     didSet {
       observers.notify {
@@ -31,7 +32,7 @@ public class Command {
   
   public let name: String
   public var title: String
-  private let handler: (() -> Void)?
+  private let handler: ((Command) -> Void)?
   
   //menu item
   public let menuPath: String?
@@ -44,10 +45,11 @@ public class Command {
   
   @objc public func execute() {
     guard isEnable else { return }
-    handler?()
+    handler?(self)
   }
   
-  public init(name: String, menuPath: String? = nil, keyEquivalent: String? = nil , toolbarIcon: NSImage? = nil, handler:  @escaping () -> Void) {
+
+  public init(name: String, menuPath: String? = nil, keyEquivalent: String? = nil , toolbarIcon: NSImage? = nil, handler:  @escaping (Command) -> Void) {
     self.name = name
     self.title = name
     self.groupName = nil
