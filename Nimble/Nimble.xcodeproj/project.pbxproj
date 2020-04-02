@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0C238B12233E4E3D004F87E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D2222878F40088715C /* Assets.xcassets */; };
+		0C2A26D42429E2F800AA8B51 /* InspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2A26D32429E2F800AA8B51 /* InspectorView.swift */; };
 		0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */; };
 		0C65E3CD242DCA6E00552B64 /* Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C65E3CC242DCA6E00552B64 /* Toolbar.swift */; };
 		0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */; };
@@ -98,6 +99,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0C2A26D32429E2F800AA8B51 /* InspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorView.swift; sourceTree = "<group>"; };
 		0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDocument.swift; sourceTree = "<group>"; };
 		0C65E3CC242DCA6E00552B64 /* Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toolbar.swift; sourceTree = "<group>"; };
 		0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedPane.swift; sourceTree = "<group>"; };
@@ -197,6 +199,7 @@
 				D724C5E7237C418B00E80958 /* TabbedEditor.xib */,
 				0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */,
 				D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */,
+				0C2A26D32429E2F800AA8B51 /* InspectorView.swift */,
 				0C65E3CC242DCA6E00552B64 /* Toolbar.swift */,
 			);
 			path = Controls;
@@ -391,6 +394,7 @@
 				0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */,
 				D721CFA72385EC3200FD1B00 /* NSOpenPanel.swift in Sources */,
 				D72F9587222CAC3C009F2EC3 /* AppDelegate.swift in Sources */,
+				0C2A26D42429E2F800AA8B51 /* InspectorView.swift in Sources */,
 				D7D461652390083C0090FC34 /* Document.swift in Sources */,
 				D724C5F1237C418B00E80958 /* NavigatorView.swift in Sources */,
 				0C85AF6A2432513D00575325 /* Command.swift in Sources */,
