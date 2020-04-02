@@ -41,12 +41,12 @@ class SwiftBuildSystem: BuildSystem {
           DispatchQueue.main.async {
             swiftcProcConsole?.close()
           }
-          handler?(.finished(workbench), process)
+          handler?(.finished, process)
         } else {
           if contents.contains("error:"){
-            handler?(.failed(workbench), process)
+            handler?(.failed, process)
           } else {
-            handler?(.finished(workbench), process)
+            handler?(.finished, process)
           }
         }
       }
@@ -64,7 +64,7 @@ class SwiftBuildSystem: BuildSystem {
     }
     
     try? swiftcProc.run()
-    handler?(.running(workbench), swiftcProc)
+    handler?(.running, swiftcProc)
   }
   
   func clean(in workbench: Workbench, handler: (() -> Void)?) {
@@ -99,7 +99,7 @@ extension SwiftBuildSystem : ConsoleSupport {}
 class SwiftLauncher : Launcher {
   func launch(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
     guard let fileURL = workbench.currentDocument?.fileURL else {
-      handler?(.failed(workbench), nil)
+      handler?(.failed, nil)
       return
     }
     let programProc = Process()
@@ -108,7 +108,7 @@ class SwiftLauncher : Launcher {
     var programProcConsole: Console?
     programProc.terminationHandler = { process in
       programProcConsole?.stopReadingFromBuffer()
-      handler?(.finished(workbench), process)
+      handler?(.finished, process)
     }
     programProcConsole = self.openConsole(key: fileURL, title: "Run: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
     if !(programProcConsole?.isReadingFromBuffer ?? true) {
@@ -120,7 +120,7 @@ class SwiftLauncher : Launcher {
       return
     }
     try? programProc.run()
-    handler?(.running(workbench), programProc)
+    handler?(.running, programProc)
   }
 }
 extension SwiftLauncher : ConsoleSupport {}

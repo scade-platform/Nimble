@@ -62,9 +62,9 @@ extension ConsoleSupport {
 
 
 public enum BuildStatus {
-  case running(Workbench)
-  case finished(Workbench)
-  case failed(Workbench)
+  case running
+  case finished
+  case failed
 }
 
 public protocol Launcher {

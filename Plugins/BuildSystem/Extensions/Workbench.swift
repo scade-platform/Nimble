@@ -22,6 +22,10 @@ extension Workbench {
       }
     }
   }
+  
+  subscript(command: Command) -> CommandState? {
+    return self.commandSates[command]
+  }
 }
 
 

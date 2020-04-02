@@ -193,21 +193,6 @@ extension NimbleWorkbench : NSToolbarDelegate {
 }
 
 
-////MARK: - CommandObserver
-//
-//extension NimbleWorkbench : CommandObserver {
-//  public func commandDidChange(_ command: Command) {
-//    for item in toolbar.items {
-//      guard item.itemIdentifier.rawValue == command.name else { continue }
-//      DispatchQueue.main.async {
-//        item.isEnabled = command.isEnable
-//      }
-//      return
-//    }
-//  }
-//}
-
-
 // MARK: - Workbench
 
 extension NimbleWorkbench: Workbench {

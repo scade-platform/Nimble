@@ -99,7 +99,9 @@ final class BuildSystemPlugin: Plugin {
     
     showConsoleTillFirstEscPress(in: currentWorkbench)
     
-    BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench, handler: launcherHandler(status:process:))
+    BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench, handler: { [weak self] status, process in
+      self?.launcherHandler(status: status, process: process, workbench: currentWorkbench)
+    })
   }
   
   func run() {
@@ -113,10 +115,12 @@ final class BuildSystemPlugin: Plugin {
       case .finished:
         DispatchQueue.main.async { [weak self] in
           self?.showConsoleTillFirstEscPress(in: currentWorkbench)
-          BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: currentWorkbench, handler: self?.launcherHandler(status:process:))
+          BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: currentWorkbench, handler: { status, process in
+            self?.launcherHandler(status: status,process: process, workbench: currentWorkbench)
+          })
         }
       case .failed, .running:
-        self?.launcherHandler(status: status, process: process)
+        self?.launcherHandler(status: status,process: process, workbench: currentWorkbench)
       }
     }
   }
@@ -143,27 +147,23 @@ final class BuildSystemPlugin: Plugin {
     BuildSystemsManager.shared.activeBuildSystem?.clean(in: currentWorkbench)
   }
   
-  func launcherHandler(status: BuildStatus, process: Process?) -> Void {
+  func launcherHandler(status: BuildStatus, process: Process?, workbench: Workbench) -> Void {
     guard let runCommand = runCommand, let buildCommand = buildCommand, let stopCommand = stopCommand else { return }
     guard let process = process else {
-//      runCommand?.isEnable = true
-//      buildCommand?.isEnable = true
-//      stopCommand?.isEnable = false
+      workbench[runCommand]?.isEnable = true
+      workbench[buildCommand]?.isEnable = true
+      workbench[stopCommand]?.isEnable = false
       return
     }
-    switch status {
-    case .running(let workbench):
-      if process.isRunning {
-        workbench.commandSates[runCommand]?.isEnable = false
-        workbench.commandSates[buildCommand]?.isEnable = false
-        workbench.commandSates[stopCommand]?.isEnable = true
-        workbench.buildProcess = process
-      }
-    case .finished(let workbench),
-         .failed(let workbench):
-      workbench.commandSates[runCommand]?.isEnable = true
-      workbench.commandSates[buildCommand]?.isEnable = true
-      workbench.commandSates[stopCommand]?.isEnable = false
+    if status == .running && process.isRunning {
+      workbench[runCommand]?.isEnable = false
+      workbench[buildCommand]?.isEnable = false
+      workbench[stopCommand]?.isEnable = true
+      workbench.buildProcess = process
+    } else {
+      workbench[runCommand]?.isEnable = true
+      workbench[buildCommand]?.isEnable = true
+      workbench[stopCommand]?.isEnable = false
       workbench.buildProcess = nil
     }
   }
