@@ -108,6 +108,10 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     
     PluginManager.shared.activate(in: self)
   }
+  
+  public func windowShouldClose(_ sender: NSWindow) -> Bool {
+    PluginManager.shared.shouldDeactivate(in: self)
+  }
     
   public func windowWillClose(_ notification: Notification) {
     PluginManager.shared.deactivate(in: self)

@@ -26,6 +26,11 @@ final class BuildSystemPlugin: Plugin {
   }
   
   func deactivate(in workbench: Workbench) {
+    guard let process = workbench.buildProcess else { return }
+    
+    if process.isRunning {
+      process.terminate()
+    }
     workbench.buildProcess = nil
   }
   
@@ -34,6 +39,20 @@ final class BuildSystemPlugin: Plugin {
       return
     }
     workbench.commandSates[stopCommand]?.isEnable = false
+  }
+  
+  func shouldDeactivate(in workbench: Workbench) -> Bool {
+    guard let process = workbench.buildProcess else { return true }
+    if process.isRunning {
+      let alert = NSAlert()
+      alert.alertStyle = .warning
+      alert.messageText = "Are you sure you want to close the Workbench?"
+      alert.informativeText = "Closing this workbench will stop the current task."
+      alert.addButton(withTitle: "Stop Task")
+      alert.addButton(withTitle: "Cancel")
+      return alert.runModal() == .alertFirstButtonReturn
+    }
+    return true
   }
   
   private func setupMainMenu() {

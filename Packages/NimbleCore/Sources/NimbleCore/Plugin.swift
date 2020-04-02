@@ -27,6 +27,8 @@ public protocol Plugin: class {
   func activate(in: Workbench) -> Void
   
   func deactivate(in: Workbench) -> Void
+  
+  func shouldDeactivate(in: Workbench) -> Bool
 }
 
 public extension Plugin {
@@ -47,6 +49,8 @@ public extension Plugin {
   func activate(in _: Workbench) -> Void {}
   
   func deactivate(in _: Workbench) -> Void {}
+  
+  func shouldDeactivate(in: Workbench) -> Bool { true }
   
   func extensions<T: Decodable>(_ type: T.Type, at extensionPoint: String) -> [T] {
     return PluginManager.shared.getFromPackages(type, at: "extensions/\(id)/\(extensionPoint)")
@@ -172,6 +176,10 @@ public class PluginManager {
   
   public func deactivate(in workbench: Workbench) -> Void {
     plugins.forEach{ $0.1.deactivate(in: workbench) }
+  }
+  
+  public func shouldDeactivate(in workbench: Workbench) -> Bool {
+    return !plugins.contains{$0.value.shouldDeactivate(in: workbench) == false}
   }
     
   public func getFromPackages<T: Decodable>(_ type: T.Type, at path: String) -> [T] {
