@@ -15,6 +15,8 @@
 		0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */; };
 		0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */; };
 		0CA297B423A903340025A4EF /* BinaryFileDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA297B323A903340025A4EF /* BinaryFileDocument.swift */; };
+		0CAAE9A324370523003CAE92 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAAE9A224370523003CAE92 /* Bundle.swift */; };
+		0CAAE9AD24370BEE003CAE92 /* NimbleWorkbenchArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAAE9AC24370BEE003CAE92 /* NimbleWorkbenchArea.swift */; };
 		0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3523A39503003B01DE /* StatusBarView.swift */; };
 		0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */; };
 		0CD0FB4623A776BD003B01DE /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB4523A776BD003B01DE /* EditorView.swift */; };
@@ -106,6 +108,8 @@
 		0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedPane.swift; sourceTree = "<group>"; };
 		0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnsupportedPane.xib; sourceTree = "<group>"; };
 		0CA297B323A903340025A4EF /* BinaryFileDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryFileDocument.swift; sourceTree = "<group>"; };
+		0CAAE9A224370523003CAE92 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
+		0CAAE9AC24370BEE003CAE92 /* NimbleWorkbenchArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleWorkbenchArea.swift; sourceTree = "<group>"; };
 		0CB6607722F41D1500CBB386 /* NimbleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleController.swift; sourceTree = "<group>"; };
 		0CD0FB3523A39503003B01DE /* StatusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
 		0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootSplitView.swift; sourceTree = "<group>"; };
@@ -161,6 +165,7 @@
 				D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */,
 				D7D461642390083C0090FC34 /* Document.swift */,
 				0C2A270C242B424B00AA8B51 /* Command+ToolbarDelegate.swift */,
+				0CAAE9A224370523003CAE92 /* Bundle.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -257,6 +262,7 @@
 				D72F959D222DF2F4009F2EC3 /* Controls */,
 				D721CFA42385EC1800FD1B00 /* Extensions */,
 				D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */,
+				0CAAE9AC24370BEE003CAE92 /* NimbleWorkbenchArea.swift */,
 				0CB6607722F41D1500CBB386 /* NimbleController.swift */,
 				0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */,
 				D78BCB05222B4DE300AE0A9C /* AppDelegate.swift */,
@@ -382,6 +388,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */,
+				0CAAE9A324370523003CAE92 /* Bundle.swift in Sources */,
 				D72F959F222DF7AF009F2EC3 /* WorkbenchSidebar.swift in Sources */,
 				D79BE0BD2385AD4000D96619 /* NimbleController.swift in Sources */,
 				D724C5F2237C418B00E80958 /* TabbedEditor.swift in Sources */,
@@ -396,6 +403,7 @@
 				D72F9587222CAC3C009F2EC3 /* AppDelegate.swift in Sources */,
 				0C2A26D42429E2F800AA8B51 /* InspectorView.swift in Sources */,
 				D7D461652390083C0090FC34 /* Document.swift in Sources */,
+				0CAAE9AD24370BEE003CAE92 /* NimbleWorkbenchArea.swift in Sources */,
 				D724C5F1237C418B00E80958 /* NavigatorView.swift in Sources */,
 				0C2A270D242B424B00AA8B51 /* Command+ToolbarDelegate.swift in Sources */,
 				D724C5F4237C418B00E80958 /* DebugView.swift in Sources */,
