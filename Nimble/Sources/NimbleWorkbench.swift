@@ -15,7 +15,7 @@ import NimbleCore
 public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   public var observers = ObserverSet<WorkbenchObserver>()
   
-  private var toolbar: Toolbar?
+  private var toolbar: WorkbenchToolbar?
   
   public private(set) var diagnostics: [Path: [Diagnostic]] = [:]
   
@@ -95,7 +95,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     DocumentManager.shared.defaultDocument = BinaryFileDocument.self
     
     setupCommands()
-    toolbar = Toolbar(window!, delegate: CommandsToolbarDelegate.shared)
+    toolbar = WorkbenchToolbar(window!, delegate: CommandsToolbarDelegate.shared)
 
     PluginManager.shared.activate(in: self)
   }

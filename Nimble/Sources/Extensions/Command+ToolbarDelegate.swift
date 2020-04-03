@@ -102,7 +102,7 @@ fileprivate enum ModifierFlags: CaseIterable {
 class CommandsToolbarDelegate: ToolbarDelegate {
   public static var shared = CommandsToolbarDelegate()
   
-  func toolbarDefaultItems(_ toolbar: Toolbar) -> [ToolbarItem] {
+  func toolbarDefaultItems(_ toolbar: WorkbenchToolbar) -> [ToolbarItem] {
     var result : [ToolbarItem] = []
     let loadedCommands = CommandManager.shared.commands
 
@@ -114,7 +114,7 @@ class CommandsToolbarDelegate: ToolbarDelegate {
     return result
   }
   
-  func toolbarAllowedItems(_ toolbar: Toolbar) -> [ToolbarItem] {
+  func toolbarAllowedItems(_ toolbar: WorkbenchToolbar) -> [ToolbarItem] {
     var result : [ToolbarItem] = []
     let loadedCommands = CommandManager.shared.commands
 
@@ -128,14 +128,14 @@ class CommandsToolbarDelegate: ToolbarDelegate {
     return result
   }
   
-  func toolbarWillAddItem(_ toolbar: Toolbar, item: ToolbarItem) {
+  func toolbarWillAddItem(_ toolbar: WorkbenchToolbar, item: ToolbarItem) {
     guard let win = toolbar.nsWindow, let workbench = win.windowController as? NimbleWorkbench else { return }
     if let command = item.command {
       command.observers.add(observer: workbench)
     }
   }
   
-  func toolbarDidRemoveItem(_ toolbar: Toolbar, item: ToolbarItem) {
+  func toolbarDidRemoveItem(_ toolbar: WorkbenchToolbar, item: ToolbarItem) {
     guard let win = toolbar.nsWindow, let workbench = win.windowController as? NimbleWorkbench else { return }
     if let command = item.command {
       command.observers.remove(observer: workbench)

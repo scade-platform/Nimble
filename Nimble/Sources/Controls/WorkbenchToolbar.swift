@@ -1,5 +1,5 @@
 //
-//  Toolbar.swift
+//  WorkbenchToolbar.swift
 //  Nimble
 //
 //  Created by Danil Kristalev on 27/03/2020.
@@ -10,7 +10,7 @@ import Cocoa
 import NimbleCore
 
 
-class Toolbar: NSObject {
+class WorkbenchToolbar: NSObject {
   var delegate: ToolbarDelegate?
   private(set) var items: [ToolbarItem] = []
   
@@ -40,7 +40,7 @@ class Toolbar: NSObject {
   
 }
 
-extension Toolbar : NSToolbarDelegate {
+extension WorkbenchToolbar : NSToolbarDelegate {
   
   func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
     return defaultItemIdentifiers
@@ -79,10 +79,10 @@ extension Toolbar : NSToolbarDelegate {
 }
 
 protocol ToolbarDelegate {
-  func toolbarDefaultItems(_ toolbar: Toolbar) -> [ToolbarItem]
-  func toolbarAllowedItems(_ toolbar: Toolbar) -> [ToolbarItem]
-  func toolbarWillAddItem(_ toolbar: Toolbar, item: ToolbarItem)
-  func toolbarDidRemoveItem(_ toolbar: Toolbar, item: ToolbarItem)
+  func toolbarDefaultItems(_ toolbar: WorkbenchToolbar) -> [ToolbarItem]
+  func toolbarAllowedItems(_ toolbar: WorkbenchToolbar) -> [ToolbarItem]
+  func toolbarWillAddItem(_ toolbar: WorkbenchToolbar, item: ToolbarItem)
+  func toolbarDidRemoveItem(_ toolbar: WorkbenchToolbar, item: ToolbarItem)
 }
 
 enum ToolbarItemKind {
