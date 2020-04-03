@@ -180,8 +180,10 @@ extension ToolbarItem {
   private class ToolbarItemButtonCell: NSButtonCell {
     
     override func drawImage(_ image: NSImage, withFrame frame: NSRect, in controlView: NSView) {
+      let color = NSColor(named: "ButtonIconColor", bundle: Bundle.main) ?? .darkGray
+      let img = image.imageWithTint(color)
       //set top and bottom paddings for image
-      super.drawImage(image, withFrame: frame.insetBy(dx: 0, dy: 2), in: controlView)
+      super.drawImage(img, withFrame: frame.insetBy(dx: 0, dy: 2), in: controlView)
     }
     
   }
@@ -241,7 +243,7 @@ extension ToolbarItem {
       let imageRect = computeImageRect(imageSize: imageSize, in: frame)
       
       let selectedColor = NSColor(named: "SelectedSegmentColor", bundle: Bundle.main)
-      let defaulColor = NSColor(named: "BottonIconColor", bundle: Bundle.main)
+      let defaulColor = NSColor(named: "ButtonIconColor", bundle: Bundle.main)
       let tintColor: NSColor = (isSelected(forSegment: segment) ? selectedColor : defaulColor) ?? .darkGray
       
       if let image = image(forSegment: segment)?.imageWithTint(tintColor) {
