@@ -14,7 +14,7 @@ class WorkbenchToolbar: NSObject {
   var delegate: ToolbarDelegate?
   private(set) var items: [ToolbarItem] = []
   
-  var nsWindow: NSWindow?
+  weak var nsWindow: NSWindow?
   
   lazy var defaultItems: [ToolbarItem] = {
     let result = self.delegate?.toolbarDefaultItems(self) ?? []

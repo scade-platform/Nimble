@@ -124,23 +124,6 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   }
 }
 
-
-//MARK: - CommandObserver
-
-extension NimbleWorkbench : CommandObserver {
-  public func commandDidChange(_ command: Command) {
-    DispatchQueue.main.async { [weak self] in
-    guard let self = self, let window = self.window, let toolbar = window.toolbar else { return }
-    for item in toolbar.items {
-      guard item.itemIdentifier.rawValue == command.name else { continue }
-        item.isEnabled = command.isEnable
-      }
-      return
-    }
-  }
-}
-
-
 // MARK: - Workbench
 
 extension NimbleWorkbench: Workbench {

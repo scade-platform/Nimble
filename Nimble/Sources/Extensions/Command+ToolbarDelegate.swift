@@ -14,7 +14,7 @@ public extension Command {
   func createMenuItem() -> NSMenuItem? {
     guard menuPath != nil else { return nil }
     let (key, mask) = getKeyEquivalent()
-    let menuItem = NSMenuItem(title: self.name, action: #selector(execute), keyEquivalent: key)
+    let menuItem = NSMenuItem(title: self.title, action: #selector(execute), keyEquivalent: key)
     menuItem.keyEquivalentModifierMask = mask
     menuItem.target = self
     menuItem.representedObject = self
@@ -106,10 +106,14 @@ class CommandsToolbarDelegate: ToolbarDelegate {
     var result : [ToolbarItem] = []
     let loadedCommands = CommandManager.shared.commands
 
-    //create for each new command ToolbarItem
+    //create for each command ToolbarItem
     result.append(contentsOf: loadedCommands.map{$0.createToolbarItem()}.filter{$0.kind != .segment && $0.kind != .indefinite})
     
     result.append(.flexibleSpace)
+    
+    //find all groups
+    let loadedGroups = CommandManager.shared.groups
+    result.append(contentsOf: loadedGroups.map{$0.value.createToolbarItem()})
     
     return result
   }
@@ -121,6 +125,10 @@ class CommandsToolbarDelegate: ToolbarDelegate {
     //create for each new command ToolbarItem
     result.append(contentsOf: loadedCommands.map{$0.createToolbarItem()}.filter{$0.kind != .segment && $0.kind != .indefinite})
     
+    //find all new groups
+    let loadedGroups = CommandManager.shared.groups
+    result.append(contentsOf: loadedGroups.map{$0.value.createToolbarItem()})
+    
     result.append(.flexibleSpace)
     result.append(.space)
     result.append(.separator)
@@ -129,16 +137,20 @@ class CommandsToolbarDelegate: ToolbarDelegate {
   }
   
   func toolbarWillAddItem(_ toolbar: WorkbenchToolbar, item: ToolbarItem) {
-    guard let win = toolbar.nsWindow, let workbench = win.windowController as? NimbleWorkbench else { return }
+    guard let window = toolbar.nsWindow else { return }
     if let command = item.command {
-      command.observers.add(observer: workbench)
+      command.observers.add(observer: window)
+    } else if let group = item.commandGroup {
+      group.commands.compactMap{$0.value}.forEach{$0.observers.add(observer: window)}
     }
   }
   
   func toolbarDidRemoveItem(_ toolbar: WorkbenchToolbar, item: ToolbarItem) {
-    guard let win = toolbar.nsWindow, let workbench = win.windowController as? NimbleWorkbench else { return }
+    guard let window = toolbar.nsWindow else { return }
     if let command = item.command {
-      command.observers.remove(observer: workbench)
+      command.observers.remove(observer: window)
+    } else if let group = item.commandGroup {
+      group.commands.compactMap{$0.value}.forEach{$0.observers.remove(observer: window)}
     }
   }
 }
@@ -147,11 +159,9 @@ extension CommandsToolbarDelegate: ToolbarItemDelegate {
   func isEnabled(_ toolbarItem: ToolbarItem) -> Bool {
     return toolbarItem.command?.isEnable ?? false
   }
-}
-
-extension CommandsToolbarDelegate: CommandObserver {
-  func commandDidChange(_ command: Command) {
-    
+  
+  func isSelected(_ toolbarItem: ToolbarItem) -> Bool {
+    return toolbarItem.command?.isSelected ?? false
   }
 }
 
@@ -159,8 +169,8 @@ fileprivate extension Command {
   func createToolbarItem() -> ToolbarItem {
     return ToolbarItem(identifier: NSToolbarItem.Identifier(rawValue: self.name),
                 kind: self.kind,
-                lable: self.name,
-                palleteLable: self.name,
+                lable: self.title,
+                palleteLable: self.title,
                 image: self.toolbarIcon,
                 width: 38.0,
                 action:  #selector(self.execute),
@@ -169,7 +179,9 @@ fileprivate extension Command {
   }
   
   var kind: ToolbarItemKind {
-    if self.toolbarIcon != nil {
+    if self.groupName != nil {
+      return .segment
+    } else if self.toolbarIcon != nil {
       return .imageButton
     } else {
       return .indefinite
@@ -177,6 +189,17 @@ fileprivate extension Command {
   }
 }
 
+fileprivate extension CommandGroup {
+  func createToolbarItem() -> ToolbarItem {
+    let toolbarSubitems = self.commands.compactMap{$0.value}.map{$0.createToolbarItem()}
+    
+    return ToolbarItem(identifier: NSToolbarItem.Identifier(rawValue: self.name),
+                   kind: .segmentedControl,
+                   palleteLable: self.palleteLable ?? "",
+                   group: toolbarSubitems,
+                   delegate: CommandsToolbarDelegate.shared)
+  }
+}
 
 fileprivate extension ToolbarItem {
   var command: Command? {
@@ -185,5 +208,40 @@ fileprivate extension ToolbarItem {
       return c
     }
     return nil
+  }
+  
+  var commandGroup: CommandGroup? {
+    guard !group.isEmpty else {return nil}
+    if let g = CommandManager.shared.groups.filter({$0.key == self.identifier.rawValue}).first {
+      return g.value
+    }
+    return nil
+  }
+}
+
+extension NSWindow : CommandObserver {
+  public func commandDidChange(_ command: Command) {
+    DispatchQueue.main.async { [weak self] in
+      guard let self = self,
+        let toolbar = self.toolbar
+      else {return}
+      
+      for item in toolbar.items {
+        if item.itemIdentifier.rawValue == command.name {
+          item.isEnabled = command.isEnable
+          return
+        } else if let groupName = command.groupName, item.itemIdentifier.rawValue == groupName, let segmentedControl = item.view as? NSSegmentedControl, let group = CommandManager.shared.groups[groupName] {
+          for (index, weakCommand) in group.commands.enumerated() {
+            if let command = weakCommand.value {
+              segmentedControl.setEnabled(command.isEnable, forSegment: index)
+              segmentedControl.setSelected(command.isSelected, forSegment: index)
+            }
+          }
+          return
+        } else {
+          continue
+        }
+      }
+    }
   }
 }
