@@ -24,8 +24,8 @@ public protocol Workbench: class {
   
   var navigatorArea: WorkbenchArea? { get }
   
-//  var inspectorArea: WorkbenchPart { get }
-//
+  var inspectorArea: WorkbenchArea? { get }
+  
 //  var toolbarArea: WorkbenchPart { get }
 //
   

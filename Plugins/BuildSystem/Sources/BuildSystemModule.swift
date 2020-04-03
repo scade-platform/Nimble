@@ -84,18 +84,18 @@ final class BuildSystemPlugin: Plugin {
     let runImage = Bundle(for: BuildSystemPlugin.self).image(forResource: "run")?.imageWithTint(buttonIconColor)
     let stopImage = Bundle(for: BuildSystemPlugin.self).image(forResource: "stop")?.imageWithTint(buttonIconColor)
 
-    let runCommand = Command(name: "Run", menuPath: "Tools", keyEquivalent: "cmd+r", toolbarIcon: runImage) { self.run() }
+    let runCommand = Command(name: "Run", menuPath: "Tools", keyEquivalent: "cmd+r", toolbarIcon: runImage) { _ in self.run() }
     CommandManager.shared.registerCommand(command: runCommand)
     self.runCommand = runCommand
     
-    let stopCommand = Command(name: "Stop", menuPath: "Tools", keyEquivalent: "cmd+.", toolbarIcon: stopImage) { self.stop() }
+    let stopCommand = Command(name: "Stop", menuPath: "Tools", keyEquivalent: "cmd+.", toolbarIcon: stopImage) { _ in self.stop() }
     CommandManager.shared.registerCommand(command: stopCommand)
     self.stopCommand = stopCommand
     
-    let claenCommand = Command(name: "Clean", menuPath: "Tools", keyEquivalent: "cmd+K") { self.clean() }
+    let claenCommand = Command(name: "Clean", menuPath: "Tools", keyEquivalent: "cmd+K") { _ in self.clean() }
     CommandManager.shared.registerCommand(command: claenCommand)
     
-    let buildCommand = Command(name: "Build", menuPath: "Tools", keyEquivalent: "cmd+b") { self.build() }
+    let buildCommand = Command(name: "Build", menuPath: "Tools", keyEquivalent: "cmd+b") { _ in self.build() }
     CommandManager.shared.registerCommand(command: buildCommand)
     self.buildCommand = buildCommand
   }

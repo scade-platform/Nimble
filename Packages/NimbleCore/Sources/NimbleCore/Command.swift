@@ -12,7 +12,7 @@ import Cocoa
 public class Command {
   
   public let name: String
-  private let handler: (() -> Void)?
+  private let handler: ((Command) -> Void)?
   
   //menu item
   public let menuPath: String?
@@ -21,12 +21,15 @@ public class Command {
   //toolbar item
   public let toolbarIcon: NSImage?
   
-  @objc public func execute() {
-    handler?()
-  }
+  public var groupName: String?
   
-  public init(name: String, menuPath: String? = nil, keyEquivalent: String? = nil , toolbarIcon: NSImage? = nil, handler:  @escaping () -> Void) {
+  @objc public func execute() {
+    handler?(self)
+  }
+
+  public init(name: String, menuPath: String? = nil, keyEquivalent: String? = nil , toolbarIcon: NSImage? = nil, handler: @escaping (Command) -> Void) {
     self.name = name
+    self.groupName = nil
     self.handler = handler
     self.menuPath = menuPath
     self.keyEquivalent = keyEquivalent
@@ -44,6 +47,18 @@ extension Command : Hashable {
   }
 }
 
+public class CommandGroup {
+  public let name: String
+  
+  public var palleteLable: String?
+  public var commands: [WeakRef<Command>] = []
+  
+  public init(name: String){
+    self.name = name
+    self.palleteLable = name
+  }
+}
+
 public class CommandState {
   public var isEnable: Bool {
     didSet {
@@ -51,16 +66,31 @@ public class CommandState {
     }
   }
   
+  public var title: String {
+    didSet {
+      stateStorage?.stateDidChange?(self)
+    }
+  }
+  
+  public var isSelected: Bool {
+    didSet {
+      stateStorage?.stateDidChange?(self)
+    }
+  }
+    
   public weak var command: Command?
   
   public weak var stateStorage: CommandStateStorage?
   
-  fileprivate init(command: Command, isEnable: Bool = true, storage: CommandStateStorage) {
+  fileprivate init(command: Command, title: String = "", isEnable: Bool = true, isSelected: Bool = false, storage: CommandStateStorage) {
     self.command = command
     self.isEnable = isEnable
+    self.isSelected = isSelected
+    self.title = command.name
     self.stateStorage = storage
   }
 }
+
 
 public class CommandStateStorage {
   private var states: [CommandState] = []
@@ -93,12 +123,21 @@ public extension CommandStateStorage {
 public class CommandManager {
   public static let shared: CommandManager = CommandManager()
   
+  public var handlerRegisteredCommand : ((Command) -> Void)?
+  
   private(set) public var commands: [Command] = []
+  private(set) public var groups: [String: CommandGroup] = [:]
   
   private init() {}
   
   public func registerCommand(command: Command) {
     guard !commands.contains(where: {$0.name == command.name}) else { return }
     commands.append(command)
+    handlerRegisteredCommand?(command)
+  }
+  
+  public func registerGroup(group: CommandGroup) {
+    guard groups[group.name] == nil else { return }
+    groups[group.name] = group
   }
 }
