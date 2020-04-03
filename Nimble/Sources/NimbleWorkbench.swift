@@ -15,24 +15,11 @@ import NimbleCore
 public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   public var observers = ObserverSet<WorkbenchObserver>()
   
-  private var toolbar: Toolbar?
-  
   public private(set) var diagnostics: [Path: [Diagnostic]] = [:]
   
+  private var toolbar: WorkbenchToolbar?
   
-  private lazy var toolbarItems: [NSToolbarItem.Identifier] = {
-    guard !CommandManager.shared.commands.isEmpty else {
-      return []
-    }
-    
-    let toolbarCommands = CommandManager.shared.commands
-      .filter{$0.toolbarIcon != nil}
-    
-    return toolbarCommands.map{NSToolbarItem.Identifier($0.name)}
-  }()
 
-  
-  
   // Document property of the WindowController always refer to the project
   public override var document: AnyObject? {
     get { super.document }
@@ -76,6 +63,9 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   }
   
   public override func windowWillLoad() {
+    let workbenchAreaGroup = CommandGroup(name: "WorkbenchAreaGroup")
+    CommandManager.shared.registerGroup(group: workbenchAreaGroup)
+    
     PluginManager.shared.load()
   }
   
@@ -92,38 +82,18 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     guard let debugView = debugView else { return }
     debugView.isHidden = true
     
+    guard let inspectorView = inspectorView else { return }
+    inspectorView.isHidden = true
+    
     DocumentManager.shared.defaultDocument = BinaryFileDocument.self
     
-    setupCommands()
-    toolbar = Toolbar(window!, delegate: CommandsToolbarDelegate.shared)
+    toolbar = WorkbenchToolbar(window!, delegate: CommandsToolbarDelegate.shared)
 
     PluginManager.shared.activate(in: self)
   }
     
   public func windowWillClose(_ notification: Notification) {
     PluginManager.shared.deactivate(in: self)
-  }
-  
-  private func setupCommands() {
-    //Command to show/hide Debug Area
-    var title: String = debugArea?.isHidden ?? true ? "Show Debug Area" : "Hide Debug Area"
-    let changeDebugAreaVisabilityCommand = Command(name: title, menuPath: "View", keyEquivalent: nil, toolbarIcon: nil) {[weak self] command in
-      guard let debugArea = self?.debugArea else { return }
-      let title = debugArea.isHidden ? "Hide Debug Area" : "Show Debug Area"
-      command.title = title
-      debugArea.isHidden = !debugArea.isHidden
-    }
-    CommandManager.shared.registerCommand(command: changeDebugAreaVisabilityCommand)
-    
-    //Command to show/hide Navigator Area
-    title = navigatorArea?.isHidden ?? true ? "Show Navigator Area" : "Hide Navigator Area"
-    let changeNavigatorAreaVisabilityCommand = Command(name: title, menuPath: "View", keyEquivalent: nil, toolbarIcon: nil) { [weak self] command in
-      guard let navigatorArea = self?.navigatorArea else { return }
-      let title = navigatorArea.isHidden  ? "Hide Navigator Area" : "Show Navigator Area"
-      command.title = title
-      navigatorArea.isHidden = !navigatorArea.isHidden
-    }
-    CommandManager.shared.registerCommand(command: changeNavigatorAreaVisabilityCommand)
   }
   
   private lazy var editorMenuItem: NSMenuItem? = {
@@ -153,24 +123,6 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     }
   }
 }
-
-
-//MARK: - CommandObserver
-
-extension NimbleWorkbench : CommandObserver {
-  public func commandDidChange(_ command: Command) {
-    DispatchQueue.main.async { [weak self] in
-    guard let self = self, let window = self.window, let toolbar = window.toolbar else { return }
-    for item in toolbar.items {
-      guard item.itemIdentifier.rawValue == command.name else { continue }
-     
-        item.isEnabled = command.isEnable
-      }
-      return
-    }
-  }
-}
-
 
 // MARK: - Workbench
 
@@ -299,7 +251,7 @@ extension NimbleWorkbench {
     currentDocument?.save(sender)
   }
   
-  @IBAction func saveAs(_ sender: Any?) {    
+  @IBAction func saveAs(_ sender: Any?) {
     currentDocument?.saveAs(sender)
   }
   
@@ -337,25 +289,6 @@ extension NimbleWorkbench {
     }
   }
 }
-
-
-// MARK: - NimbleWorkbenchArea
-
-protocol NimbleWorkbenchArea: WorkbenchArea where Self: NSViewController { }
-extension NimbleWorkbenchArea {
-  public var isHidden: Bool {
-    set {
-      guard let parent = self.parent as? NSSplitViewController else { return }
-      parent.splitViewItem(for: self)?.isCollapsed = newValue
-    }
-    get {
-      guard let parent = self.parent as? NSSplitViewController else { return true }
-      return parent.splitViewItem(for: self)?.isCollapsed ?? true
-    }
-  }
-}
-
-
 
 // MARK: - NimbleWorkbenchView
 

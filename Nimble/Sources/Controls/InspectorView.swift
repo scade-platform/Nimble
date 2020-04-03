@@ -11,9 +11,29 @@ import NimbleCore
 
 class InspectorView: NSViewController {
   @IBOutlet weak var sidebar: WorkbenchSidebar? = nil
+  weak var command: Command?
+  
+  lazy var icon: NSImage? = {
+    return Bundle.main.loadBottonImage(name: "rightSideBar")
+  }()
+  
+  override func viewDidLoad() {
+    self.title = "Inspector Area"
+    
+    command = self.registerCommand()
+  }
 }
 
 extension InspectorView: NimbleWorkbenchArea {
+  var toolbarIcon: NSImage? {
+    icon
+  }
+  
+  
+  var changeVisibleCommand: Command? {
+    command
+  }
+  
   func add(part: WorkbenchPart) {
     if let viewController = part as? NSViewController {
       self.addChild(viewController)

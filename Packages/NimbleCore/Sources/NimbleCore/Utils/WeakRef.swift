@@ -10,4 +10,8 @@ import Foundation
 
 public struct WeakRef<T: AnyObject> {
   public weak var value: T? = nil
+  
+  public init(value: T?){
+    self.value = value
+  }
 }
