@@ -104,26 +104,34 @@ fileprivate enum ModifierFlags: CaseIterable {
 class CommandsToolbarDelegate: ToolbarDelegate {
   public static var shared = CommandsToolbarDelegate()
   
-  func toolbarDefaultItems(_ toolbar: Toolbar) -> [ToolbarItem] {
+  func toolbarDefaultItems(_ toolbar: WorkbenchToolbar) -> [ToolbarItem] {
     var result : [ToolbarItem] = []
     let loadedCommands = CommandManager.shared.commands
 
-    //create for each new command ToolbarItem
+    //create for each command ToolbarItem
     result.append(contentsOf: loadedCommands.map{$0.createToolbarItem()}.filter{$0.kind != .segment && $0.kind != .indefinite})
     
     result.forEach{$0.toolbar = toolbar}
     
     result.append(.flexibleSpace)
     
+    //find all groups
+    let loadedGroups = CommandManager.shared.groups
+    result.append(contentsOf: loadedGroups.map{$0.value.createToolbarItem()})
+    
     return result
   }
   
-  func toolbarAllowedItems(_ toolbar: Toolbar) -> [ToolbarItem] {
+  func toolbarAllowedItems(_ toolbar: WorkbenchToolbar) -> [ToolbarItem] {
     var result : [ToolbarItem] = []
     let loadedCommands = CommandManager.shared.commands
 
     //create for each new command ToolbarItem
     result.append(contentsOf: loadedCommands.map{$0.createToolbarItem()}.filter{$0.kind != .segment && $0.kind != .indefinite})
+    
+    //find all new groups
+    let loadedGroups = CommandManager.shared.groups
+    result.append(contentsOf: loadedGroups.map{$0.value.createToolbarItem()})
     
     result.append(.flexibleSpace)
     result.append(.space)
@@ -132,11 +140,11 @@ class CommandsToolbarDelegate: ToolbarDelegate {
     return result
   }
   
-  func toolbarWillAddItem(_ toolbar: Toolbar, item: ToolbarItem) {
+  func toolbarWillAddItem(_ toolbar: WorkbenchToolbar, item: ToolbarItem) {
     //nothing
   }
   
-  func toolbarDidRemoveItem(_ toolbar: Toolbar, item: ToolbarItem) {
+  func toolbarDidRemoveItem(_ toolbar: WorkbenchToolbar, item: ToolbarItem) {
     //nothing
   }
 }
@@ -146,14 +154,19 @@ extension CommandsToolbarDelegate: ToolbarItemDelegate {
     guard let workbench = toolbarItem.toolbar?.nsWindow?.windowController as? Workbench, let command = toolbarItem.command else { return true }
     return workbench.commandSates[command]?.isEnable ?? false
   }
+  
+  func isSelected(_ toolbarItem: ToolbarItem) -> Bool {
+    guard let workbench = toolbarItem.toolbar?.nsWindow?.windowController as? Workbench, let command = toolbarItem.command else { return true }
+    return workbench.commandSates[command]?.isSelected ?? false
+  }
 }
 
 fileprivate extension Command {
   func createToolbarItem() -> ToolbarItem {
     return ToolbarItem(identifier: NSToolbarItem.Identifier(rawValue: self.name),
                 kind: self.kind,
-                lable: self.name,
-                palleteLable: self.name,
+                lable: "",
+                palleteLable: "",
                 image: self.toolbarIcon,
                 width: 38.0,
                 action:  #selector(self.execute),
@@ -162,7 +175,9 @@ fileprivate extension Command {
   }
   
   var kind: ToolbarItemKind {
-    if self.toolbarIcon != nil {
+    if self.groupName != nil {
+      return .segment
+    } else if self.toolbarIcon != nil {
       return .imageButton
     } else {
       return .indefinite
@@ -170,12 +185,31 @@ fileprivate extension Command {
   }
 }
 
+fileprivate extension CommandGroup {
+  func createToolbarItem() -> ToolbarItem {
+    let toolbarSubitems = self.commands.compactMap{$0.value}.map{$0.createToolbarItem()}
+    
+    return ToolbarItem(identifier: NSToolbarItem.Identifier(rawValue: self.name),
+                   kind: .segmentedControl,
+                   palleteLable: self.palleteLable ?? "",
+                   group: toolbarSubitems,
+                   delegate: CommandsToolbarDelegate.shared)
+  }
+}
 
 fileprivate extension ToolbarItem {
   var command: Command? {
     guard group.isEmpty else {return nil}
     if let c = CommandManager.shared.commands.filter({$0.name == self.identifier.rawValue}).first {
       return c
+    }
+    return nil
+  }
+  
+  var commandGroup: CommandGroup? {
+    guard !group.isEmpty else {return nil}
+    if let g = CommandManager.shared.groups.filter({$0.key == self.identifier.rawValue}).first {
+      return g.value
     }
     return nil
   }

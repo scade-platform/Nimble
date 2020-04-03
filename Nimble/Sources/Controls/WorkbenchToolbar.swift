@@ -1,5 +1,5 @@
 //
-//  Toolbar.swift
+//  WorkbenchToolbar.swift
 //  Nimble
 //
 //  Created by Danil Kristalev on 27/03/2020.
@@ -10,11 +10,11 @@ import Cocoa
 import NimbleCore
 
 
-class Toolbar: NSObject {
+class WorkbenchToolbar: NSObject {
   var delegate: ToolbarDelegate?
   private(set) var items: [ToolbarItem] = []
   
-  var nsWindow: NSWindow?
+  weak var nsWindow: NSWindow?
   
   lazy var defaultItems: [ToolbarItem] = {
     let result = self.delegate?.toolbarDefaultItems(self) ?? []
@@ -40,7 +40,7 @@ class Toolbar: NSObject {
   
 }
 
-extension Toolbar : NSToolbarDelegate {
+extension WorkbenchToolbar : NSToolbarDelegate {
   
   func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
     return defaultItemIdentifiers
@@ -79,10 +79,10 @@ extension Toolbar : NSToolbarDelegate {
 }
 
 protocol ToolbarDelegate {
-  func toolbarDefaultItems(_ toolbar: Toolbar) -> [ToolbarItem]
-  func toolbarAllowedItems(_ toolbar: Toolbar) -> [ToolbarItem]
-  func toolbarWillAddItem(_ toolbar: Toolbar, item: ToolbarItem)
-  func toolbarDidRemoveItem(_ toolbar: Toolbar, item: ToolbarItem)
+  func toolbarDefaultItems(_ toolbar: WorkbenchToolbar) -> [ToolbarItem]
+  func toolbarAllowedItems(_ toolbar: WorkbenchToolbar) -> [ToolbarItem]
+  func toolbarWillAddItem(_ toolbar: WorkbenchToolbar, item: ToolbarItem)
+  func toolbarDidRemoveItem(_ toolbar: WorkbenchToolbar, item: ToolbarItem)
 }
 
 enum ToolbarItemKind {
@@ -104,9 +104,9 @@ class ToolbarItem: NSObject {
   weak var target: AnyObject?
   let group: [ToolbarItem]
   var delegate: ToolbarItemDelegate?
-  weak var toolbar: Toolbar?
+  weak var toolbar: WorkbenchToolbar?
   
-  init(identifier: NSToolbarItem.Identifier, kind: ToolbarItemKind = .indefinite, lable: String = "", palleteLable: String = "", image: NSImage? = nil, width: CGFloat = .zero, height: CGFloat = .zero, action: Selector? = nil, target: AnyObject? = nil, group: [ToolbarItem] = [], toolbar: Toolbar? = nil, delegate: ToolbarItemDelegate? = nil){
+  init(identifier: NSToolbarItem.Identifier, kind: ToolbarItemKind = .indefinite, lable: String = "", palleteLable: String = "", image: NSImage? = nil, width: CGFloat = .zero, height: CGFloat = .zero, action: Selector? = nil, target: AnyObject? = nil, group: [ToolbarItem] = [], toolbar: WorkbenchToolbar? = nil, delegate: ToolbarItemDelegate? = nil){
     self.identifier = identifier
     self.kind = kind
     self.lable = lable
@@ -182,8 +182,10 @@ extension ToolbarItem {
   private class ToolbarItemButtonCell: NSButtonCell {
     
     override func drawImage(_ image: NSImage, withFrame frame: NSRect, in controlView: NSView) {
+      let color = NSColor(named: "ButtonIconColor", bundle: Bundle.main) ?? .darkGray
+      let img = image.imageWithTint(color)
       //set top and bottom paddings for image
-      super.drawImage(image, withFrame: frame.insetBy(dx: 0, dy: 2), in: controlView)
+      super.drawImage(img, withFrame: frame.insetBy(dx: 0, dy: 2), in: controlView)
     }
     
   }
@@ -243,7 +245,7 @@ extension ToolbarItem {
       let imageRect = computeImageRect(imageSize: imageSize, in: frame)
       
       let selectedColor = NSColor(named: "SelectedSegmentColor", bundle: Bundle.main)
-      let defaulColor = NSColor(named: "BottonIconColor", bundle: Bundle.main)
+      let defaulColor = NSColor(named: "ButtonIconColor", bundle: Bundle.main)
       let tintColor: NSColor = (isSelected(forSegment: segment) ? selectedColor : defaulColor) ?? .darkGray
       
       if let image = image(forSegment: segment)?.imageWithTint(tintColor) {
