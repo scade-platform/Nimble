@@ -13,25 +13,19 @@ public class NavigatorView: NSViewController {
   @IBOutlet var sidebar: WorkbenchSidebar? = nil
   weak var command: Command?
   
-  lazy var icon: NSImage? = {
+  static var icon: NSImage? {
     return Bundle.main.loadBottonImage(name: "leftSideBar")
-  }()
+  }
   
   
   public override func viewDidLoad() {
     self.title = "Navigator Area"
-
-    command = self.registerCommand()
   }
 }
 
 extension NavigatorView: NimbleWorkbenchArea {
-  var toolbarIcon: NSImage? {
-    icon
-  }
-  
   var changeVisibleCommand: Command? {
-    command
+    NimbleWorkbenchCommands.shared.navigatorAreaCommand
   }
   
   public func add(part: WorkbenchPart) {

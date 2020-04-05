@@ -32,8 +32,8 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
             item.isEnabled = state.isEnable
             return
           } else if let groupName = command.groupName, item.itemIdentifier.rawValue == groupName, let segmentedControl = item.view as? NSSegmentedControl, let group = CommandManager.shared.groups[groupName] {
-            for (index, weakCommand) in group.commands.enumerated() {
-              if let strongCommand = weakCommand.value, strongCommand == command {
+            for (index, groupCommand) in group.commands.enumerated() {
+              if groupCommand == command {
                 segmentedControl.setEnabled(state.isEnable, forSegment: index)
                 segmentedControl.setSelected(state.isSelected, forSegment: index)
               }
@@ -93,10 +93,8 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   }
   
   public override func windowWillLoad() {
-    let workbenchAreaGroup = CommandGroup(name: "WorkbenchAreaGroup")
-    CommandManager.shared.registerGroup(group: workbenchAreaGroup)
-    
     PluginManager.shared.load()
+    NimbleWorkbenchCommands.shared.registerCommands()
   }
   
   public override func windowDidLoad() {
@@ -117,6 +115,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     
     DocumentManager.shared.defaultDocument = BinaryFileDocument.self
     
+    NimbleWorkbenchCommands.shared.initCommandStates(for: self)
     toolbar = WorkbenchToolbar(window!, delegate: CommandsToolbarDelegate.shared)
 
     PluginManager.shared.activate(in: self)

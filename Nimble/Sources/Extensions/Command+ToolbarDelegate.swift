@@ -109,15 +109,13 @@ class CommandsToolbarDelegate: ToolbarDelegate {
     let loadedCommands = CommandManager.shared.commands
 
     //create for each command ToolbarItem
-    result.append(contentsOf: loadedCommands.map{$0.createToolbarItem()}.filter{$0.kind != .segment && $0.kind != .indefinite})
-    
-    result.forEach{$0.toolbar = toolbar}
+    result.append(contentsOf: loadedCommands.map{$0.createToolbarItem(toolbar)}.filter{$0.kind != .segment && $0.kind != .indefinite})
     
     result.append(.flexibleSpace)
     
     //find all groups
     let loadedGroups = CommandManager.shared.groups
-    result.append(contentsOf: loadedGroups.map{$0.value.createToolbarItem()})
+    result.append(contentsOf: loadedGroups.map{$0.value.createToolbarItem(toolbar)})
     
     return result
   }
@@ -127,11 +125,11 @@ class CommandsToolbarDelegate: ToolbarDelegate {
     let loadedCommands = CommandManager.shared.commands
 
     //create for each new command ToolbarItem
-    result.append(contentsOf: loadedCommands.map{$0.createToolbarItem()}.filter{$0.kind != .segment && $0.kind != .indefinite})
+    result.append(contentsOf: loadedCommands.map{$0.createToolbarItem(toolbar)}.filter{$0.kind != .segment && $0.kind != .indefinite})
     
     //find all new groups
     let loadedGroups = CommandManager.shared.groups
-    result.append(contentsOf: loadedGroups.map{$0.value.createToolbarItem()})
+    result.append(contentsOf: loadedGroups.map{$0.value.createToolbarItem(toolbar)})
     
     result.append(.flexibleSpace)
     result.append(.space)
@@ -162,7 +160,7 @@ extension CommandsToolbarDelegate: ToolbarItemDelegate {
 }
 
 fileprivate extension Command {
-  func createToolbarItem() -> ToolbarItem {
+  func createToolbarItem(_ toolbar: WorkbenchToolbar? = nil) -> ToolbarItem {
     return ToolbarItem(identifier: NSToolbarItem.Identifier(rawValue: self.name),
                 kind: self.kind,
                 lable: "",
@@ -171,6 +169,7 @@ fileprivate extension Command {
                 width: 38.0,
                 action:  #selector(self.execute),
                 target: self,
+                toolbar: toolbar,
                 delegate: CommandsToolbarDelegate.shared)
   }
   
@@ -186,13 +185,14 @@ fileprivate extension Command {
 }
 
 fileprivate extension CommandGroup {
-  func createToolbarItem() -> ToolbarItem {
-    let toolbarSubitems = self.commands.compactMap{$0.value}.map{$0.createToolbarItem()}
+  func createToolbarItem(_ toolbar: WorkbenchToolbar? = nil) -> ToolbarItem {
+    let toolbarSubitems = self.commands.map{$0.createToolbarItem(toolbar)}
     
     return ToolbarItem(identifier: NSToolbarItem.Identifier(rawValue: self.name),
                    kind: .segmentedControl,
                    palleteLable: self.palleteLable ?? "",
                    group: toolbarSubitems,
+                   toolbar: toolbar,
                    delegate: CommandsToolbarDelegate.shared)
   }
 }
@@ -213,4 +213,94 @@ fileprivate extension ToolbarItem {
     }
     return nil
   }
+}
+
+
+class NimbleWorkbenchCommands {
+  static let shared = NimbleWorkbenchCommands()
+  
+  let workbenchAreaGroup = CommandGroup(name: "WorkbenchAreaGroup")
+  
+  weak var navigatorAreaCommand: Command?
+  weak var debugAreaCommand: Command?
+  weak var inspectorAreaCommand: Command?
+  
+  init() {
+    CommandManager.shared.registerGroup(group: workbenchAreaGroup)
+  }
+  
+  
+  func registerCommands() {
+    //Command to show/hide Navigator Area
+    if navigatorAreaCommand == nil {
+      let name: String = "NavigatorAreaCommand"
+      
+      let changeNavigatorAreaVisabilityCommand = Command(name: name, menuPath: "View", keyEquivalent: nil, toolbarIcon: NavigatorView.icon, groupName: workbenchAreaGroup.name) { command in
+        guard let workbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? NimbleWorkbench, let navigatorArea = workbench.navigatorArea else { return }
+        let title = navigatorArea.isHidden  ? "Hide Navigator Area" : "Show Navigator Area"
+         workbench.commandSates[command]?.title = title
+        navigatorArea.isHidden = !navigatorArea.isHidden
+      }
+      
+      navigatorAreaCommand = changeNavigatorAreaVisabilityCommand
+      CommandManager.shared.registerCommand(command: changeNavigatorAreaVisabilityCommand)
+      workbenchAreaGroup.commands.append(changeNavigatorAreaVisabilityCommand)
+    }
+    
+    //Command to show/hide Debug Area
+    if debugAreaCommand == nil {
+      let name: String = "DegubAreaCommand"
+      
+      let changeDebugAreaVisabilityCommand = Command(name: name, menuPath: "View", keyEquivalent: nil, toolbarIcon: DebugView.icon, groupName: workbenchAreaGroup.name) { command in
+        guard let workbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? NimbleWorkbench, let debugArea = workbench.debugArea else { return }
+        let title = debugArea.isHidden ? "Hide Debug Area" : "Show Debug Area"
+        workbench.commandSates[command]?.title = title
+        debugArea.isHidden = !debugArea.isHidden
+      }
+      
+      debugAreaCommand = changeDebugAreaVisabilityCommand
+      CommandManager.shared.registerCommand(command: changeDebugAreaVisabilityCommand)
+      workbenchAreaGroup.commands.append(changeDebugAreaVisabilityCommand)
+    }
+    
+    //Command to show/hide Inspector Area
+    if inspectorAreaCommand == nil {
+      let name = "InspectorAreaCommand"
+      
+      let changeInspectorAreaVisabilityCommand = Command(name: name, menuPath: "View", keyEquivalent: nil, toolbarIcon: InspectorView.icon, groupName: workbenchAreaGroup.name) { command in
+        guard let workbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? NimbleWorkbench, let inspectorArea = workbench.inspectorArea else { return }
+        let title = inspectorArea.isHidden ? "Hide Inspector Area" :  "Show Inspector Area"
+        workbench.commandSates[command]?.title = title
+        inspectorArea.isHidden = !inspectorArea.isHidden
+      }
+      inspectorAreaCommand = changeInspectorAreaVisabilityCommand
+      CommandManager.shared.registerCommand(command: changeInspectorAreaVisabilityCommand)
+      workbenchAreaGroup.commands.append(changeInspectorAreaVisabilityCommand)
+    }
+  }
+  
+  func initCommandStates(for workbench: NimbleWorkbench) {
+    //Navigator Area
+    if let navigatorArea = workbench.navigatorArea, let command = navigatorAreaCommand {
+      let title: String = navigatorArea.isHidden ? "Show Navigator Area" : "Hide Navigator Area"
+      
+      workbench.commandSates[command]?.isSelected = !navigatorArea.isHidden
+      workbench.commandSates[command]?.title = title
+    }
+    //Debug Area
+    if let debugArea = workbench.debugArea, let command = debugAreaCommand {
+      let title = debugArea.isHidden ? "Show Debug Area" : "Hide Debug Area"
+      
+      workbench.commandSates[command]?.isSelected = !debugArea.isHidden
+      workbench.commandSates[command]?.title = title
+    }
+    //Inspector Area
+    if let inspectorArea = workbench.inspectorArea, let command = inspectorAreaCommand {
+      let title = inspectorArea.isHidden ? "Show Inspector Area" : "Hide Inspector Area"
+      
+      workbench.commandSates[command]?.isSelected = !inspectorArea.isHidden
+      workbench.commandSates[command]?.title = title
+    }
+  }
+  
 }

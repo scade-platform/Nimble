@@ -21,15 +21,15 @@ public class Command {
   //toolbar item
   public let toolbarIcon: NSImage?
   
-  public var groupName: String?
+  public let groupName: String?
   
   @objc public func execute() {
     handler?(self)
   }
 
-  public init(name: String, menuPath: String? = nil, keyEquivalent: String? = nil , toolbarIcon: NSImage? = nil, handler: @escaping (Command) -> Void) {
+  public init(name: String, menuPath: String? = nil, keyEquivalent: String? = nil , toolbarIcon: NSImage? = nil, groupName: String? = nil, handler: @escaping (Command) -> Void) {
     self.name = name
-    self.groupName = nil
+    self.groupName = groupName
     self.handler = handler
     self.menuPath = menuPath
     self.keyEquivalent = keyEquivalent
@@ -51,7 +51,17 @@ public class CommandGroup {
   public let name: String
   
   public var palleteLable: String?
-  public var commands: [WeakRef<Command>] = []
+  private var weakCommands: [WeakRef<Command>] = []
+  
+  public var commands: [Command] {
+    get {
+      weakCommands = weakCommands.filter{$0.value != nil}
+      return weakCommands.compactMap{$0.value}
+    }
+    set {
+      weakCommands = newValue.map{WeakRef(value: $0)}
+    }
+  }
   
   public init(name: String){
     self.name = name
