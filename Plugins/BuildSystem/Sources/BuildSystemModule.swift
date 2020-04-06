@@ -14,16 +14,38 @@ public final class BuildSystemModule: Module {
 }
 
 final class BuildSystemPlugin: Plugin {
-  private var runCommand: Command? = nil
-  private var buildCommand: Command? = nil
-  private var stopCommand: Command? = nil
-  private var currentProcess: Process?
-    
+  private weak var runCommand: Command?
+  private weak var buildCommand: Command?
+  private weak var stopCommand: Command?
+  
   func load() {
     BuildSystemsManager.shared.add(buildSystem: SwiftBuildSystem())
     BuildSystemsManager.shared.add(buildSystem: SPMBuildSystem())
     setupMainMenu()
     setupCommands()
+  }
+  
+  func deactivate(in workbench: Workbench) {
+    guard let process = workbench.buildProcess else { return }
+    
+    if process.isRunning {
+      process.terminate()
+    }
+    workbench.buildProcess = nil
+  }
+  
+  func shouldDeactivate(in workbench: Workbench) -> Bool {
+    guard let process = workbench.buildProcess else { return true }
+    if process.isRunning {
+      let alert = NSAlert()
+      alert.alertStyle = .warning
+      alert.messageText = "Are you sure you want to close the Workbench?"
+      alert.informativeText = "Closing this workbench will stop the current task."
+      alert.addButton(withTitle: "Stop Task")
+      alert.addButton(withTitle: "Cancel")
+      return alert.runModal() == .alertFirstButtonReturn
+    }
+    return true
   }
   
   private func setupMainMenu() {
@@ -40,7 +62,7 @@ final class BuildSystemPlugin: Plugin {
     autoItem.representedObject = Automatic.shared
     submenu.addItem(autoItem)
     submenu.addItem(.separator())
-
+    
     let tools = BuildSystemsManager.shared.buildSystems
     for tool in tools {
       let toolItem = NSMenuItem(title: tool.name, action: #selector(switchBuildSystem(_:)), keyEquivalent: "")
@@ -54,16 +76,22 @@ final class BuildSystemPlugin: Plugin {
     let buttonIconColor = getColorFromAsset("ButtonIconColor", defualt: .darkGray)
     let runImage = Bundle(for: BuildSystemPlugin.self).image(forResource: "run")?.imageWithTint(buttonIconColor)
     let stopImage = Bundle(for: BuildSystemPlugin.self).image(forResource: "stop")?.imageWithTint(buttonIconColor)
-
-    runCommand = Command(name: "Run", menuPath: "Tools", keyEquivalent: "cmd+r", toolbarIcon: runImage) { _ in self.run() }
-    CommandManager.shared.registerCommand(command: runCommand!)
-    stopCommand = Command(name: "Stop", menuPath: "Tools", keyEquivalent: "cmd+.", toolbarIcon: stopImage) { _ in self.stop() }
-    stopCommand?.isEnable = false
-    CommandManager.shared.registerCommand(command: stopCommand!)
+    
+    let runCommand = Command(name: "Run", menuPath: "Tools", keyEquivalent: "cmd+r", toolbarIcon: runImage) { _ in self.run() }
+    CommandManager.shared.registerCommand(command: runCommand)
+    self.runCommand = runCommand
+    
+    let stopCommand = Command(name: "Stop", menuPath: "Tools", keyEquivalent: "cmd+.", toolbarIcon: stopImage) { _ in self.stop() }
+    CommandManager.shared.registerCommand(command: stopCommand)
+    stopCommand.isEnable = false
+    self.stopCommand = stopCommand
+    
     let claenCommand = Command(name: "Clean", menuPath: "Tools", keyEquivalent: "cmd+K") { _ in self.clean() }
     CommandManager.shared.registerCommand(command: claenCommand)
-    buildCommand = Command(name: "Build", menuPath: "Tools", keyEquivalent: "cmd+b") { _ in self.build() }
-    CommandManager.shared.registerCommand(command: buildCommand!)
+    
+    let buildCommand = Command(name: "Build", menuPath: "Tools", keyEquivalent: "cmd+b") { _ in self.build() }
+    CommandManager.shared.registerCommand(command: buildCommand)
+    self.buildCommand = buildCommand
   }
   
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
@@ -84,7 +112,9 @@ final class BuildSystemPlugin: Plugin {
     
     showConsoleTillFirstEscPress(in: currentWorkbench)
     
-    BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench, handler: launcherHandler(status:process:))
+    BuildSystemsManager.shared.activeBuildSystem?.run(in: currentWorkbench, handler: { [weak self] status, process in
+      self?.launcherHandler(status: status, process: process, workbench: currentWorkbench)
+    })
   }
   
   func run() {
@@ -98,10 +128,12 @@ final class BuildSystemPlugin: Plugin {
       case .finished:
         DispatchQueue.main.async { [weak self] in
           self?.showConsoleTillFirstEscPress(in: currentWorkbench)
-          BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: currentWorkbench, handler: self?.launcherHandler(status:process:))
+          BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: currentWorkbench, handler: { [weak self] status, process in
+            self?.launcherHandler(status: status,process: process, workbench: currentWorkbench)
+          })
         }
       case .failed, .running:
-        self?.launcherHandler(status: status, process: process)
+        self?.launcherHandler(status: status, process: process, workbench: currentWorkbench)
       }
     }
   }
@@ -128,7 +160,7 @@ final class BuildSystemPlugin: Plugin {
     BuildSystemsManager.shared.activeBuildSystem?.clean(in: currentWorkbench)
   }
   
-  func launcherHandler(status: BuildStatus, process: Process?) -> Void {
+  func launcherHandler(status: BuildStatus, process: Process?, workbench: Workbench) -> Void {
     guard let process = process else {
       runCommand?.isEnable = true
       buildCommand?.isEnable = true
@@ -139,26 +171,24 @@ final class BuildSystemPlugin: Plugin {
       runCommand?.isEnable = false
       buildCommand?.isEnable = false
       stopCommand?.isEnable = true
-      currentProcess = process
+      workbench.buildProcess = process
     } else {
       runCommand?.isEnable = true
       buildCommand?.isEnable = true
       stopCommand?.isEnable = false
-      currentProcess = nil
+      workbench.buildProcess = nil
     }
   }
   
   func stop() {
-    guard let process = currentProcess else { return }
+    guard let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench, let process = currentWorkbench.buildProcess else { return }
     if process.isRunning {
       process.terminate()
     }
-    if let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench {
-      showConsoleTillFirstEscPress(in: currentWorkbench)
-    }
+    showConsoleTillFirstEscPress(in: currentWorkbench)
   }
   
   fileprivate func getColorFromAsset(_ name: String, defualt: NSColor) -> NSColor {
-     return NSColor.init(named: name, bundle: Bundle.init(for: BuildSystemPlugin.self)) ?? defualt
+    return NSColor.init(named: name, bundle: Bundle.init(for: BuildSystemPlugin.self)) ?? defualt
   }
 }
