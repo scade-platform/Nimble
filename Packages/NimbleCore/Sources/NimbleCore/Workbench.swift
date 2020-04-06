@@ -34,6 +34,8 @@ public protocol Workbench: class {
   var statusBar: WorkbenchStatusBar { get }
   
   var openedConsoles: [Console] { get }
+  
+  var commandSates: CommandStateStorage { get }
               
   
   func open(_ doc: Document, show: Bool)

@@ -18,24 +18,18 @@ class DebugView: NSViewController {
   
   weak var command: Command?
   
-  lazy var icon: NSImage? = {
+  static var icon: NSImage? {
     return Bundle.main.loadBottonImage(name: "bottomArea")
-  }()
+  }
   
   override func viewDidLoad() {
     self.title = "Debug Area"
-    
-    command = self.registerCommand()
   }
 }
 
 extension DebugView: NimbleWorkbenchArea {
-  var toolbarIcon: NSImage? {
-    icon
-  }
-  
   var changeVisibleCommand: Command? {
-    command
+    NimbleWorkbenchCommands.shared.debugAreaCommand
   }
   
   public func add(part: WorkbenchPart) {

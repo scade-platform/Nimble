@@ -11,27 +11,7 @@ import Cocoa
 
 public class Command {
   
-  public var observers = ObserverSet<CommandObserver>()
-  
-  public var isEnable: Bool {
-    didSet {
-      observers.notify {
-        $0.commandDidChange(self)
-      }
-    }
-  }
-  
-
-  public var isSelected: Bool {
-    didSet {
-      observers.notify {
-        $0.commandDidChange(self)
-      }
-    }
-  }
-  
   public let name: String
-  public var title: String
   private let handler: ((Command) -> Void)?
   
   //menu item
@@ -41,23 +21,19 @@ public class Command {
   //toolbar item
   public let toolbarIcon: NSImage?
   
-  public var groupName: String?
+  public let groupName: String?
   
   @objc public func execute() {
-    guard isEnable else { return }
     handler?(self)
   }
 
-  public init(name: String, menuPath: String? = nil, keyEquivalent: String? = nil , toolbarIcon: NSImage? = nil, handler:  @escaping (Command) -> Void) {
+  public init(name: String, menuPath: String? = nil, keyEquivalent: String? = nil , toolbarIcon: NSImage? = nil, groupName: String? = nil, handler: @escaping (Command) -> Void) {
     self.name = name
-    self.title = name
-    self.groupName = nil
+    self.groupName = groupName
     self.handler = handler
     self.menuPath = menuPath
     self.keyEquivalent = keyEquivalent
     self.toolbarIcon = toolbarIcon
-    self.isEnable = true
-    self.isSelected = false
   }
 }
 
@@ -91,10 +67,6 @@ public class CommandGroup {
     self.name = name
     self.palleteLable = name
   }
-}
-
-public protocol CommandObserver: class {
-  func commandDidChange(_ command: Command)
 }
 
 public class CommandState {

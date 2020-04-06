@@ -17,6 +17,36 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   
   public private(set) var diagnostics: [Path: [Diagnostic]] = [:]
   
+  private lazy var commandStateStorage : CommandStateStorage = {
+    return CommandStateStorage{ [weak self] state in
+      guard let self = self,
+        let command = state.command
+        else { return }
+      
+      DispatchQueue.main.async {
+        guard let toolbar = self.window?.toolbar
+          else { return }
+        
+        for item in toolbar.items {
+          if item.itemIdentifier.rawValue == command.name {
+            item.isEnabled = state.isEnable
+            return
+          } else if let groupName = command.groupName, item.itemIdentifier.rawValue == groupName, let segmentedControl = item.view as? NSSegmentedControl, let group = CommandManager.shared.groups[groupName] {
+            for (index, groupCommand) in group.commands.enumerated() {
+              if groupCommand == command {
+                segmentedControl.setEnabled(state.isEnable, forSegment: index)
+                segmentedControl.setSelected(state.isSelected, forSegment: index)
+              }
+            }
+            return
+          } else {
+            continue
+          }
+        }
+      }
+    }
+  }()
+  
   private var toolbar: WorkbenchToolbar?
   
 
@@ -63,10 +93,8 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   }
   
   public override func windowWillLoad() {
-    let workbenchAreaGroup = CommandGroup(name: "WorkbenchAreaGroup")
-    CommandManager.shared.registerGroup(group: workbenchAreaGroup)
-    
     PluginManager.shared.load()
+    NimbleWorkbenchCommands.shared.registerCommands()
   }
   
   public override func windowDidLoad() {
@@ -87,6 +115,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     
     DocumentManager.shared.defaultDocument = BinaryFileDocument.self
     
+    NimbleWorkbenchCommands.shared.initCommandStates(for: self)
     toolbar = WorkbenchToolbar(window!, delegate: CommandsToolbarDelegate.shared)
 
     PluginManager.shared.activate(in: self)
@@ -127,6 +156,11 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
 // MARK: - Workbench
 
 extension NimbleWorkbench: Workbench {
+  public var commandSates: CommandStateStorage {
+    commandStateStorage
+  }
+  
+  
   public var openedConsoles: [Console] {
     guard let debugView = debugView else {
       return []

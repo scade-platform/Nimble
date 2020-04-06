@@ -85,6 +85,12 @@ protocol ToolbarDelegate {
   func toolbarDidRemoveItem(_ toolbar: WorkbenchToolbar, item: ToolbarItem)
 }
 
+extension ToolbarDelegate {
+  //default implementation
+  func toolbarWillAddItem(_ toolbar: WorkbenchToolbar, item: ToolbarItem) {}
+  func toolbarDidRemoveItem(_ toolbar: WorkbenchToolbar, item: ToolbarItem) {}
+}
+
 enum ToolbarItemKind {
   case imageButton
   case segmentedControl
@@ -104,8 +110,9 @@ class ToolbarItem: NSObject {
   weak var target: AnyObject?
   let group: [ToolbarItem]
   var delegate: ToolbarItemDelegate?
+  weak var toolbar: WorkbenchToolbar?
   
-  init(identifier: NSToolbarItem.Identifier, kind: ToolbarItemKind = .indefinite, lable: String = "", palleteLable: String = "", image: NSImage? = nil, width: CGFloat = .zero, height: CGFloat = .zero, action: Selector? = nil, target: AnyObject? = nil, group: [ToolbarItem] = [], delegate: ToolbarItemDelegate? = nil){
+  init(identifier: NSToolbarItem.Identifier, kind: ToolbarItemKind = .indefinite, lable: String = "", palleteLable: String = "", image: NSImage? = nil, width: CGFloat = .zero, height: CGFloat = .zero, action: Selector? = nil, target: AnyObject? = nil, group: [ToolbarItem] = [], toolbar: WorkbenchToolbar? = nil, delegate: ToolbarItemDelegate? = nil){
     self.identifier = identifier
     self.kind = kind
     self.lable = lable
@@ -116,6 +123,7 @@ class ToolbarItem: NSObject {
     self.action = action
     self.target = target
     self.group = group
+    self.toolbar = toolbar
     self.delegate = delegate
   }
   
