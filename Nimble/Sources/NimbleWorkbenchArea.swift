@@ -61,7 +61,7 @@ extension NimbleWorkbenchArea {
       let command = self.createCommand() {
       command.groupName = group.name
       CommandManager.shared.registerCommand(command: command)
-      group.commands.append(WeakRef(value: command))
+      group.commands.append(command)
       return command
     }
     return nil

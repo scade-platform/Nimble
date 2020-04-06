@@ -141,7 +141,7 @@ class CommandsToolbarDelegate: ToolbarDelegate {
     if let command = item.command {
       command.observers.add(observer: window)
     } else if let group = item.commandGroup {
-      group.commands.compactMap{$0.value}.forEach{$0.observers.add(observer: window)}
+      group.commands.forEach{$0.observers.add(observer: window)}
     }
   }
   
@@ -150,7 +150,7 @@ class CommandsToolbarDelegate: ToolbarDelegate {
     if let command = item.command {
       command.observers.remove(observer: window)
     } else if let group = item.commandGroup {
-      group.commands.compactMap{$0.value}.forEach{$0.observers.remove(observer: window)}
+      group.commands.forEach{$0.observers.remove(observer: window)}
     }
   }
 }
@@ -191,7 +191,7 @@ fileprivate extension Command {
 
 fileprivate extension CommandGroup {
   func createToolbarItem() -> ToolbarItem {
-    let toolbarSubitems = self.commands.compactMap{$0.value}.map{$0.createToolbarItem()}
+    let toolbarSubitems = self.commands.map{$0.createToolbarItem()}
     
     return ToolbarItem(identifier: NSToolbarItem.Identifier(rawValue: self.name),
                    kind: .segmentedControl,
@@ -231,8 +231,8 @@ extension NSWindow : CommandObserver {
           item.isEnabled = command.isEnable
           return
         } else if let groupName = command.groupName, item.itemIdentifier.rawValue == groupName, let segmentedControl = item.view as? NSSegmentedControl, let group = CommandManager.shared.groups[groupName] {
-          for (index, weakCommand) in group.commands.enumerated() {
-            if let command = weakCommand.value {
+          for (index, groupCommand) in group.commands.enumerated() {
+            if command == groupCommand {
               segmentedControl.setEnabled(command.isEnable, forSegment: index)
               segmentedControl.setSelected(command.isSelected, forSegment: index)
             }
