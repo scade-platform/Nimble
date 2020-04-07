@@ -135,14 +135,14 @@ public class CommandManager {
   
   public var handlerRegisteredCommand : ((Command) -> Void)?
   
-  private(set) public var commands: Set<Command> = []
+  private(set) public var commands: [Command] = []
   private(set) public var groups: [String: CommandGroup] = [:]
   
   private init() {}
   
   public func registerCommand(command: Command) {
-    guard !commands.contains(command) else { return }
-    commands.insert(command)
+    guard !commands.contains(where: {$0 == command}) else { return }
+    commands.append(command)
     handlerRegisteredCommand?(command)
   }
   
