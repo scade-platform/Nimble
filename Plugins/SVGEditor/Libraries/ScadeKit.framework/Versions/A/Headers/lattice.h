@@ -20,6 +20,8 @@ typedef NS_ENUM(NSInteger, SCDLatticeTransition) {
 
 #import <ScadeKit/SCDLatticePageAdapter.h>
 
+#import <ScadeKit/SCDLatticeEditorPageAdapter.h>
+
 #import <ScadeKit/SCDLatticePageContainer.h>
 
 #import <ScadeKit/SCDLatticeSizeChangedEvent.h>
