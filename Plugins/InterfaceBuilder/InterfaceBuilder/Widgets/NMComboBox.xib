@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="PSs-vr-IlB" customClass="NMComboBox" customModule="InterfaceBuilder" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="216" height="21"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <visualEffectView blendingMode="behindWindow" material="contentBackground" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="0oJ-hK-RmA">
+                    <rect key="frame" x="0.0" y="0.0" width="216" height="21"/>
+                    <subviews>
+                        <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e9X-4d-wgR">
+                            <rect key="frame" x="0.0" y="0.0" width="197" height="19"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" focusRingType="none" drawsBackground="YES" id="U2Z-jS-Kun">
+                                <font key="font" usesAppearanceFont="YES"/>
+                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <button translatesAutoresizingMaskIntoConstraints="NO" id="vF8-cJ-wf2">
+                            <rect key="frame" x="197" y="3" width="16" height="15"/>
+                            <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="NSTouchBarGoDownTemplate" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="pPt-1A-YXG">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <color key="contentTintColor" red="0.1529197991" green="0.15295344590000001" blue="0.15291768310000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="buttonDidClick:" target="PSs-vr-IlB" id="VCS-qZ-oYf"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="vF8-cJ-wf2" secondAttribute="trailing" constant="3" id="3D6-aA-M05"/>
+                        <constraint firstItem="vF8-cJ-wf2" firstAttribute="leading" secondItem="e9X-4d-wgR" secondAttribute="trailing" id="49l-ek-XUw"/>
+                        <constraint firstAttribute="bottom" secondItem="e9X-4d-wgR" secondAttribute="bottom" id="BNX-uc-PNF"/>
+                        <constraint firstAttribute="bottom" secondItem="vF8-cJ-wf2" secondAttribute="bottom" constant="3" id="Eca-aa-hEv"/>
+                        <constraint firstItem="e9X-4d-wgR" firstAttribute="leading" secondItem="0oJ-hK-RmA" secondAttribute="leading" id="WR6-0A-ZYG"/>
+                        <constraint firstItem="vF8-cJ-wf2" firstAttribute="top" secondItem="0oJ-hK-RmA" secondAttribute="top" constant="3" id="qnq-t8-BBM"/>
+                        <constraint firstItem="e9X-4d-wgR" firstAttribute="top" secondItem="0oJ-hK-RmA" secondAttribute="top" constant="2" id="wtN-HS-h3m"/>
+                    </constraints>
+                </visualEffectView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="0oJ-hK-RmA" firstAttribute="leading" secondItem="PSs-vr-IlB" secondAttribute="leading" id="3CX-YP-fkD"/>
+                <constraint firstAttribute="trailing" secondItem="0oJ-hK-RmA" secondAttribute="trailing" id="6el-cc-ebI"/>
+                <constraint firstAttribute="bottom" secondItem="0oJ-hK-RmA" secondAttribute="bottom" id="ER4-uC-Irf"/>
+                <constraint firstItem="0oJ-hK-RmA" firstAttribute="top" secondItem="PSs-vr-IlB" secondAttribute="top" id="Y9d-g8-LXp"/>
+            </constraints>
+            <connections>
+                <outlet property="button" destination="vF8-cJ-wf2" id="oIN-0v-6bh"/>
+                <outlet property="textField" destination="e9X-4d-wgR" id="c0m-kU-LZU"/>
+            </connections>
+            <point key="canvasLocation" x="157" y="53"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="NSTouchBarGoDownTemplate" width="16" height="30"/>
+    </resources>
+</document>

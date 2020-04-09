@@ -17,12 +17,9 @@ class TextPane: NSViewController {
   @IBOutlet weak var headerView: HeaderView?
   @IBOutlet weak var contentView: NSView?
   
-  @IBOutlet weak var titleTextField: NSTextField?
-  
   @IBOutlet weak var familyPopUpButton: NSPopUpButton?
   @IBOutlet weak var stylePopUpButton: NSPopUpButton?
-  @IBOutlet weak var sizeTextField: NSTextField?
-  @IBOutlet weak var sizeStepper: NSStepper?
+  @IBOutlet weak var sizeComboBoxView: NSView?
   
   private weak var shownWidget: SCDWidgetsWidget?
   
@@ -36,8 +33,12 @@ class TextPane: NSViewController {
     visabilityButton?.isHidden = true
     headerView?.button = visabilityButton
     
-    sizeTextField?.intValue = 13
-    sizeStepper?.intValue = sizeTextField?.intValue ?? 0
+ 
+    
+    let nmComboBox = NMComboBox.loadFromNib()
+    nmComboBox.textField?.stringValue = "11"
+    sizeComboBoxView?.addSubview(nmComboBox)
+    nmComboBox.layout(into: sizeComboBoxView!)
   }
   
   var widget: SCDWidgetsWidget? {
@@ -56,7 +57,6 @@ class TextPane: NSViewController {
   
  
   private func setFields(widget: SCDWidgetsWidget) {
-    titleTextField?.stringValue = widget.name
   }
   
   @IBAction func buttonDidClick(_ sender: Any) {
@@ -69,15 +69,6 @@ class TextPane: NSViewController {
     visabilityButton.title = contentView.isHidden ? "Show" : "Hide"
     visabilityButton.isHidden = !contentView.isHidden
   }
-  
-  @IBAction func stepperDidClick(_ sender: Any) {
-    sizeTextField?.intValue = sizeStepper?.intValue ?? 0
-  }
-  
-  @IBAction func sizeDidChange(_ sender: Any) {
-    sizeStepper?.intValue = sizeTextField?.intValue ?? 0
-  }
-  
 }
 
 
@@ -109,3 +100,12 @@ class HeaderView: NSView {
   }
 }
 
+fileprivate extension NSView {
+  func layout(into: NSView, insets: NSEdgeInsets = NSEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)) {
+    self.translatesAutoresizingMaskIntoConstraints = false
+    self.topAnchor.constraint(equalTo: into.topAnchor, constant: insets.top).isActive = true
+    self.bottomAnchor.constraint(equalTo: into.bottomAnchor, constant: -insets.bottom).isActive = true
+    self.leadingAnchor.constraint(equalTo: into.leadingAnchor, constant: insets.left).isActive = true
+    self.trailingAnchor.constraint(equalTo: into.trailingAnchor, constant: -insets.right).isActive = true
+  }
+}
