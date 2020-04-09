@@ -22,7 +22,6 @@ class EditorView: SVGEditorView {
 
       guard let page = pageDocument?.page else { return }
       widgetSelector.visit(page)
-
       elementSelector = widgetSelector
     }
   }
@@ -31,6 +30,10 @@ class EditorView: SVGEditorView {
     super.didOpenDocument(document)
 
     pageDocument?.adapter.show(window)
+
+    guard let page = pageDocument?.page else { return }
+
+    WidgetUI().visit(page)
   }
 }
 

@@ -21,6 +21,7 @@
 		E451B30022C4B69F006185B7 /* WidgetSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E451B2FF22C4B69F006185B7 /* WidgetSelector.swift */; };
 		E46496C623FFFFC8000375D1 /* SVGEditor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E46496C523FFFFC8000375D1 /* SVGEditor.framework */; };
 		E4909E7923E478C000C1DFE2 /* ScadeKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4909E7823E478C000C1DFE2 /* ScadeKit.framework */; };
+		E4CEE39B243A5899007CF117 /* WidgetUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4CEE39A243A5899007CF117 /* WidgetUI.swift */; };
 		E4D59E0724113876003DAB16 /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D59E0424113876003DAB16 /* Plugin.swift */; };
 		E4D59E0824113876003DAB16 /* EditorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E4D59E0524113876003DAB16 /* EditorView.xib */; };
 		E4D59E0924113876003DAB16 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4D59E0624113876003DAB16 /* EditorView.swift */; };
@@ -43,6 +44,7 @@
 		E451B2FF22C4B69F006185B7 /* WidgetSelector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetSelector.swift; sourceTree = "<group>"; };
 		E46496C523FFFFC8000375D1 /* SVGEditor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SVGEditor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4909E7823E478C000C1DFE2 /* ScadeKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScadeKit.framework; path = ../../SVGEditor/Libraries/ScadeKit.framework; sourceTree = "<group>"; };
+		E4CEE39A243A5899007CF117 /* WidgetUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WidgetUI.swift; sourceTree = "<group>"; };
 		E4D59E0424113876003DAB16 /* Plugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
 		E4D59E0524113876003DAB16 /* EditorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditorView.xib; sourceTree = "<group>"; };
 		E4D59E0624113876003DAB16 /* EditorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 		D7CD750022B8CC37004C437B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				E4CEE39A243A5899007CF117 /* WidgetUI.swift */,
 				E4D59E0624113876003DAB16 /* EditorView.swift */,
 				E4D59E0524113876003DAB16 /* EditorView.xib */,
 				E4D59E0424113876003DAB16 /* Plugin.swift */,
@@ -197,6 +200,7 @@
 			files = (
 				0CAAE9DD243CB839003CAE92 /* TextPane.swift in Sources */,
 				E4D59E0724113876003DAB16 /* Plugin.swift in Sources */,
+				E4CEE39B243A5899007CF117 /* WidgetUI.swift in Sources */,
 				E451B30022C4B69F006185B7 /* WidgetSelector.swift in Sources */,
 				E4D59E0924113876003DAB16 /* EditorView.swift in Sources */,
 				0CAAE9D9243C5E66003CAE92 /* WidgetInspector.swift in Sources */,
