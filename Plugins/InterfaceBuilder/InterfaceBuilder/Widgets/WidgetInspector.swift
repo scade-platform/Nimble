@@ -22,20 +22,16 @@ class WidgetInspector: NSViewController, WorkbenchPart {
   }
 }
 
-extension WidgetInspector : EditorViewObserver {
-  func editorDidChangeSelection(editor: EditorView, widget: SCDWidgetsWidget) {
-    
-  }
-}
-
 extension WidgetInspector : WorkbenchObserver {
   func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) {
     stackView?.subviews.forEach{$0.removeFromSuperview()}
-    if document != nil {
+    if document != nil, let editor = document?.editor as? EditorView  {
       let textPane = TextPane.loadFromNib()
       self.addChild(textPane)
       stackView?.addArrangedSubview(textPane.view)
       textPane.view.trailingAnchor.constraint(equalTo: stackView!.trailingAnchor).isActive = true
+      editor.observers.add(observer: textPane)
+      textPane.view.isHidden = true
     }
   }
 }

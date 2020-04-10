@@ -13,9 +13,14 @@ class NMComboBox: NSView {
   @IBOutlet weak var button: NSButton?
   var buttonMenu: NSMenu?
   
+  var textDidChange: ((String) -> Void)?
+  
   required init?(coder: NSCoder) {
     super.init(coder: coder)
-    self.drawPageBorder(with: NSSize(width: 1, height: 1))
+    let layer = CALayer()
+    layer.cornerRadius = 5.0
+    layer.masksToBounds = true
+    self.layer = layer
   }
   
   override func viewDidMoveToWindow() {
@@ -36,27 +41,14 @@ class NMComboBox: NSView {
   @objc func itemDidSelect(_ sender: Any?) {
     guard let item = sender as? NSMenuItem else {return}
     textField?.stringValue = item.title
+    textDidChange?(textField?.stringValue ?? "")
+  }
+  
+  @IBAction func textDidEdit(_ sender: Any) {
+    textDidChange?(textField?.stringValue ?? "")
   }
   
   @IBAction func buttonDidClick(_ sender: Any) {
     buttonMenu?.popUp(positioning: buttonMenu?.item(at: 0), at: NSEvent.mouseLocation, in: nil)
-  }
-  
-}
-
-class TextFieldCell : NSTextField {
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
-    self.invalidateIntrinsicContentSize()
-  }
-  
-  override var intrinsicContentSize: NSSize {
-    // Guard the cell exists and wraps
-    guard let cell = self.cell, cell.wraps else {return super.intrinsicContentSize}
-
-    // Use intrinsic width to jive with autolayout
-    let width = super.intrinsicContentSize.width / 2
-
-    return NSMakeSize(width, super.intrinsicContentSize.height);
   }
 }

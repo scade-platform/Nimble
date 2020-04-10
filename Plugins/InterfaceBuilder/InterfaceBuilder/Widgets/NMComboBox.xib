@@ -17,12 +17,15 @@
                     <rect key="frame" x="0.0" y="0.0" width="216" height="21"/>
                     <subviews>
                         <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="e9X-4d-wgR">
-                            <rect key="frame" x="0.0" y="0.0" width="197" height="19"/>
+                            <rect key="frame" x="0.0" y="0.0" width="197" height="17"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" focusRingType="none" drawsBackground="YES" id="U2Z-jS-Kun">
-                                <font key="font" usesAppearanceFont="YES"/>
+                                <font key="font" metaFont="controlContent" size="11"/>
                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
+                            <connections>
+                                <action selector="textDidEdit:" target="PSs-vr-IlB" id="c7q-nJ-oR0"/>
+                            </connections>
                         </textField>
                         <button translatesAutoresizingMaskIntoConstraints="NO" id="vF8-cJ-wf2">
                             <rect key="frame" x="197" y="3" width="16" height="15"/>
@@ -43,7 +46,7 @@
                         <constraint firstAttribute="bottom" secondItem="vF8-cJ-wf2" secondAttribute="bottom" constant="3" id="Eca-aa-hEv"/>
                         <constraint firstItem="e9X-4d-wgR" firstAttribute="leading" secondItem="0oJ-hK-RmA" secondAttribute="leading" id="WR6-0A-ZYG"/>
                         <constraint firstItem="vF8-cJ-wf2" firstAttribute="top" secondItem="0oJ-hK-RmA" secondAttribute="top" constant="3" id="qnq-t8-BBM"/>
-                        <constraint firstItem="e9X-4d-wgR" firstAttribute="top" secondItem="0oJ-hK-RmA" secondAttribute="top" constant="2" id="wtN-HS-h3m"/>
+                        <constraint firstItem="e9X-4d-wgR" firstAttribute="top" secondItem="0oJ-hK-RmA" secondAttribute="top" constant="4" id="wtN-HS-h3m"/>
                     </constraints>
                 </visualEffectView>
             </subviews>
