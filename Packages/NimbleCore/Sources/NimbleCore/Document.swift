@@ -21,6 +21,10 @@ public protocol Document where Self: NSDocument {
   static func isDefault(for uti: String) -> Bool
     
   static func canOpen(_ uti: String) -> Bool
+
+  static func isDefault(for file: File) -> Bool
+
+  static func canOpen(_ file: File) -> Bool
 }
 
 
@@ -61,7 +65,15 @@ public extension Document {
     }
     return true
   }
-  
+
+  static func isDefault(for file: File) -> Bool {
+    return isDefault(for: file.url.uti)
+  }
+
+  static func canOpen(_ file: File) -> Bool {
+    return canOpen(file.url.uti)
+  }
+
 }
 
 
@@ -128,7 +140,7 @@ public class DocumentManager {
   }
 
   public func open(file: File) -> Document? {
-    guard let type = selectDocumentClass(for: file.url.uti) else { return nil }
+    guard let type = selectDocumentClass(for: file) else { return nil }
 
     return open(file: file, docType: type)
   }
@@ -161,18 +173,15 @@ public class DocumentManager {
   public func selectDocumentClasses(for uti: String) -> [Document.Type] {
     return documentClasses.filter { $0.canOpen(uti) }
   }
-    
+
+  private func selectDocumentClass(for file: File) -> Document.Type? {
+    let classes = documentClasses.filter{$0.canOpen(file)}
+    return classes.first{$0.isDefault(for: file)} ?? classes.first ?? defaultDocument
+  }
+  
   private func selectDocumentClass(for uti: String) -> Document.Type? {
-    var docClasses: [Document.Type] = []
-    for dc in documentClasses {
-      if dc.canOpen(uti) {
-        docClasses.append(dc)
-        if dc.isDefault(for: uti) {
-          return dc
-        }
-      }
-    }
-    return docClasses.first ?? defaultDocument
+    let classes = documentClasses.filter{$0.canOpen(uti)}
+    return classes.first{$0.isDefault(for: uti)} ?? classes.first ?? defaultDocument
   }
     
   private func searchOpenedDocument(_ file: File, docType: Document.Type) -> Document? {
