@@ -51,9 +51,13 @@ final class BuildSystemPlugin: Plugin {
   }
   
   private func setupCommands() {
-    let buttonIconColor = getColorFromAsset("ButtonIconColor", defualt: .darkGray)
-    let runImage = Bundle(for: BuildSystemPlugin.self).image(forResource: "run")?.imageWithTint(buttonIconColor)
-    let stopImage = Bundle(for: BuildSystemPlugin.self).image(forResource: "stop")?.imageWithTint(buttonIconColor)
+    //let buttonIconColor = getColorFromAsset("ButtonIconColor", defualt: .darkGray)
+    
+    let runImage = IconsManager.Icons.run.image()
+    let stopImage = IconsManager.Icons.stop.image()
+    
+    //let runImage = Bundle(for: BuildSystemPlugin.self).image(forResource: "run")?.imageWithTint(buttonIconColor)
+    //let stopImage = Bundle(for: BuildSystemPlugin.self).image(forResource: "stop")?.imageWithTint(buttonIconColor)
 
     runCommand = Command(name: "Run", menuPath: "Tools", keyEquivalent: "cmd+r", toolbarIcon: runImage) { _ in self.run() }
     CommandManager.shared.registerCommand(command: runCommand!)
