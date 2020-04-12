@@ -11,38 +11,47 @@ import Foundation
 // MARK: - Setting
 
 @propertyWrapper
-public class Setting<T: Codable> {
+final public class Setting<T: Codable> {
   let key: String
   let defaultValue: T
-  
-  fileprivate var ref: SettingRef { SettingRef(self) }
-      
+
+  public var observers = ObserverSet<SettingObserver>()
+
   public var wrappedValue: T {
     get { return Settings.shared.get(key) }
-    set { Settings.shared.set(key, value: newValue) }
+    set {
+      Settings.shared.set(key, value: newValue)
+      valueDidChange()
+    }
   }
-  
+
   public var projectedValue: Setting {
     return self
   }
-    
+
   public init(_ key: String, defaultValue: T) {
     self.key = key
     self.defaultValue = defaultValue
   }
 }
 
-public enum SettingError: Error {
-  case decodingError(String)
+public protocol SettingObserver {
+  func settingValueDidChange<T: Codable>(_ setting: Setting<T>)
 }
-
 
 protocol SettingProtocol: class {
+  typealias DecodingContainer = KeyedDecodingContainer<RawCodingKey>
+  typealias EncodingContainer = KeyedEncodingContainer<RawCodingKey>
+
+  var key: String { get }
   var `default`: Any { get }
-  
-  static func encode(value: Any, to container: inout KeyedEncodingContainer<RawCodingKey>, forKey key: RawCodingKey) throws
-  static func decode(from container: KeyedDecodingContainer<RawCodingKey>, forKey key: RawCodingKey) throws -> Any
+
+  func valueDidChange()
+
+  static func encode(value: Any, to: inout EncodingContainer, forKey: RawCodingKey) throws
+  static func decode(from: DecodingContainer, forKey: RawCodingKey) throws -> Any
 }
+
 
 struct SettingRef {
   let coder: SettingProtocol.Type
@@ -56,22 +65,26 @@ struct SettingRef {
   }
 }
 
+fileprivate extension SettingProtocol {
+  var ref: SettingRef { SettingRef(self) }
+}
 
 extension Setting: SettingProtocol {
   var `default`: Any {
     return self.defaultValue
   }
-  
-  static func encode(value: Any,
-                     to container: inout KeyedEncodingContainer<RawCodingKey>,
-                     forKey key: RawCodingKey) throws {
-    
+
+  func valueDidChange() {
+    observers.notify {
+      $0.settingValueDidChange(self)
+    }
+  }
+
+  static func encode(value: Any, to container: inout EncodingContainer, forKey key: RawCodingKey) throws {
     try container.encode((value as! T), forKey: key)
   }
   
-  static func decode(from container: KeyedDecodingContainer<RawCodingKey>,
-                     forKey key: RawCodingKey) throws -> Any {
-    
+  static func decode(from container: DecodingContainer, forKey key: RawCodingKey) throws -> Any {
     let val = try container.decode(T.self, forKey: key)
     return val
   }
@@ -83,25 +96,22 @@ public extension Setting where T: Comparable {
 
 
 
-// MARK: - Settings
+// MARK: - Global settings
 
 public class Settings {
   struct Store {
-    fileprivate var data: [String: Any]
-    fileprivate weak var settings: Settings? = nil
+    var data: [String: Any]
+    weak var settings: Settings? = nil
     
     static var empty: Store { Store(data: [:]) }
   }
     
   private let loader: () -> Store
-  
-  private var refs: [String: SettingRef] = [:]
-  
-//  private var groups: [SettingsGroup] = []
-  
+
   private lazy var store: Store = loader()
-  
-  
+
+  fileprivate var refs: [String: SettingRef] = [:]
+
   init(loader: @escaping () -> Store = { .empty }) {
     self.loader = loader
   }
@@ -136,13 +146,12 @@ public class Settings {
     assert(refs[setting.key] == nil)
     refs[setting.key] = setting.ref
   }
-  
-//  public func add(group: SettingsGroup) {
-//
-//  }
-  
+
   public func reload() {
     self.store = loader()
+    for (_, ref) in refs {
+      ref.setting?.valueDidChange()
+    }
   }
   
 }
@@ -172,20 +181,29 @@ extension Settings {
 }
 
 
-//public class SettingsGroup {
-//  fileprivate weak var settings: Settings? = nil
-//
-//  public let key: String
-//  public let title: String
-//
-//  public init(key: String, title: String) {
-//    self.key = key
-//    self.title = title
-//  }
-//}
 
+// MARK: - Settings Group
+
+public protocol SettingsGroup {
+  static var shared: Self { get }
+}
+
+public extension SettingsGroup {
+  static func register() {
+    let mirror = Mirror(reflecting: self.shared)
+    for child in mirror.children {
+      if let setting = child.value as? SettingProtocol {
+        Settings.shared.refs[setting.key] = setting.ref
+      }
+    }
+  }
+}
 
 // MARK: - Codable
+
+public enum SettingCodingError: Error {
+  case decodingError(String)
+}
 
 extension Settings.Store: Codable {
   init(from decoder: Decoder) throws {
@@ -193,7 +211,7 @@ extension Settings.Store: Codable {
     self.settings = decoder.userInfo[.settings] as? Settings
     
     guard let defs = settings?.refs else {
-      throw SettingError.decodingError("Settings definitions not available")
+      throw SettingCodingError.decodingError("Settings definitions not available")
     }
     
     let container = try decoder.container(keyedBy: RawCodingKey.self)

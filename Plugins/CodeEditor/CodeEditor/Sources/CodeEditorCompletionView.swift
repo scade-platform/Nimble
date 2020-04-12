@@ -353,7 +353,7 @@ class CompletionView: NSView {
   override func draw(_ dirtyRect: NSRect) {
     super.draw(dirtyRect)
         
-    switch NSView.systemInterfaceStlye {
+    switch Theme.Style.system {
     case .dark:
       NSColor.underPageBackgroundColor.withAlphaComponent(0.95).setFill()
     default:

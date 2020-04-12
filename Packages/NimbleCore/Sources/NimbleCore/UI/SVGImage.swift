@@ -1,8 +1,8 @@
 //
-//  NSImage.swift
+//  SVGImage.swift
 //  NimbleCore
 //
-//  Created by Danil Kristalev on 16/01/2020.
+//  Created by Grigory Markin on 02/04/2020.
 //  Copyright © 2020 SCADE. All rights reserved.
 //
 
@@ -17,6 +17,10 @@ public class SVGImage: NSImage {
     let size = layer?.viewBox?.size ?? layer?.boundingBox.size ?? NSSize()
     self.init(size: size)
     self.layer = layer
+  }
+  
+  public convenience init(svg: Path) {
+    self.init(svg: svg.url)
   }
     
   public override func cgImage(forProposedRect proposedDestRect: UnsafeMutablePointer<NSRect>?, context referenceContext: NSGraphicsContext?, hints: [NSImageRep.HintKey : Any]?) -> CGImage? {
@@ -44,26 +48,5 @@ public class SVGImage: NSImage {
 
     layer.render(in: context)
     return context.makeImage()
-  }
-}
-
-
-public extension NSImage {
-  func imageWithTint(_ tint: NSColor) -> NSImage {
-    var imageRect = NSZeroRect;
-    imageRect.size = self.size;
-    
-    let highlightImage = NSImage(size: imageRect.size)
-    
-    highlightImage.lockFocus()
-    
-    self.draw(in: imageRect, from: NSZeroRect, operation: .sourceOver, fraction: 1.0)
-    
-    tint.set()
-    imageRect.fill(using: .sourceAtop);
-    
-    highlightImage.unlockFocus()
-    
-    return highlightImage;
   }
 }

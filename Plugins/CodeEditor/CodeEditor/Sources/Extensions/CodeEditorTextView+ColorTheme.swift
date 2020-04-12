@@ -15,7 +15,8 @@ extension CodeEditorTextView {
     self.selectedTextAttributes = [.backgroundColor: theme.general.selection]
     self.lineHighLightColor = theme.general.lineHighlight
     self.insertionPointColor = theme.general.caret
-    
+    self.backgroundColor = theme.general.background
+
     if let textStorage = self.textStorage {
       for layoutManager in textStorage.layoutManagers {
         //layoutManager.firstTextView?.font = theme.font

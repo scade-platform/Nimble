@@ -17,6 +17,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   static let openRecentProjectMenuId = "openRecentProjectMenu"
   static let openRecentDocumentMenuId = "openRecentDocumentMenu"
     
+  // let settingsDocument = SettingsDocument()
   weak var settingsDocument: Document? = nil
   
   let documentController = NimbleController()
@@ -54,6 +55,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
     documentController.currentWorkbench?.open(doc, show: true)
     
+    //documentController.openDocument(settingsDocument, display: true)
   }
     
   @objc private func validateMenuItem(_ item: NSMenuItem?) -> Bool {
@@ -150,7 +152,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Replace the default delegate installed by the NSDocumentController
     // The default one shows all recent documents without filtering etc.
     openRecentDocumentMenu?.delegate = self
-    
+
+    // Register workbench settings
+    WorkbenchSettings.register()
+
     // Loading plugins
     PluginManager.shared.load()    
     IconsManager.shared.register(provider: self)

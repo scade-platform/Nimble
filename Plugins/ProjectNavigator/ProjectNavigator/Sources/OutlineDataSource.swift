@@ -267,7 +267,7 @@ extension OutlineDataSource: NSOutlineViewDelegate {
                                               owner: self) as? NSTableCellView else { return nil }
         
       view.textField?.stringValue = item.name
-      view.imageView?.image = item.icon?.image //Bundle(for: type(of: self)).image(forResource: "document")
+      view.imageView?.image = item.icon?.image() //Bundle(for: type(of: self)).image(forResource: "document")
       
       return view
       
@@ -276,7 +276,7 @@ extension OutlineDataSource: NSOutlineViewDelegate {
                                             owner: self) as? NSTableCellView else { return nil }
 
       view.textField?.stringValue = item.folder.name
-      view.imageView?.image = item.folder.icon?.image
+      view.imageView?.image = item.folder.icon?.image()
       
       return view
           
