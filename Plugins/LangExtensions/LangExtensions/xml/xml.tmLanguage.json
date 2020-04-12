@@ -353,26 +353,36 @@
 			"patterns": [
 				{
 					"begin": "<%--",
-					"captures": {
+					"beginCaptures": {
 						"0": {
 							"name": "punctuation.definition.comment.xml"
-						},
-						"end": "--%>",
-						"name": "comment.block.xml"
-					}
+						}
+					},
+          "end": "--%>",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.xml"
+            }
+          },
+          "name": "comment.block.xml"
 				},
 				{
 					"begin": "<!--",
-					"captures": {
+					"beginCaptures": {
 						"0": {
 							"name": "punctuation.definition.comment.xml"
 						}
 					},
 					"end": "-->",
+          "endnCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.xml"
+            }
+          },
 					"name": "comment.block.xml",
-					"patterns": [
+          "patterns": [
 						{
-							"begin": "--(?!>)",
+							"match": "--(?!>)",
 							"captures": {
 								"0": {
 									"name": "invalid.illegal.bad-comments-or-CDATA.xml"
