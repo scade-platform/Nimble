@@ -11,8 +11,6 @@
 		0CAAE9D9243C5E66003CAE92 /* WidgetInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAAE9D8243C5E66003CAE92 /* WidgetInspector.swift */; };
 		0CAAE9DB243CB821003CAE92 /* TextPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CAAE9DA243CB821003CAE92 /* TextPane.xib */; };
 		0CAAE9DD243CB839003CAE92 /* TextPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAAE9DC243CB839003CAE92 /* TextPane.swift */; };
-		0CAAE9DF243F0144003CAE92 /* NMComboBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAAE9DE243F0144003CAE92 /* NMComboBox.swift */; };
-		0CAAE9E1243F015C003CAE92 /* NMComboBox.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CAAE9E0243F015C003CAE92 /* NMComboBox.xib */; };
 		D7CD750722B8CCF5004C437B /* PageDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CD750622B8CCF5004C437B /* PageDocument.swift */; };
 		D7D4BD3A23FCADCD0063BD8F /* ScadeKitExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D4BD3923FCADCD0063BD8F /* ScadeKitExtension.framework */; };
 		D7D4BD3C23FCADD30063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD3B23FCADD30063BD8F /* NimbleCore */; };
@@ -31,8 +29,6 @@
 		0CAAE9D8243C5E66003CAE92 /* WidgetInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetInspector.swift; sourceTree = "<group>"; };
 		0CAAE9DA243CB821003CAE92 /* TextPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextPane.xib; sourceTree = "<group>"; };
 		0CAAE9DC243CB839003CAE92 /* TextPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextPane.swift; sourceTree = "<group>"; };
-		0CAAE9DE243F0144003CAE92 /* NMComboBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NMComboBox.swift; sourceTree = "<group>"; };
-		0CAAE9E0243F015C003CAE92 /* NMComboBox.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NMComboBox.xib; sourceTree = "<group>"; };
 		D7CD74F722B8CC24004C437B /* InterfaceBuilder.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InterfaceBuilder.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7CD74FA22B8CC24004C437B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7CD750622B8CCF5004C437B /* PageDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageDocument.swift; sourceTree = "<group>"; };
@@ -70,8 +66,6 @@
 				0CAAE9D8243C5E66003CAE92 /* WidgetInspector.swift */,
 				0CAAE9DA243CB821003CAE92 /* TextPane.xib */,
 				0CAAE9DC243CB839003CAE92 /* TextPane.swift */,
-				0CAAE9DE243F0144003CAE92 /* NMComboBox.swift */,
-				0CAAE9E0243F015C003CAE92 /* NMComboBox.xib */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -180,7 +174,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CAAE9E1243F015C003CAE92 /* NMComboBox.xib in Resources */,
 				0CAAE9D7243C5E2B003CAE92 /* WidgetInspector.xib in Resources */,
 				E4D59E0824113876003DAB16 /* EditorView.xib in Resources */,
 				0CAAE9DB243CB821003CAE92 /* TextPane.xib in Resources */,
@@ -202,7 +195,6 @@
 				0CAAE9D9243C5E66003CAE92 /* WidgetInspector.swift in Sources */,
 				D7CD750722B8CCF5004C437B /* PageDocument.swift in Sources */,
 				E451B2FE22C0E919006185B7 /* WidgetVisitor.swift in Sources */,
-				0CAAE9DF243F0144003CAE92 /* NMComboBox.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

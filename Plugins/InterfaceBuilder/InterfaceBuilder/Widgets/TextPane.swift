@@ -8,6 +8,7 @@
 
 import Cocoa
 import ScadeKit
+import NimbleCore
 
 class TextPane: NSViewController {
   
@@ -19,10 +20,10 @@ class TextPane: NSViewController {
   
   @IBOutlet weak var familyPopUpButton: NSPopUpButton?
   @IBOutlet weak var stylePopUpButton: NSPopUpButton?
-  @IBOutlet weak var sizeComboBoxView: NSView?
-  weak var nmComboBox : NMComboBox?
+  @IBOutlet weak var sizeTextField: NSTextField?
+  @IBOutlet weak var sizeStepper: NSStepper?
   
-  @IBOutlet weak var colorPicker: NSColorWell?
+  @IBOutlet weak var colorWell: NSColorWell?
   
   
   private weak var shownWidget: TextWidget?
@@ -36,13 +37,6 @@ class TextPane: NSViewController {
     
     visabilityButton?.isHidden = true
     headerView?.button = visabilityButton
-    
- 
-    let nmComboBox = NMComboBox.loadFromNib()
-    sizeComboBoxView?.addSubview(nmComboBox)
-    nmComboBox.layout(into: sizeComboBoxView!)
-    self.nmComboBox = nmComboBox
-    nmComboBox.textDidChange = sizeDidChange(_:)
   }
   
   var widget: TextWidget? {
@@ -73,9 +67,10 @@ class TextPane: NSViewController {
         }
       }
     }
-    colorPicker?.color = font.color.nsColor
-    colorPicker?.layout()
-    nmComboBox?.textField?.stringValue = "\(font.size)"
+    
+    colorWell?.color = font.color.nsColor
+    sizeTextField?.stringValue = "\(font.size)"
+    sizeStepper?.intValue = Int32(font.size)
   }
   
   @IBAction func buttonDidClick(_ sender: Any) {
@@ -87,14 +82,6 @@ class TextPane: NSViewController {
     
     visabilityButton.title = contentView.isHidden ? "Show" : "Hide"
     visabilityButton.isHidden = !contentView.isHidden
-  }
-  
-  func sizeDidChange(_ newValue: String) {
-    guard let intValue = Int(newValue),
-      let font = widget?.font
-    else { return }
-    
-    font.size = intValue
   }
   
   @IBAction func fontDidChange(_ sender: Any) {
@@ -128,8 +115,38 @@ class TextPane: NSViewController {
       }
     }
   }
+  
+  @IBAction func sizeTextDidChange(_ sender: Any) {
+    guard let value = sizeTextField?.intValue, let font = widget?.font else { return }
+    font.size = Int(value)
+    sizeStepper?.intValue = value
+  }
+  
+  @IBAction func sizeStepperDidClick(_ sender: Any) {
+    guard let value = sizeStepper?.intValue, let font = widget?.font else { return }
+    font.size = Int(value)
+    sizeTextField?.intValue = value
+  }
+  
+  @IBAction func colorDidChange(_ sender: Any) {
+    guard let value = colorWell?.color, let font = widget?.font else { return }
+    
+    font.color = value.scdGraphicsRGB
+  }
 }
 
+class ColorView: NSView {
+  required init?(coder: NSCoder) {
+    super.init(coder: coder)
+    self.wantsLayer = true
+    let layer = CALayer()
+    layer.masksToBounds = true
+    layer.cornerRadius = 5.5
+    layer.borderWidth = 1
+    layer.borderColor = NSColor.labelColor.cgColor
+    self.layer = layer
+  }
+}
 
 class HeaderView: NSView {
   var trackingArea: NSTrackingArea? = nil
@@ -175,20 +192,15 @@ extension TextPane : EditorViewObserver {
 }
 
 
-
-fileprivate extension NSView {
-  func layout(into: NSView, insets: NSEdgeInsets = NSEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)) {
-    self.translatesAutoresizingMaskIntoConstraints = false
-    self.topAnchor.constraint(equalTo: into.topAnchor, constant: insets.top).isActive = true
-    self.bottomAnchor.constraint(equalTo: into.bottomAnchor, constant: -insets.bottom).isActive = true
-    self.leadingAnchor.constraint(equalTo: into.leadingAnchor, constant: insets.left).isActive = true
-    self.trailingAnchor.constraint(equalTo: into.trailingAnchor, constant: -insets.right).isActive = true
+extension SCDGraphicsRGB {
+  var nsColor: NSColor {
+    NSColor(red: CGFloat(self.red) / 255, green: CGFloat(self.green) / 255, blue: CGFloat(self.blue) / 255, alpha: CGFloat(self.alpha) / 255)
   }
 }
 
-extension SCDGraphicsRGB {
-  var nsColor: NSColor {
-    NSColor(red: CGFloat(self.red) / 255, green: CGFloat(self.green) / 255, blue: CGFloat(self.blue) / 255, alpha: CGFloat(self.alpha))
+extension NSColor {
+  var scdGraphicsRGB : SCDGraphicsRGB {
+    return SCDGraphicsRGB(red: Int(self.redComponent * 255), green: Int(self.greenComponent * 255), blue: Int(self.blueComponent * 255), alpha: Int(self.alphaComponent * 255))
   }
 }
 
