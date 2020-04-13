@@ -124,11 +124,12 @@ public class PatternRule: GrammarRule {
   }
 }
   
-  
+
+// MARK: - Patterns
 
 // MARK: -
 
-public class IncludePattern: PatternRule {
+final public class IncludePattern: PatternRule {
   private enum CodingKeys: String, CodingKey {
     case include
   }
@@ -141,8 +142,6 @@ public class IncludePattern: PatternRule {
     try super.init(from: decoder)
   }
 }
-
-  
 
   
 // MARK: -
@@ -163,7 +162,7 @@ public class MatchRule: PatternRule {
   
 // MARK: -
 
-public class MatchPattern: MatchRule {
+final public class MatchPattern: MatchRule {
   private enum CodingKeys: String, CodingKey {
     case match, captures
   }
@@ -213,9 +212,9 @@ public class RangeMatchPattern: MatchRule {
 
 // MARK: -
 
-public class BeginEndPattern: RangeMatchPattern {
+final public class BeginEndPattern: RangeMatchPattern {
   private enum CodingKeys: String, CodingKey {
-    case end, endCaptures, name
+    case end, endCaptures
   }
   
   public let end: MatchRegex
@@ -235,7 +234,7 @@ public class BeginEndPattern: RangeMatchPattern {
 
 // MARK: -
 
-public class BeginWhilePattern: RangeMatchPattern {
+final public class BeginWhilePattern: RangeMatchPattern {
   private enum CodingKeys: String, CodingKey {
     case `while`, whileCapture
   }
@@ -254,7 +253,9 @@ public class BeginWhilePattern: RangeMatchPattern {
     try super.init(from: decoder)
   }
 }
-  
+ 
+
+
 // MARK: -
 
 public struct MatchRegex: Decodable {
@@ -379,7 +380,7 @@ public enum GrammarRef {
     case "$base":
       self = .base
     default:
-      if let sep = value.index(of: "#") {
+      if let sep = value.firstIndex(of: "#") {
         let key = String(value.suffix(from: value.index(after: sep)))
         let scope = String(value.prefix(upTo: sep))
         

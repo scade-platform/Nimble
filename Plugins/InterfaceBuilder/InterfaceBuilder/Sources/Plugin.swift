@@ -21,6 +21,14 @@ final class Plugin: NimbleCore.Plugin {
   
   public func activate(in workbench: Workbench) {
     workbench.observers.add(observer: self)
+    
+    let inspector = WidgetInspector.loadFromNib()
+    if let inspectorArea = workbench.inspectorArea {
+      inspectorArea.add(part: inspector)
+      workbench.observers.add(observer: inspector)
+    }
+    
+    
   }
   
   public func deactivate(in workbench: Workbench) {

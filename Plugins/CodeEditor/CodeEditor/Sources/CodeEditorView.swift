@@ -86,10 +86,7 @@ class CodeEditorView: NSViewController {
     
     layoutManager.replaceTextStorage(doc.textStorage)
     doc.textStorage.delegate = self
-    
-    
-    self.textView.drawsBackground = false
-    
+
     if let theme = ThemeManager.shared.currentTheme {
       self.textView.font = theme.general.font
 

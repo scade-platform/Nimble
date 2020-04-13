@@ -166,7 +166,7 @@ extension ToolbarItem {
     button.action = self.action
     button.target = self.target
     button.title = ""
-    button.imageScaling = .scaleProportionallyDown
+    button.imageScaling = .scaleProportionallyUpOrDown
     button.bezelStyle = .texturedRounded
     button.focusRingType = .none
     button.widthAnchor.constraint(equalToConstant: self.width).isActive = true
@@ -177,15 +177,13 @@ extension ToolbarItem {
     return item
   }
   
-  private class ToolbarItemButtonCell: NSButtonCell {
-    
-    override func drawImage(_ image: NSImage, withFrame frame: NSRect, in controlView: NSView) {
-      let color = NSColor(named: "ButtonIconColor", bundle: Bundle.main) ?? .darkGray
-      let img = image.imageWithTint(color)
-      //set top and bottom paddings for image
-      super.drawImage(img, withFrame: frame.insetBy(dx: 0, dy: 2), in: controlView)
-    }
-    
+  private class ToolbarItemButtonCell: NSButtonCell {    
+    // override func drawImage(_ image: NSImage, withFrame frame: NSRect, in controlView: NSView) {
+    //   let color = NSColor(named: "ButtonIconColor", bundle: Bundle.main) ?? .darkGray
+    //   let img = image.imageWithTint(color)
+    //   //set top and bottom paddings for image
+    //   super.drawImage(img, withFrame: frame.insetBy(dx: 0, dy: 2), in: controlView)
+    // }
   }
 }
 

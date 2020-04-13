@@ -49,9 +49,7 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
     
     scrollView.verticalScrollElasticity = .none
     scrollView.horizontalScrollElasticity = .none
-    
-    scrollView.borderType = .lineBorder
-    
+        
     scrollView.horizontalRulerView?.measurementUnits = .points
     scrollView.verticalRulerView?.measurementUnits = .points
     

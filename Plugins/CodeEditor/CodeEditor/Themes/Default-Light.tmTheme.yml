@@ -4,8 +4,8 @@ settings:
       fontName: "SFMono-Regular"
       fontSize: 12
       foreground: "#000000"
-      background: "#DDDDDD"
-#      background: "#3C6161"
+#      background: "#DDDDDD"
+      background: "#FFFFFF"
       caret: "#000000"
       lineHighlight: "#E8F2FF"
       selection: "#A4CDFF"

@@ -64,15 +64,9 @@ class FileIconsProvider: IconsProvider {
   }
   
   private func icon(from iconInfo: IconInfo) -> Icon? {
-    let filePath: String
-    let isLight = NSView.systemInterfaceStlye == .light
-    if iconInfo.light, isLight {
-      filePath = "svg/\(iconInfo.name)_light.svg"
-    } else {
-      filePath = "svg/\(iconInfo.name).svg"
-    }
-    let iconPath = iconsPath/filePath
-    return Icon(image: SVGImage(svg: iconPath.url))    
+    let image = SVGImage(svg: iconsPath/"svg/\(iconInfo.name).svg")
+    let imageLight = iconInfo.light ? SVGImage(svg: iconsPath/"svg/\(iconInfo.name)_light.svg") : nil
+    return Icon(image: image, light: imageLight)
   }
 }
 

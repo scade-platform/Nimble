@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="WidgetInspector" customModule="InterfaceBuilder" customModuleProvider="target">
+            <connections>
+                <outlet property="stackView" destination="6JY-U7-P3e" id="jht-XS-hIh"/>
+                <outlet property="view" destination="c22-O7-iKe" id="h9G-vp-0Hh"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe">
+            <rect key="frame" x="0.0" y="0.0" width="294" height="493"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <visualEffectView blendingMode="behindWindow" material="windowBackground" state="followsWindowActiveState" translatesAutoresizingMaskIntoConstraints="NO" id="nvU-TJ-IHx">
+                    <rect key="frame" x="0.0" y="0.0" width="294" height="493"/>
+                    <subviews>
+                        <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6JY-U7-P3e">
+                            <rect key="frame" x="0.0" y="0.0" width="294" height="493"/>
+                        </stackView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="6JY-U7-P3e" secondAttribute="bottom" id="73j-Si-AUQ"/>
+                        <constraint firstItem="6JY-U7-P3e" firstAttribute="top" secondItem="nvU-TJ-IHx" secondAttribute="top" id="9EO-FY-GsB"/>
+                        <constraint firstItem="6JY-U7-P3e" firstAttribute="leading" secondItem="nvU-TJ-IHx" secondAttribute="leading" id="a5S-oC-p88"/>
+                        <constraint firstAttribute="trailing" secondItem="6JY-U7-P3e" secondAttribute="trailing" id="bgn-dw-4fb"/>
+                    </constraints>
+                </visualEffectView>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="nvU-TJ-IHx" secondAttribute="bottom" id="C1X-M6-QL8"/>
+                <constraint firstAttribute="trailing" secondItem="nvU-TJ-IHx" secondAttribute="trailing" id="RYS-ZV-e6o"/>
+                <constraint firstItem="nvU-TJ-IHx" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="h1p-du-7ih"/>
+                <constraint firstItem="nvU-TJ-IHx" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="usK-jK-bY5"/>
+            </constraints>
+            <point key="canvasLocation" x="46" y="264.5"/>
+        </customView>
+    </objects>
+</document>

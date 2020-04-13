@@ -11,15 +11,33 @@ import ColorCode
 
 
 public final class Theme: Decodable {
+  public enum Style {
+    case light, dark
+    
+    public static var system: Self {
+      let style = UserDefaults.standard.string(forKey: "AppleInterfaceStyle") ?? ""
+      return style == "Dark" ? .dark : .light
+    }
+    
+    public static var currentTheme: Self {
+      return ThemeManager.shared.currentTheme?.style ?? .system
+    }
+  }
+  
   public var name: String
-  //public var light: Bool?
+  
   public var settings: [ColorSettings]
     
   public var path: Path? = nil
   
   public lazy var general: GeneralColorSettings =
     GeneralColorSettings(settings.first{$0.parameters.isEmpty})
+  
+  public var style: Style {
+    return general.background.isDark ? .dark : .light
+  }
 }
+
 
 
 public final class ColorSettings: Decodable {
@@ -49,8 +67,24 @@ public final class ColorSettings: Decodable {
   }
   
   public func color(_ key: String) -> NSColor? {
-    guard let colorCode = settings[key] else { return nil }
-    return NSColor(colorCode: colorCode)
+    guard let colorString = settings[key] else { return nil }
+    
+    func name(_ range: NSRange) -> String {
+      let lb = colorString.utf16.index(colorString.startIndex, offsetBy: range.lowerBound)
+      let ub = colorString.utf16.index(colorString.startIndex, offsetBy: range.upperBound)
+      return String(colorString.utf16[lb..<ub]) ?? ""
+    }
+    
+    // Try to read color from a color list
+    if let regex = try? NSRegularExpression(pattern: "\\A([a-zA-Z_][\\w]*)\\.([a-zA-Z_][\\w]*)"),
+          let match = regex.firstMatch(in: colorString, range: NSRange(location: 0, length: colorString.utf16.count)),
+          let colorList = NSColorList(named: name(match.range(at: 1))),
+          let color = colorList.color(withKey: name(match.range(at: 2))) {
+      
+      return color
+    }
+    
+    return NSColor(colorCode: colorString)
   }
   
   public func color(_ key: String, default defaultColor: NSColor) -> NSColor {
@@ -81,6 +115,7 @@ public final class ColorSettings: Decodable {
     return styleMask
   }
 }
+
 
 // MARK: - GeneralColorSettings
 
@@ -140,9 +175,10 @@ public final class ThemeManager {
   }()
   
   public var defaultTheme: Theme? {
-    switch NSView.systemInterfaceStlye {
+    switch Theme.Style.system {
     case .dark:
       return themes.first{$0.name == "Default(Dark)"}
+      
     default:
       return themes.first{$0.name == "Default(Light)"}
     }
@@ -192,7 +228,7 @@ public final class ThemeManager {
 }
 
 
-// MARK: -
+// MARK: - Observer
 
 public protocol ThemeObserver {
   func themeDidChanged(_ theme: Theme)
@@ -201,3 +237,4 @@ public protocol ThemeObserver {
 public extension ThemeObserver {
   func themeDidChanged(_ theme: Theme) {}
 }
+

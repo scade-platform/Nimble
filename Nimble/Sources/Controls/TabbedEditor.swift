@@ -31,7 +31,7 @@ class TabItem : СustomizableTabItem {
   }
   
   var icon: NSImage? {
-    return document.icon?.image
+    return document.icon?.image(style: .currentTheme)
   }
   
   var editor: WorkbenchEditor? {
@@ -52,7 +52,7 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
   @IBOutlet weak var tabBar: TabsControl!
   @IBOutlet weak var tabViewContainer: NSView!
   
-  private lazy var style: TabControlStyle = TabControlStyle(tabBar)
+  private lazy var style: TabControlStyle = TabControlStyle(control: tabBar)
   
   var items: [TabItem] = []
   
@@ -101,18 +101,16 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
     tabBar.dataSource = self
         
     updateVisuals()
+
+    WorkbenchSettings.shared.$showFileIconsInTabs.observers.add(observer: self)
+    WorkbenchSettings.shared.$tabCloseButtonPosition.observers.add(observer: self)
+
     ThemeManager.shared.observers.add(observer: self)
   }
   
   private func updateVisuals() {
     let tabBarColor = style.theme.unselectableTabButtonTheme.backgroundColor
-    // whole tabbar color
     tabBar.setBackgroundColor(tabBarColor)
-    // tabs container color -> visible as colored separators between tabs
-    tabBar.setTabsBackgroundColor(tabBarColor.darkerColor())
-    
-    let tabViewColor = style.theme.selectedTabButtonTheme.backgroundColor
-    tabViewContainer.setBackgroundColor(tabViewColor)
     
     tabBar.reloadTabs()
   }
@@ -184,7 +182,20 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
   }
 }
 
-// MARK: - Document Observer
+
+// MARK: - Observers
+
+extension TabbedEditor: ThemeObserver {
+  func themeDidChanged(_ theme: NimbleCore.Theme) {
+    self.updateVisuals()
+  }
+}
+
+extension TabbedEditor: SettingObserver {
+  func settingValueDidChange<T: Codable>(_ setting: Setting<T>) {
+    self.updateVisuals()
+  }
+}
 
 extension TabbedEditor: DocumentObserver {
   func documentDidChange(_ document: Document) {
@@ -209,7 +220,7 @@ extension TabbedEditor: TabsControlDataSource {
   }
   
   func tabsControl(_ control: TabsControl, iconForItem item:AnyObject) -> NSImage? {
-    return (item as! TabItem).icon
+    return WorkbenchSettings.shared.showFileIconsInTabs ? (item as! TabItem).icon : nil
   }
   
 }
@@ -245,34 +256,14 @@ extension TabbedEditor: TabsControlDelegate {
   }
 }
 
-
-// MARK: - ThemeObserver
-
-extension TabbedEditor: ThemeObserver {
-  func themeDidChanged(_ theme: NimbleCore.Theme) {
-    self.updateVisuals()
-  }
-}
-
 // MARK: - Theme & Style
 
 fileprivate struct TabControlStyle: ThemedStyle {
-  private weak var control: TabsControl!
-  
-  public let theme: KPCTabsControl.Theme = TabTheme()
-  public let tabButtonWidth: TabWidth = .flexible(min: 70, max: 250)
-  public let tabsControlRecommendedHeight: CGFloat = 24.0 // No impact for now
-  
-  public var tabButtonsMargin: (left: CGFloat, right: CGFloat) {
-    if control.numberOfButtons < 1 || control.selectedButtonIndex == control.numberOfButtons - 1 {
-      return (0.0, 0.0)
-    }
-    return (0.0, 1.0)
-  }
-  
-  init(_ control: TabsControl) {
-    self.control = control
-  }
+  weak var control: TabsControl!
+
+  let theme: KPCTabsControl.Theme = TabTheme()
+  let tabButtonWidth: TabWidth = .flexible(min: 70, max: 250)
+  let tabsControlRecommendedHeight: CGFloat = 24.0 // No impact for now
 }
 
 fileprivate struct TabStyle: ThemedStyle {
@@ -280,26 +271,19 @@ fileprivate struct TabStyle: ThemedStyle {
   
   public let theme: KPCTabsControl.Theme = TabTheme()
   
-  public let tabButtonWidth: TabWidth = .flexible(min: 70, max: 250)
-  public let tabsControlRecommendedHeight: CGFloat = 24.0 // No impact for now
-  
+  let tabButtonWidth: TabWidth = .flexible(min: 70, max: 250)
+  let tabsControlRecommendedHeight: CGFloat = 24.0 // No impact for now
+  var tabButtonCloseButtonPosition: CloseButtonPosition {
+    WorkbenchSettings.shared.tabCloseButtonPosition
+  }
+
   init(_ item: TabItem) {
     self.item = item
   }
 
-  func tabButtonOffset(index: Int, totalCount: Int) -> Offset {
-    guard index > 0, let selected = item.parent.tabBar.selectedButtonIndex else {
-      return Offset(x: 0)
-    }
-    
-    if index == selected || index == selected + 1 {
-      return Offset(x: 0)
-    }
-        
-    return Offset(x: 1)
+  func tabButtonBorderMask(_ button: TabButtonCell) -> BorderMask? {
+    return button.dragging ? [.left, .right] : .right
   }
-  
-  
 }
 
 
@@ -313,10 +297,23 @@ fileprivate struct TabTheme: KPCTabsControl.Theme {
   public let selectedTabButtonTheme: TabButtonTheme = SelectedTabButtonTheme()
   public let unselectableTabButtonTheme: TabButtonTheme = DefaultTabButtonTheme()
       
-  private static var sharedBorderColor: NSColor { .clear }
+  private static var sharedBorderColor: NSColor {
+    switch Theme.Style.system {
+    case .dark:
+      return NSColor(colorCode: "#303030")!
+    case .light:
+      return NSColor(colorCode: "#B1B1B1")!
+    }
+  }
   
   fileprivate static var sharedBackgroundColor: NSColor {
-    ThemeManager.shared.currentTheme?.general.background ?? .clear }
+    switch Theme.Style.system {
+    case .dark:
+      return .controlBackgroundColor
+    case .light:
+      return .controlBackgroundColor
+    }
+  }
   
   private static var sharedTitleFont: NSFont { NSFont.systemFont(ofSize: 12) }
   private static var sharedTitleColor: NSColor {
@@ -330,15 +327,7 @@ fileprivate struct TabTheme: KPCTabsControl.Theme {
   // Themes
     
   fileprivate struct DefaultTabButtonTheme: KPCTabsControl.TabButtonTheme {
-    var backgroundColor: NSColor {
-      let color = TabTheme.sharedBackgroundColor
-      if color.isDark {
-        return color.lighterColor()
-      } else {
-        return color.darkerColor()
-      }
-    }
-    
+    var backgroundColor: NSColor { TabTheme.sharedBackgroundColor }
     var borderColor: NSColor { TabTheme.sharedBorderColor }
     var titleColor: NSColor {
       if TabTheme.sharedBackgroundColor.isDark {
@@ -351,7 +340,14 @@ fileprivate struct TabTheme: KPCTabsControl.Theme {
   }
   
   fileprivate struct SelectedTabButtonTheme: KPCTabsControl.TabButtonTheme {
-    var backgroundColor: NSColor { TabTheme.sharedBackgroundColor }
+    var backgroundColor: NSColor {
+      switch Theme.Style.system {
+      case .dark:
+        return NSColor(colorCode: "#2C2C2D")! //NSColor.underPageBackgroundColor
+      case .light:
+        return NSColor(colorCode: "#CACACA")!
+      }
+    }
     
     var borderColor: NSColor { TabTheme.sharedBorderColor }
     var titleColor: NSColor { TabTheme.sharedTitleColor }

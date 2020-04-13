@@ -11,10 +11,21 @@ import AppKit
 // MARK: - Icon
 
 public struct Icon {
-  public let image: NSImage
+  private let _image: NSImage
+  private let _imageLight: NSImage?
   
-  public init(image: NSImage) {
-    self.image = image
+  public init(image: NSImage, light: NSImage? = nil) {
+    self._image = image
+    self._imageLight = light
+  }
+  
+  public func image(style: Theme.Style = .system) -> NSImage {
+    switch style {
+    case .light:
+      return _imageLight ?? _image
+    default:
+      return _image
+    }
   }
 }
 
@@ -79,9 +90,10 @@ public extension Document {
 public extension IconsManager {
   
   private static func icon(name: String) -> Icon {
-    let isLight = NSView.systemInterfaceStlye == .light
-    let iconPath = Bundle.main.resources/"Icons/\(name + (isLight ? "-light": "")).svg"
-    return Icon(image: SVGImage(svg: iconPath.url))
+    let image = SVGImage(svg: Bundle.main.resources/"Icons/\(name).svg")
+    let imageLight = SVGImage(svg: Bundle.main.resources/"Icons/\(name)-light.svg")
+    
+    return Icon(image: image, light: imageLight)
   }
   
   enum Icons {
