@@ -110,10 +110,10 @@
                                     </connections>
                                 </textField>
                                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="aMd-kP-17U" customClass="ColorView" customModule="InterfaceBuilder" customModuleProvider="target">
-                                    <rect key="frame" x="5" y="7" width="50" height="23"/>
+                                    <rect key="frame" x="6" y="9" width="50" height="20"/>
                                     <subviews>
                                         <colorWell translatesAutoresizingMaskIntoConstraints="NO" id="DOg-pw-6Ei">
-                                            <rect key="frame" x="-5" y="-5" width="60" height="33"/>
+                                            <rect key="frame" x="-10" y="-10" width="70" height="40"/>
                                             <color key="color" red="0.05813049898" green="0.055541899059999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <connections>
                                                 <action selector="colorDidChange:" target="-2" id="B1M-6I-Sq9"/>
@@ -121,18 +121,18 @@
                                         </colorWell>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="DOg-pw-6Ei" secondAttribute="bottom" constant="-5" id="6UN-DM-K2O"/>
-                                        <constraint firstAttribute="height" constant="23" id="Gl4-0w-FFc"/>
-                                        <constraint firstItem="DOg-pw-6Ei" firstAttribute="top" secondItem="aMd-kP-17U" secondAttribute="top" constant="-5" id="K9N-HS-B4b"/>
-                                        <constraint firstAttribute="trailing" secondItem="DOg-pw-6Ei" secondAttribute="trailing" constant="-5" id="nGm-aW-39v"/>
+                                        <constraint firstAttribute="bottom" secondItem="DOg-pw-6Ei" secondAttribute="bottom" constant="-10" id="6UN-DM-K2O"/>
+                                        <constraint firstAttribute="height" constant="20" id="Gl4-0w-FFc"/>
+                                        <constraint firstItem="DOg-pw-6Ei" firstAttribute="top" secondItem="aMd-kP-17U" secondAttribute="top" constant="-10" id="K9N-HS-B4b"/>
+                                        <constraint firstAttribute="trailing" secondItem="DOg-pw-6Ei" secondAttribute="trailing" constant="-10" id="nGm-aW-39v"/>
                                         <constraint firstAttribute="width" constant="50" id="roh-uQ-Ldx"/>
-                                        <constraint firstItem="DOg-pw-6Ei" firstAttribute="leading" secondItem="aMd-kP-17U" secondAttribute="leading" constant="-5" id="tAq-Tx-E7W"/>
+                                        <constraint firstItem="DOg-pw-6Ei" firstAttribute="leading" secondItem="aMd-kP-17U" secondAttribute="leading" constant="-10" id="tAq-Tx-E7W"/>
                                     </constraints>
                                 </customView>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="aMd-kP-17U" firstAttribute="leading" secondItem="XmF-CU-aH6" secondAttribute="leading" constant="5" id="CSf-SH-630"/>
-                                <constraint firstItem="aMd-kP-17U" firstAttribute="top" secondItem="AdR-5Q-Fdh" secondAttribute="bottom" constant="5" id="CcT-Z4-SIS"/>
+                                <constraint firstItem="aMd-kP-17U" firstAttribute="leading" secondItem="XmF-CU-aH6" secondAttribute="leading" constant="6" id="CSf-SH-630"/>
+                                <constraint firstItem="aMd-kP-17U" firstAttribute="top" secondItem="AdR-5Q-Fdh" secondAttribute="bottom" constant="6" id="CcT-Z4-SIS"/>
                                 <constraint firstItem="1qE-Yx-yJ8" firstAttribute="top" secondItem="10I-bL-HFX" secondAttribute="bottom" constant="5" id="GMT-tK-eqQ"/>
                                 <constraint firstItem="AdR-5Q-Fdh" firstAttribute="top" secondItem="10I-bL-HFX" secondAttribute="bottom" constant="5" id="Jmc-0h-2aY"/>
                                 <constraint firstItem="10I-bL-HFX" firstAttribute="leading" secondItem="XmF-CU-aH6" secondAttribute="leading" constant="5" id="Kje-zc-w6t"/>

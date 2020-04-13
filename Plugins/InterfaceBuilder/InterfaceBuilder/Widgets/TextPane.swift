@@ -142,7 +142,7 @@ class ColorView: NSView {
     let layer = CALayer()
     layer.masksToBounds = true
     layer.cornerRadius = 5.5
-    layer.borderWidth = 1
+    layer.borderWidth = 0.5
     layer.borderColor = NSColor.labelColor.cgColor
     self.layer = layer
   }
