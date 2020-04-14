@@ -13,7 +13,6 @@
 		0C3469DF239F5DFF00319613 /* SwiftBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3469DE239F5DFF00319613 /* SwiftBuildSystem.swift */; };
 		0C3C32E823A2A559009A15D1 /* SPMBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3C32E723A2A559009A15D1 /* SPMBuildSystem.swift */; };
 		0C8393932445823E002A7462 /* LSPClient in Frameworks */ = {isa = PBXBuildFile; productRef = 0C8393922445823E002A7462 /* LSPClient */; };
-		0C8393952445823E002A7462 /* LSPClient in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 0C8393922445823E002A7462 /* LSPClient */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		0C92E52823950E3E00B073DE /* BuildSystemModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C92E52723950E3E00B073DE /* BuildSystemModule.swift */; };
 		0CED75E023FFDC7A00E13F68 /* Automatic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED75DF23FFDC7A00E13F68 /* Automatic.swift */; };
 		D7D4BD4623FCAE130063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD4523FCAE130063BD8F /* NimbleCore */; };
@@ -26,7 +25,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				0C8393952445823E002A7462 /* LSPClient in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -51,7 +49,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7D4BD4623FCAE130063BD8F /* NimbleCore in Frameworks */,
-				0C8393932445823E002A7462 /* LSPClient in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
