@@ -87,21 +87,14 @@
                                         <action selector="styleDidChange:" target="-2" id="774-d9-fJh"/>
                                     </connections>
                                 </popUpButton>
-                                <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MNH-VM-a1s">
-                                    <rect key="frame" x="343" y="31" width="17" height="28"/>
-                                    <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="vGZ-C8-3MQ"/>
-                                    <connections>
-                                        <action selector="sizeStepperDidClick:" target="-2" id="MIR-sH-DSo"/>
-                                    </connections>
-                                </stepper>
                                 <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1qE-Yx-yJ8">
-                                    <rect key="frame" x="294" y="34" width="50" height="22"/>
+                                    <rect key="frame" x="294" y="35" width="50" height="21"/>
                                     <constraints>
                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="oc7-B1-D5v"/>
                                     </constraints>
                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" alignment="left" bezelStyle="round" id="Goy-Vp-sL8">
                                         <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="decimal" formatWidth="-1" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" maximumFractionDigits="3" id="uSI-KF-icr"/>
-                                        <font key="font" metaFont="controlContent" size="11"/>
+                                        <font key="font" metaFont="system" size="10"/>
                                         <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
@@ -129,18 +122,27 @@
                                         <constraint firstItem="DOg-pw-6Ei" firstAttribute="leading" secondItem="aMd-kP-17U" secondAttribute="leading" constant="-10" id="tAq-Tx-E7W"/>
                                     </constraints>
                                 </customView>
+                                <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MNH-VM-a1s">
+                                    <rect key="frame" x="343" y="32" width="17" height="27"/>
+                                    <stepperCell key="cell" continuous="YES" alignment="left" maxValue="100" id="vGZ-C8-3MQ"/>
+                                    <connections>
+                                        <action selector="sizeStepperDidClick:" target="-2" id="MIR-sH-DSo"/>
+                                    </connections>
+                                </stepper>
                             </subviews>
                             <constraints>
+                                <constraint firstItem="MNH-VM-a1s" firstAttribute="height" secondItem="1qE-Yx-yJ8" secondAttribute="height" id="9Zl-fu-xs2"/>
                                 <constraint firstItem="aMd-kP-17U" firstAttribute="leading" secondItem="XmF-CU-aH6" secondAttribute="leading" constant="6" id="CSf-SH-630"/>
                                 <constraint firstItem="aMd-kP-17U" firstAttribute="top" secondItem="AdR-5Q-Fdh" secondAttribute="bottom" constant="6" id="CcT-Z4-SIS"/>
                                 <constraint firstItem="1qE-Yx-yJ8" firstAttribute="top" secondItem="10I-bL-HFX" secondAttribute="bottom" constant="5" id="GMT-tK-eqQ"/>
                                 <constraint firstItem="AdR-5Q-Fdh" firstAttribute="top" secondItem="10I-bL-HFX" secondAttribute="bottom" constant="5" id="Jmc-0h-2aY"/>
                                 <constraint firstItem="10I-bL-HFX" firstAttribute="leading" secondItem="XmF-CU-aH6" secondAttribute="leading" constant="5" id="Kje-zc-w6t"/>
                                 <constraint firstItem="MNH-VM-a1s" firstAttribute="leading" secondItem="1qE-Yx-yJ8" secondAttribute="trailing" constant="2" id="LIl-ZF-yFU"/>
+                                <constraint firstItem="MNH-VM-a1s" firstAttribute="top" secondItem="10I-bL-HFX" secondAttribute="bottom" constant="5" id="Obz-dv-Fdr"/>
+                                <constraint firstItem="AdR-5Q-Fdh" firstAttribute="height" secondItem="1qE-Yx-yJ8" secondAttribute="height" id="bnM-Pe-IE1"/>
                                 <constraint firstAttribute="trailing" secondItem="10I-bL-HFX" secondAttribute="trailing" constant="5" id="bsP-40-4va"/>
                                 <constraint firstAttribute="height" constant="80" id="clm-w0-LWQ"/>
                                 <constraint firstAttribute="trailing" secondItem="MNH-VM-a1s" secondAttribute="trailing" constant="5" id="fvg-vM-6Qi"/>
-                                <constraint firstItem="MNH-VM-a1s" firstAttribute="top" secondItem="10I-bL-HFX" secondAttribute="bottom" constant="5" id="gJj-eA-Fxy"/>
                                 <constraint firstItem="AdR-5Q-Fdh" firstAttribute="leading" secondItem="XmF-CU-aH6" secondAttribute="leading" constant="5" id="mTj-cm-Pp4"/>
                                 <constraint firstItem="10I-bL-HFX" firstAttribute="top" secondItem="XmF-CU-aH6" secondAttribute="top" id="pce-pU-SiE"/>
                                 <constraint firstItem="1qE-Yx-yJ8" firstAttribute="leading" secondItem="AdR-5Q-Fdh" secondAttribute="trailing" constant="5" id="yoP-3j-BPf"/>
