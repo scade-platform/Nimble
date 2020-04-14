@@ -12,10 +12,12 @@
 		0C3469D12397D04600319613 /* ShellBuildTool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3469D02397D04600319613 /* ShellBuildTool.swift */; };
 		0C3469DF239F5DFF00319613 /* SwiftBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3469DE239F5DFF00319613 /* SwiftBuildSystem.swift */; };
 		0C3C32E823A2A559009A15D1 /* SPMBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3C32E723A2A559009A15D1 /* SPMBuildSystem.swift */; };
+		0C8393932445823E002A7462 /* LSPClient in Frameworks */ = {isa = PBXBuildFile; productRef = 0C8393922445823E002A7462 /* LSPClient */; };
 		0C92E52823950E3E00B073DE /* BuildSystemModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C92E52723950E3E00B073DE /* BuildSystemModule.swift */; };
 		0CED75E023FFDC7A00E13F68 /* Automatic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED75DF23FFDC7A00E13F68 /* Automatic.swift */; };
 		D7D4BD4623FCAE130063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD4523FCAE130063BD8F /* NimbleCore */; };
 /* End PBXBuildFile section */
+
 
 /* Begin PBXFileReference section */
 		0C0809FF23E433E500E78444 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -41,6 +43,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C8393912445823E002A7462 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		0C92E50F23950DEE00B073DE = {
 			isa = PBXGroup;
 			children = (
@@ -48,6 +57,7 @@
 				0C0809FF23E433E500E78444 /* Assets.xcassets */,
 				0C92E52623950E1D00B073DE /* Sources */,
 				0C92E51923950DEE00B073DE /* Products */,
+				0C8393912445823E002A7462 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -90,6 +100,7 @@
 			name = BuildSystem;
 			packageProductDependencies = (
 				D7D4BD4523FCAE130063BD8F /* NimbleCore */,
+				0C8393922445823E002A7462 /* LSPClient */,
 			);
 			productName = BuildSystem;
 			productReference = 0C92E51823950DEE00B073DE /* BuildSystem.plugin */;
@@ -331,6 +342,10 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0C8393922445823E002A7462 /* LSPClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LSPClient;
+		};
 		D7D4BD4523FCAE130063BD8F /* NimbleCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NimbleCore;
