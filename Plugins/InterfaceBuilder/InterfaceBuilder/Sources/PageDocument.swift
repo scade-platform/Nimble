@@ -5,7 +5,7 @@ import SVGEditor
 
 public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
   
-  let adapter = SCDLatticePageAdapter()
+  let adapter = SCDLatticeEditorPageAdapter()
 
   public var svgWidth: SCDSvgUnit? {
     guard let width = page?.size.width else { return nil }
