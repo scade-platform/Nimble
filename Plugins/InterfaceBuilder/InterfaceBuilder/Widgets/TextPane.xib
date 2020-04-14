@@ -68,7 +68,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                     <popUpButtonCell key="cell" type="squareTextured" bezelStyle="texturedSquare" alignment="left" lineBreakMode="truncatingTail" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="lT1-Nt-csH">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="controlContent" size="11"/>
+                                        <font key="font" metaFont="menu" size="11"/>
                                         <menu key="menu" id="bpN-Em-1yA"/>
                                     </popUpButtonCell>
                                     <connections>
@@ -80,7 +80,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                     <popUpButtonCell key="cell" type="squareTextured" bezelStyle="texturedSquare" alignment="left" lineBreakMode="truncatingTail" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="X7O-T1-bK7">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                        <font key="font" metaFont="controlContent" size="11"/>
+                                        <font key="font" metaFont="menu" size="11"/>
                                         <menu key="menu" id="GtR-89-DAr"/>
                                     </popUpButtonCell>
                                     <connections>
