@@ -26,12 +26,21 @@ extension WidgetInspector : WorkbenchObserver {
   func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) {
     stackView?.subviews.forEach{$0.removeFromSuperview()}
     if document != nil, let editor = document?.editor as? EditorView  {
+//      let generalPane = GeneralPane.loadFromNib()
+//      append(viewController: generalPane)
+//      editor.observers.add(observer: generalPane)
+      
       let textPane = TextPane.loadFromNib()
-      self.addChild(textPane)
-      stackView?.addArrangedSubview(textPane.view)
-      textPane.view.trailingAnchor.constraint(equalTo: stackView!.trailingAnchor).isActive = true
+      append(viewController: textPane)
       editor.observers.add(observer: textPane)
-      textPane.view.isHidden = true
+      
     }
+  }
+  
+  func append(viewController: NSViewController) {
+    self.addChild(viewController)
+    stackView?.addArrangedSubview(viewController.view)
+    viewController.view.trailingAnchor.constraint(equalTo: stackView!.trailingAnchor).isActive = true
+    viewController.view.isHidden = true
   }
 }
