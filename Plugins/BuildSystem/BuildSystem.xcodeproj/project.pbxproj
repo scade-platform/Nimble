@@ -18,18 +18,6 @@
 		D7D4BD4623FCAE130063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD4523FCAE130063BD8F /* NimbleCore */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		0C8393942445823E002A7462 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0C0809FF23E433E500E78444 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -104,7 +92,6 @@
 				0C92E51423950DEE00B073DE /* Sources */,
 				0C92E51523950DEE00B073DE /* Frameworks */,
 				0C92E51623950DEE00B073DE /* Resources */,
-				0C8393942445823E002A7462 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
