@@ -13,7 +13,7 @@ import NimbleCore
 class TextPane: NSViewController {
   
   @IBOutlet weak var paneTitle: NSTextField?
-  @IBOutlet weak var visabilityButton: NSButton?
+  @IBOutlet weak var visibilityButton: NSButton?
   
   @IBOutlet weak var headerView: HeaderView?
   @IBOutlet weak var contentView: NSView?
@@ -35,8 +35,8 @@ class TextPane: NSViewController {
       familyPopUpButton?.addItem(withTitle: family)
     }
     
-    visabilityButton?.isHidden = true
-    headerView?.button = visabilityButton
+    visibilityButton?.isHidden = true
+    headerView?.button = visibilityButton
   }
   
   var widget: TextWidget? {
@@ -73,9 +73,9 @@ class TextPane: NSViewController {
     sizeStepper?.intValue = Int32(font.size)
   }
   
-  @IBAction func buttonDidClick(_ sender: Any) {
+  @IBAction func hideButtonDidClick(_ sender: Any) {
     guard let contentView = contentView,
-      let visabilityButton = visabilityButton
+      let visabilityButton = visibilityButton
       else { return }
     
     contentView.isHidden = !contentView.isHidden
