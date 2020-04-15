@@ -167,29 +167,37 @@ extension NimbleWorkbench: Workbench {
     guard let editorView = editorView else { return }
     
     editorView.showEditor()
-    
+
+    var opened = false
+
     // If no document is opened, just create a new tab
     if documents.count == 0 {
       editorView.editor.addTab(doc)
-    
+      opened = true
+
     // If the current document has to be presented create
     // a new tab or reuse the existing one
     } else if show {
       // If the doc is already opened, switch to its tab
       if let index = editorView.editor.findTab(doc) {
         editorView.editor.selectTab(index)
-        
+        opened = false
+
       // Insert a new tab for edited or newly created documents
       // and if it's forced by the flag 'openNewEditor'
       } else if let curDoc = currentDocument,
           openNewEditor || curDoc.isDocumentEdited || curDoc.fileURL == nil  {
         
         editorView.editor.insertTab(doc, at: editorView.editor.currentIndex! + 1)
-        
+        opened = true
+
         // Show in the current tab
       } else {
         let curDoc = self.currentDocument
+
         editorView.editor.show(doc)
+        opened = true
+
         if let curDoc = curDoc {
           observers.notify { $0.workbenchDidCloseDocument(self, document: curDoc) }
         }
@@ -198,10 +206,13 @@ extension NimbleWorkbench: Workbench {
     // Just insert a tab but not switch to it
     } else if editorView.editor.findTab(doc) == nil {
       editorView.editor.insertTab(doc, at: editorView.editor.currentIndex!, select: false)
+      opened = true
     }
-    
-    doc.editor?.didOpenDocument(doc)
-    observers.notify { $0.workbenchDidOpenDocument(self, document: doc) }
+
+    if opened {
+      doc.editor?.didOpenDocument(doc)
+      observers.notify { $0.workbenchDidOpenDocument(self, document: doc) }
+    }
   }
   
   
