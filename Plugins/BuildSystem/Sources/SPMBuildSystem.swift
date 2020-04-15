@@ -8,6 +8,7 @@
 
 import Foundation
 import NimbleCore
+import SKLocalServer
 
 class SPMBuildSystem: BuildSystem {
   var name: String {
@@ -23,13 +24,25 @@ class SPMBuildSystem: BuildSystem {
     workbench.currentDocument?.save(nil)
     guard let project = workbench.project, let package = findPackage(project: project) else { return  }
     
+    
     let packageURL = package.url
     
     let spmProc = Process()
-    spmProc.currentDirectoryURL = packageURL.deletingLastPathComponent()
     spmProc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
-    spmProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
+    spmProc.currentDirectoryURL = packageURL.deletingLastPathComponent()
+    
+
+    //Mock
+//    let toolchain = "/Library/Developer/Toolchains/swift-5.1.4-RELEASE.xctoolchain/"
+    let toolchain = SKLocalServer.swiftToolchain
+    if !toolchain.isEmpty {
+      spmProc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
+    } else {
+      spmProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
+    }
+    
     spmProc.arguments = ["build", "-Xswiftc", "-Xfrontend", "-Xswiftc", "-color-diagnostics"]
+    
     
     var spmProcConsole : Console?
     
@@ -118,8 +131,18 @@ class SPMLauncher: Launcher {
       
     let programProc = Process()
     programProc.currentDirectoryURL = packageUrl.deletingLastPathComponent()
-    programProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
+   
     programProc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
+    
+    //Mock
+//    let toolchain = "/Library/Developer/Toolchains/swift-5.1.4-RELEASE.xctoolchain/"
+    let toolchain = SKLocalServer.swiftToolchain
+    if !toolchain.isEmpty {
+      programProc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
+    } else {
+      programProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
+    }
+    
     programProc.arguments = ["run", "--skip-build"]
     
     var programProcConsole: Console?

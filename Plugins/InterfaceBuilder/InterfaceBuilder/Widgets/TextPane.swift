@@ -143,8 +143,24 @@ class ColorView: NSView {
     layer.masksToBounds = true
     layer.cornerRadius = 5.5
     layer.borderWidth = 0.5
-    layer.borderColor = NSColor.labelColor.cgColor
+    layer.borderColor = ColorView.sharedBorderColor.cgColor
     self.layer = layer
+  }
+  
+  override func layout() {
+    if let layer = self.layer {
+      //change border color after system theme changed
+      layer.borderColor = ColorView.sharedBorderColor.cgColor
+    }
+  }
+  
+  private static var sharedBorderColor: NSColor {
+    switch Theme.Style.system {
+    case .dark:
+      return NSColor(colorCode: "#303030")!
+    case .light:
+      return NSColor(colorCode: "#B1B1B1")!
+    }
   }
 }
 
@@ -179,9 +195,7 @@ class HeaderView: NSView {
 extension TextPane : EditorViewObserver {
   func editorDidChangeSelection(editor: EditorView, widget: SCDWidgetsWidget) {
     switch widget {
-    case is SCDWidgetsLabel,
-         is SCDWidgetsTextbox,
-         is SCDWidgetsButton:
+    case is SCDWidgetsTextWidget:
       let textWidget = widget as! TextWidget
       self.view.isHidden = false
       self.widget = textWidget
@@ -208,6 +222,4 @@ protocol TextWidget: class {
   var font: SCDGraphicsFont? { get set }
 }
 
-extension SCDWidgetsLabel: TextWidget {}
-extension SCDWidgetsButton: TextWidget {}
-extension SCDWidgetsTextbox: TextWidget {}
+extension SCDWidgetsTextWidget: TextWidget {}

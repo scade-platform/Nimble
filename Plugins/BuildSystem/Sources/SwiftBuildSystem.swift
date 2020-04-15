@@ -8,6 +8,7 @@
 
 import Foundation
 import NimbleCore
+import SKLocalServer
 
 class SwiftBuildSystem: BuildSystem {
   
@@ -27,8 +28,19 @@ class SwiftBuildSystem: BuildSystem {
     
     let swiftcProc = Process()
     swiftcProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
-    swiftcProc.executableURL = URL(fileURLWithPath: "/usr/bin/swiftc")
-    swiftcProc.arguments = [fileURL.path, "-Xfrontend", "-color-diagnostics"]
+    
+      //Mock
+//    let toolchain = "/Library/Developer/Toolchains/swift-5.1.4-RELEASE.xctoolchain/"
+    let toolchain = SKLocalServer.swiftToolchain
+    if !toolchain.isEmpty, let sdkPath = sdkPath {
+      swiftcProc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swiftc")
+      swiftcProc.arguments = [fileURL.path, "-sdk", "\(sdkPath)", "-Xfrontend", "-color-diagnostics"]
+    } else {
+      swiftcProc.executableURL = URL(fileURLWithPath: "/usr/bin/swiftc")
+      swiftcProc.arguments = [fileURL.path, "-Xfrontend", "-color-diagnostics"]
+    }
+    
+    
     
     var swiftcProcConsole: Console?
     
@@ -92,6 +104,18 @@ class SwiftBuildSystem: BuildSystem {
     }
     return true
   }
+  
+  lazy var sdkPath: String? = {
+    guard let sdkFolder = Folder(path: "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/") else {
+      return nil
+    }
+    for folder in (try? sdkFolder.subfolders()) ?? [] {
+      if folder.name.starts(with: "MacOSX10"), folder.name.hasSuffix(".sdk") {
+        return folder.path.string
+      }
+    }
+    return nil
+  }()
 }
 
 extension SwiftBuildSystem : ConsoleSupport {}
