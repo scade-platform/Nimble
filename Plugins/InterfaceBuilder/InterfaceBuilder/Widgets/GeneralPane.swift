@@ -8,6 +8,7 @@
 
 import Cocoa
 import ScadeKit
+import NimbleCore
 
 class GeneralPane: NSViewController {
   @IBOutlet weak var visibilityButton: NSButton?
@@ -44,11 +45,11 @@ class GeneralPane: NSViewController {
   }
   
   override func viewDidLoad() {
-     super.viewDidLoad()
-     
-     visibilityButton?.isHidden = true
-     headerView?.button = visibilityButton
-   }
+    super.viewDidLoad()
+    
+    visibilityButton?.isHidden = true
+    headerView?.button = visibilityButton
+  }
   
   
   private func setFields(widget: SCDWidgetsWidget) {

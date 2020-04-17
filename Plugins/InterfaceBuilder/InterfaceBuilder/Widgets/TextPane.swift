@@ -25,8 +25,11 @@ class TextPane: NSViewController {
   
   @IBOutlet weak var colorWell: NSColorWell?
   
+  @IBOutlet weak var alignmentSegmentedControl: NSSegmentedControl?
+  @IBOutlet weak var baselineSegmentedControl: NSSegmentedControl?
   
-  private weak var shownWidget: TextWidget?
+  
+  private weak var shownWidget: SCDWidgetsTextWidget?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -37,9 +40,11 @@ class TextPane: NSViewController {
     
     visibilityButton?.isHidden = true
     headerView?.button = visibilityButton
+    
+    
   }
   
-  var widget: TextWidget? {
+  var widget: SCDWidgetsTextWidget? {
     set {
       guard let newWidget = newValue else {
         shownWidget = nil
@@ -52,8 +57,8 @@ class TextPane: NSViewController {
       shownWidget
     }
   }
- 
-  private func setFields(widget: TextWidget) {
+  
+  private func setFields(widget: SCDWidgetsTextWidget) {
     guard let font = widget.font else { return }
     if let currentFont = NSFont(name: font.fontFamily, size: CGFloat(font.size)) {
       let familyName = currentFont.familyName
@@ -71,6 +76,28 @@ class TextPane: NSViewController {
     colorWell?.color = font.color.nsColor
     sizeTextField?.stringValue = "\(font.size)"
     sizeStepper?.intValue = Int32(font.size)
+    
+    switch widget.horizontalAlignment {
+    case SCDLayoutHorizontalAlignment.left:
+      alignmentSegmentedControl?.setSelected(true, forSegment: 0)
+    case SCDLayoutHorizontalAlignment.center:
+      alignmentSegmentedControl?.setSelected(true, forSegment: 1)
+    case SCDLayoutHorizontalAlignment.right:
+      alignmentSegmentedControl?.setSelected(true, forSegment: 2)
+    default:
+      break
+    }
+    
+    switch widget.baselineAlignment {
+    case SCDWidgetsBaselineAlignment.alphabetic:
+      baselineSegmentedControl?.setSelected(true, forSegment: 0)
+    case SCDWidgetsBaselineAlignment.middle:
+      baselineSegmentedControl?.setSelected(true, forSegment: 1)
+    case SCDWidgetsBaselineAlignment.hanging:
+      baselineSegmentedControl?.setSelected(true, forSegment: 2)
+    default:
+      break
+    }
   }
   
   @IBAction func hideButtonDidClick(_ sender: Any) {
@@ -87,7 +114,7 @@ class TextPane: NSViewController {
   @IBAction func fontDidChange(_ sender: Any) {
     guard let font = widget?.font,
       let selectedFont = familyPopUpButton?.selectedItem?.title
-    else { return }
+      else { return }
     
     font.fontFamily = selectedFont
     
@@ -97,7 +124,7 @@ class TextPane: NSViewController {
         stylePopUpButton?.addItem(withTitle: font[1] as! String)
       }
     }
-   
+    
     
   }
   
@@ -105,7 +132,7 @@ class TextPane: NSViewController {
     guard let font = widget?.font,
       let selectedStyle = stylePopUpButton?.selectedItem?.title,
       let selectedFont = familyPopUpButton?.selectedItem?.title
-    else { return }
+      else { return }
     if let availableFonts = NSFontManager.shared.availableMembers(ofFontFamily: selectedFont) {
       for availableFont in availableFonts {
         if availableFont[1] as! String == selectedStyle {
@@ -133,6 +160,35 @@ class TextPane: NSViewController {
     
     font.color = value.scdGraphicsRGB
   }
+  
+  @IBAction func alignmentDidChange(_ sender: Any) {
+    guard let value = alignmentSegmentedControl?.selectedSegment, let textWidget = widget else { return }
+    switch value {
+    case 0:
+      textWidget.horizontalAlignment = .left
+    case 1:
+      textWidget.horizontalAlignment = .center
+    case 2:
+      textWidget.horizontalAlignment = .right
+    default:
+      return
+    }
+  }
+  
+  @IBAction func baselineDidChange(_ sender: Any) {
+    guard let value = baselineSegmentedControl?.selectedSegment, let textWidget = widget else { return }
+    
+    switch value {
+    case 0:
+      textWidget.baselineAlignment = .alphabetic
+    case 1:
+      textWidget.baselineAlignment = .middle
+    case 2:
+      textWidget.baselineAlignment = .hanging
+    default:
+      return
+    }
+  }
 }
 
 
@@ -141,7 +197,7 @@ extension TextPane : EditorViewObserver {
   func editorDidChangeSelection(editor: EditorView, widget: SCDWidgetsWidget) {
     switch widget {
     case is SCDWidgetsTextWidget:
-      let textWidget = widget as! TextWidget
+      let textWidget = widget as! SCDWidgetsTextWidget
       self.view.isHidden = false
       self.widget = textWidget
     default:
@@ -162,9 +218,3 @@ extension NSColor {
     return SCDGraphicsRGB(red: Int(self.redComponent * 255), green: Int(self.greenComponent * 255), blue: Int(self.blueComponent * 255), alpha: Int(self.alphaComponent * 255))
   }
 }
-
-protocol TextWidget: class {
-  var font: SCDGraphicsFont? { get set }
-}
-
-extension SCDWidgetsTextWidget: TextWidget {}
