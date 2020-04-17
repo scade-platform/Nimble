@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C8393972445AD26002A7462 /* GeneralPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C8393962445AD26002A7462 /* GeneralPane.swift */; };
+		0C8393992445AD44002A7462 /* GeneralPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C8393982445AD44002A7462 /* GeneralPane.xib */; };
+		0CA09B1D2448027000850C3C /* CustomViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA09B1C2448027000850C3C /* CustomViews.swift */; };
+		0CA09B2224495DA800850C3C /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = 0CA09B2124495DA700850C3C /* Icons */; };
+		0CA09B2424495F3400850C3C /* InspectorIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA09B2324495F3400850C3C /* InspectorIcons.swift */; };
+		0CA09B262449A71800850C3C /* WidgetFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA09B252449A71800850C3C /* WidgetFonts.swift */; };
 		0CAAE9D7243C5E2B003CAE92 /* WidgetInspector.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CAAE9D6243C5E2B003CAE92 /* WidgetInspector.xib */; };
 		0CAAE9D9243C5E66003CAE92 /* WidgetInspector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAAE9D8243C5E66003CAE92 /* WidgetInspector.swift */; };
 		0CAAE9DB243CB821003CAE92 /* TextPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CAAE9DA243CB821003CAE92 /* TextPane.xib */; };
@@ -25,6 +31,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0C8393962445AD26002A7462 /* GeneralPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralPane.swift; sourceTree = "<group>"; };
+		0C8393982445AD44002A7462 /* GeneralPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GeneralPane.xib; sourceTree = "<group>"; };
+		0CA09B1C2448027000850C3C /* CustomViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViews.swift; sourceTree = "<group>"; };
+		0CA09B2124495DA700850C3C /* Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Icons; sourceTree = "<group>"; };
+		0CA09B2324495F3400850C3C /* InspectorIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorIcons.swift; sourceTree = "<group>"; };
+		0CA09B252449A71800850C3C /* WidgetFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetFonts.swift; sourceTree = "<group>"; };
 		0CAAE9D6243C5E2B003CAE92 /* WidgetInspector.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WidgetInspector.xib; sourceTree = "<group>"; };
 		0CAAE9D8243C5E66003CAE92 /* WidgetInspector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetInspector.swift; sourceTree = "<group>"; };
 		0CAAE9DA243CB821003CAE92 /* TextPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextPane.xib; sourceTree = "<group>"; };
@@ -66,6 +78,11 @@
 				0CAAE9D8243C5E66003CAE92 /* WidgetInspector.swift */,
 				0CAAE9DA243CB821003CAE92 /* TextPane.xib */,
 				0CAAE9DC243CB839003CAE92 /* TextPane.swift */,
+				0C8393962445AD26002A7462 /* GeneralPane.swift */,
+				0C8393982445AD44002A7462 /* GeneralPane.xib */,
+				0CA09B1C2448027000850C3C /* CustomViews.swift */,
+				0CA09B2324495F3400850C3C /* InspectorIcons.swift */,
+				0CA09B252449A71800850C3C /* WidgetFonts.swift */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -73,7 +90,7 @@
 		D7CD74EE22B8CC24004C437B = {
 			isa = PBXGroup;
 			children = (
-				0CAAE9D5243C5D31003CAE92 /* Widgets */,
+				0CA09B2124495DA700850C3C /* Icons */,
 				E42F6DD623FEC2B800E5D636 /* package.yml */,
 				D7CD74FA22B8CC24004C437B /* Info.plist */,
 				D7CD750022B8CC37004C437B /* Sources */,
@@ -93,6 +110,7 @@
 		D7CD750022B8CC37004C437B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				0CAAE9D5243C5D31003CAE92 /* Widgets */,
 				E4D59E0624113876003DAB16 /* EditorView.swift */,
 				E4D59E0524113876003DAB16 /* EditorView.xib */,
 				E4D59E0424113876003DAB16 /* Plugin.swift */,
@@ -175,7 +193,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				0CAAE9D7243C5E2B003CAE92 /* WidgetInspector.xib in Resources */,
+				0C8393992445AD44002A7462 /* GeneralPane.xib in Resources */,
 				E4D59E0824113876003DAB16 /* EditorView.xib in Resources */,
+				0CA09B2224495DA800850C3C /* Icons in Resources */,
 				0CAAE9DB243CB821003CAE92 /* TextPane.xib in Resources */,
 				E42F6DD723FEC2B800E5D636 /* package.yml in Resources */,
 			);
@@ -188,12 +208,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CA09B1D2448027000850C3C /* CustomViews.swift in Sources */,
 				0CAAE9DD243CB839003CAE92 /* TextPane.swift in Sources */,
 				E4D59E0724113876003DAB16 /* Plugin.swift in Sources */,
 				E451B30022C4B69F006185B7 /* WidgetSelector.swift in Sources */,
 				E4D59E0924113876003DAB16 /* EditorView.swift in Sources */,
 				0CAAE9D9243C5E66003CAE92 /* WidgetInspector.swift in Sources */,
 				D7CD750722B8CCF5004C437B /* PageDocument.swift in Sources */,
+				0C8393972445AD26002A7462 /* GeneralPane.swift in Sources */,
+				0CA09B262449A71800850C3C /* WidgetFonts.swift in Sources */,
+				0CA09B2424495F3400850C3C /* InspectorIcons.swift in Sources */,
 				E451B2FE22C0E919006185B7 /* WidgetVisitor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
