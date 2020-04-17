@@ -41,19 +41,19 @@ class TextPane: NSViewController {
     visibilityButton?.isHidden = true
     headerView?.button = visibilityButton
     
-    let arrowUp = InspectorIcons.arrowUp.image()
+    let arrowUp = InspectorIcons.arrowUp.image
     arrowUp.isTemplate = true
     baselineSegmentedControl?.setImageScaling(.scaleProportionallyUpOrDown, forSegment: 0)
     baselineSegmentedControl?.setImage(arrowUp, forSegment: 0)
     
     
-    let arrowUpDown = InspectorIcons.arrowUpDown.image()
+    let arrowUpDown = InspectorIcons.arrowUpDown.image
     arrowUpDown.isTemplate = true
     baselineSegmentedControl?.setImageScaling(.scaleProportionallyUpOrDown, forSegment: 1)
     baselineSegmentedControl?.setImage(arrowUpDown, forSegment: 1)
     
     
-    let arrowDown = InspectorIcons.arrowDown.image()
+    let arrowDown = InspectorIcons.arrowDown.image
     arrowDown.isTemplate = true
     baselineSegmentedControl?.setImageScaling(.scaleProportionallyUpOrDown, forSegment: 2)
     baselineSegmentedControl?.setImage(arrowDown, forSegment: 2)

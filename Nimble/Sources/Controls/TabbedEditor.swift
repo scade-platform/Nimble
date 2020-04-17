@@ -31,7 +31,7 @@ class TabItem : СustomizableTabItem {
   }
   
   var icon: NSImage? {
-    return document.icon?.image()
+    return document.icon?.image
   }
   
   var editor: WorkbenchEditor? {
