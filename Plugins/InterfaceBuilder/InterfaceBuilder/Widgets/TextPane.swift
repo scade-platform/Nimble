@@ -34,7 +34,7 @@ class TextPane: NSViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    for family in NSFontManager.shared.availableFontFamilies {
+    for family in WidgetFonts.shared.supportedFontFamilies {
       familyPopUpButton?.addItem(withTitle: family)
     }
     
@@ -151,8 +151,9 @@ class TextPane: NSViewController {
     if let availableFonts = NSFontManager.shared.availableMembers(ofFontFamily: selectedFont) {
       for availableFont in availableFonts {
         if availableFont[1] as! String == selectedStyle {
-          let styledFont = NSFont(name: availableFont[0] as! String, size: CGFloat(font.size))
-          font.fontFamily = styledFont!.fontName
+          if let styledFont = NSFont(name: availableFont[0] as! String, size: CGFloat(font.size)) {
+            font.fontFamily = styledFont.fontName
+          }
         }
       }
     }
