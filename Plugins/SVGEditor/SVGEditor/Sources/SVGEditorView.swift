@@ -52,6 +52,9 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
         
     scrollView.horizontalRulerView?.measurementUnits = .points
     scrollView.verticalRulerView?.measurementUnits = .points
+
+    scrollView.verticalRulerView?.reservedThicknessForMarkers = 0.0
+    scrollView.horizontalRulerView?.reservedThicknessForMarkers = 0.0
     
     scrollView.allowsMagnification = true
   }

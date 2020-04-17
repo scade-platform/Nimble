@@ -150,7 +150,10 @@ public class DocumentManager {
       return doc
     }
             
-    guard let doc = try? docType.init(contentsOf: file.path.url, ofType: file.url.uti) else { return nil }
+    guard let doc = try? docType.init(contentsOf: file.path.url, ofType: file.url.uti) else {
+      return try? defaultDocument?.init(contentsOf: file.path.url, ofType: file.url.uti)
+    }
+
     openedDocuments.append((WeakRef<NSDocument>(value: doc), docType))
     return doc
   }

@@ -31,7 +31,7 @@ class TabItem : СustomizableTabItem {
   }
   
   var icon: NSImage? {
-    return document.icon?.image(style: .currentTheme)
+    return document.icon?.image()
   }
   
   var editor: WorkbenchEditor? {
@@ -311,7 +311,7 @@ fileprivate struct TabTheme: KPCTabsControl.Theme {
     case .dark:
       return .controlBackgroundColor
     case .light:
-      return .controlBackgroundColor
+      return NSColor(colorCode: "#CACACA")!
     }
   }
   
@@ -345,7 +345,7 @@ fileprivate struct TabTheme: KPCTabsControl.Theme {
       case .dark:
         return NSColor(colorCode: "#2C2C2D")! //NSColor.underPageBackgroundColor
       case .light:
-        return NSColor(colorCode: "#CACACA")!
+        return .controlBackgroundColor
       }
     }
     

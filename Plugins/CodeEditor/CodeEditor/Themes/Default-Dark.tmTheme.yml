@@ -8,11 +8,7 @@ settings:
       caret: "#FFFFFF"
       lineHighlight: "#2F3239"
       selection: "#515F70"
-      invisibles: "#808080"
-      
-      editor: System.controlBackgroundColor
-      selectedTab: System.windowBackgroundColor
-#      unselectedTab: "" # Default: editor
+      invisibles: "#808080"      
 
 
 #MARK: Comments
