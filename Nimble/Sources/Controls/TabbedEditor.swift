@@ -186,7 +186,7 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
 // MARK: - Observers
 
 extension TabbedEditor: ThemeObserver {
-  func themeDidChanged(_ theme: NimbleCore.Theme) {
+  func systemStyleDidChange(_ style: NimbleCore.Theme.Style) {
     self.updateVisuals()
   }
 }
@@ -343,7 +343,7 @@ fileprivate struct TabTheme: KPCTabsControl.Theme {
     var backgroundColor: NSColor {
       switch Theme.Style.system {
       case .dark:
-        return NSColor(colorCode: "#2C2C2D")! //NSColor.underPageBackgroundColor
+        return NSColor(colorCode: "#2C2C2D")!
       case .light:
         return .controlBackgroundColor
       }

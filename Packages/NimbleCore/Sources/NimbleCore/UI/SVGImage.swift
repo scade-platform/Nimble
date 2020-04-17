@@ -12,18 +12,6 @@ import SwiftSVG
 public class SVGImage: NSImage {
   public var svgLayer: SVGLayer?
 
-  private func scaling(_ rect: NSRect) -> (xScale: CGFloat, yScale: CGFloat, width: CGFloat, height: CGFloat) {
-    let scale = NSScreen.main?.backingScaleFactor ?? 1.0
-
-    let width = scale * rect.size.width
-    let height = scale * rect.size.height
-
-    let xScale = width / svgLayer!.size.width
-    let yScale = height / svgLayer!.size.height
-
-    return (xScale, yScale, width, height)
-  }
-
   public convenience init(svg: URL) {
     let layer = SVGLayer.createFrom(url: svg)
     self.init(size: layer?.size ?? NSSize())
@@ -38,12 +26,15 @@ public class SVGImage: NSImage {
     guard let context = NSGraphicsContext.current,
           let layer = svgLayer else { return }
 
-    let (xScale, yScale, _, height) = scaling(rect)
+    let xScale = rect.size.width / svgLayer!.size.width
+    let yScale = rect.size.height / svgLayer!.size.height
 
     context.saveGraphicsState()
-    context.cgContext.translateBy(x: 0, y: height)
-    context.cgContext.scaleBy(x: xScale, y: -yScale)
 
+    context.cgContext.translateBy(x: rect.origin.x, y: rect.origin.y)
+    context.cgContext.scaleBy(x: xScale, y: yScale)
+
+    // Do not flip manually as we stay in the same coordinate system
     layer.render(in: context.cgContext)
 
     context.restoreGraphicsState()
@@ -53,7 +44,14 @@ public class SVGImage: NSImage {
     
     guard let layer = svgLayer else { return nil }
 
-    let (xScale, yScale, width, height) = scaling(proposedDestRect!.pointee)
+    let rect = proposedDestRect!.pointee
+    let scale = NSScreen.main?.backingScaleFactor ?? 1.0
+
+    let width = scale * rect.size.width
+    let height = scale * rect.size.height
+
+    let xScale = width / svgLayer!.size.width
+    let yScale = height / svgLayer!.size.height
 
     let colorSpace = CGColorSpace(name: CGColorSpace.genericRGBLinear)
     let bitmapInfo = CGBitmapInfo(rawValue: CGImageAlphaInfo.premultipliedLast.rawValue)

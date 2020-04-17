@@ -154,16 +154,19 @@ extension PropertyListDecoder: ThemeDecoder { }
 extension YAMLDecoder: ThemeDecoder { }
 extension JSONDecoder: ThemeDecoder { }
 
+
+
 // MARK: - ThemeManager
 
 public final class ThemeManager {
-  
   private let decoders: [String: ThemeDecoder.Type]  = [
     ".thTheme": PropertyListDecoder.self,
     ".tmTheme.yml": YAMLDecoder.self,
     ".thTheme.json": JSONDecoder.self
   ]
-    
+
+  private init() {}
+
   public var observers = ObserverSet<ThemeObserver>()
 
   public var defaultThemes: [Theme] = []
@@ -197,8 +200,6 @@ public final class ThemeManager {
   public var currentTheme: Theme? {
     selectedTheme ?? defaultTheme
   }
-  
-  public static let shared = ThemeManager()
 
   public func load(from path: Path, userDirectories: [Path]) {
     defaultThemes = load(path)
@@ -225,16 +226,43 @@ public final class ThemeManager {
     }
   }
 
+  @objc private func systemStyleDidChange() {
+    DispatchQueue.main.async { [weak self] in
+      self?.observers.notify {
+        let current = NSAppearance.current
+        NSAppearance.current = NSApp.appearance
+        $0.systemStyleDidChange(Theme.Style.system)
+        NSAppearance.current = current
+      }
+    }
+  }
 }
 
+private extension Notification.Name {
+  static let AppleInterfaceThemeChangedNotification =
+    Notification.Name("AppleInterfaceThemeChangedNotification")
+}
+
+public extension ThemeManager {
+  static let shared: ThemeManager = {
+    let manager = ThemeManager()
+    DistributedNotificationCenter.default.addObserver(manager,
+                                                      selector: #selector(systemStyleDidChange),
+                                                      name: .AppleInterfaceThemeChangedNotification,
+                                                      object: nil)
+    return manager
+  }()
+}
 
 // MARK: - Observer
 
 public protocol ThemeObserver {
   func themeDidChanged(_ theme: Theme)
+  func systemStyleDidChange(_ style: Theme.Style)
 }
 
 public extension ThemeObserver {
   func themeDidChanged(_ theme: Theme) {}
+  func systemStyleDidChange(_ style: Theme.Style) {}
 }
 
