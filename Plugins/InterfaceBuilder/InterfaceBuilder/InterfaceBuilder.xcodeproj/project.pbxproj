@@ -91,7 +91,6 @@
 			isa = PBXGroup;
 			children = (
 				0CA09B2124495DA700850C3C /* Icons */,
-				0CAAE9D5243C5D31003CAE92 /* Widgets */,
 				E42F6DD623FEC2B800E5D636 /* package.yml */,
 				D7CD74FA22B8CC24004C437B /* Info.plist */,
 				D7CD750022B8CC37004C437B /* Sources */,
@@ -111,6 +110,7 @@
 		D7CD750022B8CC37004C437B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				0CAAE9D5243C5D31003CAE92 /* Widgets */,
 				E4D59E0624113876003DAB16 /* EditorView.swift */,
 				E4D59E0524113876003DAB16 /* EditorView.xib */,
 				E4D59E0424113876003DAB16 /* Plugin.swift */,
