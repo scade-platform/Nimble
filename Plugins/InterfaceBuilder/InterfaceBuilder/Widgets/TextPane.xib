@@ -150,8 +150,8 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
-                                        <segmentedControl verticalHuggingPriority="750" ambiguous="YES" id="72Q-WN-lia">
-                                            <rect key="frame" x="132" y="29" width="98" height="24"/>
+                                        <segmentedControl verticalHuggingPriority="750" id="72Q-WN-lia">
+                                            <rect key="frame" x="3" y="29" width="356" height="24"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                             <segmentedCell key="cell" borderStyle="border" alignment="left" segmentDistribution="fill" style="rounded" trackingMode="selectOne" id="eBF-7s-MMR">
                                                 <font key="font" metaFont="system"/>
