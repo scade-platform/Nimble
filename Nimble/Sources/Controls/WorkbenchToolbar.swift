@@ -57,6 +57,8 @@ extension WorkbenchToolbar : NSToolbarDelegate {
       return item.imagePushButton()
     case .segmentedControl:
       return item.segmentedControl()
+    case .targetControl:
+      return item.targetControl()
     default:
       return nil
     }
@@ -89,6 +91,7 @@ enum ToolbarItemKind {
   case imageButton
   case segmentedControl
   case segment
+  case targetControl
   case indefinite
 }
 
@@ -153,6 +156,8 @@ extension ToolbarItem {
   public static let separator = ToolbarItem(identifier: .separator)
   
   public static let space = ToolbarItem(identifier: .space)
+  
+  public static let targetControl = ToolbarItem(identifier: NSToolbarItem.Identifier("com.nimble.targetControl"), kind: .targetControl, lable: "Target Control", palleteLable: "Target Control", width: 38.0, height: 24.0)
 }
 
 extension ToolbarItem {
@@ -289,5 +294,21 @@ extension ToolbarItem {
         }
         return scaledSize
     }
+  }
+}
+
+extension ToolbarItem {
+  func targetControl() -> NSToolbarItem {
+    let item = NSToolbarItem(itemIdentifier: self.identifier)
+    item.label = self.lable
+    
+    let control = ToolbarTargetControl.loadFromNib()
+//    control.widthAnchor.constraint(equalToConstant: self.width).isActive = true
+//    control.heightAnchor.constraint(equalToConstant: self.height).isActive = true
+    
+    item.view = control
+    item.isEnabled = true
+    
+    return item
   }
 }

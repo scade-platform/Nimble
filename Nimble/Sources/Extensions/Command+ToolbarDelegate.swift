@@ -109,6 +109,7 @@ class CommandsToolbarDelegate: ToolbarDelegate {
     //create for each command ToolbarItem
     result.append(contentsOf: loadedCommands.map{$0.createToolbarItem()}.filter{$0.kind != .segment && $0.kind != .indefinite})
     
+    result.append(.targetControl)
     result.append(.flexibleSpace)
     
     //find all groups
@@ -132,6 +133,7 @@ class CommandsToolbarDelegate: ToolbarDelegate {
     result.append(.flexibleSpace)
     result.append(.space)
     result.append(.separator)
+    result.append(.targetControl)
     
     return result
   }

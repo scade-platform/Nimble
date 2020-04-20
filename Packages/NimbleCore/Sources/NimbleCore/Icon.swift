@@ -220,6 +220,8 @@ public extension IconsManager {
 
     public static var trash = icon(name: "trash")
     public static var warning = icon(name: "warning")
+    
+    public static var separator = icon(name: "separator")
   }
   
 }
