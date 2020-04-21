@@ -180,3 +180,32 @@ fileprivate func findPackage(project: Project) -> File? {
   }
   return nil
 }
+
+extension SPMBuildSystem: LaunchPlatform {
+  var icon: Icon? {
+    return nil
+  }
+  
+  var subplatforms: [LaunchPlatform]? {
+    return [MacPlatform.shared]
+    
+  }
+  
+  class MacPlatform: LaunchPlatform {
+    static var shared = MacPlatform()
+    
+    var name: String {
+      return "mac"
+    }
+    
+    var icon: Icon? {
+      return nil
+    }
+    
+    var subplatforms: [LaunchPlatform]? {
+      return nil
+    }
+    
+    
+  }
+}

@@ -22,6 +22,9 @@ final class BuildSystemPlugin: Plugin {
   func load() {
     BuildSystemsManager.shared.add(buildSystem: SwiftBuildSystem())
     BuildSystemsManager.shared.add(buildSystem: SPMBuildSystem())
+    
+    TargetManager.shared.register(provider: BuildSystemsManager.shared)
+    
     setupMainMenu()
     setupCommands()
   }
