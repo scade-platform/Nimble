@@ -108,6 +108,9 @@ extension CodeEditorDocument: SourceCodeDocument {
 
 extension CodeEditorDocument: CreatableDocument {
   public static let newMenuTitle: String = "File"
+
+  public static var newMenuKeyEquivalent: String? { "n" }
+
   public static func createUntitledDocument() -> Document? {
     return try? CodeEditorDocument(type: "public.text")
   }

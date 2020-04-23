@@ -79,7 +79,14 @@ public extension Document {
 
 public protocol CreatableDocument where Self: Document {
   static var newMenuTitle: String { get }
+
+  static var newMenuKeyEquivalent: String? { get }
+
   static func createUntitledDocument() -> Document?
+}
+
+public extension CreatableDocument {
+  static var newMenuKeyEquivalent: String? { nil }
 }
 
 
