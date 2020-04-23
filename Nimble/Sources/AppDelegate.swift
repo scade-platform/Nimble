@@ -76,15 +76,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   
   private func setupApplicationMenu() {
     // Build newDocumentMenu
-    let items: [NSMenuItem] = DocumentManager.shared.creatableDocuments.map {
+    var items: [NSMenuItem] = DocumentManager.shared.creatableDocuments.map {
       let item = NSMenuItem(title: $0.newMenuTitle, action: #selector(newDocument(_:)), keyEquivalent: "")
+      item.keyEquivalent = $0.newMenuKeyEquivalent ?? ""
       item.representedObject = $0
       return item
     }
-    
-    items.first?.keyEquivalent = "n"
-    items.first?.keyEquivalentModifierMask = .command
-    
+
+    items.sort { $0.title < $1.title }
+
     // Enable iff. there are document creators
     fileMenu?.items.first?.isEnabled = !items.isEmpty
     newDocumentMenu?.items = items
