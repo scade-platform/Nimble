@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:com.scade.sdk.data.binding="http://scade.com/sdk/data/binding" xmlns:com.scade.sdk.expr="com.scade.sdk.expr" xmlns:com.scade.sdk.lattice.navigation="http://scade.com/lattice/navigation" xmlns:com.scade.sdk.layout="http://scade.com/sdk/layout" xmlns:com.scade.sdk.view="http://scade.com/sdk/view/widgets" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:svg="http://scade.com/svg/draw" xmlns:svg_1="http://scade.com/svg/constraints" xmlns:svg_2="http://scade.com/svg/style/color">
+  <com.scade.sdk.view:Page name="Page" drawing="/3">
+    <backgroundColor Red="248" Green="248" Blue="248"/>
+    <layout xsi:type="com.scade.sdk.layout:AutoLayout"/>
+  </com.scade.sdk.view:Page>
+  <com.scade.sdk.data.binding:BindingModel/>
+  <com.scade.sdk.lattice.navigation:Navigation page="/0"/>
+  <svg:Box>
+    <children xsi:type="svg:Box" attributes="{&quot;template-id&quot;:&quot;background&quot;}">
+      <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.h">
+        <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Box/height"/>
+        <expression xsi:type="com.scade.sdk.expr:Variable" name="size">
+          <path>h</path>
+        </expression>
+      </constraints>
+      <constraints xsi:type="svg_1:DirectConstraint" exprStr="size.w">
+        <feature xsi:type="ecore:EReference" href="http://scade.com/svg#//draw/Box/width"/>
+        <expression xsi:type="com.scade.sdk.expr:Variable" name="size">
+          <path>w</path>
+        </expression>
+      </constraints>
+      <children xsi:type="svg:Rect">
+        <fill xsi:type="svg_2:RGBColor" r="0.972549" g="0.972549" b="0.972549"/>
+        <width value="100.0" measurement="PERCENTAGE"/>
+        <height value="100.0" measurement="PERCENTAGE"/>
+      </children>
+      <width/>
+      <height/>
+    </children>
+    <children xsi:type="svg:Group" attributes="{&quot;template-id&quot;:&quot;content&quot;}"/>
+  </svg:Box>
+</xmi:XMI>
