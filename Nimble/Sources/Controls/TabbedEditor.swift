@@ -73,6 +73,8 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
       
       addChild(editor)
       tabViewContainer.addSubview(editor.view)
+      
+      item.document.observers.add(observer: self)
     }     
     willSet {
       currentItem?.active = false
@@ -81,6 +83,8 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
       editor.removeFromParent()
       
       workbench?.currentDocumentWillChange(currentItem?.document)
+      
+      currentItem?.document.observers.remove(observer: self)
     }
   }
   
@@ -132,7 +136,6 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
     let item = TabItem(doc, parent: self)
     
     item.parent = self
-    doc.observers.add(observer: self)
     items.insert(item, at: pos)
     
     tabBar.reloadTabs()
