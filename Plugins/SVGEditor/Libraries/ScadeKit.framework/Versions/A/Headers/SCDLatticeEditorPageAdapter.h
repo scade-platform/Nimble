@@ -16,8 +16,6 @@ SCADE_API
 @interface SCDLatticeEditorPageAdapter : SCDLatticePageAdapter
 
 
-- (void)save:(NSString* _Nonnull)path;
-
 - (void)loadTemplatePage;
 
 

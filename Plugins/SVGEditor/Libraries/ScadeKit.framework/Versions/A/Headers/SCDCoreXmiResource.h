@@ -17,6 +17,9 @@ SCADE_API
 @interface SCDCoreXmiResource : SCDCoreResource
 
 
+@property(nonatomic, readonly) NSData* _Nonnull data;
+
+
 /*PROTECTED REGION ID(a8c0cdc3cbcf0cfe39e6c315119c2126) START*/
 // Please, enable the protected region if you add manually written code.
 // To do this, add the keyword ENABLED before START.

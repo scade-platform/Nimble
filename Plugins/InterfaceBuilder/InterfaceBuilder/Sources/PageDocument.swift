@@ -48,6 +48,11 @@ public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
   }
   
   public override func data(ofType typeName: String) throws -> Data {
+    if let page = adapter.page,
+       let container = page.eContainer(),
+       let resource = container as? SCDCoreXmiResource {
+      return resource.data
+    }
     return "".data(using: .utf8)!
   }
 }
@@ -64,5 +69,21 @@ extension PageDocument: Document {
   
   public static func isDefault(for file: File) -> Bool {
     return canOpen(file)
+  }
+}
+
+extension PageDocument: CreatableDocument {
+  public static let newMenuTitle: String = "Page"
+
+  public static func createUntitledDocument() -> Document? {
+    let doc = PageDocument()
+    doc.adapter.loadTemplatePage()
+
+    if let size = doc.adapter.page?.size {
+      size.width = 320
+      size.height = 480
+    }
+
+    return doc
   }
 }
