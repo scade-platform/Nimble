@@ -76,6 +76,11 @@ public final class Project {
       return
     }
     
+    guard !projectFolders.contains(where: {$0.folder == folder}) else {
+      //already contains this folder
+      return
+    }
+    
     // Check if the folder is from the project's sub-tree
     // If yes, store it relative to the project's file, otherwise absolute
     var relativePath: String? = nil
