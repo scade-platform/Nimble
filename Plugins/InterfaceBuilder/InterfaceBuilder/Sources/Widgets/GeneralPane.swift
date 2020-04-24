@@ -29,6 +29,8 @@ class GeneralPane: NSViewController {
   @IBOutlet weak var wrapTextСheckbox: NSButton?
   
   private weak var shownWidget: SCDWidgetsWidget?
+
+  weak var document: Document? = nil
   
   var widget: SCDWidgetsWidget? {
     set {
@@ -92,36 +94,46 @@ class GeneralPane: NSViewController {
     guard let value = nameTextField?.stringValue else { return }
     
     widget?.name = value
+    documentDidChange()
   }
   
   @IBAction func accessibilityDidChange(_ sender: Any) {
     guard accessibillityView?.isHidden == false, let value = accessibillityTextField?.stringValue, let drawing = widget?.drawing else { return }
     
     drawing.accessibilityLabel = value
+    documentDidChange()
   }
   
   @IBAction func textDidChange(_ sender: Any) {
     guard textView?.isHidden == false, let value = textTextField?.stringValue, let textWidget = widget as? SCDWidgetsTextWidget else { return }
     
     textWidget.text = value
+    documentDidChange()
   }
   
   @IBAction func enableDidChange(_ sender: Any) {
     guard let value = enableCheckbox?.state else { return }
     
     widget?.isEnable = value == .on
+    documentDidChange()
   }
   
   @IBAction func visibleDidChange(_ sender: Any) {
     guard let value = visibleСheckbox?.state else { return }
     
     widget?.isVisible = value == .on
+    documentDidChange()
   }
   
   @IBAction func wrapTextDidChange(_ sender: Any) {
     guard wrapTextСheckbox?.isHidden == false, let value = wrapTextСheckbox?.state, let textWidget = widget as? SCDWidgetsTextWidget else { return }
     
     textWidget.isWrapText = value == .on
+    documentDidChange()
+  }
+
+  private func documentDidChange() {
+    document?.updateChangeCount(.changeDone)
   }
 }
 

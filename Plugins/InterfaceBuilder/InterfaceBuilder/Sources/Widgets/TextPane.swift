@@ -27,7 +27,8 @@ class TextPane: NSViewController {
   
   @IBOutlet weak var alignmentSegmentedControl: NSSegmentedControl?
   @IBOutlet weak var baselineSegmentedControl: NSSegmentedControl?
-  
+
+  weak var document: Document? = nil
   
   private weak var shownWidget: SCDWidgetsTextWidget?
   
@@ -132,6 +133,7 @@ class TextPane: NSViewController {
       else { return }
     
     font.fontFamily = selectedFont
+    documentDidChange()
     
     stylePopUpButton?.removeAllItems()
     if let availableFonts = NSFontManager.shared.availableMembers(ofFontFamily: selectedFont) {
@@ -153,6 +155,7 @@ class TextPane: NSViewController {
         if availableFont[1] as! String == selectedStyle {
           if let styledFont = NSFont(name: availableFont[0] as! String, size: CGFloat(font.size)) {
             font.fontFamily = styledFont.fontName
+            documentDidChange()
           }
         }
       }
@@ -163,18 +166,21 @@ class TextPane: NSViewController {
     guard let value = sizeTextField?.intValue, let font = widget?.font else { return }
     font.size = Int(value)
     sizeStepper?.intValue = value
+    documentDidChange()
   }
   
   @IBAction func sizeStepperDidClick(_ sender: Any) {
     guard let value = sizeStepper?.intValue, let font = widget?.font else { return }
     font.size = Int(value)
     sizeTextField?.intValue = value
+    documentDidChange()
   }
   
   @IBAction func colorDidChange(_ sender: Any) {
     guard let value = colorWell?.color, let font = widget?.font else { return }
     
     font.color = value.scdGraphicsRGB
+    documentDidChange()
   }
   
   @IBAction func alignmentDidChange(_ sender: Any) {
@@ -189,6 +195,7 @@ class TextPane: NSViewController {
     default:
       return
     }
+    documentDidChange()
   }
   
   @IBAction func baselineDidChange(_ sender: Any) {
@@ -204,6 +211,11 @@ class TextPane: NSViewController {
     default:
       return
     }
+    documentDidChange()
+  }
+
+  private func documentDidChange() {
+    document?.updateChangeCount(.changeDone)
   }
 }
 
