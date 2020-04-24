@@ -13,12 +13,18 @@ import NimbleCore
 // MARK: - NimbleWorkbench
 
 public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
+  lazy var toolbarItems: [NSToolbarItem] = {
+    var items: [NSToolbarItem] = []
+
+    items.append(contentsOf: CommandManager.shared.commands.filter({$0.group == nil}).map{$0.createToolbarItem()})
+    items.append(contentsOf: CommandManager.shared.groups.map{$0.createToolbarItem()})
+
+    return items
+   }()
+
   public var observers = ObserverSet<WorkbenchObserver>()
-  
   public private(set) var diagnostics: [Path: [Diagnostic]] = [:]
-  
-  private var toolbar: WorkbenchToolbar?
-  
+
 
   // Document property of the WindowController always refer to the project
   public override var document: AnyObject? {
@@ -61,14 +67,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   var debugView: DebugView? {
     workbenchCentralView?.children[1] as? DebugView
   }
-  
-  public override func windowWillLoad() {
-    let workbenchAreaGroup = CommandGroup(name: "WorkbenchAreaGroup")
-    CommandManager.shared.registerGroup(group: workbenchAreaGroup)
-    
-    PluginManager.shared.load()
-  }
-  
+
   public override func windowDidLoad() {
     super.windowDidLoad()
    
@@ -86,8 +85,13 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     inspectorView.isHidden = true
     
     DocumentManager.shared.defaultDocument = BinaryFileDocument.self
-    
-    toolbar = WorkbenchToolbar(window!, delegate: CommandsToolbarDelegate.shared)
+
+    let toolbar = NSToolbar(identifier: NSToolbar.Identifier("MainToolbar"))
+    toolbar.allowsUserCustomization = true
+    toolbar.displayMode = .default
+    toolbar.delegate = self
+
+    self.window?.toolbar = toolbar
 
     PluginManager.shared.activate(in: self)
   }
@@ -123,6 +127,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     }
   }
 }
+
 
 // MARK: - Workbench
 
@@ -162,7 +167,7 @@ extension NimbleWorkbench: Workbench {
     return statusBarView!
   }
   
-
+  ///TODO: rafctoring needed, we should make editor oriented creation and manage docs outside the UI
   public func open(_ doc: Document, show: Bool, openNewEditor: Bool) {
     guard let editorView = editorView else { return }
     
@@ -252,6 +257,66 @@ extension NimbleWorkbench: Workbench {
       self.diagnostics[path] = diagnostics
     }
   }
+}
+
+
+// MARK: - Toolbar
+
+extension NimbleWorkbench: NSToolbarDelegate {
+  ///TODO: implement ordering functionality
+
+//  public func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
+//    var items: [NSToolbarItem.Identifier] = CommandManager.shared.commands.compactMap {
+//      guard $0.group == nil && $0.toolbarIcon != nil else { return nil }
+//      return $0.toolbarItemIdentifier
+//    }
+//
+//    items.append(.flexibleSpace)
+//    items.append(contentsOf: CommandManager.shared.groups.map { $0.toolbarItemIdentifier })
+//    return items
+//  }
+
+//  public func toolbarAllowedItems(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
+//    var items: [NSToolbarItem.Identifier] = CommandManager.shared.commands.compactMap {
+//      guard $0.group == nil && $0.toolbarIcon != nil else { return nil }
+//      return $0.toolbarItemIdentifier
+//    }
+//    items.append(contentsOf: CommandManager.shared.groups.map { $0.toolbarItemIdentifier })
+//
+//    items.append(.flexibleSpace)
+//    items.append(.space)
+//    items.append(.separator)
+//
+//    return items
+//  }
+
+
+  public func toolbar(_ toolbar: NSToolbar,
+                      itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
+                      willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
+    
+    return toolbarItems.first{ $0.itemIdentifier == itemIdentifier }
+  }
+
+  public func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
+      var ids: [NSToolbarItem.Identifier] = CommandManager.shared.commands.compactMap {
+        guard $0.group == nil && $0.toolbarIcon != nil else { return nil }
+        return $0.toolbarItemIdentifier
+      }
+
+      ids.append(.flexibleSpace)
+      ids.append(contentsOf: CommandManager.shared.groups.map { $0.toolbarItemIdentifier })
+      return ids
+  }
+
+  public func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
+      return self.toolbarDefaultItemIdentifiers(toolbar)
+  }
+
+  public func toolbarSelectableItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
+      return self.toolbarDefaultItemIdentifiers(toolbar)
+  }
+
 }
 
 

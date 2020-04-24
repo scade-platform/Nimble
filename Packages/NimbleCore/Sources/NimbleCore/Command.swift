@@ -9,93 +9,144 @@
 import Cocoa
 
 
-public class Command {
-  
-  public var observers = ObserverSet<CommandObserver>()
-  
-  public var isEnable: Bool {
-    didSet {
-      observers.notify {
-        $0.commandDidChange(self)
-      }
-    }
-  }
-  
+open class Command {
+  public typealias Handler = (Workbench) -> Void
 
-  public var isSelected: Bool {
-    didSet {
-      observers.notify {
-        $0.commandDidChange(self)
-      }
+  public struct State: OptionSet {
+    public let rawValue: Int
+
+    public init(rawValue: Self.RawValue) {
+      self.rawValue = rawValue
     }
+    public static let enabled = State(rawValue: 1 << 0)
+    public static let selected = State(rawValue: 1 << 1)
+
+    public static let `default`: State = [.enabled]
   }
-  
+
   public let name: String
-  public var title: String
-  private let handler: ((Command) -> Void)?
-  
-  //menu item
+
+  // Menu item
   public let menuPath: String?
   public let keyEquivalent: String?
   
-  //toolbar item
+  // Toolbar item
   public let toolbarIcon: NSImage?
-  
-  public var groupName: String?
-  
-  @objc public func execute() {
-    guard isEnable else { return }
-    handler?(self)
-  }
-  
 
-  public init(name: String, menuPath: String? = nil, keyEquivalent: String? = nil , toolbarIcon: NSImage? = nil, handler:  @escaping (Command) -> Void) {
+  // Actions
+  private let handler: Handler
+
+  public fileprivate(set) weak var group: CommandGroup?
+
+  public var groupIndex: Int? { group?.commands.firstIndex{$0 === self } }
+
+  open func run(in workbench: Workbench) {
+    handler(workbench)
+  }
+
+  open func validate(in workbench: Workbench) -> State {
+    return .default
+  }
+
+  public init(name: String,              
+              menuPath: String? = nil,
+              keyEquivalent: String? = nil ,
+              toolbarIcon: NSImage? = nil,
+              handler: (@escaping Handler) = { _ in return } ) {
+
     self.name = name
-    self.title = name
-    self.groupName = nil
-    self.handler = handler
     self.menuPath = menuPath
     self.keyEquivalent = keyEquivalent
     self.toolbarIcon = toolbarIcon
-    self.isEnable = true
-    self.isSelected = false
+    self.handler = handler
   }
 }
 
 public class CommandGroup {
+  private var _commands: [WeakRef<Command>] = []
+
   public let name: String
-  
-  public var palleteLable: String?
-  public var commands: [WeakRef<Command>] = []
-  
-  public init(name: String){
+  public let title: String
+
+  public var commands: [Command] {
+    get { return _commands.compactMap{$0.value} }
+    set {
+      _commands = newValue.map {
+        $0.group = self
+        return WeakRef<Command>(value: $0)
+      }
+    }
+  }
+
+  public init(name: String, commands: [Command] = []){
     self.name = name
-    self.palleteLable = name
+    self.title = name
+    self.commands = commands
   }
 }
 
-public protocol CommandObserver: class {
-  func commandDidChange(_ command: Command)
+
+public protocol CommandObserver {
+  func commandDidRegister(_ command: Command)
+  func commandGroupDidRegister(_ commandGroup: CommandGroup)
 }
+
+
+public extension CommandObserver {
+  func commandDidRegister(_ command: Command) {}
+  func commandGroupDidRegister(_ commandGroup: CommandGroup) {}
+}
+
 
 public class CommandManager {
-  public static let shared: CommandManager = CommandManager()
-  
-  public var handlerRegisteredCommand : ((Command) -> Void)?
-  
-  private(set) public var commands: [Command] = []
-  private(set) public var groups: [String: CommandGroup] = [:]
-  
+  private var _commands: [String: Command] = [:]
+  private var _groups: [String: CommandGroup] = [:]
+
+  public var commands: [Command] { Array(_commands.values) }
+  public var groups: [CommandGroup] { Array(_groups.values) }
+
+  public var observers = ObserverSet<CommandObserver>()
+
   private init() {}
-  
-  public func registerCommand(command: Command) {
-    guard !commands.contains(where: {$0.name == command.name}) else { return }
-    commands.append(command)
-    handlerRegisteredCommand?(command)
+
+  public func command(name: String) -> Command? {
+    return _commands[name]
   }
-  
-  public func registerGroup(group: CommandGroup) {
-    guard groups[group.name] == nil else { return }
-    groups[group.name] = group
+
+  public func group(name: String) -> CommandGroup? {
+    return _groups[name]
+  }
+
+  public func register(command: Command) {
+    guard _commands[command.name] == nil else { return }
+    _commands[command.name] = command
+
+    observers.notify {
+      $0.commandDidRegister(command)
+    }
+  }
+
+  public func register(commands: [Command]) {
+    commands.forEach {self.register(command: $0)}
+  }
+
+  public func register(group: CommandGroup, registerCommands: Bool = true) {
+    guard _groups[group.name] == nil else { return }
+
+    if registerCommands {
+      group.commands.forEach { self.register(command: $0) }
+    }
+    _groups[group.name] = group
+
+    observers.notify {
+      $0.commandGroupDidRegister(group)
+    }
   }
 }
+
+
+public extension CommandManager {
+  static let shared: CommandManager = CommandManager()
+}
+
+

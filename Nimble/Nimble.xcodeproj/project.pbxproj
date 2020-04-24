@@ -9,14 +9,12 @@
 /* Begin PBXBuildFile section */
 		0C238B12233E4E3D004F87E7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D2222878F40088715C /* Assets.xcassets */; };
 		0C2A26D42429E2F800AA8B51 /* InspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2A26D32429E2F800AA8B51 /* InspectorView.swift */; };
-		0C2A270D242B424B00AA8B51 /* Command+ToolbarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2A270C242B424B00AA8B51 /* Command+ToolbarDelegate.swift */; };
 		0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */; };
-		0C65E3CD242DCA6E00552B64 /* WorkbenchToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C65E3CC242DCA6E00552B64 /* WorkbenchToolbar.swift */; };
 		0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */; };
 		0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */; };
 		0CA297B423A903340025A4EF /* BinaryFileDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA297B323A903340025A4EF /* BinaryFileDocument.swift */; };
 		0CAAE9A324370523003CAE92 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAAE9A224370523003CAE92 /* Bundle.swift */; };
-		0CAAE9AD24370BEE003CAE92 /* NimbleWorkbenchArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAAE9AC24370BEE003CAE92 /* NimbleWorkbenchArea.swift */; };
+		0CAAE9AD24370BEE003CAE92 /* WorkbenchArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAAE9AC24370BEE003CAE92 /* WorkbenchArea.swift */; };
 		0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3523A39503003B01DE /* StatusBarView.swift */; };
 		0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */; };
 		0CD0FB4623A776BD003B01DE /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB4523A776BD003B01DE /* EditorView.swift */; };
@@ -51,6 +49,9 @@
 		D7D46163238ED16B0090FC34 /* KPCTabsControl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D7D461652390083C0090FC34 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D461642390083C0090FC34 /* Document.swift */; };
 		D7F156972442079A00AFBE67 /* WorkbenchSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F156962442079A00AFBE67 /* WorkbenchSettings.swift */; };
+		D7F156AD244C93EE00AFBE67 /* Command+Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F156AC244C93EE00AFBE67 /* Command+Menu.swift */; };
+		D7F156B6244C93FE00AFBE67 /* Command+Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F156B5244C93FE00AFBE67 /* Command+Toolbar.swift */; };
+		D7F156B8244C946200AFBE67 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F156B7244C946200AFBE67 /* Command.swift */; };
 		E42DC05C22CE49A700486CC1 /* CodeEditor.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC05B22CE498200486CC1 /* CodeEditor.plugin */; };
 		E42DC05D22CE49A700486CC1 /* ProjectNavigator.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC05A22CE497F00486CC1 /* ProjectNavigator.plugin */; };
 		E42DC0C322D26C3100486CC1 /* ImageViewer.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = E42DC0C222D26C1200486CC1 /* ImageViewer.plugin */; };
@@ -106,14 +107,12 @@
 
 /* Begin PBXFileReference section */
 		0C2A26D32429E2F800AA8B51 /* InspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorView.swift; sourceTree = "<group>"; };
-		0C2A270C242B424B00AA8B51 /* Command+ToolbarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Command+ToolbarDelegate.swift"; sourceTree = "<group>"; };
 		0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDocument.swift; sourceTree = "<group>"; };
-		0C65E3CC242DCA6E00552B64 /* WorkbenchToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchToolbar.swift; sourceTree = "<group>"; };
 		0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedPane.swift; sourceTree = "<group>"; };
 		0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnsupportedPane.xib; sourceTree = "<group>"; };
 		0CA297B323A903340025A4EF /* BinaryFileDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryFileDocument.swift; sourceTree = "<group>"; };
 		0CAAE9A224370523003CAE92 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
-		0CAAE9AC24370BEE003CAE92 /* NimbleWorkbenchArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleWorkbenchArea.swift; sourceTree = "<group>"; };
+		0CAAE9AC24370BEE003CAE92 /* WorkbenchArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchArea.swift; sourceTree = "<group>"; };
 		0CB6607722F41D1500CBB386 /* NimbleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleController.swift; sourceTree = "<group>"; };
 		0CD0FB3523A39503003B01DE /* StatusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
 		0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootSplitView.swift; sourceTree = "<group>"; };
@@ -146,6 +145,9 @@
 		D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleWorkbench.swift; sourceTree = "<group>"; };
 		D7D461642390083C0090FC34 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		D7F156962442079A00AFBE67 /* WorkbenchSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchSettings.swift; sourceTree = "<group>"; };
+		D7F156AC244C93EE00AFBE67 /* Command+Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Command+Menu.swift"; sourceTree = "<group>"; };
+		D7F156B5244C93FE00AFBE67 /* Command+Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Command+Toolbar.swift"; sourceTree = "<group>"; };
+		D7F156B7244C946200AFBE67 /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
 		E42DC05A22CE497F00486CC1 /* ProjectNavigator.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = ProjectNavigator.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42DC05B22CE498200486CC1 /* CodeEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = CodeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42DC07922CFA01100486CC1 /* InterfaceBuilder.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = InterfaceBuilder.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -170,10 +172,12 @@
 		D721CFA42385EC1800FD1B00 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */,
-				D7D461642390083C0090FC34 /* Document.swift */,
-				0C2A270C242B424B00AA8B51 /* Command+ToolbarDelegate.swift */,
 				0CAAE9A224370523003CAE92 /* Bundle.swift */,
+				D7F156B7244C946200AFBE67 /* Command.swift */,
+				D7F156AC244C93EE00AFBE67 /* Command+Menu.swift */,
+				D7F156B5244C93FE00AFBE67 /* Command+Toolbar.swift */,
+				D7D461642390083C0090FC34 /* Document.swift */,
+				D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -202,6 +206,7 @@
 				D724C5ED237C418B00E80958 /* DebugView.swift */,
 				D724C5E9237C418B00E80958 /* DropView.swift */,
 				0CD0FB4523A776BD003B01DE /* EditorView.swift */,
+				0C2A26D32429E2F800AA8B51 /* InspectorView.swift */,
 				D724C5EA237C418B00E80958 /* NavigatorView.swift */,
 				0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */,
 				D78FFF1C2426A3ED00EB70E2 /* SettingsEditor.swift */,
@@ -214,8 +219,6 @@
 				D724C5E7237C418B00E80958 /* TabbedEditor.xib */,
 				0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */,
 				D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */,
-				0C2A26D32429E2F800AA8B51 /* InspectorView.swift */,
-				0C65E3CC242DCA6E00552B64 /* WorkbenchToolbar.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -273,9 +276,9 @@
 				0CA297B323A903340025A4EF /* BinaryFileDocument.swift */,
 				0CB6607722F41D1500CBB386 /* NimbleController.swift */,
 				D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */,
-				0CAAE9AC24370BEE003CAE92 /* NimbleWorkbenchArea.swift */,
 				0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */,
 				D78FFF1A2426A1E300EB70E2 /* SettingsDocument.swift */,
+				0CAAE9AC24370BEE003CAE92 /* WorkbenchArea.swift */,
 				D7F156962442079A00AFBE67 /* WorkbenchSettings.swift */,
 				D72F959D222DF2F4009F2EC3 /* Controls */,
 				D721CFA42385EC1800FD1B00 /* Extensions */,
@@ -409,19 +412,20 @@
 				0CA297B423A903340025A4EF /* BinaryFileDocument.swift in Sources */,
 				0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */,
 				D788ED452239C2750072C21E /* NimbleWorkbench.swift in Sources */,
+				D7F156B6244C93FE00AFBE67 /* Command+Toolbar.swift in Sources */,
 				D7F156972442079A00AFBE67 /* WorkbenchSettings.swift in Sources */,
-				0C65E3CD242DCA6E00552B64 /* WorkbenchToolbar.swift in Sources */,
+				D7F156B8244C946200AFBE67 /* Command.swift in Sources */,
 				0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */,
 				D724C5EF237C418B00E80958 /* ConsoleView.swift in Sources */,
 				0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */,
+				D7F156AD244C93EE00AFBE67 /* Command+Menu.swift in Sources */,
 				D721CFA72385EC3200FD1B00 /* NSOpenPanel.swift in Sources */,
 				D72F9587222CAC3C009F2EC3 /* AppDelegate.swift in Sources */,
 				0C2A26D42429E2F800AA8B51 /* InspectorView.swift in Sources */,
 				D7D461652390083C0090FC34 /* Document.swift in Sources */,
-				0CAAE9AD24370BEE003CAE92 /* NimbleWorkbenchArea.swift in Sources */,
+				0CAAE9AD24370BEE003CAE92 /* WorkbenchArea.swift in Sources */,
 				D78FFF1B2426A1E300EB70E2 /* SettingsDocument.swift in Sources */,
 				D724C5F1237C418B00E80958 /* NavigatorView.swift in Sources */,
-				0C2A270D242B424B00AA8B51 /* Command+ToolbarDelegate.swift in Sources */,
 				D724C5F4237C418B00E80958 /* DebugView.swift in Sources */,
 				0CD0FB4623A776BD003B01DE /* EditorView.swift in Sources */,
 				D724C5F0237C418B00E80958 /* DropView.swift in Sources */,

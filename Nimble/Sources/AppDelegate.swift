@@ -73,7 +73,18 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     return true
   }
-  
+
+  private func registerCommands() {
+    let visibilityCommands = [
+      ChangeAreaVisibility(title: "Debug area", icon: Bundle.main.loadBottonImage(name: "bottomArea")) { $0.debugArea },
+      ChangeAreaVisibility(title: "Navigator", icon: Bundle.main.loadBottonImage(name: "leftSideBar")) { $0.navigatorArea },
+      ChangeAreaVisibility(title: "Inspector", icon: Bundle.main.loadBottonImage(name: "rightSideBar")) { $0.inspectorArea }
+    ]
+
+    let visibilityGroup = CommandGroup(name: "AreaVisibilityCommands", commands: visibilityCommands)
+    CommandManager.shared.register(group: visibilityGroup)
+  }
+
   private func setupApplicationMenu() {
     // Build newDocumentMenu
     var items: [NSMenuItem] = DocumentManager.shared.creatableDocuments.map {
@@ -129,14 +140,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
   private func setupCommandsMenus() {
     guard let mainMenu = NSApplication.shared.mainMenu else { return }
-    let handlerRegisteredCommand = { [weak self] (command: Command) in
-      guard let self = self else { return }
-      self.addMenuItem(for: command, into: mainMenu)
+    for cmd in CommandManager.shared.commands {
+      addMenuItem(for: cmd, into: mainMenu)
     }
-    for command in CommandManager.shared.commands {
-      addMenuItem(for: command, into: mainMenu)
-    }
-    CommandManager.shared.handlerRegisteredCommand = handlerRegisteredCommand
+    CommandManager.shared.observers.add(observer: self)
   }
   
   func addMenuItem(for command: Command, into menu: NSMenu) {
@@ -147,8 +154,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       mainMenuItem.addItem(commandMenuItem)
     }
   }
-  
-  func applicationDidFinishLaunching(_ notification: Notification) {
+
+  func applicationWillFinishLaunching(_ notification: Notification) {
     // Replace the default delegate installed by the NSDocumentController
     // The default one shows all recent documents without filtering etc.
     openRecentDocumentMenu?.delegate = self
@@ -157,13 +164,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     WorkbenchSettings.register()
 
     // Loading plugins
-    PluginManager.shared.load()    
+    PluginManager.shared.load()
     IconsManager.shared.register(provider: self)
+
+    registerCommands()
 
     setupApplicationMenu()
     setupThemesMenu()
     setupSettingsMenu()
     setupCommandsMenus()
+  }
+
+  func applicationDidFinishLaunching(_ notification: Notification) {
+
+
+
   }
   
   func applicationWillTerminate(_ aNotification: Notification) {
@@ -182,6 +197,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   
 }
 
+
 // MARK: - NSMenuDelegate
 
 extension AppDelegate: NSMenuDelegate {
@@ -194,7 +210,6 @@ extension AppDelegate: NSMenuDelegate {
     }
   }
 }
-
 
 
 // MARK: - IconsProvider
@@ -225,5 +240,15 @@ extension AppDelegate: DocumentObserver {
   func documentDidSave(_ document: Document) {
     guard let doc = settingsDocument, doc === document else { return }
     Settings.shared.reload()
+  }
+}
+
+
+// MARK: - CommandObserver
+
+extension AppDelegate: CommandObserver {
+  func commandDidRegister(_ command: Command) {
+    guard let mainMenu = NSApplication.shared.mainMenu else { return }
+    self.addMenuItem(for: command, into: mainMenu)
   }
 }

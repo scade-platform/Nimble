@@ -50,6 +50,10 @@ public protocol Workbench: class {
 
 
 public extension Workbench {
+  static var current: Workbench? {
+    NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench
+  }
+
   func open(_ doc: Document, show: Bool) {
     open(doc, show: show, openNewEditor: true)
   }

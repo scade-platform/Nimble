@@ -9,35 +9,17 @@
 import Cocoa
 import NimbleCore
 
+
 class DebugView: NSViewController {
   lazy var consoleView: ConsoleView = {
     let console = ConsoleView.loadFromNib()
     self.add(part: console)
     return console
   }()
-  
-  weak var command: Command?
-  
-  lazy var icon: NSImage? = {
-    return Bundle.main.loadBottonImage(name: "bottomArea")
-  }()
-  
-  override func viewDidLoad() {
-    self.title = "Debug Area"
-    
-    command = self.registerCommand()
-  }
 }
 
-extension DebugView: NimbleWorkbenchArea {
-  var toolbarIcon: NSImage? {
-    icon
-  }
-  
-  var changeVisibleCommand: Command? {
-    command
-  }
-  
+
+extension DebugView: WorkbenchArea {
   public func add(part: WorkbenchPart) {
     ///TODO: improve it, every area should be able to host many views
     self.view.subviews.removeAll()
