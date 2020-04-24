@@ -106,7 +106,9 @@ class DiagnosticView: NSStackView {
     let lineRange: Range<Int> = textStorage.string.lineRange(line: line - 1)
     let string = String(textStorage.string[lineRange])
     self.translatesAutoresizingMaskIntoConstraints = false
-    self.widthAnchor.constraint(lessThanOrEqualToConstant: textView.bounds.width - (textView.stringWidth(for: string) ?? 0) - (textView.lineNumberView?.bounds.width ?? 0)).isActive = true
+    if let numberView = textView.lineNumberView {
+      self.leadingAnchor.constraint(greaterThanOrEqualTo: numberView.trailingAnchor, constant: (textView.stringWidth(for: string) ?? 0)).isActive = true
+    }
     self.trailingAnchor.constraint(equalTo: textView.trailingAnchor, constant: -10).isActive = true
     self.topAnchor.constraint(equalTo: textView.topAnchor, constant: lineHeight * CGFloat(line - 1)).isActive = true
   }
