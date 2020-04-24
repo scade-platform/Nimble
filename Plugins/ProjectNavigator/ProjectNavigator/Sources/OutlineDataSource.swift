@@ -201,13 +201,13 @@ extension OutlineDataSource: NSOutlineViewDataSource {
     
     switch item {
     case let item as OpenedDocumentsItem:
-      return item.documents[index]
+      return index < item.documents.count ? item.documents[index] : self
     
     case let item as ProjectFoldersItem:
-      return item.folders[index]
+      return index < item.folders.count ? item.folders[index] : self
       
     case let item as FolderItem:
-      return item.data[index]
+      return index < item.data.count ?  item.data[index] : self
 
     default:
       return self
