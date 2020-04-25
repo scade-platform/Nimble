@@ -14,8 +14,6 @@ public final class BuildSystemModule: Module {
 }
 
 final class BuildSystemPlugin: Plugin {
-  var currentProcess: Process?
-
   func load() {
     BuildSystemsManager.shared.add(buildSystem: SwiftBuildSystem())
     BuildSystemsManager.shared.add(buildSystem: SPMBuildSystem())

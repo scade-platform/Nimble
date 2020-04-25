@@ -147,7 +147,7 @@ extension LSPClient: MessageHandler {
           LSPDiagnostic(wrapped: $0)
         }
               
-        self.connector?.workbench?.publishDiagnostics(for: path, diagnostics: diagnostics)
+        self.connector?.workbench?.publish(diagnostics: diagnostics, for: path)
       }
       
     default:

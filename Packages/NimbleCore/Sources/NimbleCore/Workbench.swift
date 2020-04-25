@@ -20,8 +20,9 @@ public protocol Workbench: class {
   var observers: ObserverSet<WorkbenchObserver> { get set }
   
   var diagnostics: [Path: [Diagnostic]] { get }
-  
-  
+
+  var tasks: [WorkbenchTask] { get }
+
   var navigatorArea: WorkbenchArea? { get }
   
   var inspectorArea: WorkbenchArea? { get }
@@ -44,8 +45,11 @@ public protocol Workbench: class {
   func close(_ doc: Document) -> Bool
   
   func createConsole(title: String, show: Bool, startReading: Bool) -> Console?
-  
-  func publishDiagnostics(for path: Path, diagnostics: [Diagnostic])
+
+
+  func publish(diagnostics: [Diagnostic], for path: Path)
+
+  func publish(task: WorkbenchTask)
 }
 
 
@@ -170,3 +174,45 @@ public protocol WorkbenchStatusBar {
 }
 
 public protocol WorkbenchStatusBarItem { }
+
+
+
+// MARK: - Tasks and processes
+
+public protocol WorkbenchTask: class {
+  var observers: ObserverSet<WorkbenchTaskObserver> { get set }
+  var isRunning: Bool { get }
+
+  func stop()
+}
+
+public protocol WorkbenchTaskObserver {
+  func taskDidFinish(_ task: WorkbenchTask)
+}
+
+public extension WorkbenchTaskObserver {
+  func taskDidFinish(_ task: WorkbenchTask) {}
+}
+
+open class WorkbenchProcess {
+  let process: Process
+  public var observers = ObserverSet<WorkbenchTaskObserver>()
+
+  public init(_ process: Process) {
+    self.process = process
+    self.process.terminationHandler = { [weak self] (_: Process) in
+      DispatchQueue.main.async { [weak self] in
+        guard let self = self else { return }
+        self.observers.notify {
+          $0.taskDidFinish(self)
+        }
+      }
+    }
+  }
+}
+
+extension WorkbenchProcess: WorkbenchTask {
+  public var isRunning: Bool { process.isRunning }
+  public func stop() { process.terminate() }
+}
+

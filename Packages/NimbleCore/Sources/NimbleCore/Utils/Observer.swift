@@ -32,23 +32,38 @@ public struct ObserverSet<T> {
     let key = ObjectIdentifier(obj)
     observers.removeValue(forKey: key)
   }
-  
-  public mutating func notify(with notifier: (T) -> Void) {
-    for (id, ref) in observers {
-      guard let observer = ref.value else {
-        observers.removeValue(forKey: id)
-        continue
-      }
+
+  public func notify(with notifier: (T) -> Void) {
+    self.observers.values.forEach {
+      guard let observer = $0.value else { return }
       notifier(observer)
     }
   }
-  
-  public mutating func notify<R>(as: R.Type, with notifier: (R) -> Void) {
+
+  public func notify<R>(as: R.Type, with notifier: (R) -> Void) {
     notify {
       guard let casted = $0 as? R else { return }
       notifier(casted)
     }
   }
+
+//  public mutating func notify(with notifier: (T) -> Void) {
+//    let observers = self.observers.map{$0}
+//    for (id, ref) in observers {
+//      guard let observer = ref.value else {
+//        self.observers.removeValue(forKey: id)
+//        continue
+//      }
+//      notifier(observer)
+//    }
+//  }
+//
+//  public mutating func notify<R>(as: R.Type, with notifier: (R) -> Void) {
+//    notify {
+//      guard let casted = $0 as? R else { return }
+//      notifier(casted)
+//    }
+//  }
     
   public var isEmpty : Bool {
     return observers.isEmpty

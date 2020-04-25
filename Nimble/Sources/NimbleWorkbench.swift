@@ -23,8 +23,9 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
    }()
 
   public var observers = ObserverSet<WorkbenchObserver>()
-  public private(set) var diagnostics: [Path: [Diagnostic]] = [:]
 
+  public private(set) var diagnostics: [Path: [Diagnostic]] = [:]
+  public private(set) var tasks: [WorkbenchTask] = []
 
   // Document property of the WindowController always refer to the project
   public override var document: AnyObject? {
@@ -97,9 +98,27 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   }
     
   public func windowWillClose(_ notification: Notification) {
+    let tasks = self.tasks
+    tasks.forEach {
+      $0.stop()
+    }
+
     PluginManager.shared.deactivate(in: self)
   }
-  
+
+  public func windowShouldClose(_ sender: NSWindow) -> Bool {
+    if !tasks.isEmpty {
+       let alert = NSAlert()
+       alert.alertStyle = .warning
+       alert.messageText = "Are you sure you want to close the Workbench?"
+       alert.informativeText = "Closing this workbench will stop the current tasks."
+       alert.addButton(withTitle: "Stop Task")
+       alert.addButton(withTitle: "Cancel")
+       return alert.runModal() == .alertFirstButtonReturn
+     }
+     return true
+  }
+
   private lazy var editorMenuItem: NSMenuItem? = {
     let mainMenu = NSApplication.shared.mainMenu
     guard let index = mainMenu?.items.firstIndex(where: {$0.title == "Editor"}) else { return nil }
@@ -246,7 +265,7 @@ extension NimbleWorkbench: Workbench {
     return debugView?.consoleView.createConsole(title: title, show: show, startReading: startReading)
   }
   
-  public func publishDiagnostics(for path: Path, diagnostics: [Diagnostic]) {
+  public func publish(diagnostics: [Diagnostic], for path: Path) {
     if let doc = documents.first(where: {$0.path == path}){
       doc.editor?.publish(diagnostics: diagnostics)
     }
@@ -257,10 +276,26 @@ extension NimbleWorkbench: Workbench {
       self.diagnostics[path] = diagnostics
     }
   }
+
+  public func publish(task: WorkbenchTask) {
+    task.observers.add(observer: self)
+    self.tasks.append(task)
+  }
 }
 
 
-// MARK: - Toolbar
+// MARK: - WorkbenchTaskObserver
+
+extension NimbleWorkbench: WorkbenchTaskObserver {
+  public func taskDidFinish(_ task: WorkbenchTask) {    
+    task.observers.remove(observer: self)
+    self.tasks.removeAll { $0 === task }
+  }
+}
+
+
+
+// MARK: - NSToolbarDelegate
 
 extension NimbleWorkbench: NSToolbarDelegate {
   ///TODO: implement ordering functionality

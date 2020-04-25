@@ -18,22 +18,32 @@ final class Run: BuildSystemCommand {
 
   override func run(in workbench: Workbench) {
     showConsoleTillFirstEscPress(in: workbench)
-
     BuildSystemsManager.shared.activeBuildSystem?.run(in: workbench) { [weak self] status, process in
       switch status {
       case .finished:
         DispatchQueue.main.async { [weak self] in
           self?.showConsoleTillFirstEscPress(in: workbench)
-          BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: workbench, handler: self?.launcherHandler(status:process:))
+          BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: workbench) { status, process in
+            switch status {
+            case .running:
+              workbench.publish(process)
+            default:
+              return
+            }
+          }
         }
-      case .failed, .running:
-        self?.launcherHandler(status: status, process: process)
+
+      case .running:
+        workbench.publish(process)
+
+      case .failed:
+        return
       }
     }
   }
 
   override func validate(in workbench: Workbench) -> State {
-    return currentProcess == nil ? [.enabled] : []
+    return currentTask(in: workbench) == nil ? [.enabled] : []
   }
 }
 
@@ -46,16 +56,16 @@ final class Stop: BuildSystemCommand {
   }
 
   override func run(in workbench: Workbench) {
-    guard let process = currentProcess else { return }
+    guard let task = currentTask(in: workbench) else { return }
 
-    if process.isRunning {
-      process.terminate()
+    if task.isRunning {
+      task.stop()
     }
     showConsoleTillFirstEscPress(in: workbench)
   }
 
   override func validate(in workbench: Workbench) -> State {
-    return currentProcess != nil ? [.enabled] : []
+    return currentTask(in: workbench) != nil ? [.enabled] : []
   }
 }
 
@@ -69,11 +79,20 @@ final class Build: BuildSystemCommand {
 
   override func run(in workbench: Workbench) {
     showConsoleTillFirstEscPress(in: workbench)
-    BuildSystemsManager.shared.activeBuildSystem?.run(in: workbench, handler: launcherHandler(status:process:))
+    BuildSystemsManager.shared.activeBuildSystem?.run(in: workbench) {[weak self] status, process in
+        switch status {
+        case .finished:
+          self?.showConsoleTillFirstEscPress(in: workbench)
+        case .running:
+          workbench.publish(process)
+        case .failed:
+          return
+        }
+      }
   }
 
   override func validate(in workbench: Workbench) -> State {
-    return currentProcess == nil ? [.enabled] : []
+    return currentTask(in: workbench) == nil ? [.enabled] : []
   }
 }
 
@@ -88,7 +107,7 @@ final class Clean: BuildSystemCommand {
   }
 
   override func validate(in workbench: Workbench) -> State {
-    return currentProcess == nil ? [.enabled] : []
+    return currentTask(in: workbench) == nil ? [.enabled] : []
   }
 }
 
@@ -96,13 +115,12 @@ final class Clean: BuildSystemCommand {
 // MARK: - Basic build command
 
 class BuildSystemCommand: Command {
-  var currentProcess: Process? {
-    get { return (BuildSystemModule.plugin as? BuildSystemPlugin)?.currentProcess }
-    set { (BuildSystemModule.plugin as? BuildSystemPlugin)?.currentProcess = newValue }
-  }
-
   init(name: String, keyEquivalent: String, toolbarIcon: NSImage? = nil) {
     super.init(name: name, menuPath: "Tools", keyEquivalent: keyEquivalent, toolbarIcon: toolbarIcon)
+  }
+
+  func currentTask(in workbench: Workbench) -> BuildSystemTask? {
+    return workbench.tasks.first { $0 is BuildSystemTask } as? BuildSystemTask
   }
 
   func showConsoleTillFirstEscPress(in workbench: Workbench) {
@@ -121,12 +139,16 @@ class BuildSystemCommand: Command {
 
     workbench.debugArea?.isHidden = false
   }
+}
 
-  func launcherHandler(status: BuildStatus, process: Process?) -> Void {
-    if status == .running && process?.isRunning ?? false {
-      currentProcess = process
-    } else {
-      currentProcess = nil
-    }
+
+// MARK: - Build system task
+
+class BuildSystemTask: WorkbenchProcess {}
+
+fileprivate extension Workbench {
+  func publish(_ process: Process?) {
+    guard let process = process, process.isRunning else { return }
+    self.publish(task: BuildSystemTask(process))
   }
 }
