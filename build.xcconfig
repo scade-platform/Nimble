@@ -1,12 +1,11 @@
 //
-//  Plugin.xcconfig
+//  build.xcconfig
 //
-//  Created by Grigory Markin on 01.03.19.
+//  Created by Grigory Markin on 25.04.2020.
 //
 
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
-
-
-// Mac OS SDK 10.11
-MACOSX_DEPLOYMENT_TARGET = 10.13
+ 
+DSTROOT = ../
+MACOSX_DEPLOYMENT_TARGET = 10.14

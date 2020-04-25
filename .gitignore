@@ -3,5 +3,8 @@
 Package.resolved
 xcuserdata
 
+# Default install dir
+Applications
+
 # Emacs Backup Files #
 *~

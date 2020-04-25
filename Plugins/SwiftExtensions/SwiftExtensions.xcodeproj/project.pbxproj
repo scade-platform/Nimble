@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D77F337B23A4619500E3AFC8 /* bin in Resources */ = {isa = PBXBuildFile; fileRef = D77F337923A4619500E3AFC8 /* bin */; };
 		D7BEC81722B915D100A8F48B /* SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEC81622B915D100A8F48B /* SwiftExtensions.swift */; };
 		D7D4BD2B23FCA7A70063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD2A23FCA7A70063BD8F /* NimbleCore */; };
 		D7D4BD4E23FCAFEC0063BD8F /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = D7D4BD4D23FCAFEC0063BD8F /* package.yml */; };
@@ -130,7 +129,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D77F337B23A4619500E3AFC8 /* bin in Resources */,
 				D7D4BD4E23FCAFEC0063BD8F /* package.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
