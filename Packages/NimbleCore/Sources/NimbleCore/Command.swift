@@ -99,10 +99,9 @@ public extension CommandObserver {
 
 
 public class CommandManager {
-  private var _commands: [String: Command] = [:]
   private var _groups: [String: CommandGroup] = [:]
 
-  public var commands: [Command] { Array(_commands.values) }
+  public private(set) var commands: [Command] = []
   public var groups: [CommandGroup] { Array(_groups.values) }
 
   public var observers = ObserverSet<CommandObserver>()
@@ -110,7 +109,7 @@ public class CommandManager {
   private init() {}
 
   public func command(name: String) -> Command? {
-    return _commands[name]
+    return commands.first{$0.name == name}
   }
 
   public func group(name: String) -> CommandGroup? {
@@ -118,8 +117,8 @@ public class CommandManager {
   }
 
   public func register(command: Command) {
-    guard _commands[command.name] == nil else { return }
-    _commands[command.name] = command
+    guard self.command(name: command.name) == nil else { return }
+    commands.append(command)
 
     observers.notify {
       $0.commandDidRegister(command)
