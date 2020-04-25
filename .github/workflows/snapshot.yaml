@@ -8,15 +8,20 @@ on:
 
 jobs:
   build:
-    runs-on: [self-hosted, macOS]
+    runs-on: [self-hosted, macOS]    
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
+    
+    # Clean manually because Xcode cannot correctly clean SPM packages breaking the whole workflow
+    - name: Clean build files
+      run: |
+        find ~/Library/Developer/Xcode/DerivedData -type d -name "Nimble-*" -exec rm -rf {}/Build \;
         
     - name: Build Xcode project
       run: |
-        xcodebuild -workspace Nimble.xcworkspace -scheme Nimble -configuration=Release -xcconfig build.xcconfig clean install
+        xcodebuild -workspace Nimble.xcworkspace -scheme Nimble -configuration=Release -xcconfig build.xcconfig install
         
     - name : Compress
       run: |
