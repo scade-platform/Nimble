@@ -65,8 +65,10 @@ class NimbleController: NSDocumentController {
   override func openDocument(withContentsOf url: URL, display displayDocument: Bool,
                              completionHandler: @escaping (NSDocument?, Bool, Error?) -> Void) {
 
-    self.openDocument(openDocument(withContentsOf: url, in: currentWorkbench,
-                                   display: displayDocument, completionHandler: completionHandler))
+    self.openDocument(withContentsOf: url,
+                      in: currentWorkbench,
+                      display: displayDocument,
+                      completionHandler: completionHandler)
   }
 
   func openDocument(withContentsOf url: URL,
@@ -165,7 +167,7 @@ extension NimbleController: DocumentController {
   func openDocument(_ doc: Document, in workbench: Workbench?, display displayDocument: Bool) {
     noteNewRecentDocument(doc)
 
-    if let workbench = currentWorkbench, displayDocument {
+    if let workbench = workbench ?? currentWorkbench, displayDocument {
       workbench.open(doc, show: true)
     }
   }
