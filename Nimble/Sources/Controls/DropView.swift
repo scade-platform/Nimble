@@ -32,11 +32,14 @@ class DropView: NSSplitView, NimbleWorkbenchView {
   override func performDragOperation(_ info: NSDraggingInfo) -> Bool {
     let pasteboard = info.draggingPasteboard
             
-    guard let nimbleCtrl = (NSDocumentController.shared as? NimbleController) else { return false}
-    guard let urls = pasteboard.readObjects(forClasses: [NSURL.self], options: filteringOptions) as? [URL] else { return false }
-        
+    guard let controller = NSDocumentController.shared as? NimbleController,
+          let workbench = self.window?.windowController as? NimbleWorkbench,
+          let urls = pasteboard.readObjects(forClasses: [NSURL.self], options: filteringOptions) as? [URL] else {
+      return false
+    }
+
     urls.forEach {
-      nimbleCtrl.open(url: $0)
+      controller.open(url: $0, in: workbench)
     }
     
     return false
