@@ -1,0 +1,27 @@
+name: snapshot
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: [self-hosted, macOS]
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build Xcode project
+      run: |
+        xcodebuild -workspace Nimble.xcworkspace -scheme Nimble -configuration=Release -xcconfig build.xcconfig install
+        
+    - name : Compress
+      run: |
+        hdiutil create -volname Nimble -srcfolder ./Applications -ov -format UDZO Nimble.dmg
+      
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: Nimble
+        path: ./Nimble.dmg
