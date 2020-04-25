@@ -16,7 +16,7 @@ jobs:
         
     - name: Build Xcode project
       run: |
-        xcodebuild -workspace Nimble.xcworkspace -scheme Nimble -configuration=Release -xcconfig build.xcconfig install
+        xcodebuild -workspace Nimble.xcworkspace -scheme Nimble -configuration=Release -xcconfig build.xcconfig clean install
         
     - name : Compress
       run: |
