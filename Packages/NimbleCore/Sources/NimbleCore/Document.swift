@@ -184,6 +184,10 @@ public class DocumentManager {
     return documentClasses.filter { $0.canOpen(uti) }
   }
 
+  public func selectDocumentClasses(for file: File) -> [Document.Type] {
+    return documentClasses.filter { $0.canOpen(file) }
+  }
+
   private func selectDocumentClass(for file: File) -> Document.Type? {
     let classes = documentClasses.filter{$0.canOpen(file)}
     return classes.first{$0.isDefault(for: file)} ?? classes.first ?? defaultDocument
