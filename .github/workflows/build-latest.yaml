@@ -18,7 +18,9 @@ jobs:
     - name: Create Release
       uses: ncipollo/release-action@v1
       with:
+        tag: latest
         commit: master
+        prerelease: true
         allowUpdates: true
         replacesArtifacts: true
         artifacts: "Nimble.dmg"
