@@ -40,8 +40,8 @@ class ContextOutlineView : NSOutlineView {
 extension ContextOutlineView : ContextMenuProvider {
   
   static func menuItems(for file: File) -> [NSMenuItem] {
-    var docClasses = DocumentManager.shared.selectDocumentClasses(for: file.url.uti)
-    let _ = docClasses.partition(by: { !$0.isDefault(for: file.url.uti)})
+    var docClasses = DocumentManager.shared.selectDocumentClasses(for: file)
+    let _ = docClasses.partition(by: { !$0.isDefault(for: file)})
 
     var openAsItems: [NSMenuItem] = docClasses.map {
       createMenuItem(title: title(of: $0), selector: #selector(openAsAction), for: file)
@@ -96,7 +96,7 @@ extension ContextOutlineView : ContextMenuProvider {
       guard let file = menuItem.representedObject as? File else { return }
 
       guard let docType = DocumentManager.shared
-              .selectDocumentClasses(for: file.url.uti)
+              .selectDocumentClasses(for: file)
               .first(where: { ContextOutlineView.title(of: $0) == menuItem.title} ) else { return }
 
       guard let doc = DocumentManager.shared.open(file: file, docType: docType) else { return }
