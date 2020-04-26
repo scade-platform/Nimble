@@ -1,0 +1,26 @@
+name: build-latest
+on:
+  push:
+    branches: [ master ]    
+jobs:
+  build:
+    runs-on: [self-hosted, macOS]    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Build
+      run: ./build.sh              
+    
+    # Create a pre-release with the "latest" tag 
+    - name: Create Release 
+    - uses: ncipollo/release-action@v1
+      with:
+        commit: master
+        allowUpdates: true
+        replacesArtifacts: true
+        artifacts: "Nimble.dmg"
+        token: ${{ secrets.GITHUB_TOKEN }}
+
