@@ -15,8 +15,8 @@ jobs:
       run: ./build.sh              
     
     # Create a pre-release with the "latest" tag 
-    - name: Create Release 
-    - uses: ncipollo/release-action@v1
+    - name: Create Release
+      uses: ncipollo/release-action@v1
       with:
         commit: master
         allowUpdates: true
