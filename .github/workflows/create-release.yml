@@ -1,0 +1,24 @@
+name: create-release
+on:
+  push:    
+    tags:
+      - 'v*'
+jobs:
+  build:
+    runs-on: [self-hosted, macOS]    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Build
+      run: ./build.sh              
+    
+    - name: Create Release
+      uses: ncipollo/release-action@v1
+      with:                        
+        allowUpdates: true
+        replacesArtifacts: true
+        artifacts: "Nimble.dmg"
+        token: ${{ secrets.GITHUB_TOKEN }}
