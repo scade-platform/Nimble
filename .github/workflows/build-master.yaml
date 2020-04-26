@@ -1,7 +1,9 @@
-name: build-latest
+name: build-master
 on:
   push:
     branches: [ master ]    
+  pull_request:
+    branches: [ master ]
 jobs:
   build:
     runs-on: [self-hosted, macOS]    

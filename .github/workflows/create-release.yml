@@ -2,7 +2,7 @@ name: create-release
 on:
   push:
     tags:
-      - '*'
+      - 'v*'
 jobs:
   build:
     runs-on: [self-hosted, macOS]    
@@ -17,7 +17,8 @@ jobs:
     
     - name: Create Release
       uses: ncipollo/release-action@v1
-      with:                        
+      with:
+        prerelease: true
         allowUpdates: true
         replacesArtifacts: true
         artifacts: "Nimble.dmg"
