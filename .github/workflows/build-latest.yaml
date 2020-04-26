@@ -14,15 +14,8 @@ jobs:
     - name: Build
       run: ./build.sh              
     
-    # Create a pre-release with the "latest" tag 
-    - name: Create Release
-      uses: ncipollo/release-action@v1
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
       with:
-        tag: latest
-        commit: master
-        prerelease: true
-        allowUpdates: true
-        replacesArtifacts: true
-        artifacts: "Nimble.dmg"
-        token: ${{ secrets.GITHUB_TOKEN }}
-
+        name: Nimble.dmg
+        path: ./Nimble.dmg

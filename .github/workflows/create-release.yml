@@ -1,8 +1,8 @@
 name: create-release
 on:
-  push:    
+  push:
     tags:
-      - 'v*'
+      - '*'
 jobs:
   build:
     runs-on: [self-hosted, macOS]    
