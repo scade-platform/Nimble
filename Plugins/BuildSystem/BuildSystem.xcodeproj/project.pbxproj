@@ -13,7 +13,7 @@
 		0C3469DF239F5DFF00319613 /* SwiftBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3469DE239F5DFF00319613 /* SwiftBuildSystem.swift */; };
 		0C3C32E823A2A559009A15D1 /* SPMBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3C32E723A2A559009A15D1 /* SPMBuildSystem.swift */; };
 		0C92E52823950E3E00B073DE /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C92E52723950E3E00B073DE /* Plugin.swift */; };
-		0CED75E023FFDC7A00E13F68 /* Automatic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED75DF23FFDC7A00E13F68 /* Automatic.swift */; };
+		0CCDB13B245708A900A83CEC /* Target.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCDB13A245708A900A83CEC /* Target.swift */; };
 		D7BD82DC245319780058815F /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BD82DB245319780058815F /* Commands.swift */; };
 		D7D4BD4623FCAE130063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD4523FCAE130063BD8F /* NimbleCore */; };
 		D7F156A82447600F00AFBE67 /* LSPClient in Frameworks */ = {isa = PBXBuildFile; productRef = 0C8393922445823E002A7462 /* LSPClient */; };
@@ -29,7 +29,7 @@
 		0C92E51823950DEE00B073DE /* BuildSystem.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BuildSystem.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C92E51B23950DEE00B073DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0C92E52723950E3E00B073DE /* Plugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
-		0CED75DF23FFDC7A00E13F68 /* Automatic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Automatic.swift; sourceTree = "<group>"; };
+		0CCDB13A245708A900A83CEC /* Target.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Target.swift; sourceTree = "<group>"; };
 		D7BD82DB245319780058815F /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		D7F156A9244767FD00AFBE67 /* package.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = package.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -77,13 +77,13 @@
 		0C92E52623950E1D00B073DE /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				0CED75DF23FFDC7A00E13F68 /* Automatic.swift */,
 				0C3469CE2397A0E600319613 /* BuildSystem.swift */,
 				D7BD82DB245319780058815F /* Commands.swift */,
 				0C92E52723950E3E00B073DE /* Plugin.swift */,
 				0C3469D02397D04600319613 /* ShellBuildTool.swift */,
 				0C3C32E723A2A559009A15D1 /* SPMBuildSystem.swift */,
 				0C3469DE239F5DFF00319613 /* SwiftBuildSystem.swift */,
+				0CCDB13A245708A900A83CEC /* Target.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -161,12 +161,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CED75E023FFDC7A00E13F68 /* Automatic.swift in Sources */,
 				0C3469D12397D04600319613 /* ShellBuildTool.swift in Sources */,
 				D7BD82DC245319780058815F /* Commands.swift in Sources */,
 				0C3469CF2397A0E600319613 /* BuildSystem.swift in Sources */,
 				0C3C32E823A2A559009A15D1 /* SPMBuildSystem.swift in Sources */,
 				0C3469DF239F5DFF00319613 /* SwiftBuildSystem.swift in Sources */,
+				0CCDB13B245708A900A83CEC /* Target.swift in Sources */,
 				0C92E52823950E3E00B073DE /* Plugin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -18,30 +18,31 @@ final class Run: BuildSystemCommand {
 
   override func run(in workbench: Workbench) {
     showConsoleTillFirstEscPress(in: workbench)
-    BuildSystemsManager.shared.activeBuildSystem?.run(in: workbench) { [weak self] status, process in
-      switch status {
-      case .finished:
-        DispatchQueue.main.async { [weak self] in
-          self?.showConsoleTillFirstEscPress(in: workbench)
-          BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: workbench) { status, process in
-            switch status {
-            case .running:
-              workbench.publish(process)
-            default:
-              return
-            }
-          }
-        }
+    //TODO: improve call using new API
+//    BuildSystemsManager.shared.activeBuildSystem?.run(in: workbench) { [weak self] status, process in
+//      switch status {
+//      case .finished:
+//        DispatchQueue.main.async { [weak self] in
+//          self?.showConsoleTillFirstEscPress(in: workbench)
+//          BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: workbench) { status, process in
+//            switch status {
+//            case .running:
+//              workbench.publish(process)
+//            default:
+//              return
+//            }
+//          }
+//        }
 
-      case .running:
-        workbench.publish(process)
-
-      case .failed:
-        return
-      }
-    }
+//      case .running:
+//        workbench.publish(process)
+//
+//      case .failed:
+//        return
+//      }
+//    }
   }
-
+  
   override func validate(in workbench: Workbench) -> State {
     return currentTask(in: workbench) == nil ? [.enabled] : []
   }
@@ -79,16 +80,17 @@ final class Build: BuildSystemCommand {
 
   override func run(in workbench: Workbench) {
     showConsoleTillFirstEscPress(in: workbench)
-    BuildSystemsManager.shared.activeBuildSystem?.run(in: workbench) {[weak self] status, process in
-        switch status {
-        case .finished:
-          self?.showConsoleTillFirstEscPress(in: workbench)
-        case .running:
-          workbench.publish(process)
-        case .failed:
-          return
-        }
-      }
+    //TODO: improve call using new API
+//    BuildSystemsManager.shared.activeBuildSystem?.run(in: workbench) {[weak self] status, process in
+//        switch status {
+//        case .finished:
+//          self?.showConsoleTillFirstEscPress(in: workbench)
+//        case .running:
+//          workbench.publish(process)
+//        case .failed:
+//          return
+//        }
+//      }
   }
 
   override func validate(in workbench: Workbench) -> State {
@@ -103,7 +105,8 @@ final class Clean: BuildSystemCommand {
 
   override func run(in workbench: Workbench) {
     showConsoleTillFirstEscPress(in: workbench)
-    BuildSystemsManager.shared.activeBuildSystem?.clean(in: workbench)
+    //TODO: improve call using new API
+//    BuildSystemsManager.shared.activeBuildSystem?.clean(in: workbench)
   }
 
   override func validate(in workbench: Workbench) -> State {
