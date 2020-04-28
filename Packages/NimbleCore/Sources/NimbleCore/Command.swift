@@ -32,6 +32,7 @@ open class Command {
   
   // Toolbar item
   public let toolbarIcon: NSImage?
+  public let view: NSView?
 
   // Actions
   private let handler: Handler
@@ -58,6 +59,21 @@ open class Command {
     self.menuPath = menuPath
     self.keyEquivalent = keyEquivalent
     self.toolbarIcon = toolbarIcon
+    self.view = nil
+    self.handler = handler
+  }
+  
+  public init(name: String,
+              menuPath: String? = nil,
+              keyEquivalent: String? = nil ,
+              view: NSView? = nil,
+              handler: (@escaping Handler) = { _ in return } ) {
+
+    self.name = name
+    self.menuPath = menuPath
+    self.keyEquivalent = keyEquivalent
+    self.toolbarIcon = nil
+    self.view = view
     self.handler = handler
   }
 }

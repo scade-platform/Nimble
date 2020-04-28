@@ -98,7 +98,7 @@ class ToolbarTargetControl : NSView {
     let targets = [Target]()
     let menu = NSMenu()
     targets.forEach{addMenuItem(target: $0, to: menu)}
-    menu.popUp(positioning: menu.item(at: 0), at: NSEvent.mouseLocation, in: nil)
+//    menu.popUp(positioning: menu.item(at: 0), at: NSEvent.mouseLocation, in: nil)
 
   }
   
