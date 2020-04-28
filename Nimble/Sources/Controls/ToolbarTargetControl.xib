@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="y7O-XZ-bbO" customClass="ToolbarTargetControl" customModule="Nimble" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="174" height="23"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QRt-K6-Inr">
+                    <rect key="frame" x="5" y="0.0" width="164" height="23"/>
+                    <subviews>
+                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LZQ-cE-3vn">
+                            <rect key="frame" x="0.0" y="5" width="14" height="14"/>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="q5Z-fx-RUx"/>
+                        </imageView>
+                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0QE-se-Aho">
+                            <rect key="frame" x="17" y="4" width="37" height="16"/>
+                            <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="EWB-38-QeA">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lG4-dI-2Zh">
+                            <rect key="frame" x="57" y="4" width="9" height="15"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="9" id="NS3-9d-EBC"/>
+                            </constraints>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSRightFacingTriangleTemplate" id="lEP-CQ-aOl"/>
+                        </imageView>
+                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lS8-5x-2jn">
+                            <rect key="frame" x="71" y="5" width="14" height="14"/>
+                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="4hR-iZ-Glc"/>
+                        </imageView>
+                        <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cuY-hk-ij8">
+                            <rect key="frame" x="88" y="4" width="78" height="16"/>
+                            <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="ksK-CO-k5d">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="lG4-dI-2Zh" secondAttribute="bottom" constant="4" id="Jkm-4c-nsu"/>
+                        <constraint firstItem="lG4-dI-2Zh" firstAttribute="top" secondItem="QRt-K6-Inr" secondAttribute="top" constant="4" id="wXu-To-hTo"/>
+                    </constraints>
+                    <visibilityPriorities>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                    </visibilityPriorities>
+                    <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                    </customSpacing>
+                </stackView>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="lPP-PH-Dzw">
+                    <rect key="frame" x="5" y="0.0" width="66" height="23"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="23" id="iQ8-Hm-Yfn"/>
+                    </constraints>
+                    <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="2hP-Gn-jxt">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="leftButtonDidClick:" target="y7O-XZ-bbO" id="bN2-q7-7H9"/>
+                    </connections>
+                </button>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="s87-Wr-Afl">
+                    <rect key="frame" x="76" y="0.0" width="93" height="23"/>
+                    <buttonCell key="cell" type="roundTextured" bezelStyle="texturedRounded" alignment="center" lineBreakMode="truncatingTail" state="on" imageScaling="proportionallyDown" inset="2" id="aXw-RP-sRR">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="rightButtonDidClick:" target="y7O-XZ-bbO" id="1dy-wL-3MI"/>
+                    </connections>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstItem="QRt-K6-Inr" firstAttribute="leading" secondItem="y7O-XZ-bbO" secondAttribute="leading" constant="5" id="08Q-af-h1Y"/>
+                <constraint firstItem="lPP-PH-Dzw" firstAttribute="bottom" secondItem="QRt-K6-Inr" secondAttribute="bottom" id="Cb7-Yb-cER"/>
+                <constraint firstItem="lPP-PH-Dzw" firstAttribute="leading" secondItem="LZQ-cE-3vn" secondAttribute="leading" id="KKx-kS-rDd"/>
+                <constraint firstAttribute="bottom" secondItem="QRt-K6-Inr" secondAttribute="bottom" id="eFx-Wi-Y3w"/>
+                <constraint firstItem="s87-Wr-Afl" firstAttribute="leading" secondItem="lS8-5x-2jn" secondAttribute="leading" id="ghr-f3-isa"/>
+                <constraint firstItem="QRt-K6-Inr" firstAttribute="top" secondItem="y7O-XZ-bbO" secondAttribute="top" id="kF0-pX-0YW"/>
+                <constraint firstItem="s87-Wr-Afl" firstAttribute="bottom" secondItem="QRt-K6-Inr" secondAttribute="bottom" id="kbd-GP-J5a"/>
+                <constraint firstAttribute="trailing" secondItem="QRt-K6-Inr" secondAttribute="trailing" constant="5" id="mVu-Tm-YrB"/>
+                <constraint firstItem="lPP-PH-Dzw" firstAttribute="trailing" secondItem="lG4-dI-2Zh" secondAttribute="trailing" id="nVj-Xj-j7m"/>
+                <constraint firstItem="s87-Wr-Afl" firstAttribute="trailing" secondItem="cuY-hk-ij8" secondAttribute="trailing" id="paH-HW-Iih"/>
+                <constraint firstItem="s87-Wr-Afl" firstAttribute="top" secondItem="QRt-K6-Inr" secondAttribute="top" id="r9t-Y9-Bta"/>
+                <constraint firstItem="lPP-PH-Dzw" firstAttribute="top" secondItem="QRt-K6-Inr" secondAttribute="top" id="xrA-sc-afe"/>
+            </constraints>
+            <connections>
+                <outlet property="leftImage" destination="LZQ-cE-3vn" id="YaU-Hb-7h5"/>
+                <outlet property="leftLable" destination="0QE-se-Aho" id="V9a-u1-dU4"/>
+                <outlet property="rightImage" destination="lS8-5x-2jn" id="Pes-iI-cso"/>
+                <outlet property="rightLable" destination="cuY-hk-ij8" id="v0K-eR-zhk"/>
+                <outlet property="separatorImage" destination="lG4-dI-2Zh" id="UMd-mz-48d"/>
+            </connections>
+            <point key="canvasLocation" x="-82" y="193.5"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="NSActionTemplate" width="14" height="14"/>
+        <image name="NSRightFacingTriangleTemplate" width="9" height="12"/>
+    </resources>
+</document>
