@@ -94,11 +94,10 @@ class ToolbarTargetControl : NSView {
     guard let workbench = self.window?.windowController as? Workbench else {
       return
     }
-    //TODO: get list of targets from current workbench
-    let targets = [Target]()
+    let targets = BuildSystemsManager.shared.buildSystems.targets(for: workbench)
     let menu = NSMenu()
     targets.forEach{addMenuItem(target: $0, to: menu)}
-//    menu.popUp(positioning: menu.item(at: 0), at: NSEvent.mouseLocation, in: nil)
+    menu.popUp(positioning: menu.item(at: 0), at: NSEvent.mouseLocation, in: nil)
 
   }
   

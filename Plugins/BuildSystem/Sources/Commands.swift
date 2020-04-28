@@ -119,6 +119,10 @@ final class SelectTarget: Command {
     let view = ToolbarTargetControl.loadFromNib()
     super.init(name: "Select Target", menuPath: nil, keyEquivalent: nil, view: view)
   }
+  
+  override func validate(in workbench: Workbench) -> State {
+    return BuildSystemsManager.shared.buildSystems.hasTargets(for: workbench) ? [.enabled] : []
+  }
 }
 
 

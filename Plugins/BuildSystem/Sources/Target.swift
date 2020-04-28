@@ -11,8 +11,15 @@ import NimbleCore
 
 public struct Target {
   let name: String
-  let icon: Icon? = nil
+  let icon: Icon? 
   let variants: [Variant] 
+}
+
+extension Target : Equatable {
+  public static func == (lhs: Target, rhs: Target) -> Bool {
+    //TODO: compare icons
+    return lhs.name == rhs.name
+  }
 }
 
 public struct Variant {

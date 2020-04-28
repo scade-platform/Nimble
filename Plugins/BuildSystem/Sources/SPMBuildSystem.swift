@@ -18,7 +18,7 @@ class SPMBuildSystem: BuildSystem {
   
   func targets(from workbench: Workbench) -> [Target] {
     guard let folders = workbench.project?.folders else { return [] }
-    return folders.filter{ canHandle(folder: $0) }.map{ Target(name: $0.name, variants: [SPMBuildSystem.mac(source: $0)]) }
+    return folders.filter{ canHandle(folder: $0) }.map{ Target(name: $0.name, icon: nil, variants: [SPMBuildSystem.mac(source: $0)]) }
   }
   
   func run(_ variant: Variant, in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {

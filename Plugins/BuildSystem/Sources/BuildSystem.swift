@@ -59,3 +59,20 @@ public class BuildSystemsManager {
   }
  
 }
+
+extension Array where Element == BuildSystem {
+  func targets(for workbench: Workbench) -> [Target] {
+    let allTargets = self.flatMap{$0.targets(from: workbench)}
+    return allTargets.reduce([]) { result, target -> [Target] in
+      guard let accTarget = result.first(where: {$0 == target} ) else {
+        return result + [target]
+      }
+      let newAccTarget = Target(name: target.name, icon: target.icon, variants: accTarget.variants + target.variants)
+      return result.filter{$0.name != target.name} + [newAccTarget]
+    }
+  }
+  
+  func hasTargets(for workbench: Workbench) -> Bool {
+    self.contains{!$0.targets(from: workbench).isEmpty}
+  }
+}
