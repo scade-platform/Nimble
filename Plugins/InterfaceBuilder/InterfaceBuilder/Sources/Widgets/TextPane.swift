@@ -75,7 +75,15 @@ class TextPane: NSViewController {
   }
   
   private func setFields(widget: SCDWidgetsTextWidget) {
+    if widget.font == nil {
+      let font = SCDGraphicsFont()
+      font.fontFamily = "ArialMT"
+      font.size = 17
+      widget.font = font
+    }
+
     guard let font = widget.font else { return }
+
     if let currentFont = NSFont(name: font.fontFamily, size: CGFloat(font.size)) {
       let familyName = currentFont.familyName
       familyPopUpButton?.selectItem(withTitle: familyName!)
