@@ -11,14 +11,15 @@ import NimbleCore
 import SKLocalServer
 
 class SwiftBuildSystem: BuildSystem {
+  
   var name: String {
     return "Swift File"
   }
   
-  var targets: [Target] {
-    //TODO: add get Targets logic
-    return []
-  }
+  func targets(from workbench: Workbench) -> [Target] {
+      //TODO: add get Targets logic
+     return []
+   }
   
   func run(_ variant: Variant, in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
     //TODO: add launch logic

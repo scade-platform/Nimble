@@ -9,16 +9,31 @@
 import Foundation
 import NimbleCore
 
-public protocol Target {
-  var name: String { get }
-  var variants: [Variant] { get }
+public struct Target {
+  let name: String
+  let icon: Icon? = nil
+  let variants: [Variant] 
 }
 
 public struct Variant {
+  
   let name: String
   let icon: Icon?
+  let source: Any?
   
-  let runHendler: ((Workbench) -> Void)?
-  let buildHendler: ((Workbench) -> Void)?
-  let cleanHendler: ((Workbench) -> Void)?
+  let createRunProcess: (() -> Process?)?
 }
+
+extension Variant {
+  var sourceName : String {
+    switch self.source {
+    case let folder as Folder:
+      return "\(self.name) - \(folder.path.string)"
+    case let file as File:
+      return "\(self.name) - \(file.path.string)"
+    default:
+      return ""
+    }
+  }
+}
+

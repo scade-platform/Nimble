@@ -11,7 +11,8 @@ import NimbleCore
 
 public protocol BuildSystem {
   var name: String { get }
-  var targets: [Target] { get }
+  
+  func targets(from workbench: Workbench) -> [Target]
   
   func run(_ variant: Variant, in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?)
   func build(_ variant: Variant, in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?)

@@ -11,17 +11,40 @@ import NimbleCore
 import SKLocalServer
 
 class SPMBuildSystem: BuildSystem {
+  
   var name: String {
     return "Swift Package"
   }
   
-  var targets: [Target] {
-    //TODO: add get Targets logic
-    return []
+  func targets(from workbench: Workbench) -> [Target] {
+    guard let folders = workbench.project?.folders else { return [] }
+    return folders.filter{ canHandle(folder: $0) }.map{ Target(name: $0.name, variants: [SPMBuildSystem.mac(source: $0)]) }
   }
   
   func run(_ variant: Variant, in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
-    //TODO: add launch logic
+    guard let process = variant.createRunProcess?() else {
+      handler?(.failed, nil)
+      return
+    }
+    
+    guard let console = openConsole(key: variant.sourceName, title: "Run: \(variant.name)", in: workbench),
+      !console.isReadingFromBuffer
+      else {
+        //The console is using by another process with the same representedObject
+        return
+    }
+    
+    process.terminationHandler = { process in
+      console.stopReadingFromBuffer()
+      handler?(.finished, process)
+    }
+    
+    process.standardOutput = console.output
+    process.standardError = console.output
+    console.startReadingFromBuffer()
+    
+    try? process.run()
+    handler?(.running, process)
   }
   
   func build(_ variant: Variant, in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
@@ -32,7 +55,45 @@ class SPMBuildSystem: BuildSystem {
     //TODO: add clean logic
   }
 }
-  
+
+//API level - private
+private extension SPMBuildSystem {
+  func canHandle(folder: Folder) -> Bool {
+    guard let files = try? folder.files() else { return false }
+    if files.contains(where: {$0.name.lowercased() == "package.swift"}) {
+      return true
+    }
+    return false
+  }
+}
+
+//Mac variants
+private extension SPMBuildSystem {
+  static func mac(source: Folder) -> Variant {
+    func createRunProcess() -> Process? {
+      let proc = Process()
+      proc.currentDirectoryURL = source.url
+      proc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
+      proc.arguments = ["run", "--skip-build"]
+      
+      let toolchain = SKLocalServer.swiftToolchain
+      if !toolchain.isEmpty {
+        proc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
+      } else {
+        proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
+      }
+      return proc
+    }
+    
+    return Variant(name: "mac", icon: nil, source: source, createRunProcess: createRunProcess)
+  }
+}
+
+extension SPMBuildSystem : ConsoleSupport {}
+
+
+
+
 //  lazy var launcher: Launcher? = {
 //    return SPMLauncher()
 //  }()
@@ -126,13 +187,6 @@ class SPMBuildSystem: BuildSystem {
 //    try? proc.run()
 //  }
 //
-//  func canHandle(folder: Folder) -> Bool {
-//    guard let files = try? folder.files() else { return false }
-//    if files.contains(where: {$0.name.lowercased() == "package.swift"}) {
-//      return true
-//    }
-//    return false
-//  }
 //
 //}
 //
