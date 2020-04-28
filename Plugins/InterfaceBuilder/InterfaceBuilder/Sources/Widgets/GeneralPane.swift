@@ -91,24 +91,38 @@ class GeneralPane: NSViewController {
   }
   
   @IBAction func nameDidChange(_ sender: Any?) {
-    guard let value = nameTextField?.stringValue else { return }
-    
-    widget?.name = value
-    documentDidChange()
+    guard let value = nameTextField?.stringValue,
+          let widget = widget
+    else { return }
+
+    if widget.name != value {
+      widget.name = value
+      documentDidChange()
+    }
   }
   
   @IBAction func accessibilityDidChange(_ sender: Any) {
-    guard accessibillityView?.isHidden == false, let value = accessibillityTextField?.stringValue, let drawing = widget?.drawing else { return }
+    guard accessibillityView?.isHidden == false,
+          let value = accessibillityTextField?.stringValue,
+          let drawing = widget?.drawing
+    else { return }
     
-    drawing.accessibilityLabel = value
-    documentDidChange()
+    if drawing.accessibilityLabel != value {
+      drawing.accessibilityLabel = value
+      documentDidChange()
+    }
   }
   
   @IBAction func textDidChange(_ sender: Any) {
-    guard textView?.isHidden == false, let value = textTextField?.stringValue, let textWidget = widget as? SCDWidgetsTextWidget else { return }
+    guard textView?.isHidden == false,
+          let value = textTextField?.stringValue,
+          let textWidget = widget as? SCDWidgetsTextWidget
+    else { return }
     
-    textWidget.text = value
-    documentDidChange()
+    if textWidget.text != value {
+      textWidget.text = value
+      documentDidChange()
+    }
   }
   
   @IBAction func enableDidChange(_ sender: Any) {
@@ -119,7 +133,7 @@ class GeneralPane: NSViewController {
   }
   
   @IBAction func visibleDidChange(_ sender: Any) {
-    guard let value = visibleСheckbox?.state else { return }
+    guard let value = visibleСheckbox?.state else { return }  
     
     widget?.isVisible = value == .on
     documentDidChange()
