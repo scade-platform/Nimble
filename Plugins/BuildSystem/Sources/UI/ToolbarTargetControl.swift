@@ -71,23 +71,20 @@ class ToolbarTargetControl : NSView {
     let item = NSMenuItem(title: target.name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
     item.target = self
     item.representedObject = target
-    item.submenu = creatSubmenus(target: target, platforms: target.platforms)
+    item.submenu = creatSubmenus(target: target)
     menu.addItem(item)
   }
   
-  private func creatSubmenus(target: Target, platforms: [LaunchPlatform]) -> NSMenu? {
-    guard !platforms.isEmpty else {
+  private func creatSubmenus(target: Target) -> NSMenu? {
+    guard !target.variants.isEmpty else {
       return nil
     }
     
     let menu = NSMenu()
-    for platform in platforms {
-      let item = NSMenuItem(title: platform.name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
-      if let sublutforms = platform.subplatforms, let submenu = creatSubmenus(target: target, platforms: sublutforms) {
-        item.submenu = submenu
-      }
+    for variant in target.variants {
+      let item = NSMenuItem(title: variant.name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
       item.target = self
-      item.representedObject = target
+      item.representedObject = (target, variant)
       menu.addItem(item)
     }
     return menu
@@ -97,7 +94,8 @@ class ToolbarTargetControl : NSView {
     guard let workbench = self.window?.windowController as? Workbench else {
       return
     }
-    let targets = TargetManager.shared.targets(from: workbench)
+    //TODO: get list of targets from current workbench
+    let targets = [Target]()
     let menu = NSMenu()
     targets.forEach{addMenuItem(target: $0, to: menu)}
     menu.popUp(positioning: menu.item(at: 0), at: NSEvent.mouseLocation, in: nil)
@@ -109,14 +107,14 @@ class ToolbarTargetControl : NSView {
   }
   
   @objc func itemDidSelect(_ sender: Any?) {
-    guard let item = sender as? NSMenuItem, let target = item.representedObject as? Target else {
+    guard let item = sender as? NSMenuItem, let tuple = item.representedObject as? (Target, Variant) else {
       return
     }
 //    leftImage?.image = target.icon?.image
-    leftLable?.stringValue = target.name
+    leftLable?.stringValue = tuple.0.name
     
     separatorImage?.isHidden = false
     
-    rightLable?.stringValue = target.platforms[0].name
+    rightLable?.stringValue = tuple.1.name
   }
 }
