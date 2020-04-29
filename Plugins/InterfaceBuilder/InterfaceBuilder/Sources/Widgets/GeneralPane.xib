@@ -29,10 +29,10 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <stackView distribution="fill" orientation="vertical" alignment="centerX" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xch-PI-lHW">
-                    <rect key="frame" x="0.0" y="133" width="377" height="175"/>
+                    <rect key="frame" x="0.0" y="133" width="381" height="175"/>
                     <subviews>
                         <customView translatesAutoresizingMaskIntoConstraints="NO" id="pnT-EG-4xD" customClass="HeaderView" customModule="InterfaceBuilder" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="156" width="377" height="19"/>
+                            <rect key="frame" x="0.0" y="156" width="381" height="19"/>
                             <subviews>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Pbq-hN-QMv">
                                     <rect key="frame" x="12" y="0.0" width="58" height="14"/>
@@ -43,7 +43,7 @@
                                     </textFieldCell>
                                 </textField>
                                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZxP-VW-YBZ">
-                                    <rect key="frame" x="333" y="0.0" width="30" height="14"/>
+                                    <rect key="frame" x="337" y="0.0" width="30" height="14"/>
                                     <buttonCell key="cell" type="bevel" title="Hide" bezelStyle="rounded" alignment="center" state="on" imageScaling="proportionallyDown" inset="2" id="8sr-wO-k1x">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="smallSystemBold"/>
@@ -63,7 +63,7 @@
                             </constraints>
                         </customView>
                         <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iRq-0g-5d0">
-                            <rect key="frame" x="0.0" y="6" width="377" height="145"/>
+                            <rect key="frame" x="0.0" y="6" width="381" height="145"/>
                             <subviews>
                                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="Yct-wX-cHu">
                                     <rect key="frame" x="0.0" y="108" width="377" height="37"/>
@@ -87,7 +87,7 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
-                                                        <real key="value" value="-8"/>
+                                                        <real key="value" value="-5"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textFieldCell>
@@ -119,7 +119,7 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
-                                                        <real key="value" value="-8"/>
+                                                        <real key="value" value="-5"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textFieldCell>
@@ -159,7 +159,7 @@
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
-                                                        <real key="value" value="-8"/>
+                                                        <real key="value" value="-5"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textFieldCell>
@@ -254,12 +254,13 @@
                             </customSpacing>
                         </stackView>
                         <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="q63-cA-bNw">
-                            <rect key="frame" x="0.0" y="-2" width="377" height="5"/>
+                            <rect key="frame" x="2" y="-2" width="377" height="5"/>
                         </box>
                     </subviews>
                     <constraints>
                         <constraint firstItem="iRq-0g-5d0" firstAttribute="leading" secondItem="Xch-PI-lHW" secondAttribute="leading" id="my9-Fv-jd0"/>
                         <constraint firstItem="pnT-EG-4xD" firstAttribute="leading" secondItem="Xch-PI-lHW" secondAttribute="leading" id="tnn-DR-gCh"/>
+                        <constraint firstAttribute="trailing" secondItem="pnT-EG-4xD" secondAttribute="trailing" id="zsC-N2-Ofb"/>
                     </constraints>
                     <visibilityPriorities>
                         <integer value="1000"/>
@@ -277,7 +278,7 @@
                 <constraint firstItem="Xch-PI-lHW" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="7On-zS-aqB"/>
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Xch-PI-lHW" secondAttribute="bottom" id="Ahz-DF-ZYo"/>
                 <constraint firstItem="Xch-PI-lHW" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="KAX-bd-LqF"/>
-                <constraint firstAttribute="trailing" secondItem="Xch-PI-lHW" secondAttribute="trailing" constant="4" id="nKk-FV-w0n"/>
+                <constraint firstAttribute="trailing" secondItem="Xch-PI-lHW" secondAttribute="trailing" id="nKk-FV-w0n"/>
             </constraints>
             <point key="canvasLocation" x="87.5" y="20"/>
         </customView>

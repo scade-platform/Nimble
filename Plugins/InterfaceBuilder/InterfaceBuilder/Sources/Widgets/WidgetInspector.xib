@@ -22,12 +22,12 @@
                     <rect key="frame" x="0.0" y="0.0" width="294" height="493"/>
                     <subviews>
                         <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6JY-U7-P3e">
-                            <rect key="frame" x="0.0" y="493" width="294" height="0.0"/>
+                            <rect key="frame" x="0.0" y="485" width="294" height="0.0"/>
                         </stackView>
                     </subviews>
                     <constraints>
                         <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="6JY-U7-P3e" secondAttribute="bottom" id="73j-Si-AUQ"/>
-                        <constraint firstItem="6JY-U7-P3e" firstAttribute="top" secondItem="nvU-TJ-IHx" secondAttribute="top" id="9EO-FY-GsB"/>
+                        <constraint firstItem="6JY-U7-P3e" firstAttribute="top" secondItem="nvU-TJ-IHx" secondAttribute="top" constant="8" id="9EO-FY-GsB"/>
                         <constraint firstItem="6JY-U7-P3e" firstAttribute="leading" secondItem="nvU-TJ-IHx" secondAttribute="leading" id="a5S-oC-p88"/>
                         <constraint firstAttribute="trailing" secondItem="6JY-U7-P3e" secondAttribute="trailing" id="bgn-dw-4fb"/>
                     </constraints>
