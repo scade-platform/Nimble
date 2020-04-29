@@ -82,7 +82,7 @@
                                                 <constraint firstAttribute="height" constant="22" id="sYf-Cb-HLX"/>
                                             </constraints>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" bezelStyle="round" id="waO-yK-npg" customClass="PaddedTextFieldCell" customModule="InterfaceBuilder" customModuleProvider="target">
-                                                <font key="font" metaFont="message" size="11"/>
+                                                <font key="font" metaFont="menu" size="11"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <userDefinedRuntimeAttributes>
@@ -114,7 +114,7 @@
                                                 <constraint firstAttribute="height" constant="22" id="pHF-fP-lwx"/>
                                             </constraints>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" bezelStyle="round" id="koJ-F3-Hpz" customClass="PaddedTextFieldCell" customModule="InterfaceBuilder" customModuleProvider="target">
-                                                <font key="font" metaFont="message" size="11"/>
+                                                <font key="font" metaFont="menu" size="11"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <userDefinedRuntimeAttributes>
@@ -154,7 +154,7 @@
                                                 <constraint firstAttribute="height" constant="22" id="nHw-IC-fRZ"/>
                                             </constraints>
                                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" alignment="left" bezelStyle="round" id="bYU-T9-e60" customClass="PaddedTextFieldCell" customModule="InterfaceBuilder" customModuleProvider="target">
-                                                <font key="font" metaFont="message" size="11"/>
+                                                <font key="font" metaFont="menu" size="11"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <userDefinedRuntimeAttributes>
@@ -192,7 +192,7 @@
                                             <rect key="frame" x="-2" y="-2" width="58" height="18"/>
                                             <buttonCell key="cell" type="check" title="Enable" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="ptC-p8-fHb">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="message" size="11"/>
+                                                <font key="font" metaFont="menu" size="11"/>
                                             </buttonCell>
                                             <connections>
                                                 <action selector="enableDidChange:" target="-2" id="OhL-MF-QAe"/>
@@ -202,7 +202,7 @@
                                             <rect key="frame" x="62" y="-2" width="57" height="18"/>
                                             <buttonCell key="cell" type="check" title="Visible" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Z9q-XN-KHR">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="message" size="11"/>
+                                                <font key="font" metaFont="menu" size="11"/>
                                             </buttonCell>
                                             <connections>
                                                 <action selector="visibleDidChange:" target="-2" id="YFV-ag-KdP"/>
@@ -212,7 +212,7 @@
                                             <rect key="frame" x="125" y="-2" width="75" height="18"/>
                                             <buttonCell key="cell" type="check" title="Wrap Text" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="rOM-OV-0Rf">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                                <font key="font" metaFont="message" size="11"/>
+                                                <font key="font" metaFont="menu" size="11"/>
                                             </buttonCell>
                                             <connections>
                                                 <action selector="wrapTextDidChange:" target="-2" id="zaI-q0-LEM"/>

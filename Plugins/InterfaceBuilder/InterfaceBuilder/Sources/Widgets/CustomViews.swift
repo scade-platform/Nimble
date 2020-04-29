@@ -69,9 +69,12 @@ class HeaderView: NSView {
 
 class PaddedTextFieldCell: NSTextFieldCell {
   @IBInspectable var rightPadding: CGFloat = 5.0
+  @IBInspectable var leftPadding: CGFloat = 5.0
   
     override func drawingRect(forBounds rect: NSRect) -> NSRect {
-      let rectInset = NSMakeRect(rect.origin.x, rect.origin.y, rect.size.width + rightPadding, rect.size.height)
+      let rectInset = NSMakeRect(rect.origin.x + leftPadding , rect.origin.y, rect.size.width + rightPadding - leftPadding, rect.size.height)
       return super.drawingRect(forBounds: rectInset)
     }
 }
+
+
