@@ -929,11 +929,11 @@
                 <customObject id="5Tn-zl-jEV" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <viewController id="vg4-4s-T5h" customClass="InspectorView" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
                     <visualEffectView key="view" appearanceType="inheritedVibrantLight" blendingMode="behindWindow" material="contentBackground" state="followsWindowActiveState" id="UsA-Xn-Waa">
-                        <rect key="frame" x="0.0" y="0.0" width="226" height="400"/>
+                        <rect key="frame" x="0.0" y="0.0" width="235" height="400"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="3cH-oe-q4d" customClass="WorkbenchSidebar" customModule="Nimble" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="226" height="400"/>
+                                <rect key="frame" x="0.0" y="0.0" width="235" height="400"/>
                             </customView>
                         </subviews>
                         <constraints>
