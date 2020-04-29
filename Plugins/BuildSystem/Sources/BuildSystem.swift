@@ -12,7 +12,7 @@ import NimbleCore
 public protocol BuildSystem {
   var name: String { get }
   
-  func targets(from workbench: Workbench) -> [Target]
+  func targets(in workbench: Workbench) -> [Target]
   
   func run(_ variant: Variant, in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?)
   func build(_ variant: Variant, in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?)
@@ -61,8 +61,8 @@ public class BuildSystemsManager {
 }
 
 extension Array where Element == BuildSystem {
-  func targets(for workbench: Workbench) -> [Target] {
-    let allTargets = self.flatMap{$0.targets(from: workbench)}
+  func targets(in workbench: Workbench) -> [Target] {
+    let allTargets = self.flatMap{$0.targets(in: workbench)}
     return allTargets.reduce([]) { result, target -> [Target] in
       guard let accTarget = result.first(where: {$0 == target} ) else {
         return result + [target]
@@ -72,7 +72,7 @@ extension Array where Element == BuildSystem {
     }
   }
   
-  func hasTargets(for workbench: Workbench) -> Bool {
-    self.contains{!$0.targets(from: workbench).isEmpty}
+  func hasTargets(in workbench: Workbench) -> Bool {
+    self.contains{!$0.targets(in: workbench).isEmpty}
   }
 }

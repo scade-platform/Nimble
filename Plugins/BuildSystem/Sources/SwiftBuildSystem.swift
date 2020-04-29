@@ -16,7 +16,7 @@ class SwiftBuildSystem: BuildSystem {
     return "Swift File"
   }
   
-  func targets(from workbench: Workbench) -> [Target] {
+  func targets(in workbench: Workbench) -> [Target] {
       //TODO: add get Targets logic
      return []
    }

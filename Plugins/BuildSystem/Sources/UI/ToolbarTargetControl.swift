@@ -94,11 +94,16 @@ class ToolbarTargetControl : NSView {
     guard let workbench = self.window?.windowController as? Workbench else {
       return
     }
-    let targets = BuildSystemsManager.shared.buildSystems.targets(for: workbench)
+    
+    let targets = BuildSystemsManager.shared.buildSystems.targets(in: workbench)
+    
+    guard !targets.isEmpty else {
+      return
+    }
+    
     let menu = NSMenu()
     targets.forEach{addMenuItem(target: $0, to: menu)}
     menu.popUp(positioning: menu.item(at: 0), at: NSEvent.mouseLocation, in: nil)
-
   }
   
   @IBAction func rightButtonDidClick(_ sender: Any) {

@@ -121,7 +121,7 @@ final class SelectTarget: Command {
   }
   
   override func validate(in workbench: Workbench) -> State {
-    return BuildSystemsManager.shared.buildSystems.hasTargets(for: workbench) ? [.enabled] : []
+    return BuildSystemsManager.shared.buildSystems.hasTargets(in: workbench) ? [.enabled] : []
   }
 }
 

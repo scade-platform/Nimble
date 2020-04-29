@@ -32,7 +32,7 @@ open class Command {
   
   // Toolbar item
   public let toolbarIcon: NSImage?
-  public let view: NSView?
+  public let toolbarView: NSView?
 
   // Actions
   private let handler: Handler
@@ -59,7 +59,7 @@ open class Command {
     self.menuPath = menuPath
     self.keyEquivalent = keyEquivalent
     self.toolbarIcon = toolbarIcon
-    self.view = nil
+    self.toolbarView = nil
     self.handler = handler
   }
   
@@ -73,7 +73,7 @@ open class Command {
     self.menuPath = menuPath
     self.keyEquivalent = keyEquivalent
     self.toolbarIcon = nil
-    self.view = view
+    self.toolbarView = view
     self.handler = handler
   }
 }

@@ -335,14 +335,9 @@ extension NimbleWorkbench: NSToolbarDelegate {
 
   public func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
       var ids: [NSToolbarItem.Identifier] = CommandManager.shared.commands.compactMap {
-        guard $0.group == nil && $0.toolbarIcon != nil else { return nil }
+        guard $0.group == nil && $0.toolbarIcon != nil || $0.toolbarView != nil else { return nil }
         return $0.toolbarItemIdentifier
       }
-        
-      ids.append(contentsOf: CommandManager.shared.commands.compactMap {
-        guard $0.view != nil else {return nil}
-        return $0.toolbarItemIdentifier
-      })
     
       ids.append(.flexibleSpace)
       ids.append(contentsOf: CommandManager.shared.groups.map { $0.toolbarItemIdentifier })

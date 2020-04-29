@@ -23,13 +23,13 @@ extension Command {
     let item = ToolbarItem(itemIdentifier: self.toolbarItemIdentifier)
     item.label = self.name
     
-    item.view = self.toolbarView
+    item.view = self.view
     return item
   }
   
-  var toolbarView: NSView {
-    guard self.view == nil else {
-      return self.view!
+  var view: NSView {
+    guard self.toolbarView == nil else {
+      return self.toolbarView!
     }
     
     let button = NSButton()
