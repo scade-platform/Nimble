@@ -238,6 +238,7 @@
                             </subviews>
                             <constraints>
                                 <constraint firstItem="Oaq-lK-ZTR" firstAttribute="leading" secondItem="iRq-0g-5d0" secondAttribute="leading" constant="14" id="B0f-fc-8gj"/>
+                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Oaq-lK-ZTR" secondAttribute="trailing" constant="14" id="MBq-SQ-2uB"/>
                             </constraints>
                             <visibilityPriorities>
                                 <integer value="1000"/>
