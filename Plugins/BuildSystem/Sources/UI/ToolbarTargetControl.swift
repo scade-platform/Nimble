@@ -19,6 +19,8 @@ class ToolbarTargetControl : NSView {
   @IBOutlet weak var rightImage: NSImageView?
   @IBOutlet weak var rightLable: NSTextField?
   
+  var targets: [Target] = []
+  
   private lazy var separatorTemplate: NSImage = {
     let separator = IconsManager.Icons.separator.image
     separator.isTemplate = true
@@ -70,7 +72,6 @@ class ToolbarTargetControl : NSView {
   private func addMenuItem(target: Target, to menu: NSMenu) {
     let item = NSMenuItem(title: target.name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
     item.target = self
-    item.representedObject = target
     item.submenu = creatSubmenus(target: target)
     menu.addItem(item)
   }
@@ -84,7 +85,7 @@ class ToolbarTargetControl : NSView {
     for variant in target.variants {
       let item = NSMenuItem(title: variant.name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
       item.target = self
-      item.representedObject = (target, variant)
+      item.representedObject = variant
       menu.addItem(item)
     }
     return menu
@@ -95,7 +96,7 @@ class ToolbarTargetControl : NSView {
       return
     }
     
-    let targets = BuildSystemsManager.shared.buildSystems.targets(in: workbench)
+    self.targets = BuildSystemsManager.shared.buildSystems.targets(in: workbench)
     
     guard !targets.isEmpty else {
       return
@@ -111,14 +112,61 @@ class ToolbarTargetControl : NSView {
   }
   
   @objc func itemDidSelect(_ sender: Any?) {
-    guard let item = sender as? NSMenuItem, let tuple = item.representedObject as? (Target, Variant) else {
+    guard let item = sender as? NSMenuItem, let variant = item.representedObject as? Variant else {
       return
     }
-//    leftImage?.image = target.icon?.image
-    leftLable?.stringValue = tuple.0.name
+
+    leftLable?.stringValue = variant.target?.name ?? ""
     
     separatorImage?.isHidden = false
     
-    rightLable?.stringValue = tuple.1.name
+    rightLable?.stringValue = variant.name
+    
+    guard let workbench = self.window?.windowController as? Workbench else {
+      return
+    }
+    workbench.selectedVariant = variant
+  }
+}
+
+extension Workbench {
+  var selectedVariant: Variant? {
+    get {
+      return TargetStorage.shared.variant(in: self)
+    }
+    set {
+      if let newVariant = newValue {
+        TargetStorage.shared.save(newVariant, in: self)
+      } else {
+        TargetStorage.shared.removeVariant(in: self)
+      }
+    }
+  }
+}
+
+
+class TargetStorage {
+  static let shared = TargetStorage()
+  private var variantByWorkbench : [NSObject: Variant] = [:]
+
+  @discardableResult
+  func save(_ variant: Variant, in workbench: Workbench) -> Variant? {
+    guard let object = workbench as? NSObject else { return nil }
+    let oldVariant = variantByWorkbench[object]
+    variantByWorkbench[object] = variant
+    return oldVariant
+  }
+
+  func variant(in workbench: Workbench) -> Variant? {
+    guard let object = workbench as? NSObject else { return nil }
+    return variantByWorkbench[object]
+  }
+
+  @discardableResult
+  func removeVariant(in workbench: Workbench) -> Variant? {
+    guard let object = workbench as? NSObject else { return nil }
+    let removedVariant = variantByWorkbench[object]
+    variantByWorkbench[object] = nil
+    return removedVariant
   }
 }

@@ -38,7 +38,13 @@ extension FileSystemElement : Source {}
 
 class TargetImpl : Target {
   let name: String
-  var variants: [Variant]
+  var variants: [Variant] {
+    didSet {
+      for var variant in variants {
+        variant.target = self
+      }
+    }
+  }
   let source: Source?
   weak var workbench: Workbench?
   
@@ -54,31 +60,46 @@ class TargetImpl : Target {
 }
 
 public protocol Variant {
+  typealias Callback = (Variant, WorkbenchTask) throws -> Void
+  
   var name: String { get }
   var icon: Icon? { get }
   var target: Target? { get set }
   
-  func run() throws -> WorkbenchTask
-  func build() throws -> WorkbenchTask
-  func clean() throws -> WorkbenchTask
+  func run(_ callback: Callback?) throws -> WorkbenchTask
+  func build(_ callback: Callback?) throws -> WorkbenchTask
+  func clean(_ callback: Callback?) throws -> WorkbenchTask
 }
 
 public extension Variant {
+  
   //Default value for optional properties
   var icon: Icon? { nil }
   var target: Target? { nil }
   
   //Default implementation
-  func run() throws -> WorkbenchTask {
+  func run(_ callback: Callback?) throws -> WorkbenchTask {
     throw VariantError.operationNotSupported
+  }
+  
+  func build(_ callback: Callback?) throws -> WorkbenchTask {
+    throw VariantError.operationNotSupported
+  }
+  
+  func clean(_ callback: Callback?) throws -> WorkbenchTask {
+    throw VariantError.operationNotSupported
+  }
+  
+  func run() throws -> WorkbenchTask {
+    try run(nil)
   }
   
   func build() throws -> WorkbenchTask {
-    throw VariantError.operationNotSupported
+    try build(nil)
   }
   
   func clean() throws -> WorkbenchTask {
-    throw VariantError.operationNotSupported
+    try clean(nil)
   }
 }
 
@@ -91,4 +112,3 @@ public enum VariantError: Error {
 public enum VariantTypeError<T>: Error {
   case unexpectedSourceType(get: Any?, expected: T.Type)
 }
-

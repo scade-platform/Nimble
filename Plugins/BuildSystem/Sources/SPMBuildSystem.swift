@@ -18,23 +18,30 @@ class SPMBuildSystem: BuildSystem {
   
   func targets(in workbench: Workbench) -> [Target] {
     guard let folders = workbench.project?.folders else { return [] }
-    return folders.filter{ canHandle(folder: $0) }.map{ TargetImpl(name: $0.name, source: $0, workbench: workbench) }
+    let targets = folders.filter{ canHandle(folder: $0) }.map{ TargetImpl(name: $0.name, source: $0, workbench: workbench) }
+    for target in targets {
+      target.variants = [MacVariant(target: target)]
+    }
+    return targets
   }
   
   func run(_ variant: Variant, in workbench: Workbench) {
-    do {
-      workbench.publish(task: try variant.run())
-    } catch {
-      print(error)
-    }
+    //    do {
+    //      let buildTask = try variant.build { variant, task in
+    //        workbench.publish(task: try variant.run())
+    //      }
+    //      workbench.publish(task: buildTask)
+    //    } catch {
+    //      print(error)
+    //    }
   }
   
   func build(_ variant: Variant, in workbench: Workbench) {
-    do {
-      workbench.publish(task: try variant.build())
-    } catch {
-      print(error)
-    }
+    //    do {
+    //      workbench.publish(task: try variant.build())
+    //    } catch {
+    //      print(error)
+    //    }
   }
   
   func clean(_ variant: Variant, in workbench: Workbench) {
@@ -55,33 +62,40 @@ private extension SPMBuildSystem {
 
 extension SPMBuildSystem : ConsoleSupport {}
 
-fileprivate struct MacVariant: Variant {
+class MacVariant: Variant {
+  typealias Callback = (Variant, WorkbenchTask) throws-> Void
+  
   var name: String {
     "mac"
   }
   
+  
   weak var target: Target?
   
+  init(target: Target? = nil) {
+    self.target = target
+  }
+  
   func createProcess(source: Folder) -> Process {
-     let proc = Process()
-     proc.currentDirectoryURL = source.url
-     proc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
-     
-     let toolchain = SKLocalServer.swiftToolchain
-     if !toolchain.isEmpty {
-       proc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
-     } else {
-       proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
-     }
-     return proc
-   }
+    let proc = Process()
+    proc.currentDirectoryURL = source.url
+    proc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
+    
+    let toolchain = SKLocalServer.swiftToolchain
+    if !toolchain.isEmpty {
+      proc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
+    } else {
+      proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
+    }
+    return proc
+  }
   
 }
 
 
 // MARK: - MacVariant - Run task
 extension MacVariant {
-  func run() throws -> WorkbenchTask {
+  func run(_ callback: Callback?) throws -> WorkbenchTask {
     guard let target = target else {
       throw VariantError.targetRequired
     }
@@ -96,7 +110,9 @@ extension MacVariant {
     
     let process = createRunProcess(source: folder)
     
-    return try OutputConsoleTask(process, target: target, consoleTitle: "Run: \(target.name)")
+    return try OutputConsoleTask(process, target: target, consoleTitle: "Run: \(target.name)") { task in
+      try callback?(self, task)
+    }
   }
   
   func createRunProcess(source: Folder) -> Process {
@@ -109,7 +125,7 @@ extension MacVariant {
 
 //MARK: - MacVariant - Build task
 extension MacVariant {
-  func build() throws -> WorkbenchTask {
+  func build(_ callback: Callback?) throws -> WorkbenchTask {
     guard let target = target else {
       throw VariantError.targetRequired
     }
@@ -128,7 +144,9 @@ extension MacVariant {
     
     let consoleObserver = BuildConsoleObserver(targetName: target.name)
     
-    return try OutputConsoleTask(process, target: target, consoleTitle: "Build: \(target.name)", consoleObserver: consoleObserver)
+    return try OutputConsoleTask(process, target: target, consoleTitle: "Build: \(target.name)", consoleObserver: consoleObserver){ task in
+      try callback?(self, task)
+    }
   }
   
   func createBuildProcess(source: Folder) -> Process {

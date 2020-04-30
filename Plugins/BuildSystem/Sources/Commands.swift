@@ -19,28 +19,17 @@ final class Run: BuildSystemCommand {
   override func run(in workbench: Workbench) {
     showConsoleTillFirstEscPress(in: workbench)
     //TODO: improve call using new API
-//    BuildSystemsManager.shared.activeBuildSystem?.run(in: workbench) { [weak self] status, process in
-//      switch status {
-//      case .finished:
-//        DispatchQueue.main.async { [weak self] in
-//          self?.showConsoleTillFirstEscPress(in: workbench)
-//          BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: workbench) { status, process in
-//            switch status {
-//            case .running:
-//              workbench.publish(process)
-//            default:
-//              return
-//            }
-//          }
-//        }
-
-//      case .running:
-//        workbench.publish(process)
-//
-//      case .failed:
-//        return
-//      }
-//    }
+    guard let variant = workbench.selectedVariant else {
+      return
+    }
+    do {
+      let buildTask = try variant.build { variant, task in
+        workbench.publish(task: try variant.run())
+      }
+      workbench.publish(task: buildTask)
+    } catch {
+      print(error)
+    }
   }
   
   override func validate(in workbench: Workbench) -> State {
@@ -166,3 +155,6 @@ fileprivate extension Workbench {
     self.publish(task: BuildSystemTask(process))
   }
 }
+
+
+
