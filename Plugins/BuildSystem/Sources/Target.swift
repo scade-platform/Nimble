@@ -9,38 +9,50 @@
 import Foundation
 import NimbleCore
 
-public struct Target {
-  let name: String
-  let icon: Icon? 
-  let variants: [Variant] 
+public protocol Target {
+  var name: String { get }
+  var icon: Icon? { get }
+  var variants: [Variant] { get }
+  var source: Any? { get }
+  var workbench: Workbench? { get }
 }
 
-extension Target : Equatable {
-  public static func == (lhs: Target, rhs: Target) -> Bool {
-    //TODO: compare icons
-    return lhs.name == rhs.name
+public extension Target {
+  //Default value for optional properties
+  var icon: Icon? { nil }
+  var source: Icon? { nil }
+  var workbench: Workbench? { nil }
+}
+
+public protocol Variant {
+  var name: String { get }
+  var icon: Icon? { get }
+  var target: Target? { get }
+  
+  func run() throws -> WorkbenchTask
+  func build() throws -> WorkbenchTask
+  func clean() throws -> WorkbenchTask
+}
+
+public extension Variant {
+  //Default value for optional properties
+  var icon: Icon? { nil }
+  var target: Target? { nil }
+  
+  //Default implementation
+  func run() throws -> WorkbenchTask {
+    throw VariantError.operationNotSupported
+  }
+  
+  func build() throws -> WorkbenchTask {
+    throw VariantError.operationNotSupported
+  }
+  
+  func clean() throws -> WorkbenchTask {
+    throw VariantError.operationNotSupported
   }
 }
 
-public struct Variant {
-  
-  let name: String
-  let icon: Icon?
-  let source: Any?
-  
-  let createRunProcess: (() -> Process?)?
+public enum VariantError: Error {
+  case operationNotSupported
 }
-
-extension Variant {
-  var sourceName : String {
-    switch self.source {
-    case let folder as Folder:
-      return "\(self.name) - \(folder.path.string)"
-    case let file as File:
-      return "\(self.name) - \(file.path.string)"
-    default:
-      return ""
-    }
-  }
-}
-
