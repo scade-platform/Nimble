@@ -138,8 +138,12 @@ class GeneralPane: NSViewController {
 }
 
 extension GeneralPane: EditorViewObserver {
-  func editorDidChangeSelection(editor: EditorView, widget: SCDWidgetsWidget) {
-    self.view.isHidden = false
-    self.widget = widget
+  func editorDidChangeSelection(editor: EditorView, widget: SCDWidgetsWidget?) {
+    if let widget = widget {
+      self.view.isHidden = false
+      self.widget = widget
+    } else {
+      self.view.isHidden = true
+    }
   }
 }

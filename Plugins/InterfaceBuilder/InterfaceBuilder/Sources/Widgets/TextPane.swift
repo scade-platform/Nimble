@@ -230,7 +230,7 @@ class TextPane: NSViewController {
 
 
 extension TextPane : EditorViewObserver {
-  func editorDidChangeSelection(editor: EditorView, widget: SCDWidgetsWidget) {
+  func editorDidChangeSelection(editor: EditorView, widget: SCDWidgetsWidget?) {
     switch widget {
     case is SCDWidgetsTextWidget:
       let textWidget = widget as! SCDWidgetsTextWidget

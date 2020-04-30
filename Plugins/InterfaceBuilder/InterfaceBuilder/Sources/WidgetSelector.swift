@@ -13,6 +13,10 @@ class WidgetSelector: SVGLayerSelector, WidgetVisitor {
     super.init(svgView)
   }
 
+  deinit {
+    doSelect(nil)
+  }
+
   public func apply(_ widget: SCDWidgetsWidget) {
     if let drawable = widget.drawing {
       drawable.gestureRecognizers.append(
@@ -37,7 +41,7 @@ class WidgetSelector: SVGLayerSelector, WidgetVisitor {
     }
   }
 
-  private func doSelect(_ widget: SCDWidgetsWidget) {
+  private func doSelect(_ widget: SCDWidgetsWidget?) {
     if let editorView = self.editorView {
       editorView.observers.notify {
         $0.editorDidChangeSelection(editor: editorView, widget: widget)
