@@ -18,40 +18,22 @@ class SPMBuildSystem: BuildSystem {
   
   func targets(in workbench: Workbench) -> [Target] {
     guard let folders = workbench.project?.folders else { return [] }
-    return folders.filter{ canHandle(folder: $0) }.map{ Target(name: $0.name, icon: nil, variants: [SPMBuildSystem.mac(source: $0)]) }
+    return folders.filter{ canHandle(folder: $0) }.map{ TargetImpl(name: $0.name, source: $0, workbench: workbench) }
   }
   
-  func run(_ variant: Variant, in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
-    guard let process = variant.createRunProcess?() else {
-      handler?(.failed, nil)
-      return
+  func run(_ variant: Variant, in workbench: Workbench) {
+    do {
+      workbench.publish(task: try variant.run())
+    } catch {
+      print(error)
     }
-    
-    guard let console = openConsole(key: variant.sourceName, title: "Run: \(variant.name)", in: workbench),
-      !console.isReadingFromBuffer
-      else {
-        //The console is using by another process with the same representedObject
-        return
-    }
-    
-    process.terminationHandler = { process in
-      console.stopReadingFromBuffer()
-      handler?(.finished, process)
-    }
-    
-    process.standardOutput = console.output
-    process.standardError = console.output
-    console.startReadingFromBuffer()
-    
-    try? process.run()
-    handler?(.running, process)
   }
   
-  func build(_ variant: Variant, in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
+  func build(_ variant: Variant, in workbench: Workbench) {
     //TODO: add build logic
   }
   
-  func clean(_ variant: Variant, in workbench: Workbench, handler: (() -> Void)?) {
+  func clean(_ variant: Variant, in workbench: Workbench) {
     //TODO: add clean logic
   }
 }
@@ -67,31 +49,48 @@ private extension SPMBuildSystem {
   }
 }
 
-//Mac variants
-private extension SPMBuildSystem {
-  static func mac(source: Folder) -> Variant {
-    func createRunProcess() -> Process? {
-      let proc = Process()
-      proc.currentDirectoryURL = source.url
-      proc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
-      proc.arguments = ["run", "--skip-build"]
-      
-      let toolchain = SKLocalServer.swiftToolchain
-      if !toolchain.isEmpty {
-        proc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
-      } else {
-        proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
-      }
-      return proc
-    }
-    
-    return Variant(name: "mac", icon: nil, source: source, createRunProcess: createRunProcess)
-  }
-}
-
 extension SPMBuildSystem : ConsoleSupport {}
 
-
+fileprivate struct MacVariant: Variant {
+  var name: String {
+    "mac"
+  }
+  
+  weak var target: Target?
+  
+  func run() throws -> WorkbenchTask {
+    guard let target = target else {
+      throw VariantError.targetRequired
+    }
+    
+    guard let source = target.source else {
+      throw VariantError.sourceRequired
+    }
+    
+    guard let folder = source as? Folder else {
+      throw VariantTypeError.unexpectedSourceType(get: type(of: source), expected: Folder.self)
+    }
+    
+    let process = createRunProcess(source: folder)
+    
+    return try OutputConsoleTask(process, target: target, consoleTitle: "Run: \(target.name)")
+  }
+  
+  func createRunProcess(source: Folder) -> Process {
+    let proc = Process()
+    proc.currentDirectoryURL = source.url
+    proc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
+    proc.arguments = ["run", "--skip-build"]
+    
+    let toolchain = SKLocalServer.swiftToolchain
+    if !toolchain.isEmpty {
+      proc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
+    } else {
+      proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
+    }
+    return proc
+  }
+}
 
 
 //  lazy var launcher: Launcher? = {

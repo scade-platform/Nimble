@@ -14,9 +14,9 @@ public protocol BuildSystem {
   
   func targets(in workbench: Workbench) -> [Target]
   
-  func run(_ variant: Variant, in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?)
-  func build(_ variant: Variant, in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?)
-  func clean(_ variant: Variant, in workbench: Workbench, handler: (() -> Void)?)
+  func run(_ variant: Variant, in workbench: Workbench)
+  func build(_ variant: Variant, in workbench: Workbench)
+  func clean(_ variant: Variant, in workbench: Workbench)
 }
 
 
@@ -64,10 +64,10 @@ extension Array where Element == BuildSystem {
   func targets(in workbench: Workbench) -> [Target] {
     let allTargets = self.flatMap{$0.targets(in: workbench)}
     return allTargets.reduce([]) { result, target -> [Target] in
-      guard let accTarget = result.first(where: {$0 == target} ) else {
+      guard let accTarget = result.first(where: {$0.name == target.name && $0.source?.path == target.source?.path } ) else {
         return result + [target]
       }
-      let newAccTarget = Target(name: target.name, icon: target.icon, variants: accTarget.variants + target.variants)
+      let newAccTarget = TargetImpl(name: target.name, source: target.source, workbench: target.workbench, variants: accTarget.variants + target.variants)
       return result.filter{$0.name != target.name} + [newAccTarget]
     }
   }
