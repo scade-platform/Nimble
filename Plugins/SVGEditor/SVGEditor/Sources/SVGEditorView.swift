@@ -59,7 +59,7 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
     scrollView.allowsMagnification = true
   }
   
-  open func didOpenDocument(_ document: Document) {
+  open func didOpenDocument() {
     guard let canvasView = scrollView.documentView as? CanvasView else { return }
 
     canvasView.didOpenDocument(self.document,

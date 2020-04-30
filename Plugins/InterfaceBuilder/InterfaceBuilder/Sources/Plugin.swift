@@ -55,6 +55,18 @@ extension Plugin: WorkbenchObserver {
     }
   }
 
+  func workbenchDidOpenDocument(_ workbench: Workbench, document: Document) {
+    if let pageDocument = document as? PageDocument {
+      pageDocument.didOpen()
+    }
+  }
+
+  func workbenchDidCloseDocument(_ workbench: Workbench, document: Document) {
+    if let pageDocument = document as? PageDocument {
+      pageDocument.didClose()
+    }
+  }
+
 }
 
 extension Plugin: ProjectObserver {

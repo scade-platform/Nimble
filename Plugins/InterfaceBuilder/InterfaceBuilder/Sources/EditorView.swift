@@ -27,8 +27,8 @@ class EditorView: SVGEditorView {
     }
   }
 
-  open override func didOpenDocument(_ document: Document) {
-    super.didOpenDocument(document)
+  override func didOpenDocument() {
+    super.didOpenDocument()
 
     pageDocument?.adapter.show(window)
   }

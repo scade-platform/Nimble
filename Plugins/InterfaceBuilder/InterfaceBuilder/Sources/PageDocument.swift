@@ -4,7 +4,7 @@ import ScadeKit
 import SVGEditor
 
 public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
-  
+
   let adapter = SCDLatticeEditorPageAdapter()
 
   public var svgWidth: SCDSvgUnit? {
@@ -54,6 +54,16 @@ public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
       return resource.data
     }
     return "".data(using: .utf8)!
+  }
+
+  func didOpen() {
+    builderController.didOpenDocument()
+  }
+
+  func didClose() {
+    if let resource = self.page?.eContainer() as? SCDCoreResource {
+      resource.close()
+    }
   }
 }
 
