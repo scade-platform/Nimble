@@ -115,6 +115,9 @@
                                                     </segment>
                                                 </segments>
                                             </segmentedCell>
+                                            <connections>
+                                                <action selector="alignmentDidChange:" target="-2" id="gMM-iS-Aat"/>
+                                            </connections>
                                         </segmentedControl>
                                         <segmentedControl verticalHuggingPriority="750" id="O4K-6K-I5h">
                                             <rect key="frame" x="12" y="-2" width="342" height="25"/>
@@ -132,6 +135,9 @@
                                                     </segment>
                                                 </segments>
                                             </segmentedCell>
+                                            <connections>
+                                                <action selector="baselineDidChange:" target="-2" id="NBv-72-wM7"/>
+                                            </connections>
                                         </segmentedControl>
                                     </subviews>
                                     <constraints>
@@ -159,6 +165,9 @@
                                         <font key="font" metaFont="menu" size="11"/>
                                         <menu key="menu" id="SLj-UG-fcl"/>
                                     </popUpButtonCell>
+                                    <connections>
+                                        <action selector="fontDidChange:" target="-2" id="dA3-ck-Kmz"/>
+                                    </connections>
                                 </popUpButton>
                                 <popUpButton verticalHuggingPriority="750" id="XVq-G4-uZb">
                                     <rect key="frame" x="14" y="111" width="280" height="23"/>
@@ -168,6 +177,9 @@
                                         <font key="font" metaFont="menu" size="11"/>
                                         <menu key="menu" id="ivj-mK-myj"/>
                                     </popUpButtonCell>
+                                    <connections>
+                                        <action selector="styleDidChange:" target="-2" id="QZZ-al-2In"/>
+                                    </connections>
                                 </popUpButton>
                                 <stepper horizontalHuggingPriority="750" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MNH-VM-a1s">
                                     <rect key="frame" x="336" y="109" width="19" height="28"/>
