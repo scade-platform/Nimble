@@ -30,7 +30,11 @@ class SPMBuildSystem: BuildSystem {
   }
   
   func build(_ variant: Variant, in workbench: Workbench) {
-    //TODO: add build logic
+    do {
+      workbench.publish(task: try variant.build())
+    } catch {
+      print(error)
+    }
   }
   
   func clean(_ variant: Variant, in workbench: Workbench) {
@@ -58,6 +62,25 @@ fileprivate struct MacVariant: Variant {
   
   weak var target: Target?
   
+  func createProcess(source: Folder) -> Process {
+     let proc = Process()
+     proc.currentDirectoryURL = source.url
+     proc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
+     
+     let toolchain = SKLocalServer.swiftToolchain
+     if !toolchain.isEmpty {
+       proc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
+     } else {
+       proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
+     }
+     return proc
+   }
+  
+}
+
+
+// MARK: - MacVariant - Run task
+extension MacVariant {
   func run() throws -> WorkbenchTask {
     guard let target = target else {
       throw VariantError.targetRequired
@@ -77,20 +100,56 @@ fileprivate struct MacVariant: Variant {
   }
   
   func createRunProcess(source: Folder) -> Process {
-    let proc = Process()
-    proc.currentDirectoryURL = source.url
-    proc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
+    let proc = createProcess(source: source)
     proc.arguments = ["run", "--skip-build"]
-    
-    let toolchain = SKLocalServer.swiftToolchain
-    if !toolchain.isEmpty {
-      proc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
-    } else {
-      proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
-    }
     return proc
   }
 }
+
+
+//MARK: - MacVariant - Build task
+extension MacVariant {
+  func build() throws -> WorkbenchTask {
+    guard let target = target else {
+      throw VariantError.targetRequired
+    }
+    
+    guard let source = target.source else {
+      throw VariantError.sourceRequired
+    }
+    
+    guard let folder = source as? Folder else {
+      throw VariantTypeError.unexpectedSourceType(get: type(of: source), expected: Folder.self)
+    }
+    
+    target.workbench?.currentDocument?.save(nil)
+    
+    let process = createBuildProcess(source: folder)
+    
+    let consoleObserver = BuildConsoleObserver(targetName: target.name)
+    
+    return try OutputConsoleTask(process, target: target, consoleTitle: "Build: \(target.name)", consoleObserver: consoleObserver)
+  }
+  
+  func createBuildProcess(source: Folder) -> Process {
+    let proc = createProcess(source: source)
+    proc.arguments = ["build", "-Xswiftc", "-Xfrontend", "-Xswiftc", "-color-diagnostics"]
+    return proc
+  }
+  
+  struct BuildConsoleObserver : OutputConsoleTaskObserver {
+    let targetName: String
+    
+    func consoleStartReading(_ console: Console) {
+      console.writeLine(string: "Building: \(targetName)")
+    }
+    
+    func consoleStopReading(_ console: Console) {
+      console.writeLine(string: "Finished building \(targetName)")
+    }
+  }
+}
+
 
 
 //  lazy var launcher: Launcher? = {

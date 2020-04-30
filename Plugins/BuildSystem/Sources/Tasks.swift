@@ -11,9 +11,11 @@ import AppKit
 
 class OutputConsoleTask: WorkbenchProcess {
   var console: Console?
+  var consoleObserver: OutputConsoleTaskObserver?
   
-  init(_ process: Process, target: Target, consoleTitle title: String) throws {
+  init(_ process: Process, target: Target, consoleTitle title: String, consoleObserver: OutputConsoleTaskObserver? = nil) throws {
     super.init(process)
+    self.consoleObserver = consoleObserver
     console = openConsole(for: process, target: target, consoleTitle: title)
     self.observers.add(observer: self)
     try process.run()
@@ -31,6 +33,8 @@ class OutputConsoleTask: WorkbenchProcess {
     process.standardError = console.output
     console.startReadingFromBuffer()
     
+    self.consoleObserver?.consoleStartReading(console)
+    
     return console
   }
 
@@ -38,8 +42,18 @@ class OutputConsoleTask: WorkbenchProcess {
 
 extension OutputConsoleTask : WorkbenchTaskObserver {
   func taskDidFinish(_ task: WorkbenchTask) {
-    self.console?.stopReadingFromBuffer()
+    guard let console = self.console else {
+      return
+    }
+    self.consoleObserver?.consoleStopReading(console)
+    
+    console.stopReadingFromBuffer()
   }
 }
 
 extension OutputConsoleTask : ConsoleSupport {}
+
+protocol  OutputConsoleTaskObserver {
+  func consoleStartReading(_ console: Console)
+  func consoleStopReading(_ console: Console)
+}
