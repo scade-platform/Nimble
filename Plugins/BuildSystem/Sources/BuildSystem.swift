@@ -39,12 +39,6 @@ extension ConsoleSupport {
 }
 
 
-public enum BuildStatus {
-  case running
-  case finished
-  case failed
-}
-
 public class BuildSystemsManager {
   public static let shared = BuildSystemsManager()
   
