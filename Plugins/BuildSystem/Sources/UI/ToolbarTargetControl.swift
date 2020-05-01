@@ -68,7 +68,12 @@ class ToolbarTargetControl : NSView {
     self.rightImage?.isHidden = true
     self.rightLable?.stringValue = ""
   }
-  
+
+  override func viewWillMove(toWindow newWindow: NSWindow?) {
+    guard let window = self.window, newWindow == nil else { return }
+    selectedVariants.removeValue(forKey: ObjectIdentifier(window))
+  }
+
   private func addMenuItem(target: Target, to menu: NSMenu) {
     let item = NSMenuItem(title: target.name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
     item.target = self
@@ -129,44 +134,20 @@ class ToolbarTargetControl : NSView {
   }
 }
 
+
 extension Workbench {
+  fileprivate var id: ObjectIdentifier { ObjectIdentifier(self) }
+
   var selectedVariant: Variant? {
     get {
-      return TargetStorage.shared.variant(in: self)
+      return selectedVariants[self.id]
     }
     set {
-      if let newVariant = newValue {
-        TargetStorage.shared.save(newVariant, in: self)
-      } else {
-        TargetStorage.shared.removeVariant(in: self)
-      }
+      selectedVariants[self.id] = newValue
+
     }
   }
 }
 
 
-class TargetStorage {
-  static let shared = TargetStorage()
-  private var variantByWorkbench : [NSObject: Variant] = [:]
-
-  @discardableResult
-  func save(_ variant: Variant, in workbench: Workbench) -> Variant? {
-    guard let object = workbench as? NSObject else { return nil }
-    let oldVariant = variantByWorkbench[object]
-    variantByWorkbench[object] = variant
-    return oldVariant
-  }
-
-  func variant(in workbench: Workbench) -> Variant? {
-    guard let object = workbench as? NSObject else { return nil }
-    return variantByWorkbench[object]
-  }
-
-  @discardableResult
-  func removeVariant(in workbench: Workbench) -> Variant? {
-    guard let object = workbench as? NSObject else { return nil }
-    let removedVariant = variantByWorkbench[object]
-    variantByWorkbench[object] = nil
-    return removedVariant
-  }
-}
+fileprivate var selectedVariants: [ObjectIdentifier: Variant] = [:]
