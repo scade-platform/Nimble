@@ -50,7 +50,7 @@ class TargetImpl : Target {
 }
 
 public protocol Variant {
-  typealias Callback = (Variant, WorkbenchTask) throws -> Void
+  typealias Callback = (WorkbenchTask) throws -> Void
   
   var name: String { get }
   var icon: Icon? { get }

@@ -27,7 +27,7 @@ class SPMBuildSystem: BuildSystem {
   
   func run(_ variant: Variant, in workbench: Workbench) {
     do {
-      let buildTask = try variant.build { variant, task in
+      let buildTask = try variant.build { task in
         workbench.publish(task: try variant.run())
       }
       workbench.publish(task: buildTask)
@@ -63,7 +63,7 @@ private extension SPMBuildSystem {
 extension SPMBuildSystem : ConsoleSupport {}
 
 class MacVariant: Variant {
-  typealias Callback = (Variant, WorkbenchTask) throws-> Void
+  typealias Callback = (WorkbenchTask) throws-> Void
   
   var name: String {
     "mac"
@@ -107,7 +107,7 @@ extension MacVariant {
     let process = createRunProcess(source: folder)
     
     return try OutputConsoleTask(process, target: target, consoleTitle: "Run: \(target.name)") { task in
-      try callback?(self, task)
+      try callback?(task)
     }
   }
   
@@ -133,7 +133,7 @@ extension MacVariant {
     let consoleObserver = BuildConsoleObserver(targetName: target.name)
     
     return try OutputConsoleTask(process, target: target, consoleTitle: "Build: \(target.name)", consoleObserver: consoleObserver){ task in
-      try callback?(self, task)
+      try callback?(task)
     }
   }
   
