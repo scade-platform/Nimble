@@ -18,30 +18,27 @@ class SPMBuildSystem: BuildSystem {
   
   func targets(in workbench: Workbench) -> [Target] {
     guard let folders = workbench.project?.folders else { return [] }
-    let targets = folders.filter{ canHandle(folder: $0) }.map{ (TargetImpl(name: $0.name, workbench: workbench), $0) }
-    for (target, folder) in targets {
-      target.variants = [MacVariant(target: target, buildSystem: self, source: folder)]
-    }
-    return targets.map{$0.0}
+    let targets = folders.filter{canHandle(folder: $0)}.map{SPMTarget(folder: $0, workbench: workbench)}
+    targets.forEach{ $0.variants.append(MacVariant(target: $0, buildSystem: self))}
+    return targets
   }
   
   func run(_ variant: Variant, in workbench: Workbench) {
     do {
-      let buildTask = try variant.build { task in
-        workbench.publish(task: try variant.run())
+      workbench.publish(tasks: [try variant.build(), try variant.run()]) { result in
+        switch result {
+        case .failure(let error):
+          print(error)
+        default: break
+        }
       }
-      workbench.publish(task: buildTask)
     } catch {
       print(error)
     }
   }
   
   func build(_ variant: Variant, in workbench: Workbench) {
-    do {
-      workbench.publish(task: try variant.build())
-    } catch {
-      print(error)
-    }
+    //TODO: add logic
   }
   
   func clean(_ variant: Variant, in workbench: Workbench) {
@@ -49,7 +46,7 @@ class SPMBuildSystem: BuildSystem {
   }
 }
 
-//API level - private
+//MARK: - API level - private
 private extension SPMBuildSystem {
   func canHandle(folder: Folder) -> Bool {
     guard let files = try? folder.files() else { return false }
@@ -60,24 +57,44 @@ private extension SPMBuildSystem {
   }
 }
 
-extension SPMBuildSystem : ConsoleSupport {}
+fileprivate class SPMTarget: Target {
+  var name: String {
+    folder.name
+  }
+  
+  let folder: Folder
+  var variants: [Variant] = []
+  weak var workbench: Workbench?
+  
+  init(folder: Folder, workbench: Workbench) {
+    self.folder = folder
+    self.workbench = workbench
+  }
+  
+  var id : ObjectIdentifier {
+    ObjectIdentifier(self)
+  }
+}
 
-class MacVariant: Variant {
-  typealias Callback = (WorkbenchTask) throws-> Void
+fileprivate class MacVariant: Variant {
+  var target: Target? {
+    spmTarget
+  }
+  
+  weak var spmTarget : SPMTarget?
   
   var name: String {
     "mac"
   }
   
-  var buildSystem: BuildSystem?
-  weak var target: Target?
+  weak var buildSystem : BuildSystem?
   
-  var folder: Folder
+  //TODO: Remove this
+  var cach: [Any] = []
   
-  init(target: Target? = nil, buildSystem: BuildSystem, source folder: Folder) {
-    self.target = target
+  init(target: SPMTarget, buildSystem: SPMBuildSystem) {
+    self.spmTarget = target
     self.buildSystem = buildSystem
-    self.folder = folder
   }
   
   func createProcess(source: Folder) -> Process {
@@ -94,21 +111,44 @@ class MacVariant: Variant {
     return proc
   }
   
+  private func openConsole(for process: Process, consoleTitle title: String) -> Console? {
+    guard let workbench = target?.workbench, let console = openConsole(key: spmTarget?.id, title: title, in: workbench),
+      !console.isReadingFromBuffer
+      else {
+        //The console is using by another process with the same representedObject
+        return nil
+    }
+    
+    process.standardOutput = console.output
+    process.standardError = console.output
+    console.startReadingFromBuffer()
+    
+    return console
+  }
+
 }
+
+extension MacVariant: ConsoleSupport {}
 
 
 // MARK: - MacVariant - Run task
 extension MacVariant {
-  func run(_ callback: Callback?) throws -> WorkbenchTask {
-    guard let target = target else {
+  func run() throws -> WorkbenchTask {
+    guard let target = spmTarget else {
       throw VariantError.targetRequired
     }
+
+    let process = createRunProcess(source: target.folder)
+    let task = WorkbenchProcess(process)
     
-    let process = createRunProcess(source: folder)
-    
-    return try OutputConsoleTask(process, target: target, consoleTitle: "Run: \(target.name)") { task in
-      try callback?(task)
+    if let console = openConsole(for: process, consoleTitle: "Run: \(target.name) - \(self.name)"){
+      //TODO: Improve this
+      let t = ConsoleTaskObserver(console)
+      task.observers.add(observer: t )
+      cach.append(t)
     }
+    
+    return task
   }
   
   func createRunProcess(source: Folder) -> Process {
@@ -121,20 +161,24 @@ extension MacVariant {
 
 //MARK: - MacVariant - Build task
 extension MacVariant {
-  func build(_ callback: Callback?) throws -> WorkbenchTask {
-    guard let target = target else {
+  func build() throws -> WorkbenchTask {
+    guard let target = spmTarget else {
       throw VariantError.targetRequired
     }
     
     target.workbench?.currentDocument?.save(nil)
     
-    let process = createBuildProcess(source: folder)
+    let process = createBuildProcess(source: target.folder)
+    let task = WorkbenchProcess(process)
     
-    let consoleObserver = BuildConsoleObserver(targetName: target.name)
-    
-    return try OutputConsoleTask(process, target: target, consoleTitle: "Build: \(target.name)", consoleObserver: consoleObserver){ task in
-      try callback?(task)
+    if let console = openConsole(for: process, consoleTitle: "Build: \(target.name) - \(self.name)"){
+      //TODO: Improve this
+      let t = ConsoleTaskObserver(console, startMessage: "Building: \(target.name) - \(self.name)", endMessage:  "Finished building \(target.name) - \(self.name)")
+      task.observers.add(observer: t )
+      cach.append(t)
     }
+    
+    return task
   }
   
   func createBuildProcess(source: Folder) -> Process {
@@ -142,177 +186,33 @@ extension MacVariant {
     proc.arguments = ["build", "-Xswiftc", "-Xfrontend", "-Xswiftc", "-color-diagnostics"]
     return proc
   }
-  
-  struct BuildConsoleObserver : OutputConsoleTaskObserver {
-    let targetName: String
-    
-    func consoleStartReading(_ console: Console) {
-      console.writeLine(string: "Building: \(targetName)")
-    }
-    
-    func consoleStopReading(_ console: Console) {
-      console.writeLine(string: "Finished building \(targetName)")
-    }
-  }
 }
 
-
-
-//  lazy var launcher: Launcher? = {
-//    return SPMLauncher()
-//  }()
-//
-//
-//  func run(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
-//    workbench.currentDocument?.save(nil)
-//    guard let project = workbench.project, let package = findPackage(project: project) else { return  }
-//
-//
-//    let packageURL = package.url
-//
-//    let spmProc = Process()
-//    spmProc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
-//    spmProc.currentDirectoryURL = packageURL.deletingLastPathComponent()
-//
-//
-//    //Mock
-////    let toolchain = "/Library/Developer/Toolchains/swift-5.1.4-RELEASE.xctoolchain/"
-//    let toolchain = SKLocalServer.swiftToolchain
-//    if !toolchain.isEmpty {
-//      spmProc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
-//    } else {
-//      spmProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
-//    }
-//
-//    spmProc.arguments = ["build", "-Xswiftc", "-Xfrontend", "-Xswiftc", "-color-diagnostics"]
-//
-//
-//    var spmProcConsole : Console?
-//
-//    spmProc.terminationHandler = { process in
-//      spmProcConsole?.writeLine(string: "Finished building \(packageURL.deletingLastPathComponent().lastPathComponent)")
-//      spmProcConsole?.stopReadingFromBuffer()
-//
-//
-//      if let contents = spmProcConsole?.contents {
-//        if contents.isEmpty {
-//          DispatchQueue.main.async {
-//            spmProcConsole?.close()
-//          }
-//          handler?(.finished, process)
-//        } else {
-//          if contents.contains("error:"){
-//            handler?(.failed, process)
-//          } else {
-//            handler?(.finished, process)
-//          }
-//        }
-//      }
-//    }
-//
-//    spmProcConsole = self.openConsole(key: packageURL.appendingPathComponent("compile"), title: "Compile: \(packageURL.deletingLastPathComponent().lastPathComponent)", in: workbench)
-//    if !(spmProcConsole?.isReadingFromBuffer ?? true) {
-//      spmProc.standardOutput = spmProcConsole?.output
-//      spmProc.standardError = spmProcConsole?.output
-//      spmProcConsole?.startReadingFromBuffer()
-//      spmProcConsole?.writeLine(string: "Building: \(packageURL.deletingLastPathComponent().lastPathComponent)")
-//    } else {
-//      //The console is using by another process with the same representedObject
-//      return
-//    }
-//    try? spmProc.run()
-//    handler?(.running, spmProc)
-//  }
-//
-//  func clean(in workbench: Workbench, handler: (() -> Void)?) {
-//    guard let project = workbench.project, let package = findPackage(project: project) else { return  }
-//
-//    let proc = Process()
-//    proc.currentDirectoryURL = package.url.deletingLastPathComponent()
-//    proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
-//    proc.arguments = ["package", "clean"]
-//    var cleanConsole : Console?
-//    proc.terminationHandler = { process in
-//      cleanConsole?.writeLine(string: "Finished Cleaning \(package.url.deletingLastPathComponent().lastPathComponent)")
-//      cleanConsole?.stopReadingFromBuffer()
-//
-//      handler?()
-//    }
-//    cleanConsole = self.openConsole(key: package.url.appendingPathComponent("clean"), title: "Clean: \(package.url.deletingLastPathComponent().lastPathComponent)", in: workbench)
-//
-//    if !(cleanConsole?.isReadingFromBuffer ?? true) {
-//      proc.standardOutput = cleanConsole?.output
-//      proc.standardError = cleanConsole?.output
-//      cleanConsole?.startReadingFromBuffer()
-//      cleanConsole?.writeLine(string: "Cleaning: \(package.url.deletingLastPathComponent().lastPathComponent)")
-//    } else {
-//      return
-//    }
-//    try? proc.run()
-//  }
-//
-//
-//}
-//
-//extension SPMBuildSystem : ConsoleSupport {}
-//
-//class SPMLauncher: Launcher {
-//
-//  func launch(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
-//   guard let project = workbench.project, let package = findPackage(project: project) else {
-//      handler?(.failed, nil)
-//      return
-//    }
-//    let packageUrl = package.url
-//
-//    let programProc = Process()
-//    programProc.currentDirectoryURL = packageUrl.deletingLastPathComponent()
-//
-//    programProc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
-//
-//    //Mock
-////    let toolchain = "/Library/Developer/Toolchains/swift-5.1.4-RELEASE.xctoolchain/"
-//    let toolchain = SKLocalServer.swiftToolchain
-//    if !toolchain.isEmpty {
-//      programProc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
-//    } else {
-//      programProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
-//    }
-//
-//    programProc.arguments = ["run", "--skip-build"]
-//
-//    var programProcConsole: Console?
-//    programProc.terminationHandler = { process in
-//      programProcConsole?.stopReadingFromBuffer()
-//      handler?(.finished, process)
-//    }
-//
-//    let name = packageUrl.deletingLastPathComponent().lastPathComponent
-//    programProcConsole = openConsole(key: package, title: "Run: \(name)", in: workbench)
-//    if !(programProcConsole?.isReadingFromBuffer ?? true) {
-//      programProc.standardOutput = programProcConsole?.output
-//      programProc.standardError = programProcConsole?.output
-//      programProcConsole?.startReadingFromBuffer()
-//    } else {
-//      //The console is using by another process with the same representedObject
-//      return
-//    }
-//
-//
-//    try? programProc.run()
-//    handler?(.running, programProc)
-//  }
-//}
-//
-//extension SPMLauncher : ConsoleSupport {}
-//
-//
-//fileprivate func findPackage(project: Project) -> File? {
-//  for folder in project.folders {
-//    guard let files = try? folder.files() else { continue }
-//    if let package = files.first(where: {file in file.name.lowercased() == "package.swift"}) {
-//      return package
-//    }
-//  }
-//  return nil
-//}
+class ConsoleTaskObserver: WorkbenchTaskObserver {
+  let console: Console
+  let startMessage: String?
+  let endMessage: String?
+  
+  init(_ console: Console, startMessage: String? = nil, endMessage: String? = nil) {
+    self.console = console
+    self.startMessage = startMessage
+    self.endMessage = endMessage
+  }
+  
+  func taskDidStart(_ task: WorkbenchTask) {
+    guard console.isReadingFromBuffer, let startMessage = startMessage else {
+      return
+    }
+    console.writeLine(string: startMessage)
+  }
+  
+  func taskDidFinish(_ task: WorkbenchTask) {
+    defer {
+      console.stopReadingFromBuffer()
+    }
+    guard console.isReadingFromBuffer, let endMessage = endMessage else {
+      return
+    }
+    console.writeLine(string: endMessage)
+  }
+}

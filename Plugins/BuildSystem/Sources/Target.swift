@@ -22,84 +22,37 @@ public extension Target {
   var workbench: Workbench? { nil }
 }
 
-extension Target {
-  var sourceName: String {
-    " \(workbench?.project?.path?.string) : \(self.name)"
-  }
-}
-
-class TargetImpl : Target {
-  let name: String
-  var variants: [Variant] {
-    didSet {
-      for var variant in variants {
-        variant.target = self
-      }
-    }
-  }
-  weak var workbench: Workbench?
-  
-  init(name: String,  workbench: Workbench? = nil, variants: [Variant] = []) {
-    self.name = name
-    self.workbench = workbench
-    self.variants = variants
-    for var variant in variants {
-      variant.target = self
-    }
-  }
-}
-
 public protocol Variant {
-  typealias Callback = (WorkbenchTask) throws -> Void
-  
   var name: String { get }
   var icon: Icon? { get }
-  var target: Target? { get set }
+  var target: Target? { get }
   var buildSystem: BuildSystem? { get }
   
-  func run(_ callback: Callback?) throws -> WorkbenchTask
-  func build(_ callback: Callback?) throws -> WorkbenchTask
-  func clean(_ callback: Callback?) throws -> WorkbenchTask
+  func run() throws -> WorkbenchTask
+  func build() throws -> WorkbenchTask
+  func clean() throws -> WorkbenchTask
 }
 
 public extension Variant {
-  
   //Default value for optional properties
   var icon: Icon? { nil }
   var target: Target? { nil }
   
   //Default implementation
-  func run(_ callback: Callback?) throws -> WorkbenchTask {
-    throw VariantError.operationNotSupported
-  }
-  
-  func build(_ callback: Callback?) throws -> WorkbenchTask {
-    throw VariantError.operationNotSupported
-  }
-  
-  func clean(_ callback: Callback?) throws -> WorkbenchTask {
-    throw VariantError.operationNotSupported
-  }
-  
   func run() throws -> WorkbenchTask {
-    try run(nil)
+    throw VariantError.operationNotSupported
   }
   
   func build() throws -> WorkbenchTask {
-    try build(nil)
+    throw VariantError.operationNotSupported
   }
   
   func clean() throws -> WorkbenchTask {
-    try clean(nil)
+    throw VariantError.operationNotSupported
   }
 }
 
 public enum VariantError: Error {
   case operationNotSupported
   case targetRequired
-  case sourceRequired
-}
-
-public enum VariantTypeError<T>: Error {
-  case unexpectedSourceType(get: Any?, expected: T.Type)
 }

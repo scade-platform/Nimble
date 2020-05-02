@@ -9,7 +9,7 @@
 import Cocoa
 import NimbleCore
 
-public protocol BuildSystem {
+public protocol BuildSystem : class {
   var name: String { get }
   
   func targets(in workbench: Workbench) -> [Target]
@@ -27,7 +27,7 @@ protocol ConsoleSupport {
 extension ConsoleSupport {
   func openConsole<T: Equatable>(key: T, title: String, in workbench: Workbench) -> Console? {
     let openedConsoles = workbench.openedConsoles
-    guard let console = openedConsoles.filter({$0.representedObject is T}).first(where: {($0.representedObject as! T) == key}) else {
+    guard let console = openedConsoles.filter({$0.title == title}).filter({$0.representedObject is T}).first(where: {($0.representedObject as! T) == key}) else {
       if var newConsole = workbench.createConsole(title: title, show: true, startReading: false) {
         newConsole.representedObject = key
         return newConsole
@@ -56,17 +56,11 @@ public class BuildSystemsManager {
 
 extension Array where Element == BuildSystem {
   func targets(in workbench: Workbench) -> [Target] {
-    let allTargets = self.flatMap{$0.targets(in: workbench)}
-    return allTargets.reduce([]) { result, target -> [Target] in
-      guard let accTarget = result.first(where: {$0.name == target.name} ) else {
-        return result + [target]
-      }
-      let newAccTarget = TargetImpl(name: target.name, workbench: target.workbench, variants: accTarget.variants + target.variants)
-      return result.filter{$0.name != target.name} + [newAccTarget]
-    }
+    return self.flatMap{$0.targets(in: workbench)}
   }
   
   func hasTargets(in workbench: Workbench) -> Bool {
     self.contains{!$0.targets(in: workbench).isEmpty}
   }
 }
+

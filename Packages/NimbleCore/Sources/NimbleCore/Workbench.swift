@@ -184,14 +184,17 @@ public protocol WorkbenchTask: class {
   var isRunning: Bool { get }
 
   func stop()
+  func run() throws
 }
 
 public protocol WorkbenchTaskObserver {
   func taskDidFinish(_ task: WorkbenchTask)
+  func taskDidStart(_ task: WorkbenchTask)
 }
 
 public extension WorkbenchTaskObserver {
   func taskDidFinish(_ task: WorkbenchTask) {}
+  func taskDidStart(_ task: WorkbenchTask) {}
 }
 
 open class WorkbenchProcess {
@@ -214,5 +217,11 @@ open class WorkbenchProcess {
 extension WorkbenchProcess: WorkbenchTask {
   public var isRunning: Bool { process.isRunning }
   public func stop() { process.terminate() }
+  public func run() throws {
+    try process.run()
+    self.observers.notify {
+      $0.taskDidStart(self)
+    }
+  }
 }
 
