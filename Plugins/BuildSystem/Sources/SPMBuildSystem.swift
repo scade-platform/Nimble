@@ -18,11 +18,11 @@ class SPMBuildSystem: BuildSystem {
   
   func targets(in workbench: Workbench) -> [Target] {
     guard let folders = workbench.project?.folders else { return [] }
-    let targets = folders.filter{ canHandle(folder: $0) }.map{ TargetImpl(name: $0.name, source: $0, workbench: workbench) }
-    for target in targets {
-      target.variants = [MacVariant(target: target, buildSystem: self)]
+    let targets = folders.filter{ canHandle(folder: $0) }.map{ (TargetImpl(name: $0.name, workbench: workbench), $0) }
+    for (target, folder) in targets {
+      target.variants = [MacVariant(target: target, buildSystem: self, source: folder)]
     }
-    return targets
+    return targets.map{$0.0}
   }
   
   func run(_ variant: Variant, in workbench: Workbench) {
@@ -72,9 +72,12 @@ class MacVariant: Variant {
   var buildSystem: BuildSystem?
   weak var target: Target?
   
-  init(target: Target? = nil, buildSystem: BuildSystem) {
+  var folder: Folder
+  
+  init(target: Target? = nil, buildSystem: BuildSystem, source folder: Folder) {
     self.target = target
     self.buildSystem = buildSystem
+    self.folder = folder
   }
   
   func createProcess(source: Folder) -> Process {
@@ -101,14 +104,6 @@ extension MacVariant {
       throw VariantError.targetRequired
     }
     
-    guard let source = target.source else {
-      throw VariantError.sourceRequired
-    }
-    
-    guard let folder = source as? Folder else {
-      throw VariantTypeError.unexpectedSourceType(get: type(of: source), expected: Folder.self)
-    }
-    
     let process = createRunProcess(source: folder)
     
     return try OutputConsoleTask(process, target: target, consoleTitle: "Run: \(target.name)") { task in
@@ -129,14 +124,6 @@ extension MacVariant {
   func build(_ callback: Callback?) throws -> WorkbenchTask {
     guard let target = target else {
       throw VariantError.targetRequired
-    }
-    
-    guard let source = target.source else {
-      throw VariantError.sourceRequired
-    }
-    
-    guard let folder = source as? Folder else {
-      throw VariantTypeError.unexpectedSourceType(get: type(of: source), expected: Folder.self)
     }
     
     target.workbench?.currentDocument?.save(nil)

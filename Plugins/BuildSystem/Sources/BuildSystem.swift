@@ -58,10 +58,10 @@ extension Array where Element == BuildSystem {
   func targets(in workbench: Workbench) -> [Target] {
     let allTargets = self.flatMap{$0.targets(in: workbench)}
     return allTargets.reduce([]) { result, target -> [Target] in
-      guard let accTarget = result.first(where: {$0.name == target.name && $0.source?.path == target.source?.path } ) else {
+      guard let accTarget = result.first(where: {$0.name == target.name} ) else {
         return result + [target]
       }
-      let newAccTarget = TargetImpl(name: target.name, source: target.source, workbench: target.workbench, variants: accTarget.variants + target.variants)
+      let newAccTarget = TargetImpl(name: target.name, workbench: target.workbench, variants: accTarget.variants + target.variants)
       return result.filter{$0.name != target.name} + [newAccTarget]
     }
   }
