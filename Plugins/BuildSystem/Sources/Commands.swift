@@ -18,18 +18,10 @@ final class Run: BuildSystemCommand {
 
   override func run(in workbench: Workbench) {
     showConsoleTillFirstEscPress(in: workbench)
-    //TODO: improve call using new API
     guard let variant = workbench.selectedVariant else {
       return
     }
-    do {
-      let buildTask = try variant.build { variant, task in
-        workbench.publish(task: try variant.run())
-      }
-      workbench.publish(task: buildTask)
-    } catch {
-      print(error)
-    }
+    variant.buildSystem?.run(variant, in: workbench)
   }
   
   override func validate(in workbench: Workbench) -> State {

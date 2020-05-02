@@ -65,6 +65,7 @@ public protocol Variant {
   var name: String { get }
   var icon: Icon? { get }
   var target: Target? { get set }
+  var buildSystem: BuildSystem? { get }
   
   func run(_ callback: Callback?) throws -> WorkbenchTask
   func build(_ callback: Callback?) throws -> WorkbenchTask

@@ -20,28 +20,28 @@ class SPMBuildSystem: BuildSystem {
     guard let folders = workbench.project?.folders else { return [] }
     let targets = folders.filter{ canHandle(folder: $0) }.map{ TargetImpl(name: $0.name, source: $0, workbench: workbench) }
     for target in targets {
-      target.variants = [MacVariant(target: target)]
+      target.variants = [MacVariant(target: target, buildSystem: self)]
     }
     return targets
   }
   
   func run(_ variant: Variant, in workbench: Workbench) {
-    //    do {
-    //      let buildTask = try variant.build { variant, task in
-    //        workbench.publish(task: try variant.run())
-    //      }
-    //      workbench.publish(task: buildTask)
-    //    } catch {
-    //      print(error)
-    //    }
+    do {
+      let buildTask = try variant.build { variant, task in
+        workbench.publish(task: try variant.run())
+      }
+      workbench.publish(task: buildTask)
+    } catch {
+      print(error)
+    }
   }
   
   func build(_ variant: Variant, in workbench: Workbench) {
-    //    do {
-    //      workbench.publish(task: try variant.build())
-    //    } catch {
-    //      print(error)
-    //    }
+    do {
+      workbench.publish(task: try variant.build())
+    } catch {
+      print(error)
+    }
   }
   
   func clean(_ variant: Variant, in workbench: Workbench) {
@@ -69,11 +69,12 @@ class MacVariant: Variant {
     "mac"
   }
   
-  
+  var buildSystem: BuildSystem?
   weak var target: Target?
   
-  init(target: Target? = nil) {
+  init(target: Target? = nil, buildSystem: BuildSystem) {
     self.target = target
+    self.buildSystem = buildSystem
   }
   
   func createProcess(source: Folder) -> Process {
