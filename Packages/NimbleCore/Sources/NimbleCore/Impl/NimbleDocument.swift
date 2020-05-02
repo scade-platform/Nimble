@@ -22,18 +22,19 @@ open class NimbleDocument: NSDocument {
       super.fileURL = newValue
       
       if oldValue != newValue, let doc = self as? Document {
+
+        if newValue?.scheme == .some("file") {
+          if filePresenter == .none {
+            filePresenter = DocumentFilePresenter(self)
+          }
+          filePresenter?.register()
+        } else {
+          filePresenter?.unregister()
+        }
+
         observers.notify {
           $0.documentFileUrlDidChange(doc, oldFileUrl: oldValue)
         }
-      }
-
-      if newValue?.scheme == .some("file") {
-        if filePresenter == .none {
-          filePresenter = DocumentFilePresenter(self)
-        }
-        filePresenter?.register()
-      } else {
-        filePresenter?.unregister()
       }
     }
   }
@@ -49,6 +50,12 @@ open class NimbleDocument: NSDocument {
       }
       doc.editor?.workbench?.willSaveDocument(doc)
     }
+
+    let isFilePresenterRegistered = filePresenter?.isRegistered ?? false
+
+    if isFilePresenterRegistered {
+      filePresenter?.unregister()
+    }
     
     super.save(to: url, ofType: typeName, for: saveOperation) {[weak self] in
       if $0 == nil, let doc = self as? Document {
@@ -58,6 +65,10 @@ open class NimbleDocument: NSDocument {
         doc.editor?.workbench?.didSaveDocument(doc)
       }
       completionHandler($0)
+    }
+
+    if isFilePresenterRegistered {
+      filePresenter?.register()
     }
   }
   
@@ -88,7 +99,7 @@ fileprivate class DocumentFilePresenter: NSObject, NSFilePresenter {
   public var presentedItemOperationQueue: OperationQueue
   { return doc?.presentedItemOperationQueue ?? OperationQueue.main }
 
-  private var isRegistered = false
+  var isRegistered = false
 
   public init(_ doc: NimbleDocument) {
     super.init()
