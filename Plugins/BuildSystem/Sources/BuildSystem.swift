@@ -44,8 +44,8 @@ public class BuildSystemsManager {
   
   public private(set) var buildSystems : [BuildSystem] = []
   
-  public var activeBuildSystem: BuildSystem? = nil
-  
+  public var activeBuildSystem: BuildSystem? = Automatic.shared
+
   private init() {}
   
   public func add(buildSystem: BuildSystem) {
