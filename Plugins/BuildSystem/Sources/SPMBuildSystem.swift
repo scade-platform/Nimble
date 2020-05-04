@@ -70,10 +70,6 @@ fileprivate class SPMTarget: Target {
     self.folder = folder
     self.workbench = workbench
   }
-  
-  var id : ObjectIdentifier {
-    ObjectIdentifier(self)
-  }
 }
 
 fileprivate class MacVariant: Variant {
@@ -88,9 +84,6 @@ fileprivate class MacVariant: Variant {
   }
   
   weak var buildSystem : BuildSystem?
-  
-  //TODO: Remove this
-  var cach: [Any] = []
   
   init(target: SPMTarget, buildSystem: SPMBuildSystem) {
     self.spmTarget = target
@@ -110,25 +103,7 @@ fileprivate class MacVariant: Variant {
     }
     return proc
   }
-  
-  private func openConsole(for process: Process, consoleTitle title: String) -> Console? {
-    guard let workbench = target?.workbench, let console = openConsole(key: spmTarget?.id, title: title, in: workbench),
-      !console.isReadingFromBuffer
-      else {
-        //The console is using by another process with the same representedObject
-        return nil
-    }
-    
-    process.standardOutput = console.output
-    process.standardError = console.output
-    console.startReadingFromBuffer()
-    
-    return console
-  }
-
 }
-
-extension MacVariant: ConsoleSupport {}
 
 
 // MARK: - MacVariant - Run task
@@ -139,14 +114,7 @@ extension MacVariant {
     }
 
     let process = createRunProcess(source: target.folder)
-    let task = WorkbenchProcess(process)
-    
-    if let console = openConsole(for: process, consoleTitle: "Run: \(target.name) - \(self.name)"){
-      //TODO: Improve this
-      let t = ConsoleTaskObserver(console)
-      task.observers.add(observer: t )
-      cach.append(t)
-    }
+    let task = ConsoleOutputWorkbenchProcess(process, title: "Run: \(target.name) - \(self.name)", target: target)
     
     return task
   }
@@ -169,14 +137,12 @@ extension MacVariant {
     target.workbench?.currentDocument?.save(nil)
     
     let process = createBuildProcess(source: target.folder)
-    let task = WorkbenchProcess(process)
     
-    if let console = openConsole(for: process, consoleTitle: "Build: \(target.name) - \(self.name)"){
-      //TODO: Improve this
-      let t = ConsoleTaskObserver(console, startMessage: "Building: \(target.name) - \(self.name)", endMessage:  "Finished building \(target.name) - \(self.name)")
-      task.observers.add(observer: t )
-      cach.append(t)
+    let task = ConsoleOutputWorkbenchProcess(process, title: "Build: \(target.name) - \(self.name)", target: target) { [weak self] console in
+      guard let self = self else { return }
+      console.writeLine(string: "Finished building \(target.name) - \(self.name)")
     }
+    task.console?.writeLine(string: "Building: \(target.name) - \(self.name)")
     
     return task
   }
@@ -216,3 +182,40 @@ class ConsoleTaskObserver: WorkbenchTaskObserver {
     console.writeLine(string: endMessage)
   }
 }
+
+class ConsoleOutputWorkbenchProcess: BuildSystemTask {
+  let process: Process
+  var console: Console?
+  
+  init(_ process: Process, title: String, target: Target, handler: ((Console) -> Void)? = nil) {
+    self.process = process
+    super.init(process)
+    self.console = openConsole(for: process, consoleTitle: title, target: target)
+    let superTerminateHandler = process.terminationHandler
+    process.terminationHandler = {[weak self] process in
+      guard let self = self else { return }
+      superTerminateHandler?(process)
+      if let console = self.console {
+          handler?(console)
+      }
+      self.console?.stopReadingFromBuffer()
+    }
+  }
+  
+  private func openConsole(for process: Process, consoleTitle title: String, target: Target) -> Console? {
+     guard let workbench = target.workbench, let console = openConsole(key: target.id, title: title, in: workbench),
+       !console.isReadingFromBuffer
+       else {
+         //The console is using by another process with the same representedObject
+         return nil
+     }
+     
+     process.standardOutput = console.output
+     process.standardError = console.output
+     console.startReadingFromBuffer()
+     
+     return console
+   }
+}
+
+extension ConsoleOutputWorkbenchProcess: ConsoleSupport {}

@@ -20,6 +20,7 @@ public extension Target {
   //Default value for optional properties
   var icon: Icon? { nil }
   var workbench: Workbench? { nil }
+  var id: ObjectIdentifier { ObjectIdentifier(self) }
 }
 
 public protocol Variant {

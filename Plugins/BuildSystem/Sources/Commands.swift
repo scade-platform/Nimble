@@ -141,12 +141,5 @@ class BuildSystemCommand: Command {
 
 class BuildSystemTask: WorkbenchProcess {}
 
-fileprivate extension Workbench {
-  func publish(_ process: Process?) {
-    guard let process = process, process.isRunning else { return }
-    self.publish(task: BuildSystemTask(process))
-  }
-}
-
 
 

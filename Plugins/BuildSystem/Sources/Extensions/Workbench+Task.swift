@@ -10,13 +10,17 @@ import Cocoa
 import NimbleCore
 
 extension Workbench {
-  func publish(tasks: [WorkbenchTask], then handler: @escaping (Task.Outcome) -> Void) {
-    Task.sequence(tasks.map{Task.execute($0, in: self)}).perform(then: handler)
+  func publish(tasks: [WorkbenchTask], then handler: @escaping (Outcome) -> Void) {
+    Task.sequence(tasks.map{WorkbenchTaskWrapper($0)}.map{Task.execute($0, in: self)}).perform(then: handler)
   }
 }
 
+enum Outcome {
+  case success
+  case failure(Error)
+}
 
-struct Task {
+fileprivate struct Task {
   typealias Closure = (Controller) -> Void
   
   private let closure: Closure
@@ -42,13 +46,6 @@ extension Task {
 }
 
 extension Task {
-  enum Outcome {
-    case success
-    case failure(Error)
-  }
-}
-
-extension Task {
   func perform(on queue: DispatchQueue = .global(),
                then handler: @escaping (Outcome) -> Void) {
     queue.async {
@@ -64,32 +61,16 @@ extension Task {
 
 extension Task {
   
-  static func execute(_ task: WorkbenchTask, in workbench: Workbench) -> Task {
+  static func execute(_ task: WorkbenchTaskWrapper, in workbench: Workbench) -> Task {
     return Task { controller in
       do {
-        //TODO: Improve this
-        let t = WorkbenchTaskObserverImpl(controller: controller)
-        task.observers.add(observer: t)
-        cash.append(t)
-        try task.run()
+        try task.run {
+          controller.finish()
+        }
         workbench.publish(task: task)
       } catch {
         controller.fail(with: error)
       }
-    }
-  }
-}
-
-extension Task {
-  class WorkbenchTaskObserverImpl: WorkbenchTaskObserver {
-    let controller: Controller
-    
-    init(controller: Controller) {
-      self.controller = controller
-    }
-    
-    func taskDidFinish(_ task: WorkbenchTask) {
-      controller.finish()
     }
   }
 }
@@ -124,5 +105,47 @@ extension Task {
   }
 }
 
-//TODO: Remove this
-fileprivate var cash : [Any] = []
+fileprivate class WorkbenchTaskWrapper: WorkbenchTask {
+  let innerWorkbenchTask: WorkbenchTask
+  var handler: (() -> Void)?
+  
+  var observers: ObserverSet<WorkbenchTaskObserver> {
+    get {
+      innerWorkbenchTask.observers
+    }
+    set {
+      innerWorkbenchTask.observers = newValue
+    }
+  }
+  
+  var isRunning: Bool {
+    innerWorkbenchTask.isRunning
+  }
+  
+  func stop() {
+    innerWorkbenchTask.stop()
+  }
+  
+  func run() throws {
+    try innerWorkbenchTask.run()
+  }
+  
+  func run(then handler: @escaping () -> Void) throws {
+    self.handler = handler
+    try self.run()
+  }
+  
+  init(_ task: WorkbenchTask) {
+    self.innerWorkbenchTask = task
+    self.innerWorkbenchTask.observers.add(observer: self)
+  }
+}
+
+extension WorkbenchTaskWrapper: WorkbenchTaskObserver {
+  func taskDidFinish(_ task: WorkbenchTask) {
+    guard task === innerWorkbenchTask else {
+      return
+    }
+    handler?()
+  }
+}
