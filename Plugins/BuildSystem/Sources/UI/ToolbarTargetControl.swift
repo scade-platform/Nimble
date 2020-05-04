@@ -97,18 +97,27 @@ class ToolbarTargetControl : NSView {
   }
   
   @IBAction func leftButtonDidClick(_ sender: Any) {
-    guard let workbench = self.window?.windowController as? Workbench else {
-      return
-    }
-    
-    self.targets = BuildSystemsManager.shared.buildSystems.targets(in: workbench)
-    
-    guard !targets.isEmpty else {
+    guard let workbench = self.window?.windowController as? Workbench, let buildSystem = BuildSystemsManager.shared.activeBuildSystem else {
       return
     }
     
     let menu = NSMenu()
-    targets.forEach{addMenuItem(target: $0, to: menu)}
+    if let automatic = buildSystem as? Automatic {
+      for targets in automatic.targetsBySystem(in: workbench) {
+        guard !targets.isEmpty else {
+          continue
+        }
+        targets.forEach{addMenuItem(target: $0, to: menu)}
+        self.targets.append(contentsOf: targets)
+        menu.addItem(.separator())
+      }
+    } else {
+      self.targets = buildSystem.targets(in: workbench)
+      guard !targets.isEmpty else {
+        return
+      }
+      targets.forEach{addMenuItem(target: $0, to: menu)}
+    }
     menu.popUp(positioning: menu.item(at: 0), at: NSEvent.mouseLocation, in: nil)
   }
   
