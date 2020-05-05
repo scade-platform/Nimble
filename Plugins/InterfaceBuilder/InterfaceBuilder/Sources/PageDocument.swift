@@ -61,9 +61,6 @@ public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
   }
 
   func didClose() {
-    if let resource = self.page?.eContainer() as? SCDCoreResource {
-      resource.close()
-    }
   }
 }
 
