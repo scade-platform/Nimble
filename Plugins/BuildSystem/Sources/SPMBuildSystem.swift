@@ -23,25 +23,20 @@ class SPMBuildSystem: BuildSystem {
     return targets
   }
   
-  func run(_ variant: Variant, in workbench: Workbench) {
+  func run(_ variant: Variant) {
+    guard let workbench = variant.target?.workbench else { return }
     do {
-      workbench.publish(tasks: [try variant.build(), try variant.run()]) { result in
-        switch result {
-        case .failure(let error):
-          print(error)
-        default: break
-        }
-      }
+      try workbench.publish(tasks: [try variant.build(), try variant.run()])
     } catch {
       print(error)
     }
   }
   
-  func build(_ variant: Variant, in workbench: Workbench) {
+  func build(_ variant: Variant) {
     //TODO: add logic
   }
   
-  func clean(_ variant: Variant, in workbench: Workbench) {
+  func clean(_ variant: Variant) {
     //TODO: add clean logic
   }
 }

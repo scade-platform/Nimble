@@ -21,7 +21,7 @@ final class Run: BuildSystemCommand {
     guard let variant = workbench.selectedVariant else {
       return
     }
-    BuildSystemsManager.shared.activeBuildSystem?.run(variant, in: workbench)
+    BuildSystemsManager.shared.activeBuildSystem?.run(variant)
   }
   
   override func validate(in workbench: Workbench) -> State {

@@ -21,15 +21,15 @@ class ShellBuildSystem: BuildSystem {
   }
 
   
-  func run(_ variant: Variant, in workbench: Workbench) {
+  func run(_ variant: Variant) {
     //TODO: add launch logic
   }
   
-  func build(_ variant: Variant, in workbench: Workbench) {
+  func build(_ variant: Variant) {
     //TODO: add build logic
   }
   
-  func clean(_ variant: Variant, in workbench: Workbench) {
+  func clean(_ variant: Variant) {
     //TODO: add clean logic
   }
   

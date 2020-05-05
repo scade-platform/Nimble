@@ -14,9 +14,9 @@ public protocol BuildSystem : class {
   
   func targets(in workbench: Workbench) -> [Target]
   
-  func run(_ variant: Variant, in workbench: Workbench)
-  func build(_ variant: Variant, in workbench: Workbench)
-  func clean(_ variant: Variant, in workbench: Workbench)
+  func run(_ variant: Variant)
+  func build(_ variant: Variant)
+  func clean(_ variant: Variant)
 }
 
 

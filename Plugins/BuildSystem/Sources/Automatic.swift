@@ -31,16 +31,16 @@ class Automatic: BuildSystem {
     return systems.flatMap{$0.targets(in: workbench)}
   }
   
-  func run(_ variant: Variant, in workbench: Workbench) {
-    variant.buildSystem?.run(variant, in: workbench)
+  func run(_ variant: Variant) {
+    variant.buildSystem?.run(variant)
   }
   
-  func build(_ variant: Variant, in workbench: Workbench) {
-     variant.buildSystem?.build(variant, in: workbench)
+  func build(_ variant: Variant) {
+     variant.buildSystem?.build(variant)
   }
   
-  func clean(_ variant: Variant, in workbench: Workbench) {
-    variant.buildSystem?.clean(variant, in: workbench)
+  func clean(_ variant: Variant) {
+    variant.buildSystem?.clean(variant)
   }
 }
 
