@@ -44,10 +44,6 @@ public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
   }
   
   public override func read(from url: URL, ofType typeName: String) throws {
-    if let resource = self.page?.eContainer() as? SCDCoreResource {
-       resource.close()
-     }
-
     adapter.load(url.path)
   }
   
