@@ -12,20 +12,13 @@ import NimbleCore
 extension Workbench {
   func publish(tasks: [WorkbenchTask], onComplete: (([WorkbenchTask]) -> Void)? = nil) throws {
     let t = SequenceTask(tasks, in: self)
-    try self.publish(t) { _ in
+    self.publish(task: t) { _ in
       onComplete?(tasks)
     }
-  }
-  
-  func publish(_ task: WorkbenchTask, onComplete: @escaping (WorkbenchTask) -> Void) throws {
-    let wrappedTask = WorkbenchTaskWrapper(task)
-    try wrappedTask.run {
-      onComplete(task)
-    }
-    self.publish(task: wrappedTask)
+    try t.run()
   }
 }
-
+  
 class SequenceTask: WorkbenchTask {
   var atomicIsRunning = Atomic<Bool>(false)
   
@@ -55,14 +48,20 @@ class SequenceTask: WorkbenchTask {
       let semaphore = DispatchSemaphore(value: 0)
       self.isRunning = true
       for t in self.subTasks {
-        do {
-          try self.workbench.publish(t) {_ in
+        DispatchQueue.main.async {
+          self.workbench.publish(task: t) {_ in
+            //stop waiting
             semaphore.signal()
           }
+        }
+        do {
+          //run task
+          try t.run()
         } catch {
           print(error)
           return
         }
+        //wait until task complete
         semaphore.wait()
       }
       self.isRunning = false
@@ -74,50 +73,5 @@ class SequenceTask: WorkbenchTask {
     self.subTasks = tasks
     self.workbench = workbench
     self.queue = .global()
-  }
-}
-
-fileprivate class WorkbenchTaskWrapper: WorkbenchTask {
-  let innerWorkbenchTask: WorkbenchTask
-  var handler: (() -> Void)?
-  
-  var observers: ObserverSet<WorkbenchTaskObserver> {
-    get {
-      innerWorkbenchTask.observers
-    }
-    set {
-      innerWorkbenchTask.observers = newValue
-    }
-  }
-  
-  var isRunning: Bool {
-    innerWorkbenchTask.isRunning
-  }
-  
-  func stop() {
-    innerWorkbenchTask.stop()
-  }
-  
-  func run() throws {
-    try innerWorkbenchTask.run()
-  }
-  
-  func run(then handler: @escaping () -> Void) throws {
-    self.handler = handler
-    try self.run()
-  }
-  
-  init(_ task: WorkbenchTask) {
-    self.innerWorkbenchTask = task
-    self.innerWorkbenchTask.observers.add(observer: self)
-  }
-}
-
-extension WorkbenchTaskWrapper: WorkbenchTaskObserver {
-  func taskDidFinish(_ task: WorkbenchTask) {
-    guard task === innerWorkbenchTask else {
-      return
-    }
-    handler?()
   }
 }

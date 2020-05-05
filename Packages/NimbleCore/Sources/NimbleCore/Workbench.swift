@@ -50,6 +50,7 @@ public protocol Workbench: class {
   func publish(diagnostics: [Diagnostic], for path: Path)
 
   func publish(task: WorkbenchTask)
+  func publish(task: WorkbenchTask, onComplete: @escaping (WorkbenchTask) -> Void)
 }
 
 
