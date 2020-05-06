@@ -27,7 +27,7 @@ public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
     return adapter.page
   }
 
-  private lazy var builderController: EditorView = {
+  private lazy var editorController: EditorView = {
     let controller = EditorView.loadFromNib()
     controller.document = self
 
@@ -58,7 +58,7 @@ public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
 }
 
 extension PageDocument: Document {
-  public var editor: WorkbenchEditor? { builderController }
+  public var editor: WorkbenchEditor? { editorController }
   
   /// TODO: register UTIs for the page files
   public static var typeIdentifiers: [String] = []
