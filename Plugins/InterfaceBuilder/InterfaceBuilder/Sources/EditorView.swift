@@ -17,27 +17,35 @@ class EditorView: SVGEditorView {
   }
 
   override func setupElementSelector() {
-    if elementSelector == nil {
-      let widgetSelector = WidgetSelector(svgView, editorView: self)
+    let widgetSelector = WidgetSelector(svgView, editorView: self)
 
-      guard let page = pageDocument?.page else { return }
-      widgetSelector.visit(page)
+    guard let page = pageDocument?.page else { return }
+    widgetSelector.visit(page)
 
-      elementSelector = widgetSelector
-    }
+    elementSelector = widgetSelector
   }
 
   override func didOpenDocument() {
     super.didOpenDocument()
 
-    pageDocument?.adapter.show(window)
+    showPage(in: window)
+  }
+
+  override func onDocumentFileDidChange() {
+    super.onDocumentFileDidChange()
+
+    showPage(in: window)
+  }
+
+  private func showPage(in window: SCDLatticeWindow) {
+    pageDocument?.self.adapter.show(window)
   }
 }
 
 protocol EditorViewObserver: class {
-  func editorDidChangeSelection(editor: EditorView, widget: SCDWidgetsWidget)
+  func editorDidChangeSelection(editor: EditorView, widget: SCDWidgetsWidget?)
 }
 
 extension EditorViewObserver {
-  func editorDidChangeSelection(editor: EditorView, widget: SCDWidgetsWidget) {}
+  func editorDidChangeSelection(editor: EditorView, widget: SCDWidgetsWidget?) {}
 }

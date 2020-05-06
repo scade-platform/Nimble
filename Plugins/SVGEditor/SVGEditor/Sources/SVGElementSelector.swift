@@ -45,6 +45,12 @@ open class SVGLayerSelector: SVGElementSelector, SVGElementVisitor {
     self.svgView = svgView
   }
 
+  deinit {
+    if let selected = self.selected {
+      onUnselect(selected)
+    }
+  }
+
   public func process(_ element: SCDSvgElement) {
     visit(element)
   }
