@@ -6,8 +6,6 @@ class EditorView: SVGEditorView {
   
   let window = SCDLatticeWindow()
 
-  var isDocumentOpened = false
-
   var observers = ObserverSet<EditorViewObserver>()
 
   var pageDocument: PageDocument? {
@@ -16,10 +14,6 @@ class EditorView: SVGEditorView {
 
   override func setupSVGView() {
     setupElementSelector()
-
-    if isDocumentOpened {
-      showPage(on: window)
-    }
   }
 
   override func setupElementSelector() {
@@ -31,14 +25,19 @@ class EditorView: SVGEditorView {
     elementSelector = widgetSelector
   }
 
-  override func didOpenDocument() {
-    super.didOpenDocument()
+  override func didOpenDocument(_ document: Document) {
+    super.didOpenDocument(document)
 
-    showPage(on: window)
-    isDocumentOpened = true
+    showPage(in: window)
   }
 
-  private func showPage(on window: SCDLatticeWindow) {
+  override func onFileDidChange() {
+    super.onFileDidChange()
+
+    showPage(in: window)
+  }
+
+  private func showPage(in window: SCDLatticeWindow) {
     pageDocument?.self.adapter.show(window)
   }
 }
