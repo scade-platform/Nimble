@@ -25,8 +25,8 @@ class EditorView: SVGEditorView {
     elementSelector = widgetSelector
   }
 
-  override func didOpenDocument(_ document: Document) {
-    super.didOpenDocument(document)
+  override func didOpenDocument() {
+    super.didOpenDocument()
 
     showPage(in: window)
   }

@@ -57,7 +57,7 @@ public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
   }
 
   func didOpen() {
-    builderController.didOpenDocument()
+    editorController.didOpenDocument()
   }
 
   func didClose() {
