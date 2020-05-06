@@ -51,12 +51,8 @@ open class NimbleDocument: NSDocument {
       doc.editor?.workbench?.willSaveDocument(doc)
     }
 
-    let isFilePresenterRegistered = filePresenter?.isRegistered ?? false
+    filePresenter?.saveInProgress = true
 
-    if isFilePresenterRegistered {
-      filePresenter?.unregister()
-    }
-    
     super.save(to: url, ofType: typeName, for: saveOperation) {[weak self] in
       if $0 == nil, let doc = self as? Document {
         self?.observers.notify{
@@ -67,9 +63,7 @@ open class NimbleDocument: NSDocument {
       completionHandler($0)
     }
 
-    if isFilePresenterRegistered {
-      filePresenter?.register()
-    }
+    filePresenter?.saveInProgress = false
   }
   
   
@@ -95,6 +89,8 @@ fileprivate class DocumentFilePresenter: NSObject, NSFilePresenter {
   private weak var doc: NimbleDocument?
   
   public var presentedItemURL: URL? { return self.doc?.presentedItemURL }
+
+  public var saveInProgress: Bool = false
   
   public var presentedItemOperationQueue: OperationQueue
   { return doc?.presentedItemOperationQueue ?? OperationQueue.main }
@@ -121,6 +117,8 @@ fileprivate class DocumentFilePresenter: NSObject, NSFilePresenter {
   }
 
   public func presentedItemDidChange() {
-    doc?.presentedItemDidChange()
+    if isRegistered && !saveInProgress {
+      doc?.presentedItemDidChange()
+    }
   }
 }
