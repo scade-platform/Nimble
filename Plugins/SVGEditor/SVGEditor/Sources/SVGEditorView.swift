@@ -66,7 +66,7 @@ open class SVGEditorView: NSViewController, SVGEditorViewProtocol {
                                scrollView: scrollView, svgView: svgView)
   }
 
-  open func onFileDidChange() {
+  open func onDocumentFileDidChange() {
     setupSVGView()
   }
 
@@ -79,7 +79,7 @@ extension SVGEditorView: DocumentObserver {
   }
 
   public func documentFileDidChange(_ document: Document) {
-    onFileDidChange()
+    onDocumentFileDidChange()
   }
 }
 
