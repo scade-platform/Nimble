@@ -26,12 +26,35 @@ class SPMBuildSystem: BuildSystem {
   func run(_ variant: Variant) {
     guard let workbench = variant.target?.workbench else { return }
     do {
-      try workbench.publish(tasks: [try variant.build(), try variant.run()]) { _ in
+      let buildTask = try variant.build()
+      workbench.publish(task: buildTask) { task in
+        guard let consoleOutputTask = task as? ConsoleOutputWorkbenchProcess,
+          let console = consoleOutputTask.console else {
+          return
+        }
+        
         DispatchQueue.main.async {
-          //show console with result
+          //show console with build result
           ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
         }
+        
+        //If build without error
+        if !console.contents.contains("error:") {
+          if let runTask = try? variant.run() {
+            
+            workbench.publish(task: runTask) { _ in
+              DispatchQueue.main.async {
+                //show console with run result
+                ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+              }
+            }
+            
+            //then run
+            try? runTask.run()
+          }
+        }
       }
+      try buildTask.run()
     } catch {
       print(error)
     }

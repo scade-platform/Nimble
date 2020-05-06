@@ -21,12 +21,19 @@ class ConsoleOutputWorkbenchProcess: BuildSystemTask {
     self.console = openConsole(for: process, consoleTitle: title, target: target)
     let superTerminateHandler = process.terminationHandler
     process.terminationHandler = {[weak self] process in
-      guard let self = self else { return }
-      superTerminateHandler?(process)
-      if let console = self.console {
+      DispatchQueue.main.async { [weak self] in
+        guard let self = self else { return }
+        if let console = self.console {
           handler?(console)
+          
+          if console.contents.isEmpty {
+            console.close()
+          }
+        }
+        self.console?.stopReadingFromBuffer()
+        superTerminateHandler?(process)
       }
-      self.console?.stopReadingFromBuffer()
+      
     }
   }
   
