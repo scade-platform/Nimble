@@ -22,18 +22,19 @@ open class NimbleDocument: NSDocument {
       super.fileURL = newValue
       
       if oldValue != newValue, let doc = self as? Document {
+
+        if newValue?.scheme == .some("file") {
+          if filePresenter == .none {
+            filePresenter = DocumentFilePresenter(self)
+          }
+          filePresenter?.register()
+        } else {
+          filePresenter?.unregister()
+        }
+
         observers.notify {
           $0.documentFileUrlDidChange(doc, oldFileUrl: oldValue)
         }
-      }
-
-      if newValue?.scheme == .some("file") {
-        if filePresenter == .none {
-          filePresenter = DocumentFilePresenter(self)
-        }
-        filePresenter?.register()
-      } else {
-        filePresenter?.unregister()
       }
     }
   }
@@ -49,7 +50,9 @@ open class NimbleDocument: NSDocument {
       }
       doc.editor?.workbench?.willSaveDocument(doc)
     }
-    
+
+    filePresenter?.saveInProgress = true
+
     super.save(to: url, ofType: typeName, for: saveOperation) {[weak self] in
       if $0 == nil, let doc = self as? Document {
         self?.observers.notify{
@@ -59,6 +62,8 @@ open class NimbleDocument: NSDocument {
       }
       completionHandler($0)
     }
+
+    filePresenter?.saveInProgress = false
   }
   
   
@@ -84,11 +89,13 @@ fileprivate class DocumentFilePresenter: NSObject, NSFilePresenter {
   private weak var doc: NimbleDocument?
   
   public var presentedItemURL: URL? { return self.doc?.presentedItemURL }
+
+  public var saveInProgress: Bool = false
   
   public var presentedItemOperationQueue: OperationQueue
   { return doc?.presentedItemOperationQueue ?? OperationQueue.main }
 
-  private var isRegistered = false
+  var isRegistered = false
 
   public init(_ doc: NimbleDocument) {
     super.init()
@@ -110,6 +117,8 @@ fileprivate class DocumentFilePresenter: NSObject, NSFilePresenter {
   }
 
   public func presentedItemDidChange() {
-    doc?.presentedItemDidChange()
+    if isRegistered && !saveInProgress {
+      doc?.presentedItemDidChange()
+    }
   }
 }
