@@ -19,7 +19,7 @@ class ToolbarTargetControl : NSView {
   @IBOutlet weak var rightImage: NSImageView?
   @IBOutlet weak var rightLable: NSTextField?
   
-  var targets: [Target] = []
+  var selectedTarget: Target?
   
   private lazy var separatorTemplate: NSImage = {
     let separator = IconsManager.Icons.separator.image
@@ -82,6 +82,7 @@ class ToolbarTargetControl : NSView {
   private func addMenuItem(target: Target, to menu: NSMenu) {
     let item = NSMenuItem(title: target.name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
     item.target = self
+    item.representedObject = target
     item.submenu = creatSubmenus(target: target)
     menu.addItem(item)
   }
@@ -108,16 +109,17 @@ class ToolbarTargetControl : NSView {
     
     let menu = NSMenu()
     if let automatic = buildSystem as? Automatic {
-      for targets in automatic.targetsBySystem(in: workbench) {
-        guard !targets.isEmpty else {
+      targets = []
+      for automaticTargets in automatic.targetsBySystem(in: workbench) {
+        guard !automaticTargets.isEmpty else {
           continue
         }
-        targets.forEach{addMenuItem(target: $0, to: menu)}
-        self.targets.append(contentsOf: targets)
+        automaticTargets.forEach{addMenuItem(target: $0, to: menu)}
+        targets.append(contentsOf: automaticTargets)
         menu.addItem(.separator())
       }
     } else {
-      self.targets = buildSystem.targets(in: workbench)
+      targets = buildSystem.targets(in: workbench)
       guard !targets.isEmpty else {
         return
       }
@@ -127,7 +129,12 @@ class ToolbarTargetControl : NSView {
   }
   
   @IBAction func rightButtonDidClick(_ sender: Any) {
-    print("2")
+    guard let workbench = self.window?.windowController as? Workbench, let variant = workbench.selectedVariant, let target = variant.target else {
+      return
+    }
+    if let menu = creatSubmenus(target: target) {
+       menu.popUp(positioning: menu.item(at: 0), at: NSEvent.mouseLocation, in: nil)
+    }
   }
   
   @objc func itemDidSelect(_ sender: Any?) {
@@ -144,7 +151,16 @@ class ToolbarTargetControl : NSView {
     guard let workbench = self.window?.windowController as? Workbench else {
       return
     }
+    selectedTarget = variant.target
     workbench.selectedVariant = variant
+  }
+  
+  @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
+    guard let item = item else {return true}
+    if let target = item.representedObject as? Target {
+      item.state = (target.name  == selectedTarget?.name) ? .on : .off
+    } 
+    return true
   }
 }
 
@@ -154,6 +170,11 @@ extension Workbench {
 
   var selectedVariant: Variant? {
     get {
+      if let swiftBuildSystem = BuildSystemsManager.shared.activeBuildSystem as? SwiftBuildSystem {
+        let fileTarget =  swiftBuildSystem.targets(in: self)[0]
+        targets.append(fileTarget)
+        return fileTarget.variants[0]
+      }
       return selectedVariants[self.id]
     }
     set {
@@ -165,3 +186,4 @@ extension Workbench {
 
 
 fileprivate var selectedVariants: [ObjectIdentifier: Variant] = [:]
+fileprivate var targets: [Target] = []

@@ -17,21 +17,80 @@ class SwiftBuildSystem: BuildSystem {
   }
   
   func targets(in workbench: Workbench) -> [Target] {
-      //TODO: add get Targets logic
-     return []
+    guard let document = workbench.currentDocument else { return [] }
+    let target = SwiftTarget(document: document, workbench: workbench)
+    target.variants.append(SingleDocumentVariant(target: target, buildSystem: self))
+    return [target]
    }
   
-  func run(_ variant: Variant) {
-    //TODO: add launch logic
-  }
-  
-  func build(_ variant: Variant) {
-    //TODO: add build logic
-  }
-  
-  func clean(_ variant: Variant) {
-    //TODO: add clean logic
-  }
+   func run(_ variant: Variant) {
+     guard let workbench = variant.target?.workbench else { return }
+     do {
+       let buildTask = try variant.build()
+       workbench.publish(task: buildTask) { task in
+         guard let consoleOutputTask = task as? ConsoleOutputWorkbenchProcess,
+           let console = consoleOutputTask.console else {
+           return
+         }
+         
+         DispatchQueue.main.async {
+           //show console with build result
+           ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+         }
+         
+         //If build without error
+         if !console.contents.contains("error:") {
+           if let runTask = try? variant.run() {
+             
+             workbench.publish(task: runTask) { _ in
+               DispatchQueue.main.async {
+                 //show console with run result
+                 ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+               }
+             }
+             
+             //then run
+             try? runTask.run()
+           }
+         }
+       }
+       try buildTask.run()
+     } catch {
+       print(error)
+     }
+   }
+   
+   func build(_ variant: Variant) {
+     guard let workbench = variant.target?.workbench else { return }
+     do {
+       let buildTask = try variant.build()
+       workbench.publish(task: buildTask) { _ in
+         DispatchQueue.main.async {
+           //show console with result
+           ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+         }
+       }
+       try buildTask.run()
+     } catch {
+       print(error)
+     }
+   }
+   
+   func clean(_ variant: Variant) {
+     guard let workbench = variant.target?.workbench else { return }
+     do {
+       let cleanTask = try variant.clean()
+       workbench.publish(task: cleanTask) { _ in
+         DispatchQueue.main.async {
+           //show console with result
+           ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+         }
+       }
+       try cleanTask.run()
+     } catch {
+       print(error)
+     }
+   }
 }
 
 fileprivate class SwiftTarget: Target {
