@@ -31,8 +31,8 @@ class EditorView: SVGEditorView {
     showPage(in: window)
   }
 
-  override func onFileDidChange() {
-    super.onFileDidChange()
+  override func onDocumentFileDidChange() {
+    super.onDocumentFileDidChange()
 
     showPage(in: window)
   }
