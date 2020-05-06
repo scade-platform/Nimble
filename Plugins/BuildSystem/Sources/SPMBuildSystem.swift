@@ -104,7 +104,7 @@ fileprivate class MacVariant: Variant {
   weak var spmTarget : SPMTarget?
   
   var name: String {
-    "mac"
+    "Mac"
   }
   
   weak var buildSystem : BuildSystem?
@@ -178,6 +178,7 @@ extension MacVariant {
   }
 }
 
+//MARK: - MacVariant - Clean task
 extension MacVariant {
   func clean() throws -> WorkbenchTask {
     guard let target = spmTarget else {
@@ -200,39 +201,4 @@ extension MacVariant {
     proc.arguments = ["package", "clean"]
     return proc
   }
-}
-
-class ConsoleOutputWorkbenchProcess: BuildSystemTask {
-  let process: Process
-  var console: Console?
-  
-  init(_ process: Process, title: String, target: Target, handler: ((Console) -> Void)? = nil) {
-    self.process = process
-    super.init(process)
-    self.console = openConsole(for: process, consoleTitle: title, target: target)
-    let superTerminateHandler = process.terminationHandler
-    process.terminationHandler = {[weak self] process in
-      guard let self = self else { return }
-      superTerminateHandler?(process)
-      if let console = self.console {
-          handler?(console)
-      }
-      self.console?.stopReadingFromBuffer()
-    }
-  }
-  
-  private func openConsole(for process: Process, consoleTitle title: String, target: Target) -> Console? {
-    guard let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: title, in: workbench),
-       !console.isReadingFromBuffer
-       else {
-         //The console is using by another process with the same representedObject
-         return nil
-     }
-     
-     process.standardOutput = console.output
-     process.standardError = console.output
-     console.startReadingFromBuffer()
-     
-     return console
-   }
 }

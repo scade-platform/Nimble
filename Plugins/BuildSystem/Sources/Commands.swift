@@ -114,11 +114,3 @@ class BuildSystemCommand: Command {
     return workbench.tasks.first { $0 is BuildSystemTask } as? BuildSystemTask
   }
 }
-
-
-// MARK: - Build system task
-
-class BuildSystemTask: WorkbenchProcess {}
-
-
-
