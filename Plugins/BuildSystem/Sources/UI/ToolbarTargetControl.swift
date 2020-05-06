@@ -34,15 +34,16 @@ class ToolbarTargetControl : NSView {
     layer.masksToBounds = true
     layer.cornerRadius = 5.5
     layer.borderWidth = 0.5
-    layer.backgroundColor = NSColor.controlColor.cgColor
+    layer.backgroundColor = ToolbarTargetControl.controlBackgroundColor.cgColor
     layer.borderColor = ToolbarTargetControl.sharedBorderColor.cgColor
     self.layer = layer
   }
   
   override func layout() {
     if let layer = self.layer {
-      //change border color after system theme changed
+      //change colors after system theme changed
       layer.borderColor = ToolbarTargetControl.sharedBorderColor.cgColor
+      layer.backgroundColor = ToolbarTargetControl.controlBackgroundColor.cgColor
     }
   }
   
@@ -53,6 +54,10 @@ class ToolbarTargetControl : NSView {
     case .light:
       return NSColor(colorCode: "#B1B1B1")!
     }
+  }
+  
+  private static var controlBackgroundColor: NSColor {
+    NSColor(named: "ControlBackgroundColor", bundle: Bundle(for: ToolbarTargetControl.self)) ?? NSColor.controlColor
   }
   
   override func awakeFromNib() {
