@@ -17,7 +17,7 @@ final class Run: BuildSystemCommand {
   }
 
   override func run(in workbench: Workbench) {
-    showConsoleTillFirstEscPress(in: workbench)
+    ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
     guard let variant = workbench.selectedVariant else {
       return
     }
@@ -43,7 +43,7 @@ final class Stop: BuildSystemCommand {
     if task.isRunning {
       task.stop()
     }
-    showConsoleTillFirstEscPress(in: workbench)
+    ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
   }
 
   override func validate(in workbench: Workbench) -> State {
@@ -60,18 +60,11 @@ final class Build: BuildSystemCommand {
   }
 
   override func run(in workbench: Workbench) {
-    showConsoleTillFirstEscPress(in: workbench)
-    //TODO: improve call using new API
-//    BuildSystemsManager.shared.activeBuildSystem?.run(in: workbench) {[weak self] status, process in
-//        switch status {
-//        case .finished:
-//          self?.showConsoleTillFirstEscPress(in: workbench)
-//        case .running:
-//          workbench.publish(process)
-//        case .failed:
-//          return
-//        }
-//      }
+    ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+    guard let variant = workbench.selectedVariant else {
+      return
+    }
+    BuildSystemsManager.shared.activeBuildSystem?.build(variant)
   }
 
   override func validate(in workbench: Workbench) -> State {
@@ -85,9 +78,11 @@ final class Clean: BuildSystemCommand {
   }
 
   override func run(in workbench: Workbench) {
-    showConsoleTillFirstEscPress(in: workbench)
-    //TODO: improve call using new API
-//    BuildSystemsManager.shared.activeBuildSystem?.clean(in: workbench)
+    ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+    guard let variant = workbench.selectedVariant else {
+      return
+    }
+    BuildSystemsManager.shared.activeBuildSystem?.clean(variant)
   }
 
   override func validate(in workbench: Workbench) -> State {
@@ -102,7 +97,8 @@ final class SelectTarget: Command {
   }
   
   override func validate(in workbench: Workbench) -> State {
-    return BuildSystemsManager.shared.buildSystems.hasTargets(in: workbench) ? [.enabled] : []
+    guard let activeSystem = BuildSystemsManager.shared.activeBuildSystem else { return [] }
+    return activeSystem.targets(in: workbench).isEmpty ? [] : [.enabled]
   }
 }
 
@@ -116,23 +112,6 @@ class BuildSystemCommand: Command {
 
   func currentTask(in workbench: Workbench) -> BuildSystemTask? {
     return workbench.tasks.first { $0 is BuildSystemTask } as? BuildSystemTask
-  }
-
-  func showConsoleTillFirstEscPress(in workbench: Workbench) {
-    var escPressMonitor: Any? = nil
-    escPressMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
-      if event.keyCode == Keycode.escape {
-        workbench.debugArea?.isHidden = true
-        if let monitor = escPressMonitor {
-          //only for first `esc` press
-          NSEvent.removeMonitor(monitor)
-          escPressMonitor = nil
-        }
-      }
-      return event
-    }
-
-    workbench.debugArea?.isHidden = false
   }
 }
 

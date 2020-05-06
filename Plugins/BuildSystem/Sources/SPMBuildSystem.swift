@@ -26,18 +26,47 @@ class SPMBuildSystem: BuildSystem {
   func run(_ variant: Variant) {
     guard let workbench = variant.target?.workbench else { return }
     do {
-      try workbench.publish(tasks: [try variant.build(), try variant.run()])
+      try workbench.publish(tasks: [try variant.build(), try variant.run()]) { _ in
+        DispatchQueue.main.async {
+          //show console with result
+          ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+        }
+      }
     } catch {
       print(error)
     }
   }
   
   func build(_ variant: Variant) {
-    //TODO: add logic
+    guard let workbench = variant.target?.workbench else { return }
+    do {
+      let buildTask = try variant.build()
+      workbench.publish(task: buildTask) { _ in
+        DispatchQueue.main.async {
+          //show console with result
+          ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+        }
+      }
+      try buildTask.run()
+    } catch {
+      print(error)
+    }
   }
   
   func clean(_ variant: Variant) {
-    //TODO: add clean logic
+    guard let workbench = variant.target?.workbench else { return }
+    do {
+      let cleanTask = try variant.clean()
+      workbench.publish(task: cleanTask) { _ in
+        DispatchQueue.main.async {
+          //show console with result
+          ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+        }
+      }
+      try cleanTask.run()
+    } catch {
+      print(error)
+    }
   }
 }
 
@@ -135,7 +164,7 @@ extension MacVariant {
     
     let task = ConsoleOutputWorkbenchProcess(process, title: "Build: \(target.name) - \(self.name)", target: target) { [weak self] console in
       guard let self = self else { return }
-      console.writeLine(string: "Finished building \(target.name) - \(self.name)")
+      console.writeLine(string: "Finished Building \(target.name) - \(self.name)")
     }
     task.console?.writeLine(string: "Building: \(target.name) - \(self.name)")
     
@@ -149,32 +178,27 @@ extension MacVariant {
   }
 }
 
-class ConsoleTaskObserver: WorkbenchTaskObserver {
-  let console: Console
-  let startMessage: String?
-  let endMessage: String?
-  
-  init(_ console: Console, startMessage: String? = nil, endMessage: String? = nil) {
-    self.console = console
-    self.startMessage = startMessage
-    self.endMessage = endMessage
+extension MacVariant {
+  func clean() throws -> WorkbenchTask {
+    guard let target = spmTarget else {
+      throw VariantError.targetRequired
+    }
+    
+    let process = createCleanProcess(source: target.folder)
+    
+    let task = ConsoleOutputWorkbenchProcess(process, title: "Clean: \(target.name) - \(self.name)", target: target) { [weak self] console in
+      guard let self = self else { return }
+      console.writeLine(string: "Finished Cleaning \(target.name) - \(self.name)")
+    }
+    
+    task.console?.writeLine(string: "Cleaning: \(target.name) - \(self.name)")
+    return task
   }
   
-  func taskDidStart(_ task: WorkbenchTask) {
-    guard console.isReadingFromBuffer, let startMessage = startMessage else {
-      return
-    }
-    console.writeLine(string: startMessage)
-  }
-  
-  func taskDidFinish(_ task: WorkbenchTask) {
-    defer {
-      console.stopReadingFromBuffer()
-    }
-    guard console.isReadingFromBuffer, let endMessage = endMessage else {
-      return
-    }
-    console.writeLine(string: endMessage)
+  func createCleanProcess(source: Folder) -> Process {
+    let proc = createProcess(source: source)
+    proc.arguments = ["package", "clean"]
+    return proc
   }
 }
 
@@ -198,7 +222,7 @@ class ConsoleOutputWorkbenchProcess: BuildSystemTask {
   }
   
   private func openConsole(for process: Process, consoleTitle title: String, target: Target) -> Console? {
-     guard let workbench = target.workbench, let console = openConsole(key: target.id, title: title, in: workbench),
+    guard let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: title, in: workbench),
        !console.isReadingFromBuffer
        else {
          //The console is using by another process with the same representedObject
@@ -212,5 +236,3 @@ class ConsoleOutputWorkbenchProcess: BuildSystemTask {
      return console
    }
 }
-
-extension ConsoleOutputWorkbenchProcess: ConsoleSupport {}
