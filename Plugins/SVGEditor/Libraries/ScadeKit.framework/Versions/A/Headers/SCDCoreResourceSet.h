@@ -26,6 +26,9 @@ SCADE_API
 
 - (SCDCoreResource* _Nullable)createResource:(NSString* _Nonnull)name;
 
+- (SCDCoreResource* _Nullable)loadResource:(NSString* _Nonnull)name
+                               forceReload:(BOOL)forceReload;
+
 
 /*PROTECTED REGION ID(b5b5b4a31226838d4beac8a8bcad74b6) START*/
 // Please, enable the protected region if you add manually written code.
