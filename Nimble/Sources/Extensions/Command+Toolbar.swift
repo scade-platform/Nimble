@@ -22,7 +22,16 @@ extension Command {
   func createToolbarItem() -> NSToolbarItem {
     let item = ToolbarItem(itemIdentifier: self.toolbarItemIdentifier)
     item.label = self.name
-
+    
+    item.view = self.view
+    return item
+  }
+  
+  var view: NSView {
+    guard self.toolbarView == nil else {
+      return self.toolbarView!
+    }
+    
     let button = NSButton()
     button.cell = ToolbarItemButtonCell()
 
@@ -35,9 +44,8 @@ extension Command {
 
     button.target = self
     button.action = #selector(Command.execute)
-
-    item.view = button
-    return item
+    
+    return button
   }
 
   private class ToolbarItemButtonCell: NSButtonCell {

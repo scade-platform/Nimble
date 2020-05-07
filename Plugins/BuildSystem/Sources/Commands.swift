@@ -17,31 +17,13 @@ final class Run: BuildSystemCommand {
   }
 
   override func run(in workbench: Workbench) {
-    showConsoleTillFirstEscPress(in: workbench)
-    BuildSystemsManager.shared.activeBuildSystem?.run(in: workbench) { [weak self] status, process in
-      switch status {
-      case .finished:
-        DispatchQueue.main.async { [weak self] in
-          self?.showConsoleTillFirstEscPress(in: workbench)
-          BuildSystemsManager.shared.activeBuildSystem?.launcher?.launch(in: workbench) { status, process in
-            switch status {
-            case .running:
-              workbench.publish(process)
-            default:
-              return
-            }
-          }
-        }
-
-      case .running:
-        workbench.publish(process)
-
-      case .failed:
-        return
-      }
+    ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+    guard let variant = workbench.selectedVariant else {
+      return
     }
+    BuildSystemsManager.shared.activeBuildSystem?.run(variant)
   }
-
+  
   override func validate(in workbench: Workbench) -> State {
     return currentTask(in: workbench) == nil ? [.enabled] : []
   }
@@ -61,7 +43,7 @@ final class Stop: BuildSystemCommand {
     if task.isRunning {
       task.stop()
     }
-    showConsoleTillFirstEscPress(in: workbench)
+    ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
   }
 
   override func validate(in workbench: Workbench) -> State {
@@ -78,17 +60,11 @@ final class Build: BuildSystemCommand {
   }
 
   override func run(in workbench: Workbench) {
-    showConsoleTillFirstEscPress(in: workbench)
-    BuildSystemsManager.shared.activeBuildSystem?.run(in: workbench) {[weak self] status, process in
-        switch status {
-        case .finished:
-          self?.showConsoleTillFirstEscPress(in: workbench)
-        case .running:
-          workbench.publish(process)
-        case .failed:
-          return
-        }
-      }
+    ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+    guard let variant = workbench.selectedVariant else {
+      return
+    }
+    BuildSystemsManager.shared.activeBuildSystem?.build(variant)
   }
 
   override func validate(in workbench: Workbench) -> State {
@@ -102,12 +78,27 @@ final class Clean: BuildSystemCommand {
   }
 
   override func run(in workbench: Workbench) {
-    showConsoleTillFirstEscPress(in: workbench)
-    BuildSystemsManager.shared.activeBuildSystem?.clean(in: workbench)
+    ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+    guard let variant = workbench.selectedVariant else {
+      return
+    }
+    BuildSystemsManager.shared.activeBuildSystem?.clean(variant)
   }
 
   override func validate(in workbench: Workbench) -> State {
     return currentTask(in: workbench) == nil ? [.enabled] : []
+  }
+}
+
+final class SelectTarget: Command {
+  init() {
+    let view = ToolbarTargetControl.loadFromNib()
+    super.init(name: "Select Target", menuPath: nil, keyEquivalent: nil, view: view)
+  }
+  
+  override func validate(in workbench: Workbench) -> State {
+    guard let activeSystem = BuildSystemsManager.shared.activeBuildSystem else { return [] }
+    return activeSystem.targets(in: workbench).isEmpty ? [] : [.enabled]
   }
 }
 
@@ -122,33 +113,7 @@ class BuildSystemCommand: Command {
   func currentTask(in workbench: Workbench) -> BuildSystemTask? {
     return workbench.tasks.first { $0 is BuildSystemTask } as? BuildSystemTask
   }
-
-  func showConsoleTillFirstEscPress(in workbench: Workbench) {
-    var escPressMonitor: Any? = nil
-    escPressMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
-      if event.keyCode == Keycode.escape {
-        workbench.debugArea?.isHidden = true
-        if let monitor = escPressMonitor {
-          //only for first `esc` press
-          NSEvent.removeMonitor(monitor)
-          escPressMonitor = nil
-        }
-      }
-      return event
-    }
-
-    workbench.debugArea?.isHidden = false
-  }
 }
-
 
 // MARK: - Build system task
-
 class BuildSystemTask: WorkbenchProcess {}
-
-fileprivate extension Workbench {
-  func publish(_ process: Process?) {
-    guard let process = process, process.isRunning else { return }
-    self.publish(task: BuildSystemTask(process))
-  }
-}

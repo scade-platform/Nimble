@@ -11,103 +11,90 @@ import NimbleCore
 import SKLocalServer
 
 class SPMBuildSystem: BuildSystem {
+  
   var name: String {
     return "Swift Package"
   }
   
-  lazy var launcher: Launcher? = {
-    return SPMLauncher()
-  }()
+  func targets(in workbench: Workbench) -> [Target] {
+    guard let folders = workbench.project?.folders else { return [] }
+    let targets = folders.filter{canHandle(folder: $0)}.map{SPMTarget(folder: $0, workbench: workbench)}
+    targets.forEach{ $0.variants.append(MacVariant(target: $0, buildSystem: self))}
+    return targets
+  }
   
-  
-  func run(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
-    workbench.currentDocument?.save(nil)
-    guard let project = workbench.project, let package = findPackage(project: project) else { return  }
-    
-    
-    let packageURL = package.url
-    
-    let spmProc = Process()
-    spmProc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
-    spmProc.currentDirectoryURL = packageURL.deletingLastPathComponent()
-    
-
-    //Mock
-//    let toolchain = "/Library/Developer/Toolchains/swift-5.1.4-RELEASE.xctoolchain/"
-    let toolchain = SKLocalServer.swiftToolchain
-    if !toolchain.isEmpty {
-      spmProc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
-    } else {
-      spmProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
-    }
-    
-    spmProc.arguments = ["build", "-Xswiftc", "-Xfrontend", "-Xswiftc", "-color-diagnostics"]
-    
-    
-    var spmProcConsole : Console?
-    
-    spmProc.terminationHandler = { process in
-      spmProcConsole?.writeLine(string: "Finished building \(packageURL.deletingLastPathComponent().lastPathComponent)")
-      spmProcConsole?.stopReadingFromBuffer()
-
-      
-      if let contents = spmProcConsole?.contents {
-        if contents.isEmpty {
-          DispatchQueue.main.async {
-            spmProcConsole?.close()
-          }
-          handler?(.finished, process)
-        } else {
-          if contents.contains("error:"){
-            handler?(.failed, process)
-          } else {
-            handler?(.finished, process)
+  func run(_ variant: Variant) {
+    guard let workbench = variant.target?.workbench else { return }
+    do {
+      let buildTask = try variant.build()
+      workbench.publish(task: buildTask) { task in
+        guard let consoleOutputTask = task as? BuildSystemTask,
+          let console = consoleOutputTask.console else {
+          return
+        }
+        
+        DispatchQueue.main.async {
+          //show console with build result
+          ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+        }
+        
+        //If build without error
+        if !console.contents.contains("error:") {
+          if let runTask = try? variant.run() {
+            
+            workbench.publish(task: runTask) { _ in
+              DispatchQueue.main.async {
+                //show console with run result
+                ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+              }
+            }
+            
+            //then run
+            try? runTask.run()
           }
         }
       }
+      try buildTask.run()
+    } catch {
+      print(error)
     }
-    
-    spmProcConsole = self.openConsole(key: packageURL.appendingPathComponent("compile"), title: "Compile: \(packageURL.deletingLastPathComponent().lastPathComponent)", in: workbench)
-    if !(spmProcConsole?.isReadingFromBuffer ?? true) {
-      spmProc.standardOutput = spmProcConsole?.output
-      spmProc.standardError = spmProcConsole?.output
-      spmProcConsole?.startReadingFromBuffer()
-      spmProcConsole?.writeLine(string: "Building: \(packageURL.deletingLastPathComponent().lastPathComponent)")
-    } else {
-      //The console is using by another process with the same representedObject
-      return
-    }
-    try? spmProc.run()
-    handler?(.running, spmProc)
   }
   
-  func clean(in workbench: Workbench, handler: (() -> Void)?) {
-    guard let project = workbench.project, let package = findPackage(project: project) else { return  }
-    
-    let proc = Process()
-    proc.currentDirectoryURL = package.url.deletingLastPathComponent()
-    proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
-    proc.arguments = ["package", "clean"]
-    var cleanConsole : Console?
-    proc.terminationHandler = { process in
-      cleanConsole?.writeLine(string: "Finished Cleaning \(package.url.deletingLastPathComponent().lastPathComponent)")
-      cleanConsole?.stopReadingFromBuffer()
-      
-      handler?()
+  func build(_ variant: Variant) {
+    guard let workbench = variant.target?.workbench else { return }
+    do {
+      let buildTask = try variant.build()
+      workbench.publish(task: buildTask) { _ in
+        DispatchQueue.main.async {
+          //show console with result
+          ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+        }
+      }
+      try buildTask.run()
+    } catch {
+      print(error)
     }
-    cleanConsole = self.openConsole(key: package.url.appendingPathComponent("clean"), title: "Clean: \(package.url.deletingLastPathComponent().lastPathComponent)", in: workbench)
-    
-    if !(cleanConsole?.isReadingFromBuffer ?? true) {
-      proc.standardOutput = cleanConsole?.output
-      proc.standardError = cleanConsole?.output
-      cleanConsole?.startReadingFromBuffer()
-      cleanConsole?.writeLine(string: "Cleaning: \(package.url.deletingLastPathComponent().lastPathComponent)")
-    } else {
-      return
-    }
-    try? proc.run()
   }
   
+  func clean(_ variant: Variant) {
+    guard let workbench = variant.target?.workbench else { return }
+    do {
+      let cleanTask = try variant.clean()
+      workbench.publish(task: cleanTask) { _ in
+        DispatchQueue.main.async {
+          //show console with result
+          ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+        }
+      }
+      try cleanTask.run()
+    } catch {
+      print(error)
+    }
+  }
+}
+
+//MARK: - API level - private
+private extension SPMBuildSystem {
   func canHandle(folder: Folder) -> Bool {
     guard let files = try? folder.files() else { return false }
     if files.contains(where: {$0.name.lowercased() == "package.swift"}) {
@@ -115,68 +102,135 @@ class SPMBuildSystem: BuildSystem {
     }
     return false
   }
-  
 }
 
-extension SPMBuildSystem : ConsoleSupport {}
-
-class SPMLauncher: Launcher {
+fileprivate class SPMTarget: Target {
+  var name: String {
+    folder.name
+  }
   
-  func launch(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
-   guard let project = workbench.project, let package = findPackage(project: project) else { 
-      handler?(.failed, nil)
-      return
-    }
-    let packageUrl = package.url
-      
-    let programProc = Process()
-    programProc.currentDirectoryURL = packageUrl.deletingLastPathComponent()
-   
-    programProc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
+  let folder: Folder
+  var variants: [Variant] = []
+  weak var workbench: Workbench?
+  
+  init(folder: Folder, workbench: Workbench) {
+    self.folder = folder
+    self.workbench = workbench
+  }
+}
+
+fileprivate class MacVariant: Variant {
+  var target: Target? {
+    spmTarget
+  }
+  
+  weak var spmTarget : SPMTarget?
+  
+  var name: String {
+    "Mac"
+  }
+  
+  weak var buildSystem : BuildSystem?
+  
+  init(target: SPMTarget, buildSystem: SPMBuildSystem) {
+    self.spmTarget = target
+    self.buildSystem = buildSystem
+  }
+  
+  func createProcess(source: Folder) -> Process {
+    let proc = Process()
+    proc.currentDirectoryURL = source.url
+    proc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
     
-    //Mock
-//    let toolchain = "/Library/Developer/Toolchains/swift-5.1.4-RELEASE.xctoolchain/"
     let toolchain = SKLocalServer.swiftToolchain
     if !toolchain.isEmpty {
-      programProc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
+      proc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
     } else {
-      programProc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
+      proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
     }
-    
-    programProc.arguments = ["run", "--skip-build"]
-    
-    var programProcConsole: Console?
-    programProc.terminationHandler = { process in
-      programProcConsole?.stopReadingFromBuffer()
-      handler?(.finished, process)
-    }
-    
-    let name = packageUrl.deletingLastPathComponent().lastPathComponent
-    programProcConsole = openConsole(key: package, title: "Run: \(name)", in: workbench)
-    if !(programProcConsole?.isReadingFromBuffer ?? true) {
-      programProc.standardOutput = programProcConsole?.output
-      programProc.standardError = programProcConsole?.output
-      programProcConsole?.startReadingFromBuffer()
-    } else {
-      //The console is using by another process with the same representedObject
-      return
-    }
-    
-    
-    try? programProc.run()
-    handler?(.running, programProc)
+    return proc
   }
 }
 
-extension SPMLauncher : ConsoleSupport {}
 
-
-fileprivate func findPackage(project: Project) -> File? {
-  for folder in project.folders {
-    guard let files = try? folder.files() else { continue }
-    if let package = files.first(where: {file in file.name.lowercased() == "package.swift"}) {
-      return package
+// MARK: - MacVariant - Run task
+extension MacVariant {
+  func run() throws -> WorkbenchTask {
+    guard let target = spmTarget else {
+      throw VariantError.targetRequired
     }
+
+    let process = createRunProcess(source: target.folder)
+    let task = BuildSystemTask(process)
+    
+    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Run: \(target.name) - \(self.name)", in: workbench) {
+      task.output(to: console)
+    }
+    
+    return task
   }
-  return nil
+  
+  func createRunProcess(source: Folder) -> Process {
+    let proc = createProcess(source: source)
+    proc.arguments = ["run", "--skip-build"]
+    return proc
+  }
+}
+
+
+//MARK: - MacVariant - Build task
+extension MacVariant {
+  func build() throws -> WorkbenchTask {
+    guard let target = spmTarget else {
+      throw VariantError.targetRequired
+    }
+    
+    target.workbench?.currentDocument?.save(nil)
+    
+    let process = createBuildProcess(source: target.folder)
+    
+    let task = BuildSystemTask(process)
+    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Build: \(target.name) - \(self.name)", in: workbench) {
+      let taskConsole = task.output(to: console) {  [weak self] console in
+        guard let self = self else { return }
+        console.writeLine(string: "Finished Building \(target.name) - \(self.name)")
+      }
+      taskConsole?.writeLine(string: "Building: \(target.name) - \(self.name)")
+    }
+    
+    return task
+  }
+  
+  func createBuildProcess(source: Folder) -> Process {
+    let proc = createProcess(source: source)
+    proc.arguments = ["build", "-Xswiftc", "-Xfrontend", "-Xswiftc", "-color-diagnostics"]
+    return proc
+  }
+}
+
+//MARK: - MacVariant - Clean task
+extension MacVariant {
+  func clean() throws -> WorkbenchTask {
+    guard let target = spmTarget else {
+      throw VariantError.targetRequired
+    }
+    
+    let process = createCleanProcess(source: target.folder)
+    let task = BuildSystemTask(process)
+    
+    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Clean: \(target.name) - \(self.name)", in: workbench) {
+      let taskConsole = task.output(to: console) {[weak self] console in
+        guard let self = self else { return }
+        console.writeLine(string: "Finished Cleaning \(target.name) - \(self.name)")
+      }
+      taskConsole?.writeLine(string: "Cleaning: \(target.name) - \(self.name)")
+    }
+    return task
+  }
+  
+  func createCleanProcess(source: Folder) -> Process {
+    let proc = createProcess(source: source)
+    proc.arguments = ["package", "clean"]
+    return proc
+  }
 }

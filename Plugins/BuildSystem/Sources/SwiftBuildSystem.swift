@@ -16,94 +16,119 @@ class SwiftBuildSystem: BuildSystem {
     return "Swift File"
   }
   
-  lazy var launcher: Launcher? = {
-    return SwiftLauncher()
-  }()
+  func targets(in workbench: Workbench) -> [Target] {
+    guard let document = workbench.currentDocument, canHandle(document: document) else { return [] }
+    let target = SwiftTarget(document: document, workbench: workbench)
+    target.variants.append(SingleDocumentVariant(target: target, buildSystem: self))
+    return [target]
+  }
   
-  func run(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
-    workbench.currentDocument?.save(nil)
-    guard let fileURL = workbench.currentDocument?.fileURL else {
-      return
-    }
-    
-    let swiftcProc = Process()
-    swiftcProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
-    
-      //Mock
-//    let toolchain = "/Library/Developer/Toolchains/swift-5.1.4-RELEASE.xctoolchain/"
-    let toolchain = SKLocalServer.swiftToolchain
-    if !toolchain.isEmpty, let sdkPath = sdkPath {
-      swiftcProc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swiftc")
-      swiftcProc.arguments = [fileURL.path, "-sdk", "\(sdkPath)", "-Xfrontend", "-color-diagnostics"]
-    } else {
-      swiftcProc.executableURL = URL(fileURLWithPath: "/usr/bin/swiftc")
-      swiftcProc.arguments = [fileURL.path, "-Xfrontend", "-color-diagnostics"]
-    }
-    
-    
-    
-    var swiftcProcConsole: Console?
-    
-    swiftcProc.terminationHandler = { process in
-      swiftcProcConsole?.writeLine(string: "Finished building \(fileURL.path)")
-      swiftcProcConsole?.stopReadingFromBuffer()
-      
-      if let contents = swiftcProcConsole?.contents {
-        if contents.isEmpty {
-          DispatchQueue.main.async {
-            swiftcProcConsole?.close()
-          }
-          handler?(.finished, process)
-        } else {
-          if contents.contains("error:"){
-            handler?(.failed, process)
-          } else {
-            handler?(.finished, process)
+  func run(_ variant: Variant) {
+    guard let workbench = variant.target?.workbench else { return }
+    do {
+      let buildTask = try variant.build()
+      workbench.publish(task: buildTask) { task in
+        guard let workbenchProcess = task as? BuildSystemTask,
+          let console = workbenchProcess.console else {
+            return
+        }
+        
+        DispatchQueue.main.async {
+          //show console with build result
+          ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+        }
+        
+        //If build without error
+        if !console.contents.contains("error:") {
+          if let runTask = try? variant.run() {
+            
+            workbench.publish(task: runTask) { _ in
+              DispatchQueue.main.async {
+                //show console with run result
+                ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+              }
+            }
+            
+            //then run
+            try? runTask.run()
           }
         }
       }
+      try buildTask.run()
+    } catch {
+      print(error)
     }
-    
-    swiftcProcConsole = self.openConsole(key: "Compile: \(fileURL.relativeString)", title: "Compile: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
-    if !(swiftcProcConsole?.isReadingFromBuffer ?? true) {
-      swiftcProc.standardOutput = swiftcProcConsole?.output
-      swiftcProc.standardError = swiftcProcConsole?.output
-      swiftcProcConsole?.startReadingFromBuffer()
-      swiftcProcConsole?.writeLine(string: "Building: \(fileURL.path)")
-    } else {
-      //The console is using by another process with the same representedObject
-      return
-    }
-    
-    try? swiftcProc.run()
-    handler?(.running, swiftcProc)
   }
   
-  func clean(in workbench: Workbench, handler: (() -> Void)?) {
-    guard let fileURL = workbench.currentDocument?.fileURL else {
-      return
+  func build(_ variant: Variant) {
+    guard let workbench = variant.target?.workbench else { return }
+    do {
+      let buildTask = try variant.build()
+      workbench.publish(task: buildTask) { _ in
+        DispatchQueue.main.async {
+          //show console with result
+          ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+        }
+      }
+      try buildTask.run()
+    } catch {
+      print(error)
     }
-    let cleanConsole = self.openConsole(key: fileURL.appendingPathComponent("clean"), title: "Clean: \(fileURL.lastPathComponent)", in: workbench)
-    guard let file = File(url: fileURL.deletingPathExtension()), file.exists else {
-      cleanConsole?.startReadingFromBuffer()
-      cleanConsole?.writeLine(string: "File not found: \(fileURL.deletingPathExtension().path)")
-      cleanConsole?.stopReadingFromBuffer()
-      return
-    }
-    try? file.path.delete()
-    cleanConsole?.startReadingFromBuffer()
-    cleanConsole?.writeLine(string: "File deleted: \(fileURL.deletingPathExtension().path)")
-    cleanConsole?.stopReadingFromBuffer()
-    handler?()
   }
   
-  func canHandle(file: File) -> Bool {
-    let fileExtension = file.path.extension
+  func clean(_ variant: Variant) {
+    guard let workbench = variant.target?.workbench else { return }
+    do {
+      let cleanTask = try variant.clean()
+      workbench.publish(task: cleanTask) { _ in
+        DispatchQueue.main.async {
+          //show console with result
+          ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+        }
+      }
+      try cleanTask.run()
+    } catch {
+      print(error)
+    }
+  }
+  
+  func canHandle(document: Document) -> Bool {
+    guard let fileExtension = document.path?.extension else { return false }
     guard !fileExtension.isEmpty, fileExtension == "swift" else {
       return false
     }
     return true
   }
+  
+}
+
+fileprivate class SwiftTarget: Target {
+  var name: String {
+    document.title
+  }
+  
+  let document: Document
+  var variants: [Variant] = []
+  weak var workbench: Workbench?
+  
+  init(document: Document, workbench: Workbench) {
+    self.document = document
+    self.workbench = workbench
+  }
+}
+
+fileprivate class SingleDocumentVariant: Variant {
+  var target: Target? {
+    swiftTarget
+  }
+  
+  weak var swiftTarget : SwiftTarget?
+  
+  var name: String {
+    "Single Swift Document"
+  }
+  
+  weak var buildSystem : BuildSystem?
   
   lazy var sdkPath: String? = {
     guard let sdkFolder = Folder(path: "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/") else {
@@ -116,35 +141,141 @@ class SwiftBuildSystem: BuildSystem {
     }
     return nil
   }()
-}
-
-extension SwiftBuildSystem : ConsoleSupport {}
-
-class SwiftLauncher : Launcher {
-  func launch(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
-    guard let fileURL = workbench.currentDocument?.fileURL else {
-      handler?(.failed, nil)
-      return
-    }
-    let programProc = Process()
-    programProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
-    programProc.executableURL = URL(fileURLWithPath: "\(fileURL.deletingPathExtension())")
-    var programProcConsole: Console?
-    programProc.terminationHandler = { process in
-      programProcConsole?.stopReadingFromBuffer()
-      handler?(.finished, process)
-    }
-    programProcConsole = self.openConsole(key: fileURL, title: "Run: \(fileURL.deletingPathExtension().lastPathComponent)", in: workbench)
-    if !(programProcConsole?.isReadingFromBuffer ?? true) {
-      programProc.standardOutput = programProcConsole?.output
-      programProc.standardError = programProcConsole?.output
-      programProcConsole?.startReadingFromBuffer()
-    } else {
-      //The console is using by another process with the same representedObject
-      return
-    }
-    try? programProc.run()
-    handler?(.running, programProc)
+  
+  init(target: SwiftTarget, buildSystem: SwiftBuildSystem) {
+    self.swiftTarget = target
+    self.buildSystem = buildSystem
   }
 }
-extension SwiftLauncher : ConsoleSupport {}
+
+extension SingleDocumentVariant {
+  enum SwiftFileError: Error {
+    case URLRequired(Document)
+  }
+}
+
+//MARK: - SingleDocumentVariant - Build task
+extension SingleDocumentVariant {
+  func build() throws -> WorkbenchTask {
+    guard let target = swiftTarget else {
+      throw VariantError.targetRequired
+    }
+    
+    target.workbench?.currentDocument?.save(nil)
+    
+    let process = try createBuildProcess(document: target.document)
+    
+    let task = BuildSystemTask(process)
+    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Build: \(target.name) - \(self.name)", in: workbench) {
+      let taskConsole = task.output(to: console) {  [weak self] console in
+        guard let self = self else { return }
+        console.writeLine(string: "Finished Building \(target.name) - \(self.name)")
+      }
+      taskConsole?.writeLine(string: "Building: \(target.name) - \(self.name)")
+    }
+    
+    return task
+  }
+  
+  func createBuildProcess(document: Document) throws -> Process {
+    guard let documentURL = document.fileURL else {
+      throw SwiftFileError.URLRequired(document)
+    }
+    
+    let proc = Process()
+    proc.currentDirectoryURL = documentURL.deletingLastPathComponent()
+    
+    let toolchain = SKLocalServer.swiftToolchain
+    if !toolchain.isEmpty, let sdkPath = sdkPath {
+      proc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swiftc")
+      proc.arguments = [documentURL.path, "-sdk", "\(sdkPath)", "-Xfrontend", "-color-diagnostics"]
+    } else {
+      proc.executableURL = URL(fileURLWithPath: "/usr/bin/swiftc")
+      proc.arguments = [documentURL.path, "-Xfrontend", "-color-diagnostics"]
+    }
+    return proc
+  }
+}
+
+//MARK: - SingleDocumentVariant - Clean task
+extension SingleDocumentVariant {
+  func clean() throws -> WorkbenchTask {
+    guard let target = swiftTarget else {
+      throw VariantError.targetRequired
+    }
+    
+    return SwiftCleanTask(target)
+  }
+  
+  class SwiftCleanTask: WorkbenchTask {
+    var observers = ObserverSet<WorkbenchTaskObserver>()
+    var isRunning: Bool = true
+    let target: SwiftTarget
+    
+    func stop() {
+      //do nothing
+    }
+    
+    func run() throws {
+      guard let workbench = target.workbench else {
+        isRunning = false
+        return
+      }
+      
+      guard let documentURL = target.document.fileURL else {
+        isRunning = false
+        return
+      }
+      
+      let console = ConsoleUtils.openConsole(key: target.id , title: "Clean: \(documentURL.lastPathComponent)", in: workbench)
+      
+      guard let file = File(url: documentURL.deletingPathExtension()), file.exists else {
+        console?.startReadingFromBuffer()
+        console?.writeLine(string: "File not found: \(documentURL.deletingPathExtension().path)")
+        console?.stopReadingFromBuffer()
+        isRunning = false
+        return
+      }
+      
+      try file.path.delete()
+      console?.startReadingFromBuffer()
+      console?.writeLine(string: "File deleted: \(documentURL.deletingPathExtension().path)")
+      console?.stopReadingFromBuffer()
+      isRunning = false
+      self.observers.notify{$0.taskDidFinish(self)}
+    }
+    
+    init(_ target: SwiftTarget) {
+      self.target = target
+    }
+  }
+}
+
+//MARK: - SingleDocumentVariant - Clean task
+extension SingleDocumentVariant {
+  func run() throws -> WorkbenchTask {
+    guard let target = swiftTarget else {
+      throw VariantError.targetRequired
+    }
+
+    let process = try createRunProcess(document: target.document)
+    let task = BuildSystemTask(process)
+    
+    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Run: \(target.name) - \(self.name)", in: workbench) {
+      task.output(to: console)
+    }
+    
+    return task
+  }
+  
+  func createRunProcess(document: Document) throws -> Process {
+    guard let documentURL = document.fileURL else {
+      throw SwiftFileError.URLRequired(document)
+    }
+    
+    let proc = Process()
+    proc.currentDirectoryURL = documentURL.deletingLastPathComponent()
+    proc.executableURL = URL(fileURLWithPath: "\(documentURL.deletingPathExtension())")
+    return proc
+  }
+}

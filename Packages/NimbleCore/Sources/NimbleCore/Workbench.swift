@@ -50,6 +50,7 @@ public protocol Workbench: class {
   func publish(diagnostics: [Diagnostic], for path: Path)
 
   func publish(task: WorkbenchTask)
+  func publish(task: WorkbenchTask, onComplete: @escaping (WorkbenchTask) -> Void)
 }
 
 
@@ -184,18 +185,28 @@ public protocol WorkbenchTask: class {
   var isRunning: Bool { get }
 
   func stop()
+  func run() throws
+}
+
+public extension WorkbenchTask {
+  var id: ObjectIdentifier {
+    return ObjectIdentifier(self)
+  }
 }
 
 public protocol WorkbenchTaskObserver {
   func taskDidFinish(_ task: WorkbenchTask)
+  func taskDidStart(_ task: WorkbenchTask)
 }
 
 public extension WorkbenchTaskObserver {
   func taskDidFinish(_ task: WorkbenchTask) {}
+  func taskDidStart(_ task: WorkbenchTask) {}
 }
 
 open class WorkbenchProcess {
   let process: Process
+  public private(set) var console: Console?
   public var observers = ObserverSet<WorkbenchTaskObserver>()
 
   public init(_ process: Process) {
@@ -209,10 +220,46 @@ open class WorkbenchProcess {
       }
     }
   }
+  
+  @discardableResult
+  public func output(to console: Console, consoleWillCloseHandler handler: ((Console) -> Void)? = nil) -> Console? {
+    guard !process.isRunning, !console.isReadingFromBuffer else {
+      return nil
+    }
+    self.console = console
+    
+    process.standardOutput = console.output
+    process.standardError = console.output
+    
+    console.startReadingFromBuffer()
+    
+    let defaultTerminateHandler = process.terminationHandler
+    process.terminationHandler = {[weak self] process in
+      DispatchQueue.main.async { [weak self] in
+        guard let self = self else { return }
+        if let console = self.console {
+          handler?(console)
+          
+          if console.contents.isEmpty {
+            console.close()
+          }
+        }
+        self.console?.stopReadingFromBuffer()
+        defaultTerminateHandler?(process)
+      }
+    }
+    
+    return self.console
+  }
 }
 
 extension WorkbenchProcess: WorkbenchTask {
   public var isRunning: Bool { process.isRunning }
   public func stop() { process.terminate() }
+  public func run() throws {
+    try process.run()
+    self.observers.notify {
+      $0.taskDidStart(self)
+    }
+  }
 }
-

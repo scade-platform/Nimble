@@ -86,4 +86,33 @@ public extension Console {
   }
 }
 
+public class ConsoleUtils {
+  public static func openConsole<T: Equatable>(key: T, title: String, in workbench: Workbench) -> Console? {
+    let openedConsoles = workbench.openedConsoles
+    guard let console = openedConsoles.filter({$0.title == title}).filter({$0.representedObject is T}).first(where: {($0.representedObject as! T) == key}) else {
+      if var newConsole = workbench.createConsole(title: title, show: true, startReading: false) {
+        newConsole.representedObject = key
+        return newConsole
+      }
+      return nil
+    }
+    return console
+  }
+  
+  public static func showConsoleTillFirstEscPress(in workbench: Workbench) {
+    var escPressMonitor: Any? = nil
+    escPressMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+      if event.keyCode == Keycode.escape {
+        workbench.debugArea?.isHidden = true
+        if let monitor = escPressMonitor {
+          //only for first `esc` press
+          NSEvent.removeMonitor(monitor)
+          escPressMonitor = nil
+        }
+      }
+      return event
+    }
+    workbench.debugArea?.isHidden = false
+  }
+}
 

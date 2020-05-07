@@ -11,45 +11,60 @@ import NimbleCore
 
 
 class ShellBuildSystem: BuildSystem {
-  
   var name: String {
     return "Shell"
   }
   
-  var launcher: Launcher? {
-    return nil
+  func targets(in workbench: Workbench) -> [Target] {
+    //TODO: add get Targets logic
+    return []
+  }
+
+  
+  func run(_ variant: Variant) {
+    //TODO: add launch logic
   }
   
-  func run(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
-    guard let fileURL = workbench.currentDocument?.fileURL else {
-      return
-    }
-    let shellProc = Process()
-    shellProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
-    shellProc.executableURL = URL(fileURLWithPath: "/bin/sh")
-    shellProc.arguments = [fileURL.path]
-    DispatchQueue.main.async {
-      let console = workbench.createConsole(title: "\(fileURL.lastPathComponent)", show: true)
-      shellProc.standardOutput = console?.output
-      shellProc.standardError = console?.output
-      try? shellProc.run()
-    }
+  func build(_ variant: Variant) {
+    //TODO: add build logic
   }
   
-  func clean(in workbench: Workbench, handler: (() -> Void)?) {
-    handler?()
+  func clean(_ variant: Variant) {
+    //TODO: add clean logic
   }
+  
 }
-
-extension ShellBuildSystem : Launcher {
-  var builder: BuildSystem? {
-    return self
-  }
   
-  func launch(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
-    run(in: workbench)
-  }
-}
-
-
-
+//  func run(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
+//    guard let fileURL = workbench.currentDocument?.fileURL else {
+//      return
+//    }
+//    let shellProc = Process()
+//    shellProc.currentDirectoryURL = fileURL.deletingLastPathComponent()
+//    shellProc.executableURL = URL(fileURLWithPath: "/bin/sh")
+//    shellProc.arguments = [fileURL.path]
+//    DispatchQueue.main.async {
+//      let console = workbench.createConsole(title: "\(fileURL.lastPathComponent)", show: true)
+//      shellProc.standardOutput = console?.output
+//      shellProc.standardError = console?.output
+//      try? shellProc.run()
+//    }
+//  }
+//
+//  func clean(in workbench: Workbench, handler: (() -> Void)?) {
+//    handler?()
+//  }
+//}
+//
+//extension ShellBuildSystem : Launcher {
+//  var builder: BuildSystem? {
+//    return self
+//  }
+//
+//  func launch(in workbench: Workbench, handler: ((BuildStatus, Process?) -> Void)?) {
+//    run(in: workbench)
+//  }
+//}
+//
+//
+//
