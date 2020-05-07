@@ -17,80 +17,89 @@ class SwiftBuildSystem: BuildSystem {
   }
   
   func targets(in workbench: Workbench) -> [Target] {
-    guard let document = workbench.currentDocument else { return [] }
+    guard let document = workbench.currentDocument, canHandle(document: document) else { return [] }
     let target = SwiftTarget(document: document, workbench: workbench)
     target.variants.append(SingleDocumentVariant(target: target, buildSystem: self))
     return [target]
-   }
+  }
   
-   func run(_ variant: Variant) {
-     guard let workbench = variant.target?.workbench else { return }
-     do {
-       let buildTask = try variant.build()
-       workbench.publish(task: buildTask) { task in
-         guard let consoleOutputTask = task as? ConsoleOutputWorkbenchProcess,
-           let console = consoleOutputTask.console else {
-           return
-         }
-         
-         DispatchQueue.main.async {
-           //show console with build result
-           ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
-         }
-         
-         //If build without error
-         if !console.contents.contains("error:") {
-           if let runTask = try? variant.run() {
-             
-             workbench.publish(task: runTask) { _ in
-               DispatchQueue.main.async {
-                 //show console with run result
-                 ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
-               }
-             }
-             
-             //then run
-             try? runTask.run()
-           }
-         }
-       }
-       try buildTask.run()
-     } catch {
-       print(error)
-     }
-   }
-   
-   func build(_ variant: Variant) {
-     guard let workbench = variant.target?.workbench else { return }
-     do {
-       let buildTask = try variant.build()
-       workbench.publish(task: buildTask) { _ in
-         DispatchQueue.main.async {
-           //show console with result
-           ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
-         }
-       }
-       try buildTask.run()
-     } catch {
-       print(error)
-     }
-   }
-   
-   func clean(_ variant: Variant) {
-     guard let workbench = variant.target?.workbench else { return }
-     do {
-       let cleanTask = try variant.clean()
-       workbench.publish(task: cleanTask) { _ in
-         DispatchQueue.main.async {
-           //show console with result
-           ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
-         }
-       }
-       try cleanTask.run()
-     } catch {
-       print(error)
-     }
-   }
+  func run(_ variant: Variant) {
+    guard let workbench = variant.target?.workbench else { return }
+    do {
+      let buildTask = try variant.build()
+      workbench.publish(task: buildTask) { task in
+        guard let workbenchProcess = task as? BuildSystemTask,
+          let console = workbenchProcess.console else {
+            return
+        }
+        
+        DispatchQueue.main.async {
+          //show console with build result
+          ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+        }
+        
+        //If build without error
+        if !console.contents.contains("error:") {
+          if let runTask = try? variant.run() {
+            
+            workbench.publish(task: runTask) { _ in
+              DispatchQueue.main.async {
+                //show console with run result
+                ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+              }
+            }
+            
+            //then run
+            try? runTask.run()
+          }
+        }
+      }
+      try buildTask.run()
+    } catch {
+      print(error)
+    }
+  }
+  
+  func build(_ variant: Variant) {
+    guard let workbench = variant.target?.workbench else { return }
+    do {
+      let buildTask = try variant.build()
+      workbench.publish(task: buildTask) { _ in
+        DispatchQueue.main.async {
+          //show console with result
+          ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+        }
+      }
+      try buildTask.run()
+    } catch {
+      print(error)
+    }
+  }
+  
+  func clean(_ variant: Variant) {
+    guard let workbench = variant.target?.workbench else { return }
+    do {
+      let cleanTask = try variant.clean()
+      workbench.publish(task: cleanTask) { _ in
+        DispatchQueue.main.async {
+          //show console with result
+          ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+        }
+      }
+      try cleanTask.run()
+    } catch {
+      print(error)
+    }
+  }
+  
+  func canHandle(document: Document) -> Bool {
+    guard let fileExtension = document.path?.extension else { return false }
+    guard !fileExtension.isEmpty, fileExtension == "swift" else {
+      return false
+    }
+    return true
+  }
+  
 }
 
 fileprivate class SwiftTarget: Target {
@@ -156,11 +165,14 @@ extension SingleDocumentVariant {
     
     let process = try createBuildProcess(document: target.document)
     
-    let task = ConsoleOutputWorkbenchProcess(process, title: "Build: \(target.name) - \(self.name)", target: target) { [weak self] console in
-      guard let self = self else { return }
-      console.writeLine(string: "Finished Building \(target.name) - \(self.name)")
+    let task = BuildSystemTask(process)
+    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Build: \(target.name) - \(self.name)", in: workbench) {
+      let taskConsole = task.output(to: console) {  [weak self] console in
+        guard let self = self else { return }
+        console.writeLine(string: "Finished Building \(target.name) - \(self.name)")
+      }
+      taskConsole?.writeLine(string: "Building: \(target.name) - \(self.name)")
     }
-    task.console?.writeLine(string: "Building: \(target.name) - \(self.name)")
     
     return task
   }
@@ -199,7 +211,7 @@ extension SingleDocumentVariant {
     var observers = ObserverSet<WorkbenchTaskObserver>()
     var isRunning: Bool = true
     let target: SwiftTarget
-
+    
     func stop() {
       //do nothing
     }
@@ -247,7 +259,11 @@ extension SingleDocumentVariant {
     }
 
     let process = try createRunProcess(document: target.document)
-    let task = ConsoleOutputWorkbenchProcess(process, title: "Run: \(target.name) - \(self.name)", target: target)
+    let task = BuildSystemTask(process)
+    
+    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Run: \(target.name) - \(self.name)", in: workbench) {
+      task.output(to: console)
+    }
     
     return task
   }

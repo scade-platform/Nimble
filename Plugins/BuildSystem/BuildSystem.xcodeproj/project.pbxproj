@@ -18,7 +18,6 @@
 		0CCDB14524580CB700A83CEC /* ToolbarTargetControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CCDB14324580CB700A83CEC /* ToolbarTargetControl.xib */; };
 		0CCDB14A245DA39C00A83CEC /* Automatic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCDB149245DA39C00A83CEC /* Automatic.swift */; };
 		0CCDB14F245DD19B00A83CEC /* Workbench+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCDB14E245DD19B00A83CEC /* Workbench+Task.swift */; };
-		0CCDB152246284AE00A83CEC /* BuildSystemTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCDB151246284AE00A83CEC /* BuildSystemTask.swift */; };
 		D7BD82DC245319780058815F /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BD82DB245319780058815F /* Commands.swift */; };
 		D7D4BD4623FCAE130063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD4523FCAE130063BD8F /* NimbleCore */; };
 		D7F156A82447600F00AFBE67 /* LSPClient in Frameworks */ = {isa = PBXBuildFile; productRef = 0C8393922445823E002A7462 /* LSPClient */; };
@@ -39,7 +38,6 @@
 		0CCDB14324580CB700A83CEC /* ToolbarTargetControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ToolbarTargetControl.xib; sourceTree = "<group>"; };
 		0CCDB149245DA39C00A83CEC /* Automatic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Automatic.swift; sourceTree = "<group>"; };
 		0CCDB14E245DD19B00A83CEC /* Workbench+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workbench+Task.swift"; sourceTree = "<group>"; };
-		0CCDB151246284AE00A83CEC /* BuildSystemTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildSystemTask.swift; sourceTree = "<group>"; };
 		D7BD82DB245319780058815F /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		D7F156A9244767FD00AFBE67 /* package.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = package.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -90,7 +88,6 @@
 				0CCDB14D245DD16F00A83CEC /* Extensions */,
 				0CCDB14124580C9300A83CEC /* UI */,
 				0C3469CE2397A0E600319613 /* BuildSystem.swift */,
-				0CCDB151246284AE00A83CEC /* BuildSystemTask.swift */,
 				D7BD82DB245319780058815F /* Commands.swift */,
 				0C92E52723950E3E00B073DE /* Plugin.swift */,
 				0C3469D02397D04600319613 /* ShellBuildTool.swift */,
@@ -196,7 +193,6 @@
 				0CCDB14424580CB700A83CEC /* ToolbarTargetControl.swift in Sources */,
 				0CCDB14A245DA39C00A83CEC /* Automatic.swift in Sources */,
 				0C3469D12397D04600319613 /* ShellBuildTool.swift in Sources */,
-				0CCDB152246284AE00A83CEC /* BuildSystemTask.swift in Sources */,
 				D7BD82DC245319780058815F /* Commands.swift in Sources */,
 				0C3469CF2397A0E600319613 /* BuildSystem.swift in Sources */,
 				0C3C32E823A2A559009A15D1 /* SPMBuildSystem.swift in Sources */,

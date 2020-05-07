@@ -200,6 +200,7 @@ public extension WorkbenchTaskObserver {
 
 open class WorkbenchProcess {
   let process: Process
+  public private(set) var console: Console?
   public var observers = ObserverSet<WorkbenchTaskObserver>()
 
   public init(_ process: Process) {
@@ -213,6 +214,37 @@ open class WorkbenchProcess {
       }
     }
   }
+  
+  @discardableResult
+  public func output(to console: Console, consoleWillCloseHandler handler: ((Console) -> Void)? = nil) -> Console? {
+    guard !process.isRunning, !console.isReadingFromBuffer else {
+      return nil
+    }
+    self.console = console
+    
+    process.standardOutput = console.output
+    process.standardError = console.output
+    
+    console.startReadingFromBuffer()
+    
+    let defaultTerminateHandler = process.terminationHandler
+    process.terminationHandler = {[weak self] process in
+      DispatchQueue.main.async { [weak self] in
+        guard let self = self else { return }
+        if let console = self.console {
+          handler?(console)
+          
+          if console.contents.isEmpty {
+            console.close()
+          }
+        }
+        self.console?.stopReadingFromBuffer()
+        defaultTerminateHandler?(process)
+      }
+    }
+    
+    return self.console
+  }
 }
 
 extension WorkbenchProcess: WorkbenchTask {
@@ -225,4 +257,3 @@ extension WorkbenchProcess: WorkbenchTask {
     }
   }
 }
-

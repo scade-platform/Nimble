@@ -28,7 +28,7 @@ class SPMBuildSystem: BuildSystem {
     do {
       let buildTask = try variant.build()
       workbench.publish(task: buildTask) { task in
-        guard let consoleOutputTask = task as? ConsoleOutputWorkbenchProcess,
+        guard let consoleOutputTask = task as? BuildSystemTask,
           let console = consoleOutputTask.console else {
           return
         }
@@ -161,7 +161,11 @@ extension MacVariant {
     }
 
     let process = createRunProcess(source: target.folder)
-    let task = ConsoleOutputWorkbenchProcess(process, title: "Run: \(target.name) - \(self.name)", target: target)
+    let task = BuildSystemTask(process)
+    
+    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Run: \(target.name) - \(self.name)", in: workbench) {
+      task.output(to: console)
+    }
     
     return task
   }
@@ -185,11 +189,14 @@ extension MacVariant {
     
     let process = createBuildProcess(source: target.folder)
     
-    let task = ConsoleOutputWorkbenchProcess(process, title: "Build: \(target.name) - \(self.name)", target: target) { [weak self] console in
-      guard let self = self else { return }
-      console.writeLine(string: "Finished Building \(target.name) - \(self.name)")
+    let task = BuildSystemTask(process)
+    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Build: \(target.name) - \(self.name)", in: workbench) {
+      let taskConsole = task.output(to: console) {  [weak self] console in
+        guard let self = self else { return }
+        console.writeLine(string: "Finished Building \(target.name) - \(self.name)")
+      }
+      taskConsole?.writeLine(string: "Building: \(target.name) - \(self.name)")
     }
-    task.console?.writeLine(string: "Building: \(target.name) - \(self.name)")
     
     return task
   }
@@ -209,13 +216,15 @@ extension MacVariant {
     }
     
     let process = createCleanProcess(source: target.folder)
+    let task = BuildSystemTask(process)
     
-    let task = ConsoleOutputWorkbenchProcess(process, title: "Clean: \(target.name) - \(self.name)", target: target) { [weak self] console in
-      guard let self = self else { return }
-      console.writeLine(string: "Finished Cleaning \(target.name) - \(self.name)")
+    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Clean: \(target.name) - \(self.name)", in: workbench) {
+      let taskConsole = task.output(to: console) {[weak self] console in
+        guard let self = self else { return }
+        console.writeLine(string: "Finished Cleaning \(target.name) - \(self.name)")
+      }
+      taskConsole?.writeLine(string: "Cleaning: \(target.name) - \(self.name)")
     }
-    
-    task.console?.writeLine(string: "Cleaning: \(target.name) - \(self.name)")
     return task
   }
   
