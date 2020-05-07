@@ -40,6 +40,10 @@ class EditorView: SVGEditorView {
   private func showPage(in window: SCDLatticeWindow) {
     pageDocument?.self.adapter.show(window)
   }
+
+  func updateSelector() {
+    elementSelector.updateSelector()
+  }
 }
 
 protocol EditorViewObserver: class {

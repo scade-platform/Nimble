@@ -225,6 +225,10 @@ class TextPane: NSViewController {
   }
 
   private func documentDidChange() {
+    if let editorView = document?.editor as? EditorView {
+      editorView.updateSelector()
+      
+    }
     document?.updateChangeCount(.changeDone)
   }
 }
