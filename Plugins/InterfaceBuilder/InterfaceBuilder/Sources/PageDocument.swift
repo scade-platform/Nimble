@@ -45,6 +45,7 @@ public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
   
   public override func read(from url: URL, ofType typeName: String) throws {
     adapter.load(url.path)
+    onPageLoad()
   }
   
   public override func data(ofType typeName: String) throws -> Data {
@@ -54,6 +55,15 @@ public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
       return resource.data
     }
     return "".data(using: .utf8)!
+  }
+
+  private func onPageLoad() {
+    if let size = adapter.page?.size {
+      if size.width == 0 || size.height == 0 {
+        size.width = 320
+        size.height = 480
+      }
+    }
   }
 }
 
@@ -78,11 +88,7 @@ extension PageDocument: CreatableDocument {
   public static func createUntitledDocument() -> Document? {
     let doc = PageDocument()
     doc.adapter.loadTemplatePage()
-
-    if let size = doc.adapter.page?.size {
-      size.width = 320
-      size.height = 480
-    }
+    doc.onPageLoad()
 
     return doc
   }
