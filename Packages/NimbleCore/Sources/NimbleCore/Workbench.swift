@@ -188,6 +188,12 @@ public protocol WorkbenchTask: class {
   func run() throws
 }
 
+public extension WorkbenchTask {
+  var id: ObjectIdentifier {
+    return ObjectIdentifier(self)
+  }
+}
+
 public protocol WorkbenchTaskObserver {
   func taskDidFinish(_ task: WorkbenchTask)
   func taskDidStart(_ task: WorkbenchTask)

@@ -25,8 +25,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   public var observers = ObserverSet<WorkbenchObserver>()
 
   public private(set) var diagnostics: [Path: [Diagnostic]] = [:]
-  public private(set) var tasks: [WorkbenchTask] = []
-  public private(set) var taskCompleteHandlers: [(WorkbenchTask, (WorkbenchTask) -> Void)] = []
+  public private(set) var tasksDictionary: [ObjectIdentifier: (WorkbenchTask, ((WorkbenchTask) -> Void)?)] = [:]
 
   // Document property of the WindowController always refer to the project
   public override var document: AnyObject? {
@@ -152,6 +151,10 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
 // MARK: - Workbench
 
 extension NimbleWorkbench: Workbench {
+  public var tasks: [WorkbenchTask] {
+    self.tasksDictionary.map{$0.value.0}
+  }
+  
   public var openedConsoles: [Console] {
     guard let debugView = debugView else {
       return []
@@ -280,13 +283,12 @@ extension NimbleWorkbench: Workbench {
 
   public func publish(task: WorkbenchTask) {
     task.observers.add(observer: self)
-    self.tasks.append(task)
+    self.tasksDictionary[task.id] = (task, nil)
   }
   
   public func publish(task: WorkbenchTask, onComplete: @escaping (WorkbenchTask)-> Void) {
     task.observers.add(observer: self)
-    taskCompleteHandlers.append((task, onComplete))
-    self.tasks.append(task)
+    tasksDictionary[task.id] = (task, onComplete)
   }
 }
 
@@ -296,11 +298,10 @@ extension NimbleWorkbench: Workbench {
 extension NimbleWorkbench: WorkbenchTaskObserver {
   public func taskDidFinish(_ task: WorkbenchTask) {    
     task.observers.remove(observer: self)
-    if let (_, onComplete) = self.taskCompleteHandlers.first(where: {$0.0 === task}) {
-      onComplete(task)
-      self.taskCompleteHandlers.removeAll{$0.0 === task}
+    if let (_, onComplete) = tasksDictionary[task.id] {
+      onComplete?(task)
+      tasksDictionary[task.id] = nil
     }
-    self.tasks.removeAll { $0 === task }
   }
 }
 
