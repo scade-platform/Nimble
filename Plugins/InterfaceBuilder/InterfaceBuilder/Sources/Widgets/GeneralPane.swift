@@ -48,7 +48,7 @@ class GeneralPane: NSViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    
+    self.textTextField?.delegate = self
     visibilityButton?.isHidden = true
     headerView?.button = visibilityButton
   }
@@ -161,3 +161,13 @@ extension GeneralPane: EditorViewObserver {
     }
   }
 }
+
+extension GeneralPane : NSTextFieldDelegate {
+  func controlTextDidChange(_ notification: Notification) {
+    guard let textField  = notification.object as? NSTextField else { return }
+    if textField === textTextField {
+      textDidChange(textField)
+    }
+  }
+}
+
