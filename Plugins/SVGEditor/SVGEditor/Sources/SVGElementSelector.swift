@@ -12,6 +12,8 @@ public protocol SVGElementSelector {
   func onSelect(_ element: SCDSvgElement)
 
   func onUnselect(_ element: SCDSvgElement)
+
+  func updateSelector()
 }
 
 class SelectionView: NSView {
@@ -68,6 +70,21 @@ open class SVGLayerSelector: SVGElementSelector, SVGElementVisitor {
    }
 
   public func onSelect(_ element: SCDSvgElement) {
+    setSelectorBounds(element)
+    svgView?.superview?.addSubview(selectView, positioned: .above, relativeTo: nil)
+  }
+
+  public func handleOnTap(with handler: SCDSvgGestureRecognizer?) {
+    select(handler?.target as! SCDSvgElement)
+  }
+
+  public func updateSelector() {
+    if let selected = self.selected {
+      setSelectorBounds(selected)
+    }
+  }
+
+  private func setSelectorBounds(_ element: SCDSvgElement) {
     guard let drawable = element as? SCDSvgDrawable else { return }
 
     let bbox = drawable.getBoundingBox()
@@ -84,11 +101,6 @@ open class SVGLayerSelector: SVGElementSelector, SVGElementVisitor {
                            dy: svgView?.frame.origin.y ?? 0.0)
 
     selectView.frame = frame
-    svgView?.superview?.addSubview(selectView, positioned: .above, relativeTo: nil)
-  }
-
-  public func handleOnTap(with handler: SCDSvgGestureRecognizer?) {
-    select(handler?.target as! SCDSvgElement)
   }
 
   private func select(_ element: SCDSvgElement) {
