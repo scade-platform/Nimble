@@ -8,4 +8,15 @@ public protocol SVGDocumentProtocol: Document {
   var svgWidth: SCDSvgUnit? { get }
 
   var svgHeight: SCDSvgUnit? { get }
+
+  func didOpen() -> Void
+}
+
+public extension SVGDocumentProtocol {
+
+  func didOpen() {
+    if let editor = self.editor as? SVGEditorViewProtocol {
+      editor.didOpenDocument()
+    }
+  }
 }

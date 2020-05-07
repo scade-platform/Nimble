@@ -4,6 +4,7 @@
 
 
 @class EObject;
+@class SCDCoreResourceSet;
 
 
 /*PROTECTED REGION ID(137918a89ff8ab87dde9da9350569cfb) START*/
@@ -17,6 +18,8 @@ SCADE_API
 
 
 @property(nonatomic) NSArray<EObject*>* _Nonnull contents;
+
+@property(nonatomic, readonly) SCDCoreResourceSet* _Nullable parent;
 
 
 - (EObject* _Nullable)getEObject:(NSString* _Nonnull)name;
