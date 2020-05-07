@@ -39,10 +39,17 @@ public final class LSPClient {
     // The LSP servers supporting workspace folders, ignore rootURI, hence pass all forlder URLs
     // For the servers without such support only rootURI is used, hence we set
     // the first folder as the root folder per default
-    guard state == .ready, let rootURL = workspaceFolders.first else { return }
-    let initRequest = InitializeRequest(rootURI: DocumentURI(rootURL),
+    guard state == .ready else { return }
+
+
+    var rootURI: DocumentURI? = nil
+    if let rootURL = workspaceFolders.first {
+      rootURI = DocumentURI(rootURL)
+    }
+    
+    let initRequest = InitializeRequest(rootURI: rootURI,
                                         capabilities: LSPClient.clientCapabilities,
-                                        workspaceFolders: workspaceFolders.map{WorkspaceFolder(uri: DocumentURI($0))})
+                                        workspaceFolders: workspaceFolders.map {WorkspaceFolder(uri: DocumentURI($0))})
     
     state = .initializing
     initializing.enter()

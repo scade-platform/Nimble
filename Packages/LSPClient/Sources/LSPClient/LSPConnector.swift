@@ -6,6 +6,8 @@
 //  Copyright © 2019 SCADE. All rights reserved.
 //
 
+import Foundation
+
 import NimbleCore
 import CodeEditor
 
@@ -34,15 +36,22 @@ final class LSPConnector {
   }
   
   func createServer(`in` folder: Folder?, for doc: SourceCodeDocument) -> LSPServer? {
-    guard let folder = folder,
-          let server = createServer(for: doc.languageId) else { return nil }
+    guard let server = createServer(for: doc.languageId) else { return nil }
     
     var servers = runningServers[doc.languageId] ?? []
     servers.append(server)
     runningServers[doc.languageId] = servers
 
+
+    let folderUrls: [URL]
+    if let folderUrl = folder?.path.url {
+      folderUrls = [folderUrl]
+    } else {
+      folderUrls = []
+    }
+
     ///TODO: implement support for servers allowing multiple folders for a workspace
-    server.client.initialize(workspaceFolders: [folder.path.url]) { [weak self] in
+    server.client.initialize(workspaceFolders: folderUrls) { [weak self] in
       if server.client.state == .failed {
         self?.runningServers[doc.languageId]?.removeAll{ $0 === server }
       }

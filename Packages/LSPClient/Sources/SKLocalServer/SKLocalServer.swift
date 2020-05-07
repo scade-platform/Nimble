@@ -46,13 +46,8 @@ public final class SKLocalServer: LSPServer {
     clientConnection = LocalConnection()
     serverConnection = LocalConnection()
     
-    client = LSPClient(serverConnection)
-        
-//    let installPath = AbsolutePath(Bundle.main.bundlePath)
+    client = LSPClient(serverConnection)    
     ToolchainRegistry.shared = ToolchainRegistry(installPath: SKLocalServer.swiftToolchainInstallPath, localFileSystem)
-    
-    let toolchain = ToolchainRegistry.shared.default
-    print(toolchain?.displayName)    
   }
   
   public func start() throws {
