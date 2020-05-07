@@ -35,6 +35,8 @@ class TextPane: NSViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    self.sizeTextField?.delegate = self
+    
     for family in WidgetFonts.shared.supportedFontFamilies {
       familyPopUpButton?.addItem(withTitle: family)
     }
@@ -252,5 +254,14 @@ extension SCDGraphicsRGB {
 extension NSColor {
   var scdGraphicsRGB : SCDGraphicsRGB {
     return SCDGraphicsRGB(red: Int(self.redComponent * 255), green: Int(self.greenComponent * 255), blue: Int(self.blueComponent * 255), alpha: Int(self.alphaComponent * 255))
+  }
+}
+
+extension TextPane : NSTextFieldDelegate {
+  func controlTextDidChange(_ notification: Notification) {
+    guard let textField  = notification.object as? NSTextField else { return }
+    if textField === sizeTextField {
+      sizeTextDidChange(textField)
+    }
   }
 }
