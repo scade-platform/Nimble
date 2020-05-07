@@ -9,6 +9,8 @@ public protocol SVGEditorViewProtocol: class {
   func zoomOut() -> Void
 
   func zoomActualSize() -> Void
+
+  func didOpenDocument() -> Void
 }
 
 public extension SVGEditorViewProtocol {

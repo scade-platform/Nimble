@@ -27,11 +27,11 @@ public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
     return adapter.page
   }
 
-  private lazy var editorController: EditorView = {
-    let controller = EditorView.loadFromNib()
-    controller.document = self
+  private lazy var editorView: EditorView = {
+    let view = EditorView.loadFromNib()
+    view.document = self
 
-    return controller
+    return view
   }()
 
   override public func presentedItemDidChange() {
@@ -55,17 +55,10 @@ public final class PageDocument: NimbleDocument, SVGDocumentProtocol {
     }
     return "".data(using: .utf8)!
   }
-
-  func didOpen() {
-    editorController.didOpenDocument()
-  }
-
-  func didClose() {
-  }
 }
 
 extension PageDocument: Document {
-  public var editor: WorkbenchEditor? { editorController }
+  public var editor: WorkbenchEditor? { editorView }
   
   /// TODO: register UTIs for the page files
   public static var typeIdentifiers: [String] = []

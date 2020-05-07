@@ -1,11 +1,3 @@
-//
-//  InterfaceBuilder.swift
-//  InterfaceBuilder
-//
-//  Created by Grigory Markin on 18.06.19.
-//  Copyright © 2019 SCADE. All rights reserved.
-//
-
 import Foundation
 import NimbleCore
 
@@ -27,8 +19,6 @@ final class Plugin: NimbleCore.Plugin {
       inspectorArea.add(part: inspector)
       workbench.observers.add(observer: inspector)
     }
-    
-    
   }
   
   public func deactivate(in workbench: Workbench) {
@@ -60,13 +50,6 @@ extension Plugin: WorkbenchObserver {
       pageDocument.didOpen()
     }
   }
-
-  func workbenchDidCloseDocument(_ workbench: Workbench, document: Document) {
-    if let pageDocument = document as? PageDocument {
-      pageDocument.didClose()
-    }
-  }
-
 }
 
 extension Plugin: ProjectObserver {
