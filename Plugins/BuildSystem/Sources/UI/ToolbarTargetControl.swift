@@ -9,7 +9,7 @@
 import Cocoa
 import NimbleCore
 
-class ToolbarTargetControl : NSView {
+class ToolbarTargetControl : NSControl {
   
   @IBOutlet weak var leftImage: NSImageView?
   @IBOutlet weak var leftLable: NSTextField?
@@ -20,6 +20,18 @@ class ToolbarTargetControl : NSView {
   @IBOutlet weak var rightLable: NSTextField?
   
   var selectedTarget: Target?
+  
+  override var isEnabled: Bool {
+    didSet {
+      if isEnabled {
+        leftLable?.textColor = .labelColor
+        rightLable?.textColor = .labelColor
+      } else {
+        leftLable?.textColor = .disabledControlTextColor
+        rightLable?.textColor = .disabledControlTextColor
+      }
+    }
+  }
   
   private lazy var separatorTemplate: NSImage = {
     let separator = IconsManager.Icons.separator.image
