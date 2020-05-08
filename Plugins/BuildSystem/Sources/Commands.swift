@@ -92,7 +92,7 @@ final class Clean: BuildSystemCommand {
 
 final class SelectTarget: Command {
   init() {
-    super.init(name: "Select Target", menuPath: nil, keyEquivalent: nil, viewClass: ToolbarTargetControl.self)
+    super.init(name: "Select Target", menuPath: nil, keyEquivalent: nil, controlClass: ToolbarTargetControl.self)
   }
   
   override func validate(in workbench: Workbench) -> State {
