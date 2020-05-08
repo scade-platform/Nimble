@@ -92,8 +92,7 @@ final class Clean: BuildSystemCommand {
 
 final class SelectTarget: Command {
   init() {
-    let view = ToolbarTargetControl.loadFromNib()
-    super.init(name: "Select Target", menuPath: nil, keyEquivalent: nil, view: view)
+    super.init(name: "Select Target", menuPath: nil, keyEquivalent: nil, viewClass: ToolbarTargetControl.self)
   }
   
   override func validate(in workbench: Workbench) -> State {
