@@ -125,6 +125,10 @@ class ToolbarTargetControl : NSView {
       }
       targets.forEach{addMenuItem(target: $0, to: menu)}
     }
+    
+    guard !menu.items.isEmpty else {
+      return
+    }
     menu.popUp(positioning: menu.item(at: 0), at: NSEvent.mouseLocation, in: nil)
   }
   

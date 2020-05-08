@@ -28,8 +28,8 @@ extension Command {
   }
   
   var view: NSView {
-    guard self.toolbarView == nil else {
-      return self.toolbarView!
+    guard self.toolbarViewClass == nil else {
+      return self.toolbarViewClass!.loadFromNib()
     }
     
     let button = NSButton()
