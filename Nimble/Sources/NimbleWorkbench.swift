@@ -341,7 +341,8 @@ extension NimbleWorkbench: NSToolbarDelegate {
   public func toolbar(_ toolbar: NSToolbar,
                       itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
                       willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
-    
+    print("Items:")
+    print(toolbarItems.map{$0.view})
     return toolbarItems.first{ $0.itemIdentifier == itemIdentifier }
   }
 
@@ -353,6 +354,8 @@ extension NimbleWorkbench: NSToolbarDelegate {
     
       ids.append(.flexibleSpace)
       ids.append(contentsOf: CommandManager.shared.groups.map { $0.toolbarItemIdentifier })
+      print("ItemIdentifiers:")
+      print(ids)
       return ids
   }
 

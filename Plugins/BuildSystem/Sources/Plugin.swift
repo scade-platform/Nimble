@@ -48,6 +48,7 @@ final class BuildSystemPlugin: Plugin {
   
   private func setupCommands() {
     CommandManager.shared.register(commands: [Run(), Stop(), Build(), Clean(), SelectTarget()])
+    print(CommandManager.shared.commands)
   }
   
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {

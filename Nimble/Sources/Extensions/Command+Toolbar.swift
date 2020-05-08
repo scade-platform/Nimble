@@ -28,9 +28,12 @@ extension Command {
   }
   
   var view: NSView {
+    print(self)
     guard self.toolbarControlClass == nil else {
+      print("\(self) - has control")
       let control = self.toolbarControlClass!.loadFromNib()
       control.target = self
+      print("\(control) - control")
       return control
     }
     
