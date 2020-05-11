@@ -143,8 +143,10 @@ extension LSPClient: MessageHandler {
   public func handle<Notification>(_ notification: Notification, from: ObjectIdentifier) where Notification : NotificationType {
     switch notification {
     case let log as LogMessageNotification:
-      print(log.message)
-      
+      DispatchQueue.main.async {
+        self.connector?.workbench?.statusBar.statusMessage = "LSP: \(log.message)"
+      }
+
     case let diagnostic as PublishDiagnosticsNotification:
       DispatchQueue.main.async {
         guard let url = diagnostic.uri.fileURL,

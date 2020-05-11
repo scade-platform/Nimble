@@ -13,7 +13,17 @@ class StatusBarView: NSViewController {
   @IBOutlet weak var leftBarStackView: NSStackView!
   @IBOutlet weak var rightBarStackView: NSStackView!
   @IBOutlet weak var editorBarStackView: NSStackView!
-  
+
+  private let workbenchBar = NimbleStatusBar.loadFromNib()
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    leftBar.append(workbenchBar.view as! WorkbenchStatusBarItem)
+
+    statusMessage = ""
+  }
+
   var editorBar: [WorkbenchStatusBarItem] {
     get {
       return editorBarStackView.subviews.compactMap {$0 as? WorkbenchStatusBarItem}
@@ -53,6 +63,11 @@ extension StatusBarView : WorkbenchStatusBar {
         rightBarStackView.insertView(view, at: 0, in: .leading)
       }
     }
+  }
+
+  var statusMessage: String {
+    get { workbenchBar.statusMessage.stringValue  }
+    set { workbenchBar.statusMessage.stringValue = newValue }
   }
 }
 

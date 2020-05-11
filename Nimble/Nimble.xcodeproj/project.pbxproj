@@ -19,6 +19,8 @@
 		0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */; };
 		0CD0FB4623A776BD003B01DE /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB4523A776BD003B01DE /* EditorView.swift */; };
 		0CEE0F0D23965A11002E69D6 /* BuildSystem.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 0CEE0F0A239659FC002E69D6 /* BuildSystem.plugin */; };
+		D71D04FA246615F400200127 /* NimbleStatusBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D71D04F9246615F400200127 /* NimbleStatusBar.xib */; };
+		D71D04FC2466163B00200127 /* NimbleStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71D04FB2466163B00200127 /* NimbleStatusBar.swift */; };
 		D71E1D10241FF69400711B5A /* FileIcons.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = D71E1D0F241FF69400711B5A /* FileIcons.plugin */; };
 		D721CFA72385EC3200FD1B00 /* NSOpenPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */; };
 		D724C5EE237C418B00E80958 /* TabbedEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = D724C5E7237C418B00E80958 /* TabbedEditor.xib */; };
@@ -118,6 +120,8 @@
 		0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootSplitView.swift; sourceTree = "<group>"; };
 		0CD0FB4523A776BD003B01DE /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
 		0CEE0F0A239659FC002E69D6 /* BuildSystem.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = BuildSystem.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		D71D04F9246615F400200127 /* NimbleStatusBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NimbleStatusBar.xib; sourceTree = "<group>"; };
+		D71D04FB2466163B00200127 /* NimbleStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleStatusBar.swift; sourceTree = "<group>"; };
 		D71E1D0F241FF69400711B5A /* FileIcons.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = FileIcons.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSOpenPanel.swift; sourceTree = "<group>"; };
 		D724C5E7237C418B00E80958 /* TabbedEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TabbedEditor.xib; sourceTree = "<group>"; };
@@ -214,11 +218,13 @@
 				D724C5EB237C418B00E80958 /* TabbedEditor.swift */,
 				0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */,
 				D72F959E222DF7AF009F2EC3 /* WorkbenchSidebar.swift */,
+				D71D04FB2466163B00200127 /* NimbleStatusBar.swift */,
 				D724C5EC237C418B00E80958 /* ConsoleView.xib */,
 				D78FFF0F24242B6500EB70E2 /* SettingsEditor.xib */,
 				D724C5E7237C418B00E80958 /* TabbedEditor.xib */,
 				0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */,
 				D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */,
+				D71D04F9246615F400200127 /* NimbleStatusBar.xib */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -390,6 +396,7 @@
 				D7CBF7D6222878F40088715C /* Main.storyboard in Resources */,
 				D724C5F3237C418B00E80958 /* ConsoleView.xib in Resources */,
 				0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */,
+				D71D04FA246615F400200127 /* NimbleStatusBar.xib in Resources */,
 				D78FFF1024242B6500EB70E2 /* SettingsEditor.xib in Resources */,
 				D724C5EE237C418B00E80958 /* TabbedEditor.xib in Resources */,
 				0C238B12233E4E3D004F87E7 /* Assets.xcassets in Resources */,
@@ -405,6 +412,7 @@
 			files = (
 				0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */,
 				0CAAE9A324370523003CAE92 /* Bundle.swift in Sources */,
+				D71D04FC2466163B00200127 /* NimbleStatusBar.swift in Sources */,
 				D72F959F222DF7AF009F2EC3 /* WorkbenchSidebar.swift in Sources */,
 				D78FFF1D2426A3ED00EB70E2 /* SettingsEditor.swift in Sources */,
 				D79BE0BD2385AD4000D96619 /* NimbleController.swift in Sources */,

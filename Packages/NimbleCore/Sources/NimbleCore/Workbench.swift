@@ -50,6 +50,7 @@ public protocol Workbench: class {
   func publish(diagnostics: [Diagnostic], for path: Path)
 
   func publish(task: WorkbenchTask)
+
   func publish(task: WorkbenchTask, onComplete: @escaping (WorkbenchTask) -> Void)
 }
 
@@ -169,9 +170,11 @@ public extension WorkbenchEditor {
 
 // MARK: - StatusBar
 
-public protocol WorkbenchStatusBar {
+public protocol WorkbenchStatusBar: class {
   var leftBar : [WorkbenchStatusBarItem] { get set }
   var rightBar: [WorkbenchStatusBarItem] { get set }
+
+  var statusMessage: String { get set }
 }
 
 public protocol WorkbenchStatusBarItem { }

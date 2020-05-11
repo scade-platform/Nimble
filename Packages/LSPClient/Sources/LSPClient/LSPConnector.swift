@@ -63,18 +63,25 @@ final class LSPConnector {
   
   func findServer(for doc: SourceCodeDocument) -> (LSPServer?, Folder?) {
     guard let proj = workbench?.project,
-          let docUrl = doc.fileURL,
-          let docFolder = proj.folder(containing: docUrl) else { return (nil, nil) }
+          let docUrl = doc.fileURL else { return (nil, nil) }
 
+    let folder: Folder
+    if let docFolder = proj.folder(containing: docUrl) {
+      folder = docFolder
 
-    let runningServer = runningServers[doc.languageId]?.first {
-      $0.client.workspaceFolders.contains(docFolder.path.url)
+    } else if let docFolder = Folder(url: docUrl.deletingLastPathComponent()) {
+      folder = docFolder
+
+    } else {
+      return (nil, nil)
     }
 
-    return (runningServer, docFolder)
-  }
-  
+    let runningServer = runningServers[doc.languageId]?.first {
+      $0.client.workspaceFolders.contains(folder.path.url)
+    }
 
+    return (runningServer, folder)
+  }
 }
 
 
@@ -117,6 +124,13 @@ extension LSPConnector: WorkbenchObserver {
       }
     } else if let client = createServer(in: docFolder, for: doc)?.client {
       client.openDocument(doc: doc)
+    }
+  }
+
+  func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) {
+    guard let doc = document as? SourceCodeDocument else {
+      workbench.statusBar.statusMessage = ""
+      return
     }
   }
 }

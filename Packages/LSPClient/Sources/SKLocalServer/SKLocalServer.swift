@@ -61,10 +61,20 @@ public final class SKLocalServer: LSPServer {
 //    Logger.shared.disableNSLog = true
     Logger.shared.disableOSLog = true
     
-//    Logger.shared.setLogLevel("error")
-//    Logger.shared.addLogHandler { [weak self] message, _ in
-//      self?.clientConnection.send(LogMessageNotification(type: .log, message: message))
-//    }
+    Logger.shared.setLogLevel("warning")
+    Logger.shared.addLogHandler { [weak self] message, logLevel in
+      let messageType: WindowMessageType?
+
+      switch logLevel {
+      case .error: messageType = .error
+      case .warning: messageType = .warning
+      case .info: messageType = .info
+      default: messageType = nil
+      }
+
+      guard let type = messageType else { return }
+      self?.clientConnection.send(LogMessageNotification(type: type, message: message))
+    }
     
     isRunning = true
   }
