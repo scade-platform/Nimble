@@ -22,12 +22,14 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   // MARK: -
   
   var lineNumberView: LineNumberView? = nil
-  
+
+  // MARK: - Snippets
+
+  var snippetPlaceholders: [NSRange] = [ ]
+
   // MARK: -
-  // MARK: Lifecycle
-  
+
   required init?(coder: NSCoder) {
-    
     // set paragraph style values
 
 //    if let theme = ThemeManager.shared.theme {
@@ -54,9 +56,11 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     
     //let layoutManager = LayoutManager()
     let layoutManager = CodeEditorLayoutManager()
+    layoutManager.delegate = self
+
     self.textContainer!.replaceLayoutManager(layoutManager)
     self.layoutManager!.allowsNonContiguousLayout = true
-    
+
     // set layout values (wraps lines)
     self.minSize = self.frame.size
     self.maxSize = .infinite
@@ -400,3 +404,50 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   
 }
 
+
+
+// MARK: - NSLayoutManagerDelegate
+
+extension CodeEditorTextView: NSLayoutManagerDelegate {
+  func layoutManager(_ layoutManager: NSLayoutManager,
+                     shouldGenerateGlyphs glyphs: UnsafePointer<CGGlyph>,
+                     properties: UnsafePointer<NSLayoutManager.GlyphProperty>,
+                     characterIndexes: UnsafePointer<Int>,
+                     font: NSFont,
+                     forGlyphRange glyphRange: NSRange) -> Int {
+
+    var modifiedGlyphProperties = [NSLayoutManager.GlyphProperty]()
+    for i in 0 ..< glyphRange.length {
+      var glyphProperties = properties[i]
+      if snippetPlaceholders.contains(where: { $0.contains(characterIndexes[i])}) {
+        glyphProperties.insert(.controlCharacter)
+      }
+      modifiedGlyphProperties.append(glyphProperties)
+    }
+
+    modifiedGlyphProperties.withUnsafeBufferPointer { modifiedGlyphPropertiesBufferPointer in
+        guard let modifiedGlyphPropertiesPointer = modifiedGlyphPropertiesBufferPointer.baseAddress else { return }
+        layoutManager.setGlyphs(glyphs,
+                                properties: modifiedGlyphPropertiesPointer,
+                                characterIndexes: characterIndexes,
+                                font: font,
+                                forGlyphRange: glyphRange)
+    }
+
+    return glyphRange.length
+  }
+
+
+  func layoutManager(_ layoutManager: NSLayoutManager,
+                     shouldUse action: NSLayoutManager.ControlCharacterAction,
+                     forControlCharacterAt charIndex: Int) -> NSLayoutManager.ControlCharacterAction {
+
+    guard snippetPlaceholders.contains(where: {
+      return $0.contains(charIndex)
+    }) else {
+      return action
+    }
+
+    return .zeroAdvancement
+  }
+}
