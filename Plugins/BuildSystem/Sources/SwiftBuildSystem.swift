@@ -125,7 +125,7 @@ fileprivate class SingleDocumentVariant: Variant {
   weak var swiftTarget : SwiftTarget?
   
   var name: String {
-    "Single Swift Document"
+    "Single Swift File"
   }
   
   weak var buildSystem : BuildSystem?
