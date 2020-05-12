@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -52,16 +52,16 @@
                             </scroller>
                         </scrollView>
                         <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bed-oD-Mwo">
-                            <rect key="frame" x="0.0" y="0.0" width="259" height="168"/>
+                            <rect key="frame" x="0.0" y="0.0" width="359" height="168"/>
                             <subviews>
                                 <popUpButton translatesAutoresizingMaskIntoConstraints="NO" id="6sq-ed-dLL">
-                                    <rect key="frame" x="-2" y="116" width="204" height="54"/>
+                                    <rect key="frame" x="-2" y="116" width="304" height="54"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="200" id="rD1-bj-TLf"/>
+                                        <constraint firstAttribute="width" constant="300" id="rD1-bj-TLf"/>
                                     </constraints>
                                     <popUpButtonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" lineBreakMode="truncatingTail" inset="2" id="pHo-q2-rE9">
                                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                        <font key="font" size="11" name=".AppleSystemUIFont"/>
+                                        <font key="font" metaFont="menu" size="11"/>
                                         <menu key="menu" id="GPz-r8-kCC"/>
                                     </popUpButtonCell>
                                     <connections>
@@ -69,7 +69,7 @@
                                     </connections>
                                 </popUpButton>
                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="N6a-kt-c8u">
-                                    <rect key="frame" x="208" y="151" width="17" height="17"/>
+                                    <rect key="frame" x="308" y="151" width="17" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="N6a-kt-c8u" secondAttribute="height" multiplier="1:1" id="XCJ-Qy-2Ew"/>
                                         <constraint firstAttribute="width" constant="17" id="ehM-ie-FFW"/>
@@ -83,10 +83,10 @@
                                     </connections>
                                 </button>
                                 <box horizontalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Wow-0W-mpu">
-                                    <rect key="frame" x="231" y="72" width="5" height="96"/>
+                                    <rect key="frame" x="331" y="72" width="5" height="96"/>
                                 </box>
                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="KC3-0c-zVn">
-                                    <rect key="frame" x="242" y="151" width="17" height="17"/>
+                                    <rect key="frame" x="342" y="151" width="17" height="17"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="17" id="Ti7-ax-RzG"/>
                                         <constraint firstAttribute="width" secondItem="KC3-0c-zVn" secondAttribute="height" multiplier="1:1" id="dKG-GT-IZc"/>
