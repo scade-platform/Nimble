@@ -154,17 +154,27 @@ class ToolbarTargetControl : NSControl {
   }
   
   @objc func itemDidSelect(_ sender: Any?) {
-    guard let item = sender as? NSMenuItem, let variant = item.representedObject as? Variant else {
+    guard let item = sender as? NSMenuItem else {
       return
     }
-
-    leftLable?.stringValue = variant.target?.name ?? ""
     
-    separatorImage?.isHidden = false
+    let selectedVariant: Variant?
+    if let variant = item.representedObject as? Variant {
+      leftLable?.stringValue = variant.target?.name ?? ""
+      separatorImage?.isHidden = false
+      rightLable?.stringValue = variant.name
+      selectedVariant = variant
+    } else if let target = item.representedObject as? Target {
+      leftLable?.stringValue = target.name
+      separatorImage?.isHidden = false
+      selectedVariant = target.variants.first
+      rightLable?.stringValue = selectedVariant?.name ?? ""
+    } else {
+      selectedVariant = nil
+    }
     
-    rightLable?.stringValue = variant.name
     
-    guard let workbench = self.window?.windowController as? Workbench else {
+    guard let workbench = self.window?.windowController as? Workbench, let variant = selectedVariant else {
       return
     }
     selectedTarget = variant.target
