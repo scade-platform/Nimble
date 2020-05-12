@@ -39,7 +39,7 @@ class SwiftBuildSystem: BuildSystem {
         }
         
         //If build without error
-        if !console.contents.contains("error:") {
+        if !console.contents.lowercased().contains("error:") {
           if let runTask = try? variant.run() {
             
             workbench.publish(task: runTask) { _ in
