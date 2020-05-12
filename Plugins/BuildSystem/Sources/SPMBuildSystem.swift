@@ -30,7 +30,7 @@ class SPMBuildSystem: BuildSystem {
       workbench.publish(task: buildTask) { task in
         guard let consoleOutputTask = task as? BuildSystemTask,
           let console = consoleOutputTask.console else {
-          return
+            return
         }
         
         DispatchQueue.main.async {
@@ -39,7 +39,7 @@ class SPMBuildSystem: BuildSystem {
         }
         
         //If build without error
-        if !console.contents.contains("error:") {
+        if !console.contents.lowercased().contains("error:") {
           if let runTask = try? variant.run() {
             
             workbench.publish(task: runTask) { _ in
@@ -159,7 +159,7 @@ extension MacVariant {
     guard let target = spmTarget else {
       throw VariantError.targetRequired
     }
-
+    
     let process = createRunProcess(source: target.folder)
     let task = BuildSystemTask(process)
     

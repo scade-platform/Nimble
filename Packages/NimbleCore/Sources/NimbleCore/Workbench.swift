@@ -211,7 +211,8 @@ open class WorkbenchProcess {
   let process: Process
   public private(set) var console: Console?
   public var observers = ObserverSet<WorkbenchTaskObserver>()
-
+  var consoleWillCloseHandler: ((Console) -> Void)?
+  
   public init(_ process: Process) {
     self.process = process
     self.process.terminationHandler = { [weak self] (_: Process) in
@@ -225,30 +226,31 @@ open class WorkbenchProcess {
   }
   
   @discardableResult
-  public func output(to console: Console, consoleWillCloseHandler handler: ((Console) -> Void)? = nil) -> Console? {
+  public func output(to console: Console, consoleWillCloseHandler handler: @escaping (Console) -> Void = {_ in }) -> Console? {
     guard !process.isRunning, !console.isReadingFromBuffer else {
       return nil
     }
     self.console = console
+    self.consoleWillCloseHandler = handler
     
     process.standardOutput = console.output
     process.standardError = console.output
     
     console.startReadingFromBuffer()
-    
-    let defaultTerminateHandler = process.terminationHandler
     process.terminationHandler = {[weak self] process in
       DispatchQueue.main.async { [weak self] in
         guard let self = self else { return }
         if let console = self.console {
-          handler?(console)
+          handler(console)
           
           if console.contents.isEmpty {
             console.close()
           }
         }
         self.console?.stopReadingFromBuffer()
-        defaultTerminateHandler?(process)
+        self.observers.notify {
+          $0.taskDidFinish(self)
+        }
       }
     }
     
@@ -260,7 +262,32 @@ extension WorkbenchProcess: WorkbenchTask {
   public var isRunning: Bool { process.isRunning }
   public func stop() { process.terminate() }
   public func run() throws {
-    try process.run()
+    do {
+      try process.run()
+    } catch {
+      let nsError = error as NSError
+      if let console = console {
+        DispatchQueue.main.async { [weak self] in
+          guard let self = self else { return }
+          if nsError.domain == "NSCocoaErrorDomain", nsError.code == 4, let filePath = nsError.userInfo["NSFilePath"] {
+            console.writeLine(string: "Error: The file \"\(filePath)\" doesn’t exist.")
+          } else {
+            console.write(string: "Error: ").writeLine(obj: error)
+          }
+          self.consoleWillCloseHandler?(console)
+          console.stopReadingFromBuffer()
+        }
+      }
+      DispatchQueue.main.async { [weak self] in
+        guard let self = self else { return }
+        //We can run the process after save it in Workbench
+        //so we need to release resources even though the process doesn't start
+        self.observers.notify {
+          $0.taskDidFinish(self)
+        }
+      }
+      throw error
+    }
     self.observers.notify {
       $0.taskDidStart(self)
     }
