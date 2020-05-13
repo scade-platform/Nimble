@@ -25,6 +25,10 @@ public protocol Plugin: class {
   func activate(in: Workbench) -> Void
   
   func deactivate(in: Workbench) -> Void
+  
+  func restoreState(in: Workbench, coder: NSCoder) -> Void
+  
+  func encodeRestorableState(in: Workbench, coder: NSCoder) -> Void
 }
 
 public extension Plugin {
@@ -43,6 +47,10 @@ public extension Plugin {
   func activate(in _: Workbench) -> Void {}
   
   func deactivate(in _: Workbench) -> Void {}
+  
+  func restoreState(in: Workbench, coder: NSCoder) -> Void {}
+  
+  func encodeRestorableState(in: Workbench, coder: NSCoder) -> Void {}
   
   func extensions<T: Decodable>(_ type: T.Type, at extensionPoint: String) -> [T] {
     return PluginManager.shared.getFromPackages(type, at: "extensions/\(id)/\(extensionPoint)")
@@ -165,7 +173,15 @@ public class PluginManager {
   public func deactivate(in workbench: Workbench) -> Void {
     plugins.forEach{ $0.1.deactivate(in: workbench) }
   }
-    
+  
+  public func restoreState(in workbench: Workbench, coder: NSCoder) {
+    plugins.forEach{ $0.1.restoreState(in: workbench, coder: coder) }
+  }
+  
+  public func encodeRestorableState(in workbench: Workbench, coder: NSCoder) {
+    plugins.forEach{ $0.1.encodeRestorableState(in: workbench, coder: coder) }
+  }
+  
   public func getFromPackages<T: Decodable>(_ type: T.Type, at path: String) -> [T] {
     return packages.compactMap{
       //try? $0.decode(type, keyPath: path) ?? nil

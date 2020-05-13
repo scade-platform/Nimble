@@ -21,4 +21,8 @@ extension NavigatorView: WorkbenchArea {
     
     sidebar?.appendView(part.view, title: part.title ?? "", icon: part.icon)
   }
+  
+  public var parts: [WorkbenchPart] {
+    self.children.compactMap{$0 as? WorkbenchPart}
+  }
 }

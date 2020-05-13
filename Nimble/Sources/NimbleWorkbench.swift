@@ -124,7 +124,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     super.encodeRestorableState(with: coder)
     let documentUrls = documents.compactMap{$0.fileURL}
     coder.encode(documentUrls, forKey: "openDocuments")
-    print("Save workbench")
+    PluginManager.shared.encodeRestorableState(in: self, coder: coder)
   }
   
   public override func restoreState(with coder: NSCoder) {
@@ -133,13 +133,12 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
       let documents = documentsURL.compactMap{DocumentManager.shared.open(url: $0)}
       documents.forEach{self.open($0, show: true, openNewEditor: true)}
     }
-    print("Restore workbench")
+    PluginManager.shared.restoreState(in: self, coder: coder)
   }
   
   public override func invalidateRestorableState() {
     super.invalidateRestorableState()
     (document as? ProjectDocument)?.invalidateRestorableState()
-    print("Invalidate state")
   }
   
   private lazy var editorMenuItem: NSMenuItem? = {

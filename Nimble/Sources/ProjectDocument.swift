@@ -21,13 +21,11 @@ class ProjectDocument: NSDocument {
   override func encodeRestorableState(with coder: NSCoder) {
     super.encodeRestorableState(with: coder)
     workbench?.encodeRestorableState(with: coder)
-    Swift.print("Save project")
   }
   
   override func restoreState(with coder: NSCoder) {
     super.restoreState(with: coder)
     workbench?.restoreState(with: coder)
-    Swift.print("Restore project")
   }
   
   // MARK: - User Interface
