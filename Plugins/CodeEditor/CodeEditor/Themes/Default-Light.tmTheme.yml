@@ -1,7 +1,7 @@
 name: Default(Light)
 settings:
   - settings:
-      fontName: "SFMono-Regular"
+      fontName: "SFMono-Medium"
       fontSize: 12
       foreground: "#000000"
 #      background: "#DDDDDD"
