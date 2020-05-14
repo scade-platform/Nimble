@@ -52,6 +52,8 @@ public protocol Workbench: class {
   func publish(task: WorkbenchTask)
 
   func publish(task: WorkbenchTask, onComplete: @escaping (WorkbenchTask) -> Void)
+  
+  func invalidateRestorableState()
 }
 
 
@@ -106,6 +108,8 @@ public extension WorkbenchObserver {
 
 public protocol WorkbenchArea: class {
   var isHidden: Bool { get set }
+  
+  var parts: [WorkbenchPart] { get }
   
   func add(part: WorkbenchPart) -> Void
 }

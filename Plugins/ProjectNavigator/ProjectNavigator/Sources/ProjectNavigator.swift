@@ -7,6 +7,7 @@
 //
 
 import NimbleCore
+import Cocoa
 
 
 public final class ProjectNavigator: Module {
@@ -28,5 +29,19 @@ final class ProjectNavigatorPlugin: Plugin {
     let outlineView = OutlineView.loadFromNib()
     outlineView.workbench = workbench
     workbench.navigatorArea?.add(part: outlineView)
+  }
+  
+  func encodeRestorableState(in workbench: Workbench, coder: NSCoder) {
+    guard let outlinePart = workbench.navigatorArea?.parts.first(where: {$0 is OutlineView}), let outlineView = outlinePart as? NSViewController else {
+      return
+    }
+    outlineView.encodeRestorableState(with: coder)
+  }
+  
+  func restoreState(in workbench: Workbench, coder: NSCoder) {
+    guard let outlinePart = workbench.navigatorArea?.parts.first(where: {$0 is OutlineView}), let outlineView = outlinePart as? NSViewController else {
+      return
+    }
+    outlineView.restoreState(with: coder)
   }
 }

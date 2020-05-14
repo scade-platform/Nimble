@@ -18,6 +18,16 @@ class ProjectDocument: NSDocument {
     windowControllers.first as? NimbleWorkbench
   }
   
+  override func encodeRestorableState(with coder: NSCoder) {
+    super.encodeRestorableState(with: coder)
+    workbench?.encodeRestorableState(with: coder)
+  }
+  
+  override func restoreState(with coder: NSCoder) {
+    super.restoreState(with: coder)
+    workbench?.restoreState(with: coder)
+  }
+  
   // MARK: - User Interface
   
   override func makeWindowControllers() {
@@ -29,7 +39,6 @@ class ProjectDocument: NSDocument {
     addWindowController(windowController)
   }
   
-
   // MARK: - Reading and Writing
   
   override func read(from url: URL, ofType typeName: String) throws {

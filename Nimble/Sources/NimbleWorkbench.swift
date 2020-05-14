@@ -13,6 +13,7 @@ import NimbleCore
 // MARK: - NimbleWorkbench
 
 public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
+  
   lazy var toolbarItems: [NSToolbarItem] = {
     var items: [NSToolbarItem] = []
 
@@ -118,7 +119,28 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
      }
      return true
   }
-
+  
+  public override func encodeRestorableState(with coder: NSCoder) {
+    super.encodeRestorableState(with: coder)
+    let documentUrls = documents.compactMap{$0.fileURL}
+    coder.encode(documentUrls, forKey: "openDocuments")
+    PluginManager.shared.encodeRestorableState(in: self, coder: coder)
+  }
+  
+  public override func restoreState(with coder: NSCoder) {
+    super.restoreState(with: coder)
+    if let documentsURL = coder.decodeObject(forKey: "openDocuments") as? [URL] {
+      let documents = documentsURL.compactMap{DocumentManager.shared.open(url: $0)}
+      documents.forEach{self.open($0, show: true, openNewEditor: true)}
+    }
+    PluginManager.shared.restoreState(in: self, coder: coder)
+  }
+  
+  public override func invalidateRestorableState() {
+    super.invalidateRestorableState()
+    (document as? ProjectDocument)?.invalidateRestorableState()
+  }
+  
   private lazy var editorMenuItem: NSMenuItem? = {
     let mainMenu = NSApplication.shared.mainMenu
     guard let index = mainMenu?.items.firstIndex(where: {$0.title == "Editor"}) else { return nil }
@@ -240,8 +262,11 @@ extension NimbleWorkbench: Workbench {
     if opened {
       doc.editor?.didOpenDocument(doc)
       observers.notify { $0.workbenchDidOpenDocument(self, document: doc) }
+      invalidateRestorableState()
     }
   }
+  
+  
   
   
   @discardableResult
@@ -385,10 +410,12 @@ extension NimbleWorkbench {
   @IBAction func close(_ sender: Any?) {
     guard let doc = currentDocument else { return }
     close(doc)
+    invalidateRestorableState()
   }
   
   @IBAction func closeAll(_ sender: Any?) {
     documents.forEach{close($0)}
+    invalidateRestorableState()
   }
   
   @IBAction func addFolder(_ sender: Any?) {
@@ -430,3 +457,4 @@ extension NimbleWorkbenchViewController where Self: NSViewController {
     return view.window?.windowController as? NimbleWorkbench
   }
 }
+

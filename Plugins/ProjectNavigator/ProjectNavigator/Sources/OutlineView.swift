@@ -73,6 +73,68 @@ open class OutlineView: NSViewController, WorkbenchPart {
     outlineView.expandItem(outlineDataSource?.openedDocuments)
     
   }
+  
+  open override func encodeRestorableState(with coder: NSCoder) {
+    super.encodeRestorableState(with: coder)
+    guard let outlineView = outlineView,
+      let outlineDataSource = outlineDataSource,
+      outlineView.isItemExpanded(outlineDataSource.projectFolders) else { return }
+    var expandedFolders: [String] = []
+    var stack: [FolderItem] = outlineDataSource.projectFolders.folders
+    repeat {
+      // Pop an item off the stack
+      let currentItem = stack.last
+      if !stack.isEmpty{
+        stack = stack.dropLast()
+      }
+      
+      // Push the children onto the stack
+      if outlineView.isItemExpanded(currentItem) {
+        let childCount = outlineView.numberOfChildren(ofItem: currentItem)
+        for i in 0..<childCount {
+          if let obj = outlineView.child(i, ofItem: currentItem) as? FolderItem {
+              stack.append(obj)
+          }
+        }
+        
+        // Visit the current item.
+        if let folderItem = currentItem {
+          expandedFolders.append(folderItem.folder.path.string)
+        }
+      }
+      
+    } while !stack.isEmpty
+    coder.encode(expandedFolders, forKey: "expandedFolders")
+  }
+  
+  open override func restoreState(with coder: NSCoder) {
+    super.restoreState(with: coder)
+    guard let outlineView = outlineView,
+         let outlineDataSource = outlineDataSource,
+         outlineView.isItemExpanded(outlineDataSource.projectFolders) else { return }
+    if let expandedFolders = coder.decodeObject(forKey: "expandedFolders") as? [String] {
+      var stack: [FolderItem] = outlineDataSource.projectFolders.folders
+      repeat {
+        // Pop an item off the stack
+        let currentItem = stack.last
+        if !stack.isEmpty{
+          stack = stack.dropLast()
+        }
+        
+        // Push the children onto the stack
+        if let folderItem = currentItem, expandedFolders.contains(folderItem.folder.path.string) {
+          outlineView.expandItem(folderItem)
+          let childCount = outlineView.numberOfChildren(ofItem: folderItem)
+          for i in 0..<childCount {
+            if let obj = outlineView.child(i, ofItem: currentItem) as? FolderItem {
+                stack.append(obj)
+            }
+          }
+        }
+        
+      } while !stack.isEmpty
+    }
+  }
 }
 
 

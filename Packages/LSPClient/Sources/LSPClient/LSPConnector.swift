@@ -35,7 +35,7 @@ final class LSPConnector {
     return server
   }
   
-  func createServer(`in` folder: Folder?, for doc: SourceCodeDocument) -> LSPServer? {
+  func createServer(`in` folder: Folder?, for doc: SourceCodeDocument) -> LSPServer? {    
     guard let server = createServer(for: doc.languageId) else { return nil }
     
     var servers = runningServers[doc.languageId] ?? []

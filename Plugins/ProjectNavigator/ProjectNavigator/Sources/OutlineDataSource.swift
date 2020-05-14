@@ -309,6 +309,7 @@ extension OutlineDataSource: NSOutlineViewDelegate {
     
     // update folder icon
     outlineView.reloadItem(item, reloadChildren: false)
+    workbench?.invalidateRestorableState()
   }
   
   public func outlineViewItemWillExpand(_ notification: Notification) {
@@ -333,6 +334,8 @@ extension OutlineDataSource: NSOutlineViewDelegate {
     folderItem.folder.isOpened = false
     // update folder icon
     outlineView.reloadItem(item, reloadChildren: false)
+    
+    workbench?.invalidateRestorableState()
   }
  
   
