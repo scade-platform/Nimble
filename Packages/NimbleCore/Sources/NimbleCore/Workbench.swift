@@ -116,10 +116,6 @@ public protocol WorkbenchArea: class {
 
 
 public extension WorkbenchArea {
-  var parts: [WorkbenchPart] {
-    []
-  }
-
   func show() { isHidden = false }
   func hide() { isHidden = true }
 }

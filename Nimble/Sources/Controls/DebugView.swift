@@ -21,6 +21,10 @@ class DebugView: NSViewController {
 
 extension DebugView: WorkbenchArea {
   public func add(part: WorkbenchPart) {
+    if let viewController = part as? NSViewController {
+      self.addChild(viewController)
+    }
+    
     ///TODO: improve it, every area should be able to host many views
     self.view.subviews.removeAll()
     self.view.addSubview(part.view)
@@ -31,5 +35,9 @@ extension DebugView: WorkbenchArea {
     part.view.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
     part.view.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
     part.view.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+  }
+  
+  public var parts: [WorkbenchPart] {
+    self.children.compactMap{$0 as? WorkbenchPart}
   }
 }
