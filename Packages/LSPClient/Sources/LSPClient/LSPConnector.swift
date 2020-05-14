@@ -35,14 +35,7 @@ final class LSPConnector {
     return server
   }
   
-  func createServer(`in` folder: Folder?, for doc: SourceCodeDocument) -> LSPServer? {
-    //Return already running server on the same folder
-    if let folderUrl = folder?.path.url, let runningServer = runningServers[doc.languageId]?.first(where: {
-      $0.client.workspaceFolders.contains(folderUrl)
-    }) {
-      return runningServer
-    }
-    
+  func createServer(`in` folder: Folder?, for doc: SourceCodeDocument) -> LSPServer? {    
     guard let server = createServer(for: doc.languageId) else { return nil }
     
     var servers = runningServers[doc.languageId] ?? []
@@ -84,7 +77,7 @@ final class LSPConnector {
     }
 
     let runningServer = runningServers[doc.languageId]?.first {
-      $0.client.hasOpened(doc: doc)
+      $0.client.workspaceFolders.contains(folder.path.url)
     }
 
     return (runningServer, folder)
