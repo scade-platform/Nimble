@@ -104,7 +104,7 @@ private extension SPMBuildSystem {
   }
 }
 
-fileprivate class SPMTarget: Target {
+class SPMTarget: Target {
   var name: String {
     folder.name
   }
@@ -232,5 +232,19 @@ extension MacVariant {
     let proc = createProcess(source: source)
     proc.arguments = ["package", "clean"]
     return proc
+  }
+}
+
+
+extension Array where Element == SPMTarget {
+  func containsSwiftFile(document: Document) -> Bool {
+    guard let filePathString = document.fileURL?.file?.path.string else { return false }
+    for target in self {
+      let targetFolder = target.folder
+      if targetFolder.path.string.count < filePathString.count, filePathString.hasPrefix(targetFolder.path.string){
+        return true
+      }      
+    }
+    return false
   }
 }

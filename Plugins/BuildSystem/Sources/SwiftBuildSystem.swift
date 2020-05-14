@@ -18,6 +18,18 @@ class SwiftBuildSystem: BuildSystem {
   
   func targets(in workbench: Workbench) -> [Target] {
     guard let document = workbench.currentDocument, canHandle(document: document) else { return [] }
+    
+    //Workaround to prevent allow compile single swift file in SPM package
+    if BuildSystemsManager.shared.activeBuildSystem is Automatic {
+      if let spmBuildSystem = BuildSystemsManager.shared.buildSystems.first(where: {$0 is SPMBuildSystem}) {
+        let spmTargets = spmBuildSystem.targets(in: workbench).compactMap{$0 as? SPMTarget}
+        guard !spmTargets.isEmpty else { return [] }
+        if spmTargets.containsSwiftFile(document: document) {
+          return []
+        }
+      }
+    }
+    
     let target = SwiftTarget(document: document, workbench: workbench)
     target.variants.append(SingleDocumentVariant(target: target, buildSystem: self))
     return [target]
