@@ -1,1 +1,0 @@
-#import <ScadeKitExtension/SVGView.h>
