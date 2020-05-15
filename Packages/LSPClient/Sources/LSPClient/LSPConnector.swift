@@ -128,9 +128,8 @@ extension LSPConnector: WorkbenchObserver {
   }
 
   func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) {
-    guard let doc = document as? SourceCodeDocument else {
+    if document == nil {
       workbench.statusBar.statusMessage = ""
-      return
     }
   }
 }
