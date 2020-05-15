@@ -28,9 +28,9 @@
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="q5Z-fx-RUx"/>
                                         </imageView>
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0QE-se-Aho">
-                                            <rect key="frame" x="17" y="4" width="43" height="16"/>
+                                            <rect key="frame" x="17" y="5" width="43" height="14"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="EWB-38-QeA">
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="controlContent" size="11"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
@@ -46,6 +46,7 @@
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="lG4-dI-2Zh" secondAttribute="bottom" constant="5" id="X8B-8K-jmA"/>
                                         <constraint firstItem="lG4-dI-2Zh" firstAttribute="top" secondItem="Llj-cC-VXO" secondAttribute="top" constant="5" id="Z6b-ze-ttR"/>
+                                        <constraint firstItem="0QE-se-Aho" firstAttribute="centerY" secondItem="Llj-cC-VXO" secondAttribute="centerY" id="yRK-7E-x9g"/>
                                     </constraints>
                                     <visibilityPriorities>
                                         <integer value="1000"/>
@@ -94,14 +95,17 @@
                                             <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSActionTemplate" id="4hR-iZ-Glc"/>
                                         </imageView>
                                         <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cuY-hk-ij8">
-                                            <rect key="frame" x="17" y="4" width="66" height="16"/>
+                                            <rect key="frame" x="17" y="5" width="66" height="14"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="ksK-CO-k5d">
-                                                <font key="font" metaFont="system"/>
+                                                <font key="font" metaFont="controlContent" size="11"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
                                         </textField>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="cuY-hk-ij8" firstAttribute="centerY" secondItem="f38-4A-GGl" secondAttribute="centerY" id="vhy-87-YJ4"/>
+                                    </constraints>
                                     <visibilityPriorities>
                                         <integer value="1000"/>
                                         <integer value="1000"/>
@@ -159,6 +163,7 @@
                 <outlet property="leftLable" destination="0QE-se-Aho" id="V9a-u1-dU4"/>
                 <outlet property="rightImage" destination="lS8-5x-2jn" id="Pes-iI-cso"/>
                 <outlet property="rightLable" destination="cuY-hk-ij8" id="v0K-eR-zhk"/>
+                <outlet property="rightParentView" destination="xsn-LW-Px4" id="0Dj-fz-3hC"/>
                 <outlet property="separatorImage" destination="lG4-dI-2Zh" id="UMd-mz-48d"/>
             </connections>
             <point key="canvasLocation" x="-82" y="193.5"/>
