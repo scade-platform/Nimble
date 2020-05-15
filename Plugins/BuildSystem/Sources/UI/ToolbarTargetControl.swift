@@ -78,7 +78,7 @@ class ToolbarTargetControl : NSControl {
     super.awakeFromNib()
   
     self.leftImage?.isHidden = true
-    self.leftLable?.stringValue = "Not Targets"
+    self.leftLable?.stringValue = "No Targets"
     
     self.separatorImage?.imageScaling = .scaleProportionallyDown
     self.separatorImage?.image = separatorTemplate
