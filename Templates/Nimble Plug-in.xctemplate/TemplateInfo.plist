@@ -14,14 +14,41 @@
 	<key>Concrete</key>
 	<true/>
 	<key>Description</key>
-	<string>This template builds a Nimble plugin.</string>
+	<string>This template builds a Nimble plug-in.</string>
 	<key>SortOrder</key>
 	<integer>101</integer>
+	<key>Project</key>
+	<dict>
+		<key>Configurations</key>
+		<dict>
+			<key>Debug</key>
+			<dict>
+				<key>SWIFT_OPTIMIZATION_LEVEL</key>
+				<string>-Onone</string>
+				<key>SWIFT_ACTIVE_COMPILATION_CONDITIONS</key>
+				<string>DEBUG</string>
+			</dict>
+			<key>Release</key>
+			<dict>
+				<key>SWIFT_OPTIMIZATION_LEVEL</key>
+				<string>-O</string>
+				<key>SWIFT_COMPILATION_MODE</key>
+				<string>wholemodule</string>
+			</dict>
+		</dict>
+		<key>SharedSettings</key>
+		<dict>
+			<key>MACOSX_DEPLOYMENT_TARGET</key>
+			<string>10.14</string>
+			<key>SWIFT_VERSION</key>
+			<string>5.0</string>
+		</dict>
+	</dict>
 	<key>Targets</key>
 	<array>
 		<dict>
 			<key>Name</key>
-			<string>___PACKAGENAME___.nimble-plugin</string>
+			<string>___PACKAGENAME___</string>
 			<key>ProductType</key>
 			<string>com.apple.product-type.bundle</string>
 			<key>TargetIdentifier</key>
@@ -55,6 +82,10 @@
 					<key>Class</key>
 					<string>Resources</string>
 				</dict>
+			</array>
+			<key>Frameworks</key>
+			<array>
+				<string>NimbleCore</string>
 			</array>
 		</dict>
 	</array>
