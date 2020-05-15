@@ -75,6 +75,12 @@ class CodeEditorSyntaxMenu: NSObject {
   }
 }
 
+extension NSMenu {
+  var selectedItems: [NSMenuItem] {
+    self.items.filter{$0.state == .on}
+  }
+}
+
 // MARK: - Show Completion
 
 class CodeEditorShowCompletionMenuItem: NSObject {

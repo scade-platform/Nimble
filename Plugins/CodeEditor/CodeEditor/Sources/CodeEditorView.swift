@@ -225,6 +225,11 @@ extension CodeEditorView: WorkbenchEditor {
   }
   
   var statusBarItems: [WorkbenchStatusBarItem] {
+    //We should update shared menu each time
+    CodeEditorSyntaxMenu.nsMenu.update()
+    //And then update menu button
+    statusBarView.syntaxMenuButton?.select(CodeEditorSyntaxMenu.nsMenu.selectedItems.first)
+  
     return [statusBarView.view as! EditorStatusBar]
   }
   
