@@ -13,14 +13,14 @@ import NimbleCore
 class StatusBarView: NSViewController {
   weak var textView: CodeEditorTextView?
   
-  @IBOutlet weak var syntaxMenuButton: NSPopUpButton!
+  @IBOutlet weak var syntaxMenuButton: NSPopUpButton?
   @IBOutlet weak var cursorPositionLabel: NSTextField!
   
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    syntaxMenuButton.menu = CodeEditorSyntaxMenu.nsMenu
-    syntaxMenuButton.select(CodeEditorSyntaxMenu.nsMenu.items.first {
+    syntaxMenuButton?.menu = CodeEditorSyntaxMenu.nsMenu
+    syntaxMenuButton?.select(CodeEditorSyntaxMenu.nsMenu.items.first {
       return CodeEditorSyntaxMenu.itemState($0) == .on
     })
     
