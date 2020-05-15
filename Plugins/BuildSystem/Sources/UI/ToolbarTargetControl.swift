@@ -16,8 +16,10 @@ class ToolbarTargetControl : NSControl {
   
   @IBOutlet weak var separatorImage: NSImageView?
   
+  @IBOutlet weak var rightParentView: NSView? 
   @IBOutlet weak var rightImage: NSImageView?
   @IBOutlet weak var rightLable: NSTextField?
+  
   
   var selectedTarget: Target?
   
@@ -76,12 +78,13 @@ class ToolbarTargetControl : NSControl {
     super.awakeFromNib()
   
     self.leftImage?.isHidden = true
-    self.leftLable?.stringValue = "Target..."
+    self.leftLable?.stringValue = "No Targets"
     
     self.separatorImage?.imageScaling = .scaleProportionallyDown
     self.separatorImage?.image = separatorTemplate
     self.separatorImage?.isHidden = true
     
+    self.rightParentView?.isHidden = true
     self.rightImage?.isHidden = true
     self.rightLable?.stringValue = ""
   }
@@ -173,6 +176,9 @@ class ToolbarTargetControl : NSControl {
       selectedVariant = nil
     }
     
+    if !(rightLable?.stringValue.isEmpty ?? true) || rightImage != nil {
+      rightParentView?.isHidden = false
+    }
     
     guard let workbench = self.window?.windowController as? Workbench, let variant = selectedVariant else {
       return
