@@ -41,6 +41,7 @@ public final class LSPClient {
     // the first folder as the root folder per default
     guard state == .ready else { return }
 
+    self.workspaceFolders = workspaceFolders
 
     var rootURI: DocumentURI? = nil
     if let rootURL = workspaceFolders.first {
@@ -62,8 +63,7 @@ public final class LSPClient {
         onComplete?()
         return
       }
-      
-      self?.workspaceFolders = workspaceFolders
+
       self?.serverCapabilities = response.capabilities
       
       self?.connection.send(InitializedNotification())
