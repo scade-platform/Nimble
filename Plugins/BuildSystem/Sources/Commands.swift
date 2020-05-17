@@ -8,6 +8,7 @@
 
 import AppKit
 import NimbleCore
+import BuildSystem
 
 // MARK: - Run command
 

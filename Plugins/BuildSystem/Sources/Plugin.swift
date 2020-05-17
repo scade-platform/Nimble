@@ -6,8 +6,10 @@
 //  Copyright © 2019 Scade. All rights reserved.
 //
 
-import NimbleCore
 import Cocoa
+import NimbleCore
+import BuildSystem
+
 
 public final class BuildSystemModule: Module {
   public static let plugin: Plugin = BuildSystemPlugin()
@@ -15,6 +17,8 @@ public final class BuildSystemModule: Module {
 
 final class BuildSystemPlugin: Plugin {
   func load() {
+    BuildSystemsManager.shared.activeBuildSystem = Automatic.shared
+    
     BuildSystemsManager.shared.add(buildSystem: SwiftBuildSystem())
     BuildSystemsManager.shared.add(buildSystem: SPMBuildSystem())
 

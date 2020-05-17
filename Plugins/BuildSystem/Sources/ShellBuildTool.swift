@@ -7,8 +7,9 @@
 //
 
 import Foundation
-import NimbleCore
 
+import NimbleCore
+import BuildSystem
 
 class ShellBuildSystem: BuildSystem {
   var name: String {

@@ -8,11 +8,9 @@
 
 import Foundation
 import NimbleCore
-
+import BuildSystem
 
 class Automatic: BuildSystem {
-  
-  
   public static let shared = Automatic()
   
   private init() {}

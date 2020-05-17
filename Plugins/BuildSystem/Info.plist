@@ -21,6 +21,6 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2019 Scade. All rights reserved.</string>
 	<key>NSPrincipalClass</key>
-	<string>BuildSystem.BuildSystemModule</string>
+	<string>BuildSystemPlugin.BuildSystemModule</string>
 </dict>
 </plist>

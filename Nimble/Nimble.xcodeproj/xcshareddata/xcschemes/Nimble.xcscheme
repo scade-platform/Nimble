@@ -71,8 +71,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0C92E51723950DEE00B073DE"
-               BuildableName = "BuildSystem.plugin"
-               BlueprintName = "BuildSystem"
+               BuildableName = "BuildSystem.plugin.plugin"
+               BlueprintName = "BuildSystem.plugin"
                ReferencedContainer = "container:../Plugins/BuildSystem/BuildSystem.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

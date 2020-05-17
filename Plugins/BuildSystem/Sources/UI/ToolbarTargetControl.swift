@@ -8,6 +8,7 @@
 
 import Cocoa
 import NimbleCore
+import BuildSystem
 
 class ToolbarTargetControl : NSControl {
   

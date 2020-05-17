@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 import NimbleCore
+import BuildSystem
 import SKLocalServer
 
 class SwiftBuildSystem: BuildSystem {
