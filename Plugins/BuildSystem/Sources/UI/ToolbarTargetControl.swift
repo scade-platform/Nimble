@@ -164,15 +164,15 @@ class ToolbarTargetControl : NSControl {
     
     let selectedVariant: Variant?
     if let variant = item.representedObject as? Variant {
-      leftLable?.stringValue = variant.target?.name ?? ""
+      set(target: variant.target)
       separatorImage?.isHidden = false
-      rightLable?.stringValue = variant.name
+      set(variant: variant)
       selectedVariant = variant
     } else if let target = item.representedObject as? Target {
-      leftLable?.stringValue = target.name
+      set(target: target)
       separatorImage?.isHidden = false
       selectedVariant = target.variants.first
-      rightLable?.stringValue = selectedVariant?.name ?? ""
+      set(variant: selectedVariant)
     } else {
       selectedVariant = nil
     }
@@ -186,6 +186,26 @@ class ToolbarTargetControl : NSControl {
     }
     selectedTarget = variant.target
     workbench.selectedVariant = variant
+  }
+  
+  private func set(target: Target?) {
+    if let targetIcon = target?.icon {
+      leftImage?.isHidden = false
+      leftImage?.image = targetIcon.image
+    } else {
+      leftImage?.isHidden = true
+    }
+    leftLable?.stringValue = target?.name ?? ""
+  }
+  
+  private func set(variant: Variant?) {
+    if let variantIcon = variant?.icon {
+      rightImage?.isHidden = false
+      rightImage?.image = variantIcon.image
+    } else {
+      rightImage?.isHidden = true
+    }
+    rightLable?.stringValue = variant?.name ?? ""
   }
   
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {

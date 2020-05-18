@@ -111,6 +111,15 @@ class SPMTarget: Target {
     folder.name
   }
   
+  lazy var icon: Icon? = {
+    guard let files = try? folder.files() else { return nil }
+    //There is at least package.swift file
+    if let swiftFile = files.first(where: {$0.extension == "swift"}) {
+      return IconsManager.shared.icon(for: swiftFile)
+    }
+    return nil
+  }()
+  
   let folder: Folder
   var variants: [Variant] = []
   weak var workbench: Workbench?
@@ -124,6 +133,10 @@ class SPMTarget: Target {
 fileprivate class MacVariant: Variant {
   var target: Target? {
     spmTarget
+  }
+  
+  var icon: Icon? {
+    BuildSystemIcons.mac
   }
   
   weak var spmTarget : SPMTarget?
