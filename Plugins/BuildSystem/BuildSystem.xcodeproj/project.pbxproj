@@ -341,7 +341,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.BuildSystem;
 				PRODUCT_MODULE_NAME = BuildSystemPlugin;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = BuildSystem;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -364,7 +364,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.BuildSystem;
 				PRODUCT_MODULE_NAME = BuildSystemPlugin;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = BuildSystem;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = plugin;
