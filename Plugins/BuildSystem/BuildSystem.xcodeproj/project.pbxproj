@@ -43,7 +43,7 @@
 		0C3469D02397D04600319613 /* ShellBuildTool.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellBuildTool.swift; sourceTree = "<group>"; };
 		0C3469DE239F5DFF00319613 /* SwiftBuildSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBuildSystem.swift; sourceTree = "<group>"; };
 		0C3C32E723A2A559009A15D1 /* SPMBuildSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPMBuildSystem.swift; sourceTree = "<group>"; };
-		0C92E51823950DEE00B073DE /* BuildSystem.plugin.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BuildSystem.plugin.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
+		0C92E51823950DEE00B073DE /* BuildSystem.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BuildSystem.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C92E51B23950DEE00B073DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0C92E52723950E3E00B073DE /* Plugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
 		0CCDB14224580CB700A83CEC /* ToolbarTargetControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolbarTargetControl.swift; sourceTree = "<group>"; };
@@ -90,7 +90,7 @@
 		0C92E51923950DEE00B073DE /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				0C92E51823950DEE00B073DE /* BuildSystem.plugin.plugin */,
+				0C92E51823950DEE00B073DE /* BuildSystem.plugin */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -150,7 +150,7 @@
 				D7D0FFDF2471CB62001A0EFC /* BuildSystem */,
 			);
 			productName = BuildSystem;
-			productReference = 0C92E51823950DEE00B073DE /* BuildSystem.plugin.plugin */;
+			productReference = 0C92E51823950DEE00B073DE /* BuildSystem.plugin */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -341,7 +341,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.BuildSystem;
 				PRODUCT_MODULE_NAME = BuildSystemPlugin;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = BuildSystem;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -364,7 +364,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.BuildSystem;
 				PRODUCT_MODULE_NAME = BuildSystemPlugin;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = BuildSystem;
 				SKIP_INSTALL = YES;
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = plugin;
