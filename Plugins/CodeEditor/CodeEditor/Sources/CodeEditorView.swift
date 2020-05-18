@@ -93,6 +93,8 @@ class CodeEditorView: NSViewController {
       textView.apply(theme: theme)
       highlightSyntax()
 
+      ///TODO: enable it
+      //textView.snippetPlaceholders = parseSnippets()
       textView.createSnippets()
     }
   }
@@ -244,6 +246,13 @@ extension CodeEditorView: WorkbenchEditor {
 // MARK: - NSTextStorageDelegate
 
 extension CodeEditorView: NSTextStorageDelegate {
+  private func parseSnippets(in: NSRange? = nil) -> [NSRange] {
+    guard let string = textView.textStorage?.string else { return [] }
+    ///TODO: implement parsing snippets
+
+    return []
+  }
+
   override func textStorageDidProcessEditing(_ notification: Notification) {
     guard let doc = document,
           let textStorage = notification.object as? NSTextStorage,
@@ -255,6 +264,10 @@ extension CodeEditorView: NSTextStorageDelegate {
     guard let syntaxParser = doc.syntaxParser else { return }
     let range = textStorage.editedRange
     
+
+    ///TODO: enable it
+    //self.textView.snippetPlaceholders = parseSnippets()
+
     DispatchQueue.main.async { [weak self] in
       self?.textView.subviews.filter{$0 is DiagnosticView}.forEach{$0.removeFromSuperview()}
       if let progress = self?.highlightProgress {
