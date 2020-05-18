@@ -139,7 +139,7 @@ fileprivate class SingleDocumentVariant: Variant {
   weak var swiftTarget : SwiftTarget?
   
   var name: String {
-    "Single Swift File"
+    "Mac"
   }
   
   weak var buildSystem : BuildSystem?
