@@ -12,6 +12,7 @@ import BuildSystem
 
 class ToolbarTargetControl : NSControl {
   
+  @IBOutlet weak var leftParentView: NSView?
   @IBOutlet weak var leftImage: NSImageView?
   @IBOutlet weak var leftLable: NSTextField?
   
@@ -153,7 +154,8 @@ class ToolbarTargetControl : NSControl {
       return
     }
     if let menu = creatSubmenus(target: target) {
-       menu.popUp(positioning: menu.item(at: 0), at: NSEvent.mouseLocation, in: nil)
+      menu.delegate = self
+      menu.popUp(positioning: menu.item(at: 0), at: NSEvent.mouseLocation, in: nil)
     }
   }
   
@@ -214,6 +216,19 @@ class ToolbarTargetControl : NSControl {
       item.state = (target.name  == selectedTarget?.name) ? .on : .off
     } 
     return true
+  }
+}
+
+extension ToolbarTargetControl : NSMenuDelegate {
+  func menuDidClose(_ menu: NSMenu) {
+    guard let view = self.leftParentView else { return }
+    let windowViewFrame = view.convert(view.frame, to: nil)
+    if let window = view.window, windowViewFrame.contains(window.mouseLocationOutsideOfEventStream) {
+      DispatchQueue.main.async { [weak self] in
+        guard let self = self else { return }
+        self.leftButtonDidClick(self)
+      }
+    }
   }
 }
 

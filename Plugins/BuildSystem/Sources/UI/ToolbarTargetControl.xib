@@ -34,7 +34,7 @@
                                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0QE-se-Aho">
                                             <rect key="frame" x="17" y="5" width="43" height="14"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="EWB-38-QeA">
-                                                <font key="font" metaFont="message" size="11"/>
+                                                <font key="font" metaFont="controlContent" size="11"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
@@ -105,7 +105,7 @@
                                         <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cuY-hk-ij8">
                                             <rect key="frame" x="17" y="5" width="77" height="14"/>
                                             <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="ksK-CO-k5d">
-                                                <font key="font" metaFont="message" size="11"/>
+                                                <font key="font" metaFont="controlContent" size="11"/>
                                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             </textFieldCell>
@@ -169,6 +169,7 @@
             <connections>
                 <outlet property="leftImage" destination="LZQ-cE-3vn" id="YaU-Hb-7h5"/>
                 <outlet property="leftLable" destination="0QE-se-Aho" id="V9a-u1-dU4"/>
+                <outlet property="leftParentView" destination="gMW-7j-n7r" id="GqA-CK-PDj"/>
                 <outlet property="rightImage" destination="lS8-5x-2jn" id="Pes-iI-cso"/>
                 <outlet property="rightLable" destination="cuY-hk-ij8" id="v0K-eR-zhk"/>
                 <outlet property="rightParentView" destination="xsn-LW-Px4" id="0Dj-fz-3hC"/>
