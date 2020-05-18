@@ -96,9 +96,12 @@ final class SelectTarget: Command {
     super.init(name: "Select Target", menuPath: nil, keyEquivalent: nil, controlClass: ToolbarTargetControl.self)
   }
   
-  override func validate(in workbench: Workbench) -> State {
-    guard let activeSystem = BuildSystemsManager.shared.activeBuildSystem else { return [] }
-    return activeSystem.targets(in: workbench).isEmpty ? [] : [.enabled]
+  override func validate(in workbench: Workbench, control: NSControl?) -> State {
+    guard let activeSystem = BuildSystemsManager.shared.activeBuildSystem, !activeSystem.targets(in: workbench).isEmpty else { return [] }
+    if let toolbarTargetControl = control as? ToolbarTargetControl {
+      toolbarTargetControl.autoSelectTarget(in: workbench)
+    }
+    return [.enabled]
   }
 }
 
