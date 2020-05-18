@@ -48,6 +48,7 @@
 		D7D4716323FC9BBE00CC9BAA /* NSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4715323FC9BBD00CC9BAA /* NSAttributedString.swift */; };
 		D7D4716423FC9BBE00CC9BAA /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4715423FC9BBE00CC9BAA /* String+Localization.swift */; };
 		D7D4BD1723FCA0F20063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD1623FCA0F20063BD8F /* NimbleCore */; };
+		E417A19224727CF500E2AD09 /* SnippetPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E417A19124727CF400E2AD09 /* SnippetPlaceholderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -104,6 +105,7 @@
 		D7D4715223FC9BBD00CC9BAA /* MutableCopying.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MutableCopying.swift; path = ../../../CotEditor/CotEditor/Sources/MutableCopying.swift; sourceTree = "<group>"; };
 		D7D4715323FC9BBD00CC9BAA /* NSAttributedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSAttributedString.swift; path = ../../../CotEditor/CotEditor/Sources/NSAttributedString.swift; sourceTree = "<group>"; };
 		D7D4715423FC9BBE00CC9BAA /* String+Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Localization.swift"; path = "../../../CotEditor/CotEditor/Sources/String+Localization.swift"; sourceTree = "<group>"; };
+		E417A19124727CF400E2AD09 /* SnippetPlaceholderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnippetPlaceholderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +154,7 @@
 		D7D4710823FC983E00CC9BAA /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				E417A19124727CF400E2AD09 /* SnippetPlaceholderView.swift */,
 				D7D4711A23FC983E00CC9BAA /* CodeEditor.swift */,
 				D7D4711223FC983E00CC9BAA /* CodeEditorCompletionView.swift */,
 				D7D4711D23FC983E00CC9BAA /* CodeEditorDocument.swift */,
@@ -309,6 +312,7 @@
 				D7D4715723FC9BBE00CC9BAA /* LineEnding.swift in Sources */,
 				D7D4715B23FC9BBE00CC9BAA /* String+Counting.swift in Sources */,
 				D7D4716023FC9BBE00CC9BAA /* NSLayoutManager+Range.swift in Sources */,
+				E417A19224727CF500E2AD09 /* SnippetPlaceholderView.swift in Sources */,
 				D7D4715F23FC9BBE00CC9BAA /* Collection.swift in Sources */,
 				D7D4712823FC983E00CC9BAA /* CurrentLineHighlighting.swift in Sources */,
 				D7D4716423FC9BBE00CC9BAA /* String+Localization.swift in Sources */,

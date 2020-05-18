@@ -30,7 +30,8 @@ class StatusBarView: NSViewController {
   }
   
   func setCursorPosition(_ line: Int, _ column: Int) {
-    cursorPositionLabel.stringValue = "Ln \(line + 1), Col \(column + 1)"
+    //TODO: fix crash after snippets loading
+    //cursorPositionLabel.stringValue = "Ln \(line + 1), Col \(column + 1)"
   }
 }
 

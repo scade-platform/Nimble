@@ -25,7 +25,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
 
   // MARK: - Snippets
 
-  var snippetPlaceholders: [NSRange] = [ ]
+  var snippetPlaceholders: [NSRange] = [ NSMakeRange(3, 1), NSMakeRange(70, 1)]
 
   // MARK: -
 
@@ -133,7 +133,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   }
   
   @objc private func textDidChange(notification: NSNotification) {
-    self.lineNumberView?.needsDisplay = true
+    self.lineNumberView?.needsDisplay = true  
   }
   
   
@@ -449,5 +449,35 @@ extension CodeEditorTextView: NSLayoutManagerDelegate {
     }
 
     return .zeroAdvancement
+  }
+}
+
+// MARK: - Code Snippets
+
+extension CodeEditorTextView {
+
+  func createSnippets() {
+    self.textContainer?.lineFragmentPadding = 0
+    snippetPlaceholders.forEach { self.createSnippet(for: $0) }
+  }
+
+  private func createSnippet(for characterRange: NSRange) {
+    guard let layoutManager = self.layoutManager,
+          let textContainer = self.textContainer else { return }
+
+    let glyphRange = layoutManager.glyphRange(forCharacterRange: characterRange,
+                                              actualCharacterRange: nil)
+    let boundingRect = layoutManager.boundingRect(forGlyphRange: glyphRange,
+                                                  in: textContainer)
+
+    let snippet = SnippetPlaceholderView()
+    snippet.configure(for: self, range: characterRange, text: "Snippet")
+    snippet.frame.origin = boundingRect.origin
+    snippet.frame.origin.y -= floor(self.font?.descender ?? 0)
+    snippet.sizeToFit()
+    self.addSubview(snippet)
+
+    let path = NSBezierPath.init(rect: snippet.frame)
+    textContainer.exclusionPaths.append(path)
   }
 }

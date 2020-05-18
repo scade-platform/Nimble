@@ -92,6 +92,8 @@ class CodeEditorView: NSViewController {
 
       textView.apply(theme: theme)
       highlightSyntax()
+
+      textView.createSnippets()
     }
   }
       
