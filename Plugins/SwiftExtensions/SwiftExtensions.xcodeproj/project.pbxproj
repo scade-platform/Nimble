@@ -8,14 +8,37 @@
 
 /* Begin PBXBuildFile section */
 		D7BEC81722B915D100A8F48B /* SwiftExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEC81622B915D100A8F48B /* SwiftExtensions.swift */; };
+		D7D0FFE42471CE95001A0EFC /* SPMBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D0FFE32471CE95001A0EFC /* SPMBuildSystem.swift */; };
+		D7D0FFE62471CE9E001A0EFC /* SwiftBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D0FFE52471CE9E001A0EFC /* SwiftBuildSystem.swift */; };
+		D7D0FFE92471CF58001A0EFC /* BuildSystem in Frameworks */ = {isa = PBXBuildFile; productRef = D7D0FFE82471CF58001A0EFC /* BuildSystem */; };
+		D7D0FFEB2471CF58001A0EFC /* BuildSystem in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D7D0FFE82471CF58001A0EFC /* BuildSystem */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D7D0FFED2471D062001A0EFC /* LSPClient in Frameworks */ = {isa = PBXBuildFile; productRef = D7D0FFEC2471D062001A0EFC /* LSPClient */; };
+		D7D0FFEE2471D062001A0EFC /* LSPClient in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D7D0FFEC2471D062001A0EFC /* LSPClient */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D7D4BD2B23FCA7A70063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD2A23FCA7A70063BD8F /* NimbleCore */; };
 		D7D4BD4E23FCAFEC0063BD8F /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = D7D4BD4D23FCAFEC0063BD8F /* package.yml */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		D7D0FFEA2471CF58001A0EFC /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				D7D0FFEB2471CF58001A0EFC /* BuildSystem in Embed Frameworks */,
+				D7D0FFEE2471D062001A0EFC /* LSPClient in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		D77F337923A4619500E3AFC8 /* bin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bin; sourceTree = "<group>"; };
 		D7BEC80C22B9158B00A8F48B /* SwiftExtensions.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftExtensions.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7BEC81622B915D100A8F48B /* SwiftExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftExtensions.swift; sourceTree = "<group>"; };
+		D7D0FFE32471CE95001A0EFC /* SPMBuildSystem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SPMBuildSystem.swift; sourceTree = "<group>"; };
+		D7D0FFE52471CE9E001A0EFC /* SwiftBuildSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBuildSystem.swift; sourceTree = "<group>"; };
 		D7D4BD4D23FCAFEC0063BD8F /* package.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = package.yml; sourceTree = "<group>"; };
 		D7EC1376239EFC6D00DA0DA0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -25,6 +48,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7D0FFED2471D062001A0EFC /* LSPClient in Frameworks */,
+				D7D0FFE92471CF58001A0EFC /* BuildSystem in Frameworks */,
 				D7D4BD2B23FCA7A70063BD8F /* NimbleCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -40,6 +65,7 @@
 				D7BEC80D22B9158B00A8F48B /* Products */,
 				D7EC1388239F0D6200DA0DA0 /* Resources */,
 				D7BEC81522B915BB00A8F48B /* Sources */,
+				D7D0FFE72471CF58001A0EFC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,9 +80,18 @@
 		D7BEC81522B915BB00A8F48B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				D7D0FFE52471CE9E001A0EFC /* SwiftBuildSystem.swift */,
+				D7D0FFE32471CE95001A0EFC /* SPMBuildSystem.swift */,
 				D7BEC81622B915D100A8F48B /* SwiftExtensions.swift */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		D7D0FFE72471CF58001A0EFC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		D7EC1388239F0D6200DA0DA0 /* Resources */ = {
@@ -77,6 +112,7 @@
 				D7BEC80822B9158B00A8F48B /* Sources */,
 				D7BEC80922B9158B00A8F48B /* Frameworks */,
 				D7BEC80A22B9158B00A8F48B /* Resources */,
+				D7D0FFEA2471CF58001A0EFC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -85,6 +121,8 @@
 			name = SwiftExtensions;
 			packageProductDependencies = (
 				D7D4BD2A23FCA7A70063BD8F /* NimbleCore */,
+				D7D0FFE82471CF58001A0EFC /* BuildSystem */,
+				D7D0FFEC2471D062001A0EFC /* LSPClient */,
 			);
 			productName = SwiftExtensions;
 			productReference = D7BEC80C22B9158B00A8F48B /* SwiftExtensions.plugin */;
@@ -140,7 +178,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7D0FFE42471CE95001A0EFC /* SPMBuildSystem.swift in Sources */,
 				D7BEC81722B915D100A8F48B /* SwiftExtensions.swift in Sources */,
+				D7D0FFE62471CE9E001A0EFC /* SwiftBuildSystem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,6 +371,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		D7D0FFE82471CF58001A0EFC /* BuildSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BuildSystem;
+		};
+		D7D0FFEC2471D062001A0EFC /* LSPClient */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LSPClient;
+		};
 		D7D4BD2A23FCA7A70063BD8F /* NimbleCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = NimbleCore;

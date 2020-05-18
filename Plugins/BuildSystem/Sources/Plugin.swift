@@ -17,11 +17,6 @@ public final class BuildSystemModule: Module {
 
 final class BuildSystemPlugin: Plugin {
   func load() {
-    BuildSystemsManager.shared.activeBuildSystem = Automatic.shared
-    
-    BuildSystemsManager.shared.add(buildSystem: SwiftBuildSystem())
-    BuildSystemsManager.shared.add(buildSystem: SPMBuildSystem())
-
     setupMainMenu()
     setupCommands()
   }

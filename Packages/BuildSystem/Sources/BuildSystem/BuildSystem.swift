@@ -9,6 +9,8 @@
 import Cocoa
 import NimbleCore
 
+// MARK: - BuildSystem base protocol
+
 public protocol BuildSystem : class {
   var name: String { get }
 
@@ -19,18 +21,25 @@ public protocol BuildSystem : class {
   func clean(_ variant: Variant)
 }
 
+
+// MARK: - BuildSystemTask
+
+public class BuildSystemTask: WorkbenchProcess {}
+
+
+// MARK: - BuildSystemManager
+
 public class BuildSystemsManager {
   public static let shared = BuildSystemsManager()
 
   public private(set) var buildSystems : [BuildSystem] = []
 
-  public var activeBuildSystem: BuildSystem? = nil
+  public var activeBuildSystem: BuildSystem? = Automatic.shared
 
   private init() {}
 
   public func add(buildSystem: BuildSystem) {
     buildSystems.append(buildSystem)
   }
-
 }
 
