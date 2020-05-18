@@ -95,10 +95,13 @@ class ToolbarTargetControl : NSControl {
     selectedVariants.removeValue(forKey: ObjectIdentifier(window))
   }
   
-  func autoSelectTarget(in workbench: Workbench) {
-    guard selectedTarget == nil, workbench.selectedVariant == nil, let buildSystem = BuildSystemsManager.shared.activeBuildSystem, let target = buildSystem.targets(in: workbench).first, let variant = target.variants.first else {
-      return
-    }
+  func autoSelectTarget(in workbench: Workbench) {    
+    guard selectedTarget == nil, workbench.selectedVariant == nil else { return }
+    
+    guard let buildSystem = BuildSystemsManager.shared.activeBuildSystem, 
+          let target = buildSystem.targets(in: workbench).first, 
+          let variant = target.variants.first else { return }
+    
     leftLable?.stringValue = target.name
     separatorImage?.isHidden = false
     rightParentView?.isHidden = false
