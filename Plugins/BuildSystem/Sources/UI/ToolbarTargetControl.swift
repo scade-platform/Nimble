@@ -94,6 +94,21 @@ class ToolbarTargetControl : NSControl {
     guard let window = self.window, newWindow == nil else { return }
     selectedVariants.removeValue(forKey: ObjectIdentifier(window))
   }
+  
+  func autoSelectTarget(in workbench: Workbench) {    
+    guard selectedTarget == nil, workbench.selectedVariant == nil else { return }
+    
+    guard let buildSystem = BuildSystemsManager.shared.activeBuildSystem, 
+          let target = buildSystem.targets(in: workbench).first, 
+          let variant = target.variants.first else { return }
+    
+    leftLable?.stringValue = target.name
+    separatorImage?.isHidden = false
+    rightParentView?.isHidden = false
+    rightLable?.stringValue = variant.name
+    selectedTarget = target
+    workbench.selectedVariant = variant
+  }
 
   private func addMenuItem(target: Target, to menu: NSMenu) {
     let item = NSMenuItem(title: target.name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")

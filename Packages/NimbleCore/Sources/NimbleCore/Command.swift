@@ -48,6 +48,12 @@ open class Command {
   open func validate(in workbench: Workbench) -> State {
     return .default
   }
+  
+  //Command doesn't contain concrete control but could produce it
+  //so we need to ability to validate this concrete control
+  open func validate(in workbench: Workbench, control: NSControl) -> State {
+    return .default
+  }
 
   public init(name: String,              
               menuPath: String? = nil,
