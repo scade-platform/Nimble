@@ -12,8 +12,6 @@
 		0C3469DF239F5DFF00319613 /* SwiftBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3469DE239F5DFF00319613 /* SwiftBuildSystem.swift */; };
 		0C3C32E823A2A559009A15D1 /* SPMBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C3C32E723A2A559009A15D1 /* SPMBuildSystem.swift */; };
 		0C92E52823950E3E00B073DE /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C92E52723950E3E00B073DE /* Plugin.swift */; };
-		0C9A1C2B24727AA50048272F /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = 0C9A1C2A24727AA50048272F /* Icons */; };
-		0C9A1C2D24727E270048272F /* BuildSystemIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9A1C2C24727E270048272F /* BuildSystemIcons.swift */; };
 		0CCDB14424580CB700A83CEC /* ToolbarTargetControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCDB14224580CB700A83CEC /* ToolbarTargetControl.swift */; };
 		0CCDB14524580CB700A83CEC /* ToolbarTargetControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CCDB14324580CB700A83CEC /* ToolbarTargetControl.xib */; };
 		0CCDB14A245DA39C00A83CEC /* Automatic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCDB149245DA39C00A83CEC /* Automatic.swift */; };
@@ -48,8 +46,6 @@
 		0C92E51823950DEE00B073DE /* BuildSystem.plugin.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BuildSystem.plugin.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C92E51B23950DEE00B073DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0C92E52723950E3E00B073DE /* Plugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
-		0C9A1C2A24727AA50048272F /* Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Icons; sourceTree = "<group>"; };
-		0C9A1C2C24727E270048272F /* BuildSystemIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildSystemIcons.swift; sourceTree = "<group>"; };
 		0CCDB14224580CB700A83CEC /* ToolbarTargetControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolbarTargetControl.swift; sourceTree = "<group>"; };
 		0CCDB14324580CB700A83CEC /* ToolbarTargetControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ToolbarTargetControl.xib; sourceTree = "<group>"; };
 		0CCDB149245DA39C00A83CEC /* Automatic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Automatic.swift; sourceTree = "<group>"; };
@@ -82,7 +78,6 @@
 		0C92E50F23950DEE00B073DE = {
 			isa = PBXGroup;
 			children = (
-				0C9A1C2A24727AA50048272F /* Icons */,
 				0C92E51B23950DEE00B073DE /* Info.plist */,
 				0C0809FF23E433E500E78444 /* Assets.xcassets */,
 				D7F156A9244767FD00AFBE67 /* package.yml */,
@@ -120,7 +115,6 @@
 			children = (
 				0CCDB14224580CB700A83CEC /* ToolbarTargetControl.swift */,
 				0CCDB14324580CB700A83CEC /* ToolbarTargetControl.xib */,
-				0C9A1C2C24727E270048272F /* BuildSystemIcons.swift */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -197,7 +191,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0CCDB14524580CB700A83CEC /* ToolbarTargetControl.xib in Resources */,
-				0C9A1C2B24727AA50048272F /* Icons in Resources */,
 				0C080A0023E433E500E78444 /* Assets.xcassets in Resources */,
 				D7F156AA244767FD00AFBE67 /* package.yml in Resources */,
 			);
@@ -218,7 +211,6 @@
 				0CCDB14F245DD19B00A83CEC /* Workbench+Task.swift in Sources */,
 				0C3469DF239F5DFF00319613 /* SwiftBuildSystem.swift in Sources */,
 				0C92E52823950E3E00B073DE /* Plugin.swift in Sources */,
-				0C9A1C2D24727E270048272F /* BuildSystemIcons.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

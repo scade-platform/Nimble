@@ -9,15 +9,15 @@
 import NimbleCore
 import Cocoa
 
-class BuildSystemIcons {
+public class BuildSystemIcons {
   private static func icon(name: String) -> Icon {
-    let image = SVGImage(svg: Bundle(for: BuildSystemIcons.self).resources/"Icons/\(name).svg")
-    let imageLight = SVGImage(svg: Bundle(for: BuildSystemIcons.self).resources/"Icons/\(name)-light.svg")
+    let image = SVGImage(svg: Bundle.main.resources/"Icons/BuildSystem/\(name).svg")
+    let imageLight = SVGImage(svg:  Bundle.main.resources/"Icons/BuildSystem/\(name)-light.svg")
     
     return Icon(image: image, light: imageLight)
   }
 }
 
-extension BuildSystemIcons {
+public extension BuildSystemIcons {
   public static let mac = icon(name: "macIcon")
 }
