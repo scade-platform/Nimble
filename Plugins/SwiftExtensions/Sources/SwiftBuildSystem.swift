@@ -13,7 +13,6 @@ import BuildSystem
 import SKLocalServer
 
 class SwiftBuildSystem: BuildSystem {
-  
   var name: String {
     return "Swift File"
   }
