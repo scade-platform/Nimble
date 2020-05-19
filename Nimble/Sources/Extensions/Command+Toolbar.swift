@@ -64,7 +64,12 @@ extension Command {
       guard let workbench = NimbleWorkbench.current,
             let command = self.target as? Command else { return }
 
-      self.isEnabled = command.validate(in: workbench).contains(.enabled)
+      if command.toolbarControlClass != nil, let control = self.view as? NSControl {
+        //for custom controlls
+        self.isEnabled = command.validate(in: workbench, control: control).contains(.enabled)
+      } else {
+        self.isEnabled = command.validate(in: workbench).contains(.enabled)
+      }
     }
   }
 }

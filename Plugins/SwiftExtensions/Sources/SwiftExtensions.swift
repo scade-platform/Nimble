@@ -7,6 +7,7 @@
 //
 
 import NimbleCore
+import BuildSystem
 
 public final class SwiftExtensions: Module {
   public static let plugin: Plugin = SwiftExtensionsPlugin()
@@ -15,7 +16,8 @@ public final class SwiftExtensions: Module {
 
 final class SwiftExtensionsPlugin: Plugin {
   func load() {
-    
+    BuildSystemsManager.shared.register(buildSystem: SwiftBuildSystem())
+    BuildSystemsManager.shared.register(buildSystem: SPMBuildSystem())
   }
 }
 

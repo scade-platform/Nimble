@@ -1,5 +1,6 @@
 dependencies:
 - com.scade.nimble.LSPClient
+- com.scade.nimble.BuildSystem
 
 #extensions:
 #  com.scade.nimble.LSPClient:
