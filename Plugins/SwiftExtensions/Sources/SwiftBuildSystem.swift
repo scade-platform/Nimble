@@ -120,6 +120,10 @@ fileprivate class SwiftTarget: Target {
     document.title
   }
   
+  lazy var icon: Icon? = {
+    IconsManager.shared.icon(for: document.fileURL?.file)
+  }()
+  
   let document: Document
   var variants: [Variant] = []
   weak var workbench: Workbench?
@@ -137,8 +141,12 @@ fileprivate class SingleDocumentVariant: Variant {
   
   weak var swiftTarget : SwiftTarget?
   
+  var icon: Icon? {
+    BuildSystemIcons.mac
+  }
+  
   var name: String {
-    "Single Swift File"
+    "Mac"
   }
   
   weak var buildSystem : BuildSystem?

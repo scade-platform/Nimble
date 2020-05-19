@@ -12,6 +12,7 @@ import BuildSystem
 
 class ToolbarTargetControl : NSControl {
   
+  @IBOutlet weak var leftParentView: NSView?
   @IBOutlet weak var leftImage: NSImageView?
   @IBOutlet weak var leftLable: NSTextField?
   
@@ -102,10 +103,14 @@ class ToolbarTargetControl : NSControl {
           let target = buildSystem.targets(in: workbench).first, 
           let variant = target.variants.first else { return }
     
-    leftLable?.stringValue = target.name
+    set(target: target)
     separatorImage?.isHidden = false
-    rightParentView?.isHidden = false
-    rightLable?.stringValue = variant.name
+    set(variant: variant)
+    
+    if !(rightLable?.stringValue.isEmpty ?? true) || rightImage != nil {
+      rightParentView?.isHidden = false
+    }
+    
     selectedTarget = target
     workbench.selectedVariant = variant
   }
@@ -168,7 +173,8 @@ class ToolbarTargetControl : NSControl {
       return
     }
     if let menu = creatSubmenus(target: target) {
-       menu.popUp(positioning: menu.item(at: 0), at: NSEvent.mouseLocation, in: nil)
+      menu.delegate = self
+      menu.popUp(positioning: menu.item(at: 0), at: NSEvent.mouseLocation, in: nil)
     }
   }
   
@@ -179,15 +185,15 @@ class ToolbarTargetControl : NSControl {
     
     let selectedVariant: Variant?
     if let variant = item.representedObject as? Variant {
-      leftLable?.stringValue = variant.target?.name ?? ""
+      set(target: variant.target)
       separatorImage?.isHidden = false
-      rightLable?.stringValue = variant.name
+      set(variant: variant)
       selectedVariant = variant
     } else if let target = item.representedObject as? Target {
-      leftLable?.stringValue = target.name
+      set(target: target)
       separatorImage?.isHidden = false
       selectedVariant = target.variants.first
-      rightLable?.stringValue = selectedVariant?.name ?? ""
+      set(variant: selectedVariant)
     } else {
       selectedVariant = nil
     }
@@ -203,12 +209,45 @@ class ToolbarTargetControl : NSControl {
     workbench.selectedVariant = variant
   }
   
+  private func set(target: Target?) {
+    if let targetIcon = target?.icon {
+      leftImage?.isHidden = false
+      leftImage?.image = targetIcon.image
+    } else {
+      leftImage?.isHidden = true
+    }
+    leftLable?.stringValue = target?.name ?? ""
+  }
+  
+  private func set(variant: Variant?) {
+    if let variantIcon = variant?.icon {
+      rightImage?.isHidden = false
+      rightImage?.image = variantIcon.image
+    } else {
+      rightImage?.isHidden = true
+    }
+    rightLable?.stringValue = variant?.name ?? ""
+  }
+  
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
     guard let item = item else {return true}
     if let target = item.representedObject as? Target {
       item.state = (target.name  == selectedTarget?.name) ? .on : .off
     } 
     return true
+  }
+}
+
+extension ToolbarTargetControl : NSMenuDelegate {
+  func menuDidClose(_ menu: NSMenu) {
+    guard let view = self.leftParentView else { return }
+    let windowViewFrame = view.convert(view.frame, to: nil)
+    if let window = view.window, windowViewFrame.contains(window.mouseLocationOutsideOfEventStream) {
+      DispatchQueue.main.async { [weak self] in
+        guard let self = self else { return }
+        self.leftButtonDidClick(self)
+      }
+    }
   }
 }
 
