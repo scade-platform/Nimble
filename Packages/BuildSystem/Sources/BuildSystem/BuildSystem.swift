@@ -31,15 +31,32 @@ public class BuildSystemTask: WorkbenchProcess {}
 
 public class BuildSystemsManager {
   public static let shared = BuildSystemsManager()
+  
+  public var observers = ObserverSet<BuildSystemsObserver>()
 
   public private(set) var buildSystems : [BuildSystem] = []
 
-  public var activeBuildSystem: BuildSystem? = Automatic.shared
+  public var activeBuildSystem: BuildSystem? = Automatic.shared {
+    didSet {
+      observers.notify{$0.activeBuildSystemDidChange(deactivatedBuildSystem: oldValue, activeBuildSystem: activeBuildSystem)}
+    }
+  }
 
   private init() {}
 
-  public func add(buildSystem: BuildSystem) {
+  public func register(buildSystem: BuildSystem) {
     buildSystems.append(buildSystem)
+    observers.notify{ $0.buildSystemDidRegister(buildSystem) }
   }
 }
 
+public protocol BuildSystemsObserver : class {
+  func buildSystemDidRegister(_ buildSystem: BuildSystem)
+  func activeBuildSystemDidChange(deactivatedBuildSystem: BuildSystem?, activeBuildSystem: BuildSystem?)
+}
+
+public extension BuildSystemsObserver {
+  //Default implementations
+  func buildSystemDidRegister(_ buildSystem: BuildSystem) {}
+  func activeBuildSystemDidChange(deactivatedBuildSystem: BuildSystem?, activeBuildSystem: BuildSystem?) {}
+}

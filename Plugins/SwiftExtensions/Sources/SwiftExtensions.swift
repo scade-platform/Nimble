@@ -16,8 +16,8 @@ public final class SwiftExtensions: Module {
 
 final class SwiftExtensionsPlugin: Plugin {
   func load() {
-    BuildSystemsManager.shared.add(buildSystem: SwiftBuildSystem())
-    BuildSystemsManager.shared.add(buildSystem: SPMBuildSystem())
+    BuildSystemsManager.shared.register(buildSystem: SwiftBuildSystem())
+    BuildSystemsManager.shared.register(buildSystem: SPMBuildSystem())
   }
 }
 

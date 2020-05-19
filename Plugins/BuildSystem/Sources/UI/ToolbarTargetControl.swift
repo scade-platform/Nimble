@@ -134,7 +134,7 @@ class ToolbarTargetControl : NSControl {
   }
   
   @IBAction func leftButtonDidClick(_ sender: Any) {
-    guard let workbench = self.window?.windowController as? Workbench, let buildSystem = BuildSystemsManager.shared.activeBuildSystem else {
+    guard self.isEnabled, let workbench = self.window?.windowController as? Workbench, let buildSystem = BuildSystemsManager.shared.activeBuildSystem else {
       return
     }
     
@@ -164,7 +164,7 @@ class ToolbarTargetControl : NSControl {
   }
   
   @IBAction func rightButtonDidClick(_ sender: Any) {
-    guard let workbench = self.window?.windowController as? Workbench, let variant = workbench.selectedVariant, let target = variant.target else {
+    guard self.isEnabled, let workbench = self.window?.windowController as? Workbench, let variant = workbench.selectedVariant, let target = variant.target else {
       return
     }
     if let menu = creatSubmenus(target: target) {
