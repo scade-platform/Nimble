@@ -103,10 +103,14 @@ class ToolbarTargetControl : NSControl {
           let target = buildSystem.targets(in: workbench).first, 
           let variant = target.variants.first else { return }
     
-    leftLable?.stringValue = target.name
+    set(target: target)
     separatorImage?.isHidden = false
-    rightParentView?.isHidden = false
-    rightLable?.stringValue = variant.name
+    set(variant: variant)
+    
+    if !(rightLable?.stringValue.isEmpty ?? true) || rightImage != nil {
+      rightParentView?.isHidden = false
+    }
+    
     selectedTarget = target
     workbench.selectedVariant = variant
   }
