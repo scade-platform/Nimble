@@ -24,8 +24,7 @@ class SwiftBuildSystem: BuildSystem {
     if BuildSystemsManager.shared.activeBuildSystem is Automatic {
       if let spmBuildSystem = BuildSystemsManager.shared.buildSystems.first(where: {$0 is SPMBuildSystem}) {
         let spmTargets = spmBuildSystem.targets(in: workbench).compactMap{$0 as? SPMTarget}
-        guard !spmTargets.isEmpty else { return [] }
-        if spmTargets.containsSwiftFile(document: document) {
+        if  !spmTargets.isEmpty, spmTargets.containsSwiftFile(document: document) {
           return []
         }
       }

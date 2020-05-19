@@ -31,6 +31,9 @@ class ToolbarTargetControl : NSControl {
         leftLable?.textColor = .labelColor
         rightLable?.textColor = .labelColor
       } else {
+        //Disable means there aren't any targets
+        dropTarget()
+        
         leftLable?.textColor = .disabledControlTextColor
         rightLable?.textColor = .disabledControlTextColor
       }
@@ -78,12 +81,21 @@ class ToolbarTargetControl : NSControl {
   
   override func awakeFromNib() {
     super.awakeFromNib()
-  
-    self.leftImage?.isHidden = true
-    self.leftLable?.stringValue = "No Targets"
     
     self.separatorImage?.imageScaling = .scaleProportionallyDown
     self.separatorImage?.image = separatorTemplate
+    
+    dropTarget()
+  }
+  
+  func dropTarget() {
+    self.selectedTarget = nil
+    targets = []
+    selectedVariants = [:]
+    
+    self.leftImage?.isHidden = true
+    self.leftLable?.stringValue = "No Targets"
+    
     self.separatorImage?.isHidden = true
     
     self.rightParentView?.isHidden = true
