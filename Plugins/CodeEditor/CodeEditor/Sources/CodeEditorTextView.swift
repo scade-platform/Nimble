@@ -25,7 +25,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
 
   // MARK: - Snippets
 
-  var snippetPlaceholders: [NSRange] = [ NSMakeRange(3, 1), NSMakeRange(70, 1)]
+  var snippetPlaceholders: [NSRange] = [ NSMakeRange(3, 1)/*, NSMakeRange(70, 1)*/]
 
   // MARK: -
 
@@ -48,11 +48,11 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     self.scaleUnitSquare(to: self.convert(.unit, from: nil))  // reset scale
     
     // setup layoutManager and textContainer
-    let textContainer = TextContainer()
-    // TODO: move to settings
-    textContainer.isHangingIndentEnabled = true //defaults[.enablesHangingIndent]
-    textContainer.hangingIndentWidth = 2 //defaults[.hangingIndentWidth]
-    self.replaceTextContainer(textContainer)
+    // let textContainer = TextContainer()
+    // // TODO: move to settings
+    // textContainer.isHangingIndentEnabled = true //defaults[.enablesHangingIndent]
+    // textContainer.hangingIndentWidth = 2 //defaults[.hangingIndentWidth]
+    // self.replaceTextContainer(textContainer)
     
     //let layoutManager = LayoutManager()
     let layoutManager = CodeEditorLayoutManager()
