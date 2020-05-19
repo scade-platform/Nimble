@@ -9,16 +9,31 @@
 import Cocoa
 import NimbleCore
 
+// MARK: - Kinds of building resources 
+public enum BuildResourceKind {
+  case singleFile
+  case projectFolder
+  case undefined
+}
+
 // MARK: - BuildSystem base protocol
 
 public protocol BuildSystem : class {
   var name: String { get }
+  
+  var resourceKind: BuildResourceKind { get }
 
   func targets(in workbench: Workbench) -> [Target]
 
   func run(_ variant: Variant)
   func build(_ variant: Variant)
   func clean(_ variant: Variant)
+}
+
+public extension BuildSystem {
+  var resourceKind: BuildResourceKind {
+    .undefined
+  }
 }
 
 
