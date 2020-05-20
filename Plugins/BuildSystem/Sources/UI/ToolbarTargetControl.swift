@@ -257,11 +257,13 @@ extension Workbench {
 
   var selectedVariant: Variant? {
     get {
-      if let activeBuildSystem = BuildSystemsManager.shared.activeBuildSystem, case .singleFile =  activeBuildSystem.resourceKind  {
-        let fileTarget =  activeBuildSystem.targets(in: self)[0]
-        targets.append(fileTarget)
-        return fileTarget.variants[0]
-      }
+      /// TODO: fixit
+
+//      if let swiftBuildSystem = BuildSystemsManager.shared.activeBuildSystem as? SwiftBuildSystem {
+//        let fileTarget =  swiftBuildSystem.targets(in: self)[0]
+//        targets.append(fileTarget)
+//        return fileTarget.variants[0]
+//      }
       return selectedVariants[self.id]
     }
     set {

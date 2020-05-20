@@ -17,10 +17,6 @@ class SwiftBuildSystem: BuildSystem {
     return "Swift File"
   }
   
-  var kindResource: BuildResourceKind {
-    .singleFile
-  }
-  
   func targets(in workbench: Workbench) -> [Target] {
     guard let document = workbench.currentDocument, canHandle(document: document) else { return [] }
     

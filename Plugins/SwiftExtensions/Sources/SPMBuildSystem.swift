@@ -18,10 +18,6 @@ class SPMBuildSystem: BuildSystem {
     return "Swift Package"
   }
   
-  var kindResource: BuildResourceKind {
-    .projectFolder
-  }
-  
   func targets(in workbench: Workbench) -> [Target] {
     guard let folders = workbench.project?.folders else { return [] }
     let targets = folders.filter{canHandle(folder: $0)}.map{SPMTarget(folder: $0, workbench: workbench)}
