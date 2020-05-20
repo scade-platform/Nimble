@@ -14,6 +14,7 @@ public protocol Target : class {
   var icon: Icon? { get }
   var variants: [Variant] { get }
   var workbench: Workbench? { get }
+  var representedObject: Any? { get }
 }
 
 public extension Target {

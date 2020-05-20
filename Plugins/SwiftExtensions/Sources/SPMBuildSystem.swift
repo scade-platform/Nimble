@@ -120,6 +120,10 @@ class SPMTarget: Target {
     return nil
   }()
   
+  var representedObject: Any? {
+    folder
+  }
+  
   let folder: Folder
   var variants: [Variant] = []
   weak var workbench: Workbench?
