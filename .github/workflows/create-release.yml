@@ -15,6 +15,11 @@ jobs:
     - name: Build
       run: ./build.sh              
     
+    - name: Detect version
+      uses: FLORG1/github-version-action@v1
+      with:
+        tag-var-name: TAG_VERSION
+
     - name: Create Release
       uses: ncipollo/release-action@v1
       with:
