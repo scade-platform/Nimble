@@ -129,13 +129,6 @@ class SPMTarget: Target {
     self.workbench = workbench
   }
   
-  func contain(file: File) -> Bool {
-    let filePathString = file.path.string
-    if folder.path.string.count < filePathString.count, filePathString.hasPrefix(folder.path.string){
-      return true
-    }
-    return false
-  }
 }
 
 fileprivate class MacVariant: Variant {
@@ -261,9 +254,10 @@ extension MacVariant {
 
 extension Array where Element == SPMTarget {
   func containsSwiftFile(document: Document) -> Bool {
-    guard let file = document.fileURL?.file else { return false }
+    guard let filePathString = document.fileURL?.file?.path.string else { return false }
     for target in self {
-      if target.contain(file: file) {
+      let targetFolder = target.folder
+      if targetFolder.path.string.count < filePathString.count, filePathString.hasPrefix(targetFolder.path.string){
         return true
       }      
     }

@@ -15,7 +15,7 @@ public protocol Target : class {
   var variants: [Variant] { get }
   var workbench: Workbench? { get }
   
-  func contain(file: File) -> Bool
+  func contains(file: File) -> Bool
 }
 
 public extension Target {
@@ -24,7 +24,7 @@ public extension Target {
   var workbench: Workbench? { nil }
   var id: ObjectIdentifier { ObjectIdentifier(self) }
   
-  func contain(file: File) -> Bool {
+  func contains(file: File) -> Bool {
     return false
   }
 }

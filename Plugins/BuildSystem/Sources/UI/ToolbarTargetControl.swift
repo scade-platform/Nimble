@@ -22,8 +22,15 @@ class ToolbarTargetControl : NSControl {
   @IBOutlet weak var rightImage: NSImageView?
   @IBOutlet weak var rightLable: NSTextField?
   
+  //Last target and variant selected by user
+  private var userSelection: (target: Target, variant: Variant)?
   
-  var statesStack: [(target: Target?, variant: Variant?)] = []
+  //Current target which could be selected by the control
+  private var activeTarget: Target?
+  
+  //Temp storage for menu item targets
+  private var menuItemTargets: [Target] = []
+  
   weak var borderLayer: CALayer?
   
   override var isEnabled: Bool {
@@ -130,9 +137,11 @@ class ToolbarTargetControl : NSControl {
   }
   
   func dropTarget() {
-    self.statesStack = []
-    targets = []
-    selectedVariants = [:]
+    self.activeTarget = nil
+    self.userSelection = nil
+    if let window = self.window {
+      selectedVariants.removeValue(forKey: ObjectIdentifier(window))
+    }
     
     self.leftImage?.isHidden = true
     self.leftLable?.stringValue = "No Targets"
@@ -150,10 +159,10 @@ class ToolbarTargetControl : NSControl {
   }
   
   func autoSelectTarget(in workbench: Workbench) {    
-    guard statesStack.isEmpty, workbench.selectedVariant == nil else { return }
+    guard activeTarget == nil, workbench.selectedVariant == nil else { return }
     
     guard let buildSystem = BuildSystemsManager.shared.activeBuildSystem, 
-      let target = buildSystem.targets(in: workbench).first, 
+      let target = buildSystem.targets(in: workbench).first,
       let variant = target.variants.first else { return }
     
     set(target: target)
@@ -164,7 +173,10 @@ class ToolbarTargetControl : NSControl {
       rightParentView?.isHidden = false
     }
     
-    statesStack = [(target, variant)]
+    if userSelection == nil {
+      self.userSelection = (target, variant)
+    }
+    activeTarget = target
     workbench.selectedVariant = variant
   }
   
@@ -198,21 +210,21 @@ class ToolbarTargetControl : NSControl {
     
     let menu = NSMenu()
     if let automatic = buildSystem as? Automatic {
-      targets = []
+      menuItemTargets = []
       for automaticTargets in automatic.targetsBySystem(in: workbench) {
         guard !automaticTargets.isEmpty else {
           continue
         }
         automaticTargets.forEach{addMenuItem(target: $0, to: menu)}
-        targets.append(contentsOf: automaticTargets)
+        menuItemTargets.append(contentsOf: automaticTargets)
         menu.addItem(.separator())
       }
     } else {
-      targets = buildSystem.targets(in: workbench)
-      guard !targets.isEmpty else {
+      menuItemTargets = buildSystem.targets(in: workbench)
+      guard !menuItemTargets.isEmpty else {
         return
       }
-      targets.forEach{addMenuItem(target: $0, to: menu)}
+      menuItemTargets.forEach{addMenuItem(target: $0, to: menu)}
     }
     
     guard !menu.items.isEmpty else {
@@ -258,8 +270,12 @@ class ToolbarTargetControl : NSControl {
     guard let workbench = self.window?.windowController as? Workbench, let variant = selectedVariant else {
       return
     }
-    statesStack = [(variant.target, variant)]
+    
+    userSelection = (variant.target!, variant)
+    activeTarget = variant.target
     workbench.selectedVariant = variant
+    
+    menuItemTargets = []
   }
   
   private func set(target: Target?) {
@@ -285,7 +301,7 @@ class ToolbarTargetControl : NSControl {
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
     guard let item = item else {return true}
     if let target = item.representedObject as? Target {
-      item.state = (target.name  == statesStack.last?.target?.name) ? .on : .off
+      item.state = (target.name  == activeTarget?.name) ? .on : .off
     } 
     return true
   }
@@ -308,24 +324,22 @@ extension ToolbarTargetControl : WorkbenchObserver {
   func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) {
     guard let buildSystem = BuildSystemsManager.shared.activeBuildSystem else { return }
     let avalibleTargets = buildSystem.targets(in: workbench)
-    guard let file = document?.fileURL?.file, let target = avalibleTargets.first(where: {($0.contain(file: file))}) else {
-      repeat {
-        let lastStates = statesStack.last
-        if avalibleTargets.contains(where: {$0.name == lastStates?.target?.name}) {
-          set(target: lastStates?.target)
-          separatorImage?.isHidden = false
-          set(variant: lastStates?.variant)
-          
-          workbench.selectedVariant = lastStates?.variant
-          return
-        }
-        if !statesStack.isEmpty{
-          statesStack = statesStack.dropLast()
-        }
-      } while !statesStack.isEmpty
-      self.statesStack = []
-      targets = []
-      selectedVariants = [:]
+    guard let file = document?.fileURL?.file, let target = avalibleTargets.first(where: {($0.contains(file: file))}) else {
+      guard let (selectedTarget, selectedVariant) = userSelection, avalibleTargets.contains(where: {$0.name == selectedTarget.name}) else {
+        self.userSelection = nil
+        self.activeTarget = nil
+        workbench.selectedVariant = nil
+        return
+      }
+      
+      
+      set(target: selectedTarget)
+      separatorImage?.isHidden = false
+      set(variant: selectedVariant)
+      
+      activeTarget = selectedTarget
+      workbench.selectedVariant = selectedVariant
+      
       return
     }
     set(target: target)
@@ -333,7 +347,7 @@ extension ToolbarTargetControl : WorkbenchObserver {
     let selectedVariant = target.variants.first
     set(variant: selectedVariant)
     
-    statesStack.append((target, selectedVariant))
+    activeTarget = target
     workbench.selectedVariant = selectedVariant
     
     if !(rightLable?.stringValue.isEmpty ?? true) || rightImage != nil {
@@ -344,9 +358,11 @@ extension ToolbarTargetControl : WorkbenchObserver {
 
 extension ToolbarTargetControl: BuildSystemsObserver {
   func activeBuildSystemDidChange(deactivatedBuildSystem: BuildSystem?, activeBuildSystem: BuildSystem?) {
-    self.statesStack = []
-    targets = []
-    selectedVariants = [:]
+    self.activeTarget = nil
+    self.userSelection = nil
+    if let window = self.window {
+      selectedVariants.removeValue(forKey: ObjectIdentifier(window))
+    }
   }
 }
 
@@ -366,4 +382,3 @@ extension Workbench {
 }
 
 fileprivate var selectedVariants: [ObjectIdentifier: Variant] = [:]
-fileprivate var targets: [Target] = []

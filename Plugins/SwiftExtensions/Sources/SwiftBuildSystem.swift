@@ -132,7 +132,7 @@ fileprivate class SwiftTarget: Target {
     self.workbench = workbench
   }
   
-  func contain(file: File) -> Bool {
+  func contains(file: File) -> Bool {
     if document.fileURL == file.url {
       return true
     }
