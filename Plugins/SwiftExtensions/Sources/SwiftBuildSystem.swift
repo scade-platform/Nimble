@@ -123,6 +123,10 @@ fileprivate class SwiftTarget: Target {
     IconsManager.shared.icon(for: document.fileURL?.file)
   }()
   
+  var representedObject: Any? {
+    document
+  }
+  
   let document: Document
   var variants: [Variant] = []
   weak var workbench: Workbench?
