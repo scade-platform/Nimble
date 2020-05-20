@@ -99,6 +99,8 @@ final class SelectTarget: Command {
   override func validate(in workbench: Workbench, control: NSControl?) -> State {
     guard let activeSystem = BuildSystemsManager.shared.activeBuildSystem, !activeSystem.targets(in: workbench).isEmpty else { return [] }
     if let toolbarTargetControl = control as? ToolbarTargetControl {
+      workbench.observers.add(observer: toolbarTargetControl)
+      BuildSystemsManager.shared.observers.add(observer: toolbarTargetControl)
       toolbarTargetControl.autoSelectTarget(in: workbench)
     }
     return [.enabled]

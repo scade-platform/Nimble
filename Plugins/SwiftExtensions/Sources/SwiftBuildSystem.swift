@@ -131,7 +131,15 @@ fileprivate class SwiftTarget: Target {
     self.document = document
     self.workbench = workbench
   }
+  
+  func contains(file: File) -> Bool {
+    if document.fileURL == file.url {
+      return true
+    }
+    return false
+  }
 }
+
 
 fileprivate class SingleDocumentVariant: Variant {
   var target: Target? {

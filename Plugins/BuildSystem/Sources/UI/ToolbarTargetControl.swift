@@ -22,8 +22,15 @@ class ToolbarTargetControl : NSControl {
   @IBOutlet weak var rightImage: NSImageView?
   @IBOutlet weak var rightLable: NSTextField?
   
+  //Last target and variant selected by user
+  private var userSelection: (target: Target, variant: Variant)?
   
-  var selectedTarget: Target?
+  //Current target which could be selected by the control
+  private var activeTarget: Target?
+  
+  //Temp storage for menu item targets
+  private var menuItemTargets: [Target] = []
+  
   weak var borderLayer: CALayer?
   
   override var isEnabled: Bool {
@@ -52,11 +59,11 @@ class ToolbarTargetControl : NSControl {
   }()
   
   lazy var bottomBackgroundColor : NSColor = {
-     NSColor(named: "BottomGradientColor", bundle: Bundle(for: ToolbarTargetControl.self)) ?? NSColor.controlColor
+    NSColor(named: "BottomGradientColor", bundle: Bundle(for: ToolbarTargetControl.self)) ?? NSColor.controlColor
   }()
   
   lazy var topBorderColor : NSColor = {
-     NSColor(named: "TopBorderGradientColor", bundle: Bundle(for: ToolbarTargetControl.self)) ?? ToolbarTargetControl.sharedBorderColor
+    NSColor(named: "TopBorderGradientColor", bundle: Bundle(for: ToolbarTargetControl.self)) ?? ToolbarTargetControl.sharedBorderColor
   }()
   
   lazy var bottomBorderColor : NSColor = {
@@ -67,6 +74,7 @@ class ToolbarTargetControl : NSControl {
     super.init(coder: coder)
     self.wantsLayer = true
     let layer = CAGradientLayer()
+    
     layer.masksToBounds = true
     layer.cornerRadius = 4.5
     layer.colors = [self.bottomBackgroundColor.cgColor, self.topBackgroundColor.cgColor]
@@ -129,9 +137,11 @@ class ToolbarTargetControl : NSControl {
   }
   
   func dropTarget() {
-    self.selectedTarget = nil
-    targets = []
-    selectedVariants = [:]
+    self.activeTarget = nil
+    self.userSelection = nil
+    if let window = self.window {
+      selectedVariants.removeValue(forKey: ObjectIdentifier(window))
+    }
     
     self.leftImage?.isHidden = true
     self.leftLable?.stringValue = "No Targets"
@@ -142,18 +152,18 @@ class ToolbarTargetControl : NSControl {
     self.rightImage?.isHidden = true
     self.rightLable?.stringValue = ""
   }
-
+  
   override func viewWillMove(toWindow newWindow: NSWindow?) {
     guard let window = self.window, newWindow == nil else { return }
     selectedVariants.removeValue(forKey: ObjectIdentifier(window))
   }
   
   func autoSelectTarget(in workbench: Workbench) {    
-    guard selectedTarget == nil, workbench.selectedVariant == nil else { return }
+    guard activeTarget == nil, workbench.selectedVariant == nil else { return }
     
     guard let buildSystem = BuildSystemsManager.shared.activeBuildSystem, 
-          let target = buildSystem.targets(in: workbench).first, 
-          let variant = target.variants.first else { return }
+      let target = buildSystem.targets(in: workbench).first,
+      let variant = target.variants.first else { return }
     
     set(target: target)
     separatorImage?.isHidden = false
@@ -163,10 +173,13 @@ class ToolbarTargetControl : NSControl {
       rightParentView?.isHidden = false
     }
     
-    selectedTarget = target
+    if userSelection == nil {
+      self.userSelection = (target, variant)
+    }
+    activeTarget = target
     workbench.selectedVariant = variant
   }
-
+  
   private func addMenuItem(target: Target, to menu: NSMenu) {
     let item = NSMenuItem(title: target.name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
     item.target = self
@@ -197,21 +210,21 @@ class ToolbarTargetControl : NSControl {
     
     let menu = NSMenu()
     if let automatic = buildSystem as? Automatic {
-      targets = []
+      menuItemTargets = []
       for automaticTargets in automatic.targetsBySystem(in: workbench) {
         guard !automaticTargets.isEmpty else {
           continue
         }
         automaticTargets.forEach{addMenuItem(target: $0, to: menu)}
-        targets.append(contentsOf: automaticTargets)
+        menuItemTargets.append(contentsOf: automaticTargets)
         menu.addItem(.separator())
       }
     } else {
-      targets = buildSystem.targets(in: workbench)
-      guard !targets.isEmpty else {
+      menuItemTargets = buildSystem.targets(in: workbench)
+      guard !menuItemTargets.isEmpty else {
         return
       }
-      targets.forEach{addMenuItem(target: $0, to: menu)}
+      menuItemTargets.forEach{addMenuItem(target: $0, to: menu)}
     }
     
     guard !menu.items.isEmpty else {
@@ -257,8 +270,12 @@ class ToolbarTargetControl : NSControl {
     guard let workbench = self.window?.windowController as? Workbench, let variant = selectedVariant else {
       return
     }
-    selectedTarget = variant.target
+    
+    userSelection = (variant.target!, variant)
+    activeTarget = variant.target
     workbench.selectedVariant = variant
+    
+    menuItemTargets = []
   }
   
   private func set(target: Target?) {
@@ -284,7 +301,7 @@ class ToolbarTargetControl : NSControl {
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
     guard let item = item else {return true}
     if let target = item.representedObject as? Target {
-      item.state = (target.name  == selectedTarget?.name) ? .on : .off
+      item.state = (target.name  == activeTarget?.name) ? .on : .off
     } 
     return true
   }
@@ -303,28 +320,65 @@ extension ToolbarTargetControl : NSMenuDelegate {
   }
 }
 
-
-extension Workbench {
-  fileprivate var id: ObjectIdentifier { ObjectIdentifier(self) }
-
-  var selectedVariant: Variant? {
-    get {
-      /// TODO: fixit
-
-//      if let swiftBuildSystem = BuildSystemsManager.shared.activeBuildSystem as? SwiftBuildSystem {
-//        let fileTarget =  swiftBuildSystem.targets(in: self)[0]
-//        targets.append(fileTarget)
-//        return fileTarget.variants[0]
-//      }
-      return selectedVariants[self.id]
+extension ToolbarTargetControl : WorkbenchObserver {
+  func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) {
+    guard let buildSystem = BuildSystemsManager.shared.activeBuildSystem else { return }
+    let avalibleTargets = buildSystem.targets(in: workbench)
+    guard let file = document?.fileURL?.file, let target = avalibleTargets.first(where: {($0.contains(file: file))}) else {
+      guard let (selectedTarget, selectedVariant) = userSelection, avalibleTargets.contains(where: {$0.name == selectedTarget.name}) else {
+        self.userSelection = nil
+        self.activeTarget = nil
+        workbench.selectedVariant = nil
+        return
+      }
+      
+      
+      set(target: selectedTarget)
+      separatorImage?.isHidden = false
+      set(variant: selectedVariant)
+      
+      activeTarget = selectedTarget
+      workbench.selectedVariant = selectedVariant
+      
+      return
     }
-    set {
-      selectedVariants[self.id] = newValue
+    set(target: target)
+    separatorImage?.isHidden = false
+    let selectedVariant = target.variants.first
+    set(variant: selectedVariant)
+    
+    activeTarget = target
+    workbench.selectedVariant = selectedVariant
+    
+    if !(rightLable?.stringValue.isEmpty ?? true) || rightImage != nil {
+      rightParentView?.isHidden = false
+    }
+  }
+}
 
+extension ToolbarTargetControl: BuildSystemsObserver {
+  func activeBuildSystemDidChange(deactivatedBuildSystem: BuildSystem?, activeBuildSystem: BuildSystem?) {
+    self.activeTarget = nil
+    self.userSelection = nil
+    if let window = self.window {
+      selectedVariants.removeValue(forKey: ObjectIdentifier(window))
     }
   }
 }
 
 
+extension Workbench {
+  fileprivate var id: ObjectIdentifier { ObjectIdentifier(self) }
+  
+  var selectedVariant: Variant? {
+    get {
+      return selectedVariants[self.id]
+    }
+    set {
+      selectedVariants[self.id] = newValue
+      
+    }
+  }
+}
+
 fileprivate var selectedVariants: [ObjectIdentifier: Variant] = [:]
-fileprivate var targets: [Target] = []

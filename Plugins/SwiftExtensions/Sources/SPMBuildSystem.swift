@@ -128,6 +128,7 @@ class SPMTarget: Target {
     self.folder = folder
     self.workbench = workbench
   }
+  
 }
 
 fileprivate class MacVariant: Variant {
