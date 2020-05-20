@@ -24,6 +24,7 @@ class ToolbarTargetControl : NSControl {
   
   
   var selectedTarget: Target?
+  weak var borderLayer: CALayer?
   
   override var isEnabled: Bool {
     didSet {
@@ -31,6 +32,9 @@ class ToolbarTargetControl : NSControl {
         leftLable?.textColor = .labelColor
         rightLable?.textColor = .labelColor
       } else {
+        //Disable means there aren't any targets
+        dropTarget()
+        
         leftLable?.textColor = .disabledControlTextColor
         rightLable?.textColor = .disabledControlTextColor
       }
@@ -43,24 +47,63 @@ class ToolbarTargetControl : NSControl {
     return separator
   }()
   
+  lazy var topBackgroundColor : NSColor = {
+    NSColor(named: "TopGradientColor", bundle: Bundle(for: ToolbarTargetControl.self)) ?? NSColor.controlColor
+  }()
+  
+  lazy var bottomBackgroundColor : NSColor = {
+     NSColor(named: "BottomGradientColor", bundle: Bundle(for: ToolbarTargetControl.self)) ?? NSColor.controlColor
+  }()
+  
+  lazy var topBorderColor : NSColor = {
+     NSColor(named: "TopBorderGradientColor", bundle: Bundle(for: ToolbarTargetControl.self)) ?? ToolbarTargetControl.sharedBorderColor
+  }()
+  
+  lazy var bottomBorderColor : NSColor = {
+    NSColor(named: "BottomBorderGradientColor", bundle: Bundle(for: ToolbarTargetControl.self)) ?? ToolbarTargetControl.sharedBorderColor
+  }()
+  
   required init?(coder: NSCoder) {
     super.init(coder: coder)
     self.wantsLayer = true
-    let layer = CALayer()
+    let layer = CAGradientLayer()
     layer.masksToBounds = true
-    layer.cornerRadius = 5.5
-    layer.borderWidth = 0.5
-    layer.backgroundColor = ToolbarTargetControl.controlBackgroundColor.cgColor
-    layer.borderColor = ToolbarTargetControl.sharedBorderColor.cgColor
+    layer.cornerRadius = 4.5
+    layer.colors = [self.bottomBackgroundColor.cgColor, self.topBackgroundColor.cgColor]
     self.layer = layer
+    addGradienBorder(colors: [self.bottomBorderColor, self.topBorderColor])
+    
+    
   }
   
   override func layout() {
-    if let layer = self.layer {
+    if let layer = self.layer as? CAGradientLayer {
       //change colors after system theme changed
-      layer.borderColor = ToolbarTargetControl.sharedBorderColor.cgColor
-      layer.backgroundColor = ToolbarTargetControl.controlBackgroundColor.cgColor
+      layer.colors = [self.bottomBackgroundColor.cgColor, self.topBackgroundColor.cgColor]
+      addGradienBorder(colors: [self.bottomBorderColor, self.topBorderColor])
     }
+  }
+  
+  private func addGradienBorder(colors:[NSColor], width:CGFloat = 1) {
+    let gradientLayer = CAGradientLayer()
+    gradientLayer.frame =  CGRect(origin: .zero, size: self.bounds.size)
+    gradientLayer.colors = colors.map({$0.cgColor})
+    
+    let shapeLayer = CAShapeLayer()
+    shapeLayer.lineWidth = width
+    shapeLayer.path = NSBezierPath(roundedRect: self.bounds, xRadius: 4.5, yRadius: 4.5).cgPath
+    shapeLayer.fillColor = nil
+    shapeLayer.strokeColor = NSColor.black.cgColor
+    gradientLayer.mask = shapeLayer
+    
+    if let borderLayer = borderLayer {
+      self.layer?.replaceSublayer(borderLayer, with: gradientLayer)
+      self.borderLayer = gradientLayer
+    } else {
+      self.layer?.addSublayer(gradientLayer)
+      self.borderLayer = gradientLayer
+    }
+    
   }
   
   private static var sharedBorderColor: NSColor {
@@ -78,12 +121,21 @@ class ToolbarTargetControl : NSControl {
   
   override func awakeFromNib() {
     super.awakeFromNib()
-  
-    self.leftImage?.isHidden = true
-    self.leftLable?.stringValue = "No Targets"
     
     self.separatorImage?.imageScaling = .scaleProportionallyDown
     self.separatorImage?.image = separatorTemplate
+    
+    dropTarget()
+  }
+  
+  func dropTarget() {
+    self.selectedTarget = nil
+    targets = []
+    selectedVariants = [:]
+    
+    self.leftImage?.isHidden = true
+    self.leftLable?.stringValue = "No Targets"
+    
     self.separatorImage?.isHidden = true
     
     self.rightParentView?.isHidden = true
