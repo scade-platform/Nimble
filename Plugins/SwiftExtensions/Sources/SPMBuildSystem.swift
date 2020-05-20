@@ -120,10 +120,6 @@ class SPMTarget: Target {
     return nil
   }()
   
-  var representedObject: Any? {
-    folder
-  }
-  
   let folder: Folder
   var variants: [Variant] = []
   weak var workbench: Workbench?
@@ -131,6 +127,14 @@ class SPMTarget: Target {
   init(folder: Folder, workbench: Workbench) {
     self.folder = folder
     self.workbench = workbench
+  }
+  
+  func contain(file: File) -> Bool {
+    let filePathString = file.path.string
+    if folder.path.string.count < filePathString.count, filePathString.hasPrefix(folder.path.string){
+      return true
+    }
+    return false
   }
 }
 
@@ -257,10 +261,9 @@ extension MacVariant {
 
 extension Array where Element == SPMTarget {
   func containsSwiftFile(document: Document) -> Bool {
-    guard let filePathString = document.fileURL?.file?.path.string else { return false }
+    guard let file = document.fileURL?.file else { return false }
     for target in self {
-      let targetFolder = target.folder
-      if targetFolder.path.string.count < filePathString.count, filePathString.hasPrefix(targetFolder.path.string){
+      if target.contain(file: file) {
         return true
       }      
     }

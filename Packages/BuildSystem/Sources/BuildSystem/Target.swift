@@ -14,7 +14,8 @@ public protocol Target : class {
   var icon: Icon? { get }
   var variants: [Variant] { get }
   var workbench: Workbench? { get }
-  var representedObject: Any? { get }
+  
+  func contain(file: File) -> Bool
 }
 
 public extension Target {
@@ -22,6 +23,10 @@ public extension Target {
   var icon: Icon? { nil }
   var workbench: Workbench? { nil }
   var id: ObjectIdentifier { ObjectIdentifier(self) }
+  
+  func contain(file: File) -> Bool {
+    return false
+  }
 }
 
 public protocol Variant {

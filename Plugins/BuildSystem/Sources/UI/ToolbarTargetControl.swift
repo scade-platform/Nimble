@@ -52,11 +52,11 @@ class ToolbarTargetControl : NSControl {
   }()
   
   lazy var bottomBackgroundColor : NSColor = {
-     NSColor(named: "BottomGradientColor", bundle: Bundle(for: ToolbarTargetControl.self)) ?? NSColor.controlColor
+    NSColor(named: "BottomGradientColor", bundle: Bundle(for: ToolbarTargetControl.self)) ?? NSColor.controlColor
   }()
   
   lazy var topBorderColor : NSColor = {
-     NSColor(named: "TopBorderGradientColor", bundle: Bundle(for: ToolbarTargetControl.self)) ?? ToolbarTargetControl.sharedBorderColor
+    NSColor(named: "TopBorderGradientColor", bundle: Bundle(for: ToolbarTargetControl.self)) ?? ToolbarTargetControl.sharedBorderColor
   }()
   
   lazy var bottomBorderColor : NSColor = {
@@ -67,7 +67,7 @@ class ToolbarTargetControl : NSControl {
     super.init(coder: coder)
     self.wantsLayer = true
     let layer = CAGradientLayer()
-
+    
     layer.masksToBounds = true
     layer.cornerRadius = 4.5
     layer.colors = [self.bottomBackgroundColor.cgColor, self.topBackgroundColor.cgColor]
@@ -143,7 +143,7 @@ class ToolbarTargetControl : NSControl {
     self.rightImage?.isHidden = true
     self.rightLable?.stringValue = ""
   }
-
+  
   override func viewWillMove(toWindow newWindow: NSWindow?) {
     guard let window = self.window, newWindow == nil else { return }
     selectedVariants.removeValue(forKey: ObjectIdentifier(window))
@@ -153,8 +153,8 @@ class ToolbarTargetControl : NSControl {
     guard statesStack.isEmpty, workbench.selectedVariant == nil else { return }
     
     guard let buildSystem = BuildSystemsManager.shared.activeBuildSystem, 
-          let target = buildSystem.targets(in: workbench).first, 
-          let variant = target.variants.first else { return }
+      let target = buildSystem.targets(in: workbench).first, 
+      let variant = target.variants.first else { return }
     
     set(target: target)
     separatorImage?.isHidden = false
@@ -167,7 +167,7 @@ class ToolbarTargetControl : NSControl {
     statesStack = [(target, variant)]
     workbench.selectedVariant = variant
   }
-
+  
   private func addMenuItem(target: Target, to menu: NSMenu) {
     let item = NSMenuItem(title: target.name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
     item.target = self
@@ -308,8 +308,7 @@ extension ToolbarTargetControl : WorkbenchObserver {
   func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) {
     guard let buildSystem = BuildSystemsManager.shared.activeBuildSystem else { return }
     let avalibleTargets = buildSystem.targets(in: workbench)
-    let avalibleDocumentTargets = avalibleTargets.filter{$0.representedObject is Document}
-    guard !avalibleDocumentTargets.isEmpty, let document = document else {
+    guard let file = document?.fileURL?.file, let target = avalibleTargets.first(where: {($0.contain(file: file))}) else {
       repeat {
         let lastStates = statesStack.last
         if avalibleTargets.contains(where: {$0.name == lastStates?.target?.name}) {
@@ -329,18 +328,16 @@ extension ToolbarTargetControl : WorkbenchObserver {
       selectedVariants = [:]
       return
     }
-    if let target = avalibleDocumentTargets.first(where: {($0.representedObject as! Document) == document}) {
-      set(target: target)
-      separatorImage?.isHidden = false
-      let selectedVariant = target.variants.first
-      set(variant: selectedVariant)
-      
-      statesStack.append((target, selectedVariant))
-      workbench.selectedVariant = selectedVariant
-      
-      if !(rightLable?.stringValue.isEmpty ?? true) || rightImage != nil {
-        rightParentView?.isHidden = false
-      }
+    set(target: target)
+    separatorImage?.isHidden = false
+    let selectedVariant = target.variants.first
+    set(variant: selectedVariant)
+    
+    statesStack.append((target, selectedVariant))
+    workbench.selectedVariant = selectedVariant
+    
+    if !(rightLable?.stringValue.isEmpty ?? true) || rightImage != nil {
+      rightParentView?.isHidden = false
     }
   }
 }
@@ -356,14 +353,14 @@ extension ToolbarTargetControl: BuildSystemsObserver {
 
 extension Workbench {
   fileprivate var id: ObjectIdentifier { ObjectIdentifier(self) }
-
+  
   var selectedVariant: Variant? {
     get {
       return selectedVariants[self.id]
     }
     set {
       selectedVariants[self.id] = newValue
-
+      
     }
   }
 }
