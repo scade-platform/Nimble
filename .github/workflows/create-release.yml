@@ -12,14 +12,14 @@ jobs:
       with:
         submodules: recursive
 
-    - name: Build
-      run: ./build.sh              
-    
     - name: Detect version
       uses: FLORG1/github-version-action@v1
       with:
         tag-var-name: TAG_VERSION
 
+    - name: Build
+      run: export TAG_VERSION; ./build.sh
+    
     - name: Create Release
       uses: ncipollo/release-action@v1
       with:
