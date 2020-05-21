@@ -3,6 +3,9 @@
 Package.resolved
 xcuserdata
 
+# User defined plugins
+NimblePlugins
+
 # Default install dir
 Applications
 
