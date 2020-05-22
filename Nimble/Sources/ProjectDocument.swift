@@ -20,11 +20,23 @@ class ProjectDocument: NSDocument {
   
   override func encodeRestorableState(with coder: NSCoder) {
     super.encodeRestorableState(with: coder)
+    if project.path == nil {
+      let foldersURL = project.folders.map{$0.url}
+      coder.encode(foldersURL, forKey: "openFolders")
+    }
     workbench?.encodeRestorableState(with: coder)
   }
   
   override func restoreState(with coder: NSCoder) {
     super.restoreState(with: coder)
+    if project.path == nil {
+      if let foldersURL = coder.decodeObject(forKey: "openFolders") as? [URL] {
+        foldersURL.forEach{ url in
+          guard let folder = Folder(url: url) else { return }
+          project.add(folder)
+        }
+      }
+    }
     workbench?.restoreState(with: coder)
   }
   
