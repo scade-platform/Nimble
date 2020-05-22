@@ -95,7 +95,7 @@ class CodeEditorView: NSViewController {
 
       ///TODO: enable it
       //textView.snippetPlaceholders = parseSnippets()
-      textView.createSnippets()
+      textView.snippetsManager.onLoadContent()
     }
   }
       
@@ -246,12 +246,6 @@ extension CodeEditorView: WorkbenchEditor {
 // MARK: - NSTextStorageDelegate
 
 extension CodeEditorView: NSTextStorageDelegate {
-  private func parseSnippets(in: NSRange? = nil) -> [NSRange] {
-    guard let string = textView.textStorage?.string else { return [] }
-    ///TODO: implement parsing snippets
-
-    return []
-  }
 
   override func textStorageDidProcessEditing(_ notification: Notification) {
     guard let doc = document,
@@ -278,6 +272,20 @@ extension CodeEditorView: NSTextStorageDelegate {
       }
     }
   }
+
+  func textStorage(_ textStorage: NSTextStorage,
+                   willProcessEditing editedMask: NSTextStorageEditActions,
+                   range editedRange: NSRange, changeInLength delta: Int) {
+    if editedMask.contains(.editedCharacters) {
+      textView.snippetsManager.isEdited = true
+
+      if delta > 0 {
+        textView.snippetsManager.processEditing(in: editedRange)
+      }
+    }
+  }
+  
+
 }
 
 // MARK: - NSTextViewDelegate

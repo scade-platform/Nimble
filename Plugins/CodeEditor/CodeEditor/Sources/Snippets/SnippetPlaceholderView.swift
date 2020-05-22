@@ -4,7 +4,7 @@ class SnippetPlaceholderView: NSTextView {
 
   private var snippetText: String = ""
 
-  private var range: NSRange!
+  var range: NSRange!
 
   private weak var editorView: NSTextView?
 

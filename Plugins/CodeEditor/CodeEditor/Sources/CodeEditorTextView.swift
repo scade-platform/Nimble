@@ -25,7 +25,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
 
   // MARK: - Snippets
 
-  var snippetPlaceholders: [NSRange] = [ NSMakeRange(3, 1)/*, NSMakeRange(70, 1)*/]
+  let snippetsManager = SnippetsManager()
 
   // MARK: -
 
@@ -53,6 +53,11 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     // textContainer.isHangingIndentEnabled = true //defaults[.enablesHangingIndent]
     // textContainer.hangingIndentWidth = 2 //defaults[.hangingIndentWidth]
     // self.replaceTextContainer(textContainer)
+
+
+    // for snippets rendering
+    snippetsManager.textView = self
+    self.textContainer?.lineFragmentPadding = 0
     
     //let layoutManager = LayoutManager()
     let layoutManager = CodeEditorLayoutManager()
@@ -419,7 +424,7 @@ extension CodeEditorTextView: NSLayoutManagerDelegate {
     var modifiedGlyphProperties = [NSLayoutManager.GlyphProperty]()
     for i in 0 ..< glyphRange.length {
       var glyphProperties = properties[i]
-      if snippetPlaceholders.contains(where: { $0.contains(characterIndexes[i])}) {
+      if snippetsManager.containsIndex(characterIndexes[i]) {
         glyphProperties.insert(.controlCharacter)
       }
       modifiedGlyphProperties.append(glyphProperties)
@@ -442,42 +447,6 @@ extension CodeEditorTextView: NSLayoutManagerDelegate {
                      shouldUse action: NSLayoutManager.ControlCharacterAction,
                      forControlCharacterAt charIndex: Int) -> NSLayoutManager.ControlCharacterAction {
 
-    guard snippetPlaceholders.contains(where: {
-      return $0.contains(charIndex)
-    }) else {
-      return action
-    }
-
-    return .zeroAdvancement
-  }
-}
-
-// MARK: - Code Snippets
-
-extension CodeEditorTextView {
-
-  func createSnippets() {
-    self.textContainer?.lineFragmentPadding = 0
-    snippetPlaceholders.forEach { self.createSnippet(for: $0) }
-  }
-
-  private func createSnippet(for characterRange: NSRange) {
-    guard let layoutManager = self.layoutManager,
-          let textContainer = self.textContainer else { return }
-
-    let glyphRange = layoutManager.glyphRange(forCharacterRange: characterRange,
-                                              actualCharacterRange: nil)
-    let boundingRect = layoutManager.boundingRect(forGlyphRange: glyphRange,
-                                                  in: textContainer)
-
-    let snippet = SnippetPlaceholderView()
-    snippet.configure(for: self, range: characterRange, text: "Snippet")
-    snippet.frame.origin = boundingRect.origin
-    snippet.frame.origin.y -= floor(self.font?.descender ?? 0)
-    snippet.sizeToFit()
-    self.addSubview(snippet)
-
-    let path = NSBezierPath.init(rect: snippet.frame)
-    textContainer.exclusionPaths.append(path)
+    return snippetsManager.containsIndex(charIndex) ? .zeroAdvancement : action
   }
 }
