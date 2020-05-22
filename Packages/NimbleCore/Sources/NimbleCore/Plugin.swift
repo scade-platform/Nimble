@@ -104,11 +104,14 @@ public class PluginManager {
     
     var bundles = [String : (path: Path, bundle: CFBundle?)]()
     var dependenciesGraph = [ArraySlice<String>]()
+    var pluginIdCounter = Int(0)
 
     for path in searchPaths.flatMap({$0.plugins}) {
+      pluginIdCounter += 1
+
       // Use CoreFoundation API to avoid auto-loading bundles
       let bundle = CFBundleCreate(kCFAllocatorDefault, NSURL(fileURLWithPath: path.string))
-      let bundleId = CFBundleGetIdentifier(bundle) as String? ?? "empty-bundle-id"
+      let bundleId = CFBundleGetIdentifier(bundle) as String? ?? "empty-bundle-id-\(pluginIdCounter)"
 
       bundles[bundleId] = (path, bundle)
       
@@ -120,13 +123,17 @@ public class PluginManager {
         let package = Package(path: packagePath)
         packages.append(package)
 
-        dependenciesGraph.append([bundleId] + package.dependencies)
+        package.dependencies.forEach { dependenciesGraph.append([bundleId, $0]) }
       } else {
         dependenciesGraph.append([bundleId])
       }
     }
 
     let sortedBundleIds = Array(Algorithms.c3Merge(dependenciesGraph).reversed())
+
+    if sortedBundleIds.isEmpty {
+      Swift.debugPrint("\(#file) \(#line) ERROR: plugin dependency graph cannot be resolved")
+    }
 
     for bundleId in (sortedBundleIds.isEmpty ? Array(bundles.keys) : sortedBundleIds) {
       if let (path, bundle) = bundles[bundleId] {
