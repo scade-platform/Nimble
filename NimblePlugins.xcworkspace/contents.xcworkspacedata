@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:../../NimblePlugins/Plugins/SVGEditor/SVGEditor.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:../../NimblePlugins/Plugins/InterfaceBuilder/InterfaceBuilder/InterfaceBuilder.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "container:Nimble/Nimble.xcodeproj">
+   </FileRef>
+   <Group
+      location = "container:"
+      name = "Plugins">
+      <FileRef
+         location = "group:Plugins/FileIcons/FileIcons.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Plugins/BuildSystem/BuildSystem.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Plugins/CodeEditor/CodeEditor/CodeEditor.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Plugins/ImageViewer/ImageViewer.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Plugins/LangExtensions/LangExtensions.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Plugins/LSPClient/LSPClient.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Plugins/ProjectNavigator/ProjectNavigator/ProjectNavigator.xcodeproj">
+      </FileRef>
+      <FileRef
+         location = "group:Plugins/SwiftExtensions/SwiftExtensions.xcodeproj">
+      </FileRef>
+   </Group>
+   <Group
+      location = "container:"
+      name = "Packages">
+      <FileRef
+         location = "group:Packages/BuildSystem">
+      </FileRef>
+      <FileRef
+         location = "group:Packages/CodeEditor">
+      </FileRef>
+      <FileRef
+         location = "group:Packages/LSPClient">
+      </FileRef>
+      <FileRef
+         location = "group:Packages/NimbleCore">
+      </FileRef>
+   </Group>
+</Workspace>

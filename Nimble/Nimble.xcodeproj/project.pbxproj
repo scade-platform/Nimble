@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0C2A26D42429E2F800AA8B51 /* InspectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2A26D32429E2F800AA8B51 /* InspectorView.swift */; };
 		0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */; };
+		0C5DA792247BEC0A00CFC11D /* InterfaceBuilder.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 0C5DA78E247BEC0A00CFC11D /* InterfaceBuilder.plugin */; };
+		0C5DA794247BEC1400CFC11D /* SVGEditor.plugin in Embed PlugIns */ = {isa = PBXBuildFile; fileRef = 0C5DA793247BEC1400CFC11D /* SVGEditor.plugin */; };
 		0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */; };
 		0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */; };
 		0CA297B423A903340025A4EF /* BinaryFileDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA297B323A903340025A4EF /* BinaryFileDocument.swift */; };
@@ -98,6 +100,8 @@
 				E42DC0C322D26C3100486CC1 /* ImageViewer.plugin in Embed PlugIns */,
 				E42DC05C22CE49A700486CC1 /* CodeEditor.plugin in Embed PlugIns */,
 				E42DC05D22CE49A700486CC1 /* ProjectNavigator.plugin in Embed PlugIns */,
+				0C5DA794247BEC1400CFC11D /* SVGEditor.plugin in Embed PlugIns */,
+				0C5DA792247BEC0A00CFC11D /* InterfaceBuilder.plugin in Embed PlugIns */,
 			);
 			name = "Embed PlugIns";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -120,6 +124,8 @@
 /* Begin PBXFileReference section */
 		0C2A26D32429E2F800AA8B51 /* InspectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorView.swift; sourceTree = "<group>"; };
 		0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDocument.swift; sourceTree = "<group>"; };
+		0C5DA78E247BEC0A00CFC11D /* InterfaceBuilder.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; name = InterfaceBuilder.plugin; path = "../../../../../Library/Developer/Xcode/DerivedData/NimblePlugins-fnulyjzqoombzddvpdpqukisjkgk/Build/Products/Debug/InterfaceBuilder.plugin"; sourceTree = "<group>"; };
+		0C5DA793247BEC1400CFC11D /* SVGEditor.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; name = SVGEditor.plugin; path = "../../../../../Library/Developer/Xcode/DerivedData/NimblePlugins-fnulyjzqoombzddvpdpqukisjkgk/Build/Products/Debug/SVGEditor.plugin"; sourceTree = "<group>"; };
 		0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedPane.swift; sourceTree = "<group>"; };
 		0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnsupportedPane.xib; sourceTree = "<group>"; };
 		0CA297B323A903340025A4EF /* BinaryFileDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryFileDocument.swift; sourceTree = "<group>"; };
@@ -253,6 +259,8 @@
 		D7CBF7C2222878F10088715C = {
 			isa = PBXGroup;
 			children = (
+				0C5DA793247BEC1400CFC11D /* SVGEditor.plugin */,
+				0C5DA78E247BEC0A00CFC11D /* InterfaceBuilder.plugin */,
 				D7CBF7CD222878F10088715C /* Nimble */,
 				D7CBF8AE2229268C0088715C /* Sources */,
 				D7CBF7CC222878F10088715C /* Products */,
