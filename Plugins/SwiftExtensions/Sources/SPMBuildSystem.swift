@@ -10,7 +10,7 @@ import Foundation
 
 import NimbleCore
 import BuildSystem
-import SKLocalServer
+import SwiftExtensions
 
 class SPMBuildSystem: BuildSystem {
 

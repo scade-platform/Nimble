@@ -10,7 +10,8 @@ import Foundation
 
 import NimbleCore
 import BuildSystem
-import SKLocalServer
+import SwiftExtensions
+
 
 class SwiftBuildSystem: BuildSystem {
   var name: String {

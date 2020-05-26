@@ -5,6 +5,7 @@
 //  Created by Grigory Markin on 12.02.20.
 //  Copyright © 2020 SCADE. All rights reserved.
 //
+import LanguageServerProtocol
 
 public extension String {
   func index(at pos: Position) -> String.Index {

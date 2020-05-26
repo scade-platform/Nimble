@@ -10,7 +10,7 @@ import Foundation
 
 import NimbleCore
 
-@_exported import LanguageServerProtocol
+import LanguageServerProtocol
 import LanguageServerProtocolJSONRPC
 
 

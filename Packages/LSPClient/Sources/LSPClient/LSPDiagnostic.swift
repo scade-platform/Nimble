@@ -7,6 +7,7 @@
 //
 
 import CodeEditor
+import LanguageServerProtocol
 
 struct LSPDiagnostic: SourceCodeDiagnostic {
   let wrapped: LanguageServerProtocol.Diagnostic

@@ -8,8 +8,10 @@
 
 import NimbleCore
 import BuildSystem
+import LSPClient
+import SwiftExtensions
 
-public final class SwiftExtensions: Module {
+public final class SwiftExtensionsModule: Module {
   public static let plugin: Plugin = SwiftExtensionsPlugin()
 }
 
@@ -17,6 +19,13 @@ public final class SwiftExtensions: Module {
 final class SwiftExtensionsPlugin: Plugin {
 
   func load() {
+    Settings.shared.add(SKLocalServer.$swiftToolchain)
+    Settings.shared.add(SKLocalServer.$swiftTarget)
+    Settings.shared.add(SKLocalServer.$swiftSdkRoot)
+    Settings.shared.add(SKLocalServer.$swiftCompilerFlags)
+
+    LSPServerManager.shared.registerProvider(SKLocalServerProvider())
+
     BuildSystemsManager.shared.register(buildSystem: SwiftBuildSystem())
     BuildSystemsManager.shared.register(buildSystem: SPMBuildSystem())
 

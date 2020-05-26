@@ -8,6 +8,7 @@
 
 
 import Foundation
+
 // SourceKitLSP
 import SKCore
 import SKSupport
@@ -17,9 +18,12 @@ import TSCLibc
 import TSCUtility
 import LSPLogging
 import Build
+
 // LSPClient
 import LSPClient
 import NimbleCore
+
+import LanguageServerProtocol
 
 
 public extension SKLocalServer {

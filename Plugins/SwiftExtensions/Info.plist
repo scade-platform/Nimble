@@ -21,6 +21,6 @@
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2019 SCADE. All rights reserved.</string>
 	<key>NSPrincipalClass</key>
-	<string>SwiftExtensions.SwiftExtensions</string>
+	<string>SwiftExtensionsPlugin.SwiftExtensionsModule</string>
 </dict>
 </plist>
