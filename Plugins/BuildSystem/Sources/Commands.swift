@@ -9,6 +9,7 @@
 import AppKit
 import NimbleCore
 import BuildSystem
+import os.log
 
 // MARK: - Run command
 
@@ -97,13 +98,23 @@ final class SelectTarget: Command {
   }
   
   override func validate(in workbench: Workbench, control: NSControl?) -> State {
+    os_log("Validation target selector.", log: OSLog.targetSelector, type: .info)
+    
     guard let activeSystem = BuildSystemsManager.shared.activeBuildSystem, !activeSystem.targets(in: workbench).isEmpty else { return [] }
     if let toolbarTargetControl = control as? ToolbarTargetControl {
+      
+      if let target = toolbarTargetControl.target, let targetDescription = target.description {
+        os_log("Control: %{public}s, target: %{public}s", log: .targetSelector, type: .info, toolbarTargetControl.description, targetDescription)
+      } else {
+        os_log("Control: %{public}s without target", log: .targetSelector, type: .info, toolbarTargetControl.description)
+      }
+      
       workbench.observers.add(observer: toolbarTargetControl)
       BuildSystemsManager.shared.observers.add(observer: toolbarTargetControl)
       toolbarTargetControl.autoSelectTarget(in: workbench)
+      return [.enabled]
     }
-    return [.enabled]
+    return []
   }
 }
 
