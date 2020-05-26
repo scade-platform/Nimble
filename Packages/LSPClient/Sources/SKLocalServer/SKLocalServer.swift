@@ -16,6 +16,7 @@ import TSCBasic
 import TSCLibc
 import TSCUtility
 import LSPLogging
+import Build
 // LSPClient
 import LSPClient
 import NimbleCore
@@ -24,10 +25,29 @@ import NimbleCore
 public extension SKLocalServer {
   @Setting("swift.toolchain", defaultValue: "")
   static var swiftToolchain: String
+
+  @Setting("swift.target", defaultValue: "")
+  static var swiftTarget: String
+
+  @Setting("swift.sdkRoot", defaultValue: "")
+  static var swiftSdkRoot: String
+
+  @Setting("swift.compilerFlags", defaultValue: [])
+  static var swiftCompilerFlags: [String]
   
   private static var swiftToolchainInstallPath: AbsolutePath? {
     guard !SKLocalServer.$swiftToolchain.isDefault else { return nil }
     return AbsolutePath(SKLocalServer.swiftToolchain)
+  }
+
+  private static var swiftTargetValue: String? {
+    guard !SKLocalServer.$swiftTarget.isDefault else { return nil }
+    return SKLocalServer.swiftTarget
+  }
+
+  private static var swiftSdkRootValue: AbsolutePath? {
+    guard !SKLocalServer.$swiftSdkRoot.isDefault else { return nil }
+    return AbsolutePath(SKLocalServer.swiftSdkRoot)
   }
 }
 
@@ -51,6 +71,15 @@ public final class SKLocalServer: LSPServer {
   }
   
   public func start() throws {
+    if let targ = SKLocalServer.swiftTargetValue {
+      serverOptions.buildSetup.triple = try Triple(targ);
+      serverOptions.buildSetup.sdkRoot = SKLocalServer.swiftSdkRootValue
+
+      for flag in SKLocalServer.swiftCompilerFlags {
+        serverOptions.buildSetup.flags.swiftCompilerFlags.append(flag)
+      }
+    }
+
     server = SourceKitServer(client: clientConnection, options: serverOptions) { [weak self] in
       self?.stop()
     }
