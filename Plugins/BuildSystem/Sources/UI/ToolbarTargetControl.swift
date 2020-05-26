@@ -390,7 +390,7 @@ public extension Workbench {
     set {
       selectedVariants[self.id] = newValue
       BuildSystemsManager.shared.observers.notify {
-        $0.buildVariantDidChange(newValue, in: self)
+        $0.workbenchDidChangeVariant(self, variant: newValue)
       }
     }
   }

@@ -54,7 +54,7 @@ public protocol BuildSystemsObserver : class {
   func buildSystemDidRegister(_ buildSystem: BuildSystem)
   func activeBuildSystemDidChange(deactivatedBuildSystem: BuildSystem?, activeBuildSystem: BuildSystem?)
 
-  func buildVariantDidChange(_ variant: Variant?, in: Workbench)
+  func workbenchDidChangeVariant(_ workbench: Workbench, variant: Variant?)
 }
 
 public extension BuildSystemsObserver {
@@ -62,5 +62,5 @@ public extension BuildSystemsObserver {
   func buildSystemDidRegister(_ buildSystem: BuildSystem) {}
   func activeBuildSystemDidChange(deactivatedBuildSystem: BuildSystem?, activeBuildSystem: BuildSystem?) {}
 
-  func buildVariantDidChange(_ variant: Variant?, in: Workbench) {}
+  func workbenchDidChangeVariant(_ workbench: Workbench, variant: Variant?) {}
 }

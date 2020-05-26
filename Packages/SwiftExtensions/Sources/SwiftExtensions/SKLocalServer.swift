@@ -140,9 +140,12 @@ public final class SKLocalServerProvider: LSPServerProvider {
 
 
 extension SKLocalServer: BuildSystemsObserver {
-  public func buildVariantDidChange(_ variant: Variant?, in workbench: Workbench) {
-    guard self.workbench === workbench else { return }
+  public func workbenchDidChangeVariant(_ workbench: Workbench, variant: Variant?) {
+    guard self.workbench === workbench,
+          let target = variant?.target,
+          // Ensure there is at least one workspace folder included into the target
+          client.workspaceFolders.contains(where: { target.contains(url: $0) }) else { return }
 
-    print("Build variant is changed")
+    print("Folders: \(client.workspaceFolders)")
   }
 }

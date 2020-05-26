@@ -139,6 +139,11 @@ fileprivate class SwiftTarget: Target {
     }
     return false
   }
+
+  /// Corresponds to the working directory
+  func contains(folder: Folder) -> Bool {
+    return document.fileURL?.deletingLastPathComponent() == folder.url
+  }
 }
 
 

@@ -16,22 +16,22 @@ public final class LSPClient {
   enum State {
     case ready, initializing, initialized, failed
   }
-    
+
+  private var initializing = DispatchGroup()
+
+  
   let connection: Connection
-  
-  var openedDocuments: [ObjectIdentifier] = []
-  
+
   weak var connector: LSPConnector? = nil
 
-    
-  private var initializing = DispatchGroup()
-  
   private(set) var state: State = .ready
-  private(set) var workspaceFolders: [URL] = []
-  
-  private(set) var serverCapabilities = ServerCapabilities()
-      
-  
+
+  public private(set) var workspaceFolders: [URL] = []
+
+  public private(set) var openedDocuments: [ObjectIdentifier] = []
+
+  public private(set) var serverCapabilities = ServerCapabilities()
+
   
   public init(_ connection: Connection) {
     self.connection = connection

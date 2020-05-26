@@ -11,20 +11,36 @@ import NimbleCore
 
 public protocol Target : class {
   var name: String { get }
+
   var icon: Icon? { get }
+
   var variants: [Variant] { get }
+
   var workbench: Workbench? { get }
-  
+
   func contains(file: File) -> Bool
+
+  func contains(folder: Folder) -> Bool
 }
 
 public extension Target {
-  //Default value for optional properties
   var icon: Icon? { nil }
+
   var workbench: Workbench? { nil }
+
   var id: ObjectIdentifier { ObjectIdentifier(self) }
   
-  func contains(file: File) -> Bool {
+  func contains(file: File) -> Bool { return false }
+
+  func contains(folder: Folder) -> Bool { return false }
+
+  func contains(url: URL) -> Bool {
+    guard url.isFileURL else { return false }
+    if let folder = Folder(url: url) {
+      return contains(folder: folder)
+    } else if let file = File(url: url) {
+      return contains(file: file)
+    }
     return false
   }
 }

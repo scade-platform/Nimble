@@ -132,12 +132,18 @@ class SPMTarget: Target {
   }()
   
   let folder: Folder
+
   var variants: [Variant] = []
+
   weak var workbench: Workbench?
   
   init(folder: Folder, workbench: Workbench) {
     self.folder = folder
     self.workbench = workbench
+  }
+
+  func contains(folder: Folder) -> Bool {
+    return self.folder == folder
   }
 }
 
