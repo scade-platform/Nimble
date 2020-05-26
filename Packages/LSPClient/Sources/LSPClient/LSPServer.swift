@@ -25,6 +25,11 @@ public protocol LSPServer: class {
 }
 
 
+public extension LSPServer {
+  var workbench: Workbench? { client.connector?.workbench }
+}
+
+
 // MARK: - LSPServerProvider
 
 public protocol LSPServerProvider {

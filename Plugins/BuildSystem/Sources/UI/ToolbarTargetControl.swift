@@ -382,16 +382,16 @@ extension ToolbarTargetControl: BuildSystemsObserver {
 }
 
 
-extension Workbench {
+public extension Workbench {
   fileprivate var id: ObjectIdentifier { ObjectIdentifier(self) }
   
   var selectedVariant: Variant? {
-    get {
-      return selectedVariants[self.id]
-    }
+    get { return selectedVariants[self.id] }
     set {
       selectedVariants[self.id] = newValue
-      
+      BuildSystemsManager.shared.observers.notify {
+        $0.buildVariantDidChange(newValue, in: self)
+      }
     }
   }
 }

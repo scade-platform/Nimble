@@ -28,10 +28,15 @@ final class LSPConnector {
   }
     
   func createServer(for lang: String) -> LSPServer? {
-    guard let server = LSPServerManager.shared.createServer(for: lang),
-          let _ = try? server.start() else { return nil }
-    
+    guard let server = LSPServerManager.shared.createServer(for: lang) else { return nil }
     server.client.connector = self
+
+    do {
+      try server.start()
+    } catch {
+      return nil
+    }
+
     return server
   }
   

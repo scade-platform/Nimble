@@ -9,6 +9,11 @@
 
 import Foundation
 
+import LSPClient
+import NimbleCore
+import BuildSystem
+
+
 // SourceKitLSP
 import SKCore
 import SKSupport
@@ -18,11 +23,6 @@ import TSCLibc
 import TSCUtility
 import LSPLogging
 import Build
-
-// LSPClient
-import LSPClient
-import NimbleCore
-
 import LanguageServerProtocol
 
 
@@ -110,6 +110,7 @@ public final class SKLocalServer: LSPServer {
     }
     
     isRunning = true
+    BuildSystemsManager.shared.observers.add(observer: self)
   }
   
   public func stop() {
@@ -121,6 +122,7 @@ public final class SKLocalServer: LSPServer {
     serverConnection.close()
     
     isRunning = false
+    BuildSystemsManager.shared.observers.remove(observer: self)
   }
 }
 
@@ -132,5 +134,15 @@ public final class SKLocalServerProvider: LSPServerProvider {
   
   public func createServer() -> LSPServer {
     return SKLocalServer()
+  }
+}
+
+
+
+extension SKLocalServer: BuildSystemsObserver {
+  public func buildVariantDidChange(_ variant: Variant?, in workbench: Workbench) {
+    guard self.workbench === workbench else { return }
+
+    print("Build variant is changed")
   }
 }
