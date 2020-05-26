@@ -15,9 +15,12 @@ public final class SwiftExtensions: Module {
 
 
 final class SwiftExtensionsPlugin: Plugin {
+
   func load() {
     BuildSystemsManager.shared.register(buildSystem: SwiftBuildSystem())
     BuildSystemsManager.shared.register(buildSystem: SPMBuildSystem())
+
+    Settings.shared.add(SPMBuildSystem.$toolchains)
   }
 }
 

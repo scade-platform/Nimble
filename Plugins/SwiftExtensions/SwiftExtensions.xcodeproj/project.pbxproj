@@ -15,6 +15,7 @@
 		D7D0FFED2471D062001A0EFC /* LSPClient in Frameworks */ = {isa = PBXBuildFile; productRef = D7D0FFEC2471D062001A0EFC /* LSPClient */; };
 		D7D4BD2B23FCA7A70063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD2A23FCA7A70063BD8F /* NimbleCore */; };
 		D7D4BD4E23FCAFEC0063BD8F /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = D7D4BD4D23FCAFEC0063BD8F /* package.yml */; };
+		E3E692D5247BB12F004CC65B /* SwiftToolchain.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3E692D4247BB12F004CC65B /* SwiftToolchain.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +26,7 @@
 		D7D0FFE52471CE9E001A0EFC /* SwiftBuildSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBuildSystem.swift; sourceTree = "<group>"; };
 		D7D4BD4D23FCAFEC0063BD8F /* package.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = package.yml; sourceTree = "<group>"; };
 		D7EC1376239EFC6D00DA0DA0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E3E692D4247BB12F004CC65B /* SwiftToolchain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftToolchain.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 		D7BEC81522B915BB00A8F48B /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				E3E692D4247BB12F004CC65B /* SwiftToolchain.swift */,
 				D7D0FFE52471CE9E001A0EFC /* SwiftBuildSystem.swift */,
 				D7D0FFE32471CE95001A0EFC /* SPMBuildSystem.swift */,
 				D7BEC81622B915D100A8F48B /* SwiftExtensions.swift */,
@@ -163,6 +166,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7D0FFE42471CE95001A0EFC /* SPMBuildSystem.swift in Sources */,
+				E3E692D5247BB12F004CC65B /* SwiftToolchain.swift in Sources */,
 				D7BEC81722B915D100A8F48B /* SwiftExtensions.swift in Sources */,
 				D7D0FFE62471CE9E001A0EFC /* SwiftBuildSystem.swift in Sources */,
 			);
