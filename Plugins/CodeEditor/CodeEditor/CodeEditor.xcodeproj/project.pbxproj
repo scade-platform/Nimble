@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0CF422D123B4BB90000E1921 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CF422D023B4BB90000E1921 /* Assets.xcassets */; };
 		D741547E236C99AE00A1B80C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D741547D236C99AE00A1B80C /* Info.plist */; };
+		D778B8CC24782FDA00F93860 /* SnippetPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E418E4A324780FAC00112C6D /* SnippetPlaceholderView.swift */; };
 		D7D4710623FC952E00CC9BAA /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = D7D4710523FC952E00CC9BAA /* Icons */; };
 		D7D4711E23FC983E00CC9BAA /* CodeEditorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7D4710923FC983E00CC9BAA /* CodeEditorView.xib */; };
 		D7D4711F23FC983E00CC9BAA /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4710A23FC983E00CC9BAA /* CodeEditorView.swift */; };
@@ -48,8 +49,6 @@
 		D7D4716323FC9BBE00CC9BAA /* NSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4715323FC9BBD00CC9BAA /* NSAttributedString.swift */; };
 		D7D4716423FC9BBE00CC9BAA /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4715423FC9BBE00CC9BAA /* String+Localization.swift */; };
 		D7D4BD1723FCA0F20063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD1623FCA0F20063BD8F /* NimbleCore */; };
-		E418E4A524780FAC00112C6D /* SnippetPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E418E4A324780FAC00112C6D /* SnippetPlaceholderView.swift */; };
-		E418E4A624780FAC00112C6D /* SnippetsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E418E4A424780FAC00112C6D /* SnippetsManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -323,8 +322,7 @@
 				D7D4715723FC9BBE00CC9BAA /* LineEnding.swift in Sources */,
 				D7D4715B23FC9BBE00CC9BAA /* String+Counting.swift in Sources */,
 				D7D4716023FC9BBE00CC9BAA /* NSLayoutManager+Range.swift in Sources */,
-				E418E4A524780FAC00112C6D /* SnippetPlaceholderView.swift in Sources */,
-				E418E4A624780FAC00112C6D /* SnippetsManager.swift in Sources */,
+				D778B8CC24782FDA00F93860 /* SnippetPlaceholderView.swift in Sources */,
 				D7D4715F23FC9BBE00CC9BAA /* Collection.swift in Sources */,
 				D7D4712823FC983E00CC9BAA /* CurrentLineHighlighting.swift in Sources */,
 				D7D4716423FC9BBE00CC9BAA /* String+Localization.swift in Sources */,

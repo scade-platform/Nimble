@@ -11,21 +11,20 @@ import Cocoa
 // MARK: -
 
 final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
-  
-  // MARK: -
-  // MARK: CurrentLineHighlighting
-  
+
+  // MARK: - CurrentLineHighlighting
+
   var needsUpdateLineHighlight = true
   var lineHighLightRects: [NSRect] = []
   var lineHighLightColor: NSColor? = nil
     
-  // MARK: -
-  
+  // MARK: - Line numbers
+
   var lineNumberView: LineNumberView? = nil
 
   // MARK: - Snippets
 
-  let snippetsManager = SnippetsManager()
+  private var snippetViews: [NSView] = []
 
   // MARK: -
 
@@ -46,23 +45,19 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     // workaround for: the text selection highlight can remain between lines (2017-09 macOS 10.13).
     self.scaleUnitSquare(to: NSSize(width: 0.5, height: 0.5))
     self.scaleUnitSquare(to: self.convert(.unit, from: nil))  // reset scale
-    
+
     // setup layoutManager and textContainer
-    // let textContainer = TextContainer()
-    // // TODO: move to settings
-    // textContainer.isHangingIndentEnabled = true //defaults[.enablesHangingIndent]
-    // textContainer.hangingIndentWidth = 2 //defaults[.hangingIndentWidth]
-    // self.replaceTextContainer(textContainer)
+//    let textContainer = TextContainer()
+//    // // TODO: move to settings
+//    textContainer.isHangingIndentEnabled = true //defaults[.enablesHangingIndent]
+//    textContainer.hangingIndentWidth = 2 //defaults[.hangingIndentWidth]
+//    self.replaceTextContainer(textContainer)
 
-
-    // for snippets rendering
-    snippetsManager.textView = self
-    self.textContainer?.lineFragmentPadding = 0
-    
     //let layoutManager = LayoutManager()
     let layoutManager = CodeEditorLayoutManager()
     layoutManager.delegate = self
 
+    self.textContainer!.lineFragmentPadding = 0.0
     self.textContainer!.replaceLayoutManager(layoutManager)
     self.layoutManager!.allowsNonContiguousLayout = true
 
@@ -303,17 +298,27 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     //self.drawRoundedBackground(in: rect)
   }
   
-  override func setSelectedRanges(_ ranges: [NSValue], affinity: NSSelectionAffinity, stillSelecting stillSelectingFlag: Bool) {
+  override func setSelectedRanges(_ ranges: [NSValue],
+                                  affinity: NSSelectionAffinity,
+                                  stillSelecting stillSelectingFlag: Bool) {
+
+    if let selection = ranges.first as? NSRange, selection.length == 0,
+        let snippet = snippets.first(where: {$0.range.contains(selection.location) && selection.location > $0.range.location }) {
+
+      self.window?.makeFirstResponder(snippet.view)
+      return
+    }
+
     super.setSelectedRanges(ranges, affinity: affinity, stillSelecting: stillSelectingFlag)
     
     self.needsUpdateLineHighlight = true
     self.lineNumberView?.needsDisplay = true
   }
   
-  
-  // MARK: Auto-closing + auto-indents
-  
-  
+
+
+  // MARK: - Auto-closing + auto-indents
+
   let autoClosingPairs = ["()", "[]", "{}"]
 
   var selectedIndex: String.Index {
@@ -386,7 +391,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     let autoIndentLine = autoClosingPairs.contains(surroundString(selectedIndex))
     
     super.insertNewline(sender)
-    super.insertText(currentIndent, replacementRange: selectedRange())
+    //super.insertText(currentIndent, replacementRange: selectedRange())
 
     if autoIndentLine {
       super.insertTab(sender)
@@ -406,7 +411,6 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
       super.deleteBackward(sender)
     }
   }
-  
 }
 
 
@@ -419,27 +423,28 @@ extension CodeEditorTextView: NSLayoutManagerDelegate {
                      properties: UnsafePointer<NSLayoutManager.GlyphProperty>,
                      characterIndexes: UnsafePointer<Int>,
                      font: NSFont,
-                     forGlyphRange glyphRange: NSRange) -> Int {
+                     forGlyphRange range: NSRange) -> Int {
 
-    var modifiedGlyphProperties = [NSLayoutManager.GlyphProperty]()
-    for i in 0 ..< glyphRange.length {
+    var modifiedProperties = [NSLayoutManager.GlyphProperty]()
+
+    for i in 0 ..< range.length {
       var glyphProperties = properties[i]
-      if snippetsManager.containsIndex(characterIndexes[i]) {
+      if let _ = textStorage?.attribute(.snippet, at: characterIndexes[i], effectiveRange: nil) {
         glyphProperties.insert(.controlCharacter)
       }
-      modifiedGlyphProperties.append(glyphProperties)
+      modifiedProperties.append(glyphProperties)
     }
 
-    modifiedGlyphProperties.withUnsafeBufferPointer { modifiedGlyphPropertiesBufferPointer in
-        guard let modifiedGlyphPropertiesPointer = modifiedGlyphPropertiesBufferPointer.baseAddress else { return }
+    modifiedProperties.withUnsafeBufferPointer {
+        guard let ptr = $0.baseAddress else { return }
         layoutManager.setGlyphs(glyphs,
-                                properties: modifiedGlyphPropertiesPointer,
+                                properties: ptr,
                                 characterIndexes: characterIndexes,
                                 font: font,
-                                forGlyphRange: glyphRange)
+                                forGlyphRange: range)
     }
 
-    return glyphRange.length
+    return range.length
   }
 
 
@@ -447,6 +452,74 @@ extension CodeEditorTextView: NSLayoutManagerDelegate {
                      shouldUse action: NSLayoutManager.ControlCharacterAction,
                      forControlCharacterAt charIndex: Int) -> NSLayoutManager.ControlCharacterAction {
 
-    return snippetsManager.containsIndex(charIndex) ? .zeroAdvancement : action
+    if let _ = textStorage?.attribute(.snippet, at: charIndex, effectiveRange: nil) {
+      return .zeroAdvancement
+    }
+
+    return action
   }
 }
+
+
+// MARK: - Code Snippets
+
+extension NSAttributedString.Key {
+  static let snippet = NSAttributedString.Key("Snippet")
+}
+
+
+extension CodeEditorTextView {
+  typealias Snippet = (range: NSRange, view: NSView)
+
+  var range: NSRange { NSRange(location: 0, length: textStorage?.length ?? 0) }
+
+  var snippets: [Snippet] {
+    get {
+      var snippets = [Snippet]()
+      textStorage?.enumerateAttribute(.snippet, in: range, options: .longestEffectiveRangeNotRequired) { (value, range, _) in
+        guard let view = value as? NSView else { return }
+        snippets.append((view: view, range: range))
+      }
+      return snippets
+    }
+    set {
+      textStorage?.enumerateAttribute(.snippet, in: range, options: .longestEffectiveRangeNotRequired) { (value, range, _) in
+        textStorage?.removeAttribute(.snippet, range: range)
+      }
+      snippetViews.forEach { $0.removeFromSuperview() }
+      textContainer?.exclusionPaths = []
+      addSnippets(newValue)
+    }
+  }
+
+  private func addSnippets(_ snippets: [Snippet]) {
+    guard let layoutManager = self.layoutManager,
+          let textContainer = self.textContainer,
+          let textStorage = self.textStorage else { return }
+
+    // Before accessing glyphes bounds, ensure the text is layouted
+    layoutManager.ensureLayout(for: textContainer)
+
+    for s in snippets {
+      let glyphRange = layoutManager.glyphRange(forCharacterRange: s.range, actualCharacterRange: nil)
+      var glyphRect = layoutManager.boundingRect(forGlyphRange: glyphRange, in: textContainer)
+      glyphRect.origin.y -= floor(self.font?.descender ?? 0)
+
+      s.view.frame.origin = glyphRect.origin
+      self.addSubview(s.view)
+      self.snippetViews.append(s.view)
+
+      var pathRect = s.view.frame
+      pathRect.size.width += 2.0
+      s.view.frame.origin.x += 1.0
+
+      let path = NSBezierPath(rect: pathRect)
+      textContainer.exclusionPaths.append(path)
+
+      textStorage.addAttributes([.snippet: s.view], range: s.range)
+    }
+  }
+
+}
+
+

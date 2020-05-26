@@ -91,11 +91,9 @@ class CodeEditorView: NSViewController {
       self.textView.font = theme.general.font
 
       textView.apply(theme: theme)
-      highlightSyntax()
 
-      ///TODO: enable it
-      //textView.snippetPlaceholders = parseSnippets()
-      textView.snippetsManager.onLoadContent()
+      highlightSyntax()
+      invalidateSnippets()
     }
   }
       
@@ -246,21 +244,18 @@ extension CodeEditorView: WorkbenchEditor {
 // MARK: - NSTextStorageDelegate
 
 extension CodeEditorView: NSTextStorageDelegate {
+  func textStorage(_ textStorage: NSTextStorage,
+                   didProcessEditing editedMask: NSTextStorageEditActions,
+                   range editedRange: NSRange,
+                   changeInLength delta: Int) {
 
-  override func textStorageDidProcessEditing(_ notification: Notification) {
-    guard let doc = document,
-          let textStorage = notification.object as? NSTextStorage,
-              textStorage.editedMask.contains(.editedCharacters) else { return }
-        
-    doc.updateChangeCount(.changeDone)
-    
+    guard editedMask.contains(.editedCharacters) else { return }
+
+    document?.updateChangeCount(.changeDone)
+
     // Update highlighting
-    guard let syntaxParser = doc.syntaxParser else { return }
+    guard let syntaxParser = document?.syntaxParser else { return }
     let range = textStorage.editedRange
-    
-
-    ///TODO: enable it
-    //self.textView.snippetPlaceholders = parseSnippets()
 
     DispatchQueue.main.async { [weak self] in
       self?.textView.subviews.filter{$0 is DiagnosticView}.forEach{$0.removeFromSuperview()}
@@ -272,25 +267,35 @@ extension CodeEditorView: NSTextStorageDelegate {
       }
     }
   }
-
-  func textStorage(_ textStorage: NSTextStorage,
-                   willProcessEditing editedMask: NSTextStorageEditActions,
-                   range editedRange: NSRange, changeInLength delta: Int) {
-    if editedMask.contains(.editedCharacters) {
-      textView.snippetsManager.isEdited = true
-
-      if delta > 0 {
-        textView.snippetsManager.processEditing(in: editedRange)
-      }
-    }
-  }
-  
-
 }
 
 // MARK: - NSTextViewDelegate
 
 extension CodeEditorView: NSTextViewDelegate {
+  private static let snippetRegex = try? NSRegularExpression(pattern: "\\$\\{[0-9]+:(.*?)\\}")
+
+  private func invalidateSnippets(in range: NSRange? = nil) {
+    guard let string = textView.textStorage?.string,
+          let matches = CodeEditorView.snippetRegex?.matches(in: string,
+                                                             options: [],
+                                                             range: range ?? string.nsRange) else { return }
+    var snippets: [(NSRange, NSView)] = []
+
+    for m in matches where m.numberOfRanges == 2 {
+      let snippetRange = m.range(at: 0)
+      let snippetView = SnippetPlaceholderView()
+      snippetView.configure(for: textView, range: snippetRange, text: "Snippet")
+
+      snippets.append((snippetRange, snippetView))
+    }
+
+    textView.snippets = snippets
+  }
+
+  func textDidChange(_ notification: Notification) {
+    invalidateSnippets()
+  }
+
   func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
     guard let doc = document else { return true }
     
@@ -302,7 +307,7 @@ extension CodeEditorView: NSTextViewDelegate {
     
     return true
   }
-  
+
   func textViewDidChangeSelection(_ notification: Notification) {
     let pos = textView.selectedPosition
     statusBarView.setCursorPosition(pos.line, pos.column)
