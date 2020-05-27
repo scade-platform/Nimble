@@ -8,6 +8,7 @@
 
 
 import Foundation
+import os.log
 
 import LSPClient
 import NimbleCore
@@ -29,59 +30,43 @@ import LanguageServerProtocol
 public extension SKLocalServer {
   @Setting("swift.toolchain", defaultValue: "")
   static var swiftToolchain: String
-
-  @Setting("swift.target", defaultValue: "")
-  static var swiftTarget: String
-
-  @Setting("swift.sdkRoot", defaultValue: "")
-  static var swiftSdkRoot: String
-
-  @Setting("swift.compilerFlags", defaultValue: [])
-  static var swiftCompilerFlags: [String]
-  
-  private static var swiftToolchainInstallPath: AbsolutePath? {
-    guard !SKLocalServer.$swiftToolchain.isDefault else { return nil }
-    return AbsolutePath(SKLocalServer.swiftToolchain)
-  }
-
-  private static var swiftTargetValue: String? {
-    guard !SKLocalServer.$swiftTarget.isDefault else { return nil }
-    return SKLocalServer.swiftTarget
-  }
-
-  private static var swiftSdkRootValue: AbsolutePath? {
-    guard !SKLocalServer.$swiftSdkRoot.isDefault else { return nil }
-    return AbsolutePath(SKLocalServer.swiftSdkRoot)
-  }
 }
 
 public final class SKLocalServer: LSPServer {
   public var isRunning = false
-  
+
   public var client: LSPClient
   
-  var clientConnection: LocalConnection
-  var serverConnection: LocalConnection
+  private var clientConnection: LocalConnection
+  private var serverConnection: LocalConnection
       
   var server: SourceKitServer! = nil
-  var serverOptions = SourceKitServer.Options()
+  var currentVariant: SwiftVariant? = nil
   
   init() {
     clientConnection = LocalConnection()
     serverConnection = LocalConnection()
-    
-    client = LSPClient(serverConnection)    
-    ToolchainRegistry.shared = ToolchainRegistry(installPath: SKLocalServer.swiftToolchainInstallPath, localFileSystem)
+    client = LSPClient(serverConnection)
+  }
+
+  private func resetConnection() {
+    clientConnection = LocalConnection()
+    serverConnection = LocalConnection()
+    client = LSPClient(serverConnection)
   }
   
   public func start() throws {
-    if let targ = SKLocalServer.swiftTargetValue {
-      serverOptions.buildSetup.triple = try Triple(targ);
-      serverOptions.buildSetup.sdkRoot = SKLocalServer.swiftSdkRootValue
+    currentVariant = client.connector?.workbench?.selectedVariant as? SwiftVariant
+    var serverOptions = SourceKitServer.Options()
 
-      for flag in SKLocalServer.swiftCompilerFlags {
-        serverOptions.buildSetup.flags.swiftCompilerFlags.append(flag)
-      }
+    if let toolchain = currentVariant?.getToolchain() {
+      let compilerPath = AbsolutePath(toolchain.compiler)
+      ToolchainRegistry.shared = ToolchainRegistry(installPath: compilerPath, localFileSystem)
+      serverOptions.buildSetup.triple = try Triple(toolchain.target);
+      serverOptions.buildSetup.sdkRoot = AbsolutePath(toolchain.sdkRoot)
+      serverOptions.buildSetup.flags.swiftCompilerFlags += toolchain.compilerFlags
+    } else {
+      ToolchainRegistry.shared = ToolchainRegistry(installPath: nil, localFileSystem)
     }
 
     server = SourceKitServer(client: clientConnection, options: serverOptions) { [weak self] in
@@ -146,6 +131,24 @@ extension SKLocalServer: BuildSystemsObserver {
           // Ensure there is at least one workspace folder included into the target
           client.workspaceFolders.contains(where: { target.contains(url: $0) }) else { return }
 
-    print("Folders: \(client.workspaceFolders)")
+    // don't restart server if variant is not a swift variant
+    guard let sVariant = variant as? SwiftVariant else { return }
+
+    if currentVariant == nil {
+      // don't restart server if current variant is not yet set. Nimble sets
+      // variant after server start
+      currentVariant = sVariant
+      return
+    }
+
+    stop()
+    resetConnection()
+
+    do {
+      try start()
+    }
+    catch {
+      os_log("can't start SourceKit server", type: .error)
+    }
   }
 }

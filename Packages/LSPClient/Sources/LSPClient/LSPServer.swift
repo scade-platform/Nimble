@@ -9,6 +9,7 @@
 import Foundation
 
 import NimbleCore
+import BuildSystem
 
 import LanguageServerProtocol
 import LanguageServerProtocolJSONRPC

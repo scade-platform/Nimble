@@ -382,24 +382,9 @@ extension ToolbarTargetControl: BuildSystemsObserver {
 }
 
 
-public extension Workbench {
-  fileprivate var id: ObjectIdentifier { ObjectIdentifier(self) }
-  
-  var selectedVariant: Variant? {
-    get { return selectedVariants[self.id] }
-    set {
-      selectedVariants[self.id] = newValue
-      BuildSystemsManager.shared.observers.notify {
-        $0.workbenchDidChangeVariant(self, variant: newValue)
-      }
-    }
-  }
-}
-
-fileprivate var selectedVariants: [ObjectIdentifier: Variant] = [:]
-
 extension OSLog {
   private static var subsystem = "com.nimble.BuildSystem"
   
   static let targetSelector = OSLog(subsystem: subsystem, category: "targetSelector")
 }
+

@@ -7,7 +7,7 @@
 //
 
 
-struct SwiftToolchain: Codable {
+public struct SwiftToolchain: Codable {
     public var name: String
     public var compiler: String
     public var target: String

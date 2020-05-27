@@ -148,7 +148,7 @@ class SPMTarget: Target {
 }
 
 
-fileprivate class SPMVariant {
+public class SPMVariant {
   var target: Target? {
     spmTarget
   }
@@ -227,7 +227,7 @@ extension SPMVariant {
 }
 
 
-fileprivate class MacVariant: SPMVariant, Variant {
+fileprivate class MacVariant: SPMVariant, SwiftVariant {
   var icon: Icon? {
     BuildSystemIcons.mac
   }
@@ -258,6 +258,10 @@ fileprivate class MacVariant: SPMVariant, Variant {
     proc.arguments = ["build", "-Xswiftc", "-Xfrontend", "-Xswiftc", "-color-diagnostics"]
     return proc
   }
+
+  func getToolchain() -> SwiftToolchain? {
+    return nil
+  }
 }
 
 
@@ -286,7 +290,7 @@ extension MacVariant {
 }
 
 
-fileprivate class UserDefinedToolchainVariant: SPMVariant, Variant {
+fileprivate class UserDefinedToolchainVariant: SPMVariant, SwiftVariant {
   var icon: Icon? = nil
   private var toolchain: SwiftToolchain
     
@@ -327,6 +331,10 @@ fileprivate class UserDefinedToolchainVariant: SPMVariant, Variant {
     proc.arguments = ["build", "-Xswiftc", "-Xfrontend", "-Xswiftc", "-color-diagnostics",
                       "--destination", descPath.string]
     return proc
+  }
+
+  func getToolchain() -> SwiftToolchain? {
+    return toolchain
   }
 }
 

@@ -22,7 +22,7 @@ public final class LSPClient {
   
   let connection: Connection
 
-  weak var connector: LSPConnector? = nil
+  public weak var connector: LSPConnector? = nil
 
   private(set) var state: State = .ready
 

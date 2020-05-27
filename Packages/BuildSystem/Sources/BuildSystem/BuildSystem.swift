@@ -64,3 +64,22 @@ public extension BuildSystemsObserver {
 
   func workbenchDidChangeVariant(_ workbench: Workbench, variant: Variant?) {}
 }
+
+public extension Workbench {
+  fileprivate var id: ObjectIdentifier { ObjectIdentifier(self) }
+  
+  var selectedVariant: Variant? {
+    get { return selectedVariants[self.id] }
+    set {
+      var changed = (selectedVariants[self.id] !== newValue)
+      selectedVariants[self.id] = newValue
+      if changed {
+        BuildSystemsManager.shared.observers.notify {
+          $0.workbenchDidChangeVariant(self, variant: newValue)
+        }
+      }
+    }
+  }
+}
+
+public var selectedVariants: [ObjectIdentifier: Variant] = [:]

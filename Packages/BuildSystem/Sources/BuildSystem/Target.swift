@@ -45,7 +45,7 @@ public extension Target {
   }
 }
 
-public protocol Variant {
+public protocol Variant: AnyObject {
   var name: String { get }
   var icon: Icon? { get }
   var target: Target? { get }

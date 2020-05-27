@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D766FF29247D6728003646B0 /* SwiftToolchain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D766FF27247D6727003646B0 /* SwiftToolchain.swift */; };
 		D766FF2A247D6728003646B0 /* SPMBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D766FF28247D6728003646B0 /* SPMBuildSystem.swift */; };
 		D766FF2B247D6728003646B0 /* SwiftBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D766FF26247D6727003646B0 /* SwiftBuildSystem.swift */; };
 		D778B8CA24769E7200F93860 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7EC1376239EFC6D00DA0DA0 /* Info.plist */; };
@@ -36,7 +35,6 @@
 
 /* Begin PBXFileReference section */
 		D766FF26247D6727003646B0 /* SwiftBuildSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBuildSystem.swift; sourceTree = "<group>"; };
-		D766FF27247D6727003646B0 /* SwiftToolchain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftToolchain.swift; sourceTree = "<group>"; };
 		D766FF28247D6728003646B0 /* SPMBuildSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPMBuildSystem.swift; sourceTree = "<group>"; };
 		D77F337923A4619500E3AFC8 /* bin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bin; sourceTree = "<group>"; };
 		D7BEC80C22B9158B00A8F48B /* SwiftExtensions.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftExtensions.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,7 +84,6 @@
 				D7BEC81622B915D100A8F48B /* Plugin.swift */,
 				D766FF28247D6728003646B0 /* SPMBuildSystem.swift */,
 				D766FF26247D6727003646B0 /* SwiftBuildSystem.swift */,
-				D766FF27247D6727003646B0 /* SwiftToolchain.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -186,7 +183,6 @@
 			files = (
 				D7BEC81722B915D100A8F48B /* Plugin.swift in Sources */,
 				D766FF2A247D6728003646B0 /* SPMBuildSystem.swift in Sources */,
-				D766FF29247D6728003646B0 /* SwiftToolchain.swift in Sources */,
 				D766FF2B247D6728003646B0 /* SwiftBuildSystem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
