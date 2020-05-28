@@ -9,6 +9,7 @@
 import Cocoa
 import NimbleCore
 import BuildSystem
+import os.log
 
 class ToolbarTargetControl : NSControl {
   
@@ -162,10 +163,10 @@ class ToolbarTargetControl : NSControl {
     guard activeTarget == nil, workbench.selectedVariant == nil else { return }
     
     guard let buildSystem = BuildSystemsManager.shared.activeBuildSystem, 
-      let target = buildSystem.targets(in: workbench).first,
-      let variant = target.variants.first else { return }
+      let buildTarget = buildSystem.targets(in: workbench).first,
+      let variant = buildTarget.variants.first else { return }
     
-    set(target: target)
+    set(target: buildTarget)
     separatorImage?.isHidden = false
     set(variant: variant)
     
@@ -174,9 +175,10 @@ class ToolbarTargetControl : NSControl {
     }
     
     if userSelection == nil {
-      self.userSelection = (target, variant)
+      self.userSelection = (buildTarget, variant)
     }
-    activeTarget = target
+    os_log("Auto-selected build target: %{public}s", log: .targetSelector, type: .info, buildTarget.name)
+    activeTarget = buildTarget
     workbench.selectedVariant = variant
   }
   
@@ -204,7 +206,20 @@ class ToolbarTargetControl : NSControl {
   }
   
   @IBAction func leftButtonDidClick(_ sender: Any) {
+    os_log("Target selector did clicked", log: .targetSelector, type: .info)
     guard self.isEnabled, let workbench = self.window?.windowController as? Workbench, let buildSystem = BuildSystemsManager.shared.activeBuildSystem else {
+      os_log("Selector didn't show", log: .targetSelector, type: .info)
+      os_log("isEnabled = %{public}b", log: .targetSelector, type: .info, self.isEnabled)
+      if let windowController = self.window?.windowController {
+        os_log("windowController = %{public}s", log: .targetSelector, type: .info, windowController.description)
+      }else {
+        os_log("windowController = nil", log: .targetSelector, type: .info)
+      }
+      if let buildSystem = BuildSystemsManager.shared.activeBuildSystem  {
+        os_log("active buildSystem = %{public}s", log: .targetSelector, type: .info, buildSystem.name)
+      } else {
+        os_log("active buildSystem = nil", log: .targetSelector, type: .info)
+      }
       return
     }
     
@@ -382,3 +397,9 @@ extension Workbench {
 }
 
 fileprivate var selectedVariants: [ObjectIdentifier: Variant] = [:]
+
+extension OSLog {
+  private static var subsystem = "com.nimble.BuildSystem"
+  
+  static let targetSelector = OSLog(subsystem: subsystem, category: "targetSelector")
+}
