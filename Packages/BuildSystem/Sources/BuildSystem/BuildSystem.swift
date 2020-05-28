@@ -71,12 +71,11 @@ public extension Workbench {
   var selectedVariant: Variant? {
     get { return selectedVariants[self.id] }
     set {
-      var changed = (selectedVariants[self.id] !== newValue)
+      guard selectedVariants[self.id] !== newValue else { return }
+
       selectedVariants[self.id] = newValue
-      if changed {
-        BuildSystemsManager.shared.observers.notify {
-          $0.workbenchDidChangeVariant(self, variant: newValue)
-        }
+      BuildSystemsManager.shared.observers.notify {
+        $0.workbenchDidChangeVariant(self, variant: newValue)
       }
     }
   }
