@@ -9,8 +9,5 @@ NimblePlugins
 # Default install dir
 Applications
 
- # Xcode workspace build dir
-Build 
-
 # Emacs Backup Files #
 *~

@@ -17,10 +17,10 @@ xcodebuild build -workspace Nimble.xcworkspace -scheme Nimble-Release -xcconfig 
 
 # Move Nimble.app
 mkdir -p Applications
-mv ./Build/Products/Release/Nimble.app ./Applications
+mv $HOME/Library/Developer/Xcode/DerivedData/Nimble-*/Build/Products/Release/Nimble.app ./Applications/Nimble.app
 
 # Compress
 hdiutil create -volname Nimble -srcfolder ./Applications -ov -format UDZO Nimble.dmg
 
-# Delete app
+# Clean apps
 rm -rf ./Applications/Nimble.app
