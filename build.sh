@@ -13,7 +13,14 @@ trap 'echo "\"${last_command}\" command filed with exit code $?."' EXIT
 find ~/Library/Developer/Xcode/DerivedData -type d -name "Nimble-*" -exec rm -rf {}/Build \;
 
 # Build project
-xcodebuild -workspace Nimble.xcworkspace -scheme Nimble -configuration=Release -xcconfig build.xcconfig CURRENT_PROJECT_VERSION=$TAG_VERSION install
+xcodebuild build -workspace Nimble.xcworkspace -scheme Nimble-Release -xcconfig build.xcconfig CURRENT_PROJECT_VERSION=$TAG_VERSION
+
+# Move Nimble.app
+mkdir -p Applications
+mv ./Build/Products/Release/Nimble.app ./Applications
 
 # Compress
 hdiutil create -volname Nimble -srcfolder ./Applications -ov -format UDZO Nimble.dmg
+
+# Delete app
+rm -rf ./Applications/Nimble.app
