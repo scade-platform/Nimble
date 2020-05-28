@@ -1,6 +1,6 @@
 .DS_Store
 .build
-Package.resolved
+#Package.resolved
 xcuserdata
 
 # User defined plugins
