@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:../../NimblePlugins/Plugins/ScadeBuildSystem/ScadeBuildSystem.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:../../NimblePlugins/Plugins/SVGEditor/SVGEditor.xcodeproj">
    </FileRef>
    <FileRef
