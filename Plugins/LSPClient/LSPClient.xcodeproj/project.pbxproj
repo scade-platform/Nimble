@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D70AA4D123FC5449007367E7 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70AA4D023FC5449007367E7 /* main.swift */; };
+		D70AA4D123FC5449007367E7 /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70AA4D023FC5449007367E7 /* Plugin.swift */; };
 		D70AA4D423FC5479007367E7 /* LSPClient in Frameworks */ = {isa = PBXBuildFile; productRef = D70AA4D323FC5479007367E7 /* LSPClient */; };
 		D70AA4D523FC5479007367E7 /* LSPClient in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D70AA4D323FC5479007367E7 /* LSPClient */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		D766FF25247D5A68003646B0 /* SourceKitLSP.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D766FF23247D5A1F003646B0 /* SourceKitLSP.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D7D4BD2323FCA6250063BD8F /* CodeEditor in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD2223FCA6250063BD8F /* CodeEditor */; };
 		D7D4BD2723FCA6A90063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD2623FCA6A90063BD8F /* NimbleCore */; };
 		D7D4BD5023FCB2010063BD8F /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = D7D4BD4F23FCB2010063BD8F /* package.yml */; };
@@ -23,6 +24,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				D766FF25247D5A68003646B0 /* SourceKitLSP.framework in Embed Frameworks */,
 				D70AA4D523FC5479007367E7 /* LSPClient in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -31,7 +33,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		D70AA4D023FC5449007367E7 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		D70AA4D023FC5449007367E7 /* Plugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
+		D766FF23247D5A1F003646B0 /* SourceKitLSP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SourceKitLSP.framework; path = PackageFrameworks/SourceKitLSP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7D4BD4F23FCB2010063BD8F /* package.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = package.yml; sourceTree = "<group>"; };
 		D7EC1361239EF4D100DA0DA0 /* LSPClient.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LSPClient.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7EC136A239EF6E100DA0DA0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -54,9 +57,17 @@
 		D70AA4CF23FC5449007367E7 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				D70AA4D023FC5449007367E7 /* main.swift */,
+				D70AA4D023FC5449007367E7 /* Plugin.swift */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		D766FF22247D59EA003646B0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D766FF23247D5A1F003646B0 /* SourceKitLSP.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		D7EC1358239EF4D100DA0DA0 = {
@@ -64,6 +75,7 @@
 			children = (
 				D7EC136A239EF6E100DA0DA0 /* Info.plist */,
 				D7D4BD4F23FCB2010063BD8F /* package.yml */,
+				D766FF22247D59EA003646B0 /* Frameworks */,
 				D7EC1362239EF4D100DA0DA0 /* Products */,
 				D70AA4CF23FC5449007367E7 /* Sources */,
 			);
@@ -155,7 +167,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D70AA4D123FC5449007367E7 /* main.swift in Sources */,
+				D70AA4D123FC5449007367E7 /* Plugin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

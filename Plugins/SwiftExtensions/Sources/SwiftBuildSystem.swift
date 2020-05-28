@@ -10,7 +10,8 @@ import Foundation
 
 import NimbleCore
 import BuildSystem
-import SKLocalServer
+import SwiftExtensions
+
 
 class SwiftBuildSystem: BuildSystem {
   var name: String {
@@ -137,6 +138,11 @@ fileprivate class SwiftTarget: Target {
       return true
     }
     return false
+  }
+
+  /// Corresponds to the working directory
+  func contains(folder: Folder) -> Bool {
+    return document.fileURL?.deletingLastPathComponent() == folder.url
   }
 }
 

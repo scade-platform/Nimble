@@ -10,9 +10,10 @@ import Foundation
 
 import NimbleCore
 import CodeEditor
+import BuildSystem
 
-final class LSPConnector {
-  weak var workbench: Workbench?
+public final class LSPConnector {
+  public weak var workbench: Workbench?
   
   private var runningServers: [String: [LSPServer]] = [:]
   
@@ -28,10 +29,15 @@ final class LSPConnector {
   }
     
   func createServer(for lang: String) -> LSPServer? {
-    guard let server = LSPServerManager.shared.createServer(for: lang),
-          let _ = try? server.start() else { return nil }
-    
+    guard let server = LSPServerManager.shared.createServer(for: lang) else { return nil }
     server.client.connector = self
+
+    do {
+      try server.start()
+    } catch {
+      return nil
+    }
+
     return server
   }
   
@@ -86,7 +92,7 @@ final class LSPConnector {
 
 
 extension LSPConnector: WorkbenchObserver {
-  func workbenchDidOpenDocument(_ workbench: Workbench, document: Document) {
+  public func workbenchDidOpenDocument(_ workbench: Workbench, document: Document) {
     guard let doc = document as? SourceCodeDocument else { return }
     
     let (runningServer, docFolder) = findServer(for: doc)
@@ -100,7 +106,7 @@ extension LSPConnector: WorkbenchObserver {
   }
   
   
-  func workbenchDidCloseDocument(_ workbench: Workbench, document: Document) {
+  public func workbenchDidCloseDocument(_ workbench: Workbench, document: Document) {
     guard let doc = document as? SourceCodeDocument else { return }
     
     let (server, _) = findServer(for: doc)
@@ -111,7 +117,7 @@ extension LSPConnector: WorkbenchObserver {
   }
   
   
-  func workbenchDidSaveDocument(_ workbench: Workbench, document: Document) {
+  public func workbenchDidSaveDocument(_ workbench: Workbench, document: Document) {
     guard let doc = document as? SourceCodeDocument else { return }
     
     let (server, docFolder) = findServer(for: doc)
@@ -127,7 +133,7 @@ extension LSPConnector: WorkbenchObserver {
     }
   }
 
-  func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) {
+  public func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) {
     if document == nil {
       workbench.statusBar.statusMessage = ""
     }

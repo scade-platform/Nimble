@@ -53,10 +53,32 @@ public class BuildSystemsManager {
 public protocol BuildSystemsObserver : class {
   func buildSystemDidRegister(_ buildSystem: BuildSystem)
   func activeBuildSystemDidChange(deactivatedBuildSystem: BuildSystem?, activeBuildSystem: BuildSystem?)
+
+  func workbenchDidChangeVariant(_ workbench: Workbench, variant: Variant?)
 }
 
 public extension BuildSystemsObserver {
   //Default implementations
   func buildSystemDidRegister(_ buildSystem: BuildSystem) {}
   func activeBuildSystemDidChange(deactivatedBuildSystem: BuildSystem?, activeBuildSystem: BuildSystem?) {}
+
+  func workbenchDidChangeVariant(_ workbench: Workbench, variant: Variant?) {}
 }
+
+public extension Workbench {
+  fileprivate var id: ObjectIdentifier { ObjectIdentifier(self) }
+  
+  var selectedVariant: Variant? {
+    get { return selectedVariants[self.id] }
+    set {
+      guard selectedVariants[self.id] !== newValue else { return }
+
+      selectedVariants[self.id] = newValue
+      BuildSystemsManager.shared.observers.notify {
+        $0.workbenchDidChangeVariant(self, variant: newValue)
+      }
+    }
+  }
+}
+
+public var selectedVariants: [ObjectIdentifier: Variant] = [:]

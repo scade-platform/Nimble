@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D7BEC80B22B9158B00A8F48B"
                BuildableName = "SwiftExtensions.plugin"
-               BlueprintName = "SwiftExtensions"
+               BlueprintName = "SwiftExtensions.plugin"
                ReferencedContainer = "container:SwiftExtensions.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -29,8 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -47,12 +45,10 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D7BEC80B22B9158B00A8F48B"
             BuildableName = "SwiftExtensions.plugin"
-            BlueprintName = "SwiftExtensions"
+            BlueprintName = "SwiftExtensions.plugin"
             ReferencedContainer = "container:SwiftExtensions.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -65,7 +61,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D7BEC80B22B9158B00A8F48B"
             BuildableName = "SwiftExtensions.plugin"
-            BlueprintName = "SwiftExtensions"
+            BlueprintName = "SwiftExtensions.plugin"
             ReferencedContainer = "container:SwiftExtensions.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

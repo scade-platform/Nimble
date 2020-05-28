@@ -36,6 +36,9 @@
       location = "container:"
       name = "Packages">
       <FileRef
+         location = "group:Packages/SwiftExtensions">
+      </FileRef>
+      <FileRef
          location = "group:Packages/BuildSystem">
       </FileRef>
       <FileRef
