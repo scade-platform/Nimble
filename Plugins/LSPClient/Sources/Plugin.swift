@@ -8,7 +8,7 @@
 
 import NimbleCore
 import LSPClient
-import SKLocalServer
+
 
 public final class LSPClientModule: Module {
   public static let plugin: Plugin = LSPClientPlugin()
@@ -16,10 +16,7 @@ public final class LSPClientModule: Module {
 
 
 final class LSPClientPlugin: Plugin {
-  func load() {
-    Settings.shared.add(SKLocalServer.$swiftToolchain)
-    LSPServerManager.shared.registerProvider(SKLocalServerProvider())
-  }
+  func load() { }
   
   public func activate(in workbench: Workbench) {
     LSPServerManager.shared.connect(to: workbench)

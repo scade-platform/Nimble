@@ -9,8 +9,9 @@
 import Foundation
 
 import NimbleCore
+import BuildSystem
 
-@_exported import LanguageServerProtocol
+import LanguageServerProtocol
 import LanguageServerProtocolJSONRPC
 
 
@@ -22,6 +23,11 @@ public protocol LSPServer: class {
   
   func start() throws
   func stop()
+}
+
+
+public extension LSPServer {
+  var workbench: Workbench? { client.connector?.workbench }
 }
 
 

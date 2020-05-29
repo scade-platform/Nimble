@@ -3,24 +3,27 @@
 import PackageDescription
 
 let package = Package(
-    name: "LSPClient",
+    name: "SwiftExtensions",
     platforms: [
         .macOS(.v10_14),
     ],
     products: [        
-        .library(name: "LSPClient", type: .dynamic, targets: ["LSPClient"]),
+        .library(name: "SwiftExtensions", type: .dynamic, targets: ["SwiftExtensions"]),
     ],
     dependencies: [
       .package(path: "../../NimbleCore"),
-      .package(path: "../CodeEditor"),
+      .package(path: "../../BuildSystem"),
+      .package(path: "../../LSPClient"),
+      
       .package(url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("swift-5.2-branch")),
     ],
     targets: [
       .target(
-        name: "LSPClient",
+        name: "SwiftExtensions",
         dependencies: [
           "NimbleCore",
-          "CodeEditor",
+          "BuildSystem",
+          "LSPClient",
           "SourceKitLSP"
         ]
       ),

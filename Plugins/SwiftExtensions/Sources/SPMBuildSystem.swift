@@ -10,9 +10,12 @@ import Foundation
 
 import NimbleCore
 import BuildSystem
-import SKLocalServer
+import SwiftExtensions
 
 class SPMBuildSystem: BuildSystem {
+
+  @Setting("swift.toolchains", defaultValue: [])
+  static var toolchains: [SwiftToolchain]
   
   var name: String {
     return "Swift Package"
@@ -21,7 +24,15 @@ class SPMBuildSystem: BuildSystem {
   func targets(in workbench: Workbench) -> [Target] {
     guard let folders = workbench.project?.folders else { return [] }
     let targets = folders.filter{canHandle(folder: $0)}.map{SPMTarget(folder: $0, workbench: workbench)}
-    targets.forEach{ $0.variants.append(MacVariant(target: $0, buildSystem: self))}
+    targets.forEach{
+      // creating default Mac variant
+      $0.variants.append(MacVariant(target: $0, buildSystem: self))
+
+      // creating variants for all user defined toolchains
+      for toolchain in SPMBuildSystem.toolchains {
+        $0.variants.append(UserDefinedToolchainVariant(target: $0, buildSystem: self, toolchain: toolchain))
+      }
+    }
     return targets
   }
   
@@ -121,39 +132,111 @@ class SPMTarget: Target {
   }()
   
   let folder: Folder
+
   var variants: [Variant] = []
+
   weak var workbench: Workbench?
   
   init(folder: Folder, workbench: Workbench) {
     self.folder = folder
     self.workbench = workbench
   }
-  
+
+  func contains(folder: Folder) -> Bool {
+    return self.folder == folder
+  }
 }
 
-fileprivate class MacVariant: Variant {
+
+public class SPMVariant {
   var target: Target? {
     spmTarget
   }
+
+  var name: String
+
+  weak var spmTarget : SPMTarget?
+  weak var buildSystem : BuildSystem?
+
+  init(target: SPMTarget, buildSystem: SPMBuildSystem, name: String) {
+    self.spmTarget = target
+    self.buildSystem = buildSystem
+    self.name = name
+  }
+
+  func createProcess(source: Folder) -> Process {
+    preconditionFailure("This method must be overridden") 
+  }
+
+  func createBuildProcess(source: Folder) -> Process {
+    preconditionFailure("This method must be overridden") 
+  }
+}
+
+
+//MARK: - SPMVariant - Build task
+extension SPMVariant {
+  func build() throws -> WorkbenchTask {
+    guard let target = spmTarget else {
+      throw VariantError.targetRequired
+    }
+    
+    target.workbench?.currentDocument?.save(nil)
+    
+    let process = createBuildProcess(source: target.folder)
+    
+    let task = BuildSystemTask(process)
+    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Build: \(target.name) - \(self.name)", in: workbench) {
+      let taskConsole = task.output(to: console) {  [weak self] console in
+        guard let self = self else { return }
+        console.writeLine(string: "Finished Building \(target.name) - \(self.name)")
+      }
+      taskConsole?.writeLine(string: "Building: \(target.name) - \(self.name)")
+    }
+    
+    return task
+  }
+}
+
+
+//MARK: - SPMVariant - Clean task
+extension SPMVariant {
+  func clean() throws -> WorkbenchTask {
+    guard let target = spmTarget else {
+      throw VariantError.targetRequired
+    }
+    
+    let process = createCleanProcess(source: target.folder)
+    let task = BuildSystemTask(process)
+    
+    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Clean: \(target.name) - \(self.name)", in: workbench) {
+      let taskConsole = task.output(to: console) {[weak self] console in
+        guard let self = self else { return }
+        console.writeLine(string: "Finished Cleaning \(target.name) - \(self.name)")
+      }
+      taskConsole?.writeLine(string: "Cleaning: \(target.name) - \(self.name)")
+    }
+    return task
+  }
   
+  func createCleanProcess(source: Folder) -> Process {
+    let proc = createProcess(source: source)
+    proc.arguments = ["package", "clean"]
+    return proc
+  }
+}
+
+
+fileprivate class MacVariant: SPMVariant, SwiftVariant {
   var icon: Icon? {
     BuildSystemIcons.mac
   }
-  
-  weak var spmTarget : SPMTarget?
-  
-  var name: String {
-    "Mac"
-  }
-  
-  weak var buildSystem : BuildSystem?
-  
+
   init(target: SPMTarget, buildSystem: SPMBuildSystem) {
-    self.spmTarget = target
-    self.buildSystem = buildSystem
+    super.init(target: target, buildSystem: buildSystem, name: "Mac")
   }
   
-  func createProcess(source: Folder) -> Process {
+  override func createProcess(source: Folder) -> Process {
     let proc = Process()
     proc.currentDirectoryURL = source.url
     proc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
@@ -161,10 +244,23 @@ fileprivate class MacVariant: Variant {
     let toolchain = SKLocalServer.swiftToolchain
     if !toolchain.isEmpty {
       proc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
+      if !FileManager.default.fileExists(atPath: proc.executableURL!.path) {
+        proc.executableURL = URL(fileURLWithPath: "\(toolchain)/bin/swift")
+      }
     } else {
       proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
     }
     return proc
+  }
+
+  override func createBuildProcess(source: Folder) -> Process {
+    let proc = createProcess(source: source)
+    proc.arguments = ["build", "-Xswiftc", "-Xfrontend", "-Xswiftc", "-color-diagnostics"]
+    return proc
+  }
+
+  func getToolchain() -> SwiftToolchain? {
+    return nil
   }
 }
 
@@ -194,60 +290,51 @@ extension MacVariant {
 }
 
 
-//MARK: - MacVariant - Build task
-extension MacVariant {
-  func build() throws -> WorkbenchTask {
-    guard let target = spmTarget else {
-      throw VariantError.targetRequired
-    }
+fileprivate class UserDefinedToolchainVariant: SPMVariant, SwiftVariant {
+  var icon: Icon? = nil
+  private var toolchain: SwiftToolchain
     
-    target.workbench?.currentDocument?.save(nil)
-    
-    let process = createBuildProcess(source: target.folder)
-    
-    let task = BuildSystemTask(process)
-    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Build: \(target.name) - \(self.name)", in: workbench) {
-      let taskConsole = task.output(to: console) {  [weak self] console in
-        guard let self = self else { return }
-        console.writeLine(string: "Finished Building \(target.name) - \(self.name)")
-      }
-      taskConsole?.writeLine(string: "Building: \(target.name) - \(self.name)")
-    }
-    
-    return task
+  init(target: SPMTarget, buildSystem: SPMBuildSystem, toolchain: SwiftToolchain) {
+    self.toolchain = toolchain
+    super.init(target: target, buildSystem: buildSystem, name: toolchain.name)
   }
   
-  func createBuildProcess(source: Folder) -> Process {
-    let proc = createProcess(source: source)
-    proc.arguments = ["build", "-Xswiftc", "-Xfrontend", "-Xswiftc", "-color-diagnostics"]
+  override func createProcess(source: Folder) -> Process {
+    let proc = Process()
+    proc.currentDirectoryURL = source.url
+    proc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
+    proc.executableURL = URL(fileURLWithPath: toolchain.compiler + "/bin/swift")
     return proc
   }
-}
 
-//MARK: - MacVariant - Clean task
-extension MacVariant {
-  func clean() throws -> WorkbenchTask {
-    guard let target = spmTarget else {
-      throw VariantError.targetRequired
-    }
+  override func createBuildProcess(source: Folder) -> Process {
+    var dict: [String : Any] = [:]
+    dict["version"] = 1
+    dict["target"] = toolchain.target
+    dict["sdk"] = toolchain.sdkRoot
+    dict["toolchain-bin-dir"] = toolchain.compiler + "/bin"
+    dict["extra-swiftc-flags"] = toolchain.compilerFlags
+    dict["extra-cc-flags"] = Array<String>()
+    dict["extra-cpp-flags"] = Array<String>()
     
-    let process = createCleanProcess(source: target.folder)
-    let task = BuildSystemTask(process)
+    let descPath = source.path.join(".build").join("desc-" + toolchain.name + ".json")
     
-    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Clean: \(target.name) - \(self.name)", in: workbench) {
-      let taskConsole = task.output(to: console) {[weak self] console in
-        guard let self = self else { return }
-        console.writeLine(string: "Finished Cleaning \(target.name) - \(self.name)")
-      }
-      taskConsole?.writeLine(string: "Cleaning: \(target.name) - \(self.name)")
+    do {
+      let descData = try JSONSerialization.data(withJSONObject: dict, options: [.prettyPrinted])
+      try descData.write(to: descPath, atomically: true)
     }
-    return task
-  }
-  
-  func createCleanProcess(source: Folder) -> Process {
+    catch {
+      print("ERROR: can't write SPM description file to \(descPath): \(error)")
+    }
+
     let proc = createProcess(source: source)
-    proc.arguments = ["package", "clean"]
+    proc.arguments = ["build", "-Xswiftc", "-Xfrontend", "-Xswiftc", "-color-diagnostics",
+                      "--destination", descPath.string]
     return proc
+  }
+
+  func getToolchain() -> SwiftToolchain? {
+    return toolchain
   }
 }
 
