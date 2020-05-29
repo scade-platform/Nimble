@@ -2,10 +2,10 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:../../NimblePlugins/Plugins/ScadeBuildSystem/ScadeBuildSystem.xcodeproj">
+      location = "group:../../NimblePlugins/Plugins/SVGEditor/SVGEditor.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:../../NimblePlugins/Plugins/SVGEditor/SVGEditor.xcodeproj">
+      location = "group:../../NimblePlugins/Plugins/ScadeBuildSystem/ScadeBuildSystem.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:../../NimblePlugins/Plugins/InterfaceBuilder/InterfaceBuilder/InterfaceBuilder.xcodeproj">
@@ -44,6 +44,9 @@
    <Group
       location = "container:"
       name = "Packages">
+      <FileRef
+         location = "group:Packages/SwiftExtensions">
+      </FileRef>
       <FileRef
          location = "group:Packages/BuildSystem">
       </FileRef>
