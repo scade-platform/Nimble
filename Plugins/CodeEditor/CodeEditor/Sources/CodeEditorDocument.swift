@@ -94,6 +94,11 @@ extension CodeEditorDocument: Document {
 
 extension CodeEditorDocument: SourceCodeDocument {
   public var text: String {
+//    let text = NSMutableAttributedString(attributedString: textStorage.attributedSubstring(from: textStorage.range))
+//    textStorage.snippets().forEach {
+//      text.replaceCharacters(in: $0.range, with: String(repeating: "", count: $0.range.length))
+//    }
+//    return text.string
     return textStorage.string
   }
   

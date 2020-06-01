@@ -235,7 +235,17 @@ extension CodeEditorView: WorkbenchEditor {
   }
     
   func publish(diagnostics: [Diagnostic]) {
-    self.diagnostics = diagnostics.compactMap { return $0 as? SourceCodeDiagnostic }
+    self.diagnostics = diagnostics.compactMap {
+      guard let diag = $0 as? SourceCodeDiagnostic,
+            let textStorage = document?.textStorage else { return nil }
+
+      let range = diag.range(in: textStorage.string)
+      if textStorage.snippet(at: range.lowerBound) != nil {
+        return nil
+      }
+
+      return diag
+    }
     scheduleDiagnosticsUpdate()
   }
 }
@@ -252,7 +262,7 @@ extension CodeEditorView: NSTextStorageDelegate {
     guard editedMask.contains(.editedCharacters) else { return }
 
     document?.updateChangeCount(.changeDone)
-
+    
     // Update highlighting
     guard let syntaxParser = document?.syntaxParser else { return }
     let range = textStorage.editedRange
@@ -282,11 +292,12 @@ extension CodeEditorView: NSTextViewDelegate {
     var snippets: [(NSRange, NSView)] = []
 
     for m in matches where m.numberOfRanges == 2 {
-      let snippetRange = m.range(at: 0)
       let snippetView = SnippetPlaceholderView()
-      snippetView.configure(for: textView, range: snippetRange, text: "Snippet")
 
-      snippets.append((snippetRange, snippetView))
+      snippetView.range = m.range(at: 0)
+      snippetView.text = string[m.range(at: 1)] ?? ""
+
+      snippets.append((snippetView.range, snippetView))
     }
 
     textView.snippets = snippets
@@ -298,7 +309,7 @@ extension CodeEditorView: NSTextViewDelegate {
 
   func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
     guard let doc = document else { return true }
-    
+
     doc.observers.notify(as: SourceCodeDocumentObserver.self) {
       guard let text = textView.textStorage?.string else { return }            
       let range = text.range(for: text.utf16.range(for: affectedCharRange))

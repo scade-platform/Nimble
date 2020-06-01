@@ -99,7 +99,6 @@ class CodeEditorCompletionView: NSViewController {
     // Select
     case Keycode.returnKey:
       insertCompletion()
-      close()
       return true
     // Update
     case Keycode.delete:
@@ -296,16 +295,21 @@ class CodeEditorCompletionView: NSViewController {
           let cursor = textView?.selectedRange().location else { return }
                       
     let range = NSRange(completionPosition..<cursor)
-    
+
+    let text: String
     if let textEdit = item.textEdit {
-      textView?.insertText(textEdit.newText, replacementRange: range)
-      
+      text = textEdit.newText
     } else if let newText = item.insertText {
-      textView?.insertText(newText, replacementRange: range)
-    
+      text = newText
     } else {
-      textView?.insertText(item.label, replacementRange: range)
+      text = item.label
     }
+
+    textView?.insertText(text, replacementRange: range)
+    close()
+
+    let insertionRange = NSRange(location: range.location, length: text.count)
+    textView?.selectSnippet(in: insertionRange)
   }
 }
 

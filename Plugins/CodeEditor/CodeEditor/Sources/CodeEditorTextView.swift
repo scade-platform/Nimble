@@ -24,7 +24,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
 
   // MARK: - Snippets
 
-  private var snippetViews: [NSView] = []
+  var snippetViews: [NSView] = []
 
   // MARK: -
 
@@ -35,7 +35,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
 //      lineHeight = theme.lineHeight
 //      tabWidth = theme.tabWidth
 //    } else {
-    lineHeight = 1.2
+    lineHeight = 1.0
     tabWidth = 4
 //    }
     super.init(coder: coder)
@@ -43,8 +43,8 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     self.drawsBackground = true
     
     // workaround for: the text selection highlight can remain between lines (2017-09 macOS 10.13).
-    self.scaleUnitSquare(to: NSSize(width: 0.5, height: 0.5))
-    self.scaleUnitSquare(to: self.convert(.unit, from: nil))  // reset scale
+    //self.scaleUnitSquare(to: NSSize(width: 0.5, height: 0.5))
+    //self.scaleUnitSquare(to: self.convert(.unit, from: nil))  // reset scale
 
     // setup layoutManager and textContainer
 //    let textContainer = TextContainer()
@@ -93,10 +93,22 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   }
   
   public override func keyDown(with event: NSEvent) {
-    guard let delegate = self.delegate as? CodeEditorView, delegate.handleKeyDown(with: event) else {
-      super.keyDown(with: event)
+    if let specialKey = event.specialKey {
+      switch specialKey {
+      case .tab:
+        if selectClosestSnippet() {
+          return
+        }        
+      default:
+        break
+      }
+    }
+
+    if let delegate = self.delegate as? CodeEditorView, delegate.handleKeyDown(with: event) {
       return
     }
+
+    super.keyDown(with: event)
   }
   
   public override func mouseDown(with event: NSEvent) {
@@ -248,7 +260,6 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   
   /// set defaultParagraphStyle based on font, tab width, and line height
   private func invalidateDefaultParagraphStyle() {
-    
     assert(Thread.isMainThread)
     
     let paragraphStyle = NSParagraphStyle.default.mutable
@@ -270,7 +281,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     paragraphStyle.baseWritingDirection = self.baseWritingDirection
     
     self.defaultParagraphStyle = paragraphStyle
-    
+
     // add paragraph style also to the typing attributes
     //   -> textColor and font are added automatically.
     self.typingAttributes[.paragraphStyle] = paragraphStyle
@@ -301,7 +312,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   override func setSelectedRanges(_ ranges: [NSValue],
                                   affinity: NSSelectionAffinity,
                                   stillSelecting stillSelectingFlag: Bool) {
-
+    
     if let selection = ranges.first as? NSRange, selection.length == 0,
         let snippet = snippets.first(where: {$0.range.contains(selection.location) && selection.location > $0.range.location }) {
 
@@ -352,7 +363,12 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
       
     return String(currentLine[result.range.lowerBound..<result.range.upperBound])
   }
-  
+
+
+  func setCursorPosition(_ pos: Int) {
+    setSelectedRange(NSRange(location: pos, length: 0))
+  }
+
   func surroundRange(_ index: String.Index) -> Range<String.Index> {
     let lineRange = string.lineRange(at: selectedIndex)
     let from = (index > lineRange.lowerBound) ? string.index(before: index) : lineRange.lowerBound
@@ -459,67 +475,4 @@ extension CodeEditorTextView: NSLayoutManagerDelegate {
     return action
   }
 }
-
-
-// MARK: - Code Snippets
-
-extension NSAttributedString.Key {
-  static let snippet = NSAttributedString.Key("Snippet")
-}
-
-
-extension CodeEditorTextView {
-  typealias Snippet = (range: NSRange, view: NSView)
-
-  var range: NSRange { NSRange(location: 0, length: textStorage?.length ?? 0) }
-
-  var snippets: [Snippet] {
-    get {
-      var snippets = [Snippet]()
-      textStorage?.enumerateAttribute(.snippet, in: range, options: .longestEffectiveRangeNotRequired) { (value, range, _) in
-        guard let view = value as? NSView else { return }
-        snippets.append((view: view, range: range))
-      }
-      return snippets
-    }
-    set {
-      textStorage?.enumerateAttribute(.snippet, in: range, options: .longestEffectiveRangeNotRequired) { (value, range, _) in
-        textStorage?.removeAttribute(.snippet, range: range)
-      }
-      snippetViews.forEach { $0.removeFromSuperview() }
-      textContainer?.exclusionPaths = []
-      addSnippets(newValue)
-    }
-  }
-
-  private func addSnippets(_ snippets: [Snippet]) {
-    guard let layoutManager = self.layoutManager,
-          let textContainer = self.textContainer,
-          let textStorage = self.textStorage else { return }
-
-    // Before accessing glyphes bounds, ensure the text is layouted
-    layoutManager.ensureLayout(for: textContainer)
-
-    for s in snippets {
-      let glyphRange = layoutManager.glyphRange(forCharacterRange: s.range, actualCharacterRange: nil)
-      var glyphRect = layoutManager.boundingRect(forGlyphRange: glyphRange, in: textContainer)
-      glyphRect.origin.y -= floor(self.font?.descender ?? 0)
-
-      s.view.frame.origin = glyphRect.origin
-      self.addSubview(s.view)
-      self.snippetViews.append(s.view)
-
-      var pathRect = s.view.frame
-      pathRect.size.width += 2.0
-      s.view.frame.origin.x += 1.0
-
-      let path = NSBezierPath(rect: pathRect)
-      textContainer.exclusionPaths.append(path)
-
-      textStorage.addAttributes([.snippet: s.view], range: s.range)
-    }
-  }
-
-}
-
 

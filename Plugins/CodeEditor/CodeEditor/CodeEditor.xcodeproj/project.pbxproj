@@ -9,7 +9,8 @@
 /* Begin PBXBuildFile section */
 		0CF422D123B4BB90000E1921 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CF422D023B4BB90000E1921 /* Assets.xcassets */; };
 		D741547E236C99AE00A1B80C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D741547D236C99AE00A1B80C /* Info.plist */; };
-		D778B8CC24782FDA00F93860 /* SnippetPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E418E4A324780FAC00112C6D /* SnippetPlaceholderView.swift */; };
+		D7A538C1248018C2007C25EE /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A538C0248018C2007C25EE /* String.swift */; };
+		D7A538C524804E79007C25EE /* CodeEditorTextView+Snippets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A538C424804E79007C25EE /* CodeEditorTextView+Snippets.swift */; };
 		D7D4710623FC952E00CC9BAA /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = D7D4710523FC952E00CC9BAA /* Icons */; };
 		D7D4711E23FC983E00CC9BAA /* CodeEditorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7D4710923FC983E00CC9BAA /* CodeEditorView.xib */; };
 		D7D4711F23FC983E00CC9BAA /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4710A23FC983E00CC9BAA /* CodeEditorView.swift */; };
@@ -68,6 +69,8 @@
 /* Begin PBXFileReference section */
 		0CF422D023B4BB90000E1921 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D741547D236C99AE00A1B80C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D7A538C0248018C2007C25EE /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		D7A538C424804E79007C25EE /* CodeEditorTextView+Snippets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorTextView+Snippets.swift"; sourceTree = "<group>"; };
 		D7D2D58922B1B48C0017B45D /* CodeEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7D4710523FC952E00CC9BAA /* Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Icons; sourceTree = "<group>"; };
 		D7D4710923FC983E00CC9BAA /* CodeEditorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CodeEditorView.xib; sourceTree = "<group>"; };
@@ -105,8 +108,6 @@
 		D7D4715223FC9BBD00CC9BAA /* MutableCopying.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MutableCopying.swift; path = ../../../CotEditor/CotEditor/Sources/MutableCopying.swift; sourceTree = "<group>"; };
 		D7D4715323FC9BBD00CC9BAA /* NSAttributedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSAttributedString.swift; path = ../../../CotEditor/CotEditor/Sources/NSAttributedString.swift; sourceTree = "<group>"; };
 		D7D4715423FC9BBE00CC9BAA /* String+Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Localization.swift"; path = "../../../CotEditor/CotEditor/Sources/String+Localization.swift"; sourceTree = "<group>"; };
-		E418E4A324780FAC00112C6D /* SnippetPlaceholderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnippetPlaceholderView.swift; sourceTree = "<group>"; };
-		E418E4A424780FAC00112C6D /* SnippetsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnippetsManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,7 +172,6 @@
 				D7D4710B23FC983E00CC9BAA /* StatusBarView.xib */,
 				D7D4711523FC983E00CC9BAA /* CotEditor */,
 				D7D4711023FC983E00CC9BAA /* Extensions */,
-				E418E4A224780EEC00112C6D /* Snippets */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -180,6 +180,8 @@
 			isa = PBXGroup;
 			children = (
 				D7D4711123FC983E00CC9BAA /* CodeEditorTextView+ColorTheme.swift */,
+				D7A538C424804E79007C25EE /* CodeEditorTextView+Snippets.swift */,
+				D7A538C0248018C2007C25EE /* String.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -222,15 +224,6 @@
 				D7D4715423FC9BBE00CC9BAA /* String+Localization.swift */,
 			);
 			name = Sources;
-			sourceTree = "<group>";
-		};
-		E418E4A224780EEC00112C6D /* Snippets */ = {
-			isa = PBXGroup;
-			children = (
-				E418E4A324780FAC00112C6D /* SnippetPlaceholderView.swift */,
-				E418E4A424780FAC00112C6D /* SnippetsManager.swift */,
-			);
-			path = Snippets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -320,9 +313,9 @@
 				D7D4715623FC9BBE00CC9BAA /* Comparable.swift in Sources */,
 				D7D4715E23FC9BBE00CC9BAA /* NSFont+Size.swift in Sources */,
 				D7D4715723FC9BBE00CC9BAA /* LineEnding.swift in Sources */,
+				D7A538C1248018C2007C25EE /* String.swift in Sources */,
 				D7D4715B23FC9BBE00CC9BAA /* String+Counting.swift in Sources */,
 				D7D4716023FC9BBE00CC9BAA /* NSLayoutManager+Range.swift in Sources */,
-				D778B8CC24782FDA00F93860 /* SnippetPlaceholderView.swift in Sources */,
 				D7D4715F23FC9BBE00CC9BAA /* Collection.swift in Sources */,
 				D7D4712823FC983E00CC9BAA /* CurrentLineHighlighting.swift in Sources */,
 				D7D4716423FC9BBE00CC9BAA /* String+Localization.swift in Sources */,
@@ -344,6 +337,7 @@
 				D7D4712F23FC983E00CC9BAA /* CodeEditorDocument.swift in Sources */,
 				D7D4715D23FC9BBE00CC9BAA /* NSString.swift in Sources */,
 				D7D4712123FC983E00CC9BAA /* DiagnosticView.swift in Sources */,
+				D7A538C524804E79007C25EE /* CodeEditorTextView+Snippets.swift in Sources */,
 				D7D4712E23FC983E00CC9BAA /* CodeEditorLayoutManager.swift in Sources */,
 				D7D4712423FC983E00CC9BAA /* CodeEditorTextView+ColorTheme.swift in Sources */,
 			);
