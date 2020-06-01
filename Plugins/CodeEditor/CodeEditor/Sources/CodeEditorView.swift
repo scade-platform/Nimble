@@ -114,14 +114,19 @@ class CodeEditorView: NSViewController {
     let style = NSNumber(value: NSUnderlineStyle.thick.rawValue)
     var lastLine = -1
     var diagnosticsOnLine: [Diagnostic] = []
-    
+
     //remove previouse diagnostics view
     diagnosticViews.forEach{ $0.removeFromSuperview() }
     for d in diagnostics {
-      let color = d.severity == .error ? NSColor.red : NSColor.yellow
-      
       let range = d.range(in: text)
-      
+
+      // Do not show diagnostic for the snippet ranges
+      guard textStorage.snippet(at: range.lowerBound) == nil else {
+        continue
+      }
+
+      let color = d.severity == .error ? NSColor.red : NSColor.yellow
+
       let line = text.lineNumber(at: range.lowerBound)
       if line != lastLine {
         if !diagnosticsOnLine.isEmpty {
@@ -235,17 +240,7 @@ extension CodeEditorView: WorkbenchEditor {
   }
     
   func publish(diagnostics: [Diagnostic]) {
-    self.diagnostics = diagnostics.compactMap {
-      guard let diag = $0 as? SourceCodeDiagnostic,
-            let textStorage = document?.textStorage else { return nil }
-
-      let range = diag.range(in: textStorage.string)
-      if textStorage.snippet(at: range.lowerBound) != nil {
-        return nil
-      }
-
-      return diag
-    }
+    self.diagnostics = diagnostics.compactMap { $0 as? SourceCodeDiagnostic }
     scheduleDiagnosticsUpdate()
   }
 }
