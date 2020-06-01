@@ -93,20 +93,26 @@ final class Clean: BuildSystemCommand {
 }
 
 final class SelectTarget: Command {
+  
+  
   init() {
     super.init(name: "Select Target", menuPath: nil, keyEquivalent: nil, controlClass: ToolbarTargetControl.self)
   }
   
   override func validate(in workbench: Workbench, control: NSControl?) -> State {
-    os_log("Validation target selector.", log: OSLog.targetSelector, type: .info)
+    if OSLog.isLogOn {
+      os_log("Validation target selector.", log: .targetSelector, type: .info)
+    }
     
     guard let activeSystem = BuildSystemsManager.shared.activeBuildSystem, !activeSystem.targets(in: workbench).isEmpty else { return [] }
     if let toolbarTargetControl = control as? ToolbarTargetControl {
       
-      if let target = toolbarTargetControl.target, let targetDescription = target.description {
-        os_log("Control: %{public}s, target: %{public}s", log: .targetSelector, type: .info, toolbarTargetControl.description, targetDescription)
-      } else {
-        os_log("Control: %{public}s without target", log: .targetSelector, type: .info, toolbarTargetControl.description)
+      if OSLog.isLogOn {
+        if let target = toolbarTargetControl.target, let targetDescription = target.description {
+          os_log("Control: %{public}s, target: %{public}s", log: .targetSelector, type: .info, toolbarTargetControl.description, targetDescription)
+        } else {
+          os_log("Control: %{public}s without target", log: .targetSelector, type: .info, toolbarTargetControl.description)
+        }
       }
       
       workbench.observers.add(observer: toolbarTargetControl)

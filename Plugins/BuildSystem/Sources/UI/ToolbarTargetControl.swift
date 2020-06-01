@@ -177,7 +177,11 @@ class ToolbarTargetControl : NSControl {
     if userSelection == nil {
       self.userSelection = (buildTarget, variant)
     }
-    os_log("Auto-selected build target: %{public}s", log: .targetSelector, type: .info, buildTarget.name)
+    
+    if OSLog.isLogOn {
+      os_log("Auto-selected build target: %{public}s", log: .targetSelector, type: .info, buildTarget.name)
+    }
+    
     activeTarget = buildTarget
     workbench.selectedVariant = variant
   }
@@ -206,20 +210,26 @@ class ToolbarTargetControl : NSControl {
   }
   
   @IBAction func leftButtonDidClick(_ sender: Any) {
-    os_log("Target selector did clicked", log: .targetSelector, type: .info)
+    if OSLog.isLogOn {
+      os_log("Target selector did clicked", log: .targetSelector, type: .info)
+    }
+    
     guard self.isEnabled, let workbench = self.window?.windowController as? Workbench, let buildSystem = BuildSystemsManager.shared.activeBuildSystem else {
-      os_log("Selector didn't show", log: .targetSelector, type: .info)
-      os_log("isEnabled = %{public}b", log: .targetSelector, type: .info, self.isEnabled)
-      if let windowController = self.window?.windowController {
-        os_log("windowController = %{public}s", log: .targetSelector, type: .info, windowController.description)
-      }else {
-        os_log("windowController = nil", log: .targetSelector, type: .info)
+      if OSLog.isLogOn {
+        os_log("Selector didn't show", log: .targetSelector, type: .info)
+        os_log("isEnabled = %{public}b", log: .targetSelector, type: .info, self.isEnabled)
+        if let windowController = self.window?.windowController {
+          os_log("windowController = %{public}s", log: .targetSelector, type: .info, windowController.description)
+        }else {
+          os_log("windowController = nil", log: .targetSelector, type: .info)
+        }
+        if let buildSystem = BuildSystemsManager.shared.activeBuildSystem  {
+          os_log("active buildSystem = %{public}s", log: .targetSelector, type: .info, buildSystem.name)
+        } else {
+          os_log("active buildSystem = nil", log: .targetSelector, type: .info)
+        }
       }
-      if let buildSystem = BuildSystemsManager.shared.activeBuildSystem  {
-        os_log("active buildSystem = %{public}s", log: .targetSelector, type: .info, buildSystem.name)
-      } else {
-        os_log("active buildSystem = nil", log: .targetSelector, type: .info)
-      }
+      
       return
     }
     
@@ -383,8 +393,15 @@ extension ToolbarTargetControl: BuildSystemsObserver {
 
 
 extension OSLog {
-  private static var subsystem = "com.nimble.BuildSystem"
+  private static let subsystem = "com.nimble.BuildSystem"
   
   static let targetSelector = OSLog(subsystem: subsystem, category: "targetSelector")
+  
+  @Setting("nimble.log", defaultValue: [])
+  public static var logsSystems: [String]
+  
+  static var isLogOn : Bool {
+    return OSLog.logsSystems.contains(OSLog.subsystem)
+  }
 }
 
