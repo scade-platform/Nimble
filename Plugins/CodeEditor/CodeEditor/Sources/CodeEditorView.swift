@@ -91,7 +91,9 @@ class CodeEditorView: NSViewController {
       self.textView.font = theme.general.font
 
       textView.apply(theme: theme)
+
       highlightSyntax()
+      invalidateSnippets()
     }
   }
       
@@ -112,14 +114,19 @@ class CodeEditorView: NSViewController {
     let style = NSNumber(value: NSUnderlineStyle.thick.rawValue)
     var lastLine = -1
     var diagnosticsOnLine: [Diagnostic] = []
-    
+
     //remove previouse diagnostics view
     diagnosticViews.forEach{ $0.removeFromSuperview() }
     for d in diagnostics {
-      let color = d.severity == .error ? NSColor.red : NSColor.yellow
-      
       let range = d.range(in: text)
-      
+
+      // Do not show diagnostic for the snippet ranges
+      guard textStorage.snippet(at: range.lowerBound) == nil else {
+        continue
+      }
+
+      let color = d.severity == .error ? NSColor.red : NSColor.yellow
+
       let line = text.lineNumber(at: range.lowerBound)
       if line != lastLine {
         if !diagnosticsOnLine.isEmpty {
@@ -238,7 +245,7 @@ extension CodeEditorView: WorkbenchEditor {
   }
     
   func publish(diagnostics: [Diagnostic]) {
-    self.diagnostics = diagnostics.compactMap { return $0 as? SourceCodeDiagnostic }
+    self.diagnostics = diagnostics.compactMap { $0 as? SourceCodeDiagnostic }
     scheduleDiagnosticsUpdate()
   }
 }
@@ -247,17 +254,19 @@ extension CodeEditorView: WorkbenchEditor {
 // MARK: - NSTextStorageDelegate
 
 extension CodeEditorView: NSTextStorageDelegate {
-  override func textStorageDidProcessEditing(_ notification: Notification) {
-    guard let doc = document,
-          let textStorage = notification.object as? NSTextStorage,
-              textStorage.editedMask.contains(.editedCharacters) else { return }
-        
-    doc.updateChangeCount(.changeDone)
+  func textStorage(_ textStorage: NSTextStorage,
+                   didProcessEditing editedMask: NSTextStorageEditActions,
+                   range editedRange: NSRange,
+                   changeInLength delta: Int) {
+
+    guard editedMask.contains(.editedCharacters) else { return }
+
+    document?.updateChangeCount(.changeDone)
     
     // Update highlighting
-    guard let syntaxParser = doc.syntaxParser else { return }
+    guard let syntaxParser = document?.syntaxParser else { return }
     let range = textStorage.editedRange
-    
+
     DispatchQueue.main.async { [weak self] in
       self?.textView.subviews.filter{$0 is DiagnosticView}.forEach{$0.removeFromSuperview()}
       if let progress = self?.highlightProgress {
@@ -273,9 +282,34 @@ extension CodeEditorView: NSTextStorageDelegate {
 // MARK: - NSTextViewDelegate
 
 extension CodeEditorView: NSTextViewDelegate {
+  private static let snippetRegex = try? NSRegularExpression(pattern: "\\$\\{[0-9]+:(.*?)\\}")
+
+  private func invalidateSnippets(in range: NSRange? = nil) {
+    guard let string = textView.textStorage?.string,
+          let matches = CodeEditorView.snippetRegex?.matches(in: string,
+                                                             options: [],
+                                                             range: range ?? string.nsRange) else { return }
+    var snippets: [(NSRange, NSView)] = []
+
+    for m in matches where m.numberOfRanges == 2 {
+      let snippetView = SnippetPlaceholderView()
+
+      snippetView.range = m.range(at: 0)
+      snippetView.text = string[m.range(at: 1)] ?? ""
+
+      snippets.append((snippetView.range, snippetView))
+    }
+
+    textView.snippets = snippets
+  }
+
+  func textDidChange(_ notification: Notification) {
+    invalidateSnippets()
+  }
+
   func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
     guard let doc = document else { return true }
-    
+
     doc.observers.notify(as: SourceCodeDocumentObserver.self) {
       guard let text = textView.textStorage?.string else { return }            
       let range = text.range(for: text.utf16.range(for: affectedCharRange))
@@ -284,7 +318,7 @@ extension CodeEditorView: NSTextViewDelegate {
     
     return true
   }
-  
+
   func textViewDidChangeSelection(_ notification: Notification) {
     let pos = textView.selectedPosition
     statusBarView.setCursorPosition(pos.line, pos.column)
