@@ -146,7 +146,7 @@ extension LSPClient: MessageHandler {
     switch notification {
     case let log as LogMessageNotification:
       DispatchQueue.main.async {
-        self.connector?.workbench?.statusBar.statusMessage = "LSP: \(log.message)"
+        self.connector?.workbench?.statusBar.setStatusMessage("LSP: \(log.message)", duration: 5)
       }
 
     case let diagnostic as PublishDiagnosticsNotification:

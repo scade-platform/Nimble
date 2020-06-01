@@ -179,6 +179,8 @@ public protocol WorkbenchStatusBar: class {
   var rightBar: [WorkbenchStatusBarItem] { get set }
 
   var statusMessage: String { get set }
+
+  func setStatusMessage(_ message: String, duration: Int)
 }
 
 public protocol WorkbenchStatusBarItem { }
