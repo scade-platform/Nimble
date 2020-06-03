@@ -30,43 +30,31 @@ extension CodeEditorTextView {
       }
 
       snippetViews.forEach { $0.removeFromSuperview() }
-      textContainer?.exclusionPaths = []
+      snippetViews = []
+
       addSnippets(newValue)
     }
   }
 
   private func addSnippets(_ snippets: [Snippet]) {
-    guard let layoutManager = self.layoutManager,
-          let textContainer = self.textContainer,
-          let textStorage = self.textStorage else { return }
+    guard let textStorage = self.textStorage,
+          let layoutManager = self.layoutManager,
+          let textContainer = self.textContainer else { return }
 
-    // Before accessing glyphes bounds, ensure the text is layouted
-    layoutManager.ensureLayout(for: textContainer)
-
-    var exclusionPaths = [NSBezierPath]()
-
-    for s in snippets {
-      let glyphRange = layoutManager.glyphRange(forCharacterRange: s.range, actualCharacterRange: nil)
-      let glyphRect = layoutManager.boundingRect(forGlyphRange: glyphRange, in: textContainer)
-
-      s.view.frame.origin = glyphRect.origin
-      self.addSubview(s.view)
-      self.snippetViews.append(s.view)
-
-      var pathRect = s.view.frame
-      pathRect.size.width += 2.0
-      s.view.frame.origin.x += 1.0
-
-      let path = NSBezierPath(rect: pathRect)
-      exclusionPaths.append(path)
+    snippets.forEach {
+      self.addSubview($0.view)
+      self.snippetViews.append($0.view)
+      textStorage.addAttributes([.snippet: $0.view], range: $0.range)
     }
 
-    // Add exclusion paths all together, otherwise every append causes a re-layout
-    textContainer.exclusionPaths = exclusionPaths
+    layoutManager.ensureLayout(for: textContainer)
 
-    // Add snippet attributes after the exclusion paths are added
+    // Set snippet view location after layout is done
     snippets.forEach {
-      textStorage.addAttributes([.snippet: $0.view], range: $0.range)
+      let glyphRange = layoutManager.glyphRange(forCharacterRange: $0.range, actualCharacterRange: nil)
+      let glyphRect = layoutManager.boundingRect(forGlyphRange: glyphRange, in: textContainer)
+
+      $0.view.setFrameOrigin(glyphRect.origin)
     }
   }
 
@@ -122,10 +110,12 @@ extension NSTextStorage {
     }
   }
 
-  func snippet(at position: Int) -> Snippet? {
-    var range: NSRange = NSRange(location: position, length: 0)
-    if let snippetView = attribute(.snippet, at: position, effectiveRange: &range) as? NSView {
-      return (range: range, view: snippetView)
+  func snippet(at location: Int) -> Snippet? {
+    guard self.range.contains(location) else { return nil }
+
+    var effectiveRange: NSRange = NSRange(location: location, length: 0)
+    if let snippetView = attribute(.snippet, at: location, effectiveRange: &effectiveRange) as? NSView {
+      return (range: effectiveRange, view: snippetView)
     }
 
     return nil
@@ -142,6 +132,14 @@ extension NSTextStorage {
 
   func snippets(in range: Range<Int>) -> [Snippet] {
     return snippets(in: NSRange(range))
+  }
+
+  func snippetLeft(from location: Int) -> Snippet? {
+    return snippet(at: max(location - 1, 0))
+  }
+
+  func snippetRight(from location: Int) -> Snippet? {
+    return snippet(at: min(location + 1, length > 0 ? length - 1 : 0))
   }
 }
 
@@ -196,7 +194,7 @@ class SnippetPlaceholderView: NSTextView {
     if let font = self.editorView?.font {
       self.font = font
     }
-
+    
     invalidate()
   }
 
@@ -235,22 +233,20 @@ class SnippetPlaceholderView: NSTextView {
   override func keyDown(with event: NSEvent) {
     switch event.keyCode {
     case Keycode.leftArrow:
-      editorView?.setCursorPosition(range.lowerBound - 1)
-      editorView?.moveForward(nil)
+      editorView?.setCursorPosition(range.lowerBound)
       window?.makeFirstResponder(editorView)
 
     case Keycode.rightArrow:
-      editorView?.setCursorPosition(range.upperBound + 1)
-      editorView?.moveBackward(nil)
+      editorView?.setCursorPosition(range.upperBound)
       window?.makeFirstResponder(editorView)
 
     case Keycode.upArrow:
-      editorView?.setCursorPosition(range.lowerBound + 1)
+      editorView?.setCursorPosition(range.lowerBound)
       editorView?.moveUp(nil)
       window?.makeFirstResponder(editorView)
 
     case Keycode.downArrow:
-      editorView?.setCursorPosition(range.upperBound - 1)
+      editorView?.setCursorPosition(range.upperBound)
       editorView?.moveDown(nil)
       window?.makeFirstResponder(editorView)
 

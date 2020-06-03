@@ -312,16 +312,9 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   override func setSelectedRanges(_ ranges: [NSValue],
                                   affinity: NSSelectionAffinity,
                                   stillSelecting stillSelectingFlag: Bool) {
-    
-    if let selection = ranges.first as? NSRange, selection.length == 0,
-        let snippet = snippets.first(where: {$0.range.contains(selection.location) && selection.location > $0.range.location }) {
-
-      self.window?.makeFirstResponder(snippet.view)
-      return
-    }
 
     super.setSelectedRanges(ranges, affinity: affinity, stillSelecting: stillSelectingFlag)
-    
+
     self.needsUpdateLineHighlight = true
     self.lineNumberView?.needsDisplay = true
   }
@@ -337,7 +330,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     let utf16 = string.utf16
     return utf16.index(utf16.startIndex, offsetBy: selectedRange().location)
   }
-  
+
   var selectedPosition: (line: Int, column: Int) {
     let sel = selectedIndex
     if let str = textStorage?.string {
@@ -423,8 +416,28 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     if autoClosingPairs.contains(surroundString(selectedIndex)) {
       super.deleteForward(sender)
       super.deleteBackward(sender)
+
+    } else if let snippet = textStorage?.snippetLeft(from: selectedRange().location) {
+      self.insertText("", replacementRange: snippet.range)
+
     } else {
       super.deleteBackward(sender)
+    }
+  }
+
+  override func moveLeft(_ sender: Any?) {
+    if let snippet = textStorage?.snippetLeft(from: selectedRange().location) {
+      window?.makeFirstResponder(snippet.view)
+    } else {
+      super.moveLeft(sender)
+    }
+  }
+
+  override func moveRight(_ sender: Any?) {
+    if let snippet = textStorage?.snippetRight(from: selectedRange().location) {
+      window?.makeFirstResponder(snippet.view)
+    } else {
+      super.moveRight(sender)
     }
   }
 }
@@ -441,26 +454,45 @@ extension CodeEditorTextView: NSLayoutManagerDelegate {
                      font: NSFont,
                      forGlyphRange range: NSRange) -> Int {
 
-    var modifiedProperties = [NSLayoutManager.GlyphProperty]()
+    var chunckIndex = 0
+    var chunckLocation = range.lowerBound
 
-    for i in 0 ..< range.length {
-      var glyphProperties = properties[i]
-      if let _ = textStorage?.attribute(.snippet, at: characterIndexes[i], effectiveRange: nil) {
-        glyphProperties.insert(.controlCharacter)
+    textStorage?.enumerateSnippets(in: range) {
+      let chunckLength = $0.range.upperBound - chunckLocation
+      let chunckSnippetIndex = $0.range.lowerBound - range.lowerBound
+
+      var chunckGlyphs = [CGGlyph](repeating: kCGFontIndexInvalid, count:  chunckLength)
+      var chunckProperties = [NSLayoutManager.GlyphProperty](repeating: .null , count: chunckLength)
+
+      // Copy non-snippet glyphs
+      for i in chunckIndex..<chunckSnippetIndex {
+        chunckGlyphs[i - chunckIndex] = glyphs[i]
+        chunckProperties[i - chunckIndex] = properties[i]
       }
-      modifiedProperties.append(glyphProperties)
+
+      // Set first snippet glyph as a control charackter
+      chunckProperties[chunckSnippetIndex - chunckIndex] = .controlCharacter
+
+      layoutManager.setGlyphs(chunckGlyphs,
+                              properties: chunckProperties,
+                              characterIndexes: characterIndexes.advanced(by: chunckIndex),
+                              font: font, forGlyphRange: NSRange(location: chunckLocation, length: chunckLength))
+
+      chunckIndex = chunckSnippetIndex + $0.range.length
+      chunckLocation = $0.range.upperBound
     }
 
-    modifiedProperties.withUnsafeBufferPointer {
-        guard let ptr = $0.baseAddress else { return }
-        layoutManager.setGlyphs(glyphs,
-                                properties: ptr,
-                                characterIndexes: characterIndexes,
-                                font: font,
-                                forGlyphRange: range)
+    // Copy rest non-snippet glyphs
+    if chunckIndex > 0 && chunckIndex < range.length {
+      layoutManager.setGlyphs(glyphs.advanced(by: chunckIndex),
+                              properties: properties.advanced(by: chunckIndex),
+                              characterIndexes: characterIndexes.advanced(by: chunckIndex),
+                              font: font, forGlyphRange: NSRange(location: chunckLocation, length: range.length - chunckIndex))
+
+      chunckIndex = range.length
     }
 
-    return range.length
+    return chunckIndex
   }
 
 
@@ -469,10 +501,24 @@ extension CodeEditorTextView: NSLayoutManagerDelegate {
                      forControlCharacterAt charIndex: Int) -> NSLayoutManager.ControlCharacterAction {
 
     if let _ = textStorage?.attribute(.snippet, at: charIndex, effectiveRange: nil) {
-      return .zeroAdvancement
+      return .whitespace
     }
 
     return action
+  }
+
+  func layoutManager(_ layoutManager: NSLayoutManager,
+                     boundingBoxForControlGlyphAt glyphIndex: Int,
+                     for textContainer: NSTextContainer,
+                     proposedLineFragment proposedRect: NSRect,
+                     glyphPosition: NSPoint,
+                     characterIndex charIndex: Int) -> NSRect {
+
+    var glyphSize = NSSize(width: 0.0, height: proposedRect.height)
+    if let snippet = textStorage?.attribute(.snippet, at: charIndex, effectiveRange: nil) as? NSView {
+      glyphSize = snippet.frame.size
+    }
+    return NSRect(origin: glyphPosition, size: glyphSize)
   }
 }
 
