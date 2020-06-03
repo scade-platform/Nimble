@@ -9,7 +9,7 @@
 import Cocoa
 import NimbleCore
 import BuildSystem
-
+import os.log
 
 public final class BuildSystemModule: Module {
   public static let plugin: Plugin = BuildSystemPlugin()
@@ -21,6 +21,8 @@ final class BuildSystemPlugin: Plugin {
   func load() {
     setupMainMenu()
     setupCommands()
+    
+    Settings.shared.add(OSLog.$logsSystems)
     BuildSystemsManager.shared.observers.add(observer: self)
   }
   

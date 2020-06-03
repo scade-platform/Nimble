@@ -69,6 +69,15 @@ extension StatusBarView : WorkbenchStatusBar {
     get { workbenchBar.statusMessage.stringValue  }
     set { workbenchBar.statusMessage.stringValue = newValue }
   }
+
+  func setStatusMessage(_ message: String, duration: Int) {
+    self.statusMessage = message
+    DispatchQueue.main.asyncAfter(deadline: .now() + Double(duration)) { [weak self] in
+      if let currentMessage = self?.statusMessage, currentMessage == message {
+        self?.statusMessage = ""
+      }
+    }
+  }
 }
 
 

@@ -11,30 +11,31 @@ import Cocoa
 // MARK: -
 
 final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
-  
-  // MARK: -
-  // MARK: CurrentLineHighlighting
-  
+
+  // MARK: - CurrentLineHighlighting
+
   var needsUpdateLineHighlight = true
   var lineHighLightRects: [NSRect] = []
   var lineHighLightColor: NSColor? = nil
     
-  // MARK: -
-  
+  // MARK: - Line numbers
+
   var lineNumberView: LineNumberView? = nil
-  
+
+  // MARK: - Snippets
+
+  var snippetViews: [NSView] = []
+
   // MARK: -
-  // MARK: Lifecycle
-  
+
   required init?(coder: NSCoder) {
-    
     // set paragraph style values
 
 //    if let theme = ThemeManager.shared.theme {
 //      lineHeight = theme.lineHeight
 //      tabWidth = theme.tabWidth
 //    } else {
-    lineHeight = 1.2
+    lineHeight = 1.0
     tabWidth = 4
 //    }
     super.init(coder: coder)
@@ -42,21 +43,24 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     self.drawsBackground = true
     
     // workaround for: the text selection highlight can remain between lines (2017-09 macOS 10.13).
-    self.scaleUnitSquare(to: NSSize(width: 0.5, height: 0.5))
-    self.scaleUnitSquare(to: self.convert(.unit, from: nil))  // reset scale
-    
+    //self.scaleUnitSquare(to: NSSize(width: 0.5, height: 0.5))
+    //self.scaleUnitSquare(to: self.convert(.unit, from: nil))  // reset scale
+
     // setup layoutManager and textContainer
-    let textContainer = TextContainer()
-    // TODO: move to settings
-    textContainer.isHangingIndentEnabled = true //defaults[.enablesHangingIndent]
-    textContainer.hangingIndentWidth = 2 //defaults[.hangingIndentWidth]
-    self.replaceTextContainer(textContainer)
-    
+//    let textContainer = TextContainer()
+//    // // TODO: move to settings
+//    textContainer.isHangingIndentEnabled = true //defaults[.enablesHangingIndent]
+//    textContainer.hangingIndentWidth = 2 //defaults[.hangingIndentWidth]
+//    self.replaceTextContainer(textContainer)
+
     //let layoutManager = LayoutManager()
     let layoutManager = CodeEditorLayoutManager()
+    layoutManager.delegate = self
+
+    self.textContainer!.lineFragmentPadding = 0.0
     self.textContainer!.replaceLayoutManager(layoutManager)
     self.layoutManager!.allowsNonContiguousLayout = true
-    
+
     // set layout values (wraps lines)
     self.minSize = self.frame.size
     self.maxSize = .infinite
@@ -89,10 +93,22 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   }
   
   public override func keyDown(with event: NSEvent) {
-    guard let delegate = self.delegate as? CodeEditorView, delegate.handleKeyDown(with: event) else {
-      super.keyDown(with: event)
+    if let specialKey = event.specialKey {
+      switch specialKey {
+      case .tab:
+        if selectClosestSnippet() {
+          return
+        }        
+      default:
+        break
+      }
+    }
+
+    if let delegate = self.delegate as? CodeEditorView, delegate.handleKeyDown(with: event) {
       return
     }
+
+    super.keyDown(with: event)
   }
   
   public override func mouseDown(with event: NSEvent) {
@@ -129,7 +145,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   }
   
   @objc private func textDidChange(notification: NSNotification) {
-    self.lineNumberView?.needsDisplay = true
+    self.lineNumberView?.needsDisplay = true  
   }
   
   
@@ -244,7 +260,6 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   
   /// set defaultParagraphStyle based on font, tab width, and line height
   private func invalidateDefaultParagraphStyle() {
-    
     assert(Thread.isMainThread)
     
     let paragraphStyle = NSParagraphStyle.default.mutable
@@ -266,7 +281,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     paragraphStyle.baseWritingDirection = self.baseWritingDirection
     
     self.defaultParagraphStyle = paragraphStyle
-    
+
     // add paragraph style also to the typing attributes
     //   -> textColor and font are added automatically.
     self.typingAttributes[.paragraphStyle] = paragraphStyle
@@ -294,17 +309,27 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     //self.drawRoundedBackground(in: rect)
   }
   
-  override func setSelectedRanges(_ ranges: [NSValue], affinity: NSSelectionAffinity, stillSelecting stillSelectingFlag: Bool) {
+  override func setSelectedRanges(_ ranges: [NSValue],
+                                  affinity: NSSelectionAffinity,
+                                  stillSelecting stillSelectingFlag: Bool) {
+    
+    if let selection = ranges.first as? NSRange, selection.length == 0,
+        let snippet = snippets.first(where: {$0.range.contains(selection.location) && selection.location > $0.range.location }) {
+
+      self.window?.makeFirstResponder(snippet.view)
+      return
+    }
+
     super.setSelectedRanges(ranges, affinity: affinity, stillSelecting: stillSelectingFlag)
     
     self.needsUpdateLineHighlight = true
     self.lineNumberView?.needsDisplay = true
   }
   
-  
-  // MARK: Auto-closing + auto-indents
-  
-  
+
+
+  // MARK: - Auto-closing + auto-indents
+
   let autoClosingPairs = ["()", "[]", "{}"]
 
   var selectedIndex: String.Index {
@@ -338,7 +363,12 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
       
     return String(currentLine[result.range.lowerBound..<result.range.upperBound])
   }
-  
+
+
+  func setCursorPosition(_ pos: Int) {
+    setSelectedRange(NSRange(location: pos, length: 0))
+  }
+
   func surroundRange(_ index: String.Index) -> Range<String.Index> {
     let lineRange = string.lineRange(at: selectedIndex)
     let from = (index > lineRange.lowerBound) ? string.index(before: index) : lineRange.lowerBound
@@ -377,7 +407,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     let autoIndentLine = autoClosingPairs.contains(surroundString(selectedIndex))
     
     super.insertNewline(sender)
-    super.insertText(currentIndent, replacementRange: selectedRange())
+    //super.insertText(currentIndent, replacementRange: selectedRange())
 
     if autoIndentLine {
       super.insertTab(sender)
@@ -397,6 +427,52 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
       super.deleteBackward(sender)
     }
   }
-  
+}
+
+
+
+// MARK: - NSLayoutManagerDelegate
+
+extension CodeEditorTextView: NSLayoutManagerDelegate {
+  func layoutManager(_ layoutManager: NSLayoutManager,
+                     shouldGenerateGlyphs glyphs: UnsafePointer<CGGlyph>,
+                     properties: UnsafePointer<NSLayoutManager.GlyphProperty>,
+                     characterIndexes: UnsafePointer<Int>,
+                     font: NSFont,
+                     forGlyphRange range: NSRange) -> Int {
+
+    var modifiedProperties = [NSLayoutManager.GlyphProperty]()
+
+    for i in 0 ..< range.length {
+      var glyphProperties = properties[i]
+      if let _ = textStorage?.attribute(.snippet, at: characterIndexes[i], effectiveRange: nil) {
+        glyphProperties.insert(.controlCharacter)
+      }
+      modifiedProperties.append(glyphProperties)
+    }
+
+    modifiedProperties.withUnsafeBufferPointer {
+        guard let ptr = $0.baseAddress else { return }
+        layoutManager.setGlyphs(glyphs,
+                                properties: ptr,
+                                characterIndexes: characterIndexes,
+                                font: font,
+                                forGlyphRange: range)
+    }
+
+    return range.length
+  }
+
+
+  func layoutManager(_ layoutManager: NSLayoutManager,
+                     shouldUse action: NSLayoutManager.ControlCharacterAction,
+                     forControlCharacterAt charIndex: Int) -> NSLayoutManager.ControlCharacterAction {
+
+    if let _ = textStorage?.attribute(.snippet, at: charIndex, effectiveRange: nil) {
+      return .zeroAdvancement
+    }
+
+    return action
+  }
 }
 
