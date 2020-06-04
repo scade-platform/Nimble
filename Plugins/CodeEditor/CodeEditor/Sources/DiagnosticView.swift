@@ -103,13 +103,21 @@ class DiagnosticView: NSStackView {
 
     textView.addSubview(self)
 
-    let lineRange = NSRange(textStorage.string.lineRange(line: line - 1))
-    let lineWidth =  textView.boundingRect(for: lineRange)?.size.width ?? textView.frame.size.width
+
+    var lineRange = NSRange(textStorage.string.lineRange(line: line - 1))
+
+    // Adjust lineRange to remove NEWLINE symbol
+    // Otherwise the line width would span to the text view's width
+    if lineRange.length > 1 {
+      lineRange = NSRange(location: lineRange.location, length: lineRange.length - 1)
+    }
+
+    let lineWidth =  textView.boundingRect(for: lineRange)?.size.width ?? 0
     let lineHeight = textView.layoutManager!.lineHeight
 
     let leadingOffset = min(0.8 * textView.frame.size.width, lineWidth)
 
-    let placeholder = NSRect(x: leadingOffset,
+    let placeholder = NSRect(x: leadingOffset + 10,
                              y: lineHeight * CGFloat(line - 1),
                              width: textView.frame.size.width - leadingOffset,
                              height: lineHeight)
@@ -123,7 +131,7 @@ class DiagnosticView: NSStackView {
 
     if let numberView = textView.lineNumberView {
       self.leadingAnchor.constraint(greaterThanOrEqualTo: numberView.trailingAnchor,
-                                    constant: placeholder.origin.x + 10).isActive = true
+                                    constant: placeholder.origin.x).isActive = true
     }
 
     // Reserve place for the view by the textContainer

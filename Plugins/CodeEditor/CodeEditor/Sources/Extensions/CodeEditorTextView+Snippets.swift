@@ -149,7 +149,7 @@ class SnippetPlaceholderView: NSTextView {
       self.textStorage?.string ?? ""
     }
     set {
-      self.replaceCharacters(in: textRange, with: newValue)
+      self.replaceCharacters(in: textRange, with: " \(newValue) ")
     }
   }
 
