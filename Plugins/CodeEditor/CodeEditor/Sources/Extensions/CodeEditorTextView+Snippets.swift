@@ -253,7 +253,7 @@ class SnippetPlaceholderView: NSTextView {
 
     case Keycode.tab:
       if let snippet = editorView?.nextSnippet(at: range.upperBound) ??
-                        editorView?.prevSnippet(at: range.lowerBound) {
+                       editorView?.nextSnippet(at: editorView?.visibleRange?.location ?? 0) {
 
         self.window?.makeFirstResponder(snippet.view)
       }
