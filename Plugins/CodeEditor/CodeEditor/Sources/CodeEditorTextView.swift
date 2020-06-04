@@ -53,7 +53,6 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
 //    textContainer.hangingIndentWidth = 2 //defaults[.hangingIndentWidth]
 //    self.replaceTextContainer(textContainer)
 
-    //let layoutManager = LayoutManager()
     let layoutManager = CodeEditorLayoutManager()
     layoutManager.delegate = self
 
@@ -154,19 +153,10 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     return NSPoint(x: super.textContainerOrigin.x, y: 0.0)
   }
   
-  
+
   /// text font
   override var font: NSFont? {
-    get {
-      return (self.layoutManager as? CodeEditorLayoutManager)?.textFont ?? super.font
-    }
-    
-    set {
-      guard let font = newValue else { return }
-      
-      (self.layoutManager as? CodeEditorLayoutManager)?.textFont = font
-      
-      super.font = font
+    didSet {
       self.invalidateDefaultParagraphStyle()
     }
   }

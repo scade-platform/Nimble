@@ -9,26 +9,7 @@
 import Cocoa
 
 final class CodeEditorLayoutManager: NSLayoutManager {
-  
-  private(set) var spaceWidth: CGFloat = 0
-  private var defaultLineHeight: CGFloat = 1.5
-  private var defaultBaselineOffset: CGFloat = 0
-  
-  var textFont: NSFont? {
-    didSet {
-      if let textFont = textFont {
-        spaceWidth = textFont.spaceWidth
-        defaultLineHeight = defaultLineHeight(for: textFont)
-        defaultBaselineOffset = defaultBaselineOffset(for: textFont)
-      }
-    }
-  }
-  
-  var lineHeight: CGFloat {
-    let multiple = firstTextView?.defaultParagraphStyle?.lineHeightMultiple ?? 1.0
-    return multiple * defaultLineHeight
-  }
-  
+
   override func drawUnderline(forGlyphRange glyphRange: NSRange, underlineType underlineVal: NSUnderlineStyle, baselineOffset: CGFloat, lineFragmentRect lineRect: NSRect, lineFragmentGlyphRange lineGlyphRange: NSRange, containerOrigin: NSPoint) {
     
     guard let container = textContainer(forGlyphAt: glyphRange.location, effectiveRange: nil) else { return }

@@ -268,7 +268,6 @@ extension CodeEditorView: NSTextStorageDelegate {
     let range = textStorage.editedRange
 
     DispatchQueue.main.async { [weak self] in
-      self?.textView.subviews.filter{$0 is DiagnosticView}.forEach{$0.removeFromSuperview()}
       if let progress = self?.highlightProgress {
         progress.cancel()
         self?.highlightProgress = syntaxParser.highlightAll()
@@ -309,6 +308,9 @@ extension CodeEditorView: NSTextViewDelegate {
 
   func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
     guard let doc = document else { return true }
+
+    textView.textContainer?.exclusionPaths = []
+    textView.subviews.filter{$0 is DiagnosticView}.forEach{$0.removeFromSuperview()}
 
     doc.observers.notify(as: SourceCodeDocumentObserver.self) {
       guard let text = textView.textStorage?.string else { return }            

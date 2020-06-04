@@ -11,6 +11,7 @@
 		D741547E236C99AE00A1B80C /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D741547D236C99AE00A1B80C /* Info.plist */; };
 		D7A538C1248018C2007C25EE /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A538C0248018C2007C25EE /* String.swift */; };
 		D7A538C524804E79007C25EE /* CodeEditorTextView+Snippets.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A538C424804E79007C25EE /* CodeEditorTextView+Snippets.swift */; };
+		D7BD02852489585D00FAAA90 /* NSLayoutManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BD02842489585D00FAAA90 /* NSLayoutManager.swift */; };
 		D7D4710623FC952E00CC9BAA /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = D7D4710523FC952E00CC9BAA /* Icons */; };
 		D7D4711E23FC983E00CC9BAA /* CodeEditorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7D4710923FC983E00CC9BAA /* CodeEditorView.xib */; };
 		D7D4711F23FC983E00CC9BAA /* CodeEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4710A23FC983E00CC9BAA /* CodeEditorView.swift */; };
@@ -71,6 +72,7 @@
 		D741547D236C99AE00A1B80C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D7A538C0248018C2007C25EE /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		D7A538C424804E79007C25EE /* CodeEditorTextView+Snippets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorTextView+Snippets.swift"; sourceTree = "<group>"; };
+		D7BD02842489585D00FAAA90 /* NSLayoutManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSLayoutManager.swift; sourceTree = "<group>"; };
 		D7D2D58922B1B48C0017B45D /* CodeEditor.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeEditor.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7D4710523FC952E00CC9BAA /* Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Icons; sourceTree = "<group>"; };
 		D7D4710923FC983E00CC9BAA /* CodeEditorView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CodeEditorView.xib; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 			children = (
 				D7D4711123FC983E00CC9BAA /* CodeEditorTextView+ColorTheme.swift */,
 				D7A538C424804E79007C25EE /* CodeEditorTextView+Snippets.swift */,
+				D7BD02842489585D00FAAA90 /* NSLayoutManager.swift */,
 				D7A538C0248018C2007C25EE /* String.swift */,
 			);
 			path = Extensions;
@@ -319,6 +322,7 @@
 				D7D4715F23FC9BBE00CC9BAA /* Collection.swift in Sources */,
 				D7D4712823FC983E00CC9BAA /* CurrentLineHighlighting.swift in Sources */,
 				D7D4716423FC9BBE00CC9BAA /* String+Localization.swift in Sources */,
+				D7BD02852489585D00FAAA90 /* NSLayoutManager.swift in Sources */,
 				D7D4716123FC9BBE00CC9BAA /* OrderedSet.swift in Sources */,
 				D7D4716223FC9BBE00CC9BAA /* MutableCopying.swift in Sources */,
 				D7D4711F23FC983E00CC9BAA /* CodeEditorView.swift in Sources */,

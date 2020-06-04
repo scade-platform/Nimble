@@ -37,24 +37,18 @@ extension CodeEditorTextView {
   }
 
   private func addSnippets(_ snippets: [Snippet]) {
-    guard let textStorage = self.textStorage,
-          let layoutManager = self.layoutManager,
-          let textContainer = self.textContainer else { return }
-
     snippets.forEach {
       self.addSubview($0.view)
       self.snippetViews.append($0.view)
-      textStorage.addAttributes([.snippet: $0.view], range: $0.range)
+      self.textStorage?.addAttributes([.snippet: $0.view], range: $0.range)
     }
 
-    layoutManager.ensureLayout(for: textContainer)
+    self.layoutManager?.ensureLayout(for: self.textContainer!)
 
     // Set snippet view location after layout is done
     snippets.forEach {
-      let glyphRange = layoutManager.glyphRange(forCharacterRange: $0.range, actualCharacterRange: nil)
-      let glyphRect = layoutManager.boundingRect(forGlyphRange: glyphRange, in: textContainer)
-
-      $0.view.setFrameOrigin(glyphRect.origin)
+      guard let snippetRect = boundingRect(for: $0.range) else { return }
+      $0.view.setFrameOrigin(snippetRect.origin)
     }
   }
 
