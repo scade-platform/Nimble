@@ -100,17 +100,42 @@ class DiagnosticView: NSStackView {
     guard let textView = textView as? CodeEditorTextView, let textStorage = textView.textStorage else {
       return
     }
+
     textView.addSubview(self)
-    let defaultLineHeight = textView.layoutManager?.defaultLineHeight(for: textView.font ?? NSFont.systemFont(ofSize: NSFont.systemFontSize))
-    let lineHeight = defaultLineHeight! * (textView.defaultParagraphStyle?.lineHeightMultiple ?? 1)
-    let lineRange: Range<Int> = textStorage.string.lineRange(line: line - 1)
-    let string = String(textStorage.string[lineRange])
-    self.translatesAutoresizingMaskIntoConstraints = false
-    if let numberView = textView.lineNumberView {
-      self.leadingAnchor.constraint(greaterThanOrEqualTo: numberView.trailingAnchor, constant: (textView.stringWidth(for: string) ?? 0)).isActive = true
+
+
+    var lineRange = NSRange(textStorage.string.lineRange(line: line - 1))
+
+    // Adjust lineRange to remove NEWLINE symbol
+    // Otherwise the line width would span to the text view's width
+    if lineRange.length > 1 {
+      lineRange = NSRange(location: lineRange.location, length: lineRange.length - 1)
     }
-    self.trailingAnchor.constraint(equalTo: textView.trailingAnchor, constant: -10).isActive = true
-    self.topAnchor.constraint(equalTo: textView.topAnchor, constant: lineHeight * CGFloat(line - 1)).isActive = true
+
+    let lineWidth =  textView.boundingRect(for: lineRange)?.size.width ?? 0
+    let lineHeight = textView.layoutManager!.lineHeight
+
+    let leadingOffset = min(0.8 * textView.frame.size.width, lineWidth)
+
+    let placeholder = NSRect(x: leadingOffset + 10,
+                             y: lineHeight * CGFloat(line - 1),
+                             width: textView.frame.size.width - leadingOffset,
+                             height: lineHeight)
+
+    self.translatesAutoresizingMaskIntoConstraints = false
+    self.topAnchor.constraint(equalTo: textView.topAnchor,
+                              constant: placeholder.origin.y).isActive = true
+
+    self.trailingAnchor.constraint(equalTo: textView.trailingAnchor,
+                                   constant: -10).isActive = true
+
+    if let numberView = textView.lineNumberView {
+      self.leadingAnchor.constraint(greaterThanOrEqualTo: numberView.trailingAnchor,
+                                    constant: placeholder.origin.x).isActive = true
+    }
+
+    // Reserve place for the view by the textContainer
+    textView.textContainer?.exclusionPaths.append(NSBezierPath(rect: placeholder))
   }
 }
 
@@ -260,7 +285,7 @@ fileprivate class DiagnosticTableView: NSView {
     self.stackView = NSStackView()
     super.init(frame: .zero)
     let layer = CALayer()
-    layer.cornerRadius = 6.0
+    layer.cornerRadius = 4.0
     layer.masksToBounds = true
     self.layer = layer
     setupStackView()
