@@ -24,7 +24,9 @@
                                 </stackView>
                             </subviews>
                             <constraints>
+                                <constraint firstAttribute="bottom" secondItem="Hze-Sl-jfe" secondAttribute="bottom" id="4td-zM-W0w"/>
                                 <constraint firstAttribute="trailing" secondItem="Hze-Sl-jfe" secondAttribute="trailing" constant="3" id="BcP-8f-oAb"/>
+                                <constraint firstItem="Hze-Sl-jfe" firstAttribute="top" secondItem="j1K-6C-YwF" secondAttribute="top" id="DVs-w7-mxI"/>
                                 <constraint firstItem="Hze-Sl-jfe" firstAttribute="top" secondItem="j1K-6C-YwF" secondAttribute="top" id="U4V-W9-VYU"/>
                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Hze-Sl-jfe" secondAttribute="bottom" id="kqE-y4-yhZ"/>
                                 <constraint firstItem="Hze-Sl-jfe" firstAttribute="leading" secondItem="j1K-6C-YwF" secondAttribute="leading" constant="3" id="u1A-bz-mUP"/>

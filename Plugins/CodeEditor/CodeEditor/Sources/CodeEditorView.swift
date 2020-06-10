@@ -40,7 +40,6 @@ class CodeEditorView: NSViewController {
     _ = view.view    
     return view
   }()
-  
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -48,7 +47,16 @@ class CodeEditorView: NSViewController {
     ThemeManager.shared.observers.add(observer: self)
     loadContent()
   }
-  
+
+  override func viewDidLayout() {
+    super.viewDidLayout()
+    textView.textContainer?.exclusionPaths = []
+    diagnosticViews.forEach {
+      $0.updateConstraints()
+      $0.layout()
+    }
+  }
+
   func handleKeyDown(with event: NSEvent) -> Bool {
     if completionView.isActive {
       return completionView.handleKeyDown(with: event)
@@ -343,3 +351,4 @@ extension CodeEditorView: NSTextViewDelegate {
     }
   }
 }
+

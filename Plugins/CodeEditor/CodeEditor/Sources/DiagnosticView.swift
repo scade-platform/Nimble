@@ -55,53 +55,25 @@ class DiagnosticView: NSStackView {
     self.line = line
     
     super.init(frame: .zero)
-    
+
+    self.translatesAutoresizingMaskIntoConstraints = false
     self.orientation = .vertical
     self.alignment = .trailing
     self.spacing = 8
         
     set(diagnostics: diagnostics)
-    setupView()
-    
+
+    textView.addSubview(self)
     ThemeManager.shared.observers.add(observer: self)
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
-  func mouseDownHandler() {
-    if self.subviews.count > 1 {
-      //when expand hide other diagnostic view
-      if let textView = textView {
-        textView.subviews.filter{$0 is DiagnosticView}.filter{$0 !== self}.forEach{$0.isHidden = !$0.isHidden}
-      }
-      self.arrangedSubviews.forEach{$0.isHidden = !$0.isHidden}
-    }
-   }
-  
-  private func addTable(for diagnostics: [Diagnostic], isHidden: Bool = false){
-    let tableView = DiagnosticTableView(delegate: SingleDiagnosticRowViewDelegate(font: font))
-    for diagnostic in diagnostics {
-      let row = DiagnosticRowView.loadFromNib()
-      tableView.add(row: row)
-      row.diagnostics = [diagnostic]
-    }
-    tableView.isHidden = isHidden
-    tableView.mouseDownCallBack = mouseDownHandler
-    self.addArrangedSubview(tableView)
-  }
-  
-  private func set(diagnostics: [Diagnostic]) {
-    self.diagnostics = diagnostics
-  }
-  
-  private func setupView() {
-    guard let textView = textView as? CodeEditorTextView, let textStorage = textView.textStorage else {
-      return
-    }
 
-    textView.addSubview(self)
+  override func updateConstraints() {
+    guard let textView = textView as? CodeEditorTextView,
+          let textStorage = textView.textStorage else { return }
 
 
     var lineRange = NSRange(textStorage.string.lineRange(line: line - 1))
@@ -119,25 +91,54 @@ class DiagnosticView: NSStackView {
 
     let placeholder = NSRect(x: leadingOffset + 10,
                              y: lineHeight * CGFloat(line - 1),
-                             width: textView.frame.size.width - leadingOffset,
+                             width: textView.frame.size.width - leadingOffset - 10,
                              height: lineHeight)
 
-    self.translatesAutoresizingMaskIntoConstraints = false
+
     self.topAnchor.constraint(equalTo: textView.topAnchor,
                               constant: placeholder.origin.y).isActive = true
 
-    self.trailingAnchor.constraint(equalTo: textView.trailingAnchor,
-                                   constant: -10).isActive = true
+    self.trailingAnchor.constraint(equalTo: textView.trailingAnchor).isActive = true
+    self.widthAnchor.constraint(lessThanOrEqualToConstant: placeholder.width).isActive = true
 
-    if let numberView = textView.lineNumberView {
-      self.leadingAnchor.constraint(greaterThanOrEqualTo: numberView.trailingAnchor,
-                                    constant: placeholder.origin.x).isActive = true
+    super.updateConstraints()
+  }
+
+  override func layout() {
+    super.layout()    
+    textView?.textContainer?.exclusionPaths.append(NSBezierPath(rect: self.frame))
+  }
+
+  func mouseDownHandler() {
+    if self.subviews.count > 1 {
+      //when expand hide other diagnostic view
+      if let textView = textView {
+        textView.subviews.filter{$0 is DiagnosticView}.filter{$0 !== self}.forEach{$0.isHidden = !$0.isHidden}
+      }
+      self.arrangedSubviews.forEach{$0.isHidden = !$0.isHidden}
+    }
+   }
+  
+  private func addTable(for diagnostics: [Diagnostic], isHidden: Bool = false){
+    let tableView = DiagnosticTableView(delegate: SingleDiagnosticRowViewDelegate(font: font))
+
+    for diagnostic in diagnostics {
+      let row = DiagnosticRowView.loadFromNib()
+      tableView.add(row: row)
+      row.diagnostics = [diagnostic]
     }
 
-    // Reserve place for the view by the textContainer
-    textView.textContainer?.exclusionPaths.append(NSBezierPath(rect: placeholder))
+    tableView.isHidden = isHidden
+    tableView.mouseDownCallBack = mouseDownHandler
+    self.addArrangedSubview(tableView)
+  }
+  
+  private func set(diagnostics: [Diagnostic]) {
+    self.diagnostics = diagnostics
   }
 }
+
+// MARK: - DiagnosticView + ThemeObserver
 
 extension DiagnosticView: ThemeObserver {
   func colorThemeDidChanged(_ theme: Theme) {
@@ -146,6 +147,8 @@ extension DiagnosticView: ThemeObserver {
     self.diagnostics = d
   }
 }
+
+// MARK: - DiagnosticRowView
 
 class DiagnosticRowView: NSView {
   var diagnosticDelegate: DiagnosticRowViewDelegate? = nil
@@ -164,6 +167,8 @@ class DiagnosticRowView: NSView {
   
 }
 
+// MARK: - Abstract Row Delegate
+
 protocol DiagnosticRowViewDelegate {
   func show(diagnostics: [Diagnostic], in row: DiagnosticRowView)
 }
@@ -180,25 +185,31 @@ class DiagnosticRowViewDelegateImpl: DiagnosticRowViewDelegate {
   }
 }
 
+// MARK: - Single Row Delegate
+
 class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegateImpl {
   
   override func show(diagnostics: [Diagnostic], in row: DiagnosticRowView) {
     guard let diagnostic = diagnostics.first else { return }
+
     addIcon(for: diagnostic, in: row.iconsView)
     row.iconsView.superview?.setBackgroundColor(DiagnosticViewUtils.iconColumnColor(for: diagnostic))
+
     addText(for: diagnostic, in: row.textView)
     row.setBackgroundColor(DiagnosticViewUtils.textColumnColor(for: diagnostic))
   }
   
   private func addIcon(for diagnostic: Diagnostic, in iconsView: NSStackView) {
     let imgView = NSImageView()
+
     imgView.image = DiagnosticViewUtils.icon(for: diagnostic)?.imageWithTint(.black)
     imgView.imageScaling = .scaleAxesIndependently
-    imgView.heightAnchor.constraint(equalToConstant: 11).isActive = true
+    imgView.heightAnchor.constraint(equalToConstant: 10).isActive = true
     imgView.widthAnchor.constraint(equalTo: imgView.heightAnchor, multiplier: 1).isActive = true
+
     let parentView = NSView()
     parentView.addSubview(imgView)
-    imgView.layout(into: parentView, insets: NSEdgeInsets(top: 3, left: 3, bottom: 3, right: 0))
+    imgView.layout(into: parentView, insets: NSEdgeInsets(top: 0, left: 3, bottom: 0, right: 0))
     iconsView.addArrangedSubview(parentView)
   }
   
@@ -211,6 +222,8 @@ class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegateImpl {
     textView.sizeToFit()
   }
 }
+
+// MARK: - Summary Row Delegate
 
 class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegateImpl {
   override func show(diagnostics: [Diagnostic], in row : DiagnosticRowView) {
@@ -245,15 +258,17 @@ class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegateImpl {
     }
     for diagnosticType in DiagnosticSeverity.allCases {
       guard let diagnostic = diagnostics.first(where: {$0.severity == diagnosticType}) else { continue }
+
       let imgView = NSImageView()
       imgView.imageScaling = .scaleAxesIndependently
       imgView.image = DiagnosticViewUtils.icon(for: diagnostic)?.imageWithTint(.black)
-      imgView.heightAnchor.constraint(equalToConstant: 11).isActive = true
+      imgView.heightAnchor.constraint(equalToConstant: 10).isActive = true
       imgView.widthAnchor.constraint(equalTo: imgView.heightAnchor, multiplier: 1).isActive = true
+
       let parentView = NSView()
       parentView.setBackgroundColor(currentIconColumnColor!)
       parentView.addSubview(imgView)
-      imgView.layout(into: parentView, insets: NSEdgeInsets(top: 3, left: 0, bottom: 3, right: 0))
+      imgView.layout(into: parentView, insets: NSEdgeInsets(top: 0, left: 0, bottom: 0, right: 0))
       iconsView.addArrangedSubview(parentView)
     }
   }
@@ -274,6 +289,9 @@ class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegateImpl {
   }
 }
 
+
+// MARK: - Utils
+
 fileprivate class DiagnosticTableView: NSView {
   let stackView: NSStackView
   var mouseDownCallBack: (() -> Void)?
@@ -285,7 +303,7 @@ fileprivate class DiagnosticTableView: NSView {
     self.stackView = NSStackView()
     super.init(frame: .zero)
     let layer = CALayer()
-    layer.cornerRadius = 4.0
+    layer.cornerRadius = 2.0
     layer.masksToBounds = true
     self.layer = layer
     setupStackView()

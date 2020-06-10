@@ -13,9 +13,9 @@ class CodeEditorCompletionView: NSViewController {
   
   weak var textView: CodeEditorTextView? = nil
   
-  weak var currentView: NSView? = nil
+  private weak var currentView: NSView? = nil
   
-  
+
   
   @IBOutlet weak var tableView: NSTableView!
     
