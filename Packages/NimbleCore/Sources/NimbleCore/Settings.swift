@@ -135,7 +135,16 @@ public class Settings {
     }
               
     do {
-      return try YAMLEncoder().encode(store)
+      let content = try YAMLEncoder().encode(store)
+      let strArray : [String] = content.components(separatedBy: "\n")
+      let newArray = strArray.sorted { $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending }
+      return newArray.reduce("") { result, nextString in
+        if result.isEmpty {
+          return nextString
+        } else {
+          return "\(result)\n\(nextString)"
+        }
+      }
     } catch {
       print("Error encoding settings file \(error)")
       return ""
