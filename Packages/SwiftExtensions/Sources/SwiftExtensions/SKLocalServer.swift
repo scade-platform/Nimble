@@ -30,6 +30,12 @@ import LanguageServerProtocol
 public extension SKLocalServer {
   @Setting("swift.toolchain", defaultValue: "")
   static var swiftToolchain: String
+
+  private static var swiftToolchainInstallPath: AbsolutePath? {
+    guard !SKLocalServer.$swiftToolchain.isDefault else { return nil }
+    return AbsolutePath(SKLocalServer.swiftToolchain)
+  }
+
 }
 
 public final class SKLocalServer: LSPServer {
@@ -66,7 +72,7 @@ public final class SKLocalServer: LSPServer {
       serverOptions.buildSetup.sdkRoot = AbsolutePath(toolchain.sdkRoot)
       serverOptions.buildSetup.flags.swiftCompilerFlags += toolchain.compilerFlags
     } else {
-      ToolchainRegistry.shared = ToolchainRegistry(installPath: nil, localFileSystem)
+      ToolchainRegistry.shared = ToolchainRegistry(installPath: SKLocalServer.swiftToolchainInstallPath, localFileSystem)
     }
 
     server = SourceKitServer(client: clientConnection, options: serverOptions) { [weak self] in
@@ -152,3 +158,5 @@ extension SKLocalServer: BuildSystemsObserver {
     }
   }
 }
+
+
