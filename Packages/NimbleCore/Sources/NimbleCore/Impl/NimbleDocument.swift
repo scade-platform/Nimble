@@ -39,6 +39,11 @@ open class NimbleDocument: NSDocument {
     }
   }
   
+  open override func prepareSavePanel(_ savePanel: NSSavePanel) -> Bool {
+    savePanel.isExtensionHidden = false
+    return true
+  }
+  
   open override func save(to url: URL,
                           ofType typeName: String,
                           for saveOperation: NSDocument.SaveOperationType,
