@@ -13,12 +13,70 @@ import BuildSystem
 import SwiftExtensions
 
 class SPMBuildSystem: BuildSystem {
+  @Setting("swift.android.toolchain", defaultValue: nil)
+  static var androidToolchain: SwiftAndroidToolchain?
 
-  @Setting("swift.toolchains", defaultValue: [])
-  static var toolchains: [SwiftToolchain]
+  @Setting("swift.platforms", defaultValue: [])
+  static var platforms: [SwiftToolchain]
   
   var name: String {
     return "Swift Package"
+  }
+
+  private func makeAndroidVariants(target: SPMTarget) -> [Variant] {
+    guard let toolchain = SPMBuildSystem.androidToolchain else { return [] }
+
+    struct AndroidABI {
+      var triple: String
+      var sysrootArch: String
+      var includeArch: String
+      var stlArch: String
+    }
+
+    let androidABIs: [String: AndroidABI] = [
+      "x86_64": AndroidABI(triple: "x86_64-none-linux-android",
+                           sysrootArch: "x86_64",
+                           includeArch: "x86_64-linux-android",
+                           stlArch: "x86_64"),
+      "x86": AndroidABI(triple: "i686-none-linux-android",
+                        sysrootArch: "x86",
+                        includeArch: "i686-linux-android",
+                        stlArch: "x86"),
+      "ARM": AndroidABI(triple: "aarch64-none-linux-android",
+                        sysrootArch: "arm64",
+                        includeArch: "aarch64-linux-android",
+                        stlArch: "arm64-v8a"),
+      "ARM64": AndroidABI(triple: "armv7-none-linux-androideabi",
+                          sysrootArch: "arm",
+                          includeArch: "arm-linux-androideabi",
+                          stlArch: "armeabi-v7a")
+    ]
+
+    return androidABIs.map { abi, props in
+      let toolchain = SwiftToolchain(
+        name: "Android " + abi,
+        compiler: toolchain.compiler,
+        target: props.triple,
+        sdkRoot: toolchain.ndk + "/platforms/android-21/arch-" + props.sysrootArch,
+        compilerFlags: [
+          "-tools-directory",
+          toolchain.ndk + "/toolchains/llvm/prebuilt/darwin-x86_64/bin",
+          "-I",
+          toolchain.ndk + "/sysroot/usr/include",
+          "-I",
+          toolchain.ndk + "/sysroot/usr/include/" + props.includeArch,
+          "-L",
+          toolchain.ndk + "/sources/cxx-stl/llvm-libc++/libs/" + props.stlArch,
+          "-lswiftJNI",
+          "-lswiftDispatch",
+          "-ldispatch",
+          "-lswiftFoundation",
+          "-lswiftFoundationNetworking"
+        ]
+      )
+
+      return UserDefinedToolchainVariant(target: target, buildSystem: self, toolchain: toolchain)
+    }
   }
   
   func targets(in workbench: Workbench) -> [Target] {
@@ -28,8 +86,11 @@ class SPMBuildSystem: BuildSystem {
       // creating default Mac variant
       $0.variants.append(MacVariant(target: $0, buildSystem: self))
 
-      // creating variants for all user defined toolchains
-      for toolchain in SPMBuildSystem.toolchains {
+      // creating variants for all android platforms
+      $0.variants += makeAndroidVariants(target: $0)
+
+      // creating variants for all user defined platforms
+      for toolchain in SPMBuildSystem.platforms {
         $0.variants.append(UserDefinedToolchainVariant(target: $0, buildSystem: self, toolchain: toolchain))
       }
     }
