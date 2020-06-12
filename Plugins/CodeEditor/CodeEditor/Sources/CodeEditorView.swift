@@ -52,8 +52,7 @@ class CodeEditorView: NSViewController {
     super.viewDidLayout()
     textView.textContainer?.exclusionPaths = []
     diagnosticViews.forEach {
-      $0.updateConstraints()
-      $0.layout()
+      $0.updateConstraints()      
     }
   }
 
@@ -121,10 +120,10 @@ class CodeEditorView: NSViewController {
     // Show new diagnostics
     let style = NSNumber(value: NSUnderlineStyle.thick.rawValue)
     var lastLine = -1
-    var diagnosticsOnLine: [Diagnostic] = []
+    var diagnosticsOnLine: [SourceCodeDiagnostic] = []
 
-    //remove previouse diagnostics view
-    diagnosticViews.forEach{ $0.removeFromSuperview() }
+    removeDiagnosticsViews()
+
     for d in diagnostics {
       let range = d.range(in: text)
 
@@ -161,11 +160,17 @@ class CodeEditorView: NSViewController {
     }
   }
   
-  private func addDiagnosticsView(diagnosticsOnLine: [Diagnostic], lastLine: Int) {
-    let diagnosticView = DiagnosticView(textView: textView, diagnostics: diagnosticsOnLine, line: lastLine)
+  private func addDiagnosticsView(diagnosticsOnLine: [SourceCodeDiagnostic], lastLine: Int) {
+    let diagnosticView = DiagnosticView(textView: textView, line: lastLine)
+    diagnosticView.diagnostics = diagnosticsOnLine
     self.diagnosticViews.append(diagnosticView)
   }
-  
+
+  private func removeDiagnosticsViews() {
+    diagnosticViews.forEach{ $0.removeFromSuperview() }
+    diagnosticViews.removeAll()
+    textView.textContainer?.exclusionPaths = []
+  }
   
   private func scheduleDiagnosticsUpdate() {
     if let timer = diagnosticsUpdateTimer {
@@ -317,8 +322,7 @@ extension CodeEditorView: NSTextViewDelegate {
   func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
     guard let doc = document else { return true }
 
-    textView.textContainer?.exclusionPaths = []
-    textView.subviews.filter{$0 is DiagnosticView}.forEach{$0.removeFromSuperview()}
+    removeDiagnosticsViews()
 
     doc.observers.notify(as: SourceCodeDocumentObserver.self) {
       guard let text = textView.textStorage?.string else { return }            

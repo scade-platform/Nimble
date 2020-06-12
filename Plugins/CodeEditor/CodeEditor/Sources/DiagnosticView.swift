@@ -12,34 +12,46 @@ import CodeEditor
 
 //The target view
 class DiagnosticView: NSStackView {
-  private weak var textView: NSTextView?
+  fileprivate weak var textView: NSTextView?
+
   private let line: Int
-  
-  private(set) var diagnostics: [Diagnostic] = [] {
+
+  private var expanded: Bool = false
+
+  private var topConstraint: NSLayoutConstraint? = nil
+  private var widthConstraint: NSLayoutConstraint? = nil
+  private var trailingConstraint: NSLayoutConstraint? = nil
+
+  var diagnostics: [SourceCodeDiagnostic] = [] {
     didSet {
       guard !diagnostics.isEmpty else { return }
+
+      let collapsedView = DiagnosticTableView(diagnosticView: self)
+      collapsedView.delegate = SummaryDiagnosticsRowViewDelegate()
+
       let collapsedRow = DiagnosticRowView.loadFromNib()
-      let collapsedView = DiagnosticTableView(delegate: SummaryDiagnosticsRowViewDelegate(font: font))
       collapsedView.add(row: collapsedRow)
       collapsedView.mouseDownCallBack = mouseDownHandler
-      collapsedRow.diagnostics = diagnostics
+
+      collapsedRow.content = .diagnostics(diagnostics)
       self.addArrangedSubview(collapsedView)
-      if diagnostics.count > 1 {
+
+      if diagnostics.count > 1 || diagnostics.contains(where: {!$0.fixes.isEmpty}) {
         if !errors.isEmpty {
-          addTable(for: errors, isHidden: true)
+          createTable(for: errors, isHidden: true)
         }
         if !warnings.isEmpty {
-          addTable(for: warnings, isHidden: true)
+          createTable(for: warnings, isHidden: true)
         }
       }
     }
   }
   
-  private lazy var errors : [Diagnostic] = {
+  private lazy var errors : [SourceCodeDiagnostic] = {
     return diagnostics.filter{$0.severity == .error}
   }()
   
-  private lazy var warnings : [Diagnostic] = {
+  private lazy var warnings : [SourceCodeDiagnostic] = {
     return diagnostics.filter{$0.severity == .warning}
   }()
   
@@ -50,18 +62,16 @@ class DiagnosticView: NSStackView {
     return font
   }()
   
-  init(textView: NSTextView, diagnostics: [Diagnostic], line: Int) {
+  init(textView: NSTextView, line: Int) {
     self.textView = textView
     self.line = line
-    
+
     super.init(frame: .zero)
 
     self.translatesAutoresizingMaskIntoConstraints = false
     self.orientation = .vertical
     self.alignment = .trailing
     self.spacing = 8
-        
-    set(diagnostics: diagnostics)
 
     textView.addSubview(self)
     ThemeManager.shared.observers.add(observer: self)
@@ -73,8 +83,8 @@ class DiagnosticView: NSStackView {
 
   override func updateConstraints() {
     guard let textView = textView as? CodeEditorTextView,
-          let textStorage = textView.textStorage else { return }
-
+          let textStorage = textView.textStorage,
+          let textContainer = textView.textContainer else { return }
 
     var lineRange = NSRange(textStorage.string.lineRange(line: line - 1))
 
@@ -84,59 +94,99 @@ class DiagnosticView: NSStackView {
       lineRange = NSRange(location: lineRange.location, length: lineRange.length - 1)
     }
 
-    let lineWidth =  textView.boundingRect(for: lineRange)?.size.width ?? 0
-    let lineHeight = textView.layoutManager!.lineHeight
+    let lineSize =  textView.boundingRect(for: lineRange)?.size ?? NSSize()
+    let defaultLineHeight = textView.layoutManager!.lineHeight
 
-    let leadingOffset = min(0.8 * textView.frame.size.width, lineWidth)
+    let leadingOffset = min(0.8 * textView.frame.size.width, lineSize.width)
 
     let placeholder = NSRect(x: leadingOffset + 10,
-                             y: lineHeight * CGFloat(line - 1),
+                             y: defaultLineHeight * CGFloat(line - 1),
                              width: textView.frame.size.width - leadingOffset - 10,
-                             height: lineHeight)
+                             height: defaultLineHeight)
 
 
-    self.topAnchor.constraint(equalTo: textView.topAnchor,
-                              constant: placeholder.origin.y).isActive = true
+    if !textContainer.exclusionPaths.contains(where: {$0.bounds == placeholder}) {
+      textContainer.exclusionPaths.append(NSBezierPath(rect: placeholder))
+    }
 
-    self.trailingAnchor.constraint(equalTo: textView.trailingAnchor).isActive = true
-    self.widthAnchor.constraint(lessThanOrEqualToConstant: placeholder.width).isActive = true
+    if !expanded {
+      if topConstraint == nil {
+        topConstraint = self.topAnchor.constraint(equalTo: textView.topAnchor)
+        topConstraint?.isActive = true
+      }
+
+      if widthConstraint == nil {
+        widthConstraint = self.widthAnchor.constraint(lessThanOrEqualToConstant: 0.0)
+        widthConstraint?.isActive = true
+      }
+
+      if trailingConstraint == nil {
+        trailingConstraint = self.trailingAnchor.constraint(equalTo: textView.trailingAnchor)
+        trailingConstraint?.isActive = true
+      }
+
+      topConstraint?.constant = placeholder.origin.y
+      widthConstraint?.constant = placeholder.width
+      trailingConstraint?.constant = 0.0
+
+    } else {
+      topConstraint?.constant = placeholder.origin.y + lineSize.height
+      trailingConstraint?.constant = -40.0
+
+      var maxWidth: CGFloat = 0
+      diagnostics.forEach {
+        guard let width = textView.stringWidth(for: $0.message) else { return }
+        maxWidth = max(maxWidth, width)
+
+        $0.fixes.forEach { quickfix in
+          guard let width = textView.stringWidth(for: quickfix.title) else { return }
+          maxWidth = max(maxWidth, width)
+        }
+      }
+      widthConstraint?.constant = maxWidth + 30
+    }
+
 
     super.updateConstraints()
-  }
-
-  override func layout() {
-    super.layout()    
-    textView?.textContainer?.exclusionPaths.append(NSBezierPath(rect: self.frame))
   }
 
   func mouseDownHandler() {
     if self.subviews.count > 1 {
       //when expand hide other diagnostic view
-      if let textView = textView {
-        textView.subviews.filter{$0 is DiagnosticView}.filter{$0 !== self}.forEach{$0.isHidden = !$0.isHidden}
-      }
+//      if let textView = textView {
+//        textView.subviews.filter{$0 is DiagnosticView}.filter{$0 !== self}.forEach{$0.isHidden = !$0.isHidden}
+//      }
+      expanded = !expanded
+
       self.arrangedSubviews.forEach{$0.isHidden = !$0.isHidden}
+
+      self.bringToFront()      
+      self.updateConstraints()
     }
    }
   
-  private func addTable(for diagnostics: [Diagnostic], isHidden: Bool = false){
-    let tableView = DiagnosticTableView(delegate: SingleDiagnosticRowViewDelegate(font: font))
+  private func createTable(for diagnostics: [SourceCodeDiagnostic], isHidden: Bool = false){
+    let tableView = DiagnosticTableView(diagnosticView: self)
+    tableView.delegate = SingleDiagnosticRowViewDelegate()
 
     for diagnostic in diagnostics {
       let row = DiagnosticRowView.loadFromNib()
       tableView.add(row: row)
-      row.diagnostics = [diagnostic]
+      row.content = .diagnostic(diagnostic)
+
+      for quickfix in diagnostic.fixes {
+        let row = DiagnosticRowView.loadFromNib()
+        tableView.add(row: row)
+        row.content = .quickfix(quickfix, diagnostic)
+      }
     }
 
     tableView.isHidden = isHidden
     tableView.mouseDownCallBack = mouseDownHandler
     self.addArrangedSubview(tableView)
   }
-  
-  private func set(diagnostics: [Diagnostic]) {
-    self.diagnostics = diagnostics
-  }
 }
+
 
 // MARK: - DiagnosticView + ThemeObserver
 
@@ -148,40 +198,114 @@ extension DiagnosticView: ThemeObserver {
   }
 }
 
+// MARK: - DiagnosticTableView
+
+fileprivate class DiagnosticTableView: NSView {
+  fileprivate weak var diagnosticView: DiagnosticView? = nil
+  var delegate: DiagnosticRowViewDelegate? = nil
+
+  let stackView: NSStackView = NSStackView()
+  var mouseDownCallBack: (() -> Void)?
+
+  //Add rounded corners to the target view
+  init(diagnosticView: DiagnosticView) {
+    self.diagnosticView = diagnosticView
+
+    super.init(frame: .zero)
+
+    self.addSubview(stackView)
+
+    self.stackView.orientation = .vertical
+    self.stackView.spacing = 0
+    self.stackView.layout(into: self)
+
+    self.wantsLayer = true
+    self.layer?.cornerRadius = 2.0
+    self.layer?.masksToBounds = true
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+
+  func add(row: DiagnosticRowView) {
+    row.tableView = self
+
+    self.stackView.addArrangedSubview(row)
+
+    row.leadingAnchor.constraint(equalTo: stackView.leadingAnchor).isActive = true
+    row.trailingAnchor.constraint(equalTo: stackView.trailingAnchor).isActive = true
+  }
+
+  override func mouseDown(with event: NSEvent) {
+    mouseDownCallBack?()
+  }
+}
+
 // MARK: - DiagnosticRowView
 
 class DiagnosticRowView: NSView {
-  var diagnosticDelegate: DiagnosticRowViewDelegate? = nil
-  
-  
+  fileprivate weak var tableView: DiagnosticTableView? = nil
+
+  @IBOutlet weak var stackView: NSStackView!
   @IBOutlet weak var iconsView: NSStackView!
-  @IBOutlet weak var textView: NSTextField!
-  
-  
-  var diagnostics: [Diagnostic] = [] {
+  @IBOutlet weak var messageView: NSTextField!
+
+  var font: NSFont? {
+    guard let font = tableView?.diagnosticView?.textView?.font else { return nil }
+    return NSFont.systemFont(ofSize: font.pointSize)
+  }
+
+  var content: DiagnosticRowViewContent = .empty {
     didSet {
-      guard !diagnostics.isEmpty else { return }
-      diagnosticDelegate?.show(diagnostics: diagnostics, in: self)
+      switch content {
+      case .diagnostics(let diagnostics):
+        tableView?.delegate?.show(diagnostics: diagnostics, in: self)
+      case .diagnostic(let diagnostic):
+        tableView?.delegate?.show(diagnostic: diagnostic, in: self)
+      case .quickfix(let quickfix, let diagnostic):
+        tableView?.delegate?.show(quickfix: quickfix, from: diagnostic, in: self)
+      default:
+        return
+      }
     }
   }
-  
+
+  @objc func fix() {
+    guard case .quickfix(let quickfix, _) = content,
+          let textView = tableView?.diagnosticView?.textView else { return }
+
+    let range = quickfix.textEdit.range(in: textView.string)
+    textView.insertText(quickfix.textEdit.newText, replacementRange: NSRange(range))
+  }
+}
+
+enum DiagnosticRowViewContent {
+  case diagnostics([SourceCodeDiagnostic])
+  case diagnostic(SourceCodeDiagnostic)
+  case quickfix(SourceCodeQuickfix, SourceCodeDiagnostic)
+  case empty
 }
 
 // MARK: - Abstract Row Delegate
 
 protocol DiagnosticRowViewDelegate {
-  func show(diagnostics: [Diagnostic], in row: DiagnosticRowView)
+  func show(diagnostics: [SourceCodeDiagnostic], in row: DiagnosticRowView)
+  func show(diagnostic: SourceCodeDiagnostic, in row: DiagnosticRowView)
+  func show(quickfix: SourceCodeQuickfix, from: SourceCodeDiagnostic, in: DiagnosticRowView)
 }
 
 class DiagnosticRowViewDelegateImpl: DiagnosticRowViewDelegate {
-  let font: NSFont
-  
-  init(font: NSFont) {
-    self.font = font
-  }
-  
-  func show(diagnostics: [Diagnostic], in row: DiagnosticRowView) {
+  func show(diagnostics: [SourceCodeDiagnostic], in row: DiagnosticRowView) {
     fatalError("show(diagnostics:,in:) has not been implemented")
+  }
+
+  func show(diagnostic: SourceCodeDiagnostic, in row: DiagnosticRowView) {
+    fatalError("show(diagnostics:,in:) has not been implemented")
+  }
+
+  func show(quickfix: SourceCodeQuickfix, from diagnostic: SourceCodeDiagnostic, in row: DiagnosticRowView) {
+    fatalError("show(quickfix:,in:) has not been implemented")
   }
 }
 
@@ -189,17 +313,44 @@ class DiagnosticRowViewDelegateImpl: DiagnosticRowViewDelegate {
 
 class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegateImpl {
   
-  override func show(diagnostics: [Diagnostic], in row: DiagnosticRowView) {
-    guard let diagnostic = diagnostics.first else { return }
-
-    addIcon(for: diagnostic, in: row.iconsView)
+  override func show(diagnostic: SourceCodeDiagnostic, in row: DiagnosticRowView) {
+    addIcon(for: diagnostic, in: row)
     row.iconsView.superview?.setBackgroundColor(DiagnosticViewUtils.iconColumnColor(for: diagnostic))
 
-    addText(for: diagnostic, in: row.textView)
+    addText(diagnostic.message, for: diagnostic, in: row)
     row.setBackgroundColor(DiagnosticViewUtils.textColumnColor(for: diagnostic))
   }
-  
-  private func addIcon(for diagnostic: Diagnostic, in iconsView: NSStackView) {
+
+  override func show(quickfix: SourceCodeQuickfix, from diagnostic: SourceCodeDiagnostic, in row: DiagnosticRowView) {
+    // Add a an empty icon holder
+    let iconHolder = NSView()
+    iconHolder.widthAnchor.constraint(equalToConstant: 10).isActive = true  // icon width
+    iconHolder.heightAnchor.constraint(equalToConstant: 20).isActive = true // icon height + top and bottom insets
+
+    row.iconsView.addArrangedSubview(iconHolder)
+    row.iconsView.superview?.setBackgroundColor(DiagnosticViewUtils.iconColumnColor(for: diagnostic))
+
+    // Add quickfix title
+    addText(quickfix.title, for: diagnostic, in: row)
+    row.setBackgroundColor(DiagnosticViewUtils.textColumnColor(for: diagnostic))
+
+    // Add quickfix action button
+    let fixButton = NSButton()
+    fixButton.title = "Fix"
+    fixButton.font = row.font
+    fixButton.contentTintColor = ThemeManager.shared.currentTheme?.general.foreground
+    fixButton.bezelStyle = .roundRect
+    fixButton.target = row
+    fixButton.action = #selector(DiagnosticRowView.fix)
+
+    let buttonHolder = NSView()
+    buttonHolder.addSubview(fixButton)
+
+    fixButton.layout(into: buttonHolder, insets: NSEdgeInsets(top: 0, left: 0, bottom: 0, right: 3))
+    row.stackView.addArrangedSubview(buttonHolder)
+  }
+
+  private func addIcon(for diagnostic: SourceCodeDiagnostic, in row: DiagnosticRowView) {
     let imgView = NSImageView()
 
     imgView.image = DiagnosticViewUtils.icon(for: diagnostic)?.imageWithTint(.black)
@@ -209,53 +360,57 @@ class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegateImpl {
 
     let parentView = NSView()
     parentView.addSubview(imgView)
-    imgView.layout(into: parentView, insets: NSEdgeInsets(top: 0, left: 3, bottom: 0, right: 0))
-    iconsView.addArrangedSubview(parentView)
+    imgView.layout(into: parentView, insets: NSEdgeInsets(top: 5, left: 0, bottom: 5, right: 0))
+    row.iconsView.addArrangedSubview(parentView)
   }
   
-  private func addText(for diagnostic: Diagnostic, in textView: NSTextField) {
-    textView.stringValue = diagnostic.message
-    textView.font = font
-    textView.textColor = ThemeManager.shared.currentTheme?.general.foreground
-    textView.drawsBackground = true
-    textView.backgroundColor = DiagnosticViewUtils.textColumnColor(for: diagnostic)
-    textView.sizeToFit()
+  private func addText(_ text: String, for diagnostic: SourceCodeDiagnostic, in row: DiagnosticRowView) {
+    row.messageView.stringValue = text
+    row.messageView.font = row.font
+    row.messageView.textColor = ThemeManager.shared.currentTheme?.general.foreground
+    row.messageView.drawsBackground = true
+    row.messageView.backgroundColor = DiagnosticViewUtils.textColumnColor(for: diagnostic)
+    row.messageView.sizeToFit()
   }
 }
+
 
 // MARK: - Summary Row Delegate
 
 class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegateImpl {
-  override func show(diagnostics: [Diagnostic], in row : DiagnosticRowView) {
-    
+  override func show(diagnostics: [SourceCodeDiagnostic], in row : DiagnosticRowView) {
     guard !diagnostics.isEmpty else { return }
     
-    addIcons(for: diagnostics, in: row.iconsView)
-    if let color = addText(for: diagnostics, in: row.textView) {
+    addIcons(for: diagnostics, in: row)
+    if let color = addText(for: diagnostics, in: row) {
       row.setBackgroundColor(color)
     }
   }
   
-  private func addIcons(for diagnostics: [Diagnostic], in iconsView: NSStackView) {
+  private func addIcons(for diagnostics: [SourceCodeDiagnostic], in row : DiagnosticRowView) {
     var currentIconColumnColor: NSColor? = nil
+
     for diagnosticType in DiagnosticSeverity.allCases {
       guard let diagnostic = diagnostics.first(where: {$0.severity == diagnosticType}) else { continue }
       currentIconColumnColor =  DiagnosticViewUtils.iconColumnColor(for: diagnostic)
       break
     }
-    iconsView.superview?.setBackgroundColor(currentIconColumnColor!)
+
+    row.iconsView.superview?.setBackgroundColor(currentIconColumnColor!)
+
     if diagnostics.count > 1 {
       let countView = NSTextField(labelWithString: "\(diagnostics.count)")
-      countView.font = font
+      countView.font = row.font
       countView.textColor = ThemeManager.shared.currentTheme?.general.foreground
       countView.sizeToFit()
 
       countView.alignment = .center
       countView.drawsBackground = true
       countView.backgroundColor = currentIconColumnColor
-      iconsView.addArrangedSubview(countView)
+      row.iconsView.addArrangedSubview(countView)
       countView.setContentCompressionResistancePriority(NSLayoutConstraint.Priority(rawValue: 751), for: .horizontal)
     }
+
     for diagnosticType in DiagnosticSeverity.allCases {
       guard let diagnostic = diagnostics.first(where: {$0.severity == diagnosticType}) else { continue }
 
@@ -269,71 +424,34 @@ class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegateImpl {
       parentView.setBackgroundColor(currentIconColumnColor!)
       parentView.addSubview(imgView)
       imgView.layout(into: parentView, insets: NSEdgeInsets(top: 0, left: 0, bottom: 0, right: 0))
-      iconsView.addArrangedSubview(parentView)
+
+      row.iconsView.addArrangedSubview(parentView)
     }
   }
   
-  private func addText(for diagnostics: [Diagnostic], in textView: NSTextField) -> NSColor? {
-    textView.lineBreakMode = .byTruncatingTail
+  private func addText(for diagnostics: [SourceCodeDiagnostic], in row : DiagnosticRowView) -> NSColor? {
+    row.messageView.lineBreakMode = .byTruncatingTail
+
     for diagnosticType in DiagnosticSeverity.allCases {
       guard let diagnostic = diagnostics.first(where: {$0.severity == diagnosticType}) else { continue }
-      textView.stringValue = diagnostic.message
-      textView.font = font
-      textView.textColor = ThemeManager.shared.currentTheme?.general.foreground
-      textView.drawsBackground = true
-      textView.backgroundColor = DiagnosticViewUtils.textColumnColor(for: diagnostic)
-      textView.sizeToFit()
-      return textView.backgroundColor
+
+      row.messageView.stringValue = diagnostic.message
+      row.messageView.font = row.font
+
+      row.messageView.textColor = ThemeManager.shared.currentTheme?.general.foreground
+      row.messageView.drawsBackground = true
+      row.messageView.backgroundColor = DiagnosticViewUtils.textColumnColor(for: diagnostic)
+      row.messageView.sizeToFit()
+
+      return row.messageView.backgroundColor
     }
     return nil
   }
 }
 
-
 // MARK: - Utils
 
-fileprivate class DiagnosticTableView: NSView {
-  let stackView: NSStackView
-  var mouseDownCallBack: (() -> Void)?
-  var diagnosticDelegate: DiagnosticRowViewDelegate? = nil
-  
-  //Add rounded corners to the target view
-  init(delegate: DiagnosticRowViewDelegate) {
-    self.diagnosticDelegate = delegate
-    self.stackView = NSStackView()
-    super.init(frame: .zero)
-    let layer = CALayer()
-    layer.cornerRadius = 2.0
-    layer.masksToBounds = true
-    self.layer = layer
-    setupStackView()
-  }
-  
-  required init?(coder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
-  }
-  
-  private func setupStackView() {
-    self.addSubview(stackView)
-    self.stackView.orientation = .vertical
-    self.stackView.spacing = 0
-    self.stackView.layout(into: self)
-  }
-  
-  func add(row view: DiagnosticRowView) {
-    view.diagnosticDelegate = diagnosticDelegate
-    self.stackView.addArrangedSubview(view)
-    view.leadingAnchor.constraint(equalTo: stackView.leadingAnchor).isActive = true
-    view.trailingAnchor.constraint(equalTo: stackView.trailingAnchor).isActive = true
-  }
-  
-  override func mouseDown(with event: NSEvent) {
-    mouseDownCallBack?()
-  }
-}
-
 fileprivate class DiagnosticViewUtils {
-  
   enum ThemeKind {
     case dark
     case light
@@ -346,7 +464,7 @@ fileprivate class DiagnosticViewUtils {
     return backgroundColor.lightnessComponent > CGFloat(0.5) ? .light : .dark
   }
   
-  fileprivate static func iconColumnColor(for diagnostic: Diagnostic) -> NSColor {
+  fileprivate static func iconColumnColor(for diagnostic: SourceCodeDiagnostic) -> NSColor {
     switch diagnostic.severity {
     case .error:
       switch themeKind {
@@ -367,7 +485,7 @@ fileprivate class DiagnosticViewUtils {
     }
   }
 
-  fileprivate static func textColumnColor(for diagnostic: Diagnostic) -> NSColor {
+  fileprivate static func textColumnColor(for diagnostic: SourceCodeDiagnostic) -> NSColor {
     switch diagnostic.severity {
     case .error:
       switch themeKind {
@@ -388,7 +506,7 @@ fileprivate class DiagnosticViewUtils {
     }
   }
 
-  fileprivate static func icon(for diagnostic: Diagnostic) -> NSImage? {
+  fileprivate static func icon(for diagnostic: SourceCodeDiagnostic) -> NSImage? {
     switch diagnostic.severity {
     case .warning:
       return Bundle(for: self).image(forResource: "warning")
@@ -419,3 +537,5 @@ fileprivate extension NSTextView {
     return atrStr.size().width + (self.defaultParagraphStyle?.defaultTabInterval ?? 0.0) * CGFloat(tabsCount)
   }
 }
+
+

@@ -26,6 +26,11 @@ public extension SourceCodeDocumentObserver {
 
 
 public protocol SourceCodeDiagnostic: Diagnostic {
+  var fixes: [SourceCodeQuickfix] { get }
   func range(`in`: String) -> Range<Int>
 }
 
+public protocol SourceCodeQuickfix {
+  var title: String { get }
+  var textEdit: TextEdit { get }
+}
