@@ -25,7 +25,8 @@ final class SwiftExtensionsPlugin: Plugin {
     BuildSystemsManager.shared.register(buildSystem: SPMBuildSystem())
 
     Settings.shared.add(SKLocalServer.$swiftToolchain)
-    Settings.shared.add(SPMBuildSystem.$toolchains)
+    Settings.shared.add(SPMBuildSystem.$androidToolchain)
+    Settings.shared.add(SPMBuildSystem.$platforms)
   }
 }
 
