@@ -136,20 +136,56 @@ public class Settings {
               
     do {
       let content = try YAMLEncoder().encode(store)
-      let strArray : [String] = content.components(separatedBy: "\n")
-      let newArray = strArray.sorted { $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending }
-      return newArray.reduce("") { result, nextString in
-        if result.isEmpty {
-          return nextString
-        } else {
-          return "\(result)\n\(nextString)"
+      
+      if let dictionary: [String: Any] = try Yams.load(yaml: content) as? [String: Any] {
+        let sortedKeys = dictionary.keys.sorted { $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending }
+        var result: String = ""
+        for key in sortedKeys {
+          if !result.isEmpty {
+            result += "\n"
+          }
+          if let subDict = dictionary[key] as? [String: String] {
+            result += "\(key):\n"
+            result += dictionaryToString(subDict)
+          } else {
+            result += "\(key): \(optionalToString(optional: dictionary[key], defaultValue: ""))"
+          }
         }
+        return result
       }
+      return content
     } catch {
       print("Error encoding settings file \(error)")
       return ""
     }
   }
+  
+  private func dictionaryToString(_ dictionary: [String: String]) -> String {
+    var result = ""
+    let sortedKeys = dictionary.keys.sorted { $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending }
+    for key in sortedKeys {
+      if !result.isEmpty {
+        result += "\n"
+      }
+      result += "  \(key): \(optionalToString(optional: dictionary[key], defaultValue: ""))"
+    }
+    return result
+  }
+  
+ 
+  
+  public func optionalToString<T>(optional: T?, defaultValue: @autoclosure () -> String) -> String
+  {
+    switch optional {
+    case let value?:
+      if value is NSNull {
+        return defaultValue()
+      }
+      return String(describing: value)
+    case nil: return defaultValue()
+    }
+  }
+
   
   public func add<T: Codable>(_ setting: Setting<T>) {
     assert(refs[setting.key] == nil)
