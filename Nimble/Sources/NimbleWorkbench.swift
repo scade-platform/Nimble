@@ -141,16 +141,15 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     (document as? ProjectDocument)?.invalidateRestorableState()
   }
   
-  private lazy var editorMenuItem: NSMenuItem? = {
+  private func getEditorMenuItem() ->  NSMenuItem? {
     let mainMenu = NSApplication.shared.mainMenu
     guard let index = mainMenu?.items.firstIndex(where: {$0.title == "Editor"}) else { return nil }
     
     mainMenu?.removeItem(at: index)
     return mainMenu?.insertItem(withTitle: "Editor", action: nil, keyEquivalent: "", at: index)
-  }()
+  }
   
   func currentDocumentWillChange(_ doc: Document?) {
-    editorMenuItem?.submenu = nil
     statusBarView?.editorBar = []
   }
   
@@ -158,7 +157,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     let editorMenu = doc?.editor?.editorMenu
     editorMenu?.title = "Editor"
              
-    editorMenuItem?.submenu = editorMenu
+    getEditorMenuItem()?.submenu = editorMenu
     statusBarView?.editorBar = doc?.editor?.statusBarItems ?? []
       
     doc?.editor?.focus()
