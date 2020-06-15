@@ -170,15 +170,11 @@ public class Settings {
   
  
   
-  public func optionalToString<T>(optional: T?, defaultValue: @autoclosure () -> String) -> String
-  {
+  public func optionalToString(optional: Any?, defaultValue: String) -> String {
     switch optional {
-    case let value?:
-      if value is NSNull {
-        return defaultValue()
-      }
-      return String(describing: value)
-    case nil: return defaultValue()
+    case let value? where value is NSNull: return defaultValue
+    case let value?: return String(describing: value)
+    case nil: return defaultValue
     }
   }
 
