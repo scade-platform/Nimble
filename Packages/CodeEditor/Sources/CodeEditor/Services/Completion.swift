@@ -9,22 +9,11 @@
 public protocol CompletionItem {
   var label: String { get }
   var detail: String? { get }
-  var documentation: CompletionItemDocumentation? { get }
+  var documentation: Documentation? { get }
   var filterText: String? { get }
   var insertText: String? { get }
-  var textEdit: CompletionTextEdit? { get }
+  var textEdit: TextEdit? { get }
   var kind: CompletionItemKind { get }
-}
-
-public enum CompletionItemDocumentation {
-  case plaintext(String)
-  case markdown(String)
-}
-
-
-public protocol CompletionTextEdit {
-  var range: Range<Int> { get }
-  var newText: String { get }
 }
 
 public enum CompletionItemKind: Int {

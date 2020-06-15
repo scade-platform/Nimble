@@ -19,14 +19,14 @@ public final class SwiftExtensionsModule: Module {
 final class SwiftExtensionsPlugin: Plugin {
 
   func load() {
-    Settings.shared.add(SKLocalServer.$swiftToolchain)
-
     LSPServerManager.shared.registerProvider(SKLocalServerProvider())
 
     BuildSystemsManager.shared.register(buildSystem: SwiftBuildSystem())
     BuildSystemsManager.shared.register(buildSystem: SPMBuildSystem())
 
-    Settings.shared.add(SPMBuildSystem.$toolchains)
+    Settings.shared.add(SKLocalServer.$swiftToolchain)
+    Settings.shared.add(SPMBuildSystem.$androidToolchain)
+    Settings.shared.add(SPMBuildSystem.$platforms)
   }
 }
 

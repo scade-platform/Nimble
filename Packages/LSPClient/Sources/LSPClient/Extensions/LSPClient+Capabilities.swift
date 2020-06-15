@@ -19,7 +19,8 @@ extension LSPClient {
    
    capabilities.textDocument = TextDocumentClientCapabilities()
    capabilities.textDocument?.publishDiagnostics =
-     TextDocumentClientCapabilities.PublishDiagnostics(relatedInformation: true)
+     TextDocumentClientCapabilities.PublishDiagnostics(relatedInformation: true,
+                                                       codeActionsInline: true)
    
    
    let completionItemCapabilities = TextDocumentClientCapabilities.Completion.CompletionItem (

@@ -43,8 +43,8 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     self.drawsBackground = true
     
     // workaround for: the text selection highlight can remain between lines (2017-09 macOS 10.13).
-    //self.scaleUnitSquare(to: NSSize(width: 0.5, height: 0.5))
-    //self.scaleUnitSquare(to: self.convert(.unit, from: nil))  // reset scale
+    self.scaleUnitSquare(to: NSSize(width: 0.5, height: 0.5))
+    self.scaleUnitSquare(to: self.convert(.unit, from: nil))  // reset scale
 
     // setup layoutManager and textContainer
 //    let textContainer = TextContainer()
@@ -130,7 +130,8 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     NotificationCenter.default.addObserver(self, selector: #selector(frameDidChange),
                                            name: NSView.frameDidChangeNotification, object: self)
     
-    NotificationCenter.default.addObserver(self, selector: #selector(textDidChange), name: NSText.didChangeNotification, object: self)
+    NotificationCenter.default.addObserver(self, selector: #selector(textDidChange),
+                                           name: NSText.didChangeNotification, object: self)
   }
   
 //  override var wantsUpdateLayer: Bool { return true }
@@ -284,21 +285,14 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     // apply new style to current text
     self.invalidateStyle()
   }
-  
-  
-  /// draw background
+
+
   override func drawBackground(in rect: NSRect) {
-    
     super.drawBackground(in: rect)
-    
-    // draw current line highlight
-    if true { //UserDefaults.standard[.highlightCurrentLine] {
-      self.drawCurrentLine(in: rect)
-    }
-    
-    //self.drawRoundedBackground(in: rect)
+    self.drawCurrentLine(in: rect)
   }
-  
+
+
   override func setSelectedRanges(_ ranges: [NSValue],
                                   affinity: NSSelectionAffinity,
                                   stillSelecting stillSelectingFlag: Bool) {

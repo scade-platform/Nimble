@@ -21,5 +21,20 @@ extension NSView {
 
     NSAppearance.current = current
 
-  }  
+  }
+
+  public func bringToFront() {
+    var ctx = self
+    self.superview?.sortSubviews({(view1, view2, ptr) in
+      let view = ptr?.load(as: NSView.self)
+      switch view {
+       case view1:
+           return ComparisonResult.orderedDescending
+       case view2:
+           return ComparisonResult.orderedAscending
+       default:
+           return ComparisonResult.orderedSame
+       }
+    }, context: &ctx)
+  }
 }

@@ -143,6 +143,7 @@ public final class LSPClient {
 
 extension LSPClient: MessageHandler {
   public func handle<Notification>(_ notification: Notification, from: ObjectIdentifier) where Notification : NotificationType {
+    
     switch notification {
     case let log as LogMessageNotification:
       DispatchQueue.main.async {
@@ -225,7 +226,7 @@ extension LSPClient: LanguageService {
     
     _ = connection.send(request, queue: DispatchQueue.main) {
       guard let items = (try? $0.get())?.items else { return }
-      let completions = items.map { CompletionItemWrapper(text: doc.text, item: $0) }
+      let completions = items.map { LSPCompletionItem(item: $0) }
       handler(triggerIndex, completions)
     }
   }
@@ -263,65 +264,6 @@ extension LSPClient: LanguageService {
     
    return (triggerIndex, triggerKind)
   }
-}
-
-
-// MARK: - CompletionItem
-
-struct CompletionItemWrapper {
-  let text: String
-  let item: LanguageServerProtocol.CompletionItem
-}
-
-struct TextEditWrapper {
-  let text: String
-  let textEdit: TextEdit
-}
-
-extension CompletionItemWrapper: CodeEditor.CompletionItem {
-  var label: String {
-    return item.label
-  }
-  
-  var detail: String? {
-    return item.detail
-  }
-  
-  var documentation: CodeEditor.CompletionItemDocumentation? {
-    guard let doc = item.documentation else { return nil }
-    switch doc {
-    case .string(let val):
-      return .plaintext(val)
-    case .markupContent(let markup):
-      switch markup.kind {
-      case .markdown:
-        return .markdown(markup.value)
-      default:
-        return .plaintext(markup.value)
-      }
-    }
-  }
-  
-  var filterText: String? { item.filterText }
-  
-  var insertText: String? { item.insertText }
-  
-  var textEdit: CodeEditor.CompletionTextEdit? {
-    guard let textEdit = item.textEdit else { return nil }
-    return TextEditWrapper(text: text, textEdit: textEdit)
-  }
-  
-  var kind: CodeEditor.CompletionItemKind {    
-    return CodeEditor.CompletionItemKind(rawValue: item.kind.rawValue) ?? .unknown
-  }
-}
-
-extension TextEditWrapper: CodeEditor.CompletionTextEdit {
-  var range: Range<Int> {
-    return text.range(for: text.range(for: textEdit.range))
-  }
-  
-  var newText: String { textEdit.newText }
 }
 
 
