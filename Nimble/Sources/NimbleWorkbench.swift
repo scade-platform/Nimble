@@ -141,7 +141,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     (document as? ProjectDocument)?.invalidateRestorableState()
   }
   
-  private func getEditorMenuItem() ->  NSMenuItem? {
+  private func createEditorMenuItem() ->  NSMenuItem? {
     let mainMenu = NSApplication.shared.mainMenu
     guard let index = mainMenu?.items.firstIndex(where: {$0.title == "Editor"}) else { return nil }
     
@@ -157,7 +157,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     let editorMenu = doc?.editor?.editorMenu
     editorMenu?.title = "Editor"
              
-    getEditorMenuItem()?.submenu = editorMenu
+    createEditorMenuItem()?.submenu = editorMenu
     statusBarView?.editorBar = doc?.editor?.statusBarItems ?? []
       
     doc?.editor?.focus()
