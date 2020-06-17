@@ -136,20 +136,48 @@ public class Settings {
               
     do {
       let content = try YAMLEncoder().encode(store)
-      let strArray : [String] = content.components(separatedBy: "\n")
-      let newArray = strArray.sorted { $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending }
-      return newArray.reduce("") { result, nextString in
-        if result.isEmpty {
-          return nextString
-        } else {
-          return "\(result)\n\(nextString)"
-        }
+      
+      guard let dictionary: [String: Any] = try Yams.load(yaml: content) as? [String: Any] else {
+        return content
       }
+      
+      return dictionaryToString(dictionary)
     } catch {
       print("Error encoding settings file \(error)")
       return ""
     }
   }
+  
+  private func dictionaryToString(_ dictionary: [String: Any], level: Int = 0) -> String {
+    var result = ""
+    let sortedKeys = dictionary.keys.sorted { $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending }
+    for key in sortedKeys {
+      if !result.isEmpty {
+        result += "\n"
+      }
+      if let subDict = dictionary[key] as? [String: String] {
+        result += "\(key):\n"
+        result += dictionaryToString(subDict, level: level + 2)
+      } else {
+        for _ in 0..<level {
+          result += " "
+        }
+        result += "\(key): \(optionalToString(optional: dictionary[key], defaultValue: ""))"
+      }
+    }
+    return result
+  }
+  
+ 
+  
+  public func optionalToString(optional: Any?, defaultValue: String) -> String {
+    switch optional {
+    case let value? where value is NSNull: return defaultValue
+    case let value?: return String(describing: value)
+    case nil: return defaultValue
+    }
+  }
+
   
   public func add<T: Codable>(_ setting: Setting<T>) {
     assert(refs[setting.key] == nil)
