@@ -378,9 +378,15 @@ fileprivate class UserDefinedToolchainVariant: SPMVariant, SwiftVariant {
     dict["extra-cc-flags"] = Array<String>()
     dict["extra-cpp-flags"] = Array<String>()
     
-    let descPath = source.path.join(".build").join("desc-" + toolchain.name + ".json")
+    let buildPath = source.path.join(".build")
+    let descPath = buildPath.join("desc-" + toolchain.name + ".json")
     
     do {
+      if !FileManager.default.fileExists(atPath: buildPath.string) {
+        try FileManager.default.createDirectory(atPath: buildPath.string,
+                                                withIntermediateDirectories: false,
+                                                attributes: nil)
+      }
       let descData = try JSONSerialization.data(withJSONObject: dict, options: [.prettyPrinted])
       try descData.write(to: descPath, atomically: true)
     }
