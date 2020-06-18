@@ -7,9 +7,8 @@
 //
 
 import Cocoa
-import NimbleCore
 
-extension Workbench {
+public extension Workbench {
   func publish(tasks: [WorkbenchTask], onComplete: (([WorkbenchTask]) -> Void)? = nil) throws {
     let t = SequenceTask(tasks, in: self)
     self.publish(task: t) { _ in
@@ -19,10 +18,10 @@ extension Workbench {
   }
 }
   
-class SequenceTask: WorkbenchTask {
+public class SequenceTask: WorkbenchTask {
   var atomicIsRunning = Atomic<Bool>(false)
   
-  var isRunning: Bool {
+  public var isRunning: Bool {
     get {
       atomicIsRunning.value
     }
@@ -31,18 +30,19 @@ class SequenceTask: WorkbenchTask {
     }
   }
   
-  func stop() {
+  
+  public func stop() {
   }
   
-  var observers = ObserverSet<WorkbenchTaskObserver>()
+  public var observers = ObserverSet<WorkbenchTaskObserver>()
   let workbench: Workbench
   fileprivate let queue: DispatchQueue
 
   
-  let subTasks: [WorkbenchTask]
+  public let subTasks: [WorkbenchTask]
 
   
-  func run() throws {
+  public func run() throws {
     queue.async { [weak self] in
       guard let self = self else { return }
       let semaphore = DispatchSemaphore(value: 0)
@@ -65,11 +65,14 @@ class SequenceTask: WorkbenchTask {
         semaphore.wait()
       }
       self.isRunning = false
-      self.observers.notify{$0.taskDidFinish(self)}
+      DispatchQueue.main.async { [weak self] in
+        guard let self = self else { return }
+        self.observers.notify{$0.taskDidFinish(self)}
+      }
     }
   }
   
-  init(_ tasks: [WorkbenchTask], in workbench: Workbench) {
+  public init(_ tasks: [WorkbenchTask], in workbench: Workbench) {
     self.subTasks = tasks
     self.workbench = workbench
     self.queue = .global()

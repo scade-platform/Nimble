@@ -12,7 +12,6 @@
 		0C92E52823950E3E00B073DE /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C92E52723950E3E00B073DE /* Plugin.swift */; };
 		0CCDB14424580CB700A83CEC /* ToolbarTargetControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCDB14224580CB700A83CEC /* ToolbarTargetControl.swift */; };
 		0CCDB14524580CB700A83CEC /* ToolbarTargetControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CCDB14324580CB700A83CEC /* ToolbarTargetControl.xib */; };
-		0CCDB14F245DD19B00A83CEC /* Workbench+Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCDB14E245DD19B00A83CEC /* Workbench+Task.swift */; };
 		D7BD82DC245319780058815F /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BD82DB245319780058815F /* Commands.swift */; };
 		D7D0FFE02471CB62001A0EFC /* BuildSystem in Frameworks */ = {isa = PBXBuildFile; productRef = D7D0FFDF2471CB62001A0EFC /* BuildSystem */; };
 		D7D0FFE22471CB62001A0EFC /* BuildSystem in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D7D0FFDF2471CB62001A0EFC /* BuildSystem */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -42,7 +41,6 @@
 		0C92E52723950E3E00B073DE /* Plugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
 		0CCDB14224580CB700A83CEC /* ToolbarTargetControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolbarTargetControl.swift; sourceTree = "<group>"; };
 		0CCDB14324580CB700A83CEC /* ToolbarTargetControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ToolbarTargetControl.xib; sourceTree = "<group>"; };
-		0CCDB14E245DD19B00A83CEC /* Workbench+Task.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Workbench+Task.swift"; sourceTree = "<group>"; };
 		D7BD82DB245319780058815F /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		D7F156A9244767FD00AFBE67 /* package.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = package.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -111,7 +109,6 @@
 		0CCDB14D245DD16F00A83CEC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				0CCDB14E245DD19B00A83CEC /* Workbench+Task.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -194,7 +191,6 @@
 				0CCDB14424580CB700A83CEC /* ToolbarTargetControl.swift in Sources */,
 				0C3469D12397D04600319613 /* ShellBuildTool.swift in Sources */,
 				D7BD82DC245319780058815F /* Commands.swift in Sources */,
-				0CCDB14F245DD19B00A83CEC /* Workbench+Task.swift in Sources */,
 				0C92E52823950E3E00B073DE /* Plugin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
