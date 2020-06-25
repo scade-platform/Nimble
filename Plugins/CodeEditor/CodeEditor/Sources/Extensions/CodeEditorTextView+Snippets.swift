@@ -258,7 +258,7 @@ class SnippetPlaceholderView: NSTextView {
         self.window?.makeFirstResponder(snippet.view)
       }
 
-    case _ where Keycode.chars.contains(event.keyCode):
+    case _ where event.characters != nil :
       if let chars = event.charactersIgnoringModifiers {
         textStorage?.replaceCharacters(in: textStorage?.range ?? NSRange(), with: chars)
         substituteText()

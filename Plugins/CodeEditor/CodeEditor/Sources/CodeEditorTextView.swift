@@ -384,7 +384,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     let autoIndentLine = autoClosingPairs.contains(surroundString(selectedIndex))
     
     super.insertNewline(sender)
-    //super.insertText(currentIndent, replacementRange: selectedRange())
+    super.insertText(currentIndent, replacementRange: selectedRange())
 
     if autoIndentLine {
       super.insertTab(sender)

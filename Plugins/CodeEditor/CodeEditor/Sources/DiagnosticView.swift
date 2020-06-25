@@ -339,6 +339,7 @@ class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegateImpl {
     fixButton.title = "Fix"
     fixButton.font = row.font
     fixButton.contentTintColor = ThemeManager.shared.currentTheme?.general.foreground
+    fixButton.bezelColor = ThemeManager.shared.currentTheme?.general.foreground
     fixButton.bezelStyle = .roundRect
     fixButton.target = row
     fixButton.action = #selector(DiagnosticRowView.fix)
