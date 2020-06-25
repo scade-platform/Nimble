@@ -61,7 +61,7 @@ extension Command {
 
   private class ToolbarItem: NSToolbarItem {
     override func validate() {
-      guard let workbench = NimbleWorkbench.current,
+      guard let workbench = NSApp.currentWorkbench,
             let command = self.target as? Command else { return }
 
       if command.toolbarControlClass != nil, let control = self.view as? NSControl {
@@ -122,7 +122,7 @@ extension CommandGroup {
 
   private class ToolbarItem: NSToolbarItemGroup {
     override func validate() {
-      guard let workbench = NimbleWorkbench.current,
+      guard let workbench = NSApp.currentWorkbench,
             let command = self.target as? CommandGroup,
             let control = self.view as? NSSegmentedControl else { return }
 

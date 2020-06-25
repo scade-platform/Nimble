@@ -58,10 +58,6 @@ public protocol Workbench: class {
 
 
 public extension Workbench {
-  static var current: Workbench? {
-    NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench
-  }
-
   func open(_ doc: Document, show: Bool) {
     open(doc, show: show, openNewEditor: true)
   }
@@ -82,7 +78,6 @@ public extension Workbench {
     return createConsole(title: title, show: show, startReading: true)
   }
 }
-
 
 public protocol WorkbenchObserver: class {
   func workbenchWillChangeProject(_ workbench: Workbench)
@@ -136,12 +131,12 @@ public protocol WorkbenchPart: class {
 
 ///TODO: avoid constraining the protocol to the NSViewController
 public protocol WorkbenchEditor: NSViewController {
-  var workbench: Workbench? { get }
-  
   ///TODO: replace by Commands
   // Shown within the app's main menu
-  var editorMenu: NSMenu? { get }
-  
+  static var editorMenu: NSMenu? { get }
+
+  var workbench: Workbench? { get }
+
   var statusBarItems: [WorkbenchStatusBarItem] { get }
   
   @discardableResult
@@ -154,12 +149,12 @@ public protocol WorkbenchEditor: NSViewController {
 
 
 public extension WorkbenchEditor {
+  static var editorMenu: NSMenu? { return nil }
+
   var workbench: Workbench? {
     return view.window?.windowController as? Workbench
   }
-  
-  var editorMenu: NSMenu? { return nil }
-  
+
   var statusBarItems: [WorkbenchStatusBarItem] { return [] }
   
   func focus() -> Bool {

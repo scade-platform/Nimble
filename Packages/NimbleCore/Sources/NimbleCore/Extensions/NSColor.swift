@@ -1,8 +1,9 @@
 //
-//  NSColor.swift
-//  
+//  NSApp.swift
+//  NimbleCore
 //
-//  Created by Grigory Markin on 31.03.20.
+//  Created by Grigory Markin on 31/03/20.
+//  Copyright © 2020 SCADE. All rights reserved.
 //
 
 import Cocoa

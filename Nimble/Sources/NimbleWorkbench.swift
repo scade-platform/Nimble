@@ -143,10 +143,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   
   private lazy var editorMenuItem: NSMenuItem? = {
     let mainMenu = NSApplication.shared.mainMenu
-    guard let index = mainMenu?.items.firstIndex(where: {$0.title == "Editor"}) else { return nil }
-    
-    mainMenu?.removeItem(at: index)
-    return mainMenu?.insertItem(withTitle: "Editor", action: nil, keyEquivalent: "", at: index)
+    return mainMenu?.items.first(where: {$0.title == "Editor"})
   }()
   
   func currentDocumentWillChange(_ doc: Document?) {
@@ -155,14 +152,20 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   }
   
   func currentDocumentDidChange(_ doc: Document?) {
-    let editorMenu = doc?.editor?.editorMenu
-    editorMenu?.title = "Editor"
-             
-    editorMenuItem?.submenu = editorMenu
-    statusBarView?.editorBar = doc?.editor?.statusBarItems ?? []
-      
-    doc?.editor?.focus()
-        
+    if let editor = doc?.editor {
+        let editorMenu = type(of: editor).editorMenu
+
+      editorMenu?.title = "Editor"
+
+      if editorMenuItem?.submenu != editorMenu {
+        editorMenuItem?.submenu = editorMenu
+        editorMenuItem?.isEnabled = true
+      }
+
+      statusBarView?.editorBar = editor.statusBarItems
+      editor.focus()
+    }
+
     observers.notify {
       $0.workbenchActiveDocumentDidChange(self, document: doc)
     }

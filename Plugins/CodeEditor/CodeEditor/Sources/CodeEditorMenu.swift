@@ -9,21 +9,15 @@
 import Cocoa
 import CodeEditor
 
-class CodeEditorMenu: NSObject {
-  static let shared = CodeEditorMenu()
-  
-  var codeEditor: CodeEditorView? = nil
-  
-  lazy var nsMenu: NSMenu = {
-    let menu = NSMenu()
-    
-    CodeEditorSyntaxMenu.fillMenu(nsMenu: menu)
-    menu.addItem(NSMenuItem.separator())
-    CodeEditorShowCompletionMenuItem.fillMenu(nsMenu: menu)
-    
-    return menu
-  }()
+
+fileprivate var codeEditor: CodeEditorView? {
+  codeEidtorDocument?.editor as? CodeEditorView
 }
+
+fileprivate var codeEidtorDocument: CodeEditorDocument? {
+  return NSApp.currentWorkbench?.currentDocument as? CodeEditorDocument
+}
+
 
 // MARK: - Syntax menu
 
@@ -59,25 +53,19 @@ class CodeEditorSyntaxMenu: NSObject {
   
   static func itemState(_ item: NSMenuItem) -> NSControl.StateValue {
     let lang = item.representedObject as AnyObject?
-    let currentLang = CodeEditorMenu.shared.codeEditor?.document?.language
+    let currentLang = codeEidtorDocument?.language
     return (lang === currentLang) ? .on : .off
   }
   
   
   @objc func selectSyntax(_ item: NSMenuItem) {
-    CodeEditorMenu.shared.codeEditor?.document?.language = item.representedObject as? Language
+    codeEidtorDocument?.language = item.representedObject as? Language
   }
   
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
     guard let item = item else {return true}
     item.state = CodeEditorSyntaxMenu.itemState(item)
     return true
-  }
-}
-
-extension NSMenu {
-  var selectedItems: [NSMenuItem] {
-    self.items.filter{$0.state == .on}
   }
 }
 
@@ -94,10 +82,21 @@ class CodeEditorShowCompletionMenuItem: NSObject {
   }
   
   @objc func showCompletion(_ item: NSMenuItem) {
-    CodeEditorMenu.shared.codeEditor?.showCompletion()
+    codeEditor?.showCompletion()
   }
   
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
     return true
   }
 }
+
+
+// MARK: - Utils
+
+extension NSMenu {
+  var selectedItems: [NSMenuItem] {
+    self.items.filter{$0.state == .on}
+  }
+}
+
+

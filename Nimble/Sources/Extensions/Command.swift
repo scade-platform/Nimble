@@ -11,8 +11,8 @@ import NimbleCore
 
 
 extension Command {
-  @objc func execute() {
-    guard let workbench = NimbleWorkbench.current else { return }
+  @objc func execute() {    
+    guard let workbench = NSApp.currentWorkbench else { return }
     self.run(in: workbench)
   }
 }
