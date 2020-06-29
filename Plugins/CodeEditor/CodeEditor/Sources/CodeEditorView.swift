@@ -239,24 +239,29 @@ extension CodeEditorView: ThemeObserver {
 // MARK: - WorkbenchEditor
 
 extension CodeEditorView: WorkbenchEditor {
-  var editorMenu: NSMenu? {
-    CodeEditorMenu.shared.codeEditor = self
-    return CodeEditorMenu.shared.nsMenu
-  }
-  
+  static var editorMenu: NSMenu? = {
+    let menu = NSMenu()
+
+    CodeEditorSyntaxMenu.fillMenu(nsMenu: menu)
+    menu.addItem(NSMenuItem.separator())
+    CodeEditorShowCompletionMenuItem.fillMenu(nsMenu: menu)
+
+    return menu
+  }()
+
   var statusBarItems: [WorkbenchStatusBarItem] {
     //We should update shared menu each time
     CodeEditorSyntaxMenu.nsMenu.update()
-    //And then update menu button
+    //And then update menu button   
     statusBarView.syntaxMenuButton?.select(CodeEditorSyntaxMenu.nsMenu.selectedItems.first)
-  
+
     return [statusBarView.view as! EditorStatusBar]
   }
-  
+
   func focus() -> Bool {
     return view.window?.makeFirstResponder(textView) ?? false
   }
-    
+
   func publish(diagnostics: [Diagnostic]) {
     self.diagnostics = diagnostics.compactMap { $0 as? SourceCodeDiagnostic }
     scheduleDiagnosticsUpdate()

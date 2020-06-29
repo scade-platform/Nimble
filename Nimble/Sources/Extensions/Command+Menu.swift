@@ -48,7 +48,7 @@ extension Command {
 
 extension Command {
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
-    guard let workbench = NimbleWorkbench.current else { return false }
+    guard let workbench = NSApp.currentWorkbench else { return false }
     item?.title = self.name
     return validate(in: workbench).contains(.enabled)
   }
