@@ -251,6 +251,7 @@ extension SPMVariant {
       let taskConsole = task.output(to: console) {  [weak self] console in
         guard let self = self else { return }
         console.writeLine(string: "Finished Building \(target.name) - \(self.name)")
+        console.stopReadingFromBuffer()
       }
       taskConsole?.writeLine(string: "Building: \(target.name) - \(self.name)")
     }
@@ -274,6 +275,7 @@ extension SPMVariant {
       let taskConsole = task.output(to: console) {[weak self] console in
         guard let self = self else { return }
         console.writeLine(string: "Finished Cleaning \(target.name) - \(self.name)")
+        console.stopReadingFromBuffer()
       }
       taskConsole?.writeLine(string: "Cleaning: \(target.name) - \(self.name)")
     }
@@ -337,7 +339,9 @@ extension MacVariant {
     let task = BuildSystemTask(process)
     
     if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Run: \(target.name) - \(self.name)", in: workbench) {
-      task.output(to: console)
+      task.output(to: console) { console in
+        console.stopReadingFromBuffer()
+      }
     }
     
     return task
