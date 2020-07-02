@@ -213,10 +213,15 @@ open class WorkbenchProcess {
   public private(set) var console: Console?
   public var observers = ObserverSet<WorkbenchTaskObserver>()
   var consoleWillCloseHandler: ((Console) -> Void)?
+  var userTerminationHandler: ((Process) -> Void)?
   
   public init(_ process: Process) {
     self.process = process
-    self.process.terminationHandler = { [weak self] (_: Process) in
+    self.userTerminationHandler = process.terminationHandler
+    self.process.terminationHandler = { [weak self] proc in
+      guard let self = self else { return }
+      //Call user termination handler
+      self.userTerminationHandler?(proc)
       DispatchQueue.main.async { [weak self] in
         guard let self = self else { return }
         self.observers.notify {
@@ -228,19 +233,33 @@ open class WorkbenchProcess {
   
   @discardableResult
   public func output(to console: Console, consoleWillCloseHandler handler: @escaping (Console) -> Void = {_ in }) -> Console? {
-    guard !process.isRunning, !console.isReadingFromBuffer else {
+    guard !process.isRunning else {
       return nil
     }
     self.console = console
     self.consoleWillCloseHandler = handler
     
-    process.standardOutput = console.output
-    process.standardError = console.output
+    let pipe = Pipe()
+    pipe.fileHandleForReading.readabilityHandler = {fh in
+      let data = fh.availableData
+      if !data.isEmpty {
+        console.write(data: data)
+      }
+    }
     
-    console.startReadingFromBuffer()
-    process.terminationHandler = {[weak self] process in
+    process.standardOutput = pipe
+    process.standardError = pipe
+    
+    if !console.isReadingFromBuffer {
+      console.startReadingFromBuffer()
+    }
+    process.terminationHandler = {[weak self] proc in
       DispatchQueue.main.async { [weak self] in
         guard let self = self else { return }
+        
+        //Call user termination handler
+        self.userTerminationHandler?(proc)
+        
         if let console = self.console {
           handler(console)
           
@@ -248,13 +267,11 @@ open class WorkbenchProcess {
             console.close()
           }
         }
-        self.console?.stopReadingFromBuffer()
         self.observers.notify {
           $0.taskDidFinish(self)
         }
       }
     }
-    
     return self.console
   }
 }
@@ -276,7 +293,6 @@ extension WorkbenchProcess: WorkbenchTask {
             console.write(string: "Error: ").writeLine(obj: error)
           }
           self.consoleWillCloseHandler?(console)
-          console.stopReadingFromBuffer()
         }
       }
       DispatchQueue.main.async { [weak self] in
