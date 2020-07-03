@@ -24,7 +24,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="497" height="369"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView drawsBackground="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="llq-Ii-1cH" customClass="CodeEditorTextView" customModule="CodeEditorPlugin" customModuleProvider="target">
+                            <textView drawsBackground="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" usesFontPanel="YES" spellingCorrection="YES" smartInsertDelete="YES" id="llq-Ii-1cH" customClass="CodeEditorTextView" customModule="CodeEditorPlugin" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="497" height="369"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
