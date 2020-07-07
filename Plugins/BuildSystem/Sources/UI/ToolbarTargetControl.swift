@@ -322,12 +322,19 @@ class ToolbarTargetControl : NSControl {
     }
     rightLable?.stringValue = variant?.name ?? ""
   }
-  
-  @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
-    guard let item = item else {return true}
+}
+
+extension ToolbarTargetControl: NSUserInterfaceValidations {
+  func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
+    guard let item = item as? NSMenuItem else {return true}
     if let target = item.representedObject as? Target {
       item.state = (target.name  == activeTarget?.name) ? .on : .off
-    } 
+    } else if let varint = item.representedObject as? Variant {
+      item.state = (varint.name == userSelection?.variant.name) ? .on : .off
+      if let variantValidator =  varint as? NSUserInterfaceValidations {
+        variantValidator.validateUserInterfaceItem(item)
+      }
+    }
     return true
   }
 }
