@@ -132,7 +132,7 @@ class BuildSystemCommand: Command {
     super.init(name: name, menuPath: "Tools", keyEquivalent: keyEquivalent, toolbarIcon: toolbarIcon)
   }
 
-  func currentTask(in workbench: Workbench) -> BuildSystemTask? {
-    return workbench.tasks.first { $0 is BuildSystemTask } as? BuildSystemTask
+  func currentTask(in workbench: Workbench) -> BuildTask? {
+    return workbench.tasks.first { $0 is BuildTask } as? BuildTask
   }
 }
