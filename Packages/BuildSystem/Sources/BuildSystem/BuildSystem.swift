@@ -24,7 +24,10 @@ public protocol BuildSystem : class {
 
 // MARK: - BuildSystemTask
 
-public class BuildSystemTask: WorkbenchProcess {}
+public protocol BuildTask: WorkbenchTask {}
+
+public class BuildSystemTask: WorkbenchProcess, BuildTask {}
+
 
 
 // MARK: - BuildSystemManager
