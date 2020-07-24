@@ -101,9 +101,9 @@ public class ConsoleUtils {
   
   public static func showConsoleTillFirstEscPress(in workbench: Workbench) {
     var escPressMonitor: Any? = nil
-    escPressMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { event in
+    escPressMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) {[weak workbench] event in
       if event.keyCode == Keycode.escape {
-        workbench.debugArea?.isHidden = true
+        workbench?.debugArea?.isHidden = true
         if let monitor = escPressMonitor {
           //only for first `esc` press
           NSEvent.removeMonitor(monitor)
