@@ -13,6 +13,6 @@ public extension NSApplication {
     if let currentDocument = NSDocumentController.shared.currentDocument {
       return currentDocument.windowForSheet?.windowController as? Workbench
     }
-    return mainWindow?.windowController as? Workbench
+    return keyWindow?.windowController as? Workbench
   }
 }
