@@ -374,13 +374,31 @@ extension NimbleWorkbench: NSToolbarDelegate {
   }
 
   public func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-      var ids: [NSToolbarItem.Identifier] = CommandManager.shared.commands.compactMap {
-        guard $0.group == nil && ($0.toolbarIcon != nil || $0.toolbarControlClass != nil) else { return nil }
-        return $0.toolbarItemIdentifier
-      }
+    let commandsWithoutGroups = CommandManager.shared.commands.filter { $0.group == nil && ($0.toolbarIcon != nil || $0.toolbarControlClass != nil) }
     
-      ids.append(.flexibleSpace)
-      ids.append(contentsOf: CommandManager.shared.groups.map { $0.toolbarItemIdentifier })
+    var leftGroup: [Any] = commandsWithoutGroups.filter{ if case .left(orderPriority: _) = $0.alignment {return true} else {return false}}
+    leftGroup.append(contentsOf: CommandManager.shared.groups.filter { if case .left(orderPriority: _) = $0.alignment {return true} else {return false}})
+    let sortedLeftGroup = leftGroup.sorted{l, r in sortedPredicate(l, r, {$0 < $1})}
+    
+    var centerGroup: [Any] = commandsWithoutGroups.filter{ if case .center(orderPriority: _) = $0.alignment {return true} else {return false}}
+    centerGroup.append(contentsOf: CommandManager.shared.groups.filter { if case .center(orderPriority: _) = $0.alignment {return true} else {return false}})
+    let sortedCenterGroup = centerGroup.sorted{l, r in sortedPredicate(l, r, {$0 < $1})}
+    
+    var rightGroup: [Any] = commandsWithoutGroups.filter{ if case .right(orderPriority: _) = $0.alignment {return true} else {return false}}
+    rightGroup.append(contentsOf: CommandManager.shared.groups.filter { if case .right(orderPriority: _) = $0.alignment {return true} else {return false}})
+    let sortedRightGroup = rightGroup.sorted{l, r in sortedPredicate(l, r, {$0 > $1})}
+    
+    var ids: [NSToolbarItem.Identifier] = sortedLeftGroup.compactMap(extractIdentifier(_:))
+    
+    ids.append(.flexibleSpace)
+    
+    ids.append(contentsOf: sortedCenterGroup.compactMap(extractIdentifier(_:)))
+    
+    ids.append(.flexibleSpace)
+    
+    ids.append(contentsOf: sortedRightGroup.compactMap(extractIdentifier(_:)))
+    
+    
       return ids
   }
 
@@ -390,6 +408,51 @@ extension NimbleWorkbench: NSToolbarDelegate {
 
   public func toolbarSelectableItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
       return self.toolbarDefaultItemIdentifiers(toolbar)
+  }
+  
+  private func sortedPredicate(_ l: Any, _ r: Any, _ predicate: (Int, Int) -> Bool) -> Bool {
+    let leftPriority: Int
+    let rightPriority: Int
+    
+    if let command = l as? Command {
+      switch command.alignment {
+      case .left(let orderPriority), .center(let orderPriority), .right(let orderPriority):
+        leftPriority = orderPriority
+      }
+    } else if let group = l as? CommandGroup {
+      switch group.alignment {
+      case .left(let orderPriority), .center(let orderPriority), .right(let orderPriority):
+        leftPriority = orderPriority
+      }
+    } else {
+      leftPriority = Int.max
+    }
+    
+    if let command = r as? Command {
+      switch command.alignment {
+      case .left(let orderPriority), .center(let orderPriority), .right(let orderPriority):
+        rightPriority = orderPriority
+      }
+    } else if let group = r as? CommandGroup {
+      switch group.alignment {
+      case .left(let orderPriority), .center(let orderPriority), .right(let orderPriority):
+        rightPriority = orderPriority
+      }
+    } else {
+      rightPriority = Int.max
+    }
+    
+    return predicate(leftPriority, rightPriority)
+  }
+  
+  func extractIdentifier(_ element: Any) -> NSToolbarItem.Identifier? {
+    if let command = element as? Command {
+      return command.toolbarItemIdentifier
+    } else if let group = element as? CommandGroup {
+      return group.toolbarItemIdentifier
+    } else {
+      return nil
+    }
   }
 
 }
