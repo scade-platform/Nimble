@@ -33,6 +33,7 @@ open class Command {
   // Toolbar item
   public let toolbarIcon: NSImage?
   public let toolbarControlClass: NSControl.Type?
+  open var alignment: ToolbarAlignment
 
   // Actions
   private let handler: Handler
@@ -59,6 +60,7 @@ open class Command {
               menuPath: String? = nil,
               keyEquivalent: String? = nil ,
               toolbarIcon: NSImage? = nil,
+              alignment: ToolbarAlignment = .left(orderPriority: 100),
               handler: (@escaping Handler) = { _ in return } ) {
 
     self.name = name
@@ -66,6 +68,7 @@ open class Command {
     self.keyEquivalent = keyEquivalent
     self.toolbarIcon = toolbarIcon
     self.toolbarControlClass = nil
+    self.alignment = alignment
     self.handler = handler
   }
   
@@ -73,6 +76,7 @@ open class Command {
               menuPath: String? = nil,
               keyEquivalent: String? = nil ,
               controlClass: NSControl.Type? = nil,
+              alignment: ToolbarAlignment = .left(orderPriority: 100),
               handler: (@escaping Handler) = { _ in return } ) {
 
     self.name = name
@@ -80,6 +84,7 @@ open class Command {
     self.keyEquivalent = keyEquivalent
     self.toolbarIcon = nil
     self.toolbarControlClass = controlClass
+    self.alignment = alignment
     self.handler = handler
   }
 }
@@ -89,6 +94,8 @@ public class CommandGroup {
 
   public let name: String
   public let title: String
+  
+  open var alignment: ToolbarAlignment
 
   public var commands: [Command] {
     get { return _commands.compactMap{$0.value} }
@@ -100,9 +107,10 @@ public class CommandGroup {
     }
   }
 
-  public init(name: String, commands: [Command] = []){
+  public init(name: String, alignment: ToolbarAlignment =  .right(orderPriority: 100), commands: [Command] = []){
     self.name = name
     self.title = name
+    self.alignment = alignment
     self.commands = commands
   }
 }
@@ -170,4 +178,13 @@ public extension CommandManager {
   static let shared: CommandManager = CommandManager()
 }
 
-
+public enum ToolbarAlignment {
+  //The higher the `orderPriority`, the more to the right the element
+  case left(orderPriority: Int)
+  
+  //The higher the `orderPriority`, the more to the right the element
+  case center(orderPriority: Int)
+  
+  //The higher the `orderPriority`, the more to the left the element
+  case right(orderPriority: Int)
+}

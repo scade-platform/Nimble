@@ -15,7 +15,7 @@ import os.log
 
 final class Run: BuildSystemCommand {
   init() {
-    super.init(name: "Run", keyEquivalent: "cmd+r", toolbarIcon: IconsManager.Icons.run.image)
+    super.init(name: "Run", keyEquivalent: "cmd+r", toolbarIcon: IconsManager.Icons.run.image, orderPriority: 10)
   }
 
   override func run(in workbench: Workbench) {
@@ -36,7 +36,7 @@ final class Run: BuildSystemCommand {
 
 final class Stop: BuildSystemCommand {
   init() {
-    super.init(name: "Stop", keyEquivalent: "cmd+.", toolbarIcon: IconsManager.Icons.stop.image)
+    super.init(name: "Stop", keyEquivalent: "cmd+.", toolbarIcon: IconsManager.Icons.stop.image, orderPriority: 20)
   }
 
   override func run(in workbench: Workbench) {
@@ -96,7 +96,7 @@ final class SelectTarget: Command {
   
   
   init() {
-    super.init(name: "Select Target", menuPath: nil, keyEquivalent: nil, controlClass: ToolbarTargetControl.self)
+    super.init(name: "Select Target", menuPath: nil, keyEquivalent: nil, controlClass: ToolbarTargetControl.self, alignment: .left(orderPriority: 30))
   }
   
   override func validate(in workbench: Workbench, control: NSControl?) -> State {
@@ -128,8 +128,8 @@ final class SelectTarget: Command {
 // MARK: - Basic build command
 
 class BuildSystemCommand: Command {
-  init(name: String, keyEquivalent: String, toolbarIcon: NSImage? = nil) {
-    super.init(name: name, menuPath: "Tools", keyEquivalent: keyEquivalent, toolbarIcon: toolbarIcon)
+  init(name: String, keyEquivalent: String, toolbarIcon: NSImage? = nil, orderPriority: Int = 100) {
+    super.init(name: name, menuPath: "Tools", keyEquivalent: keyEquivalent, toolbarIcon: toolbarIcon, alignment: .left(orderPriority: orderPriority))
   }
 
   func currentTask(in workbench: Workbench) -> BuildTask? {
