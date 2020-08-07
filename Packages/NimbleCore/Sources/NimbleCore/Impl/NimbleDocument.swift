@@ -38,6 +38,12 @@ open class NimbleDocument: NSDocument {
       }
     }
   }
+
+  open override func writableTypes(for saveOperation: NSDocument.SaveOperationType) -> [String] {
+    let types = super.writableTypes(for: saveOperation)
+
+    return types.isEmpty ? [""] : types
+  }
   
   open override func prepareSavePanel(_ savePanel: NSSavePanel) -> Bool {
     savePanel.isExtensionHidden = false
