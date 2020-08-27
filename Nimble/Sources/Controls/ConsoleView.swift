@@ -20,6 +20,7 @@ class ConsoleView: NSViewController {
   @IBOutlet weak var clearButton: NSButton!
   
   private var consolesStorage : [String: NimbleTextConsole] = [:]
+  private var previosOpenedConsole: Console? = nil
   
   private var currentConsole: Console? = nil
   
@@ -86,6 +87,7 @@ class ConsoleView: NSViewController {
       self.textView.textStorage?.append(convertToAttributedString(newConsole.contents))
       self.consoleSelectionButton.selectItem(withTitle: newConsole.title)
       newConsole.handler = handler(data:console:)
+      previosOpenedConsole = currentConsole
       currentConsole = newConsole
     }
     if currentConsole == nil {
@@ -111,6 +113,7 @@ class ConsoleView: NSViewController {
     guard let console = consolesStorage[title], console.title != currentConsole?.title else {
       return
     }
+    previosOpenedConsole = currentConsole
     currentConsole = console
     textView.string = ""
     self.textView.textStorage?.append(convertToAttributedString(console.contents))
@@ -147,7 +150,8 @@ class ConsoleView: NSViewController {
     currentConsole.stopReadingFromBuffer()
     textView.string = ""
     if !consolesStorage.isEmpty{
-       open(console: consolesStorage.keys.first ?? "")
+      let consoleTitle = previosOpenedConsole?.title ?? (consolesStorage.keys.first ?? "")
+      open(console: consoleTitle)
     }else{
       setControllersHidden(true)
       self.currentConsole = nil
