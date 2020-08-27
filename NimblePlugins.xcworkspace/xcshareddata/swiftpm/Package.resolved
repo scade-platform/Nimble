@@ -42,7 +42,7 @@
         "repositoryURL": "https://github.com/apple/indexstore-db.git",
         "state": {
           "branch": "swift-5.2-branch",
-          "revision": "99472b2b84b1e72f0bf4b55f2ba0b921b16ed945",
+          "revision": "20a17d4cbe9fea46cde80ee376e769ef5ea5accd",
           "version": null
         }
       },
@@ -71,6 +71,15 @@
           "branch": "swift-5.2-branch",
           "revision": "01721a2609305843b5b68ee7d80c14872ecfa9cf",
           "version": null
+        }
+      },
+      {
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser",
+        "state": {
+          "branch": null,
+          "revision": "eb51f949cdd0c9d88abba9ce79d37eb7ea1231d0",
+          "version": "0.2.0"
         }
       },
       {
