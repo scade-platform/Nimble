@@ -106,7 +106,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Enable if there are document creators
     fileMenu?.items.first?.isEnabled = !items.isEmpty
     
-    if !GeneratorsManager.shared.generators.isEmpty {
+    if !WizardsManager.shared.wizards.isEmpty {
       let item = NSMenuItem(title: "New Project...", action: #selector(newProject(_:)), keyEquivalent: "n")
       item.keyEquivalentModifierMask = [.command, .shift]
       items.append(NSMenuItem.separator())

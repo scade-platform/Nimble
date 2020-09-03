@@ -1,5 +1,5 @@
 //
-//  SPMGenerator.swift
+//  SPMWizard.swift
 //  SwiftExtensions.plugin
 //
 //  Created by Danil Kristalev on 02.09.2020.
@@ -10,7 +10,7 @@ import Cocoa
 import NimbleCore
 import SwiftExtensions
 
-class SPMGenerator: Generator {
+class SPMWizard: CreationWizard {
   var icon: Icon? {
     nil
   }
@@ -21,8 +21,8 @@ class SPMGenerator: Generator {
   
   var wizardPages: [WizardPage] = []
   
-  func generate(onComplete: @escaping () -> Void) {
-    let spmView = SPMGeneratorView.loadFromNib()
+  func create(onComplete: @escaping () -> Void) {
+    let spmView = SPMWizardView.loadFromNib()
     let saveDialog = SPMSavePanel()
     saveDialog.nameFieldLabel = "Save As: "
     saveDialog.prompt = "Create"

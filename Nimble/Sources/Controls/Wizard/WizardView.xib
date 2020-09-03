@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="WizardView">
             <connections>
-                <outlet property="lable" destination="C99-K9-PrT" id="hsV-kE-6Be"/>
+                <outlet property="label" destination="C99-K9-PrT" id="hsV-kE-6Be"/>
                 <outlet property="mainTabViewItem" destination="ofl-Hu-bel" id="9Fb-aF-tbf"/>
                 <outlet property="nextButton" destination="7H5-en-YaF" id="sXP-vy-b0b"/>
                 <outlet property="outline" destination="P0S-tY-dkN" id="LMW-Gf-hnb"/>
-                <outlet property="previouseButton" destination="5PF-JN-Ulo" id="EWE-bq-nRJ"/>
+                <outlet property="previousButton" destination="5PF-JN-Ulo" id="EWE-bq-nRJ"/>
                 <outlet property="tabView" destination="HfZ-iu-TLh" id="41K-1L-jpw"/>
                 <outlet property="view" destination="Y5s-zv-pii" id="8JK-hK-1hL"/>
             </connections>
@@ -85,13 +84,13 @@ DQ
                                 <rect key="frame" x="0.0" y="0.0" width="626" height="430"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
-                                    <scrollView autohidesScrollers="YES" horizontalLineScroll="26" horizontalPageScroll="10" verticalLineScroll="26" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zGz-8j-97v">
+                                    <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zGz-8j-97v">
                                         <rect key="frame" x="0.0" y="0.0" width="626" height="430"/>
-                                        <clipView key="contentView" id="QgT-by-2iW">
+                                        <clipView key="contentView" drawsBackground="NO" id="QgT-by-2iW">
                                             <rect key="frame" x="1" y="1" width="624" height="428"/>
-                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                            <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowHeight="24" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" outlineTableColumn="v04-b7-srG" id="P0S-tY-dkN">
+                                                <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" selectionHighlightStyle="sourceList" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" viewBased="YES" indentationPerLevel="16" outlineTableColumn="v04-b7-srG" id="P0S-tY-dkN">
                                                     <rect key="frame" x="0.0" y="0.0" width="624" height="428"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
@@ -157,7 +156,7 @@ DQ
                                                     </tableColumns>
                                                 </outlineView>
                                             </subviews>
-                                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                            <nil key="backgroundColor"/>
                                         </clipView>
                                         <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="zHi-lC-gf1">
                                             <rect key="frame" x="1" y="119" width="238" height="15"/>
