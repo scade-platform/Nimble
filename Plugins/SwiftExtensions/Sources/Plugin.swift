@@ -28,7 +28,7 @@ final class SwiftExtensionsPlugin: Plugin {
     Settings.shared.add(SPMBuildSystem.$androidToolchain)
     Settings.shared.add(SPMBuildSystem.$platforms)
     
-    GeneratorsManager.shared.register(resourceFactory: SPMGenerator())
+    WizardsManager.shared.register(wizard: SPMWizard())
   }
 }
 

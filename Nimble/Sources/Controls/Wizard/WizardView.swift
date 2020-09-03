@@ -13,9 +13,9 @@ class WizardView: NSViewController {
   
   @IBOutlet weak var outline: NSOutlineView?
   
-  @IBOutlet weak var lable: NSTextField?
+  @IBOutlet weak var label: NSTextField?
   
-  @IBOutlet weak var previouseButton: NSButton?
+  @IBOutlet weak var previousButton: NSButton?
   @IBOutlet weak var nextButton: NSButton?
   
   @IBOutlet weak var mainTabViewItem: NSTabViewItem!
@@ -26,13 +26,13 @@ class WizardView: NSViewController {
     return tabView.indexOfTabViewItem(selectedItem)
   }
   
-  private var selectedGenerator: Generator? {
+  private var selectedWizard: CreationWizard? {
     guard let itemIndex = outline?.selectedRow,
-      let generator = outline?.item(atRow: itemIndex) as? Generator
+      let wizard = outline?.item(atRow: itemIndex) as? CreationWizard
     else {
       return nil
     }
-    return generator
+    return wizard
   }
   
   override func viewDidLoad() {
@@ -40,10 +40,10 @@ class WizardView: NSViewController {
     outline?.delegate = self
     outline?.dataSource = self
     outline?.reloadData()
-    outline?.expandItem(GeneratorsManager.shared)
+    outline?.expandItem(WizardsManager.shared)
     
     self.nextButton?.isEnabled = false
-    self.previouseButton?.isEnabled = false
+    self.previousButton?.isEnabled = false
   }
   
   
@@ -52,14 +52,14 @@ class WizardView: NSViewController {
   }
   
   @IBAction func nextButtonDidClick(_ sender: Any?) {
-    guard let generator = selectedGenerator else { return }
-    if generator.wizardPages.isEmpty {
-      generator.generate { [weak self] in
+    guard let wizard = selectedWizard else { return }
+    if wizard.wizardPages.isEmpty {
+      wizard.create { [weak self] in
         self?.closeWizard()
       }
     } else {
       if currentPageIndex == 0 {
-        setupPages(for: generator)
+        setupPages(for: wizard)
       }
       showNextPage()
     }
@@ -74,14 +74,14 @@ class WizardView: NSViewController {
     (self.view.window as? NSPanel)?.orderOut(nil)
   }
   
-  private func setupPages(for generator: Generator) {
+  private func setupPages(for wizard: CreationWizard) {
     tabView?.tabViewItems.forEach{ item in
       //remove all pages except first
       guard item != mainTabViewItem else { return }
       tabView?.removeTabViewItem(item)
     }
     
-    for page in generator.wizardPages {
+    for page in wizard.wizardPages {
       //realease old data
       page.clearPage()
       let tabViewItem = NSTabViewItem(identifier: nil)
@@ -93,20 +93,20 @@ class WizardView: NSViewController {
   func showNextPage() {
     let nextPageIndex = currentPageIndex + 1
     guard nextPageIndex < tabView!.numberOfTabViewItems else {
-      selectedGenerator?.generate { [weak self] in
+      selectedWizard?.create { [weak self] in
         self?.closeWizard()
       }
       return
     }
     
     //change header title
-    lable?.stringValue = "Choose option for new project:"
+    label?.stringValue = "Choose option for new project:"
     //open next page
     tabView!.selectTabViewItem(at: nextPageIndex)
     
     
     if currentPageIndex != 0 {
-      previouseButton?.isEnabled = true
+      previousButton?.isEnabled = true
     }
     
     //last wizard page
@@ -128,8 +128,8 @@ class WizardView: NSViewController {
     
     //main wizard page
     if currentPageIndex == 0 {
-      lable?.stringValue = "Choose a template:"
-      previouseButton?.isEnabled = false
+      label?.stringValue = "Choose a template:"
+      previousButton?.isEnabled = false
     }
     
     pageChanged()
@@ -155,10 +155,10 @@ class WizardView: NSViewController {
 
 extension WizardView: NSOutlineViewDataSource {
   public func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
-    guard let item = item else { return GeneratorsManager.shared}
+    guard let item = item else { return WizardsManager.shared}
     switch item {
-    case let manager as GeneratorsManager:
-      return manager.generators[index]
+    case let manager as WizardsManager:
+      return manager.wizards[index]
     default:
       return self
     }
@@ -167,8 +167,8 @@ extension WizardView: NSOutlineViewDataSource {
   func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
     guard let item = item else { return 1 }
     switch item {
-    case let manager as GeneratorsManager:
-      return manager.generators.count
+    case let manager as WizardsManager:
+      return manager.wizards.count
     default:
       return 0
     }
@@ -189,30 +189,30 @@ extension WizardView: NSOutlineViewDelegate {
   func outlineViewSelectionDidChange(_ notification: Notification) {
     guard let outlineView = notification.object as? NSOutlineView,
       let item = outlineView.item(atRow: outlineView.selectedRow),
-      let _ = item as? Generator else { return }
+      let _ = item as? CreationWizard else { return }
     self.nextButton?.isEnabled = true
   }
   
   public func outlineView(_ outlineView: NSOutlineView, isGroupItem item: Any) -> Bool {
-    return item is GeneratorsManager
+    return item is WizardsManager
   }
   
   public func outlineView(_ outlineView: NSOutlineView, shouldShowOutlineCellForItem item: Any) -> Bool {
-    return !(item is GeneratorsManager)
+    return !(item is WizardsManager)
   }
   
   public func outlineView(_ outlineView: NSOutlineView, shouldSelectItem item: Any) -> Bool {
-    return !(item is GeneratorsManager)
+    return !(item is WizardsManager)
   }
   
   public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
     switch item {
-    case let item as GeneratorsManager:
+    case let item as WizardsManager:
       guard let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: CellIdentifiers.headerCell),
                                             owner: self) as? NSTableCellView else { return nil }
       view.textField?.stringValue = "PROJECTS"
       return view
-    case let item as Generator:
+    case let item as CreationWizard:
       guard let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: CellIdentifiers.projectCell),
                                             owner: self) as? NSTableCellView else { return nil }
       view.textField?.stringValue = item.name
