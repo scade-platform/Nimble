@@ -33,6 +33,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     documentController.makeUntitledDocument(ofType: docType)
   }
   
+  @objc private func newProject(_ sender: Any?) {
+    let wizardView = WizardView.loadFromNib()
+    let wizard = WizardPanel(contentViewController: wizardView)
+    wizard.styleMask = .borderless
+    NSApp.runModal(for: wizard)
+  }
+  
   @objc private func switchTheme(_ item: NSMenuItem?) {
     ThemeManager.shared.selectedTheme = item?.representedObject as? Theme
   }
@@ -96,8 +103,15 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     items.sort { $0.title < $1.title }
 
-    // Enable iff. there are document creators
+    // Enable if there are document creators
     fileMenu?.items.first?.isEnabled = !items.isEmpty
+    
+    if !WizardsManager.shared.wizards.isEmpty {
+      let item = NSMenuItem(title: "New Project...", action: #selector(newProject(_:)), keyEquivalent: "n")
+      item.keyEquivalentModifierMask = [.command, .shift]
+      items.append(NSMenuItem.separator())
+      items.append(item)
+    }
     newDocumentMenu?.items = items
   }
   

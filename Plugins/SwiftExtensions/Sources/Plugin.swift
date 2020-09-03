@@ -27,6 +27,8 @@ final class SwiftExtensionsPlugin: Plugin {
     Settings.shared.add(SKLocalServer.$swiftToolchain)
     Settings.shared.add(SPMBuildSystem.$androidToolchain)
     Settings.shared.add(SPMBuildSystem.$platforms)
+    
+    WizardsManager.shared.register(wizard: SPMWizard())
   }
 }
 
