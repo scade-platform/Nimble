@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner"/>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe" customClass="SPMWizardView" customModule="SwiftExtensionsPlugin" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="531" height="105"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="MTb-Ih-jqs">
+                    <rect key="frame" x="82" y="69" width="99" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="95" id="fUp-EV-HK0"/>
+                    </constraints>
+                    <textFieldCell key="cell" lineBreakMode="clipping" title="Source Control:" id="d8R-Fw-zbe">
+                        <font key="font" usesAppearanceFont="YES"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="POu-cT-WO4">
+                    <rect key="frame" x="191" y="68" width="218" height="18"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="214" id="nRg-8k-axn"/>
+                    </constraints>
+                    <buttonCell key="cell" type="check" title="Create Git repository on my Mac" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="uzk-g4-U83">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ckw-J9-9zJ">
+                    <rect key="frame" x="209" y="55" width="278" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="274" id="glU-oI-SQD"/>
+                    </constraints>
+                    <textFieldCell key="cell" controlSize="small" lineBreakMode="clipping" title="Nimble will place your project under source control" id="wec-5K-Dhn">
+                        <font key="font" metaFont="label" size="11"/>
+                        <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+                <popUpButton verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g4Q-JJ-X9Q">
+                    <rect key="frame" x="191" y="21" width="219" height="25"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <popUpButtonCell key="cell" type="push" title="Library" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" selectedItem="eRq-Vf-YKW" id="CT3-8s-y4x">
+                        <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                        <menu key="menu" id="DjL-9a-LjB">
+                            <items>
+                                <menuItem title="Library" state="on" id="eRq-Vf-YKW"/>
+                                <menuItem title="Executable" id="YBh-1j-mdG"/>
+                                <menuItem title="Empty" id="3ly-WT-I8J"/>
+                                <menuItem title="Manifest" id="Apf-UE-jX8">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                                <menuItem title="System-module" id="qpb-Kg-QtU">
+                                    <modifierMask key="keyEquivalentModifierMask"/>
+                                </menuItem>
+                            </items>
+                        </menu>
+                    </popUpButtonCell>
+                </popUpButton>
+                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nDS-YL-PiR">
+                    <rect key="frame" x="143" y="27" width="38" height="16"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <textFieldCell key="cell" lineBreakMode="clipping" title="Type:" id="uOf-DN-lan">
+                        <font key="font" usesAppearanceFont="YES"/>
+                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                    </textFieldCell>
+                </textField>
+            </subviews>
+            <constraints>
+                <constraint firstItem="ckw-J9-9zJ" firstAttribute="top" secondItem="POu-cT-WO4" secondAttribute="bottom" constant="1" id="90J-cV-9Gq"/>
+                <constraint firstItem="ckw-J9-9zJ" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="211" id="CXQ-Bn-Aio"/>
+                <constraint firstItem="MTb-Ih-jqs" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" constant="84" id="Twa-Lz-eWA"/>
+                <constraint firstItem="POu-cT-WO4" firstAttribute="leading" secondItem="MTb-Ih-jqs" secondAttribute="trailing" constant="14" id="Vfk-up-fX1"/>
+                <constraint firstAttribute="trailing" secondItem="ckw-J9-9zJ" secondAttribute="trailing" constant="46" id="agh-Su-3KY"/>
+                <constraint firstItem="POu-cT-WO4" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="21" id="gMi-rh-FaA"/>
+                <constraint firstItem="MTb-Ih-jqs" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" constant="20" id="h9T-7K-QhA"/>
+            </constraints>
+            <connections>
+                <outlet property="gitCheckBox" destination="POu-cT-WO4" id="phP-6i-PNT"/>
+                <outlet property="typePopup" destination="g4Q-JJ-X9Q" id="vgA-nf-RUv"/>
+            </connections>
+            <point key="canvasLocation" x="171.5" y="70.5"/>
+        </customView>
+    </objects>
+</document>

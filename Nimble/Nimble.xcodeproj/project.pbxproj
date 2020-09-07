@@ -14,6 +14,8 @@
 		0CA297B423A903340025A4EF /* BinaryFileDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA297B323A903340025A4EF /* BinaryFileDocument.swift */; };
 		0CAAE9A324370523003CAE92 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAAE9A224370523003CAE92 /* Bundle.swift */; };
 		0CAAE9AD24370BEE003CAE92 /* WorkbenchArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAAE9AC24370BEE003CAE92 /* WorkbenchArea.swift */; };
+		0CB6F11424FE46B800960EDA /* WizardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6F11224FE46B800960EDA /* WizardView.swift */; };
+		0CB6F11524FE46B800960EDA /* WizardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CB6F11324FE46B800960EDA /* WizardView.xib */; };
 		0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3523A39503003B01DE /* StatusBarView.swift */; };
 		0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */; };
 		0CD0FB4623A776BD003B01DE /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB4523A776BD003B01DE /* EditorView.swift */; };
@@ -126,6 +128,8 @@
 		0CAAE9A224370523003CAE92 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		0CAAE9AC24370BEE003CAE92 /* WorkbenchArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchArea.swift; sourceTree = "<group>"; };
 		0CB6607722F41D1500CBB386 /* NimbleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleController.swift; sourceTree = "<group>"; };
+		0CB6F11224FE46B800960EDA /* WizardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WizardView.swift; sourceTree = "<group>"; };
+		0CB6F11324FE46B800960EDA /* WizardView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WizardView.xib; sourceTree = "<group>"; };
 		0CD0FB3523A39503003B01DE /* StatusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
 		0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootSplitView.swift; sourceTree = "<group>"; };
 		0CD0FB4523A776BD003B01DE /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
@@ -181,6 +185,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0C2B6BD124F8FC1500DCA8B0 /* Wizard */ = {
+			isa = PBXGroup;
+			children = (
+				0CB6F11224FE46B800960EDA /* WizardView.swift */,
+				0CB6F11324FE46B800960EDA /* WizardView.xib */,
+			);
+			path = Wizard;
+			sourceTree = "<group>";
+		};
 		D721CFA42385EC1800FD1B00 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -212,6 +225,7 @@
 		D72F959D222DF2F4009F2EC3 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				0C2B6BD124F8FC1500DCA8B0 /* Wizard */,
 				D724C5E8237C418B00E80958 /* ConsoleView.swift */,
 				D724C5ED237C418B00E80958 /* DebugView.swift */,
 				D724C5E9237C418B00E80958 /* DropView.swift */,
@@ -413,6 +427,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CB6F11524FE46B800960EDA /* WizardView.xib in Resources */,
 				D72F959C222DF2D9009F2EC3 /* WorkbenchSidebar.xib in Resources */,
 				D78FFF1924255CE100EB70E2 /* Icons in Resources */,
 				D7CBF7D6222878F40088715C /* Main.storyboard in Resources */,
@@ -457,6 +472,7 @@
 				D78FFF1B2426A1E300EB70E2 /* SettingsDocument.swift in Sources */,
 				D724C5F1237C418B00E80958 /* NavigatorView.swift in Sources */,
 				D724C5F4237C418B00E80958 /* DebugView.swift in Sources */,
+				0CB6F11424FE46B800960EDA /* WizardView.swift in Sources */,
 				0CD0FB4623A776BD003B01DE /* EditorView.swift in Sources */,
 				D724C5F0237C418B00E80958 /* DropView.swift in Sources */,
 			);
