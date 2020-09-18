@@ -12,6 +12,11 @@ import NimbleCore
 ///TODO: use sidebar panel for the area
 class InspectorView: NSViewController {
   @IBOutlet weak var sidebar: WorkbenchSidebar? = nil
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    sidebar?.showButtonsBar = false
+  }
 }
 
 extension InspectorView: WorkbenchArea {
