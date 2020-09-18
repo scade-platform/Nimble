@@ -14,10 +14,9 @@ class NimbleStatusBar: NSViewController {
   @IBOutlet weak var statusMessage: NSTextField!
 }
 
-class NimbleStatusBarView: NSView {
+class NimbleStatusBarView: NSView, WorkbenchStatusBarItem {
   override var intrinsicContentSize: NSSize {
     return frame.size
   }
 }
 
-extension NimbleStatusBarView: WorkbenchStatusBarItem { }

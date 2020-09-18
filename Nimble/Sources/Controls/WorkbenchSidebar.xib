@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14490.70"/>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,8 +18,8 @@
             <rect key="frame" x="0.0" y="0.0" width="209" height="647"/>
             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
             <subviews>
-                <stackView distribution="fillEqually" orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QPz-7o-a1m">
-                    <rect key="frame" x="103" y="619" width="4" height="28"/>
+                <stackView orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QPz-7o-a1m">
+                    <rect key="frame" x="0.0" y="619" width="209" height="28"/>
                     <edgeInsets key="edgeInsets" left="4" right="0.0" top="0.0" bottom="0.0"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="28" identifier="buttonsBarHeight" id="Bf8-8G-mAU"/>
@@ -32,8 +33,9 @@
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="N5i-7a-vj0" secondAttribute="bottom" id="Ca1-w4-V8b"/>
                 <constraint firstItem="QPz-7o-a1m" firstAttribute="top" secondItem="c22-O7-iKe" secondAttribute="top" id="Yte-Ts-rws"/>
-                <constraint firstItem="QPz-7o-a1m" firstAttribute="centerX" secondItem="c22-O7-iKe" secondAttribute="centerX" id="eFD-Fc-amq"/>
+                <constraint firstAttribute="trailing" secondItem="QPz-7o-a1m" secondAttribute="trailing" id="ion-Qg-fvf"/>
                 <constraint firstItem="N5i-7a-vj0" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="mHU-xg-hwU"/>
+                <constraint firstItem="QPz-7o-a1m" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="oE6-ow-QQ0"/>
                 <constraint firstAttribute="trailing" secondItem="N5i-7a-vj0" secondAttribute="trailing" id="q0M-oI-Trl"/>
                 <constraint firstItem="N5i-7a-vj0" firstAttribute="top" secondItem="QPz-7o-a1m" secondAttribute="bottom" id="qqB-YE-32p"/>
             </constraints>

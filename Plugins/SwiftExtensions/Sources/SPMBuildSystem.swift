@@ -92,7 +92,7 @@ class SPMBuildSystem: BuildSystem {
       let buildTask = try variant.build()
       workbench.publish(task: buildTask) { _ in
         DispatchQueue.main.async {
-          //show console with result
+          //show console with result          
           ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
         }
       }

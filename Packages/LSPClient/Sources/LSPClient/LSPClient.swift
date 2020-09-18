@@ -124,6 +124,10 @@ public final class LSPClient {
     doc.observers.remove(observer: self)
     doc.languageServices.removeAll{ $0 === self }
     openedDocuments.removeAll { $0 == ObjectIdentifier(doc) }
+
+//    if let path = doc.path {
+//      self.connector?.workbench?.publish(diagnostics: [], for: path)
+//    }
   }
   
   private func waitInitAndExecute(_ handler: @escaping (LSPClient) -> Void) {
@@ -141,13 +145,27 @@ public final class LSPClient {
 
 // MARK: - MessageHandler
 
+extension WindowMessageType {
+  var severity: NimbleCore.DiagnosticSeverity {
+    switch self {
+    case .error :
+      return .error
+    case .warning:
+      return .warning
+    default:
+      return .information
+    }
+  }
+}
+
 extension LSPClient: MessageHandler {
   public func handle<Notification>(_ notification: Notification, from: ObjectIdentifier) where Notification : NotificationType {
     
     switch notification {
     case let log as LogMessageNotification:
       DispatchQueue.main.async {
-        self.connector?.workbench?.statusBar.setStatusMessage("LSP: \(log.message)", duration: 5)
+        self.connector?.workbench?.publish(diagnosticMessage: log.message,
+                                           severity: log.type.severity, source: .other("Language Server"))
       }
 
     case let diagnostic as PublishDiagnosticsNotification:

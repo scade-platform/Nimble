@@ -14,11 +14,13 @@ class StatusBarView: NSViewController {
   @IBOutlet weak var rightBarStackView: NSStackView!
   @IBOutlet weak var editorBarStackView: NSStackView!
 
+  private let diagnosticBar = DiagnosticStatusBar.loadFromNib()
   private let workbenchBar = NimbleStatusBar.loadFromNib()
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    leftBar.append(diagnosticBar.view as! WorkbenchStatusBarItem)
     leftBar.append(workbenchBar.view as! WorkbenchStatusBarItem)
 
     statusMessage = ""

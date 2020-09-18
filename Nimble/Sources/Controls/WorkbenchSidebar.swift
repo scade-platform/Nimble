@@ -16,7 +16,21 @@ public class WorkbenchSidebar: XibView {
   
   private var selectedViewIndex: Int = 0
   
-  
+  public var showButtonsBar: Bool = true {
+    didSet {
+      guard let heightCnstr = stackView?.constraints.first(where: { $0.identifier == .some("buttonsBarHeight") }) else {
+        return
+      }
+
+      heightCnstr.constant = showButtonsBar ? 28 : 0
+    }
+  }
+
+  public var showTabIcon: Bool = true
+
+  public var showTabTitle: Bool = false
+
+
   public override func awakeFromNib() {
     super.awakeFromNib()
     
@@ -54,16 +68,17 @@ public class WorkbenchSidebar: XibView {
     selectedViewIndex = at
   }
   
-  
   public func appendView(_ view: NSView, title: String, icon: NSImage?) -> Void {
     assert(stackView != nil && tabView != nil)
     
     let button = NSButton(frame: NSRect.zero)
     
-    if icon != nil {
+    if showTabIcon {
       button.image = icon
       button.title = ""
-    } else {
+    }
+
+    if showTabTitle {
       button.title = title
     }
     
@@ -72,26 +87,19 @@ public class WorkbenchSidebar: XibView {
     button.bezelStyle = .shadowlessSquare
     button.isBordered = false
     button.setButtonType(.toggle)
-    
-    stackView!.addArrangedSubview(button)
-    
+
+    //button.contentTintColor = .white
+    //stackView!.addArrangedSubview(button)
+
+    stackView!.addView(button, in: .leading)
+
     let tabViewItem = NSTabViewItem(identifier: nil)
     tabViewItem.view = view
     
     tabView!.addTabViewItem(tabViewItem)
     selectView(at: stackView!.arrangedSubviews.count - 1)
-    
-    if stackView!.arrangedSubviews.count == 1 {
-      hideButtonsBar()
-    }
   }
-  
-  public func hideButtonsBar() -> Void {
-    if let heightCnstr = stackView?.constraints.first(where: { $0.identifier == .some("buttonsBarHeight") }) {      
-      heightCnstr.constant = 0
-    }
-  }
-  
+
   private func button(at: Int) -> NSButton? {
     guard let _stackView = stackView else { return nil }
     if _stackView.arrangedSubviews.indices.contains(at) {
@@ -107,6 +115,8 @@ public class WorkbenchSidebar: XibView {
     button.setNextState()
     selectView(at: index)
   }
+
+
 }
 
 

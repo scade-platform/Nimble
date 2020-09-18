@@ -411,12 +411,11 @@ extension CodeEditorCompletionView: NSTableViewDelegate {
   }
   
   func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-    var cell: NSTableCellView? = nil
-    
     let item = completions[row]
-    
+    var cell: NSTableCellView? = nil
+
     if tableColumn == tableView.tableColumns[0], item.hasIcon ||  item.detail != nil {
-      let typeCell = tableView.makeTypeCell()
+      let typeCell = tableView.makeCell(id: "TypeCell") as? CompletionIconView
       
       cell = typeCell
       cell?.textField?.stringValue = item.detail ?? ""
@@ -425,16 +424,13 @@ extension CodeEditorCompletionView: NSTableViewDelegate {
       typeCell?.iconView.url = item.icon
       
     } else if tableColumn == tableView.tableColumns[1] {
-      cell = tableView.makeLabelCell()
+      cell = tableView.makeCell(id: "LabelCell")
             
       if filterResult.count > 0 {
         cell?.textField?.attributedStringValue = styledLabel(item.label, for: row)
       } else {
         cell?.textField?.stringValue = item.label
       }
-      
-      
-      
     }    
     
     cell?.identifier = nil
@@ -454,15 +450,5 @@ extension CodeEditorCompletionView: NSTableViewDelegate {
     
   func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
     return completions.count > 0
-  }
-}
-
-fileprivate extension NSTableView {
-  func makeTypeCell() -> CompletionIconView? {
-    return makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "TypeCell"), owner: nil) as? CompletionIconView
-  }
-  
-  func makeLabelCell() -> NSTableCellView? {
-    return makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "LabelCell"), owner: nil) as? NSTableCellView
   }
 }

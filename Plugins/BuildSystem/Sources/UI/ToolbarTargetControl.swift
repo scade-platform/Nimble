@@ -214,7 +214,7 @@ class ToolbarTargetControl : NSControl {
       os_log("Target selector did clicked", log: .targetSelector, type: .info)
     }
     
-    guard self.isEnabled, let workbench = self.window?.windowController as? Workbench, let buildSystem = BuildSystemsManager.shared.activeBuildSystem else {
+    guard self.isEnabled, let workbench = NSApp.currentWorkbench, let buildSystem = BuildSystemsManager.shared.activeBuildSystem else {
       if OSLog.isLogOn {
         os_log("Selector didn't show", log: .targetSelector, type: .info)
         os_log("isEnabled = %{public}b", log: .targetSelector, type: .info, self.isEnabled)
@@ -259,7 +259,7 @@ class ToolbarTargetControl : NSControl {
   }
   
   @IBAction func rightButtonDidClick(_ sender: Any) {
-    guard self.isEnabled, let workbench = self.window?.windowController as? Workbench, let variant = workbench.selectedVariant, let target = variant.target else {
+    guard self.isEnabled, let workbench = NSApp.currentWorkbench, let variant = workbench.selectedVariant, let target = variant.target else {
       return
     }
     if let menu = creatSubmenus(target: target) {
@@ -292,7 +292,7 @@ class ToolbarTargetControl : NSControl {
       rightParentView?.isHidden = false
     }
     
-    guard let workbench = self.window?.windowController as? Workbench, let variant = selectedVariant else {
+    guard let workbench = NSApp.currentWorkbench, let variant = selectedVariant else {
       return
     }
     

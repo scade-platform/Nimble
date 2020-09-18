@@ -19,7 +19,7 @@ public protocol Workbench: class {
   
   var observers: ObserverSet<WorkbenchObserver> { get set }
   
-  var diagnostics: [Path: [Diagnostic]] { get }
+  var diagnostics: [DiagnosticSource: [Diagnostic]] { get }
 
   var tasks: [WorkbenchTask] { get }
 
@@ -29,7 +29,6 @@ public protocol Workbench: class {
   
 //  var toolbarArea: WorkbenchPart { get }
 //
-  
   var debugArea: WorkbenchArea? { get }
     
   var statusBar: WorkbenchStatusBar { get }
@@ -46,18 +45,18 @@ public protocol Workbench: class {
   
   func createConsole(title: String, show: Bool, startReading: Bool) -> Console?
 
-
-  func publish(diagnostics: [Diagnostic], for path: Path)
+  func publish(diagnostics: [Diagnostic], for: DiagnosticSource)
 
   func publish(task: WorkbenchTask)
 
   func publish(task: WorkbenchTask, onComplete: @escaping (WorkbenchTask) -> Void)
-  
+
   func invalidateRestorableState()
 }
 
-
 public extension Workbench {
+  var areas: [WorkbenchArea] { [navigatorArea, debugArea, inspectorArea].compactMap{$0} }
+
   func open(_ doc: Document, show: Bool) {
     open(doc, show: show, openNewEditor: true)
   }
@@ -77,6 +76,25 @@ public extension Workbench {
   func  createConsole(title: String, show: Bool) -> Console? {
     return createConsole(title: title, show: show, startReading: true)
   }
+
+  func publish(diagnostics: [Diagnostic], for path: Path) {
+    publish(diagnostics: diagnostics, for: .path(path))
+  }
+
+  func publish(diagnosticMessage: String, severity: DiagnosticSeverity, source: DiagnosticSource) {
+    publish(diagnostics: [WorkbenchDiagnostic(message: diagnosticMessage, severity: severity)], for: source)
+  }
+
+  func diagnostics(severity: DiagnosticSeverity) -> [DiagnosticSource: [Diagnostic]] {
+    var res = [DiagnosticSource: [Diagnostic]]()
+    diagnostics.forEach { d in
+      let selection = d.value.filter{$0.severity == severity}
+      if !selection.isEmpty {
+        res[d.key] = selection
+      }
+    }
+    return res
+  }
 }
 
 public protocol WorkbenchObserver: class {
@@ -87,6 +105,7 @@ public protocol WorkbenchObserver: class {
   func workbenchWillSaveDocument(_ workbench: Workbench, document: Document)
   func workbenchDidSaveDocument(_ workbench: Workbench, document: Document)
   func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?)
+  func workbenchDidPublishDiagnostic(_ workbench: Workbench, diagnostic: [Diagnostic], source: DiagnosticSource)
 }
 
 public extension WorkbenchObserver {
@@ -97,16 +116,17 @@ public extension WorkbenchObserver {
   func workbenchWillSaveDocument(_ workbench: Workbench, document: Document) { return }
   func workbenchDidSaveDocument(_ workbench: Workbench, document: Document) { return }
   func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) { return }
+  func workbenchDidPublishDiagnostic(_ workbench: Workbench, diagnostic: [Diagnostic], source: DiagnosticSource) { return }
 }
 
 // MARK: - Area
 
 public protocol WorkbenchArea: class {
-  var isHidden: Bool { get set }
-  
   var parts: [WorkbenchPart] { get }
-  
+  var isHidden: Bool { get set }
+
   func add(part: WorkbenchPart) -> Void
+  func show(part: WorkbenchPart) -> Void
 }
 
 
@@ -120,10 +140,18 @@ public extension WorkbenchArea {
 
 public protocol WorkbenchPart: class {
   var view: NSView { get }
-  
   var title: String? { get }
-  
   var icon: NSImage? { get }
+  var workbench: Workbench? { get }
+}
+
+public extension WorkbenchPart {
+  func show() {
+    guard let area = (self as? NSViewController)?.parent as? WorkbenchArea else { return }
+
+    area.show()
+    area.show(part: self)
+  }
 }
 
 

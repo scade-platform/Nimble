@@ -63,7 +63,7 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
   private(set) var currentItem: TabItem? = nil {
     didSet {
       defer {
-        workbench?.currentDocumentDidChange(currentItem?.document)
+        (workbench as? NimbleWorkbench)?.currentDocumentDidChange(currentItem?.document)
       }
       currentItem?.active = true
       guard let item = currentItem else { return }
@@ -82,7 +82,7 @@ class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
       editor.view.removeFromSuperview()
       editor.removeFromParent()
       
-      workbench?.currentDocumentWillChange(currentItem?.document)
+      (workbench as? NimbleWorkbench)?.currentDocumentWillChange(currentItem?.document)
       
       currentItem?.document.observers.remove(observer: self)
     }
