@@ -25,7 +25,8 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
 
   public var observers = ObserverSet<WorkbenchObserver>()
 
-  public private(set) var diagnostics: [Path: [Diagnostic]] = [:]
+  public private(set) var diagnostics: [DiagnosticSource: [Diagnostic]] = [:]
+
   public private(set) var tasksDictionary: [ObjectIdentifier: (WorkbenchTask, ((WorkbenchTask) -> Void)?)] = [:]
 
   // Document property of the WindowController always refer to the project
@@ -181,10 +182,7 @@ extension NimbleWorkbench: Workbench {
   }
   
   public var openedConsoles: [Console] {
-    guard let debugView = debugView else {
-      return []
-    }
-    return debugView.consoleView.openedConsoles
+    return debugView?.consoleView?.openedConsoles ?? []
   }
   
   public var project: Project? {
@@ -291,22 +289,21 @@ extension NimbleWorkbench: Workbench {
   
   
   public func createConsole(title: String, show: Bool, startReading: Bool = true) -> Console? {
-    if show, debugView?.isHidden ?? false {
-      debugView?.isHidden = false
-    }
-    return debugView?.consoleView.createConsole(title: title, show: show, startReading: startReading)
+    return debugView?.consoleView?.createConsole(title: title, show: show, startReading: startReading)
   }
   
-  public func publish(diagnostics: [Diagnostic], for path: Path) {
-    if let doc = documents.first(where: {$0.path == path}){
+  public func publish(diagnostics: [Diagnostic], for source: DiagnosticSource) {
+    if case .path(let path) = source, let doc = documents.first(where: {$0.path == path}){
       doc.editor?.publish(diagnostics: diagnostics)
     }
-    
+
     if diagnostics.isEmpty {
-      self.diagnostics.removeValue(forKey: path)
+      self.diagnostics.removeValue(forKey: source)
     } else {
-      self.diagnostics[path] = diagnostics
+      self.diagnostics[source] = diagnostics
     }
+
+    observers.notify{ $0.workbenchDidPublishDiagnostic(self, diagnostic: diagnostics, source: source) }
   }
 
   public func publish(task: WorkbenchTask) {
@@ -513,13 +510,13 @@ protocol NimbleWorkbenchViewController {}
 
 
 extension NimbleWorkbenchView where Self: NSView {
-  var workbench: NimbleWorkbench? {
+  var workbench: Workbench? {
     return window?.windowController as? NimbleWorkbench
   }
 }
 
 extension NimbleWorkbenchViewController where Self: NSViewController {
-  var workbench: NimbleWorkbench? {
+  var workbench: Workbench? {
     return view.window?.windowController as? NimbleWorkbench
   }
 }

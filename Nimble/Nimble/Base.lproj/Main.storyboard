@@ -817,10 +817,13 @@
         <scene sceneID="lFy-fe-dBa">
             <objects>
                 <viewController id="vVK-t1-2nf" customClass="DebugView" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="QYh-oE-JSq">
+                    <view key="view" id="QYh-oE-JSq" customClass="WorkbenchSidebar" customModule="Nimble" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </view>
+                    <connections>
+                        <outlet property="sidebar" destination="QYh-oE-JSq" id="8c8-Ae-SM7"/>
+                    </connections>
                 </viewController>
                 <customObject id="f3g-ad-EMA" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="15702" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15702"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -25,11 +25,11 @@
                         <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="22" horizontalPageScroll="10" verticalLineScroll="22" verticalPageScroll="10" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="yRr-oy-sZb">
                             <rect key="frame" x="0.0" y="87" width="536" height="241"/>
                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="IbP-V2-NiH">
-                                <rect key="frame" x="0.0" y="0.0" width="536" height="226"/>
+                                <rect key="frame" x="0.0" y="0.0" width="536" height="241"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="none" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" rowHeight="22" viewBased="YES" id="BmO-MN-5fB" customClass="CompletionTableView" customModule="CodeEditorPlugin" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="591" height="226"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="591" height="241"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <size key="intercellSpacing" width="3" height="0.0"/>
                                         <color key="backgroundColor" red="0.19607843137254902" green="0.19607843137254902" blue="0.19607843137254902" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -37,7 +37,6 @@
                                         <tableColumns>
                                             <tableColumn width="185" maxWidth="300" id="Srf-F0-AgW">
                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
-                                                    <font key="font" metaFont="toolTip"/>
                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                 </tableHeaderCell>
@@ -85,7 +84,6 @@
                                             </tableColumn>
                                             <tableColumn width="400" minWidth="40" maxWidth="600" id="OJ9-XU-DBL">
                                                 <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
-                                                    <font key="font" metaFont="toolTip"/>
                                                     <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                 </tableHeaderCell>
@@ -128,7 +126,7 @@
                                 <constraint firstAttribute="height" constant="241" identifier="tableViewHeight" id="6Hh-aJ-Z9y"/>
                             </constraints>
                             <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="u9W-BJ-m9L">
-                                <rect key="frame" x="0.0" y="226" width="536" height="15"/>
+                                <rect key="frame" x="0.0" y="225" width="536" height="16"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                             <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="k3S-tt-lMX">
@@ -169,7 +167,7 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Qbp-3T-Prm">
-                            <rect key="frame" x="-2" y="5" width="154" height="21"/>
+                            <rect key="frame" x="-2" y="7" width="154" height="16"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="center" title="No Completions" id="znj-oA-GZy">
                                 <font key="font" usesAppearanceFont="YES"/>
                                 <color key="textColor" name="systemGrayColor" catalog="System" colorSpace="catalog"/>

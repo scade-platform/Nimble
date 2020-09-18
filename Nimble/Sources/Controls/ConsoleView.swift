@@ -10,7 +10,7 @@ import Cocoa
 import NimbleCore
 import Ansi
 
-class ConsoleView: NSViewController {
+class ConsoleView: NSViewController, NimbleWorkbenchViewController {
   
   @IBOutlet var textView: NSTextView!
   
@@ -51,7 +51,7 @@ class ConsoleView: NSViewController {
   }
   
   override func viewDidLoad() {
-    super.viewDidLoad()
+    super.viewDidLoad()    
     textView.font = font
     setControllersHidden(true)
     self.textView.layoutManager?.allowsNonContiguousLayout = false
@@ -81,19 +81,20 @@ class ConsoleView: NSViewController {
   func createConsole(title: String, show: Bool, startReading: Bool) -> Console {
     let consoleName = improveName(title)
     let newConsole = NimbleTextConsole(title: consoleName, view: self, startReading: startReading)
+
     self.consoleSelectionButton.addItem(withTitle: newConsole.title)
+
     if (show) {
-      self.textView.string = ""
-      self.textView.textStorage?.append(convertToAttributedString(newConsole.contents))
-      self.consoleSelectionButton.selectItem(withTitle: newConsole.title)
+      self.open(console: newConsole)
       newConsole.handler = handler(data:console:)
-      prevOpenedConsole = currentConsole
-      currentConsole = newConsole
     }
+
     if currentConsole == nil {
       currentConsole = newConsole
     }
-    consolesStorage[newConsole.title] = newConsole
+
+    self.consolesStorage[newConsole.title] = newConsole
+
     setControllersHidden(false)
     
     return newConsole
@@ -113,17 +114,27 @@ class ConsoleView: NSViewController {
     guard let console = consolesStorage[title], console.title != currentConsole?.title else {
       return
     }
-    prevOpenedConsole = currentConsole
-    currentConsole = console
-    textView.string = ""
+    open(console: console)
+  }
+
+  func open(console: NimbleTextConsole) {
+    self.textView.string = ""
     self.textView.textStorage?.append(convertToAttributedString(console.contents))
+    self.consoleSelectionButton.selectItem(withTitle: console.title)
+
     self.textView.scrollToEndOfDocument(nil)
+
     if console.isReadingFromBuffer {
       console.handler = handler(data:console:)
-    } 
-    consoleSelectionButton.selectItem(withTitle: console.title)
+    }
+
+    prevOpenedConsole = currentConsole
+    currentConsole = console
+
+    // Shows workbench area if hidden and selects to the tab with console
+    self.show()
   }
-  
+
   func close(console: Console) {
     guard currentConsole?.title != console.title else {
       closeCurrentConsole(self)
@@ -169,11 +180,9 @@ class ConsoleView: NSViewController {
 }
 
 extension ConsoleView : WorkbenchPart {
-  
   var icon: NSImage? {
     return nil
   }
-  
 }
 
 class NimbleTextConsole: Console {
@@ -269,12 +278,15 @@ class NimbleTextConsole: Console {
   func clear() {
     self.contents = ""
   }
-  
+
   func close() {
     stopReadingFromBuffer()
     view.close(console: self)
   }
-  
+
+  func show() {
+    view.open(console: self)
+  }
 }
 
 class BackgroundView: NSView {

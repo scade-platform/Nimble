@@ -9,6 +9,7 @@
 import Cocoa
 import NimbleCore
 
+///TODO: use sidebar panel for the area
 class InspectorView: NSViewController {
   @IBOutlet weak var sidebar: WorkbenchSidebar? = nil
 }
@@ -23,5 +24,9 @@ extension InspectorView: WorkbenchArea {
   
   public var parts: [WorkbenchPart] {
     self.children.compactMap{$0 as? WorkbenchPart}
+  }
+
+  public func show(part: WorkbenchPart) {
+
   }
 }

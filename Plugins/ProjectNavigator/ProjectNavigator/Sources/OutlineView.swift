@@ -21,7 +21,7 @@ open class OutlineView: NSViewController, WorkbenchPart {
     Bundle(for: type(of: self)).image(forResource: "navigatorPart")
   }()
       
-  weak var workbench: Workbench? = nil {
+  public weak var workbench: Workbench? = nil {
     didSet {
       workbench?.observers.add(observer: self)
     }
