@@ -272,6 +272,11 @@ extension CodeEditorView: WorkbenchEditor {
 // MARK: - NSTextStorageDelegate
 
 extension CodeEditorView: NSTextStorageDelegate {
+
+  func undoManager(for view: NSTextView) -> UndoManager? {
+    return document?.undoManager
+  }
+
   func textStorage(_ textStorage: NSTextStorage,
                    didProcessEditing editedMask: NSTextStorageEditActions,
                    range editedRange: NSRange,
