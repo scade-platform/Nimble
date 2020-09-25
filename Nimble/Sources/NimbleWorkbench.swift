@@ -154,7 +154,10 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   
   func currentDocumentDidChange(_ doc: Document?) {
     if let editor = doc?.editor {
-        let editorMenu = type(of: editor).editorMenu
+
+      (document as? ProjectDocument)?.undoManager = doc?.undoManager
+
+      let editorMenu = type(of: editor).editorMenu
 
       editorMenu?.title = "Editor"
 
