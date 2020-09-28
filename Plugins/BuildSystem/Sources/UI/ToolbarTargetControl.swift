@@ -255,7 +255,9 @@ class ToolbarTargetControl : NSControl {
     guard !menu.items.isEmpty else {
       return
     }
-    menu.popUp(positioning: menu.item(at: 0), at: NSEvent.mouseLocation, in: nil)
+     let frame = leftParentView?.window?.convertToScreen(leftParentView!.convert(leftParentView!.bounds, to: nil))
+         let location = frame?.origin ?? NSEvent.mouseLocation
+    menu.popUp(positioning: menu.item(at: 0), at: location, in: nil)
   }
   
   @IBAction func rightButtonDidClick(_ sender: Any) {
@@ -264,7 +266,9 @@ class ToolbarTargetControl : NSControl {
     }
     if let menu = creatSubmenus(target: target) {
       menu.delegate = self
-      menu.popUp(positioning: menu.item(at: 0), at: NSEvent.mouseLocation, in: nil)
+      let frame = rightParentView?.window?.convertToScreen(rightParentView!.convert(rightParentView!.bounds, to: nil))
+      let location = frame?.origin ?? NSEvent.mouseLocation
+      menu.popUp(positioning: menu.item(at: 0), at: location, in: nil)
     }
   }
   
