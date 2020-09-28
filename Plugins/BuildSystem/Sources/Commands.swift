@@ -92,6 +92,28 @@ final class Clean: BuildSystemCommand {
   }
 }
 
+final class CleanAll: BuildSystemCommand {
+  init() {
+    super.init(name: "Clean All")
+  }
+  
+  override func run(in workbench: Workbench) {
+    ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
+    for buildSystem in BuildSystemsManager.shared.buildSystems {
+      let targets = buildSystem.targets(in: workbench)
+      targets.forEach{ target in
+        target.variants.forEach{ variant in
+          buildSystem.clean(variant)
+        }
+      }
+    }
+  }
+  
+  override func validate(in workbench: Workbench) -> State {
+    return currentTask(in: workbench) == nil ? [.enabled] : []
+  }
+}
+
 final class SelectTarget: Command {
   
   
@@ -128,7 +150,7 @@ final class SelectTarget: Command {
 // MARK: - Basic build command
 
 class BuildSystemCommand: Command {
-  init(name: String, keyEquivalent: String, toolbarIcon: NSImage? = nil, orderPriority: Int = 100) {
+  init(name: String, keyEquivalent: String? = nil, toolbarIcon: NSImage? = nil, orderPriority: Int = 100) {
     super.init(name: name, menuPath: "Tools", keyEquivalent: keyEquivalent, toolbarIcon: toolbarIcon, alignment: .left(orderPriority: orderPriority))
   }
 
