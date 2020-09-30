@@ -19,8 +19,7 @@ public final class LSPClient {
 
   private var initializing = DispatchGroup()
 
-  
-  let connection: Connection
+  private var diagnosticPublishers = [Path: DispatchSourceTimer]()
 
   public weak var connector: LSPConnector? = nil
 
@@ -32,7 +31,9 @@ public final class LSPClient {
 
   public private(set) var serverCapabilities = ServerCapabilities()
 
-  
+
+  let connection: Connection
+
   public init(_ connection: Connection) {
     self.connection = connection
   }
@@ -176,8 +177,8 @@ extension LSPClient: MessageHandler {
         let diagnostics = diagnostic.diagnostics.map {
           LSPDiagnostic(wrapped: $0)
         }
-              
-        self.connector?.workbench?.publish(diagnostics: diagnostics, for: path)
+
+        self.publish(diagnostics: diagnostics, for: path)
       }
       
     default:
@@ -185,9 +186,26 @@ extension LSPClient: MessageHandler {
       return
     }
   }
-  
+
+
   public func handle<Request>(_: Request, id: RequestID, from: ObjectIdentifier, reply: @escaping (Result<Request.Response, ResponseError>) -> Void) where Request : RequestType {
     print("Request")
+  }
+
+
+  private func publish(diagnostics: [LSPDiagnostic], for path: Path) {
+    if let timer = diagnosticPublishers[path] {
+      timer.cancel()
+    }
+
+    let timer = DispatchSource.makeTimerSource(queue: .main)
+    timer.schedule(deadline:  .now() + 2.0) // 2 seconds delay
+    timer.setEventHandler{[weak self] in
+      self?.connector?.workbench?.publish(diagnostics: diagnostics, for: path)
+    }
+    timer.resume()
+
+    diagnosticPublishers[path] = timer
   }
 }
 

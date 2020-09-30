@@ -23,8 +23,6 @@ class CodeEditorView: NSViewController {
   
   var diagnostics: [SourceCodeDiagnostic] = []
   var diagnosticViews: [DiagnosticView] = []
-  var diagnosticsUpdateTimer: DispatchSourceTimer? = nil
-  
   
   private weak var highlightProgress: Progress? = nil
   
@@ -171,22 +169,7 @@ class CodeEditorView: NSViewController {
     diagnosticViews.removeAll()
     textView.textContainer?.exclusionPaths = []
   }
-  
-  private func scheduleDiagnosticsUpdate() {
-    if let timer = diagnosticsUpdateTimer {
-      timer.cancel()
-    }
-    
-    let timer = DispatchSource.makeTimerSource(queue: .main)
-    timer.schedule(deadline:  .now() + 2.0) // 2 seconds delay
-    timer.setEventHandler{[weak self] in
-      self?.showDiagnostics()
-    }
-    timer.resume()
-    
-    diagnosticsUpdateTimer = timer
-  }
-  
+
   public func highlightSyntax() {
     if let doc = document {
       guard let syntaxParser = doc.syntaxParser else {
@@ -264,7 +247,7 @@ extension CodeEditorView: WorkbenchEditor {
 
   func publish(diagnostics: [Diagnostic]) {
     self.diagnostics = diagnostics.compactMap { $0 as? SourceCodeDiagnostic }
-    scheduleDiagnosticsUpdate()
+    self.showDiagnostics()
   }
 }
 
