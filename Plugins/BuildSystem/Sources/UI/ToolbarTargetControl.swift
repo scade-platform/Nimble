@@ -31,6 +31,8 @@ class ToolbarTargetControl : NSControl {
   
   //Temp storage for menu item targets
   private var menuItemTargets: [Target] = []
+  //Dictinory with targets by name
+  private var automaticTargets: [String: [Target]] = [:]
   
   weak var borderLayer: CALayer?
   
@@ -152,6 +154,9 @@ class ToolbarTargetControl : NSControl {
     self.rightParentView?.isHidden = true
     self.rightImage?.isHidden = true
     self.rightLable?.stringValue = ""
+    
+    menuItemTargets = []
+    automaticTargets = [:]
   }
   
   override func viewWillMove(toWindow newWindow: NSWindow?) {
@@ -159,13 +164,37 @@ class ToolbarTargetControl : NSControl {
     selectedVariants.removeValue(forKey: ObjectIdentifier(window))
   }
   
-  func autoSelectTarget(in workbench: Workbench) {    
+  func updateTargets(in workbench: Workbench) {
+    menuItemTargets = []
+    automaticTargets = [:]
+    
+    guard let buildSystem = BuildSystemsManager.shared.activeBuildSystem else { return }
+    if let automatic = buildSystem as? Automatic {
+      automaticTargets = [:]
+      menuItemTargets = automatic.targets(in: workbench)
+      for target in menuItemTargets {
+        if let _ = automaticTargets[target.name] {
+          automaticTargets[target.name]?.append(target)
+        } else {
+          automaticTargets[target.name] = [target]
+        }
+      }
+    } else {
+      menuItemTargets = buildSystem.targets(in: workbench)
+    }
+  }
+  
+  func autoSelectTarget(in workbench: Workbench) {
+    if menuItemTargets.isEmpty {
+      updateTargets(in: workbench)
+    }
+    
     guard activeTarget == nil, workbench.selectedVariant == nil else { return }
     
-    guard let buildSystem = BuildSystemsManager.shared.activeBuildSystem, 
-      let buildTarget = buildSystem.targets(in: workbench).first,
+    guard let buildTarget = menuItemTargets.first,
       let variant = buildTarget.variants.first else { return }
     
+   
     set(target: buildTarget)
     separatorImage?.isHidden = false
     set(variant: variant)
@@ -198,9 +227,12 @@ class ToolbarTargetControl : NSControl {
     guard !target.variants.isEmpty else {
       return nil
     }
-    
+    return createSubmenus(for: target.variants)
+  }
+  
+  private func createSubmenus(for variants: [Variant]) -> NSMenu? {
     let menu = NSMenu()
-    for variant in target.variants {
+    for variant in variants {
       let item = NSMenuItem(title: variant.name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
       item.target = self
       item.representedObject = variant
@@ -214,38 +246,31 @@ class ToolbarTargetControl : NSControl {
       os_log("Target selector did clicked", log: .targetSelector, type: .info)
     }
     
-    guard self.isEnabled, let workbench = NSApp.currentWorkbench, let buildSystem = BuildSystemsManager.shared.activeBuildSystem else {
-      if OSLog.isLogOn {
-        os_log("Selector didn't show", log: .targetSelector, type: .info)
-        os_log("isEnabled = %{public}b", log: .targetSelector, type: .info, self.isEnabled)
-        if let windowController = self.window?.windowController {
-          os_log("windowController = %{public}s", log: .targetSelector, type: .info, windowController.description)
-        }else {
-          os_log("windowController = nil", log: .targetSelector, type: .info)
-        }
-        if let buildSystem = BuildSystemsManager.shared.activeBuildSystem  {
-          os_log("active buildSystem = %{public}s", log: .targetSelector, type: .info, buildSystem.name)
-        } else {
-          os_log("active buildSystem = nil", log: .targetSelector, type: .info)
-        }
-      }
-      
+    guard self.isEnabled else {
       return
     }
     
     let menu = NSMenu()
-    if let automatic = buildSystem as? Automatic {
-      menuItemTargets = []
-      for automaticTargets in automatic.targetsBySystem(in: workbench) {
-        guard !automaticTargets.isEmpty else {
-          continue
+    if BuildSystemsManager.shared.activeBuildSystem is Automatic {
+      let sortedAutomaticTargets = automaticTargets.map{($0.key, $0.value)}.sorted{$0.0 < $1.0}
+      for (name, targets) in sortedAutomaticTargets {
+        let allVariants = targets.map{$0.variants}
+        let buildSystemNames = allVariants.compactMap{ $0.first?.buildSystem?.name }
+        let item = NSMenuItem(title: name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
+        item.target = self
+        item.representedObject = name
+        let buildSystemSubmenu = NSMenu()
+        for (index, (name, variants)) in zip(buildSystemNames, allVariants).enumerated() {
+          let buildSystemMenuItem = NSMenuItem(title: name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
+          buildSystemMenuItem.target = self
+          buildSystemMenuItem.representedObject = targets[index]
+          buildSystemMenuItem.submenu = createSubmenus(for: variants)
+          buildSystemSubmenu.addItem(buildSystemMenuItem)
         }
-        automaticTargets.forEach{addMenuItem(target: $0, to: menu)}
-        menuItemTargets.append(contentsOf: automaticTargets)
-        menu.addItem(.separator())
+        item.submenu = buildSystemSubmenu
+        menu.addItem(item)
       }
     } else {
-      menuItemTargets = buildSystem.targets(in: workbench)
       guard !menuItemTargets.isEmpty else {
         return
       }
@@ -303,8 +328,6 @@ class ToolbarTargetControl : NSControl {
     userSelection = (variant.target!, variant)
     activeTarget = variant.target
     workbench.selectedVariant = variant
-    
-    menuItemTargets = []
   }
   
   private func set(target: Target?) {
@@ -332,12 +355,14 @@ extension ToolbarTargetControl: NSUserInterfaceValidations {
   func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
     guard let item = item as? NSMenuItem else {return true}
     if let target = item.representedObject as? Target {
-      item.state = (target.name  == activeTarget?.name) ? .on : .off
+      item.state = (target.id  == activeTarget?.id) ? .on : .off
     } else if let varint = item.representedObject as? Variant {
-      item.state = (varint.name == userSelection?.variant.name) ? .on : .off
-      if let variantValidator =  varint as? NSUserInterfaceValidations {
+      item.state = (varint.target?.id == activeTarget?.id && varint.name == userSelection?.variant.name) ? .on : .off
+      if let variantValidator = varint as? NSUserInterfaceValidations {
         variantValidator.validateUserInterfaceItem(item)
       }
+    } else if let name = item.representedObject as? String {
+      item.state = (activeTarget?.name == name) ? .on : .off
     }
     return true
   }
@@ -392,6 +417,13 @@ extension ToolbarTargetControl : WorkbenchObserver {
   }
 }
 
+extension ToolbarTargetControl: ProjectObserver {
+  func projectFoldersDidChange(_: Project) {
+    menuItemTargets = []
+    automaticTargets = [:]
+  }
+}
+
 extension ToolbarTargetControl: BuildSystemsObserver {
   func activeBuildSystemDidChange(deactivatedBuildSystem: BuildSystem?, activeBuildSystem: BuildSystem?) {
     self.activeTarget = nil
@@ -399,6 +431,9 @@ extension ToolbarTargetControl: BuildSystemsObserver {
     if let window = self.window {
       selectedVariants.removeValue(forKey: ObjectIdentifier(window))
     }
+    
+    menuItemTargets = []
+    automaticTargets = [:]
   }
 }
 
