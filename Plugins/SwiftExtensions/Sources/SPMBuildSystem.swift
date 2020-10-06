@@ -199,7 +199,7 @@ extension SPMVariant {
     let process = createBuildProcess(source: target.folder)
     
     let task = BuildSystemTask(process)
-    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Build: \(target.name) - \(self.name)", in: workbench) {
+    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: "\(target.name) - SPM", title: "\(target.name) - SPM", in: workbench) {
       let taskConsole = task.output(to: console) {  [weak self] console in
         guard let self = self else { return }
         console.writeLine(string: "Finished Building \(target.name) - \(self.name)")
@@ -223,7 +223,7 @@ extension SPMVariant {
     let process = createCleanProcess(source: target.folder)
     let task = BuildSystemTask(process)
     
-    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Clean: \(target.name) - \(self.name)", in: workbench) {
+    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: "\(target.name) - SPM", title: "\(target.name) - SPM", in: workbench) {
       let taskConsole = task.output(to: console) {[weak self] console in
         guard let self = self else { return }
         console.writeLine(string: "Finished Cleaning \(target.name) - \(self.name)")
@@ -290,7 +290,7 @@ extension MacVariant {
     let process = createRunProcess(source: target.folder)
     let task = BuildSystemTask(process)
     
-    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Run: \(target.name) - \(self.name)", in: workbench) {
+    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: "\(target.name) - SPM", title: "\(target.name) - SPM", in: workbench) {
       task.output(to: console) { console in
         console.stopReadingFromBuffer()
       }

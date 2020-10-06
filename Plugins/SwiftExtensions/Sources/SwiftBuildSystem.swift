@@ -200,7 +200,7 @@ extension SingleDocumentVariant {
     let process = try createBuildProcess(document: target.document)
     
     let task = BuildSystemTask(process)
-    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Build: \(target.name) - \(self.name)", in: workbench) {
+    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: "\(target.name) - Swift File", title: "\(target.name) - Swift File", in: workbench) {
       let taskConsole = task.output(to: console) {  [weak self] console in
         guard let self = self else { return }
         console.writeLine(string: "Finished Building \(target.name) - \(self.name)")
@@ -262,7 +262,7 @@ extension SingleDocumentVariant {
         return
       }
       
-      let console = ConsoleUtils.openConsole(key: target.id , title: "Clean: \(documentURL.lastPathComponent)", in: workbench)
+      let console = ConsoleUtils.openConsole(key: "\(target.name) - Swift File", title: "\(target.name) - Swift File", in: workbench)
       
       guard let file = File(url: documentURL.deletingPathExtension()), file.exists else {
         console?.startReadingFromBuffer()
@@ -296,7 +296,7 @@ extension SingleDocumentVariant {
     let process = try createRunProcess(document: target.document)
     let task = BuildSystemTask(process)
     
-    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: target.id, title: "Run: \(target.name) - \(self.name)", in: workbench) {
+    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: "\(target.name) - Swift File", title: "\(target.name) - Swift File", in: workbench) {
       task.output(to: console) {console in
         console.stopReadingFromBuffer()
       }
