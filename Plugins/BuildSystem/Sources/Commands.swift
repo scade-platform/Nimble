@@ -99,12 +99,14 @@ final class CleanAll: BuildSystemCommand {
   
   override func run(in workbench: Workbench) {
     ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
-    for buildSystem in BuildSystemsManager.shared.buildSystems {
-      let targets = buildSystem.targets(in: workbench)
-      targets.forEach{ target in
-        target.variants.forEach{ variant in
-          buildSystem.clean(variant)
-        }
+    //Clean all targets with build system which was selected in the target selector
+    guard let buildSystem = workbench.selectedVariant?.buildSystem else {
+      return
+    }
+    let targets = buildSystem.targets(in: workbench)
+    targets.forEach{ target in
+      target.variants.forEach{ variant in
+        buildSystem.clean(variant)
       }
     }
   }
