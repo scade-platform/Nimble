@@ -116,6 +116,7 @@ final class SelectTarget: Command {
       }
       
       workbench.observers.add(observer: toolbarTargetControl)
+      workbench.project?.observers.add(observer: toolbarTargetControl)
       BuildSystemsManager.shared.observers.add(observer: toolbarTargetControl)
       toolbarTargetControl.autoSelectTarget(in: workbench)
       return [.enabled]

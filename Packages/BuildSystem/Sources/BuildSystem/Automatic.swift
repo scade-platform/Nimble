@@ -20,12 +20,12 @@ public class Automatic: BuildSystem {
   
   public func targetsBySystem(in workbench: Workbench) -> [[Target]] {
     let systems = BuildSystemsManager.shared.buildSystems
-    return systems.map{$0.targets(in: workbench)}
+    return systems.sorted{$0.name.lowercased() < $1.name.lowercased()}.map{$0.targets(in: workbench)}
   }
   
   public func targets(in workbench: Workbench) -> [Target] {
     let systems = BuildSystemsManager.shared.buildSystems
-    return systems.flatMap{$0.targets(in: workbench)}
+    return systems.sorted{$0.name.lowercased() < $1.name.lowercased()}.flatMap{$0.targets(in: workbench)}
   }
   
   public func run(_ variant: Variant) {
