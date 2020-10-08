@@ -12,6 +12,12 @@ import Cocoa
 
 final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
 
+  // MARK: - CodeEditorView
+
+  var editorView: CodeEditorView? {
+    self.delegate as? CodeEditorView
+  }
+
   // MARK: - CurrentLineHighlighting
 
   var needsUpdateLineHighlight = true
@@ -103,15 +109,14 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
       }
     }
 
-    if let delegate = self.delegate as? CodeEditorView, delegate.handleKeyDown(with: event) {
+    guard editorView?.handleKeyDown(with: event) ?? false else {
+      super.keyDown(with: event)
       return
     }
-
-    super.keyDown(with: event)
   }
   
   public override func mouseDown(with event: NSEvent) {
-    guard let delegate = self.delegate as? CodeEditorView, delegate.handleMouseDown(with: event) else {
+    guard editorView?.handleMouseDown(with: event) ?? false else {
       super.mouseDown(with: event)
       return
     }
@@ -302,131 +307,8 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     self.needsUpdateLineHighlight = true
     self.lineNumberView?.needsDisplay = true
   }
-  
 
-
-  // MARK: - Auto-closing + auto-indents
-
-  let autoClosingPairs = ["()", "[]", "{}"]
-
-  var selectedIndex: String.Index {
-    // Use UTF-16 view as NSTextView returns index in UTF-16
-    let utf16 = string.utf16
-    return utf16.index(utf16.startIndex, offsetBy: selectedRange().location)
-  }
-
-  var selectedPosition: (line: Int, column: Int) {
-    let sel = selectedIndex
-    if let str = textStorage?.string {
-      let line = str.lineNumber(at: sel)
-      let lineStart = str.lineRange(at: sel).lowerBound
-      let column = str.utf16.distance(from: lineStart, to: sel)
-      
-      return (line, column)
-    }
-    
-    return (0, 0)
-  }
-    
-  var currentLine: String {
-    return String(string[string.lineRange(at: selectedIndex)])
-  }
-  
-  var currentIndent: String {
-    let currentLine = self.currentLine
-    guard let regexp = try? NSRegularExpression(pattern: "^(\\t|\\s)+"),
-          let result = regexp.firstMatch(in: currentLine,
-                                         range: NSRange(0..<currentLine.count)) else { return "" }
-      
-    return String(currentLine[result.range.lowerBound..<result.range.upperBound])
-  }
-
-
-  func setCursorPosition(_ pos: Int) {
-    setSelectedRange(NSRange(location: pos, length: 0))
-  }
-
-  func surroundRange(_ index: String.Index) -> Range<String.Index> {
-    let lineRange = string.lineRange(at: selectedIndex)
-    let from = (index > lineRange.lowerBound) ? string.index(before: index) : lineRange.lowerBound
-    let to = (index < lineRange.upperBound) ? string.index(after: index) : lineRange.upperBound
-    return from..<to
-  }
-  
-  func surroundString(_ index: String.Index) -> String {
-    return String(string[surroundRange(index)])
-  }
-    
-  override func insertText(_ string: Any, replacementRange: NSRange) {
-    super.insertText(string, replacementRange: replacementRange)
-    guard let input = string as? String else { return }
-    
-    switch input {
-    case "(":
-      super.insertText(")", replacementRange: replacementRange)
-      super.moveBackward(self)
-      
-    case "[":
-      super.insertText("]", replacementRange: replacementRange)
-      super.moveBackward(self)
-      
-    case "{":
-      super.insertText("}", replacementRange: replacementRange)
-      super.moveBackward(self)
-      
-    default:
-      break
-    }
-  }
-  
-  override func insertNewline(_ sender: Any?) {
-    let currentIndent = self.currentIndent
-    let autoIndentLine = autoClosingPairs.contains(surroundString(selectedIndex))
-    
-    super.insertNewline(sender)
-    super.insertText(currentIndent, replacementRange: selectedRange())
-
-    if autoIndentLine {
-      super.insertTab(sender)
-      super.insertNewline(sender)
-      super.insertText(currentIndent, replacementRange: selectedRange())
-      
-      super.moveToLeftEndOfLine(sender)
-      super.moveBackward(sender)
-    }
-  }
-  
-  override func deleteBackward(_ sender: Any?) {
-    if autoClosingPairs.contains(surroundString(selectedIndex)) {
-      super.deleteForward(sender)
-      super.deleteBackward(sender)
-
-    } else if let snippet = textStorage?.snippetLeft(from: selectedRange().location) {
-      self.insertText("", replacementRange: snippet.range)
-
-    } else {
-      super.deleteBackward(sender)
-    }
-  }
-
-  override func moveLeft(_ sender: Any?) {
-    if let snippet = textStorage?.snippetLeft(from: selectedRange().location) {
-      window?.makeFirstResponder(snippet.view)
-    } else {
-      super.moveLeft(sender)
-    }
-  }
-
-  override func moveRight(_ sender: Any?) {
-    if let snippet = textStorage?.snippetRight(from: selectedRange().location) {
-      window?.makeFirstResponder(snippet.view)
-    } else {
-      super.moveRight(sender)
-    }
-  }
 }
-
-
 
 // MARK: - NSLayoutManagerDelegate
 
@@ -505,4 +387,5 @@ extension CodeEditorTextView: NSLayoutManagerDelegate {
     return NSRect(origin: glyphPosition, size: glyphSize)
   }
 }
+
 

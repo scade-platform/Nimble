@@ -9,6 +9,8 @@ import AppKit
 import NimbleCore
 
 
+// MARK: - Language
+
 public final class Language: Decodable {
   private enum CodingKeys: String, CodingKey {
     case id, configuration, extensions, aliases, mimetypes, filenames, filenamePatterns, firstline
@@ -40,7 +42,23 @@ public final class Language: Decodable {
   public var grammar: LanguageGrammar? {
     return LanguageManager.shared.findGrammar(forLang: id)
   }
+
+  public lazy var configuration: LanguageConfiguration? = {
+    guard let path = self.configpath,
+          let data = try? Data(contentsOf: path) else { return nil }
+
+    do {
+      return try JSONDecoder().decode(LanguageConfiguration.self, from: data)
+    } catch let error as DecodingError {
+      print(error)
+      return nil
+    } catch {
+      return nil
+    }
+    
+  }()
 }
+
 
 extension Language: Equatable {
   public static func == (lhs: Language, rhs: Language) -> Bool {
@@ -48,8 +66,51 @@ extension Language: Equatable {
   }
 }
 
+// MARK: - Language configuration
 
-// MARK: -
+public struct LanguageConfiguration: Decodable {
+  private enum CodingKeys: String, CodingKey { case comments, autoClosingPairs }
+
+  public var comments: Comments
+
+  public var autoClosingPairs: [(String, String)]
+
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+
+    self.comments = try container.decode(Comments.self, forKey: .comments)
+
+    let autoClosingPairs = try container.decode([[String]].self, forKey: .autoClosingPairs)
+    self.autoClosingPairs = autoClosingPairs.compactMap {
+      guard let start = $0.first, let end = $0.last else { return nil}
+      return (start, end)
+    }
+  }
+
+  // Comments struct
+
+  public struct Comments: Decodable {
+    private enum CodingKeys: String, CodingKey { case lineComment, blockComment }
+
+    public var lineComment: String
+    public var blockComment: (start: String, end: String)?
+
+    public init(from decoder: Decoder) throws {
+      let container = try decoder.container(keyedBy: CodingKeys.self)
+
+      self.lineComment = try container.decode(String.self, forKey: .lineComment)
+
+      let blockComment = try container.decode([String].self, forKey: .blockComment)
+      if let start = blockComment.first, let end = blockComment.last {
+        self.blockComment = (start, end)
+      }
+    }
+  }
+}
+
+
+// MARK: - Language grammar
 
 public final class LanguageGrammar: Decodable, TokenizerRepository {
   public let language: String?
@@ -100,8 +161,7 @@ public final class LanguageGrammar: Decodable, TokenizerRepository {
 
 
 
-// MARK: -
-
+// MARK: - Language manager
 
 public final class LanguageManager {
   public private(set) var languages: [Language] = []
@@ -138,9 +198,7 @@ public final class LanguageManager {
   }
 }
 
-
-// MARK: -
-
+// MARK: - Extensions
 
 public extension File {
   var language: Language? {
