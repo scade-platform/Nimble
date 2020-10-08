@@ -308,14 +308,15 @@ extension CodeEditorView: NSTextViewDelegate {
   }
 
   func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
-    guard let doc = document else { return true }
+    guard let doc = document,
+          let replacementString = replacementString else { return true }
 
     removeDiagnosticsViews()
 
     doc.observers.notify(as: SourceCodeDocumentObserver.self) {
       guard let text = textView.textStorage?.string else { return }            
       let range = text.range(for: text.utf16.range(for: affectedCharRange))
-      $0.textDidChange(document: doc, range: range, text: replacementString ?? "")
+      $0.textDidChange(document: doc, range: range, text: replacementString)
     }
     
     return true
