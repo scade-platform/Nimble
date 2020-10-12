@@ -17,7 +17,7 @@ struct CodeEditorSettings {
   static var insertSpaces: Bool
 
   static func register() {
-    NimbleCore.Settings.shared.add(self.$tabSize)
-    NimbleCore.Settings.shared.add(self.$insertSpaces)
+    Settings.shared.add(self.$tabSize)
+    Settings.shared.add(self.$insertSpaces)
   }
 }

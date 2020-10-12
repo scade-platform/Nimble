@@ -71,7 +71,7 @@ extension Language: Equatable {
 public struct LanguageConfiguration: Decodable {
   private enum CodingKeys: String, CodingKey { case comments, autoClosingPairs }
 
-  public var comments: Comments
+  public var comments: Comments?
 
   public var autoClosingPairs: [(String, String)]
 
@@ -79,9 +79,9 @@ public struct LanguageConfiguration: Decodable {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
 
-    self.comments = try container.decode(Comments.self, forKey: .comments)
+    self.comments = try container.decodeIfPresent(Comments.self, forKey: .comments)
 
-    let autoClosingPairs = try container.decode([[String]].self, forKey: .autoClosingPairs)
+    let autoClosingPairs = try container.decodeIfPresent([[String]].self, forKey: .autoClosingPairs) ?? []
     self.autoClosingPairs = autoClosingPairs.compactMap {
       guard let start = $0.first, let end = $0.last else { return nil}
       return (start, end)
@@ -93,16 +93,16 @@ public struct LanguageConfiguration: Decodable {
   public struct Comments: Decodable {
     private enum CodingKeys: String, CodingKey { case lineComment, blockComment }
 
-    public var lineComment: String
+    public var lineComment: String?
     public var blockComment: (start: String, end: String)?
 
     public init(from decoder: Decoder) throws {
       let container = try decoder.container(keyedBy: CodingKeys.self)
 
-      self.lineComment = try container.decode(String.self, forKey: .lineComment)
+      self.lineComment = try container.decodeIfPresent(String.self, forKey: .lineComment)
 
-      let blockComment = try container.decode([String].self, forKey: .blockComment)
-      if let start = blockComment.first, let end = blockComment.last {
+      let blockComment = try container.decodeIfPresent([String].self, forKey: .blockComment)
+      if let start = blockComment?.first, let end = blockComment?.last {
         self.blockComment = (start, end)
       }
     }

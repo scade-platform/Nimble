@@ -47,7 +47,7 @@ class CodeEditorSyntaxMenu: NSObject {
   
   static func fillMenu(nsMenu: NSMenu) {
     let syntaxMenuItem = NSMenuItem(title: "Syntax", action: nil, keyEquivalent: "")
-    syntaxMenuItem.submenu = CodeEditorSyntaxMenu.nsMenu
+    syntaxMenuItem.submenu = self.nsMenu
     nsMenu.addItem(syntaxMenuItem)
   }
   
@@ -87,6 +87,93 @@ class CodeEditorShowCompletionMenuItem: NSObject {
   
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
     return true
+  }
+}
+
+
+// MARK: - Line
+
+class CodeEditorLineMenuItem: NSObject {
+  static let shared = CodeEditorLineMenuItem()
+
+  static let nsMenu: NSMenu = {
+    let indentItem = NSMenuItem(title: "Indent", action: #selector(indent(_:)), keyEquivalent: "]")
+    indentItem.target = shared
+
+    let unindentItem = NSMenuItem(title: "Unindent", action: #selector(unindent(_:)), keyEquivalent: "[")
+    unindentItem.target = shared
+
+    let shiftLineUpItem = NSMenuItem(title: "Shift Line Up", action: #selector(shiftLineUp(_:)), keyEquivalent: "")
+    shiftLineUpItem.target = shared
+
+    let shiftLineDownItem = NSMenuItem(title: "Shift Line Down", action: #selector(shiftLineDown(_:)), keyEquivalent: "")
+    shiftLineDownItem.target = shared
+
+    let menu = NSMenu(title: "Line")
+    menu.items = [indentItem, unindentItem, shiftLineUpItem, shiftLineDownItem]
+
+    return menu
+  }()
+
+  static func fillMenu(nsMenu: NSMenu) {
+    let lineMenuItem = NSMenuItem(title: "Line", action: nil, keyEquivalent: "")
+    lineMenuItem.submenu = self.nsMenu
+    nsMenu.addItem(lineMenuItem)
+  }
+
+  @objc func indent(_ item: NSMenuItem) {
+    codeEditor?.textView.linesIndent()
+
+  }
+
+  @objc func unindent(_ item: NSMenuItem) {
+    codeEditor?.textView.linesUnindent()
+  }
+
+  @objc func shiftLineUp(_ item: NSMenuItem) {
+    codeEditor?.textView.shiftLinesUp()
+  }
+
+  @objc func shiftLineDown(_ item: NSMenuItem) {
+    codeEditor?.textView.shiftLinesDown()
+  }
+}
+
+
+// MARK: - Comment
+
+class CodeEditorCommentMenuItem: NSObject {
+  static let shared = CodeEditorCommentMenuItem()
+
+  static let nsMenu: NSMenu = {
+    let indentItem = NSMenuItem(title: "Toggle Comment", action: #selector(toggleComment(_:)), keyEquivalent: "/")
+    indentItem.target = shared
+
+    let unindentItem = NSMenuItem(title: "Toggle Block Comment", action: #selector(toggleBlockComment(_:)), keyEquivalent: "")
+    unindentItem.target = shared
+
+    let menu = NSMenu(title: "Line")
+    menu.items = [indentItem, unindentItem]
+
+    return menu
+  }()
+
+  static func fillMenu(nsMenu: NSMenu) {
+    let commentMenuItem = NSMenuItem(title: "Comment", action: nil, keyEquivalent: "")
+    commentMenuItem.submenu = self.nsMenu
+    nsMenu.addItem(commentMenuItem)
+  }
+
+  @objc func toggleComment(_ item: NSMenuItem) {
+    guard let codeEditorTextView = codeEditor?.textView else { return }
+
+    if !codeEditorTextView.linesUncomment() {
+      codeEditorTextView.linesComment()
+    }
+  }
+
+  @objc func toggleBlockComment(_ item: NSMenuItem) {
+
   }
 }
 
