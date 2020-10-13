@@ -16,7 +16,8 @@ extension CodeEditorTextView {
   var indentChar: Character { CodeEditorSettings.insertSpaces ? " " : "\t" }
 
   var indentString: String {
-    return String(repeating: indentChar, count: CodeEditorSettings.tabSize)
+    return String(repeating: indentChar,
+                  count: CodeEditorSettings.insertSpaces ? CodeEditorSettings.tabSize : 1)
   }
 
   var lineComment: String? {
@@ -56,9 +57,10 @@ extension CodeEditorTextView {
 
   var currentIndent: String {
     let currentLine = self.currentLine
-    guard let regexp = try? NSRegularExpression(pattern: "^(\\t|\\s)+"),
-      let result = regexp.firstMatch(in: currentLine,
-                                     range: NSRange(0..<currentLine.count)) else { return "" }
+
+    guard let regexp = try? NSRegularExpression(pattern: "^[\\t ]+"),
+          let result = regexp.firstMatch(in: currentLine,
+                                         range: NSRange(0..<currentLine.count)) else { return "" }
 
     return String(currentLine[result.range.lowerBound..<result.range.upperBound])
   }
@@ -99,11 +101,12 @@ extension CodeEditorTextView {
 
   override func insertNewline(_ sender: Any?) {
     let currentIndent = self.currentIndent
+    let autoIndent = self.needAutoIndent(at: selectedIndex)
 
     super.insertNewline(sender)
     super.insertText(currentIndent, replacementRange: selectedRange())
 
-    if needAutoIndent(at: selectedIndex) {
+    if autoIndent {
       super.insertText(indentString, replacementRange: selectedRange())
 
       super.insertNewline(sender)
