@@ -104,7 +104,7 @@ class CodeEditorFormatDocumentMenuItem: NSObject {
   }
 
   @objc func formatDocument(_ item: NSMenuItem) {
-    print("Formatting")
+    codeEditor?.formatDocument()
   }
 
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {

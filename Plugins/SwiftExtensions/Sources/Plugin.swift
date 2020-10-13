@@ -23,11 +23,9 @@ final class SwiftExtensionsPlugin: Plugin {
     BuildSystemsManager.shared.register(buildSystem: SwiftBuildSystem())
     BuildSystemsManager.shared.register(buildSystem: SPMBuildSystem())
 
-    Settings.shared.add(SKLocalServer.$swiftToolchain)
-    Settings.shared.add(SPMBuildSystem.$androidToolchain)
-    Settings.shared.add(SPMBuildSystem.$platforms)
-    
     WizardsManager.shared.register(wizard: SPMWizard())
+
+    registerSettings()
   }
 
   public func activate(in workbench: Workbench) {
@@ -36,6 +34,12 @@ final class SwiftExtensionsPlugin: Plugin {
 
   public func deactivate(in workbench: Workbench) {
     SwiftLanguageService.shared.disconnect(from: workbench)
+  }
+
+  private func registerSettings() {
+    Settings.shared.add(SKLocalServer.$swiftToolchain)
+    Settings.shared.add(SPMBuildSystem.$androidToolchain)
+    Settings.shared.add(SPMBuildSystem.$platforms)
   }
 }
 

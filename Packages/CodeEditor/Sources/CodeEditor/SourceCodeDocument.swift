@@ -13,6 +13,8 @@ public protocol SourceCodeDocument: Document {
   var languageId: String { get }
   
   var languageServices: [LanguageService] { get set }
+
+  func replaceText(with newText: String)
 }
 
 

@@ -115,6 +115,12 @@ extension CodeEditorDocument: SourceCodeDocument {
     guard let id = fileURL?.file?.language?.id else { return "" }
     return id
   }
+
+  public func replaceText(with newText: String) {
+    codeEditor.textView.insertText(newText, replacementRange: self.textStorage.string.nsRange)
+//    self.textStorage.replaceCharacters(in: self.textStorage.string.nsRange ,
+//                                       with: newText)
+  }
 }
 
 extension CodeEditorDocument: CreatableDocument {
