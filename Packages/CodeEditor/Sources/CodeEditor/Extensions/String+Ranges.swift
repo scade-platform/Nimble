@@ -35,7 +35,30 @@ public extension String {
   func range(for range: Range<Index>) -> Range<Int> {
     return offset(at: range.lowerBound)..<offset(at: range.upperBound)
   }
-  
+
+  func lines(from range: Range<Index>) -> [Range<Index>] {
+    var line = lineRange(at: range.lowerBound)
+    var lines: [Range<Index>] = []
+
+    while(line.lowerBound <= range.upperBound){
+      lines.append(line)
+
+      guard line.upperBound != self.endIndex else { break }
+      line = lineRange(at: line.upperBound)
+    }
+
+    return lines
+  }
+
+  func linesRange(from range: Range<Index>) -> Range<Index> {
+    let lines = self.lines(from: range)
+
+    guard let lb = lines.first?.lowerBound,
+          let ub = lines.last?.upperBound else { return startIndex..<endIndex }
+
+    return lb..<ub
+  }
+
   func lineNumber(at index: Index) -> Int {
     assert(index <= endIndex)
     
@@ -224,7 +247,12 @@ public extension String.UTF16View {
     return distance(from: startIndex, to: index)
   }
   
-  func range(for range: NSRange) -> Range<Index> {
-    return index(at: range.lowerBound)..<index(at: range.upperBound)
+  func range(for nsRange: NSRange) -> Range<Index> {
+    return index(at: nsRange.lowerBound)..<index(at: nsRange.upperBound)
+  }
+
+  func nsRange(for range: Range<Index>) -> NSRange {
+    return NSRange(location: self.offset(at: range.lowerBound), length:
+      self.distance(from: range.lowerBound, to: range.upperBound))
   }
 }

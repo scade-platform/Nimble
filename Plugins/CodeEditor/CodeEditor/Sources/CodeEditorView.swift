@@ -228,6 +228,10 @@ extension CodeEditorView: WorkbenchEditor {
     CodeEditorSyntaxMenu.fillMenu(nsMenu: menu)
     menu.addItem(NSMenuItem.separator())
     CodeEditorShowCompletionMenuItem.fillMenu(nsMenu: menu)
+    
+    menu.addItem(NSMenuItem.separator())
+    CodeEditorLineMenuItem.fillMenu(nsMenu: menu)
+    CodeEditorCommentMenuItem.fillMenu(nsMenu: menu)
 
     return menu
   }()

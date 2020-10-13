@@ -24,7 +24,9 @@ final class CodeEditorPlugin: Plugin {
     DocumentManager.shared.registerDocumentClass(CodeEditorDocument.self)
     ThemeManager.shared.load(from: resources/"Themes",
                              userDirectories: [Path.applicationSupport/"Nimble"/"Themes"])
-    
+
+    CodeEditorSettings.register()
+
     loadCustomFonts()
   }
   
