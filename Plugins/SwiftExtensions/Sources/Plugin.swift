@@ -17,7 +17,6 @@ public final class SwiftExtensionsModule: Module {
 
 
 final class SwiftExtensionsPlugin: Plugin {
-
   func load() {
     LSPServerManager.shared.registerProvider(SKLocalServerProvider())
 
@@ -29,6 +28,14 @@ final class SwiftExtensionsPlugin: Plugin {
     Settings.shared.add(SPMBuildSystem.$platforms)
     
     WizardsManager.shared.register(wizard: SPMWizard())
+  }
+
+  public func activate(in workbench: Workbench) {
+    SwiftLanguageService.shared.connect(to: workbench)
+  }
+
+  public func deactivate(in workbench: Workbench) {
+    SwiftLanguageService.shared.disconnect(from: workbench)
   }
 }
 

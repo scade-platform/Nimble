@@ -23,6 +23,10 @@ extension CodeEditorTextView {
     return editorView?.document?.language?.configuration?.comments?.lineComment
   }
 
+  var blockComment: String? {
+    return nil
+  }
+
   var autoClosingPairs: [(String, String)] {
     return editorView?.document?.language?.configuration?.autoClosingPairs ?? []
   }
@@ -140,7 +144,59 @@ extension CodeEditorTextView {
   }
 
 
-  // MARK: - Indents and comments
+  // MARK: - Line Comments
+
+  func linesComment() {
+    self.linesComment(selectedRange())
+  }
+
+  func linesComment(_ range: NSRange) {
+    guard let lineComment = self.lineComment else { return }
+    self.indent(range, using: lineComment)
+  }
+
+  /// Returns `true` if succeds.
+  /// Note: in contrast to '`linesComment`' it can fail when not every line starts from the `lineComment` string
+  func linesUncomment() -> Bool  {
+    return self.linesUncomment(selectedRange())
+  }
+
+  func linesUncomment(_ range: NSRange) -> Bool  {
+    guard let lineComment = self.lineComment else { return false }
+    return self.unindent(range, using: lineComment)
+  }
+
+  func toggleLinesComment() {
+    guard !linesUncomment() else { return }
+    linesComment()
+  }
+
+
+  // MARK: - Block Comments
+
+  func linesBlockComment() {
+    self.linesBlockComment(selectedRange())
+  }
+
+  func linesBlockComment(_ range: NSRange) {
+
+  }
+
+  func linesBlockUncomment() -> Bool {
+    self.linesBlockUncomment(selectedRange())
+  }
+
+  func linesBlockUncomment(_ range: NSRange) -> Bool {
+    return false
+  }
+
+  func toggleBlockComment() {
+    guard !linesBlockUncomment() else { return }
+    linesBlockComment()
+  }
+
+
+  // MARK: - Indents
 
   func linesIndent() {
     self.linesIndent(selectedRange())
@@ -157,44 +213,6 @@ extension CodeEditorTextView {
   func linesUnindent(_ range: NSRange) {
     self.unindent(range, using: indentChar, indentLength: CodeEditorSettings.tabSize)
   }
-
-  func linesComment() {
-    self.linesComment(selectedRange())
-  }
-
-  func linesComment(_ range: NSRange) {
-    guard let lineComment = self.lineComment else { return }
-    self.indent(range, using: lineComment)
-  }
-
-
-  /// Returns `true` if succeds.
-  /// Note: in contrast to '`linesComment`' it can fail when not every line starts from the `lineComment` string
-  func linesUncomment() -> Bool  {
-    return self.linesUncomment(selectedRange())
-  }
-
-  func linesUncomment(_ range: NSRange) -> Bool  {
-    guard let lineComment = self.lineComment else { return false }
-    return self.unindent(range, using: lineComment)
-  }
-
-  func linesBlockComment() {
-    self.linesBlockComment(selectedRange())
-  }
-
-  func linesBlockComment(_ range: NSRange) {
-
-  }
-
-  func linesBlockUncomment() {
-    self.linesBlockUncomment(selectedRange())
-  }
-
-  func linesBlockUncomment(_ range: NSRange) {
-
-  }
-
 
   private func indent(_ range: NSRange, using indentString: String) {
     guard let string = textStorage?.string else { return }
@@ -247,6 +265,7 @@ extension CodeEditorTextView {
     }
   }
 
+
   // MARK: - Lines shifting
 
   func shiftLinesUp() {
@@ -294,9 +313,7 @@ extension CodeEditorTextView {
 
     if shiftRange.upperBound != string.endIndex {
       var shiftText = string[shiftRange]
-
-      let nextLineStart = string.index(after: shiftRange.upperBound)
-      let insertPos = string.lineRange(at: nextLineStart).upperBound
+      let insertPos = string.lineRange(at: shiftRange.upperBound).upperBound
 
       selection.location = string.offset(at: string.index(insertPos, offsetBy: -shiftText.count)) + selectionOffset
 

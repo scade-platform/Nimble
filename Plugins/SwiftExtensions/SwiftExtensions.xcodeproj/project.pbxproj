@@ -13,23 +13,25 @@
 		D766FF2A247D6728003646B0 /* SPMBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D766FF28247D6728003646B0 /* SPMBuildSystem.swift */; };
 		D766FF2B247D6728003646B0 /* SwiftBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D766FF26247D6727003646B0 /* SwiftBuildSystem.swift */; };
 		D778B8CA24769E7200F93860 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7EC1376239EFC6D00DA0DA0 /* Info.plist */; };
+		D79820B225360DDF000F6AD1 /* SwiftLanguageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D79820B125360DDF000F6AD1 /* SwiftLanguageService.swift */; };
+		D79820B725360EE8000F6AD1 /* CodeEditor in Frameworks */ = {isa = PBXBuildFile; productRef = D79820B625360EE8000F6AD1 /* CodeEditor */; };
+		D79820BA25360F09000F6AD1 /* SwiftExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = D79820B925360F09000F6AD1 /* SwiftExtensions */; };
+		D79820BC25360F09000F6AD1 /* SwiftExtensions in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D79820B925360F09000F6AD1 /* SwiftExtensions */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D7BEC81722B915D100A8F48B /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEC81622B915D100A8F48B /* Plugin.swift */; };
 		D7D0FFE92471CF58001A0EFC /* BuildSystem in Frameworks */ = {isa = PBXBuildFile; productRef = D7D0FFE82471CF58001A0EFC /* BuildSystem */; };
 		D7D4BD2B23FCA7A70063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD2A23FCA7A70063BD8F /* NimbleCore */; };
 		D7D4BD4E23FCAFEC0063BD8F /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = D7D4BD4D23FCAFEC0063BD8F /* package.yml */; };
 		D7DFDD15247D2D9E0044D742 /* LSPClient in Frameworks */ = {isa = PBXBuildFile; productRef = D7DFDD14247D2D9E0044D742 /* LSPClient */; };
-		D7DFDD18247D2DAC0044D742 /* SwiftExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = D7DFDD17247D2DAC0044D742 /* SwiftExtensions */; };
-		D7DFDD1A247D2DAC0044D742 /* SwiftExtensions in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D7DFDD17247D2DAC0044D742 /* SwiftExtensions */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		D7DFDD19247D2DAC0044D742 /* Embed Frameworks */ = {
+		D79820BB25360F09000F6AD1 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D7DFDD1A247D2DAC0044D742 /* SwiftExtensions in Embed Frameworks */,
+				D79820BC25360F09000F6AD1 /* SwiftExtensions in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -43,6 +45,7 @@
 		D766FF26247D6727003646B0 /* SwiftBuildSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBuildSystem.swift; sourceTree = "<group>"; };
 		D766FF28247D6728003646B0 /* SPMBuildSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPMBuildSystem.swift; sourceTree = "<group>"; };
 		D77F337923A4619500E3AFC8 /* bin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bin; sourceTree = "<group>"; };
+		D79820B125360DDF000F6AD1 /* SwiftLanguageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftLanguageService.swift; sourceTree = "<group>"; };
 		D7BEC80C22B9158B00A8F48B /* SwiftExtensions.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftExtensions.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7BEC81622B915D100A8F48B /* Plugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
 		D7D4BD4D23FCAFEC0063BD8F /* package.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = package.yml; sourceTree = "<group>"; };
@@ -54,10 +57,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7DFDD18247D2DAC0044D742 /* SwiftExtensions in Frameworks */,
 				D7DFDD15247D2D9E0044D742 /* LSPClient in Frameworks */,
 				D7D0FFE92471CF58001A0EFC /* BuildSystem in Frameworks */,
 				D7D4BD2B23FCA7A70063BD8F /* NimbleCore in Frameworks */,
+				D79820BA25360F09000F6AD1 /* SwiftExtensions in Frameworks */,
+				D79820B725360EE8000F6AD1 /* CodeEditor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,10 +93,11 @@
 			children = (
 				D7BEC81622B915D100A8F48B /* Plugin.swift */,
 				D766FF28247D6728003646B0 /* SPMBuildSystem.swift */,
-				D766FF26247D6727003646B0 /* SwiftBuildSystem.swift */,
 				0CB6F11D24FFDA4000960EDA /* SPMWizard.swift */,
-				0CB6F12124FFE0DD00960EDA /* SPMWizardView.xib */,
 				0CB6F12324FFE10100960EDA /* SPMWizardView.swift */,
+				D766FF26247D6727003646B0 /* SwiftBuildSystem.swift */,
+				D79820B125360DDF000F6AD1 /* SwiftLanguageService.swift */,
+				0CB6F12124FFE0DD00960EDA /* SPMWizardView.xib */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -122,7 +127,7 @@
 				D7BEC80822B9158B00A8F48B /* Sources */,
 				D7BEC80922B9158B00A8F48B /* Frameworks */,
 				D7BEC80A22B9158B00A8F48B /* Resources */,
-				D7DFDD19247D2DAC0044D742 /* Embed Frameworks */,
+				D79820BB25360F09000F6AD1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -133,7 +138,8 @@
 				D7D4BD2A23FCA7A70063BD8F /* NimbleCore */,
 				D7D0FFE82471CF58001A0EFC /* BuildSystem */,
 				D7DFDD14247D2D9E0044D742 /* LSPClient */,
-				D7DFDD17247D2DAC0044D742 /* SwiftExtensions */,
+				D79820B625360EE8000F6AD1 /* CodeEditor */,
+				D79820B925360F09000F6AD1 /* SwiftExtensions */,
 			);
 			productName = SwiftExtensions;
 			productReference = D7BEC80C22B9158B00A8F48B /* SwiftExtensions.plugin */;
@@ -194,6 +200,7 @@
 				0CB6F11E24FFDA4000960EDA /* SPMWizard.swift in Sources */,
 				0CB6F12424FFE10100960EDA /* SPMWizardView.swift in Sources */,
 				D7BEC81722B915D100A8F48B /* Plugin.swift in Sources */,
+				D79820B225360DDF000F6AD1 /* SwiftLanguageService.swift in Sources */,
 				D766FF2A247D6728003646B0 /* SPMBuildSystem.swift in Sources */,
 				D766FF2B247D6728003646B0 /* SwiftBuildSystem.swift in Sources */,
 			);
@@ -388,6 +395,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		D79820B625360EE8000F6AD1 /* CodeEditor */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CodeEditor;
+		};
+		D79820B925360F09000F6AD1 /* SwiftExtensions */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SwiftExtensions;
+		};
 		D7D0FFE82471CF58001A0EFC /* BuildSystem */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = BuildSystem;
@@ -399,10 +414,6 @@
 		D7DFDD14247D2D9E0044D742 /* LSPClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LSPClient;
-		};
-		D7DFDD17247D2DAC0044D742 /* SwiftExtensions */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = SwiftExtensions;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

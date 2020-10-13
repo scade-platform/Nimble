@@ -49,7 +49,13 @@ public final class CodeEditorDocument: NimbleDocument {
       self.language = fileURL?.file?.language
     }
   }
+
   
+  public func languageService(for feature: LanguageServiceFeature) -> LanguageService? {
+    return languageServices.first{ $0.supportedFeatures.contains(feature) }
+  }
+
+
 //  public override func save(withDelegate delegate: Any?,
 //                            didSave didSaveSelector: Selector?,
 //                            contextInfo: UnsafeMutableRawPointer?) {
