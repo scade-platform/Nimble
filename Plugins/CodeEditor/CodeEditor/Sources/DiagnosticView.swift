@@ -356,7 +356,7 @@ class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegateImpl {
 
     imgView.image = DiagnosticViewUtils.icon(for: diagnostic)?.imageWithTint(.black)
     imgView.imageScaling = .scaleAxesIndependently
-    imgView.heightAnchor.constraint(equalToConstant: 10).isActive = true
+    imgView.heightAnchor.constraint(equalToConstant: row.font?.capHeight ?? 10).isActive = true
     imgView.widthAnchor.constraint(equalTo: imgView.heightAnchor, multiplier: 1).isActive = true
 
     let parentView = NSView()
@@ -418,7 +418,7 @@ class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegateImpl {
       let imgView = NSImageView()
       imgView.imageScaling = .scaleAxesIndependently
       imgView.image = DiagnosticViewUtils.icon(for: diagnostic)?.imageWithTint(.black)
-      imgView.heightAnchor.constraint(equalToConstant: 10).isActive = true
+      imgView.heightAnchor.constraint(equalToConstant: row.font?.capHeight ?? 10).isActive = true
       imgView.widthAnchor.constraint(equalTo: imgView.heightAnchor, multiplier: 1).isActive = true
 
       let parentView = NSView()
