@@ -86,7 +86,29 @@ class CodeEditorShowCompletionMenuItem: NSObject {
   }
   
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
-    return true
+    return codeEditor?.supports(.completion) ?? false
+  }
+}
+
+
+// MARK: - Format Document
+
+class CodeEditorFormatDocumentMenuItem: NSObject {
+  static let shared = CodeEditorFormatDocumentMenuItem()
+
+  static func fillMenu(nsMenu: NSMenu) {
+    let item = NSMenuItem(title: "Format Document", action: #selector(formatDocument(_:)), keyEquivalent: "i")
+    item.target = shared
+    item.keyEquivalentModifierMask = [.command, .control]
+    nsMenu.addItem(item)
+  }
+
+  @objc func formatDocument(_ item: NSMenuItem) {
+    codeEditor?.formatDocument()
+  }
+
+  @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
+    return codeEditor?.supports(.format) ?? false
   }
 }
 
@@ -103,11 +125,13 @@ class CodeEditorLineMenuItem: NSObject {
     let unindentItem = NSMenuItem(title: "Unindent", action: #selector(unindent(_:)), keyEquivalent: "[")
     unindentItem.target = shared
 
-    let shiftLineUpItem = NSMenuItem(title: "Shift Line Up", action: #selector(shiftLineUp(_:)), keyEquivalent: "")
+    let shiftLineUpItem = NSMenuItem(title: "Shift Line Up", action: #selector(shiftLineUp(_:)), keyEquivalent: "\u{001e}")
     shiftLineUpItem.target = shared
+    shiftLineUpItem.keyEquivalentModifierMask = [.command, .control]
 
-    let shiftLineDownItem = NSMenuItem(title: "Shift Line Down", action: #selector(shiftLineDown(_:)), keyEquivalent: "")
+    let shiftLineDownItem = NSMenuItem(title: "Shift Line Down", action: #selector(shiftLineDown(_:)), keyEquivalent: "\u{001f}")
     shiftLineDownItem.target = shared
+    shiftLineDownItem.keyEquivalentModifierMask = [.command, .control]
 
     let menu = NSMenu(title: "Line")
     menu.items = [indentItem, unindentItem, shiftLineUpItem, shiftLineDownItem]
@@ -149,8 +173,9 @@ class CodeEditorCommentMenuItem: NSObject {
     let indentItem = NSMenuItem(title: "Toggle Comment", action: #selector(toggleComment(_:)), keyEquivalent: "/")
     indentItem.target = shared
 
-    let unindentItem = NSMenuItem(title: "Toggle Block Comment", action: #selector(toggleBlockComment(_:)), keyEquivalent: "")
+    let unindentItem = NSMenuItem(title: "Toggle Block Comment", action: #selector(toggleBlockComment(_:)), keyEquivalent: "/")
     unindentItem.target = shared
+    unindentItem.keyEquivalentModifierMask = [.command, .option]
 
     let menu = NSMenu(title: "Line")
     menu.items = [indentItem, unindentItem]
@@ -165,15 +190,24 @@ class CodeEditorCommentMenuItem: NSObject {
   }
 
   @objc func toggleComment(_ item: NSMenuItem) {
-    guard let codeEditorTextView = codeEditor?.textView else { return }
-
-    if !codeEditorTextView.linesUncomment() {
-      codeEditorTextView.linesComment()
-    }
+    codeEditor?.textView.toggleLinesComment()
   }
 
   @objc func toggleBlockComment(_ item: NSMenuItem) {
+    codeEditor?.textView.toggleBlockComment()
+  }
 
+  @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
+    guard let item = item else { return false }
+
+    switch item.title {
+    case "Toggle Comment":
+      return codeEditor?.textView.lineComment != nil
+    case "Toggle Block Comment":
+      return codeEditor?.textView.blockComment != nil
+    default:
+      return false
+    }
   }
 }
 

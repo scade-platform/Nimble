@@ -246,6 +246,8 @@ extension LSPClient: SourceCodeDocumentObserver {
 // MARK: - LanguageService
 
 extension LSPClient: LanguageService {
+  public var supportedFeatures: [LanguageServiceFeature] { [.completion] }
+
   public func complete(in doc: SourceCodeDocument,
                        at index: String.Index,
                        handler: @escaping (String.Index, [CodeEditor.CompletionItem]) -> Void) {

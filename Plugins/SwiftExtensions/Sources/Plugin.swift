@@ -17,18 +17,29 @@ public final class SwiftExtensionsModule: Module {
 
 
 final class SwiftExtensionsPlugin: Plugin {
-
   func load() {
     LSPServerManager.shared.registerProvider(SKLocalServerProvider())
 
     BuildSystemsManager.shared.register(buildSystem: SwiftBuildSystem())
     BuildSystemsManager.shared.register(buildSystem: SPMBuildSystem())
 
+    WizardsManager.shared.register(wizard: SPMWizard())
+
+    registerSettings()
+  }
+
+  public func activate(in workbench: Workbench) {
+    SwiftLanguageService.shared.connect(to: workbench)
+  }
+
+  public func deactivate(in workbench: Workbench) {
+    SwiftLanguageService.shared.disconnect(from: workbench)
+  }
+
+  private func registerSettings() {
     Settings.shared.add(SKLocalServer.$swiftToolchain)
     Settings.shared.add(SPMBuildSystem.$androidToolchain)
     Settings.shared.add(SPMBuildSystem.$platforms)
-    
-    WizardsManager.shared.register(wizard: SPMWizard())
   }
 }
 

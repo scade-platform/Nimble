@@ -49,7 +49,13 @@ public final class CodeEditorDocument: NimbleDocument {
       self.language = fileURL?.file?.language
     }
   }
+
   
+  public func languageService(for feature: LanguageServiceFeature) -> LanguageService? {
+    return languageServices.first{ $0.supportedFeatures.contains(feature) }
+  }
+
+
 //  public override func save(withDelegate delegate: Any?,
 //                            didSave didSaveSelector: Selector?,
 //                            contextInfo: UnsafeMutableRawPointer?) {
@@ -108,6 +114,12 @@ extension CodeEditorDocument: SourceCodeDocument {
     }
     guard let id = fileURL?.file?.language?.id else { return "" }
     return id
+  }
+
+  public func replaceText(with newText: String) {
+    codeEditor.textView.insertText(newText, replacementRange: self.textStorage.string.nsRange)
+//    self.textStorage.replaceCharacters(in: self.textStorage.string.nsRange ,
+//                                       with: newText)
   }
 }
 

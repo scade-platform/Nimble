@@ -181,30 +181,38 @@ class CodeEditorView: NSViewController {
       highlightProgress = syntaxParser.highlightAll()
     }
   }
-  
+
+  // MARK: - Language Services
+
   public func showCompletion(triggered: Bool = false) {
     guard let doc = document else { return }
-    
+
     let pos = textView.selectedIndex
-        
-    ///TODO: filter langServices or merge results
-    for langService in doc.languageServices {
-      langService.complete(in: doc, at: pos) {[weak self] in                
-        guard let string = self?.textView.textStorage?.string,
-              let cursor = self?.textView.selectedIndex, cursor >= $0 else { return }
-                
-        self?.completionView.itemsFilter = String(string[$0..<cursor])
-        
-        self?.completionView.completionItems = $1
-        self?.completionView.reload()
-        
-        if $1.count > 0 {
-          self?.completionView.open(at: string.utf16.offset(at: $0), triggered: triggered)
-        } else {
-          self?.completionView.open(at: string.utf16.offset(at: pos), triggered: triggered)
-        }
+
+    doc.languageService(for: .completion)?.complete(in: doc, at: pos) {[weak self] in
+      guard let string = self?.textView.textStorage?.string,
+            let cursor = self?.textView.selectedIndex, cursor >= $0 else { return }
+
+      self?.completionView.itemsFilter = String(string[$0..<cursor])
+
+      self?.completionView.completionItems = $1
+      self?.completionView.reload()
+
+      if $1.count > 0 {
+        self?.completionView.open(at: string.utf16.offset(at: $0), triggered: triggered)
+      } else {
+        self?.completionView.open(at: string.utf16.offset(at: pos), triggered: triggered)
       }
     }
+  }
+
+  public func formatDocument() {
+    guard let doc = document else { return }
+    doc.languageService(for: .format)?.format(doc: doc)
+  }
+
+  public func supports(_ feature: LanguageServiceFeature) -> Bool {
+    return document?.languageService(for: feature) != nil
   }
 }
 
@@ -228,7 +236,8 @@ extension CodeEditorView: WorkbenchEditor {
     CodeEditorSyntaxMenu.fillMenu(nsMenu: menu)
     menu.addItem(NSMenuItem.separator())
     CodeEditorShowCompletionMenuItem.fillMenu(nsMenu: menu)
-    
+    CodeEditorFormatDocumentMenuItem.fillMenu(nsMenu: menu)
+
     menu.addItem(NSMenuItem.separator())
     CodeEditorLineMenuItem.fillMenu(nsMenu: menu)
     CodeEditorCommentMenuItem.fillMenu(nsMenu: menu)

@@ -12,10 +12,12 @@ let package = Package(
     ],
     dependencies: [
       .package(path: "../../NimbleCore"),
+      .package(path: "../../CodeEditor"),
       .package(path: "../../BuildSystem"),
       .package(path: "../../LSPClient"),
       
       .package(url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("swift-5.2-branch")),
+      .package(url: "https://github.com/FLORG1/swift-format.git", .branch("swift-5.2-branch")),
     ],
     targets: [
       .target(
@@ -24,7 +26,9 @@ let package = Package(
           "NimbleCore",
           "BuildSystem",
           "LSPClient",
-          "SourceKitLSP"
+          "SourceKitLSP",
+          "CodeEditor",
+          "SwiftFormat"
         ]
       ),
     ]
