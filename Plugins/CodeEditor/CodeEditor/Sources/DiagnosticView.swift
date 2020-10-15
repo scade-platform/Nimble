@@ -36,13 +36,11 @@ class DiagnosticView: NSStackView {
       collapsedRow.content = .diagnostics(diagnostics)
       self.addArrangedSubview(collapsedView)
 
-      if diagnostics.count > 1 || diagnostics.contains(where: {!$0.fixes.isEmpty}) {
-        if !errors.isEmpty {
-          createTable(for: errors, isHidden: true)
-        }
-        if !warnings.isEmpty {
-          createTable(for: warnings, isHidden: true)
-        }
+      if !errors.isEmpty {
+        createTable(for: errors, isHidden: true)
+      }
+      if !warnings.isEmpty {
+        createTable(for: warnings, isHidden: true)
       }
     }
   }
@@ -238,7 +236,13 @@ fileprivate class DiagnosticTableView: NSView {
   }
 
   override func mouseDown(with event: NSEvent) {
-    mouseDownCallBack?()
+    guard delegate is SummaryDiagnosticsRowViewDelegate, let summaryRow = stackView.arrangedSubviews.first as? DiagnosticRowView else {
+      mouseDownCallBack?()
+      return
+    }
+    if delegate?.handleMouseDown(in: summaryRow) ?? true {
+      mouseDownCallBack?()
+    }
   }
 }
 
@@ -293,6 +297,7 @@ protocol DiagnosticRowViewDelegate {
   func show(diagnostics: [SourceCodeDiagnostic], in row: DiagnosticRowView)
   func show(diagnostic: SourceCodeDiagnostic, in row: DiagnosticRowView)
   func show(quickfix: SourceCodeQuickfix, from: SourceCodeDiagnostic, in: DiagnosticRowView)
+  func handleMouseDown(in row: DiagnosticRowView) -> Bool
 }
 
 class DiagnosticRowViewDelegateImpl: DiagnosticRowViewDelegate {
@@ -306,6 +311,10 @@ class DiagnosticRowViewDelegateImpl: DiagnosticRowViewDelegate {
 
   func show(quickfix: SourceCodeQuickfix, from diagnostic: SourceCodeDiagnostic, in row: DiagnosticRowView) {
     fatalError("show(quickfix:,in:) has not been implemented")
+  }
+  
+  func handleMouseDown(in row: DiagnosticRowView) -> Bool {
+    return true
   }
 }
 
@@ -447,6 +456,10 @@ class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegateImpl {
       return row.messageView.backgroundColor
     }
     return nil
+  }
+  
+  override func handleMouseDown(in row: DiagnosticRowView) -> Bool {
+    return row.messageView.visibleRect.width < row.messageView.fittingSize.width
   }
 }
 
