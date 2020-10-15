@@ -55,8 +55,8 @@ public struct SyntaxNode {
   }
       
   func search(`in` subrange: Range<Int>) -> Range<Array<SyntaxNode>.Index> {
-    let begin = nodes.binarySearch { $0.range.endIndex < subrange.startIndex }
-    let end = nodes.binarySearch { $0.range.startIndex < subrange.endIndex }
+    let begin = nodes.binarySearch { $0.range.endIndex <= subrange.startIndex }
+    let end = nodes.binarySearch { $0.range.startIndex <= subrange.endIndex }
     return begin..<end
   }
   

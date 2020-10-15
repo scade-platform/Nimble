@@ -54,6 +54,7 @@ public final class SyntaxParser {
   
   public func highlight(around range: NSRange) -> Progress? {
     var highlightRange = range
+    
     if let cache = syntaxCache {
       let dirty = cache.search(in: range)
       if !dirty.isEmpty {
@@ -68,8 +69,6 @@ public final class SyntaxParser {
   
   
   private func highlight(str: String, in range: NSRange) -> Progress? {
-    guard !range.isEmpty else { return nil }
-    
     guard let op = SyntaxParseOperation(grammar, str: str, range: range) else {return nil }
     op.qualityOfService = .userInitiated
     
@@ -157,12 +156,6 @@ public final class SyntaxParser {
     } else {
       syntaxCache?.replace(subrange: updateRange, with: nodes)
     }
-    
-    if let cache = syntaxCache {
-//      print("------------------------------")
-//      print(cache)
-    }
-    
   }
 }
 
