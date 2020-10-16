@@ -21,6 +21,7 @@ class DiagnosticView: NSStackView {
   private var topConstraint: NSLayoutConstraint? = nil
   private var widthConstraint: NSLayoutConstraint? = nil
   private var trailingConstraint: NSLayoutConstraint? = nil
+  private var leadingConstraint: NSLayoutConstraint? = nil
 
   var diagnostics: [SourceCodeDiagnostic] = [] {
     didSet {
@@ -122,14 +123,25 @@ class DiagnosticView: NSStackView {
         trailingConstraint = self.trailingAnchor.constraint(equalTo: textView.trailingAnchor)
         trailingConstraint?.isActive = true
       }
-
+      
       topConstraint?.constant = placeholder.origin.y
       widthConstraint?.constant = placeholder.width
       trailingConstraint?.constant = 0.0
-
+      leadingConstraint?.isActive = false
     } else {
       topConstraint?.constant = placeholder.origin.y + lineSize.height
       trailingConstraint?.constant = -40.0
+      
+      if leadingConstraint == nil {
+        if let editorView = textView.editorView {
+          leadingConstraint = self.leadingAnchor.constraint(greaterThanOrEqualTo: editorView.view.leadingAnchor, constant: 40)
+        } else {
+          //80 = 40 - ruleThickness of line numbers and 40 - indent
+          leadingConstraint = self.leadingAnchor.constraint(greaterThanOrEqualTo: textView.leadingAnchor, constant: 80)
+        }
+      }
+      
+      leadingConstraint?.isActive = true
 
       var maxWidth: CGFloat = 0
       diagnostics.forEach {
@@ -142,6 +154,8 @@ class DiagnosticView: NSStackView {
         }
       }
       widthConstraint?.constant = maxWidth + 30
+      self.setContentCompressionResistancePriority(NSLayoutConstraint.Priority(rawValue: 749), for: .horizontal)
+      
     }
 
 
@@ -236,7 +250,10 @@ fileprivate class DiagnosticTableView: NSView {
   }
 
   override func mouseDown(with event: NSEvent) {
-    guard delegate is SummaryDiagnosticsRowViewDelegate, let summaryRow = stackView.arrangedSubviews.first as? DiagnosticRowView else {
+    guard delegate is SummaryDiagnosticsRowViewDelegate,
+      let summaryRow = stackView.arrangedSubviews.first as? DiagnosticRowView,
+      case let .diagnostics(diagnosticsArray) = summaryRow.content,
+      diagnosticsArray.count == 1 else {
       mouseDownCallBack?()
       return
     }
