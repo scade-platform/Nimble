@@ -150,24 +150,17 @@ extension CodeEditorTextView {
   // MARK: - Line Comments
 
   func linesComment() {
-    self.linesComment(selectedRange())
-  }
-
-  func linesComment(_ range: NSRange) {
     guard let lineComment = self.lineComment else { return }
-    self.indent(range, using: lineComment)
+    self.indent(selectedRange(), using: lineComment)
   }
 
   /// Returns `true` if succeds.
   /// Note: in contrast to '`linesComment`' it can fail when not every line starts from the `lineComment` string
   func linesUncomment() -> Bool  {
-    return self.linesUncomment(selectedRange())
+    guard let lineComment = self.lineComment else { return false }
+    return self.unindent(selectedRange(), using: lineComment)
   }
 
-  func linesUncomment(_ range: NSRange) -> Bool  {
-    guard let lineComment = self.lineComment else { return false }
-    return self.unindent(range, using: lineComment)
-  }
 
   func toggleLinesComment() {
     guard !linesUncomment() else { return }
@@ -178,20 +171,14 @@ extension CodeEditorTextView {
   // MARK: - Block Comments
 
   func linesBlockComment() {
-    self.linesBlockComment(selectedRange())
-  }
-
-  func linesBlockComment(_ range: NSRange) {
 
   }
+
 
   func linesBlockUncomment() -> Bool {
-    self.linesBlockUncomment(selectedRange())
-  }
-
-  func linesBlockUncomment(_ range: NSRange) -> Bool {
     return false
   }
+
 
   func toggleBlockComment() {
     guard !linesBlockUncomment() else { return }
@@ -202,22 +189,15 @@ extension CodeEditorTextView {
   // MARK: - Indents
 
   func linesIndent() {
-    self.linesIndent(selectedRange())
-  }
-
-  func linesIndent(_ range: NSRange) {
-    self.indent(range, using: indentString)
+    self.indent(selectedRange(), using: indentString)
   }
 
   func linesUnindent() {
-    self.linesUnindent(selectedRange())
+    self.unindent(selectedRange(), using: indentChar, indentLength: CodeEditorSettings.tabSize)
   }
 
-  func linesUnindent(_ range: NSRange) {
-    self.unindent(range, using: indentChar, indentLength: CodeEditorSettings.tabSize)
-  }
 
-  private func indent(_ range: NSRange, using indentString: String) {
+  private func indent(_ range: NSRange, using indentString: String, updateSelection: Bool = true) {
     guard let string = textStorage?.string else { return }
 
     var offset = 0
@@ -227,9 +207,16 @@ extension CodeEditorTextView {
       super.insertText(indentString, replacementRange: range)
       offset += indentString.count
     }
+
+    if updateSelection {
+      var selection = range.shifted(offset: indentString.count)
+      selection.length += offset - indentString.count
+
+      setSelectedRange(selection)
+    }
   }
 
-  private func unindent(_ range: NSRange, using indentString: String) -> Bool {
+  private func unindent(_ range: NSRange, using indentString: String, updateSelection: Bool = true) -> Bool {
     guard let string = textStorage?.string else { return false }
 
     let lines = string.lines(from: string.utf16.range(for: range))
@@ -241,6 +228,13 @@ extension CodeEditorTextView {
       let range = NSRange(location: string.utf16.offset(at: $0.lowerBound) - offset, length: indentString.count)
       super.insertText("", replacementRange: range)
       offset += indentString.count
+    }
+
+    if updateSelection {
+      var selection = range.shifted(offset: -indentString.count)
+      selection.length -= offset - indentString.count
+
+      setSelectedRange(selection)
     }
 
     return true

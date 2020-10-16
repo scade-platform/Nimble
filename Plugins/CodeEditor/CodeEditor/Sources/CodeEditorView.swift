@@ -282,12 +282,13 @@ extension CodeEditorView: NSTextStorageDelegate {
     let range = textStorage.editedRange
 
     DispatchQueue.main.async { [weak self] in
-      if let progress = self?.highlightProgress {
-        progress.cancel()
-        self?.highlightProgress = syntaxParser.highlightAll()
-      } else {
+      guard let progress = self?.highlightProgress else {
         let _ = syntaxParser.highlight(around: range)
+        return
       }
+
+      progress.cancel()
+      self?.highlightProgress = syntaxParser.highlightAll()
     }
   }
 }
