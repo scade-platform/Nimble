@@ -76,6 +76,10 @@ class DiagnosticView: NSStackView {
     ThemeManager.shared.observers.add(observer: self)
   }
   
+  override func draw(_ dirtyRect: NSRect) {
+    updateConstraints()
+  }
+  
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
@@ -123,11 +127,12 @@ class DiagnosticView: NSStackView {
         trailingConstraint = self.trailingAnchor.constraint(equalTo: textView.trailingAnchor)
         trailingConstraint?.isActive = true
       }
-      
-      topConstraint?.constant = placeholder.origin.y
+
+      topConstraint?.constant = wrappedLineTopOffset() ?? placeholder.origin.y     
       widthConstraint?.constant = placeholder.width
       trailingConstraint?.constant = 0.0
       leadingConstraint?.isActive = false
+      
     } else {
       topConstraint?.constant = placeholder.origin.y + lineSize.height
       trailingConstraint?.constant = -40.0
@@ -160,6 +165,25 @@ class DiagnosticView: NSStackView {
 
 
     super.updateConstraints()
+  }
+  
+  func wrappedLineTopOffset() -> CGFloat?  {
+    guard let textView = self.textView, let textStorage = textView.textStorage, let layoutManager = textView.layoutManager else { return nil }
+    
+    var lineRange = NSRange(textStorage.string.lineRange(line: line - 1))
+
+    // Adjust lineRange to remove NEWLINE symbol
+    // Otherwise the line width would span to the text view's width
+    if lineRange.length > 1 {
+      lineRange = NSRange(location: lineRange.location, length: lineRange.length - 1)
+    }
+    
+    let glyphIndexForGlyphLine = lineRange.location
+    // See if the current line in the string spread across
+    // several lines of glyphs
+    var effectiveRange = NSMakeRange(0, 0)
+    let lineRect = layoutManager.lineFragmentRect(forGlyphAt: glyphIndexForGlyphLine, effectiveRange: &effectiveRange, withoutAdditionalLayout: false)
+    return lineRect.origin.y
   }
 
   func mouseDownHandler() {
