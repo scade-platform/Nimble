@@ -146,6 +146,15 @@ extension ContextOutlineView : ContextMenuProvider {
       //if a folder isn't root folder this operation will do nothing
       removeAction(sender)
     }
+    if fileSystemElement is File, !fileSystemElement.exists, let workbench = NSApp.currentWorkbench {
+      let deletedDocument = workbench.documents.first{ doc in
+        guard let path = doc.path else { return false }
+        return path == fileSystemElement.path
+      }
+      if let doc = deletedDocument {
+        workbench.close(doc)
+      }
+    }
     self.reloadSelected()
   }
   
