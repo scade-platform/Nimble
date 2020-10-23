@@ -63,10 +63,22 @@ extension ContextOutlineView : ContextMenuProvider {
   }
   
   static func menuItems(for folder: Folder) -> [NSMenuItem] {
+    var documentItems: [NSMenuItem] = DocumentManager.shared.creatableDocuments.map {
+      let item = NSMenuItem(title: $0.newMenuTitle, action: #selector(newDocument(_:)), keyEquivalent: "")
+      item.keyEquivalent = $0.newMenuKeyEquivalent ?? ""
+      item.representedObject = $0
+      return item
+    }
+     
+    documentItems.sort { $0.title < $1.title }
+    
+    let docItem = createSubMenuItem(title: "New Document", items: documentItems)
+    docItem.representedObject = folder
+    
     var items = [
     createMenuItem(title: "Show in Finder", selector: #selector(showInFinderAction), for: folder),
     NSMenuItem.separator(),
-    createMenuItem(title: "New File...", selector: #selector(createNewFileAction), for: folder),
+    docItem,
     createMenuItem(title: "New Folder...", selector: #selector(createNewFolderAction), for: folder),
     NSMenuItem.separator(),
     createMenuItem(title: "Rename", selector: #selector(renameAction), for: folder),
@@ -171,6 +183,17 @@ extension ContextOutlineView : ContextMenuProvider {
       try? parentPath.join(name).mkdir()
       self.reloadSelected()
     })
+  }
+  
+  @objc private func newDocument(_ sender: NSMenuItem?) {
+    guard let docType = sender?.representedObject as? CreatableDocument.Type,
+      let documentController = NSDocumentController.shared as? DocumentController else { return }
+    guard let folder = sender?.parent?.representedObject as? Folder else {
+      return
+    }
+    let parentPath = folder.path
+    documentController.makeDocument(url: parentPath.url, ofType: docType)
+    self.reloadSelected()
   }
   
   // MARK: - Alerts

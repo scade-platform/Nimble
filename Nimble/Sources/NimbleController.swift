@@ -171,6 +171,11 @@ extension NimbleController: DocumentController {
       workbench.open(doc, show: true)
     }
   }
+  
+  func makeDocument(url: URL, ofType typeClass: CreatableDocument.Type) {
+    guard let doc = typeClass.createDocument(url: url) else { return }
+    currentWorkbench?.open(doc, show: true)
+  }
 }
 
 
