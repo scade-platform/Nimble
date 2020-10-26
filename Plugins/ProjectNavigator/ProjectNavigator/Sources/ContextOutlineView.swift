@@ -146,6 +146,12 @@ extension ContextOutlineView : ContextMenuProvider {
       //if a folder isn't root folder this operation will do nothing
       removeAction(sender)
     }
+    if fileSystemElement is File, !fileSystemElement.exists {
+      let fileCoordinator = NSFileCoordinator(filePresenter: nil)
+      fileCoordinator.coordinate(writingItemAt: fileSystemElement.url, options: NSFileCoordinator.WritingOptions.forDeleting, error: nil) { _ in
+        //Triger NSFilePresenter
+      }
+    }
     self.reloadSelected()
   }
   

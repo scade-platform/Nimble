@@ -130,4 +130,18 @@ fileprivate class DocumentFilePresenter: NSObject, NSFilePresenter {
       doc?.presentedItemDidChange()
     }
   }
+  
+  //Close document, when it was removed using by Finder (Move to Bin -> Empty Bin)
+  func accommodatePresentedItemDeletion(completionHandler: @escaping (Error?) -> Void) {
+    if isRegistered {
+      DispatchQueue.main.async { [weak self] in
+        guard let self = self, let doc = self.doc as? Document, let workbench = doc.editor?.workbench else {
+          return
+        }
+        workbench.close(doc)
+      }
+      unregister()
+    }
+    completionHandler(nil)
+  }
 }
