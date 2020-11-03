@@ -185,7 +185,14 @@ class ToolbarTargetControl : NSControl {
   }
   
   func autoSelectTarget(in workbench: Workbench) {
-    if menuItemTargets.isEmpty {
+    guard let targets = BuildSystemsManager.shared.activeBuildSystem?.targets(in: workbench) else {
+      return
+    }
+    
+    if menuItemTargets.isEmpty ||
+      menuItemTargets.count != targets.count {
+      activeTarget = nil
+      workbench.selectedVariant = nil
       updateTargets(in: workbench)
     }
     

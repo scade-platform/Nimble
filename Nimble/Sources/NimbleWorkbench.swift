@@ -131,8 +131,10 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   public override func restoreState(with coder: NSCoder) {
     super.restoreState(with: coder)
     if let documentsURL = coder.decodeObject(forKey: "openDocuments") as? [URL] {
-      let documents = documentsURL.compactMap{DocumentManager.shared.open(url: $0)}
-      documents.forEach{self.open($0, show: true, openNewEditor: true)}
+      for documentURL in documentsURL {
+        guard let document = DocumentManager.shared.open(url: documentURL) else { continue }
+        self.open(document, show: true, openNewEditor: true)
+      }
     }
     PluginManager.shared.restoreState(in: self, coder: coder)
   }
