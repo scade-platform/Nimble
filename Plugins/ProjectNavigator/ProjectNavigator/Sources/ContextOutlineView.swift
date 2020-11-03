@@ -72,7 +72,7 @@ extension ContextOutlineView : ContextMenuProvider {
      
     documentItems.sort { $0.title < $1.title }
     
-    let docItem = createSubMenuItem(title: "New Document", items: documentItems)
+    let docItem = createSubMenuItem(title: "New File...", items: documentItems)
     docItem.representedObject = folder
     
     var items = [
