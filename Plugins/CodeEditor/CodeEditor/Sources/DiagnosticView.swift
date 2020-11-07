@@ -99,14 +99,14 @@ class DiagnosticView: NSStackView {
 
     let lineSize =  textView.boundingRect(for: lineRange)?.size ?? NSSize()
     let defaultLineHeight = textView.layoutManager!.lineHeight
+    let topOffset = wrappedLineTopOffset() ?? defaultLineHeight * CGFloat(line - 1)
 
     let leadingOffset = min(0.8 * textView.frame.size.width, lineSize.width)
 
     let placeholder = NSRect(x: leadingOffset + 10,
-                             y: defaultLineHeight * CGFloat(line - 1),
+                             y: topOffset,
                              width: textView.frame.size.width - leadingOffset - 10,
-                             height: defaultLineHeight)
-
+                             height: defaultLineHeight * 2)
 
     if !textContainer.exclusionPaths.contains(where: {$0.bounds == placeholder}) {
       textContainer.exclusionPaths.append(NSBezierPath(rect: placeholder))
@@ -128,7 +128,7 @@ class DiagnosticView: NSStackView {
         trailingConstraint?.isActive = true
       }
 
-      topConstraint?.constant = wrappedLineTopOffset() ?? placeholder.origin.y     
+      topConstraint?.constant = placeholder.origin.y     
       widthConstraint?.constant = placeholder.width
       trailingConstraint?.constant = 0.0
       leadingConstraint?.isActive = false
