@@ -44,7 +44,8 @@ struct LSPDiagnostic: SourceCodeDiagnostic {
     }
   }
 
-  func range(`in` text: String) -> Range<Int> {
+  func range(`in` text: String) -> Range<Int>? {
+    guard wrapped.range.isValid(for: text) else { return nil }
     return text.range(for: text.range(for: wrapped.range))    
   }
 }

@@ -123,7 +123,7 @@ class CodeEditorView: NSViewController {
     removeDiagnosticsViews()
 
     for d in diagnostics {
-      let range = d.range(in: text)
+      guard let range = d.range(in: text) else { continue }
 
       // Do not show diagnostic for the snippet ranges
       guard textStorage.snippet(at: range.lowerBound) == nil else {
