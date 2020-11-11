@@ -55,8 +55,10 @@ fileprivate extension LSPDiagnostic {
   func isValid(range: Range<Position>, for string: String) -> Bool {
     
     func isValid(position: Position) -> Bool {
-      let startLineIndex: String.Index = string.lineRange(line: position.line).lowerBound
-      return string.index(startLineIndex, offsetBy: position.utf16index, limitedBy: string.endIndex) != nil
+      let lineRange: Range<String.Index> = string.lineRange(line: position.line)
+      let startLineIndex = lineRange.lowerBound
+      let endLineIndex = lineRange.upperBound
+      return string.index(startLineIndex, offsetBy: position.utf16index, limitedBy: endLineIndex) != nil
     }
     
     guard isValid(position: range.lowerBound),
