@@ -48,6 +48,10 @@ final class LineNumberView: NSRulerView {
   required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+
+  func modifyFontSize(delta: CGFloat) {
+    lineFont = NSFontManager.shared.convert(lineFont, toSize: lineFont.pointSize + delta)
+  }
   
   override func draw(_ dirtyRect: NSRect) {
     if let draws = textView?.drawsBackground, draws {
