@@ -32,7 +32,13 @@ public protocol Document where Self: NSDocument {
 public protocol DocumentController where Self: NSDocumentController {
   var currentWorkbench: Workbench? { get }    
   func openDocument(_ doc: Document, display displayDocument: Bool) -> Void
-  func makeDocument(url: URL, ofType typeClass: CreatableDocument.Type)
+  func makeDocument(url: URL?, ofType typeClass: CreatableDocument.Type)
+}
+
+public extension DocumentController where Self: NSDocumentController {
+  func makeDocument(ofType typeClass: CreatableDocument.Type) {
+    makeDocument(url: nil, ofType: typeClass)
+  }
 }
 
 
@@ -82,10 +88,14 @@ public protocol CreatableDocument where Self: Document {
   static var newMenuTitle: String { get }
 
   static var newMenuKeyEquivalent: String? { get }
-
-  static func createUntitledDocument() -> Document?
   
-  static func createDocument(url: URL) -> Document?
+  static func createDocument(url: URL?) -> Document?
+}
+
+public extension CreatableDocument where Self: Document {
+  static func createDocument() -> Document? {
+    createDocument(url: nil)
+  }
 }
 
 public extension CreatableDocument {

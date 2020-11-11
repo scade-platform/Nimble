@@ -136,19 +136,11 @@ extension CodeEditorDocument: CreatableDocument {
 
   public static var newMenuKeyEquivalent: String? { "n" }
 
-  public static func createUntitledDocument() -> Document? {
-    return try? CodeEditorDocument(type: "public.text")
-  }
-  
-  public static func createDocument(url: URL) -> Document? {
+  public static func createDocument(url: URL?) -> Document? {
     guard let doc = try? CodeEditorDocument(type: "public.text") else {
       return nil
     }
     doc.directory = url
-    doc.saveAs(nil)
-    guard doc.fileURL != nil else {
-      return nil
-    }
     return doc
   }
 }

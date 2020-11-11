@@ -65,7 +65,6 @@ extension ContextOutlineView : ContextMenuProvider {
   static func menuItems(for folder: Folder) -> [NSMenuItem] {
     var documentItems: [NSMenuItem] = DocumentManager.shared.creatableDocuments.map {
       let item = NSMenuItem(title: $0.newMenuTitle, action: #selector(newDocument(_:)), keyEquivalent: "")
-      item.keyEquivalent = $0.newMenuKeyEquivalent ?? ""
       item.representedObject = $0
       return item
     }

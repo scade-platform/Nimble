@@ -30,7 +30,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   
   @objc private func newDocument(_ sender: Any?) {
     guard let docType = (sender as? NSMenuItem)?.representedObject as? CreatableDocument.Type else { return }
-    documentController.makeUntitledDocument(ofType: docType)
+    documentController.makeDocument(ofType: docType)
   }
   
   @objc private func newProject(_ sender: Any?) {
