@@ -45,8 +45,24 @@ struct LSPDiagnostic: SourceCodeDiagnostic {
   }
 
   func range(`in` text: String) -> Range<Int>? {
-    guard wrapped.range.isValid(for: text) else { return nil }
-    return text.range(for: text.range(for: wrapped.range))    
+    guard isValid(range: wrapped.range, for: text) else { return nil }
+    return text.range(for: text.range(for: wrapped.range))
+  }
+}
+
+
+fileprivate extension LSPDiagnostic {
+  func isValid(range: Range<Position>, for string: String) -> Bool {
+    
+    func isValid(position: Position) -> Bool {
+      let startLineIndex: String.Index = string.lineRange(line: position.line).lowerBound
+      return string.index(startLineIndex, offsetBy: position.utf16index, limitedBy: string.endIndex) != nil
+    }
+    
+    guard isValid(position: range.lowerBound),
+          isValid(position: range.upperBound)
+    else { return false }
+    return true
   }
 }
 
