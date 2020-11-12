@@ -281,6 +281,10 @@ fileprivate class DiagnosticTableView: NSView {
       mouseDownCallBack?()
       return
     }
+    if !diagnosticsArray.flatMap({$0.fixes}).isEmpty {
+      mouseDownCallBack?()
+      return
+    }
     if delegate?.handleMouseDown(in: summaryRow) ?? true {
       mouseDownCallBack?()
     }
