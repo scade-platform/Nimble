@@ -378,7 +378,7 @@ class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegateImpl {
   override func show(quickfix: SourceCodeQuickfix, from diagnostic: SourceCodeDiagnostic, in row: DiagnosticRowView) {
     // Add a an empty icon holder
     let iconHolder = NSView()
-    iconHolder.widthAnchor.constraint(equalToConstant: 10).isActive = true  // icon width
+    iconHolder.widthAnchor.constraint(equalToConstant: row.font?.capHeight ?? 10).isActive = true  // icon width
     iconHolder.heightAnchor.constraint(equalToConstant: 20).isActive = true // icon height + top and bottom insets
 
     row.iconsView.addArrangedSubview(iconHolder)
@@ -390,18 +390,23 @@ class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegateImpl {
 
     // Add quickfix action button
     let fixButton = NSButton()
+    fixButton.isBordered = false
     fixButton.title = "Fix"
-    fixButton.font = row.font
-    fixButton.contentTintColor = ThemeManager.shared.currentTheme?.general.foreground
-    fixButton.bezelColor = ThemeManager.shared.currentTheme?.general.foreground
-    fixButton.bezelStyle = .roundRect
+    fixButton.font = NSFont(name: row.font!.fontName, size: row.font!.pointSize - 1)
+    fixButton.setAttributes(foreground: ThemeManager.shared.currentTheme?.general.foreground, alignment: .center)
+    fixButton.wantsLayer = true
+    fixButton.layer?.masksToBounds = true
+    fixButton.layer?.cornerRadius = 4.0
+    fixButton.layer?.borderWidth = 1.0
+    fixButton.layer?.borderColor = ThemeManager.shared.currentTheme?.general.foreground.cgColor
     fixButton.target = row
     fixButton.action = #selector(DiagnosticRowView.fix)
 
     let buttonHolder = NSView()
     buttonHolder.addSubview(fixButton)
 
-    fixButton.layout(into: buttonHolder, insets: NSEdgeInsets(top: 0, left: 0, bottom: 0, right: 3))
+    fixButton.layout(into: buttonHolder, insets: NSEdgeInsets(top: 1, left: 0, bottom: 1, right: 3))
+    buttonHolder.widthAnchor.constraint(equalToConstant: 30).isActive = true
     row.stackView.addArrangedSubview(buttonHolder)
   }
 
@@ -598,3 +603,22 @@ fileprivate extension NSTextView {
 }
 
 
+extension NSButton {
+  func setAttributes(foreground: NSColor? = nil, alignment: NSTextAlignment? = nil) {
+    
+    var attributes: [NSAttributedString.Key: Any] = [:]
+    
+    if let foreground = foreground {
+      attributes[NSAttributedString.Key.foregroundColor] = foreground
+    }
+    
+    if let alignment = alignment {
+      let paragraph = NSMutableParagraphStyle()
+      paragraph.alignment = alignment
+      attributes[NSAttributedString.Key.paragraphStyle] = paragraph
+    }
+    
+    let attributed = NSAttributedString(string: self.title, attributes: attributes)
+    self.attributedTitle = attributed
+  }
+}
