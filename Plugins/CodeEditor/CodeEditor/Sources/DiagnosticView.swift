@@ -106,7 +106,7 @@ class DiagnosticView: NSStackView {
     let placeholder = NSRect(x: leadingOffset + 10,
                              y: topOffset,
                              width: textView.frame.size.width - leadingOffset - 10,
-                             height: defaultLineHeight * 2)
+                             height: defaultLineHeight)
 
     if !textContainer.exclusionPaths.contains(where: {$0.bounds == placeholder}) {
       textContainer.exclusionPaths.append(NSBezierPath(rect: placeholder))
