@@ -98,8 +98,7 @@ class CodeEditorCompletionView: NSViewController {
       return true
     // Select
     case Keycode.returnKey:
-      insertCompletion()
-      return true
+      return insertCompletion()
     // Update
     case Keycode.delete:
       return false
@@ -290,9 +289,9 @@ class CodeEditorCompletionView: NSViewController {
     view.setFrameSize(NSMakeSize(width, height))
   }
     
-  private func insertCompletion() {
+  private func insertCompletion() -> Bool {
     guard let item = selection,
-          let cursor = textView?.selectedRange().location else { return }
+          let cursor = textView?.selectedRange().location else { return false }
                       
     let range = NSRange(completionPosition..<cursor)
 
@@ -310,6 +309,8 @@ class CodeEditorCompletionView: NSViewController {
 
     let insertionRange = NSRange(location: range.location, length: text.count)
     textView?.selectSnippet(in: insertionRange)
+
+    return true
   }
 }
 
