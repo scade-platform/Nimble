@@ -49,6 +49,8 @@ public final class CodeEditorDocument: NimbleDocument {
       self.language = fileURL?.file?.language
     }
   }
+  
+  public var directory: URL? = nil
 
   
   public func languageService(for feature: LanguageServiceFeature) -> LanguageService? {
@@ -121,6 +123,12 @@ extension CodeEditorDocument: SourceCodeDocument {
 //    self.textStorage.replaceCharacters(in: self.textStorage.string.nsRange ,
 //                                       with: newText)
   }
+  
+  public override func prepareSavePanel(_ savePanel: NSSavePanel) -> Bool {
+    savePanel.directoryURL = self.directory
+    return super.prepareSavePanel(savePanel)
+  }
+  
 }
 
 extension CodeEditorDocument: CreatableDocument {
@@ -128,7 +136,11 @@ extension CodeEditorDocument: CreatableDocument {
 
   public static var newMenuKeyEquivalent: String? { "n" }
 
-  public static func createUntitledDocument() -> Document? {
-    return try? CodeEditorDocument(type: "public.text")
+  public static func createDocument(url: URL?) -> Document? {
+    guard let doc = try? CodeEditorDocument(type: "public.text") else {
+      return nil
+    }
+    doc.directory = url
+    return doc
   }
 }
