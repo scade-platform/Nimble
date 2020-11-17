@@ -262,6 +262,10 @@ extension CodeEditorView: WorkbenchEditor {
     self.diagnostics = diagnostics.compactMap { $0 as? SourceCodeDiagnostic }
     self.showDiagnostics()
   }
+
+  func languageDidChange(language: Language?) {
+    statusBarView.updateSelectedSyntax()
+  }
 }
 
 
