@@ -25,6 +25,11 @@ public final class CodeEditorDocument: NimbleDocument {
       }
       self.syntaxParser = SyntaxParser(textStorage: textStorage, grammar: grammar)
     }
+
+    didSet(lang) {
+      guard lang != self.language else { return }
+      codeEditor.languageDidChange(language: lang)
+    }
   }
   
   public var languageServices: [LanguageService] = []

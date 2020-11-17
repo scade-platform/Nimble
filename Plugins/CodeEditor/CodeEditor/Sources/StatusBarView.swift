@@ -20,9 +20,7 @@ class StatusBarView: NSViewController {
     super.viewDidLoad()
     
     syntaxMenuButton?.menu = CodeEditorSyntaxMenu.nsMenu
-    syntaxMenuButton?.select(CodeEditorSyntaxMenu.nsMenu.items.first {
-      return CodeEditorSyntaxMenu.itemState($0) == .on
-    })
+    updateSelectedSyntax()
     
     if let pos = textView?.selectedPosition {
       setCursorPosition(pos.line, pos.column)
@@ -31,6 +29,12 @@ class StatusBarView: NSViewController {
   
   func setCursorPosition(_ line: Int, _ column: Int) {
     cursorPositionLabel.stringValue = "Ln \(line + 1), Col \(column + 1)"
+  }
+
+  func updateSelectedSyntax() {
+    syntaxMenuButton?.select(CodeEditorSyntaxMenu.nsMenu.items.first {
+      return CodeEditorSyntaxMenu.itemState($0) == .on
+    })
   }
 }
 
