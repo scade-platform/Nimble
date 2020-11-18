@@ -97,6 +97,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var items: [NSMenuItem] = DocumentManager.shared.creatableDocuments.map {
       let item = NSMenuItem(title: $0.newMenuTitle, action: #selector(newDocument(_:)), keyEquivalent: "")
       item.keyEquivalent = $0.newMenuKeyEquivalent ?? ""
+      item.target = self
       item.representedObject = $0
       return item
     }
