@@ -325,7 +325,12 @@ class DiagnosticRowView: NSView {
           let textView = tableView?.diagnosticView?.textView else { return }
 
     let range = quickfix.textEdit.range(in: textView.string)
+    let visibleRect = textView.visibleRect
     textView.insertText(quickfix.textEdit.newText, replacementRange: NSRange(range))
+    if visibleRect != textView.visibleRect {
+      let defaultLineHeight = textView.layoutManager!.lineHeight
+      textView.scrollToVisible(visibleRect.offsetBy(dx: 0, dy: -defaultLineHeight))
+    }
   }
 }
 
