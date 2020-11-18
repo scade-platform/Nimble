@@ -211,7 +211,7 @@ class SnippetPlaceholderView: NSTextView {
   func substituteText() {
     editorView?.setCursorPosition(range.upperBound)
     window?.makeFirstResponder(editorView)
-    editorView?.insertText(self.string, replacementRange: range)
+    editorView?.insertText(self.string.trimmingCharacters(in: [" "]), replacementRange: range)
   }
 
   override func becomeFirstResponder() -> Bool {

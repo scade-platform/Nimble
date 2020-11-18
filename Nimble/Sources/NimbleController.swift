@@ -29,12 +29,6 @@ class NimbleController: NSDocumentController {
     
     return currentDocument as? ProjectDocument
   }
-  
-  
-  func makeUntitledDocument(ofType typeClass: CreatableDocument.Type) {
-    guard let doc = typeClass.createUntitledDocument() else { return }
-    currentWorkbench?.open(doc, show: true)
-  }
       
   func open(url: URL, in workbench: Workbench? = nil) {
     if url.typeIdentifierConforms(to: ProjectDocument.docType) {
@@ -170,6 +164,11 @@ extension NimbleController: DocumentController {
     if let workbench = workbench ?? currentWorkbench, displayDocument {
       workbench.open(doc, show: true)
     }
+  }
+  
+  func makeDocument(url: URL? = nil, ofType typeClass: CreatableDocument.Type) {
+    guard let doc = typeClass.createDocument(url: url) else { return }
+    currentWorkbench?.open(doc, show: true)
   }
 }
 

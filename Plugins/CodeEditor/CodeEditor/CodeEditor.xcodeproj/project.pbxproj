@@ -53,6 +53,8 @@
 		D7D4716323FC9BBE00CC9BAA /* NSAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4715323FC9BBD00CC9BAA /* NSAttributedString.swift */; };
 		D7D4716423FC9BBE00CC9BAA /* String+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4715423FC9BBE00CC9BAA /* String+Localization.swift */; };
 		D7D4BD1723FCA0F20063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD1623FCA0F20063BD8F /* NimbleCore */; };
+		E4EB0CF5255C138A0011885A /* CodeEditorTextView+Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EB0CF4255C138A0011885A /* CodeEditorTextView+Commands.swift */; };
+		E4EB0CF7255C1F0C0011885A /* NSTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EB0CF6255C1F0C0011885A /* NSTextView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -114,6 +116,8 @@
 		D7D4715223FC9BBD00CC9BAA /* MutableCopying.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MutableCopying.swift; path = ../../../CotEditor/CotEditor/Sources/MutableCopying.swift; sourceTree = "<group>"; };
 		D7D4715323FC9BBD00CC9BAA /* NSAttributedString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSAttributedString.swift; path = ../../../CotEditor/CotEditor/Sources/NSAttributedString.swift; sourceTree = "<group>"; };
 		D7D4715423FC9BBE00CC9BAA /* String+Localization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Localization.swift"; path = "../../../CotEditor/CotEditor/Sources/String+Localization.swift"; sourceTree = "<group>"; };
+		E4EB0CF4255C138A0011885A /* CodeEditorTextView+Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorTextView+Commands.swift"; sourceTree = "<group>"; };
+		E4EB0CF6255C1F0C0011885A /* NSTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSTextView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,9 +191,11 @@
 			isa = PBXGroup;
 			children = (
 				D7D4711123FC983E00CC9BAA /* CodeEditorTextView+ColorTheme.swift */,
-				D7A538C424804E79007C25EE /* CodeEditorTextView+Snippets.swift */,
+				E4EB0CF4255C138A0011885A /* CodeEditorTextView+Commands.swift */,
 				D79820AD25261621000F6AD1 /* CodeEditorTextView+Formatting.swift */,
+				D7A538C424804E79007C25EE /* CodeEditorTextView+Snippets.swift */,
 				D7BD02842489585D00FAAA90 /* NSLayoutManager.swift */,
+				E4EB0CF6255C1F0C0011885A /* NSTextView.swift */,
 				D7A538C0248018C2007C25EE /* String.swift */,
 			);
 			path = Extensions;
@@ -324,6 +330,7 @@
 				D7D4715723FC9BBE00CC9BAA /* LineEnding.swift in Sources */,
 				D7A538C1248018C2007C25EE /* String.swift in Sources */,
 				D79820AE25261621000F6AD1 /* CodeEditorTextView+Formatting.swift in Sources */,
+				E4EB0CF5255C138A0011885A /* CodeEditorTextView+Commands.swift in Sources */,
 				D7D4715B23FC9BBE00CC9BAA /* String+Counting.swift in Sources */,
 				D7D4716023FC9BBE00CC9BAA /* NSLayoutManager+Range.swift in Sources */,
 				D7D4715F23FC9BBE00CC9BAA /* Collection.swift in Sources */,
@@ -337,6 +344,7 @@
 				D7D4715523FC9BBE00CC9BAA /* Geometry.swift in Sources */,
 				D7D4712923FC983E00CC9BAA /* TextContainer.swift in Sources */,
 				D7D4715823FC9BBE00CC9BAA /* String+Constants.swift in Sources */,
+				E4EB0CF7255C1F0C0011885A /* NSTextView.swift in Sources */,
 				D7D4712D23FC983E00CC9BAA /* CodeEditorTextView.swift in Sources */,
 				D79820B0252F88D1000F6AD1 /* CodeEditorSettings.swift in Sources */,
 				D7D4712523FC983E00CC9BAA /* CodeEditorCompletionView.swift in Sources */,
