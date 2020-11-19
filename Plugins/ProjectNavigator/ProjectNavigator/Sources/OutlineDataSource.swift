@@ -293,7 +293,16 @@ extension OutlineDataSource: NSOutlineViewDelegate {
       }
       
       view.objectValue = item
-      view.textField?.stringValue = item.title
+      if self.openedDocuments.documents.contains(where: {$0.title == item.title && $0.fileURL != item.fileURL}) {
+        let title = item.title
+        if let path = item.fileURL?.path {
+          view.textField?.stringValue = "\(title) - \(path)"
+        } else {
+          view.textField?.stringValue = title
+        }
+      } else {
+        view.textField?.stringValue = item.title
+      }
       view.imageView?.image = Bundle(for: type(of: self)).image(forResource: "document")
             
       return view
