@@ -14,7 +14,7 @@ class StatusBarView: NSViewController {
   weak var textView: CodeEditorTextView?
   
   @IBOutlet weak var syntaxMenuButton: NSPopUpButton?
-  @IBOutlet weak var cursorPositionLabel: NSTextField!
+  @IBOutlet weak var cursorPositionLabel: NSTextField?
   
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -28,7 +28,10 @@ class StatusBarView: NSViewController {
   }
   
   func setCursorPosition(_ line: Int, _ column: Int) {
-    cursorPositionLabel.stringValue = "Ln \(line + 1), Col \(column + 1)"
+    guard let label = cursorPositionLabel else {
+      return
+    }
+    label.stringValue = "Ln \(line + 1), Col \(column + 1)"
   }
 
   func updateSelectedSyntax() {

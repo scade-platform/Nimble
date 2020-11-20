@@ -250,8 +250,10 @@ extension CodeEditorView: WorkbenchEditor {
     CodeEditorSyntaxMenu.nsMenu.update()
     //And then update menu button   
     statusBarView.syntaxMenuButton?.select(CodeEditorSyntaxMenu.nsMenu.selectedItems.first)
-
-    return [statusBarView.view as! EditorStatusBar]
+    let result = statusBarView.view as! EditorStatusBar
+    let pos = textView.selectedPosition
+    statusBarView.setCursorPosition(pos.line, pos.column)
+    return [result]
   }
 
   func focus() -> Bool {
