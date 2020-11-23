@@ -87,6 +87,8 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
                                .underlineStyle: NSUnderlineStyle.single.rawValue]    
 
     self.isAutomaticQuoteSubstitutionEnabled = false
+    // Disable auto replacement of ... to one special glyph
+    self.isAutomaticDashSubstitutionEnabled = false
     
     self.invalidateDefaultParagraphStyle()
     

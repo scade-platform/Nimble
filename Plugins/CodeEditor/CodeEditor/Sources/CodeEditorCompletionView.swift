@@ -293,8 +293,7 @@ class CodeEditorCompletionView: NSViewController {
     guard let item = selection,
           let cursor = textView?.selectedRange().location else { return false }
                       
-    let range = NSRange(completionPosition..<cursor)
-
+    
     let text: String
     if let textEdit = item.textEdit {
       text = textEdit.newText
@@ -303,7 +302,16 @@ class CodeEditorCompletionView: NSViewController {
     } else {
       text = item.label
     }
-
+    
+    let range: NSRange
+    //first condition allows predict that previous of `completionPosition` index exist
+    if text.starts(with: "?."), textView?.textStorage?.string[completionPosition - 1] == "." {
+      let start: Int = completionPosition - 1
+      range = NSRange(start ..< cursor)
+    } else {
+      range = NSRange(completionPosition ..< cursor)
+    }
+    
     textView?.insertText(text, replacementRange: range)
     close()
 
