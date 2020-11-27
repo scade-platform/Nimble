@@ -15,9 +15,13 @@ struct CodeEditorSettings {
 
   @Setting("editor.insertSpaces", defaultValue: false)
   static var insertSpaces: Bool
+  
+  @Setting("editor.autosave", defaultValue: true)
+  static var autosave: Bool
 
   static func register() {
     Settings.shared.add(self.$tabSize)
     Settings.shared.add(self.$insertSpaces)
+    Settings.shared.add(self.$autosave)
   }
 }
