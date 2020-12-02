@@ -77,6 +77,11 @@ open class NimbleDocument: NSDocument {
     filePresenter?.register()
   }
   
+  open override func autosave(withDelegate delegate: Any?, didAutosave didAutosaveSelector: Selector?, contextInfo: UnsafeMutableRawPointer?) {
+    super.autosave(withDelegate: delegate, didAutosave: didAutosaveSelector, contextInfo: contextInfo)
+    self.updateChangeCount(.changeCleared)
+  }
+  
   
   open override func updateChangeCount(_ change: NSDocument.ChangeType) {
     super.updateChangeCount(change)
