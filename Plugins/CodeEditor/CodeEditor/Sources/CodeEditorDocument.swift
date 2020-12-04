@@ -16,6 +16,14 @@ public final class CodeEditorDocument: NimbleDocument {
     return NSTextStorage()
   }()
   
+  public override class var autosavesInPlace: Bool {
+    CodeEditorSettings.autosave
+  }
+  
+  public override class var autosavesDrafts: Bool {
+    CodeEditorSettings.autosave
+  }
+  
   public var language: Language? {
     willSet(lang) {
       guard lang != self.language else { return }
@@ -70,7 +78,12 @@ public final class CodeEditorDocument: NimbleDocument {
 //    super.save(withDelegate: delegate, didSave: didSaveSelector, contextInfo: contextInfo)
 //    self.language = fileURL?.file?.language
 //  }
-    
+  
+  public override init() {
+    super.init()
+    self.scheduleAutosaving()
+  }
+
   public override func read(from url: URL, ofType typeName: String) throws {
     self.language = url.file?.language
     try super.read(from: url, ofType: typeName)
