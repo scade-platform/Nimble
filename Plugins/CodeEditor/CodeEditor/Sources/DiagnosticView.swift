@@ -99,9 +99,14 @@ class DiagnosticView: NSStackView {
 
     let lineSize =  textView.boundingRect(for: lineRange)?.size ?? NSSize()
     let defaultLineHeight = textView.layoutManager!.lineHeight
-    let topOffset = wrappedLineTopOffset() ?? defaultLineHeight * CGFloat(line - 1)
+    var topOffset = wrappedLineTopOffset() ?? defaultLineHeight * CGFloat(line - 1)
 
-    let leadingOffset = min(0.8 * textView.frame.size.width, lineSize.width)
+    var leadingOffset = min(0.8 * textView.frame.size.width, lineSize.width)
+    
+    if lineRange.location == textStorage.string.offset(at: textStorage.string.endIndex) {
+      topOffset += defaultLineHeight
+      leadingOffset = 0.1 * textView.frame.size.width
+    }
 
     let placeholder = NSRect(x: leadingOffset + 10,
                              y: topOffset,
@@ -171,6 +176,11 @@ class DiagnosticView: NSStackView {
     guard let textView = self.textView, let textStorage = textView.textStorage, let layoutManager = textView.layoutManager else { return nil }
     
     var lineRange = NSRange(textStorage.string.lineRange(line: line - 1))
+    if lineRange.lowerBound == textStorage.string.offset(at: textStorage.string.endIndex) {
+      let lastCharIndex = textStorage.string.index(before: textStorage.string.endIndex)
+      let bound = textStorage.string.offset(at: lastCharIndex)
+      lineRange = NSRange(bound ..< bound)
+    }
 
     // Adjust lineRange to remove NEWLINE symbol
     // Otherwise the line width would span to the text view's width
