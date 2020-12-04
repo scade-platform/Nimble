@@ -295,8 +295,8 @@ extension OutlineDataSource: NSOutlineViewDelegate {
       view.objectValue = item
       if self.openedDocuments.documents.contains(where: {$0.title == item.title && $0.fileURL != item.fileURL}) {
         let title = item.title
-        if let path = item.fileURL?.path {
-          view.textField?.stringValue = "\(title) - \(path)"
+        if let url = item.fileURL, let folder = self.workbench?.project?.folder(containing: url) {
+          view.textField?.stringValue = "\(title) - \(folder.name)"
         } else {
           view.textField?.stringValue = title
         }
