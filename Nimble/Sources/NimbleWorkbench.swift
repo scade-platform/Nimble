@@ -393,15 +393,13 @@ extension NimbleWorkbench: NSToolbarDelegate {
     var ids: [NSToolbarItem.Identifier] = sortedLeftGroup.compactMap(extractIdentifier(_:))
     
     ids.append(.flexibleSpace)
-    
     ids.append(contentsOf: sortedCenterGroup.compactMap(extractIdentifier(_:)))
-    
+
     ids.append(.flexibleSpace)
-    
     ids.append(contentsOf: sortedRightGroup.compactMap(extractIdentifier(_:)))
     
-    
-      return ids
+
+    return ids
   }
 
   public func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
@@ -409,7 +407,7 @@ extension NimbleWorkbench: NSToolbarDelegate {
   }
 
   public func toolbarSelectableItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-      return self.toolbarDefaultItemIdentifiers(toolbar)
+      return [] //self.toolbarDefaultItemIdentifiers(toolbar)
   }
   
   private func sortedPredicate(_ l: Any, _ r: Any, _ predicate: (Int, Int) -> Bool) -> Bool {
@@ -507,6 +505,7 @@ extension NimbleWorkbench {
     }
   }
 }
+
 
 // MARK: - NimbleWorkbenchView
 
