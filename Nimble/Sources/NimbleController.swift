@@ -14,15 +14,6 @@ import NimbleCore
 
 class NimbleController: NSDocumentController {
   
-  override init() {
-    super.init()
-    self.autosavingDelay = 3.0
-  }
-  
-  required init?(coder: NSCoder) {
-    super.init(coder: coder)
-  }
-  
   static func openDocumentHandler(_ doc: NSDocument?, documentWasAlreadyOpen: Bool, error: Error?) {
     ///TODO: process errors
   }
