@@ -70,6 +70,15 @@ public final class CodeEditorDocument: NimbleDocument {
 //    super.save(withDelegate: delegate, didSave: didSaveSelector, contextInfo: contextInfo)
 //    self.language = fileURL?.file?.language
 //  }
+
+  public override func presentedItemDidChange() {
+    guard let url = self.fileURL, let type = self.fileType  else { return }
+
+    DispatchQueue.main.async { [weak self] in
+      try! self?.read(from: url, ofType: type)
+      self?.updateChangeCount(.changeCleared)
+    }
+  }
     
   public override func read(from url: URL, ofType typeName: String) throws {
     self.language = url.file?.language
