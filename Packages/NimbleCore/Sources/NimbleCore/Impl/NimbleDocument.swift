@@ -98,6 +98,8 @@ open class NimbleDocument: NSDocument {
 fileprivate class DocumentFilePresenter: NSObject, NSFilePresenter {
   
   private weak var doc: NimbleDocument?
+
+  private var lastModificationDate: Date?
   
   public var presentedItemURL: URL? { return self.doc?.presentedItemURL }
 
@@ -115,6 +117,7 @@ fileprivate class DocumentFilePresenter: NSObject, NSFilePresenter {
     if !isRegistered {
       NSFileCoordinator.addFilePresenter(self)
       isRegistered = true
+      lastModificationDate = documentModificationDate()
     }
   }
 
@@ -127,7 +130,12 @@ fileprivate class DocumentFilePresenter: NSObject, NSFilePresenter {
 
   public func presentedItemDidChange() {
     if isRegistered {
-      doc?.presentedItemDidChange()
+      if let lastModificationDate = self.lastModificationDate,
+         let modificationDate = documentModificationDate(),
+         modificationDate > lastModificationDate {
+        doc?.presentedItemDidChange()
+        self.lastModificationDate = modificationDate
+      }
     }
   }
   
@@ -143,5 +151,14 @@ fileprivate class DocumentFilePresenter: NSObject, NSFilePresenter {
       unregister()
     }
     completionHandler(nil)
+  }
+
+  private func documentModificationDate() -> Date? {
+    doc?.fileURL?.removeCachedResourceValue(forKey: .contentModificationDateKey)
+
+    return try? doc?
+      .fileURL?
+      .resourceValues(forKeys: [.contentModificationDateKey])
+      .contentModificationDate
   }
 }
