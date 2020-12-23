@@ -13,6 +13,7 @@ let package = Package(
     dependencies: [
       .package(path: "../../NimbleCore"),
       .package(path: "../CodeEditor"),
+      .package(path: "../BuildSystem"),
       .package(url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("swift-5.2-branch")),
     ],
     targets: [
@@ -21,6 +22,7 @@ let package = Package(
         dependencies: [
           "NimbleCore",
           "CodeEditor",
+          "BuildSystem",
           "SourceKitLSP"
         ]
       ),

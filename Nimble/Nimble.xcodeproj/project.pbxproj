@@ -147,6 +147,7 @@
 		0CD0FB3523A39503003B01DE /* StatusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
 		0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootSplitView.swift; sourceTree = "<group>"; };
 		0CD0FB4523A776BD003B01DE /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
+		0CDCB89C2593286400AA7B34 /* Nimble.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Nimble.entitlements; sourceTree = "<group>"; };
 		0CEE0F0A239659FC002E69D6 /* BuildSystem.plugin */ = {isa = PBXFileReference; lastKnownFileType = file; path = BuildSystem.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D71D04F9246615F400200127 /* NimbleStatusBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NimbleStatusBar.xib; sourceTree = "<group>"; };
 		D71D04FB2466163B00200127 /* NimbleStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleStatusBar.swift; sourceTree = "<group>"; };
@@ -314,6 +315,7 @@
 		D7CBF7CD222878F10088715C /* Nimble */ = {
 			isa = PBXGroup;
 			children = (
+				0CDCB89C2593286400AA7B34 /* Nimble.entitlements */,
 				D785F2D7246D8E2A00FB346C /* Assets.xcassets */,
 				D78FFF1824255CE100EB70E2 /* Icons */,
 				D7CBF7D7222878F40088715C /* Info.plist */,
@@ -644,10 +646,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_ENTITLEMENTS = Nimble/Nimble.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 2ND78VA66X;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../Plugins/InterfaceBuilder/InterfaceBuilder/Libraries",
@@ -658,6 +662,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 0.4;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.Nimble;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -670,10 +675,12 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_ENTITLEMENTS = Nimble/Nimble.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 2ND78VA66X;
+				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../Plugins/InterfaceBuilder/InterfaceBuilder/Libraries",
@@ -684,6 +691,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 0.4;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.Nimble;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
