@@ -117,7 +117,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   }
   
   private func setupThemesMenu() {
-    guard let themeMenu = NSApplication.shared.mainMenu?.findItem(with: "Nimble/Preferences/Theme")?.submenu else { return }
+    guard let themeMenu = NSApplication.shared.mainMenu?.findItem(with: "Scade/Preferences/Theme")?.submenu else { return }
         
     let defaultThemeItem = NSMenuItem(title: "Default", action: #selector(switchTheme(_:)), keyEquivalent: "")
     defaultThemeItem.target = self
@@ -146,7 +146,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   }
   
   private func setupSettingsMenu() {
-    guard let settingsMenuItem = NSApplication.shared.mainMenu?.findItem(with: "Nimble/Preferences/Settings") else { return }
+    guard let settingsMenuItem = NSApplication.shared.mainMenu?.findItem(with: "Scade/Preferences/Settings") else { return }
     
     settingsMenuItem.target = self
     settingsMenuItem.identifier = NSUserInterfaceItemIdentifier(rawValue: AppDelegate.settingsMenuId)
