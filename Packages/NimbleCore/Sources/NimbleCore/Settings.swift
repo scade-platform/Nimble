@@ -18,7 +18,7 @@ final public class Setting<T: Codable> {
   public var observers = ObserverSet<SettingObserver>()
 
   public var wrappedValue: T {
-    get { return Settings.shared.get(key) }
+    get { return Settings.shared.get(key)! }
     set {
       Settings.shared.set(key, value: newValue)
       valueDidChange()
@@ -53,16 +53,35 @@ protocol SettingProtocol: class {
 }
 
 
-struct SettingRef {
+public struct SettingRef {
   let coder: SettingProtocol.Type
   weak var setting: SettingProtocol? = nil
   
   var defaultValue: Any { setting!.default }
+
+  public var isSet: Bool {
+    guard let key = setting?.key else { return false}
+    return Settings.shared.isSet(key)
+  }
   
   init(_ setting: SettingProtocol) {
     self.coder = type(of: setting)
     self.setting = setting
   }
+
+  public func get<T: Codable>() -> T? {
+    guard let key = setting?.key else { return nil }
+    return Settings.shared.get(key)
+  }
+
+  public func set<T: Codable>(_ value: T, `override`: Bool = true) {
+    guard let key = setting?.key else { return }
+
+    if `override` || !Settings.shared.isSet(key) {
+      Settings.shared.set(key, value: value)
+    }
+  }
+
 }
 
 fileprivate extension SettingProtocol {
@@ -110,23 +129,41 @@ public class Settings {
 
   private lazy var store: Store = loader()
 
+  private lazy var runtime: Store = .empty
+
   fileprivate var refs: [String: SettingRef] = [:]
+
+  public subscript(_ key: String) -> SettingRef? {
+    return refs[key]
+  }
 
   init(loader: @escaping () -> Store = { .empty }) {
     self.loader = loader
   }
       
-  fileprivate func get<T: Codable>(_ key: String) -> T {
+  fileprivate func get<T: Codable>(_ key: String) -> T? {
     assert(refs[key] != nil)
-    let value = store.data[key] ?? refs[key]!.defaultValue
-    return value as! T
+
+    if let value = runtime.data[key] {
+      return value as? T
+    }
+
+    if let value = store.data[key] {
+      return value as? T
+    }
+
+    return refs[key]?.defaultValue as? T
   }
   
   fileprivate func set<T: Codable>(_ key: String, value: T) {
     assert(refs[key] != nil)
-    store.data[key] = value
+    runtime.data[key] = value
   }
-    
+
+  fileprivate func isSet(_ key: String) -> Bool {
+    return runtime.data[key] != nil || store.data[key] != nil
+  }
+
   public var content: String {
     var store = Store(data: self.store.data, settings: self)
     
@@ -170,7 +207,7 @@ public class Settings {
   
  
   
-  public func optionalToString(optional: Any?, defaultValue: String) -> String {
+  private func optionalToString(optional: Any?, defaultValue: String) -> String {
     switch optional {
     case let value? where value is NSNull: return defaultValue
     case let value?: return String(describing: value)
