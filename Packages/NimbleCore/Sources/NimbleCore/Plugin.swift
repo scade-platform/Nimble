@@ -84,6 +84,15 @@ public struct Package {
 // MARK: - PlugIn Manager
 
 public class PluginManager {
+  
+  public struct PluginsStore {
+    private let plugins: [Plugin]
+
+    fileprivate init(_ plugins: [Plugin]) {
+      self.plugins = plugins
+    }
+  }
+
   private static var searchPaths: [Path] {
     var paths: [Path] = []
     
@@ -98,8 +107,8 @@ public class PluginManager {
     return paths
   }
   
-  private static func loadBundles() -> (plugins: [String: Plugin], packages: [Package]) {
-    var plugins = [String: Plugin]()
+  private static func loadBundles() -> (plugins: PluginsStore, packages: [Package]) {
+    var plugins = [Plugin]()
     var packages = [Package]()
     
     var bundles = [String : (path: Path, bundle: CFBundle?)]()
@@ -144,12 +153,12 @@ public class PluginManager {
            let bundle = Bundle(path: path.string),
            let module = bundle.principalClass as? Module.Type {
           
-          plugins[module.plugin.id] = module.plugin
+          plugins.append(module.plugin)
         }
       }
     }
         
-    return (plugins, packages)
+    return (PluginsStore(plugins), packages)
   }
   
   public static let shared = PluginManager()
@@ -158,14 +167,14 @@ public class PluginManager {
 
   private var packages: [Package] = []
     
-  public lazy var plugins: [String: Plugin] = {
+  public lazy var plugins: PluginsStore = {
     let (plugins, packages) = PluginManager.loadBundles()
     self.packages = packages
     return plugins
   }()
   
   private lazy var lazySingleLoad: Void = {
-    plugins.forEach { $0.1.load() }
+    plugins.forEach { $0.load() }
     return ()
   }()
   
@@ -174,19 +183,19 @@ public class PluginManager {
   }
   
   public func activate(in workbench: Workbench) -> Void {
-    plugins.forEach{ $0.1.activate(in: workbench) }
+    plugins.forEach{ $0.activate(in: workbench) }
   }
   
   public func deactivate(in workbench: Workbench) -> Void {
-    plugins.forEach{ $0.1.deactivate(in: workbench) }
+    plugins.forEach{ $0.deactivate(in: workbench) }
   }
   
   public func restoreState(in workbench: Workbench, coder: NSCoder) {
-    plugins.forEach{ $0.1.restoreState(in: workbench, coder: coder) }
+    plugins.forEach{ $0.restoreState(in: workbench, coder: coder) }
   }
   
   public func encodeRestorableState(in workbench: Workbench, coder: NSCoder) {
-    plugins.forEach{ $0.1.encodeRestorableState(in: workbench, coder: coder) }
+    plugins.forEach{ $0.encodeRestorableState(in: workbench, coder: coder) }
   }
   
   public func getFromPackages<T: Decodable>(_ type: T.Type, at path: String) -> [T] {
@@ -211,3 +220,22 @@ fileprivate extension Path {
 }
 
 
+extension PluginManager.PluginsStore: Collection {
+  public typealias Index = Array<Plugin>.Index
+  public typealias Element = Array<Plugin>.Element
+
+  public var startIndex: Index { return plugins.startIndex }
+  public var endIndex: Index { return plugins.endIndex }
+
+  public subscript(index: Index) -> Iterator.Element {
+    get { return plugins[index] }
+  }
+
+  public subscript(id: String) -> Element? {
+    get { return plugins.first(where: { $0.id == id }) }
+  }
+
+  public func index(after i: Index) -> Index {
+    return plugins.index(after: i)
+  }
+}
