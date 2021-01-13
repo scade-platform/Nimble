@@ -4,6 +4,9 @@
 
 //  Gist from: https://gist.github.com/swillits/df648e87016772c7f7e5dbed2b345066
 
+
+// MARK: - Keycodes
+
 public struct Keycode {
   
   // Layout-independent Keys
@@ -130,7 +133,7 @@ public struct Keycode {
   public static let keypad9                   : UInt16 = 0x5C
   
   
-  //MARK: Key sets
+  // MARK: - Key sets
   
   public static let chars = [
     a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z

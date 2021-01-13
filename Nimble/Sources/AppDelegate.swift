@@ -90,6 +90,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     let visibilityGroup = CommandGroup(name: "AreaVisibilityCommands", commands: visibilityCommands)
     CommandManager.shared.register(group: visibilityGroup)
+
+    ///TODO: move to the central place for common commands
+    let zoomIn = Command(name: "Zoom In", keyEquivalent: "cmd+plus") { workbench in
+      guard let editor = workbench.currentDocument?.editor as? WorkbenchEditorZoomSupport else { return }
+      editor.zoomIn()
+    }
+
+    let zoomOut = Command(name: "Zoom Out", keyEquivalent: "cmd+minus") { workbench in
+      guard let editor = workbench.currentDocument?.editor as? WorkbenchEditorZoomSupport else { return }
+      editor.zoomOut()
+    }
+
+    CommandManager.shared.register(commands: [zoomIn, zoomOut])
   }
 
   private func setupApplicationMenu() {
@@ -191,8 +204,6 @@ class AppDelegate: NSObject, NSApplicationDelegate {
   }
 
   func applicationDidFinishLaunching(_ notification: Notification) {
-
-
 
   }
   

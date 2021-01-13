@@ -19,6 +19,7 @@
 		0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3523A39503003B01DE /* StatusBarView.swift */; };
 		0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */; };
 		0CD0FB4623A776BD003B01DE /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB4523A776BD003B01DE /* EditorView.swift */; };
+		D70A5421254B872D00730F52 /* KeyboardShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70A5420254B872D00730F52 /* KeyboardShortcut.swift */; };
 		D71D04FA246615F400200127 /* NimbleStatusBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D71D04F9246615F400200127 /* NimbleStatusBar.xib */; };
 		D71D04FC2466163B00200127 /* NimbleStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71D04FB2466163B00200127 /* NimbleStatusBar.swift */; };
 		D721CFA72385EC3200FD1B00 /* NSOpenPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */; };
@@ -112,6 +113,7 @@
 		0CD0FB3523A39503003B01DE /* StatusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
 		0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootSplitView.swift; sourceTree = "<group>"; };
 		0CD0FB4523A776BD003B01DE /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
+		D70A5420254B872D00730F52 /* KeyboardShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcut.swift; sourceTree = "<group>"; };
 		D71D04F9246615F400200127 /* NimbleStatusBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NimbleStatusBar.xib; sourceTree = "<group>"; };
 		D71D04FB2466163B00200127 /* NimbleStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleStatusBar.swift; sourceTree = "<group>"; };
 		D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSOpenPanel.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				D7F156B5244C93FE00AFBE67 /* Command+Toolbar.swift */,
 				D7D461642390083C0090FC34 /* Document.swift */,
 				D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */,
+				D70A5420254B872D00730F52 /* KeyboardShortcut.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -466,6 +469,7 @@
 				0CB6F11424FE46B800960EDA /* WizardView.swift in Sources */,
 				D77AAF14250816CF00C63C19 /* DiagnosticStatusBar.swift in Sources */,
 				0CD0FB4623A776BD003B01DE /* EditorView.swift in Sources */,
+				D70A5421254B872D00730F52 /* KeyboardShortcut.swift in Sources */,
 				D724C5F0237C418B00E80958 /* DropView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

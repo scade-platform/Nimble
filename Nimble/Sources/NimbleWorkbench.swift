@@ -507,19 +507,34 @@ extension NimbleWorkbench {
 }
 
 
-// MARK: - NimbleWorkbenchView
+// MARK: - NimbleWorkbenchView (Window root view)
 
-protocol NimbleWorkbenchView { }
-protocol NimbleWorkbenchViewController {}
+class NimbleWorkbenchView: NSView, WorkbenchView {
+  public override func performKeyEquivalent(with event: NSEvent) -> Bool {
+    guard let shortcut = event.keyboardShortcut,
+          let cmd = CommandManager.shared.command(shortcut: shortcut),
+          let workbench = self.workbench, cmd.enabled(in: workbench) else { return super.performKeyEquivalent(with: event) }
+
+    cmd.run(in: workbench)
+    return true
+  }
+}
 
 
-extension NimbleWorkbenchView where Self: NSView {
+
+// MARK: - WorkbenchView
+
+protocol WorkbenchView { }
+protocol WorkbenchViewController {}
+
+
+extension WorkbenchView where Self: NSView {
   var workbench: Workbench? {
     return window?.windowController as? NimbleWorkbench
   }
 }
 
-extension NimbleWorkbenchViewController where Self: NSViewController {
+extension WorkbenchViewController where Self: NSViewController {
   var workbench: Workbench? {
     return view.window?.windowController as? NimbleWorkbench
   }

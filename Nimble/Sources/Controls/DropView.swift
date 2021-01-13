@@ -9,7 +9,7 @@
 import Cocoa
 import NimbleCore
 
-class DropView: NSSplitView, NimbleWorkbenchView {
+class DropView: NSSplitView, WorkbenchView {
   lazy var acceptedTypes: [String] = {
     Array(DocumentManager.shared.typeIdentifiers.union(["public.folder"]))
   }()

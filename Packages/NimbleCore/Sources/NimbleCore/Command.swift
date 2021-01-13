@@ -8,6 +8,7 @@
 
 import Cocoa
 
+//MARK: - Command
 
 open class Command {
   public typealias Handler = (Workbench) -> Void
@@ -24,36 +25,37 @@ open class Command {
     public static let `default`: State = [.enabled]
   }
 
+  // Actions
+  private let handler: Handler
+
   public let name: String
 
   // Menu item
   public let menuPath: String?
-  public let keyEquivalent: String?
+  public let keyboardShortcut: KeyboardShortcut?
   
   // Toolbar item
   public let toolbarIcon: NSImage?
   public let toolbarControlClass: NSControl.Type?
   open var alignment: ToolbarAlignment
 
-  // Actions
-  private let handler: Handler
-
   public fileprivate(set) weak var group: CommandGroup?
 
-  public var groupIndex: Int? { group?.commands.firstIndex{$0 === self } }
-
-  open func run(in workbench: Workbench) {
-    handler(workbench)
+  public var groupIndex: Int? {
+    group?.commands.firstIndex{$0 === self }
   }
 
-  open func validate(in workbench: Workbench) -> State {
-    return .default
-  }
-  
-  //Command doesn't contain concrete control but could produce it
-  //so we need to ability to validate this concrete control
-  open func validate(in workbench: Workbench, control: NSControl) -> State {
-    return .default
+  public init(name: String,
+              keyEquivalent: String? = nil ,
+              handler: (@escaping Handler) = { _ in return } ) {
+
+    self.name = name
+    self.menuPath = nil
+    self.keyboardShortcut = keyEquivalent.map{KeyboardShortcut($0)} ?? nil
+    self.toolbarIcon = nil
+    self.toolbarControlClass = nil
+    self.alignment = .left(orderPriority: 100)
+    self.handler = handler
   }
 
   public init(name: String,              
@@ -65,13 +67,13 @@ open class Command {
 
     self.name = name
     self.menuPath = menuPath
-    self.keyEquivalent = keyEquivalent
+    self.keyboardShortcut = keyEquivalent.map{KeyboardShortcut($0)} ?? nil
     self.toolbarIcon = toolbarIcon
     self.toolbarControlClass = nil
     self.alignment = alignment
     self.handler = handler
   }
-  
+
   public init(name: String,
               menuPath: String? = nil,
               keyEquivalent: String? = nil ,
@@ -81,13 +83,37 @@ open class Command {
 
     self.name = name
     self.menuPath = menuPath
-    self.keyEquivalent = keyEquivalent
+    self.keyboardShortcut = keyEquivalent.map{KeyboardShortcut($0)} ?? nil
     self.toolbarIcon = nil
     self.toolbarControlClass = controlClass
     self.alignment = alignment
     self.handler = handler
   }
+
+  open func run(in workbench: Workbench) {
+    handler(workbench)
+  }
+
+  open func validate(in workbench: Workbench) -> State {
+    return .default
+  }
+
+  //Command doesn't contain concrete control but could produce it
+  //so we need to ability to validate this concrete control
+  open func validate(in workbench: Workbench, control: NSControl) -> State {
+    return .default
+  }
+
+  public func enabled(in workbench: Workbench) -> Bool {
+    return validate(in: workbench).contains(.enabled)
+  }
+
+  public func selected(in workbench: Workbench) -> Bool {
+    return validate(in: workbench).contains(.selected)
+  }
 }
+
+// MARK: - CommandGroup
 
 public class CommandGroup {
   private var _commands: [WeakRef<Command>] = []
@@ -115,6 +141,7 @@ public class CommandGroup {
   }
 }
 
+// MARK: - CommandObserver
 
 public protocol CommandObserver {
   func commandDidRegister(_ command: Command)
@@ -128,27 +155,47 @@ public extension CommandObserver {
 }
 
 
+// MARK: - CommandManager
+
 public class CommandManager {
-  private var _groups: [String: CommandGroup] = [:]
-
-  public private(set) var commands: [Command] = []
-  public var groups: [CommandGroup] { Array(_groups.values) }
-
-  public var observers = ObserverSet<CommandObserver>()
+  public static let shared: CommandManager = CommandManager()
 
   private init() {}
 
+
+  private var _groups: [String: WeakRef<CommandGroup>] = [:]
+  private var _commands: [String: WeakRef<Command>] = [:]
+  private var _shortcuts: [KeyboardShortcut: WeakRef<Command>] = [:]
+
+
+  public private(set) var groups: [CommandGroup] = []
+  public private(set) var commands: [Command] = []
+
+
+  public var observers = ObserverSet<CommandObserver>()
+
+
   public func command(name: String) -> Command? {
-    return commands.first{$0.name == name}
+    return _commands[name]?.value
+  }
+
+  public func command(shortcut: KeyboardShortcut) -> Command? {
+    return _shortcuts[shortcut]?.value
   }
 
   public func group(name: String) -> CommandGroup? {
-    return _groups[name]
+    return _groups[name]?.value
   }
 
   public func register(command: Command) {
-    guard self.command(name: command.name) == nil else { return }
+    guard _commands[command.name] == nil else { return }
+
     commands.append(command)
+    _commands[command.name] = WeakRef<Command>(value: command)
+
+    if let shortcut = command.keyboardShortcut {
+      _shortcuts[shortcut] = WeakRef<Command>(value: command)
+    }
 
     observers.notify {
       $0.commandDidRegister(command)
@@ -165,7 +212,9 @@ public class CommandManager {
     if registerCommands {
       group.commands.forEach { self.register(command: $0) }
     }
-    _groups[group.name] = group
+    
+    groups.append(group)
+    _groups[group.name] = WeakRef<CommandGroup>(value: group)
 
     observers.notify {
       $0.commandGroupDidRegister(group)
@@ -174,9 +223,8 @@ public class CommandManager {
 }
 
 
-public extension CommandManager {
-  static let shared: CommandManager = CommandManager()
-}
+
+// MARK: - Utils
 
 public enum ToolbarAlignment {
   //The higher the `orderPriority`, the more to the right the element

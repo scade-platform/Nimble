@@ -47,7 +47,7 @@ class TabItem : СustomizableTabItem {
 
 // MARK: - Tabbed Editor
 
-class TabbedEditor: NSViewController, NimbleWorkbenchViewController {
+class TabbedEditor: NSViewController, WorkbenchViewController {
   
   @IBOutlet weak var tabBar: TabsControl!
   @IBOutlet weak var tabViewContainer: NSView!

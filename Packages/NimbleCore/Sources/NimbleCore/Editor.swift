@@ -39,10 +39,8 @@ public extension WorkbenchEditor {
 
 // MARK: - Editor Command Actions
 
-public protocol WorkbenchEditorZoomSuppot {
-
+public protocol WorkbenchEditorZoomSupport where Self: WorkbenchEditor {
   func zoomIn()
-
   func zoomOut()
 }
 

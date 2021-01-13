@@ -10,7 +10,7 @@ import Cocoa
 import NimbleCore
 
 
-class DiagnosticView: NSViewController, NimbleWorkbenchViewController {
+class DiagnosticView: NSViewController, WorkbenchViewController {
   @IBOutlet weak var table: NSTableView? = nil
 
   private var diagnostics: [(DiagnosticSource, Diagnostic)] = [] {

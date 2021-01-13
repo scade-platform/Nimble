@@ -9,7 +9,7 @@
 import Cocoa
 import NimbleCore
 
-class DiagnosticStatusBar: NSViewController, NimbleWorkbenchViewController {
+class DiagnosticStatusBar: NSViewController, WorkbenchViewController {
   @IBOutlet weak var errorsIcon: NSImageView!
   @IBOutlet weak var errorsCount: NSTextField!
 

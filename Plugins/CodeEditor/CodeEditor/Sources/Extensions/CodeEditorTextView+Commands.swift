@@ -1,7 +1,8 @@
 import CodeEditor
 import Cocoa
 
-extension CodeEditorTextView: WorkbenchEditorZoomSuppot {
+
+extension CodeEditorView: WorkbenchEditorZoomSupport {
 
   func zoomIn() {
     zoom(delta: 1)
@@ -12,9 +13,9 @@ extension CodeEditorTextView: WorkbenchEditorZoomSuppot {
   }
 
   private func zoom(delta: CGFloat) {
-    modifyFontSize(delta: delta)
+    self.textView.modifyFontSize(delta: delta)
 
-    guard let lineNumberView = self.lineNumberView else { return }
+    guard let lineNumberView = self.textView.lineNumberView else { return }
 
     lineNumberView.modifyFontSize(delta: delta)
     lineNumberView.setNeedsDisplay(lineNumberView.bounds)

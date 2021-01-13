@@ -10,7 +10,7 @@ import Cocoa
 import NimbleCore
 import Ansi
 
-class ConsoleView: NSViewController, NimbleWorkbenchViewController {
+class ConsoleView: NSViewController, WorkbenchViewController {
   
   @IBOutlet var textView: NSTextView!
   
