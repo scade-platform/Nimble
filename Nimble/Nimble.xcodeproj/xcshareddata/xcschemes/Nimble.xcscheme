@@ -76,6 +76,62 @@
                ReferencedContainer = "container:../Plugins/BuildSystem/BuildSystem.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D71E1BB2241ED3E600711B5A"
+               BuildableName = "FileIcons.plugin"
+               BlueprintName = "FileIcons"
+               ReferencedContainer = "container:../Plugins/FileIcons/FileIcons.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D7EC1360239EF4D100DA0DA0"
+               BuildableName = "LSPClient.plugin"
+               BlueprintName = "LSPClient.plugin"
+               ReferencedContainer = "container:../Plugins/LSPClient/LSPClient.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D7113593239435E900A5CE6B"
+               BuildableName = "LangExtensions.plugin"
+               BlueprintName = "LangExtensions"
+               ReferencedContainer = "container:../Plugins/LangExtensions/LangExtensions.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D7BEC80B22B9158B00A8F48B"
+               BuildableName = "SwiftExtensions.plugin"
+               BlueprintName = "SwiftExtensions.plugin"
+               ReferencedContainer = "container:../Plugins/SwiftExtensions/SwiftExtensions.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
