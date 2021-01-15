@@ -13,8 +13,14 @@ import BuildSystem
 import SwiftExtensions
 
 class SPMBuildSystem: BuildSystem {
-  @Setting("swift.android.toolchain", defaultValue: nil)
-  static var androidToolchain: SwiftAndroidToolchain?
+  @Setting("com.android.toolchain.sdk", defaultValue: nil)
+  static var androidToolchainSdk: String?
+
+  @Setting("com.android.toolchain.ndk", defaultValue: nil)
+  static var androidToolchainNdk: String?
+
+  @Setting("com.scade.toolchain.compiler.android", defaultValue: nil)
+  static var androidSwiftCompiler: String?
 
   @Setting("swift.platforms", defaultValue: [])
   static var platforms: [SwiftToolchain]
@@ -24,9 +30,11 @@ class SPMBuildSystem: BuildSystem {
   }
 
   private func makeAndroidVariants(target: SPMTarget) -> [Variant] {
-    guard let toolchain = SPMBuildSystem.androidToolchain else { return [] }
+    guard let sdk = SPMBuildSystem.androidToolchainSdk else { return [] }
+    guard let ndk = SPMBuildSystem.androidToolchainNdk else { return [] }
+    guard let compiler = SPMBuildSystem.androidSwiftCompiler else { return [] }
     return AndroidBuildTarget.allCases.map {
-      let t = makeAndroidSwiftToolchain(compiler: toolchain.compiler, ndk: toolchain.ndk, target: $0)
+      let t = makeAndroidSwiftToolchain(compiler: compiler, ndk: ndk, target: $0)
       return UserDefinedToolchainVariant(target: target, buildSystem: self, toolchain: t)
     }
   }
