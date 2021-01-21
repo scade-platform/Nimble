@@ -90,12 +90,29 @@ extension CodeEditorTextView {
   // MARK: - Overrides
 
   override func insertText(_ string: Any, replacementRange: NSRange) {
-    super.insertText(string, replacementRange: replacementRange)
     guard let input = string as? String else { return }
 
     if let pair = autoClosingPairs.first(where: { input == $0.0 }) {
+      super.insertText(string, replacementRange: replacementRange)
       super.insertText(pair.1, replacementRange: replacementRange)
       super.moveBackward(self)
+
+    } else if let pair = autoClosingPairs.first(where: { input == $0.1 })  {
+      let cur = self.string.index(self.string.startIndex,
+                                  offsetBy: replacementRange.lowerBound,
+                                  limitedBy: self.string.endIndex) ?? self.string.endIndex
+
+      // If pair is not closed, close it. Otherwise just move forward
+      if let next = self.string.index(cur, offsetBy: pair.1.count, limitedBy: self.string.endIndex),
+        String(self.string[cur..<next]) != pair.1 {
+        super.insertText(string, replacementRange: replacementRange)
+
+      } else {
+        super.moveForward(self)
+      }
+
+    } else {
+      super.insertText(string, replacementRange: replacementRange)
     }
   }
 
