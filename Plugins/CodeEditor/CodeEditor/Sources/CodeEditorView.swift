@@ -299,7 +299,7 @@ extension CodeEditorView: NSTextStorageDelegate {
   }
 }
 
-// MARK: - NSTextViewDelegate
+// MARK: - CodeEditorTextViewDelegate
 
 extension CodeEditorView: NSTextViewDelegate {
   private static let snippetRegex = try? NSRegularExpression(pattern: "\\$\\{[0-9]+:(.*?)\\}")
@@ -365,3 +365,11 @@ extension CodeEditorView: NSTextViewDelegate {
   }
 }
 
+
+// MARK: - CodeEditorTextViewDelegate
+
+extension CodeEditorView: CodeEditorTextViewDelegate {
+  func fontDidChange() {
+    self.showDiagnostics()
+  }
+}

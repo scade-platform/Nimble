@@ -166,6 +166,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   override var font: NSFont? {
     didSet {
       self.invalidateDefaultParagraphStyle()
+      (self.delegate as? CodeEditorTextViewDelegate)?.fontDidChange()
     }
   }
   
@@ -311,6 +312,20 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   }
 
 }
+
+
+// MARK: - CodeEditorTextViewDelegate
+
+protocol CodeEditorTextViewDelegate {
+  func fontDidChange() -> Void
+}
+
+
+extension CodeEditorTextViewDelegate {
+  func fontDidChange() -> Void {}
+}
+
+
 
 // MARK: - NSLayoutManagerDelegate
 
