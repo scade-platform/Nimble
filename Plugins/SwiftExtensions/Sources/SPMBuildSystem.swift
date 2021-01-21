@@ -19,7 +19,7 @@ class SPMBuildSystem: BuildSystem {
   @Setting("com.android.toolchain.ndk", defaultValue: nil)
   static var androidToolchainNdk: String?
 
-  @Setting("com.scade.toolchain.compiler.android", defaultValue: nil)
+  @Setting("com.android.toolchain.swift", defaultValue: nil)
   static var androidSwiftCompiler: String?
 
   @Setting("swift.platforms", defaultValue: [])
