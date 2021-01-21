@@ -63,18 +63,44 @@ public struct TokenizerResult {
   init(location: Int) {
     self.init(range: location..<location)
   }
-  
-  init(node: SyntaxNode) {
-    self.range = node.range
-    self.nodes = [node]
 
+  init(node: SyntaxNode) {
+    self.init(nodes: [node])
+  }
+
+  init(nodes: [SyntaxNode]) {
+    self.nodes = nodes
+    ///TODO: switch to use optionals to avoid having [0, 0) as a not defined range
+    self.range = nodes.range ?? 0..<0
+  }
+
+  func disjoint(from other: TokenizerResult) -> TokenizerResult {
+    return disjoint(from: other.range)
+  }
+
+  func disjoint(from range: Range<Int>) -> TokenizerResult {
+    return TokenizerResult(nodes: self.nodes.compactMap{ $0.disjoint(from: range)})
+  }
+}
+
+
+fileprivate extension SyntaxNode {
+  func disjoint(from range: Range<Int>) -> SyntaxNode? {
+    // If no intersection return itself
+    guard self.range.intersection(with: range) != nil else { return self }
+    // Because of intersection: if scoped we have to break
+    guard self.scope == nil else { return nil }
+
+    let nodes = self.nodes.compactMap{ $0.disjoint(from: range) }
+    guard let range = nodes.range else { return nil }
+
+    return SyntaxNode(scope: nil, range: range, nodes: nodes)
   }
 }
 
 public protocol TokenizerRepository: class {
   subscript(ref: GrammarRef) -> Tokenizer? { get }
 }
-
 
 
 // MARK: TM Tokenizer
@@ -198,9 +224,10 @@ class GrammarTokenizer: PatternsListTokenizer {
 
     var result: TokenizerResult? = nil
 
-    for case let lineRes? in linesRes {
+    for lineRes in linesRes {
       guard let res = result else { merge(lineRes, into: &result); continue }
-      if lineRes.range.lowerBound >= res.range.upperBound {
+
+      if let lineRes = lineRes?.disjoint(from: res), !lineRes.isEmpty {
         merge(lineRes, into: &result)
       }
     }

@@ -75,6 +75,8 @@ public struct SyntaxNode {
 
 
 extension Array where Element == SyntaxNode {
+  var range: Range<Int>? { self.map{$0.range}.union() }
+
   func visit(_ visitor: (SyntaxScope?, Range<Int>) -> Void) {
     self.forEach { $0.visit(visitor) }
   }
