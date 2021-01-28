@@ -19,7 +19,7 @@ extension Range: RangeSet where Bound: Comparable {
   }
 
   public func intersection(with other: Range) -> Range? {
-    guard self.upperBound >= other.lowerBound && self.lowerBound <= other.upperBound else { return nil }
+    guard self.upperBound > other.lowerBound && self.lowerBound < other.upperBound else { return nil }
     return Swift.max(self.lowerBound, other.lowerBound)..<Swift.min(self.upperBound, other.upperBound)
   }
 }
