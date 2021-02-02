@@ -74,7 +74,7 @@ public protocol FolderObserver  {
 public extension FolderObserver {
   //default implementation
   func folderDidChange(_ folder: Folder) {}
-  func childDidChange(_ folder: Folder, child: FileSystemElement) {}
+  func childDidChange(_ folder: Folder, child: Path) {}
 }
 
 fileprivate class FilePresenter: NSObject, NSFilePresenter  {

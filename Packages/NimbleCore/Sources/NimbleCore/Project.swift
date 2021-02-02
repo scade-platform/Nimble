@@ -25,6 +25,19 @@ public final class Project {
     }
   }
   
+  public var url: URL? {
+    set {
+      guard let newValue = newValue else {
+        path = nil
+        return
+      }
+      path = Path(url: newValue)
+    }
+    get {
+      path?.url
+    }
+  }
+  
   public var folders: [Folder] {
     projectFolders.map {$0.folder}
   }
@@ -33,6 +46,18 @@ public final class Project {
   
   public var isEmpty: Bool {
     projectFolders.isEmpty && path == nil
+  }
+  
+  public func data() -> Data? {
+    let folders: [String] = self.projectFolders.map {
+      if let relPath = $0.relativePath, let absPath = self.path?.join(relPath), absPath.exists {
+        return relPath
+      } else {
+        return $0.folder.path.description
+      }
+    }
+    let content = try? YAMLEncoder().encode(RawData(folders: folders))
+    return content?.data(using: .utf8)
   }
   
   public init() {
@@ -51,15 +76,9 @@ public final class Project {
   }
   
   public func save(to path: Path) throws {
-    let folders: [String] = self.projectFolders.map {
-      if let relPath = $0.relativePath, let absPath = self.path?.join(relPath), absPath.exists {
-        return relPath
-      } else {
-        return $0.folder.path.description
-      }
+    guard let content = data() else {
+      return
     }
-    
-    let content = try YAMLEncoder().encode(RawData(folders: folders))
     try content.write(to: path)
   }
   
