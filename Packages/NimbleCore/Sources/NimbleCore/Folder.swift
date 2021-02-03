@@ -68,20 +68,22 @@ public class Folder: FileSystemElement {
 
 public protocol FolderObserver  {
   func folderDidChange(_ folder: Folder)
+  func folderDidMoved(_ folder: Folder, to newPath: Path)
   func childDidChange(_ folder: Folder, child: Path)
 }
 
 public extension FolderObserver {
   //default implementation
   func folderDidChange(_ folder: Folder) {}
+  func folderDidMoved(_ folder: Folder, to newPath: Path) {}
   func childDidChange(_ folder: Folder, child: Path) {}
 }
 
 fileprivate class FilePresenter: NSObject, NSFilePresenter  {
-  let presentedElement: Folder
+  weak var presentedElement: Folder?
   
   var presentedItemURL: URL? {
-    return presentedElement.path.url
+    return presentedElement?.path.url
   }
   
   var presentedItemOperationQueue: OperationQueue {
@@ -94,12 +96,20 @@ fileprivate class FilePresenter: NSObject, NSFilePresenter  {
   }
   
   func presentedSubitemDidChange(at url: URL) {
+    guard let presentedElement = presentedElement else { return }
     guard let path = Path(url: url) else { return }
     presentedElement.observers.notify{$0.childDidChange(presentedElement, child: path)}
   }
   
   func presentedItemDidChange() {
+    guard let presentedElement = presentedElement else { return }
     presentedElement.observers.notify{$0.folderDidChange(presentedElement)}
+  }
+  
+  func presentedItemDidMove(to newURL: URL) {
+    guard let presentedElement = presentedElement else { return }
+    guard let newPath = Path(url: newURL) else { return }
+    presentedElement.observers.notify{$0.folderDidMoved(presentedElement, to: newPath)}
   }
 }
 

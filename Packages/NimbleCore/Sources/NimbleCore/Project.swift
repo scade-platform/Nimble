@@ -73,6 +73,10 @@ public final class Project {
     self.projectFolders = (rawData.folders ?? []).compactMap {
       ProjectFolder($0, relativeTo: path.parent)
     }
+    
+    self.projectFolders.forEach{ projectFolder in
+      projectFolder.folder.observers.add(observer: self)
+    }
   }
   
   public func save(to path: Path) throws {
@@ -90,24 +94,26 @@ public final class Project {
   }
   
   public func add(_ folder: Folder) {
-    guard let path = self.path else {
-      projectFolders.append(ProjectFolder(folder: folder))
+    guard !projectFolders.contains(where: {$0.folder == folder}) else {
+      //already contains this folder
       return
     }
     
-    guard !projectFolders.contains(where: {$0.folder == folder}) else {
-      //already contains this folder
+    guard let path = self.path else {
+      projectFolders.append(ProjectFolder(folder: folder))
+      folder.observers.add(observer: self)
       return
     }
     
     // Check if the folder is from the project's sub-tree
     // If yes, store it relative to the project's file, otherwise absolute
     var relativePath: String? = nil
-    if folder.path.description.starts(with: path.description) {
-      relativePath = folder.path.relative(to: path)
+    if folder.path.description.starts(with: path.parent.description) {
+      relativePath = folder.path.relative(to: path.parent)
     }
 
     projectFolders.append(ProjectFolder(folder: folder, relativePath: relativePath))
+    folder.observers.add(observer: self)
     save()
   }
   
@@ -115,6 +121,7 @@ public final class Project {
     projectFolders.removeAll {
       if $0.folder == folder {
         $0.folder.isRoot = false
+        $0.folder.observers.remove(observer: self)
         return true
       }
       return false
@@ -161,6 +168,16 @@ public protocol ProjectObserver: class {
 
 public extension ProjectObserver {
   func projectFoldersDidChange(_: Project) {}
+}
+
+extension Project: FolderObserver {
+  public func folderDidMoved(_ folder: Folder, to newPath: Path) {
+    remove(folder)
+    guard let newFolder = Folder(path: newPath) else {
+      return
+    }
+    add(newFolder)
+  }
 }
 
 
