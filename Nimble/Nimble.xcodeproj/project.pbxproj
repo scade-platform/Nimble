@@ -430,7 +430,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Copy all plugins into the app's Plugin folder\nPLUGINS_DIR=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Contents/Plugins\n\nmkdir -p ${PLUGINS_DIR}\nrm -rf ${PLUGINS_DIR}/*\n\n# Copy all *.plugin files \nfor i in `find ${BUILT_PRODUCTS_DIR} -name \"*.plugin\" -type d`; do        \n  cp -r $i $PLUGINS_DIR\ndone\n";
+			shellScript = "# Copy all plugins into the app's Plugin folder\nPLUGINS_DIR=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Contents/Plugins\n\nmkdir -p ${PLUGINS_DIR}\nrm -rf ${PLUGINS_DIR}/*\n\n# Copy all *.plugin files \nfor i in `find ${BUILT_PRODUCTS_DIR} -name \"*.plugin\" -type d`; do\n  PLUGIN_NAME=`basename \"$i\"` \n  ditto $i $PLUGINS_DIR/$PLUGIN_NAME\ndone\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
