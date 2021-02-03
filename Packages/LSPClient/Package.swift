@@ -13,7 +13,7 @@ let package = Package(
     dependencies: [
       .package(path: "../../NimbleCore"),
       .package(path: "../CodeEditor"),
-      .package(url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("swift-5.2-branch")),
+      .package(url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("release/5.3")),
     ],
     targets: [
       .target(

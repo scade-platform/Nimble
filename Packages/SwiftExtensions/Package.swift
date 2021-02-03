@@ -16,8 +16,8 @@ let package = Package(
       .package(path: "../../BuildSystem"),
       .package(path: "../../LSPClient"),
       
-      .package(url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("swift-5.2-branch")),
-      .package(url: "https://github.com/FLORG1/swift-format.git", .branch("swift-5.2-branch")),
+      .package(url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("release/5.3")),
+      .package(url: "https://github.com/FLORG1/swift-format.git", .branch("swift-5.3-branch")),
     ],
     targets: [
       .target(

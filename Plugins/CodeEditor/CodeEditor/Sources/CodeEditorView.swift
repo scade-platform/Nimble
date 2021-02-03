@@ -55,10 +55,16 @@ class CodeEditorView: NSViewController {
   }
 
   func handleKeyDown(with event: NSEvent) -> Bool {
+    guard !completionView.handleKeyDown(with: event) else { return true }
+
     if completionView.isActive {
-      return completionView.handleKeyDown(with: event)
+      if event.keyCode == Keycode.delete {
+        textView.deleteBackward(nil)
+        showCompletion(triggered: false)
+        return true
+      }
     }
-    
+
     if shouldTriggerCompletion(with: event) {
       if let newText = event.charactersIgnoringModifiers {
         textView.insertText(newText, replacementRange: textView.selectedRange())

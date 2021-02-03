@@ -84,6 +84,10 @@ class CodeEditorCompletionView: NSViewController {
     (emptyView.subviews[0].subviews[0] as? NSTextField)?.font = textView?.font
     
     tableView.backgroundColor = NSColor.clear
+    if #available(OSX 11.0, *) {
+      tableView.style = .plain
+    }
+
     docView.setBackgroundColor(NSColor.red)
     
     tableView.delegate = self
@@ -91,24 +95,33 @@ class CodeEditorCompletionView: NSViewController {
   }
       
   func handleKeyDown(with event: NSEvent) -> Bool {
+    guard isActive else { return false }
+    
     switch event.keyCode {
     // Navigate
     case Keycode.downArrow, Keycode.upArrow:
       tableView?.keyDown(with: event)
       return true
+
     // Select
     case Keycode.returnKey:
       return insertCompletion()
+
     // Update
     case Keycode.delete:
+      if let cursor = textView?.selectedRange().location, cursor == completionPosition + 1 {
+        close()
+      }
       return false
     
     case _ where Keycode.chars.contains(event.keyCode):
       return false
+
     // Skip (but return true, to mark as processed)
     case Keycode.escape:
       close()
-      return true      
+      return true
+
     // Skip
     default:
       close()
@@ -272,7 +285,7 @@ class CodeEditorCompletionView: NSViewController {
     
     typeColumn.width = columnWidth(atColumn: 0, row: typeMaxChars.row) + 30.0
     labelColumn.width = columnWidth(atColumn: 1, row: labelMaxChars.row)
-    
+
 
     let spacing = tableView.intercellSpacing
     
