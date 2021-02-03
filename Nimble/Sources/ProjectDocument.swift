@@ -13,6 +13,15 @@ class ProjectDocument: NSDocument {
   static let docType = "com.scade.nimble.project"
   
   var project = Project()
+  
+  override var fileURL: URL?{
+    set {
+      project.url = newValue
+    }
+    get {
+      project.url
+    }
+  }
     
   var workbench: NimbleWorkbench? {
     windowControllers.first as? NimbleWorkbench
@@ -65,13 +74,12 @@ class ProjectDocument: NSDocument {
     try project.load(from: path)
   }
   
-  
-  override func write(to url: URL, ofType typeName: String) throws {
-    guard let path = Path(url: url) else {
-      throw NSError(domain: "ProjectDocument", code: 0, userInfo: [NSLocalizedDescriptionKey: "Cannot acces \(url)"])
+  override func data(ofType typeName: String) throws -> Data {
+    guard typeName == ProjectDocument.docType else {
+      throw NSError(domain: "ProjectDocument", code: 0, userInfo: [NSLocalizedDescriptionKey: "Document type does not match"])
     }
     
-    try project.save(to: path)
+    return project.data()!
   }
   
   func reload(from url: URL) throws {
