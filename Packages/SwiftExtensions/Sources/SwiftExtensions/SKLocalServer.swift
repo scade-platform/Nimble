@@ -82,8 +82,8 @@ public final class SKLocalServer: LSPServer {
     serverConnection.start(handler: server)
     clientConnection.start(handler: client)
         
-//    Logger.shared.disableNSLog = true
-//    Logger.shared.disableOSLog = true
+    Logger.shared.disableNSLog = true
+    Logger.shared.disableOSLog = true
     
     Logger.shared.setLogLevel("warning")
     Logger.shared.addLogHandler { [weak self] message, logLevel in
