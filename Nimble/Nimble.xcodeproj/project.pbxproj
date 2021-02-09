@@ -606,7 +606,6 @@
 		D7CBF7E7222878F40088715C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Nimble/Nimble.entitlements;
 				CODE_SIGN_IDENTITY = "";
@@ -633,7 +632,6 @@
 		D7CBF7E8222878F40088715C /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Nimble/Nimble.entitlements;
 				CODE_SIGN_IDENTITY = "";
