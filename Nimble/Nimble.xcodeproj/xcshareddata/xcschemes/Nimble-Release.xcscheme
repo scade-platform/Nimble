@@ -3,23 +3,9 @@
    LastUpgradeVersion = "1010"
    version = "1.3">
    <BuildAction
-      parallelizeBuildables = "YES"
+      parallelizeBuildables = "NO"
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D7CBF7CA222878F10088715C"
-               BuildableName = "Nimble.app"
-               BlueprintName = "Nimble"
-               ReferencedContainer = "container:Nimble.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
@@ -130,6 +116,20 @@
                BuildableName = "SwiftExtensions.plugin"
                BlueprintName = "SwiftExtensions.plugin"
                ReferencedContainer = "container:../Plugins/SwiftExtensions/SwiftExtensions.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D7CBF7CA222878F10088715C"
+               BuildableName = "Nimble.app"
+               BlueprintName = "Nimble"
+               ReferencedContainer = "container:Nimble.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
