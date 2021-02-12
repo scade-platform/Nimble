@@ -16,6 +16,7 @@
 		0CAAE9AD24370BEE003CAE92 /* WorkbenchArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAAE9AC24370BEE003CAE92 /* WorkbenchArea.swift */; };
 		0CB6F11424FE46B800960EDA /* WizardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6F11224FE46B800960EDA /* WizardView.swift */; };
 		0CB6F11524FE46B800960EDA /* WizardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CB6F11324FE46B800960EDA /* WizardView.xib */; };
+		0CCD455325D6BEE0000923E3 /* KPCTabsControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */; };
 		0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3523A39503003B01DE /* StatusBarView.swift */; };
 		0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */; };
 		0CD0FB4623A776BD003B01DE /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB4523A776BD003B01DE /* EditorView.swift */; };
@@ -50,7 +51,6 @@
 		D7C9528823FC3AF400AE7E5D /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7C9528723FC3AF400AE7E5D /* NimbleCore */; };
 		D7C9528923FC3AF400AE7E5D /* NimbleCore in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D7C9528723FC3AF400AE7E5D /* NimbleCore */; };
 		D7CBF7D6222878F40088715C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D4222878F40088715C /* Main.storyboard */; };
-		D7D46162238ED16B0090FC34 /* KPCTabsControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */; };
 		D7D46163238ED16B0090FC34 /* KPCTabsControl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D7D461652390083C0090FC34 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D461642390083C0090FC34 /* Document.swift */; };
 		D7F156972442079A00AFBE67 /* WorkbenchSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F156962442079A00AFBE67 /* WorkbenchSettings.swift */; };
@@ -60,20 +60,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		D785F2D3246D8DC000FB346C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9F45CD901D396D4200149654;
-			remoteInfo = KPCTabsControlDemo;
-		};
-		D785F2D5246D8DC000FB346C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9FC4B5582195ACE7000F2119;
-			remoteInfo = KPCTabsControlTests;
-		};
 		D7D4615C238ECCE20090FC34 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
@@ -155,9 +141,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CCD455325D6BEE0000923E3 /* KPCTabsControl.framework in Frameworks */,
 				D7C9528823FC3AF400AE7E5D /* NimbleCore in Frameworks */,
 				D73FA62424004D31001DB4C3 /* Ansi in Frameworks */,
-				D7D46162238ED16B0090FC34 /* KPCTabsControl.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,8 +272,6 @@
 			isa = PBXGroup;
 			children = (
 				D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */,
-				D785F2D4246D8DC000FB346C /* KPCTabsControlDemo.app */,
-				D785F2D6246D8DC000FB346C /* KPCTabsControlTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -369,20 +353,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		D785F2D4246D8DC000FB346C /* KPCTabsControlDemo.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = KPCTabsControlDemo.app;
-			remoteRef = D785F2D3246D8DC000FB346C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D785F2D6246D8DC000FB346C /* KPCTabsControlTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = KPCTabsControlTests.xctest;
-			remoteRef = D785F2D5246D8DC000FB346C /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
