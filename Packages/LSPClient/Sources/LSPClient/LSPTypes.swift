@@ -33,15 +33,11 @@ struct LSPDiagnostic: SourceCodeDiagnostic {
   }
 
   var fixes: [SourceCodeQuickfix] {
-    guard let relInfo = wrapped.relatedInformation else { return [] }
-    return relInfo.compactMap {
-      guard let action = $0.codeActions?.first,
-            let kind = action.kind, kind == .quickFix,
-            let textEdit = action.edit?.changes?.first?.value.first else { return nil }
-
-      let title = action.title.prefix(1).capitalized + action.title.dropFirst()
-      return LSPQuickfix(title: title, textEdit: LSPTextEdit(textEdit: textEdit))
-    }
+    return wrapped.codeActions?.compactMap {$0.quickFix} ?? []
+    
+//    return wrapped.relatedInformation?.flatMap { relInfo in
+//      relInfo.codeActions?.compactMap {$0.quickFix} ?? []
+//    } ?? []
   }
 
   func range(`in` text: String) -> Range<Int>? {

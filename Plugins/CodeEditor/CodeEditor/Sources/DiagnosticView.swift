@@ -320,10 +320,13 @@ class DiagnosticRowView: NSView {
       switch content {
       case .diagnostics(let diagnostics):
         tableView?.delegate?.show(diagnostics: diagnostics, in: self)
+
       case .diagnostic(let diagnostic):
         tableView?.delegate?.show(diagnostic: diagnostic, in: self)
+
       case .quickfix(let quickfix, let diagnostic):
         tableView?.delegate?.show(quickfix: quickfix, from: diagnostic, in: self)
+
       default:
         return
       }
@@ -336,7 +339,9 @@ class DiagnosticRowView: NSView {
 
     let range = quickfix.textEdit.range(in: textView.string)
     let visibleRect = textView.visibleRect
+
     textView.insertText(quickfix.textEdit.newText, replacementRange: NSRange(range))
+
     if visibleRect != textView.visibleRect {
       let defaultLineHeight = textView.layoutManager!.lineHeight
       textView.scrollToVisible(visibleRect.offsetBy(dx: 0, dy: -defaultLineHeight))
