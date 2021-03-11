@@ -28,13 +28,13 @@ class CodeEditorCompletionView: NSViewController {
   var itemsFilter: String = ""
     
   var completionItems: [CompletionItem] = []
-  
-  
+
+
+
   private(set) var isActive: Bool = false
         
   private var wasTriggered: Bool = false
-  
-  
+
   private var filterResult: [(index: Int, ranges: [Range<Int>])] = []
   
   private var completions: [CompletionItem] {

@@ -52,19 +52,41 @@ public final class SyntaxParser {
   
   
   
-  public func highlight(around range: NSRange) -> Progress? {
-    var highlightRange = range
-    
-    if let cache = syntaxCache {
-      let dirty = cache.search(in: range)
-      if !dirty.isEmpty {
-        let begin = cache.nodes[dirty.lowerBound]
-        let end = cache.nodes[cache.nodes.index(before: dirty.upperBound)]
-        highlightRange = NSRange(begin.range.lowerBound..<end.range.upperBound)
-      }
+  public func highlightAround(editedRange: NSRange, changeInLength delta: Int) -> Progress? {
+    let dirtyRange = editedRange.lowerBound..<editedRange.upperBound - delta
+
+    //print("Edited range: \(editedRange) Delta: \(delta)")
+
+    guard let cache = syntaxCache else {
+      return highlightAll()
     }
-    
-    return highlight(str: textStorage.string, in: highlightRange)
+
+    let dirtyNodes = cache.search(in: dirtyRange)
+
+    // Update cache
+    var cacheNodes = syntaxCache?.nodes[..<dirtyNodes.lowerBound] ?? []
+    syntaxCache?.nodes[dirtyNodes.upperBound...].forEach {
+      var node = $0
+      node.visit {
+        guard let range = $0.range else { return }
+        $0.range = range.lowerBound + delta..<range.upperBound + delta
+      }
+      cacheNodes.append(node)
+    }
+
+    syntaxCache = SyntaxNode(scope: syntaxCache?.scope, nodes: cacheNodes)
+
+    // Highlight within dirty nodes
+    if !dirtyNodes.isEmpty {
+      guard let lb = cache.nodes[dirtyNodes.lowerBound].range?.lowerBound,
+            let ub = cache.nodes[cache.nodes.index(before: dirtyNodes.upperBound)].range?.upperBound else { return nil }
+
+      let range = NSRange(min(lb, editedRange.lowerBound)..<max(ub, editedRange.upperBound))
+      //print("Dirty range: \(range)")
+      return highlight(str: textStorage.string, in: range)
+    }
+
+    return highlight(str: textStorage.string, in: editedRange)
   }
   
   
@@ -131,8 +153,12 @@ public final class SyntaxParser {
     
     // Visit and color nodes transforming ranges w.r.t offsets
     nodes.visit { node in
-      node.range = offsets.map(node.range)
-      let nodeRange = NSRange(node.range)
+      guard var range = node.range else { return }
+      // Store mapped range w.r.t. offsets
+      range = offsets.map(range)
+      node.range = range
+
+      let nodeRange = NSRange(range)
       if let scope = node.scope, let setting = theme?.setting(for: scope) {
 
         if let color = setting.foreground {
@@ -210,6 +236,13 @@ class SyntaxParseOperation: Operation, ProgressReporting {
   func parse() -> TokenizerResult? {
 //    let t1 = mach_absolute_time()
     let res = tokenizer.tokenize(string, in: range)
+
+//    if let nodes = res?.nodes {
+//      nodes.forEach {
+//        print($0)
+//      }
+//    }
+
 //    let t2 = mach_absolute_time()
         
 //    for t in res?.nodes ?? [] {

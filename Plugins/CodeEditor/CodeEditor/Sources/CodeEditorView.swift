@@ -60,7 +60,7 @@ class CodeEditorView: NSViewController {
     if completionView.isActive {
       if event.keyCode == Keycode.delete {
         textView.deleteBackward(nil)
-        showCompletion(triggered: false)
+        showCompletion(triggered: true)
         return true
       }
     }
@@ -206,8 +206,11 @@ class CodeEditorView: NSViewController {
 
       if $1.count > 0 {
         self?.completionView.open(at: string.utf16.offset(at: $0), triggered: triggered)
-      } else {
+      } else if !triggered {
+        // Let it open if it was opened explicitely (not triggered automatically), e.g. by the shortcut
         self?.completionView.open(at: string.utf16.offset(at: pos), triggered: triggered)
+      } else {
+        self?.completionView.close()
       }
     }
   }
@@ -291,16 +294,15 @@ extension CodeEditorView: NSTextStorageDelegate {
     
     // Update highlighting
     guard let syntaxParser = document?.syntaxParser else { return }
-    let range = textStorage.editedRange
 
     DispatchQueue.main.async { [weak self] in
-      guard let progress = self?.highlightProgress else {
-        let _ = syntaxParser.highlight(around: range)
-        return
+      // highlighProgress refers to the whole text highlighting
+      if let progress = self?.highlightProgress {
+        progress.cancel()
+        self?.highlightProgress = syntaxParser.highlightAll()
+      } else {
+        let _ = syntaxParser.highlightAround(editedRange: editedRange, changeInLength: delta)
       }
-
-      progress.cancel()
-      self?.highlightProgress = syntaxParser.highlightAll()
     }
   }
 }

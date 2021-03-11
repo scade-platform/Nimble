@@ -51,6 +51,11 @@ extension CodeEditorTextView {
     return (0, 0)
   }
 
+  var selectedString: String {
+    guard selectedIndex < string.endIndex else { return "" }
+    return String(string[selectedIndex..<string.index(after: selectedIndex)])
+  }
+
   var currentLine: String {
     return String(string[string.lineRange(at: selectedIndex)])
   }
@@ -86,25 +91,55 @@ extension CodeEditorTextView {
     return autoClosingPairs.contains{$0.0 + $0.1 == str}
   }
 
+  func isPairOpened(_ pair: (String, String), in str: String, at index: String.Index) -> Bool {
+    guard let prev = str.index(index, offsetBy: -pair.0.count, limitedBy: str.startIndex) else { return false }
+    return String(str.utf16[prev..<index]) == pair.0
+  }
+
+  func isPairClosed(_ pair: (String, String), in str: String, at index: String.Index) -> Bool {
+    guard let next = str.index(index, offsetBy: pair.1.count, limitedBy: str.endIndex) else { return false }
+    return String(str.utf16[index..<next]) == pair.1
+  }
+
 
   // MARK: - Overrides
 
   override func insertText(_ string: Any, replacementRange: NSRange) {
     guard let input = string as? String else { return }
 
+    var pos = selectedIndex
+
+    if replacementRange.location != NSNotFound {
+      pos = self.string.utf16.index(self.string.startIndex,
+                                    offsetBy: replacementRange.lowerBound,
+                                    limitedBy: self.string.endIndex) ?? self.string.endIndex
+    }
+
+
     if let pair = autoClosingPairs.first(where: { input == $0.0 }) {
-      super.insertText(string, replacementRange: replacementRange)
-      super.insertText(pair.1, replacementRange: replacementRange)
-      super.moveBackward(self)
+      if pair.0 == pair.1, isPairClosed(pair, in: self.string, at: pos) {
+        super.moveForward(self)
+
+      } else if pair.0 == pair.1, isPairOpened(pair, in: self.string, at: pos) {
+          super.insertText(string, replacementRange: replacementRange)
+
+      } else {
+
+        super.insertText(string, replacementRange: replacementRange)
+
+        if replacementRange.location != NSNotFound {
+          super.insertText(pair.1, replacementRange: NSRange(location: replacementRange.lowerBound + 1, length: 0))
+        } else {
+          super.insertText(pair.1, replacementRange: replacementRange)
+        }
+
+        super.moveBackward(self)
+      }
 
     } else if let pair = autoClosingPairs.first(where: { input == $0.1 })  {
-      let cur = self.string.index(self.string.startIndex,
-                                  offsetBy: replacementRange.lowerBound,
-                                  limitedBy: self.string.endIndex) ?? self.string.endIndex
 
       // If pair is not closed, close it. Otherwise just move forward
-      if let next = self.string.index(cur, offsetBy: pair.1.count, limitedBy: self.string.endIndex),
-        String(self.string[cur..<next]) != pair.1 {
+      if !isPairClosed(pair, in: self.string, at: pos) {
         super.insertText(string, replacementRange: replacementRange)
 
       } else {

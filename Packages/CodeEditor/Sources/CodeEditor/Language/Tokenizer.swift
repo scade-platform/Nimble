@@ -87,7 +87,7 @@ public struct TokenizerResult {
 fileprivate extension SyntaxNode {
   func disjoint(from range: Range<Int>) -> SyntaxNode? {
     // If no intersection return itself
-    guard self.range.intersection(with: range) != nil else { return self }
+    guard self.range?.intersection(with: range) != nil else { return self }
     // Because of intersection: if scoped we have to break
     guard self.scope == nil else { return nil }
 
@@ -215,7 +215,14 @@ extension Pattern {
 class GrammarTokenizer: PatternsListTokenizer {
   override func tokenize(_ str: String, with ctx: TokenizerContext) -> TokenizerResult? {
 
+    //print("Tokenize range: \(ctx.range)")
+
     let lines = str.utf8.lines(from: ctx.range)
+
+    //    lines.forEach {
+//      print("Line: \($0)")
+//    }
+
     var linesRes = [TokenizerResult?](repeating: nil, count: lines.count)
 
     DispatchQueue.concurrentPerform(iterations: lines.count) {
