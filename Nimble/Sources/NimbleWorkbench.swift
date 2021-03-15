@@ -265,10 +265,15 @@ extension NimbleWorkbench: Workbench {
       opened = true
     }
 
-    if opened && show {
-      doc.editor?.didOpenDocument(doc)
+
+
+    if opened {
       observers.notify { $0.workbenchDidOpenDocument(self, document: doc) }
       invalidateRestorableState()
+
+      if show {
+        doc.editor?.didOpenDocument(doc)
+      }
     }
   }
   
