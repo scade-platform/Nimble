@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C9CD94625EF966A00B5B5FD /* SourceKitLSP in Frameworks */ = {isa = PBXBuildFile; productRef = 0C9CD94525EF966A00B5B5FD /* SourceKitLSP */; };
+		0C9CD94725EF966A00B5B5FD /* SourceKitLSP in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 0C9CD94525EF966A00B5B5FD /* SourceKitLSP */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D70AA4D123FC5449007367E7 /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70AA4D023FC5449007367E7 /* Plugin.swift */; };
 		D70AA4D423FC5479007367E7 /* LSPClient in Frameworks */ = {isa = PBXBuildFile; productRef = D70AA4D323FC5479007367E7 /* LSPClient */; };
 		D70AA4D523FC5479007367E7 /* LSPClient in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D70AA4D323FC5479007367E7 /* LSPClient */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		D766FF25247D5A68003646B0 /* SourceKitLSP.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D766FF23247D5A1F003646B0 /* SourceKitLSP.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D7D4BD2323FCA6250063BD8F /* CodeEditor in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD2223FCA6250063BD8F /* CodeEditor */; };
 		D7D4BD2723FCA6A90063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD2623FCA6A90063BD8F /* NimbleCore */; };
 		D7D4BD5023FCB2010063BD8F /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = D7D4BD4F23FCB2010063BD8F /* package.yml */; };
@@ -24,7 +25,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D766FF25247D5A68003646B0 /* SourceKitLSP.framework in Embed Frameworks */,
+				0C9CD94725EF966A00B5B5FD /* SourceKitLSP in Embed Frameworks */,
 				D70AA4D523FC5479007367E7 /* LSPClient in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -45,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C9CD94625EF966A00B5B5FD /* SourceKitLSP in Frameworks */,
 				D7D4BD2323FCA6250063BD8F /* CodeEditor in Frameworks */,
 				D7D4BD2723FCA6A90063BD8F /* NimbleCore in Frameworks */,
 				D70AA4D423FC5479007367E7 /* LSPClient in Frameworks */,
@@ -110,6 +112,7 @@
 				D70AA4D323FC5479007367E7 /* LSPClient */,
 				D7D4BD2223FCA6250063BD8F /* CodeEditor */,
 				D7D4BD2623FCA6A90063BD8F /* NimbleCore */,
+				0C9CD94525EF966A00B5B5FD /* SourceKitLSP */,
 			);
 			productName = LanguageServerClient;
 			productReference = D7EC1361239EF4D100DA0DA0 /* LSPClient.plugin */;
@@ -140,6 +143,7 @@
 			);
 			mainGroup = D7EC1358239EF4D100DA0DA0;
 			packageReferences = (
+				0C9CD94425EF966A00B5B5FD /* XCRemoteSwiftPackageReference "sourcekit-lsp" */,
 			);
 			productRefGroup = D7EC1362239EF4D100DA0DA0 /* Products */;
 			projectDirPath = "";
@@ -290,7 +294,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				INSTALL_PATH = /Plugins;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -300,7 +304,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.LSPClient;
 				PRODUCT_MODULE_NAME = LSPClientPlugin;
 				PRODUCT_NAME = LSPClient;
-				SKIP_INSTALL = YES;
+				SKIP_INSTALL = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = plugin;
@@ -311,10 +315,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Bundles";
+				INSTALL_PATH = /Plugins;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -324,7 +329,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.LSPClient;
 				PRODUCT_MODULE_NAME = LSPClientPlugin;
 				PRODUCT_NAME = LSPClient;
-				SKIP_INSTALL = YES;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = NO;
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = plugin;
 			};
@@ -353,7 +359,23 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		0C9CD94425EF966A00B5B5FD /* XCRemoteSwiftPackageReference "sourcekit-lsp" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/FLORG1/sourcekit-lsp.git";
+			requirement = {
+				branch = release/5.3;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		0C9CD94525EF966A00B5B5FD /* SourceKitLSP */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0C9CD94425EF966A00B5B5FD /* XCRemoteSwiftPackageReference "sourcekit-lsp" */;
+			productName = SourceKitLSP;
+		};
 		D70AA4D323FC5479007367E7 /* LSPClient */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = LSPClient;
