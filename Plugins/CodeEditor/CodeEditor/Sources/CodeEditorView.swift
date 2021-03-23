@@ -92,19 +92,20 @@ class CodeEditorView: NSViewController {
   }
   
   private func loadContent() {
-    guard let layoutManager = textView.layoutManager,
-          let doc = document else { return }
-    
-    layoutManager.replaceTextStorage(doc.textStorage)
-    doc.textStorage.delegate = self
+    DispatchQueue.main.async { [weak self] in
+      guard let layoutManager = self?.textView.layoutManager,
+            let doc = self?.document else { return }
 
-    if let theme = ThemeManager.shared.currentTheme {
-      self.textView.font = theme.general.font
+      layoutManager.replaceTextStorage(doc.textStorage)
+      doc.textStorage.delegate = self
 
-      textView.apply(theme: theme)
+      if let theme = ThemeManager.shared.currentTheme {
+        self?.textView.font = theme.general.font
+        self?.textView.apply(theme: theme)
 
-      highlightSyntax()
-      invalidateSnippets()
+        self?.highlightSyntax()
+        self?.invalidateSnippets()
+      }
     }
   }
       
