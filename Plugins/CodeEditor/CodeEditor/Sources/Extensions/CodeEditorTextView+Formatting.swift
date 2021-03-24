@@ -105,7 +105,11 @@ extension CodeEditorTextView {
   // MARK: - Overrides
 
   override func insertText(_ string: Any, replacementRange: NSRange) {
-    guard let input = string as? String else { return }
+    guard var input = string as? String else { return }
+
+    if CodeEditorSettings.insertSpaces {
+      input = input.replacingOccurrences(of: "\t", with: indentString)
+    }
 
     var pos = selectedIndex
 
@@ -121,11 +125,11 @@ extension CodeEditorTextView {
         super.moveForward(self)
 
       } else if pair.0 == pair.1, isPairOpened(pair, in: self.string, at: pos) {
-          super.insertText(string, replacementRange: replacementRange)
+          super.insertText(input, replacementRange: replacementRange)
 
       } else {
 
-        super.insertText(string, replacementRange: replacementRange)
+        super.insertText(input, replacementRange: replacementRange)
 
         if replacementRange.location != NSNotFound {
           super.insertText(pair.1, replacementRange: NSRange(location: replacementRange.lowerBound + 1, length: 0))
@@ -140,14 +144,14 @@ extension CodeEditorTextView {
 
       // If pair is not closed, close it. Otherwise just move forward
       if !isPairClosed(pair, in: self.string, at: pos) {
-        super.insertText(string, replacementRange: replacementRange)
+        super.insertText(input, replacementRange: replacementRange)
 
       } else {
         super.moveForward(self)
       }
 
     } else {
-      super.insertText(string, replacementRange: replacementRange)
+      super.insertText(input, replacementRange: replacementRange)
     }
   }
 
