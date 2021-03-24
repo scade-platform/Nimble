@@ -189,6 +189,9 @@ class ToolbarTargetControl : NSControl {
       return
     }
     
+    let currentTargetName = activeTarget?.name ?? ""
+    let currentVariantName = workbench.selectedVariant?.name ?? ""
+    
     if menuItemTargets.isEmpty ||
       menuItemTargets.count != targets.count {
       activeTarget = nil
@@ -198,10 +201,22 @@ class ToolbarTargetControl : NSControl {
     
     guard activeTarget == nil, workbench.selectedVariant == nil else { return }
     
-    guard let buildTarget = menuItemTargets.first,
-      let variant = buildTarget.variants.first else { return }
+    var buildTarget: Target
+    var variant: Variant
     
-   
+    if let t = menuItemTargets.first(where: {$0.name == currentTargetName}),
+       let v = t.variants.first(where: {$0.name == currentVariantName}) {
+      buildTarget = t
+      variant = v
+    } else if let t = menuItemTargets.first,
+              let v = t.variants.first {
+      buildTarget = t
+      variant = v
+    } else {
+      return
+    }
+    
+    
     set(target: buildTarget)
     separatorImage?.isHidden = false
     set(variant: variant)
