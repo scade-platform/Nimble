@@ -1,6 +1,12 @@
 extensions:
   com.scade.nimble.CodeEditor:
     grammars:
+    - language: cmake
+      path: cmake/CMake.tmLanguage
+      scopeName: source.cmake
+    - language: cmake-cache
+      path: cmake/CMakeCache.tmLanguage
+      scopeName: source.cmakecache  
     - embeddedLanguages:
         section.embedded.source.cshtml: csharp
         source.css: css
@@ -288,6 +294,18 @@ extensions:
       path: sql/sql.tmLanguage.json
       scopeName: source.sql
     languages:
+    - aliases:
+      - CMake      
+      filenames:
+      - CMakeLists.txt
+      extensions:
+      - cmake
+      id: cmake
+    - aliases:
+      - CMake Cache      
+      filenames:
+      - CMakeCache.txt
+      id: cmake-cache
     - aliases:
       - Razor
       - razor

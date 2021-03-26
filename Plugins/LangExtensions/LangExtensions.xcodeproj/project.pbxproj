@@ -51,6 +51,7 @@
 		D73C4FDD2396D34300B00066 /* xml in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FB32396D34300B00066 /* xml */; };
 		D73C4FDE2396D34300B00066 /* php in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FB42396D34300B00066 /* php */; };
 		D73C4FDF2396D34300B00066 /* yaml in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FB52396D34300B00066 /* yaml */; };
+		D76FCC29260D581600DECC47 /* cmake in Resources */ = {isa = PBXBuildFile; fileRef = D76FCC28260D581600DECC47 /* cmake */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -100,6 +101,7 @@
 		D73C4FB32396D34300B00066 /* xml */ = {isa = PBXFileReference; lastKnownFileType = folder; path = xml; sourceTree = "<group>"; };
 		D73C4FB42396D34300B00066 /* php */ = {isa = PBXFileReference; lastKnownFileType = folder; path = php; sourceTree = "<group>"; };
 		D73C4FB52396D34300B00066 /* yaml */ = {isa = PBXFileReference; lastKnownFileType = folder; path = yaml; sourceTree = "<group>"; };
+		D76FCC28260D581600DECC47 /* cmake */ = {isa = PBXFileReference; lastKnownFileType = folder; path = cmake; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +134,7 @@
 		D7113596239435E900A5CE6B /* LangExtensions */ = {
 			isa = PBXGroup;
 			children = (
+				D76FCC28260D581600DECC47 /* cmake */,
 				D73C4FAD2396D34200B00066 /* sql */,
 				D71135A92394384800A5CE6B /* swift */,
 				D73C4F922396D34000B00066 /* bat */,
@@ -265,6 +268,7 @@
 				D73C4FC82396D34300B00066 /* make in Resources */,
 				D73C4FBB2396D34300B00066 /* markdown-basics in Resources */,
 				D73C4FBE2396D34300B00066 /* csharp in Resources */,
+				D76FCC29260D581600DECC47 /* cmake in Resources */,
 				D73C4FCB2396D34300B00066 /* javascript in Resources */,
 				D73C4FB92396D34300B00066 /* pug in Resources */,
 				D73C4FBD2396D34300B00066 /* perl in Resources */,

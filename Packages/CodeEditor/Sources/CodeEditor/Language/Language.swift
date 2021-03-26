@@ -40,7 +40,7 @@ public final class Language: Decodable {
   }
     
   public var grammar: LanguageGrammar? {
-    return LanguageManager.shared.findGrammar(forLang: id)
+    return LanguageManager.shared.findGrammar(language: id)
   }
 
   public lazy var configuration: LanguageConfiguration? = {
@@ -186,11 +186,15 @@ public final class LanguageManager {
     self.grammars.append(grammar)
   }
   
-  public func findLanguage(forExt ext: String) -> Language? {
+  public func findLanguage(fileExtension ext: String) -> Language? {
     return languages.first { $0.extensions.contains(ext) }
   }
-  
-  public func findGrammar(forLang lang: String) -> LanguageGrammar? {
+
+  public func findLanguage(fileName name: String) -> Language? {
+    return languages.first { $0.filenames.contains(name) }
+  }
+
+  public func findGrammar(language lang: String) -> LanguageGrammar? {
     return grammars.first {
       guard let gramLang = $0.language else { return false }
       return lang == gramLang
@@ -202,6 +206,10 @@ public final class LanguageManager {
 
 public extension File {
   var language: Language? {
-    return LanguageManager.shared.findLanguage(forExt: ".\(self.extension)")
+    if let lang = LanguageManager.shared.findLanguage(fileName: self.name) {
+      return lang
+    }
+
+    return LanguageManager.shared.findLanguage(fileExtension: ".\(self.extension)")
   }
 }
