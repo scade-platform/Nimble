@@ -128,14 +128,15 @@ fileprivate class DocumentFilePresenter: NSObject, NSFilePresenter {
     }
   }
 
-  public func presentedItemDidChange() {
-    if isRegistered {
-      if let lastModificationDate = self.lastModificationDate,
-         let modificationDate = documentModificationDate(),
-         modificationDate > lastModificationDate {
-        doc?.presentedItemDidChange()
-        self.lastModificationDate = modificationDate
-      }
+  func presentedItemDidChange() {
+    guard isRegistered,
+          let lastModificationDate = self.lastModificationDate,
+          let modificationDate = documentModificationDate(),
+          modificationDate > lastModificationDate else { return }
+
+    DispatchQueue.main.async { [weak self] in
+      self?.doc?.presentedItemDidChange()
+      self?.lastModificationDate = modificationDate
     }
   }
   
@@ -143,10 +144,8 @@ fileprivate class DocumentFilePresenter: NSObject, NSFilePresenter {
   func accommodatePresentedItemDeletion(completionHandler: @escaping (Error?) -> Void) {
     if isRegistered {
       DispatchQueue.main.async { [weak self] in
-        guard let self = self, let doc = self.doc as? Document, let workbench = doc.editor?.workbench else {
-          return
-        }
-        workbench.close(doc)
+        guard let doc = self?.doc as? Document else { return }
+        doc.editor?.workbench?.close(doc)
       }
       unregister()
     }
