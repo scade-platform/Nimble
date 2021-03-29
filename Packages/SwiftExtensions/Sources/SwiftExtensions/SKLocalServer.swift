@@ -39,6 +39,8 @@ public extension SKLocalServer {
 }
 
 public final class SKLocalServer: LSPServer {
+  public static var buildFlags: BuildFlags = BuildFlags()
+
   public var isRunning = false
 
   public var client: LSPClient
@@ -74,6 +76,13 @@ public final class SKLocalServer: LSPServer {
     } else {
       ToolchainRegistry.shared = ToolchainRegistry(installPath: SKLocalServer.swiftToolchainInstallPath, localFileSystem)
     }
+
+    ///TODO: make flag management based on the target's patform
+    serverOptions.buildSetup.flags.cCompilerFlags.append(contentsOf: SKLocalServer.buildFlags.cCompilerFlags)
+    serverOptions.buildSetup.flags.cxxCompilerFlags.append(contentsOf: SKLocalServer.buildFlags.cxxCompilerFlags)
+    serverOptions.buildSetup.flags.swiftCompilerFlags.append(contentsOf: SKLocalServer.buildFlags.swiftCompilerFlags)
+    serverOptions.buildSetup.flags.linkerFlags.append(contentsOf: SKLocalServer.buildFlags.linkerFlags)
+
 
     server = SourceKitServer(client: clientConnection, options: serverOptions) { [weak self] in
       self?.stop()
