@@ -379,7 +379,7 @@ extension ToolbarTargetControl: NSUserInterfaceValidations {
     if let target = item.representedObject as? Target {
       item.state = (target.id  == activeTarget?.id) ? .on : .off
     } else if let varint = item.representedObject as? Variant {
-      item.state = (varint.target?.id == activeTarget?.id && varint.name == userSelection?.variant.name) ? .on : .off
+//      item.state = (varint.target?.id == activeTarget?.id && varint.name == userSelection?.variant.name) ? .on : .off
       if let variantValidator = varint as? NSUserInterfaceValidations {
         variantValidator.validateUserInterfaceItem(item)
       }
