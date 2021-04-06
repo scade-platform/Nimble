@@ -75,7 +75,11 @@ public class FileSystemElement {
     guard let path = Path(url: url) else { return nil }
     self.init(path: path)
   }
-  
+
+  public func contains(_ other: FileSystemElement) -> Bool {
+    guard self.path != other.path else { return false }
+    return (try? other.path.realpath().string.starts(with: self.path.realpath().string)) ?? false
+  }
 }
 
 
