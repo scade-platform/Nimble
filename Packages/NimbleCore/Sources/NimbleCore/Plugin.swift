@@ -64,8 +64,9 @@ public struct Package {
   public let path: Path
   
   func decode<T: Decodable>(_ type: T.Type, keyPath: String) throws -> T? {
+    let content = resolveVars(try String(contentsOf: path))
     let result = try YAMLDecoder().decode(KeyPathDecodable<T>.self,
-                                          from: String(contentsOf: path),
+                                          from: content,
                                           userInfo: [.keyPath: keyPath,
                                                      .relativePath: path.parent])
     return result.value
@@ -77,6 +78,11 @@ public struct Package {
     } catch {
       return []
     }
+  }
+
+  private func resolveVars(_ content: String) -> String {
+    return content.replacingOccurrences(of: "${package_path}",
+                                        with: path.parent.string)
   }
 }
 
