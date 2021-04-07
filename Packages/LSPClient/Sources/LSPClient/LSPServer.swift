@@ -31,6 +31,8 @@ public extension LSPServer {
 }
 
 
+
+
 // MARK: - LSPServerProvider
 
 public protocol LSPServerProvider {
@@ -105,15 +107,14 @@ public final class LSPExternalServer: LSPServer {
   
   private let pipeIn = Pipe()
   private let pipeOut = Pipe()
-    
   private var connection: JSONRPCConnection
-  
-  public var client: LSPClient
-  
-  public var isRunning: Bool { proc.isRunning }
-  
 
-  public init(_ exec: Path, args: [String] = [], env: [String: String]) {
+
+  public var client: LSPClient
+  public var isRunning: Bool { proc.isRunning }
+
+
+  public init(_ exec: Path, args: [String], env: [String: String], opts: LSPAny?) {
     proc = Process()
     
     proc.executableURL = exec.url
@@ -127,7 +128,7 @@ public final class LSPExternalServer: LSPServer {
                                    inFD: pipeOut.fileHandleForReading.fileDescriptor,
                                    outFD: pipeIn.fileHandleForWriting.fileDescriptor)
         
-    client = LSPClient(connection)
+    client = LSPClient(connection, initializationOptions: opts)
     
     proc.terminationHandler = {[weak self] proc in
       self?.connection.close()
@@ -146,13 +147,29 @@ public final class LSPExternalServer: LSPServer {
 
 
 public struct LSPExternalServerProvider: LSPServerProvider, Decodable {
+  private enum CodingKeys: String, CodingKey {
+    case executable, arguments, environment, initializationOptions, languages
+  }
+
   let executable: Path
-  let arguments: [String]?
-  let environment: [String: String]?
-  
+  let arguments: [String]
+  let environment: [String: String]
+  let initializationOptions: LSPAny?
+
   public let languages: [String]
+
+  public init(from decoder: Decoder) throws {
+    let container = try decoder.container(keyedBy: CodingKeys.self)
+
+    executable = try container.decode(Path.self, forKey: .executable)
+    arguments = try container.decodeIfPresent([String].self, forKey: .arguments) ?? []
+    environment = try container.decodeIfPresent([String:String].self, forKey: .environment) ?? [:]
+    initializationOptions = try container.decodeIfPresent(LSPAny.self, forKey: .initializationOptions)
+    languages = try container.decodeIfPresent([String].self, forKey: .languages) ?? []
+  }
   
+
   public func createServer() -> LSPServer {
-    return LSPExternalServer(executable, args: arguments ?? [], env: environment ?? [:])
+    return LSPExternalServer(executable, args: arguments, env: environment, opts: initializationOptions)
   }
 }

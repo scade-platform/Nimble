@@ -33,9 +33,11 @@ public final class LSPClient {
 
 
   let connection: Connection
+  let initializationOptions: LSPAny?
 
-  public init(_ connection: Connection) {
+  public init(_ connection: Connection, initializationOptions: LSPAny? = nil) {
     self.connection = connection
+    self.initializationOptions = initializationOptions
   }
   
   public func initialize(workspaceFolders: [URL], onComplete: (() -> Void)? = nil) {
@@ -52,6 +54,7 @@ public final class LSPClient {
     }
     
     let initRequest = InitializeRequest(rootURI: rootURI,
+                                        initializationOptions: initializationOptions,
                                         capabilities: LSPClient.clientCapabilities,
                                         workspaceFolders: workspaceFolders.map {WorkspaceFolder(uri: DocumentURI($0))})
     
