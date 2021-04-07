@@ -6,7 +6,6 @@
 //  Copyright © 2020 SCADE. All rights reserved.
 //
 
-
 import Foundation
 import os.log
 
@@ -27,19 +26,13 @@ import Build
 import LanguageServerProtocol
 
 
-public extension SKLocalServer {
-  @Setting("swift.toolchain", defaultValue: "")
-  static var swiftToolchain: String
-
-  private static var swiftToolchainInstallPath: AbsolutePath? {
-    guard !SKLocalServer.$swiftToolchain.isDefault else { return nil }
-    return AbsolutePath(SKLocalServer.swiftToolchain)
+public final class SKLocalServer: LSPServer {
+  public enum ServerError: Error {
+    case incompatibleVariant
   }
 
-}
-
-public final class SKLocalServer: LSPServer {
   public static var buildFlags: BuildFlags = BuildFlags()
+  public static var toolchainBuildFlags: [String: BuildFlags] = [:]
 
   public var isRunning = false
 
@@ -57,33 +50,43 @@ public final class SKLocalServer: LSPServer {
     client = LSPClient(serverConnection)
   }
 
-  private func resetConnection() {
-    clientConnection = LocalConnection()
-    serverConnection = LocalConnection()
-    client = LSPClient(serverConnection)
-  }
-  
-  public func start() throws {
-    currentVariant = client.connector?.workbench?.selectedVariant as? SwiftVariant
+  public func start(with variant: Variant?) throws {
+    currentVariant = variant as? SwiftVariant
+
+    print("Starting using toolchain: \(currentVariant?.toolchain)")
+
+    // Setup toolchain (compiler) location
+    var installPath: AbsolutePath? = nil
+    if let compilerPath = currentVariant?.toolchain?.compiler {
+      installPath = AbsolutePath(compilerPath)
+    }
+    ToolchainRegistry.shared = ToolchainRegistry(installPath: installPath, localFileSystem)
+
+
+    // Setup server options
+    var buildFlags = SKLocalServer.buildFlags
     var serverOptions = SourceKitServer.Options()
 
-    if let toolchain = currentVariant?.getToolchain() {
-      let compilerPath = AbsolutePath(toolchain.compiler)
-      ToolchainRegistry.shared = ToolchainRegistry(installPath: compilerPath, localFileSystem)
-      serverOptions.buildSetup.triple = try Triple(toolchain.target);
-      serverOptions.buildSetup.sdkRoot = AbsolutePath(toolchain.sdkRoot)
+    if let toolchain = currentVariant?.toolchain {
       serverOptions.buildSetup.flags.swiftCompilerFlags += toolchain.compilerFlags
-    } else {
-      ToolchainRegistry.shared = ToolchainRegistry(installPath: SKLocalServer.swiftToolchainInstallPath, localFileSystem)
+
+      if let target = toolchain.target {
+        serverOptions.buildSetup.triple = try? Triple(target)
+      }
+
+      if let sdkRoot = toolchain.sdkRoot {
+        serverOptions.buildSetup.sdkRoot = AbsolutePath(sdkRoot)
+      }
+
+      if let toolchainFlags = SKLocalServer.toolchainBuildFlags[toolchain.name] {
+        buildFlags.append(toolchainFlags)
+      }
     }
 
-    ///TODO: make flag management based on the target's patform
-    serverOptions.buildSetup.flags.cCompilerFlags.append(contentsOf: SKLocalServer.buildFlags.cCompilerFlags)
-    serverOptions.buildSetup.flags.cxxCompilerFlags.append(contentsOf: SKLocalServer.buildFlags.cxxCompilerFlags)
-    serverOptions.buildSetup.flags.swiftCompilerFlags.append(contentsOf: SKLocalServer.buildFlags.swiftCompilerFlags)
-    serverOptions.buildSetup.flags.linkerFlags.append(contentsOf: SKLocalServer.buildFlags.linkerFlags)
+    serverOptions.buildSetup.flags.append(buildFlags)
 
 
+    // Create server
     server = SourceKitServer(client: clientConnection, options: serverOptions) { [weak self] in
       self?.stop()
     }
@@ -110,19 +113,23 @@ public final class SKLocalServer: LSPServer {
     }
     
     isRunning = true
-    BuildSystemsManager.shared.observers.add(observer: self)
   }
   
   public func stop() {
     guard isRunning else { return }
-    
+
+    client.prepareForExit()
     server.prepareForExit()
     
     clientConnection.close()
     serverConnection.close()
     
     isRunning = false
-    BuildSystemsManager.shared.observers.remove(observer: self)
+  }
+
+  public func shouldRestart(for variant: Variant?) -> Bool {
+    guard let variant = variant as? SwiftVariant else { return false }
+    return variant.toolchain != currentVariant?.toolchain
   }
 }
 
@@ -138,33 +145,14 @@ public final class SKLocalServerProvider: LSPServerProvider {
 }
 
 
+//MARK: - Merge BuildFlags
 
-extension SKLocalServer: BuildSystemsObserver {
-  public func workbenchDidChangeVariant(_ workbench: Workbench, variant: Variant?) {
-    guard self.workbench === workbench,
-          let target = variant?.target,
-          // Ensure there is at least one workspace folder included into the target
-          client.workspaceFolders.contains(where: { target.contains(url: $0) }) else { return }
-
-    // don't restart server if variant is not a swift variant
-    guard let sVariant = variant as? SwiftVariant else { return }
-
-    if currentVariant == nil {
-      // don't restart server if current variant is not yet set. Nimble sets
-      // variant after server start
-      currentVariant = sVariant
-      return
-    }
-
-    stop()
-    resetConnection()
-
-    do {
-      try start()
-    }
-    catch {
-      os_log("can't start SourceKit server", type: .error)
-    }
+fileprivate extension BuildFlags {
+  mutating func append(_ flags: BuildFlags) {
+    self.cCompilerFlags.append(contentsOf: flags.cCompilerFlags)
+    self.cxxCompilerFlags.append(contentsOf: flags.cxxCompilerFlags)
+    self.swiftCompilerFlags.append(contentsOf: flags.swiftCompilerFlags)
+    self.linkerFlags.append(contentsOf: flags.linkerFlags)
   }
 }
 

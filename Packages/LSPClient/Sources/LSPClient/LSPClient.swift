@@ -27,7 +27,7 @@ public final class LSPClient {
 
   public private(set) var workspaceFolders: [URL] = []
 
-  public private(set) var openedDocuments: [ObjectIdentifier] = []
+  public private(set) var openedDocuments: [ObjectIdentifier: SourceCodeDocumentRef] = [:]
 
   public private(set) var serverCapabilities = ServerCapabilities()
 
@@ -78,7 +78,15 @@ public final class LSPClient {
       self?.initializing.leave()
     }
   }
-    
+
+
+  public func prepareForExit() {
+    openedDocuments.values.forEach {
+      $0.value?.remove(service: self)
+    }
+  }
+
+
   public func openDocument(doc: SourceCodeDocument) {
     guard let url = doc.fileURL else { return }
     waitInitAndExecute {
@@ -95,14 +103,13 @@ public final class LSPClient {
       $0.disconnect(from: doc)
     }
   }
-  
+
   public func saveDocument(doc: SourceCodeDocument) {
     ///TODO: implement
   }
-  
-  
+
   public func hasOpened(doc: SourceCodeDocument) -> Bool {
-    return openedDocuments.contains{ $0 == ObjectIdentifier(doc) }
+    return openedDocuments[ObjectIdentifier(doc)] != nil
   }
   
   private func open(url: URL, with text: String, as lang: String) {
@@ -119,15 +126,15 @@ public final class LSPClient {
   }
     
   private func connect(to doc: SourceCodeDocument) {
+    doc.add(service: self)
     doc.observers.add(observer: self)
-    doc.languageServices.append(self)
-    openedDocuments.append(ObjectIdentifier(doc))
+    openedDocuments[ObjectIdentifier(doc)] = SourceCodeDocumentRef(value: doc)
   }
   
   private func disconnect(from doc: SourceCodeDocument) {
+    doc.remove(service: self)
     doc.observers.remove(observer: self)
-    doc.languageServices.removeAll{ $0 === self }
-    openedDocuments.removeAll { $0 == ObjectIdentifier(doc) }
+    openedDocuments.removeValue(forKey: ObjectIdentifier(doc))
 
 //    if let path = doc.path {
 //      self.connector?.workbench?.publish(diagnostics: [], for: path)

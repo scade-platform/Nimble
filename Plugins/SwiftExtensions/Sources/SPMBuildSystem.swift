@@ -12,29 +12,14 @@ import NimbleCore
 import BuildSystem
 import SwiftExtensions
 
-class SPMBuildSystem: BuildSystem {
-  @Setting("com.android.toolchain.sdk", defaultValue: nil)
-  static var androidToolchainSdk: String?
-
-  @Setting("com.android.toolchain.ndk", defaultValue: nil)
-  static var androidToolchainNdk: String?
-
-  @Setting("com.android.toolchain.swift", defaultValue: nil)
-  static var androidSwiftCompiler: String?
-
-  @Setting("swift.platforms", defaultValue: [])
-  static var platforms: [SwiftToolchain]
-  
+class SPMBuildSystem: BuildSystem {  
   var name: String {
     return "Swift Package"
   }
 
   private func makeAndroidVariants(target: SPMTarget) -> [Variant] {
-    guard let sdk = SPMBuildSystem.androidToolchainSdk else { return [] }
-    guard let ndk = SPMBuildSystem.androidToolchainNdk else { return [] }
-    guard let compiler = SPMBuildSystem.androidSwiftCompiler else { return [] }
-    return AndroidBuildTarget.allCases.map {
-      let t = makeAndroidSwiftToolchain(compiler: compiler, ndk: ndk, target: $0)
+    return AndroidBuildTarget.allCases.compactMap {
+      guard let t = makeAndroidSwiftToolchain(for: $0) else { return nil }
       return UserDefinedToolchainVariant(target: target, buildSystem: self, toolchain: t)
     }
   }
@@ -50,7 +35,7 @@ class SPMBuildSystem: BuildSystem {
       $0.variants += makeAndroidVariants(target: $0)
 
       // creating variants for all user defined platforms
-      for toolchain in SPMBuildSystem.platforms {
+      for toolchain in SwiftExtensions.Settings.platforms {
         $0.variants.append(UserDefinedToolchainVariant(target: $0, buildSystem: self, toolchain: toolchain))
       }
     }
@@ -251,6 +236,8 @@ extension SPMVariant {
 
 
 fileprivate class MacVariant: SPMVariant, SwiftVariant {
+  var toolchain: SwiftToolchain? { return nil }
+
   var icon: Icon? {
     BuildSystemIcons.mac
   }
@@ -264,7 +251,7 @@ fileprivate class MacVariant: SPMVariant, SwiftVariant {
     proc.currentDirectoryURL = source.url
     proc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
     
-    let toolchain = SKLocalServer.swiftToolchain
+    let toolchain = SwiftExtensions.Settings.swiftToolchain
     if !toolchain.isEmpty {
       proc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
       if !FileManager.default.fileExists(atPath: proc.executableURL!.path) {
@@ -280,10 +267,6 @@ fileprivate class MacVariant: SPMVariant, SwiftVariant {
     let proc = createProcess(source: source)
     proc.arguments = ["build", "-Xswiftc", "-Xfrontend", "-Xswiftc", "-color-diagnostics"]
     return proc
-  }
-
-  func getToolchain() -> SwiftToolchain? {
-    return nil
   }
 }
 
@@ -316,11 +299,14 @@ extension MacVariant {
 
 
 fileprivate class UserDefinedToolchainVariant: SPMVariant, SwiftVariant {
+  var toolchain: SwiftToolchain? { return _toolchain }
+
   var icon: Icon? = nil
-  private var toolchain: SwiftToolchain
-    
+
+  private var _toolchain: SwiftToolchain
+
   init(target: SPMTarget, buildSystem: SPMBuildSystem, toolchain: SwiftToolchain) {
-    self.toolchain = toolchain
+    self._toolchain = toolchain
     super.init(target: target, buildSystem: buildSystem, name: toolchain.name)
   }
   
@@ -328,22 +314,22 @@ fileprivate class UserDefinedToolchainVariant: SPMVariant, SwiftVariant {
     let proc = Process()
     proc.currentDirectoryURL = source.url
     proc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
-    proc.executableURL = URL(fileURLWithPath: toolchain.compiler + "/bin/swift")
+    proc.executableURL = URL(fileURLWithPath: _toolchain.compiler + "/bin/swift")
     return proc
   }
 
   override func createBuildProcess(source: Folder) -> Process {
     var dict: [String : Any] = [:]
     dict["version"] = 1
-    dict["target"] = toolchain.target
-    dict["sdk"] = toolchain.sdkRoot
-    dict["toolchain-bin-dir"] = toolchain.compiler + "/bin"
-    dict["extra-swiftc-flags"] = toolchain.compilerFlags
+    dict["target"] = _toolchain.target
+    dict["sdk"] = _toolchain.sdkRoot
+    dict["toolchain-bin-dir"] = _toolchain.compiler + "/bin"
+    dict["extra-swiftc-flags"] = _toolchain.compilerFlags
     dict["extra-cc-flags"] = Array<String>()
     dict["extra-cpp-flags"] = Array<String>()
     
     let buildPath = source.path.join(".build")
-    let descPath = buildPath.join("desc-" + toolchain.name + ".json")
+    let descPath = buildPath.join("desc-" + _toolchain.name + ".json")
     
     do {
       if !FileManager.default.fileExists(atPath: buildPath.string) {
@@ -364,9 +350,6 @@ fileprivate class UserDefinedToolchainVariant: SPMVariant, SwiftVariant {
     return proc
   }
 
-  func getToolchain() -> SwiftToolchain? {
-    return toolchain
-  }
 }
 
 

@@ -42,12 +42,12 @@ public final class SwiftLanguageService: LanguageService {
 extension SwiftLanguageService: WorkbenchObserver {
   public func workbenchDidOpenDocument(_ workbench: Workbench, document: Document) {
     guard let doc = document as? SourceCodeDocument, doc.languageId == "swift" else { return }
-    doc.languageServices.append(self)
+    doc.add(service: self)
   }
 
   public func workbenchDidCloseDocument(_ workbench: Workbench, document: Document) {
     guard let doc = document as? SourceCodeDocument, doc.languageId == "swift" else { return }
-    doc.languageServices.removeAll{ $0 === self }
+    doc.remove(service: self)
   }
 }
 

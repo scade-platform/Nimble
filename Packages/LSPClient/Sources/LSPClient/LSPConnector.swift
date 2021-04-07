@@ -19,55 +19,51 @@ public final class LSPConnector {
   
   init(_ workbench: Workbench) {
     self.workbench = workbench
+
     workbench.observers.add(observer: self)
+    BuildSystemsManager.shared.observers.add(observer: self)
   }
   
   func disconnect() {
     runningServers.forEach {
       $0.1.forEach{$0.stop()}
     }
+
+    workbench?.observers.remove(observer: self)
+    BuildSystemsManager.shared.observers.remove(observer: self)
   }
     
-  func createServer(for lang: String) -> LSPServer? {
+  private func createServer(for lang: String, buildVariant: Variant?) -> LSPServer? {
     guard let server = LSPServerManager.shared.createServer(for: lang) else { return nil }
     server.client.connector = self
 
-    do {
-      try server.start()
-    } catch {
-      return nil
-    }
+    guard let _ = try? server.start(with: buildVariant) else { return nil }
 
     return server
   }
-  
-  func createServer(`in` folder: Folder?, for doc: SourceCodeDocument) -> LSPServer? {    
-    guard let server = createServer(for: doc.languageId) else { return nil }
+
+  private func createServer(for lang: String, in folder: URL?) -> LSPServer? {
+    return createServer(for: lang, workspaceFolders: folder != nil ? [folder!] : [])
+  }
+
+  private func createServer(for lang: String, workspaceFolders: [URL]) -> LSPServer? {
+    guard let server = createServer(for: lang, buildVariant: workbench?.selectedVariant) else { return nil }
     
-    var servers = runningServers[doc.languageId] ?? []
+    var servers = runningServers[lang] ?? []
     servers.append(server)
-    runningServers[doc.languageId] = servers
-
-
-    let folderUrls: [URL]
-    if let folderUrl = folder?.path.url {
-      folderUrls = [folderUrl]
-    } else {
-      folderUrls = []
-    }
+    runningServers[lang] = servers
 
     ///TODO: implement support for servers allowing multiple folders for a workspace
-    server.client.initialize(workspaceFolders: folderUrls) { [weak self] in
+    server.client.initialize(workspaceFolders: workspaceFolders) { [weak self] in
       if server.client.state == .failed {
-        self?.runningServers[doc.languageId]?.removeAll{ $0 === server }
+        self?.runningServers[lang]?.removeAll{ $0 === server }
       }
     }
-    
+
     return server
   }
   
-  
-  func findServer(for doc: SourceCodeDocument) -> (LSPServer?, Folder?) {
+  private func findServer(for doc: SourceCodeDocument) -> (LSPServer?, Folder?) {
     guard let proj = workbench?.project,
           let docUrl = doc.fileURL else { return (nil, nil) }
 
@@ -99,8 +95,7 @@ extension LSPConnector: WorkbenchObserver {
             
     if let client = runningServer?.client {
       client.openDocument(doc: doc)
-      
-    } else if let client = createServer(in: docFolder, for: doc)?.client {
+    } else if let client = createServer(for: doc.languageId, in: docFolder?.url)?.client {
       client.openDocument(doc: doc)
     }
   }
@@ -128,7 +123,7 @@ extension LSPConnector: WorkbenchObserver {
       } else {
         client.openDocument(doc: doc)
       }
-    } else if let client = createServer(in: docFolder, for: doc)?.client {
+    } else if let client = createServer(for: doc.languageId, in: docFolder?.url)?.client {
       client.openDocument(doc: doc)
     }
   }
@@ -136,6 +131,44 @@ extension LSPConnector: WorkbenchObserver {
   public func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) {
     if document == nil {
       workbench.statusBar.statusMessage = ""
+    }
+  }
+}
+
+
+extension LSPConnector: BuildSystemsObserver {
+  public func workbenchDidChangeVariant(_ workbench: Workbench, variant: Variant?) {
+    guard self.workbench === workbench, let target = variant?.target else { return }
+
+    let langServers = self.runningServers.compactMap {(lang, servers) -> (String, [LSPServer])? in
+      let filteredServers = servers.filter { server in
+        server.client.workspaceFolders.contains { target.contains(url: $0) }
+      }
+
+      return filteredServers.count > 0 ? (lang, filteredServers) : nil
+    }
+
+    for (lang, servers) in langServers {
+      servers.forEach { server in
+        // Check if the server should be restarted for the provided variant
+        guard server.shouldRestart(for: variant) else { return }
+
+        // Store current context
+        let workspaceFolders = server.client.workspaceFolders
+        let openedDocuments = server.client.openedDocuments.keys
+
+        // Stop the servers
+        server.stop()
+        self.runningServers[lang]?.removeAll{ $0 === server }
+
+        // Restart with the previous context
+        if let server = self.createServer(for: lang, workspaceFolders: workspaceFolders) {
+          workbench.documents.compactMap {$0 as? SourceCodeDocument}.forEach {
+            guard openedDocuments.contains(ObjectIdentifier($0)) else { return }
+            server.client.openDocument(doc: $0)
+          }
+        }
+      }
     }
   }
 }

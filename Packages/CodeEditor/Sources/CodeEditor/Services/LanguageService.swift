@@ -32,4 +32,11 @@ public extension LanguageService {
   func format(doc: SourceCodeDocument) -> Void { }
 }
 
+public struct LanguageServiceRef {
+  public private(set) weak var value: LanguageService?
+
+  public init(value: LanguageService) {
+    self.value = value
+  }
+}
 

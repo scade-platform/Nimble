@@ -37,11 +37,7 @@ final class SwiftExtensionsPlugin: Plugin {
   }
 
   private func registerSettings() {
-    Settings.shared.add(SKLocalServer.$swiftToolchain)
-    Settings.shared.add(SPMBuildSystem.$androidToolchainSdk)
-    Settings.shared.add(SPMBuildSystem.$androidToolchainNdk)
-    Settings.shared.add(SPMBuildSystem.$androidSwiftCompiler)
-    Settings.shared.add(SPMBuildSystem.$platforms)
+    SwiftExtensions.Settings.register()
   }
 }
 

@@ -220,7 +220,7 @@ extension SingleDocumentVariant {
     let proc = Process()
     proc.currentDirectoryURL = documentURL.deletingLastPathComponent()
     
-    let toolchain = SKLocalServer.swiftToolchain
+    let toolchain = SwiftExtensions.Settings.swiftToolchain
     if !toolchain.isEmpty, let sdkPath = sdkPath {
       proc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swiftc")
       proc.arguments = [documentURL.path, "-sdk", "\(sdkPath)", "-Xfrontend", "-color-diagnostics"]

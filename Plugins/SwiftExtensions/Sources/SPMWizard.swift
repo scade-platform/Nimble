@@ -38,11 +38,11 @@ class SPMWizard: CreationWizard {
         let projectPath = directoryPath/projectName
         
         //create project folder
-        try? projectPath.mkdir()
+        let _ = try? projectPath.mkdir()
         //generate SPM package
         let proc = Process()
         proc.currentDirectoryURL = projectPath.url
-        let toolchain = SKLocalServer.swiftToolchain
+        let toolchain = SwiftExtensions.Settings.swiftToolchain
         if !toolchain.isEmpty {
           proc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
         } else {

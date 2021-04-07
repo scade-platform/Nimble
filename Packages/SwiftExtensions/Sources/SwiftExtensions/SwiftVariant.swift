@@ -8,7 +8,7 @@
 
 import BuildSystem
 
-
 public protocol SwiftVariant: Variant {
-    func getToolchain() -> SwiftToolchain?
+  var toolchain: SwiftToolchain? { get }
 }
+

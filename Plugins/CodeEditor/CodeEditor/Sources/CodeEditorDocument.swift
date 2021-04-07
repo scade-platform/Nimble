@@ -11,7 +11,6 @@ import NimbleCore
 import CodeEditor
 
 public final class CodeEditorDocument: NimbleDocument {
-
   lazy var textStorage = {
     return NSTextStorage()
   }()
@@ -31,8 +30,6 @@ public final class CodeEditorDocument: NimbleDocument {
       codeEditor.languageDidChange(language: lang)
     }
   }
-  
-  public var languageServices: [LanguageService] = []
 
   public var syntaxParser: SyntaxParser? {
     didSet {
@@ -57,9 +54,10 @@ public final class CodeEditorDocument: NimbleDocument {
   
   public var directory: URL? = nil
 
+  private var _languageServices: [LanguageServiceRef] = []
   
   public func languageService(for feature: LanguageServiceFeature) -> LanguageService? {
-    return languageServices.first{ $0.supportedFeatures.contains(feature) }
+    return _languageServices.first{$0.value?.supportedFeatures.contains(feature) ?? false}?.value
   }
 
 
@@ -95,6 +93,11 @@ public final class CodeEditorDocument: NimbleDocument {
   
   public override func data(ofType typeName: String) throws -> Data {
     return textStorage.string.data(using: .utf8)!
+  }
+
+  public override func prepareSavePanel(_ savePanel: NSSavePanel) -> Bool {
+    savePanel.directoryURL = self.directory
+    return super.prepareSavePanel(savePanel)
   }
 }
 
@@ -132,17 +135,26 @@ extension CodeEditorDocument: SourceCodeDocument {
     return id
   }
 
+  public var languageServices: [LanguageService] {
+    return _languageServices.compactMap{$0.value}
+  }
+
+  public func add(service: LanguageService) {
+    _languageServices.append(LanguageServiceRef(value: service))
+  }
+
+  public func remove(service: LanguageService) {
+    _languageServices.removeAll{
+      guard let val = $0.value else { return true }
+      return ObjectIdentifier(val) == ObjectIdentifier(service)
+    }
+  }
+
   public func replaceText(with newText: String) {
     codeEditor.textView.insertText(newText, replacementRange: self.textStorage.string.nsRange)
 //    self.textStorage.replaceCharacters(in: self.textStorage.string.nsRange ,
 //                                       with: newText)
   }
-  
-  public override func prepareSavePanel(_ savePanel: NSSavePanel) -> Bool {
-    savePanel.directoryURL = self.directory
-    return super.prepareSavePanel(savePanel)
-  }
-  
 }
 
 extension CodeEditorDocument: CreatableDocument {

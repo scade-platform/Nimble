@@ -7,31 +7,19 @@
 //
 
 
-public struct SwiftToolchain: Codable {
-    public var name: String
-    public var compiler: String
-    public var target: String
-    public var sdkRoot: String
-    public var compilerFlags: [String]
+public struct SwiftToolchain: Codable, Equatable {
+  public var name: String
+  public var compiler: String
+  public var compilerFlags: [String]
 
-    public init(name: String, compiler: String, target: String, sdkRoot: String, compilerFlags: [String]) {
-        self.name = name
-        self.compiler = compiler
-        self.target = target
-        self.sdkRoot = sdkRoot
-        self.compilerFlags = compilerFlags
-    }
-}
+  public var target: String?
+  public var sdkRoot: String?
 
-
-public struct SwiftAndroidToolchain: Codable {
-    public init(compiler: String, sdk: String, ndk: String) {
-        self.compiler = compiler
-        self.sdk = sdk
-        self.ndk = ndk
-    }
-
-    public var compiler: String
-    public var sdk: String
-    public var ndk: String
+  public init(name: String, compiler: String, compilerFlags: [String], target: String? = nil, sdkRoot: String? = nil) {
+    self.name = name
+    self.compiler = compiler
+    self.target = target
+    self.sdkRoot = sdkRoot
+    self.compilerFlags = compilerFlags
+  }
 }

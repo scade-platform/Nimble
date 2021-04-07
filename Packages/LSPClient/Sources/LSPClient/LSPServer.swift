@@ -20,9 +20,11 @@ import LanguageServerProtocolJSONRPC
 public protocol LSPServer: class {
   var client: LSPClient { get }
   var isRunning: Bool { get }
-  
-  func start() throws
+
+  func start(with: Variant?) throws
   func stop()
+
+  func shouldRestart(for: Variant?) -> Bool
 }
 
 
@@ -135,13 +137,18 @@ public final class LSPExternalServer: LSPServer {
     }
   }
   
-  public func start() throws {
+  public func start(with buildVariant: Variant?) throws {
     try proc.run()
     connection.start(receiveHandler: client)
   }
   
   public func stop() {
+    client.prepareForExit()
     proc.terminate()
+  }
+
+  public func shouldRestart(for: Variant?) -> Bool {
+    return true
   }
 }
 

@@ -12,6 +12,7 @@ let package = Package(
     ],
     dependencies: [
       .package(path: "../../NimbleCore"),
+      .package(path: "../BuildSystem"),
       .package(path: "../CodeEditor"),
       .package(url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("release/5.3")),
     ],
@@ -20,6 +21,7 @@ let package = Package(
         name: "LSPClient",
         dependencies: [
           "NimbleCore",
+          "BuildSystem",
           "CodeEditor",
           "SourceKitLSP"
         ]
