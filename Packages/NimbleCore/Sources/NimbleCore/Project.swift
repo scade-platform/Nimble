@@ -114,7 +114,6 @@ public final class Project {
 
     projectFolders.append(ProjectFolder(folder: folder, relativePath: relativePath))
     folder.observers.add(observer: self)
-    save()
   }
   
   public func remove(_ folder: Folder) {
@@ -126,7 +125,6 @@ public final class Project {
       }
       return false
     }
-    save()
   }
     
   public func folder(containing url: URL) -> Folder? {

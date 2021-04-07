@@ -12,7 +12,7 @@ import NimbleCore
 class ProjectDocument: NSDocument {
   static let docType = "com.scade.nimble.project"
   
-  var project = Project()
+  var project: Project
   
   override var fileURL: URL?{
     set {
@@ -21,6 +21,12 @@ class ProjectDocument: NSDocument {
     get {
       project.url
     }
+  }
+  
+  override init() {
+    self.project = Project()
+    super.init()
+    self.project.observers.add(observer: self)
   }
     
   var workbench: NimbleWorkbench? {
@@ -93,7 +99,6 @@ class ProjectDocument: NSDocument {
     self.windowControllers.forEach{ $0.document = self }
   }
   
-  
   // MARK: - Enablers
   
   // This enables auto save.
@@ -137,8 +142,13 @@ class ProjectDocument: NSDocument {
   }
 }
 
-// MARK: - Actions
+// MARK: - ProjectObserver
 
-extension ProjectDocument {
-  
+extension ProjectDocument: ProjectObserver {
+  func projectFoldersDidChange(_: Project) {
+    guard let url = fileURL else { return }
+    self.save(to: url, ofType: ProjectDocument.docType, for: .autosaveInPlaceOperation, completionHandler: { error in
+      Swift.dump(error)
+    })
+  }
 }
