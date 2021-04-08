@@ -146,9 +146,6 @@ class ProjectDocument: NSDocument {
 
 extension ProjectDocument: ProjectObserver {
   func projectFoldersDidChange(_: Project) {
-    guard let url = fileURL else { return }
-    self.save(to: url, ofType: ProjectDocument.docType, for: .autosaveInPlaceOperation, completionHandler: { error in
-      Swift.dump(error)
-    })
+    updateChangeCount(.changeDone)
   }
 }
