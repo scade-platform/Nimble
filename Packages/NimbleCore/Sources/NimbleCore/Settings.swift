@@ -79,6 +79,7 @@ public struct SettingRef {
 
     if `override` || !Settings.shared.isSet(key) {
       Settings.shared.set(key, value: value)
+      setting?.valueDidChange()
     }
   }
 

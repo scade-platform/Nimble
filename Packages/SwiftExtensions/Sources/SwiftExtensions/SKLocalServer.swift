@@ -31,8 +31,15 @@ public final class SKLocalServer: LSPServer {
     case incompatibleVariant
   }
 
-  public static var buildFlags: BuildFlags = BuildFlags()
-  public static var toolchainBuildFlags: [String: BuildFlags] = [:]
+  /// TODO: move to settings
+  public static var swiftCompilerFlags: [String] = []
+  public static var toolchainSwiftCompilerFlags: [String: [String]] = [:]
+
+  public static func addSwiftCompilerFlags(_ flags: [String], for toolchain: String) {
+    var _flags = toolchainSwiftCompilerFlags[toolchain] ?? []
+    _flags.append(contentsOf: flags)
+    toolchainSwiftCompilerFlags[toolchain] = _flags
+  }
 
   public var isRunning = false
 
@@ -53,7 +60,7 @@ public final class SKLocalServer: LSPServer {
   public func start(with variant: Variant?) throws {
     currentVariant = variant as? SwiftVariant
 
-    print("Starting using toolchain: \(currentVariant?.toolchain)")
+    print("Using toolchain: \(currentVariant?.toolchain?.name)")
 
     // Setup toolchain (compiler) location
     var installPath: AbsolutePath? = nil
@@ -64,8 +71,8 @@ public final class SKLocalServer: LSPServer {
 
 
     // Setup server options
-    var buildFlags = SKLocalServer.buildFlags
     var serverOptions = SourceKitServer.Options()
+    serverOptions.buildSetup.flags.swiftCompilerFlags.append(contentsOf: SKLocalServer.swiftCompilerFlags)
 
     if let toolchain = currentVariant?.toolchain {
       serverOptions.buildSetup.flags.swiftCompilerFlags += toolchain.compilerFlags
@@ -78,12 +85,10 @@ public final class SKLocalServer: LSPServer {
         serverOptions.buildSetup.sdkRoot = AbsolutePath(sdkRoot)
       }
 
-      if let toolchainFlags = SKLocalServer.toolchainBuildFlags[toolchain.name] {
-        buildFlags.append(toolchainFlags)
+      if let toolchainFlags = SKLocalServer.toolchainSwiftCompilerFlags[toolchain.name] {
+        serverOptions.buildSetup.flags.swiftCompilerFlags.append(contentsOf: toolchainFlags)
       }
     }
-
-    serverOptions.buildSetup.flags.append(buildFlags)
 
 
     // Create server

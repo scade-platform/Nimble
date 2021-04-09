@@ -25,6 +25,10 @@ fileprivate struct ToolchainTuple: Hashable {
 
 fileprivate var _toolchains: [ToolchainTuple: SwiftToolchain] = [:]
 
+public func appleToolchainName(for platform: AppleBuildPlatform) -> String {
+  return "Apple \(platform.rawValue)"
+}
+
 // Makes SwiftToolchain struct for a build target, an apple build platform and a toolchain path
 public func makeAppleSwiftToolchain(for platform: AppleBuildPlatform, path: String? = nil) -> SwiftToolchain? {
   var compiler = path ?? Settings.swiftToolchain
@@ -40,7 +44,7 @@ public func makeAppleSwiftToolchain(for platform: AppleBuildPlatform, path: Stri
   }
 
   let props = appleSwiftABI(for: platform)
-  return SwiftToolchain(name: platform.rawValue,
+  return SwiftToolchain(name:  appleToolchainName(for: platform),
                         compiler: compiler,
                         compilerFlags: [
                           "-sdk", props.sdkRoot,

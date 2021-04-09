@@ -30,6 +30,11 @@ fileprivate struct ToolchainTuple: Hashable {
 
 fileprivate var _toolchains: [ToolchainTuple: SwiftToolchain] = [:]
 
+
+public func androidToolchainName(for target: AndroidBuildTarget) -> String {
+  return "Android \(target.rawValue)"
+}
+
 // Makes SwiftToolchain struct for path to compiler, path to NDK, and build target
 public func makeAndroidSwiftToolchain(for target: AndroidBuildTarget, compiler: String? = nil, ndk: String? = nil) -> SwiftToolchain? {
   guard let compiler = compiler ?? Settings.androidSwiftCompiler,
@@ -42,9 +47,9 @@ public func makeAndroidSwiftToolchain(for target: AndroidBuildTarget, compiler: 
   }
 
   let props = androidABI(for: target)
-  let toolchain = SwiftToolchain( name: "Android " + target.rawValue,
-                                  compiler: tuple.compiler,
-                                  compilerFlags: [
+  let toolchain = SwiftToolchain(name: androidToolchainName(for: target),
+                                 compiler: tuple.compiler,
+                                 compilerFlags: [
                                     "-tools-directory",
                                     ndk + "/toolchains/llvm/prebuilt/darwin-x86_64/bin",
                                     "-I",
@@ -58,9 +63,9 @@ public func makeAndroidSwiftToolchain(for target: AndroidBuildTarget, compiler: 
                                     "-ldispatch",
                                     "-lswiftFoundation",
                                     "-lswiftFoundationNetworking"
-                                  ],
-                                  target: props.triple,
-                                  sdkRoot: ndk + "/platforms/android-21/arch-" + props.sysrootArch)
+                                 ],
+                                 target: props.triple,
+                                 sdkRoot: ndk + "/platforms/android-21/arch-" + props.sysrootArch)
 
   _toolchains[tuple] = toolchain
   return toolchain
