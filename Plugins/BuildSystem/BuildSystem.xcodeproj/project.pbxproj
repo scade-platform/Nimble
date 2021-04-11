@@ -91,7 +91,6 @@
 				D7BD82DB245319780058815F /* Commands.swift */,
 				0C92E52723950E3E00B073DE /* Plugin.swift */,
 				0C3469D02397D04600319613 /* ShellBuildTool.swift */,
-				0CCDB14D245DD16F00A83CEC /* Extensions */,
 				0CCDB14124580C9300A83CEC /* UI */,
 			);
 			path = Sources;
@@ -104,13 +103,6 @@
 				0CCDB14324580CB700A83CEC /* ToolbarTargetControl.xib */,
 			);
 			path = UI;
-			sourceTree = "<group>";
-		};
-		0CCDB14D245DD16F00A83CEC /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

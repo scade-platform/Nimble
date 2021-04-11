@@ -18,7 +18,7 @@ class SwiftBuildSystem: BuildSystem {
     return "Swift File"
   }
   
-  func targets(in workbench: Workbench) -> [Target] {
+  func collectTargets(from workbench: Workbench) -> [Target] {
     guard let document = workbench.currentDocument, canHandle(document: document) else { return [] }
     
     //Workaround to prevent allow compile single swift file in SPM package
@@ -31,8 +31,8 @@ class SwiftBuildSystem: BuildSystem {
       }
     }
     
-    let target = SwiftTarget(document: document, workbench: workbench)
-    target.variants.append(SingleDocumentVariant(target: target, buildSystem: self))
+    let target = SwiftTarget(document: document, workbench: workbench, buildSystem: self)
+    target.variants.append(SingleDocumentVariant(target: target))
     return [target]
   }
   
@@ -123,12 +123,17 @@ fileprivate class SwiftTarget: Target {
   lazy var icon: Icon? = {
     IconsManager.shared.icon(for: document.fileURL?.file)
   }()
-  
-  let document: Document
+
   var variants: [Variant] = []
+
+  var buildSystem: BuildSystem { swiftBuildSystem }
+
+  let document: Document
+
   weak var workbench: Workbench?
-  
-  init(document: Document, workbench: Workbench) {
+  weak var swiftBuildSystem: SwiftBuildSystem!
+
+  init(document: Document, workbench: Workbench, buildSystem: SwiftBuildSystem) {
     self.document = document
     self.workbench = workbench
   }
@@ -152,7 +157,7 @@ fileprivate class SingleDocumentVariant: Variant {
     swiftTarget
   }
   
-  weak var swiftTarget : SwiftTarget?
+  weak var swiftTarget : SwiftTarget!
   
   var icon: Icon? {
     BuildSystemIcons.mac
@@ -161,9 +166,7 @@ fileprivate class SingleDocumentVariant: Variant {
   var name: String {
     "Mac"
   }
-  
-  weak var buildSystem : BuildSystem?
-  
+
   lazy var sdkPath: String? = {
     guard let sdkFolder = Folder(path: "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/") else {
       return nil
@@ -176,9 +179,8 @@ fileprivate class SingleDocumentVariant: Variant {
     return nil
   }()
   
-  init(target: SwiftTarget, buildSystem: SwiftBuildSystem) {
+  init(target: SwiftTarget) {
     self.swiftTarget = target
-    self.buildSystem = buildSystem
   }
 }
 

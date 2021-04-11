@@ -55,6 +55,8 @@ public protocol Workbench: class {
 }
 
 public extension Workbench {
+  var id: ObjectIdentifier { ObjectIdentifier(self) }
+  
   var areas: [WorkbenchArea] { [navigatorArea, debugArea, inspectorArea].compactMap{$0} }
 
   func open(_ doc: Document, show: Bool) {

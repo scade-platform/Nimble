@@ -25,7 +25,38 @@ final class BuildSystemPlugin: Plugin {
     Settings.shared.add(OSLog.$logsSystems)
     BuildSystemsManager.shared.observers.add(observer: self)
   }
-  
+
+  public func activate(in workbench: Workbench) {
+    BuildSystemsManager.shared.connect(to: workbench)    
+  }
+
+  public func deactivate(in workbench: Workbench) {
+    BuildSystemsManager.shared.disconnect(from: workbench)    
+  }
+
+  func encodeRestorableState(in workbench: Workbench, coder: NSCoder) -> Void {
+//    guard let variant = workbench.selectedVariant,
+//          let target = variant.target,
+//          let buildSystem = target.buildSystem else { return }
+//
+//    coder.encode(buildSystem.name, forKey: "BuildSystem")
+//    coder.encode(target.name, forKey: "BuildTarget")
+//    coder.encode(variant.name, forKey: "BuildVariant")
+  }
+
+  func restoreState(in workbench: Workbench, coder: NSCoder) -> Void {
+//    if let systemName = coder.decodeObject(forKey: "BuildSystem") as? String,
+//       let targetName = coder.decodeObject(forKey: "BuildTarget") as? String,
+//       let variantName = coder.decodeObject(forKey: "BuildVariant") as? String,
+//
+//       let system = BuildSystemsManager.shared.buildSystems.first(where: {$0.name == systemName}),
+//       let target = system.targets(in: workbench).first(where: { $0.name == targetName }),
+//       let variant = target.variants.first(where: {$0.name == variantName}) {
+//
+//      workbench.selectedVariant = variant
+//    }
+  }
+
   private func setupMainMenu() {
     guard let mainMenu = NSApplication.shared.mainMenu else { return }
     guard let toolsMenu = mainMenu.findItem(with: "Tools")?.submenu else { return }
@@ -72,9 +103,28 @@ final class BuildSystemPlugin: Plugin {
 extension BuildSystemPlugin: BuildSystemsObserver {
   func buildSystemDidRegister(_ buildSystem: BuildSystem) {
     guard let buildSystemMenu = buildSystemMenu else { return }
+
     let toolItem = NSMenuItem(title: buildSystem.name, action: #selector(switchBuildSystem(_:)), keyEquivalent: "")
     toolItem.target = self
     toolItem.representedObject = buildSystem
+
     buildSystemMenu.addItem(toolItem)
+  }
+}
+
+// MARK: - OSLog utils
+
+///TODO: remove it or move somewhere else "nimble.log" setting in the BuildSystem plugin ????!!!!!!!
+
+extension OSLog {
+  private static let subsystem = "com.nimble.BuildSystem"
+
+  static let targetSelector = OSLog(subsystem: subsystem, category: "targetSelector")
+
+  @Setting("nimble.log", defaultValue: [])
+  public static var logsSystems: [String]
+
+  static var isLogOn : Bool {
+    return OSLog.logsSystems.contains(OSLog.subsystem)
   }
 }

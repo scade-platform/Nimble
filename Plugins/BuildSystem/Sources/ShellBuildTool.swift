@@ -16,7 +16,7 @@ class ShellBuildSystem: BuildSystem {
     return "Shell"
   }
   
-  func targets(in workbench: Workbench) -> [Target] {
+  func collectTargets(from workbench: Workbench) -> [Target] {
     //TODO: add get Targets logic
     return []
   }

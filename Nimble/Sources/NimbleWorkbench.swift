@@ -35,6 +35,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     set {
       observers.notify { $0.workbenchWillChangeProject(self) }
       super.document = newValue
+      self.project?.workbench = self
       observers.notify { $0.workbenchDidChangeProject(self) }
     }
   }

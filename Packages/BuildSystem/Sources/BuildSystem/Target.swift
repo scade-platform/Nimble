@@ -16,17 +16,36 @@ public protocol Target : class {
 
   var variants: [Variant] { get }
 
+  var variantsGroups: [String] { get }
+
+  var buildSystem: BuildSystem { get }
+
   var workbench: Workbench? { get }
 
   func contains(file: File) -> Bool
 
   func contains(folder: Folder) -> Bool
+
+  // Group for a variant
+  func group(for: Variant) -> UInt?
+
+  // Group for another group. Nil is the top group
+  func group(for: String) -> UInt?
+}
+
+public struct TargetRef {
+  public private(set) weak var value: Target?
+  public init(value: Target) { self.value = value }
+}
+
+public extension Target {
+  var ref: TargetRef { TargetRef(value: self) }
 }
 
 public extension Target {
   var icon: Icon? { nil }
 
-  var workbench: Workbench? { nil }
+  var variantsGroups: [String] { [] }
 
   var id: ObjectIdentifier { ObjectIdentifier(self) }
   
@@ -43,24 +62,37 @@ public extension Target {
     }
     return false
   }
+
+  // Group variants into groups
+  func group(for: Variant) -> UInt? { return nil }
+
+  // Group another groups into sub-groups
+  func group(for: String) -> UInt? { return nil }
 }
+
+
 
 public protocol Variant: AnyObject {
   var name: String { get }
   var icon: Icon? { get }
   var target: Target? { get }
-  var buildSystem: BuildSystem? { get }
   
   func run() throws -> WorkbenchTask
   func build() throws -> WorkbenchTask
   func clean() throws -> WorkbenchTask
 }
 
+public struct VariantRef {
+  public private(set) weak var value: Variant?
+  public init(value: Variant) { self.value = value }
+}
+
+
 public extension Variant {
   //Default value for optional properties
   var icon: Icon? { nil }
   var target: Target? { nil }
-  
+
   //Default implementation
   func run() throws -> WorkbenchTask {
     throw VariantError.operationNotSupported
@@ -73,6 +105,13 @@ public extension Variant {
   func clean() throws -> WorkbenchTask {
     throw VariantError.operationNotSupported
   }
+
+  var ref: VariantRef { VariantRef(value: self) }
+}
+
+
+public extension Variant {
+  var buildSystem: BuildSystem? { target?.buildSystem }
 }
 
 public enum VariantError: Error {

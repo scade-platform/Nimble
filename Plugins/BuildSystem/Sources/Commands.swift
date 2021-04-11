@@ -1,5 +1,5 @@
 //
-//  Commands.swift
+//  BuildCommands.swift
 //  BuildSystem
 //
 //  Created by Grigory Markin on 24.04.20.
@@ -9,9 +9,23 @@
 import AppKit
 import NimbleCore
 import BuildSystem
-import os.log
 
-// MARK: - Run command
+
+// MARK: - Basic
+
+class BuildSystemCommand: Command {
+  init(name: String, keyEquivalent: String? = nil, toolbarIcon: NSImage? = nil, orderPriority: Int = 100) {
+    super.init(name: name, menuPath: "Tools", keyEquivalent: keyEquivalent, toolbarIcon: toolbarIcon, alignment: .left(orderPriority: orderPriority))
+  }
+
+  func currentTask(in workbench: Workbench) -> BuildTask? {
+    return workbench.tasks.first { $0 is BuildTask } as? BuildTask
+  }
+}
+
+
+
+// MARK: - Run
 
 final class Run: BuildSystemCommand {
   init() {
@@ -32,7 +46,7 @@ final class Run: BuildSystemCommand {
 }
 
 
-// MARK: - Stop command
+// MARK: - Stop
 
 final class Stop: BuildSystemCommand {
   init() {
@@ -54,7 +68,7 @@ final class Stop: BuildSystemCommand {
 }
 
 
-// MARK: - Build command
+// MARK: - Build
 
 final class Build: BuildSystemCommand {
   init() {
@@ -73,6 +87,9 @@ final class Build: BuildSystemCommand {
     return currentTask(in: workbench) == nil ? [.enabled] : []
   }
 }
+
+
+// MARK: - Clean
 
 final class Clean: BuildSystemCommand {
   init() {
@@ -116,48 +133,19 @@ final class CleanAll: BuildSystemCommand {
   }
 }
 
+// MARK: - Select target
+
 final class SelectTarget: Command {
-  
-  
   init() {
-    super.init(name: "Select Target", menuPath: nil, keyEquivalent: nil, controlClass: ToolbarTargetControl.self, alignment: .left(orderPriority: 30))
+    super.init(name: "Select Target",
+               menuPath: nil,
+               keyEquivalent: nil,
+               controlClass: ToolbarTargetControl.self,
+               alignment: .left(orderPriority: 30))
   }
-  
+
   override func validate(in workbench: Workbench, control: NSControl?) -> State {
-    if OSLog.isLogOn {
-      os_log("Validation target selector.", log: .targetSelector, type: .info)
-    }
-    
-    guard let activeSystem = BuildSystemsManager.shared.activeBuildSystem, !activeSystem.targets(in: workbench).isEmpty else { return [] }
-    if let toolbarTargetControl = control as? ToolbarTargetControl {
-      
-      if OSLog.isLogOn {
-        if let target = toolbarTargetControl.target, let targetDescription = target.description {
-          os_log("Control: %{public}s, target: %{public}s", log: .targetSelector, type: .info, toolbarTargetControl.description, targetDescription)
-        } else {
-          os_log("Control: %{public}s without target", log: .targetSelector, type: .info, toolbarTargetControl.description)
-        }
-      }
-      
-      workbench.observers.add(observer: toolbarTargetControl)
-      workbench.project?.observers.add(observer: toolbarTargetControl)
-      BuildSystemsManager.shared.observers.add(observer: toolbarTargetControl)
-      toolbarTargetControl.autoSelectTarget(in: workbench)
-      return [.enabled]
-    }
-    return []
-  }
-}
-
-
-// MARK: - Basic build command
-
-class BuildSystemCommand: Command {
-  init(name: String, keyEquivalent: String? = nil, toolbarIcon: NSImage? = nil, orderPriority: Int = 100) {
-    super.init(name: name, menuPath: "Tools", keyEquivalent: keyEquivalent, toolbarIcon: toolbarIcon, alignment: .left(orderPriority: orderPriority))
-  }
-
-  func currentTask(in workbench: Workbench) -> BuildTask? {
-    return workbench.tasks.first { $0 is BuildTask } as? BuildTask
+    guard let selector = control as? ToolbarTargetControl else { return .disabled }
+    return selector.activeVariant != nil ? .enabled : .disabled
   }
 }

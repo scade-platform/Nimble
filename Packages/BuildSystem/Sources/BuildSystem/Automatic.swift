@@ -18,14 +18,16 @@ public class Automatic: BuildSystem {
     return "Automatic"
   }
   
-  public func targetsBySystem(in workbench: Workbench) -> [[Target]] {
-    let systems = BuildSystemsManager.shared.buildSystems
-    return systems.sorted{$0.name.lowercased() < $1.name.lowercased()}.map{$0.targets(in: workbench)}
-  }
+//  public func targetsBySystem(in workbench: Workbench) -> [[Target]] {
+//    let systems = BuildSystemsManager.shared.buildSystems
+//    return systems.sorted{$0.name.lowercased() < $1.name.lowercased()}.map{$0.targets(in: workbench)}
+//  }
   
-  public func targets(in workbench: Workbench) -> [Target] {
+  public func collectTargets(from workbench: Workbench) -> [Target] {
     let systems = BuildSystemsManager.shared.buildSystems
-    return systems.sorted{$0.name.lowercased() < $1.name.lowercased()}.flatMap{$0.targets(in: workbench)}
+    return systems.sorted{$0.name.lowercased() < $1.name.lowercased()}.flatMap{
+      $0.collectTargets(from: workbench)      
+    }
   }
   
   public func run(_ variant: Variant) {
