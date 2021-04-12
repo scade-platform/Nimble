@@ -75,6 +75,8 @@ public class BuildSystemsManager {
     workbenchTargets[workbench.id] = targets
 
     workbench.selectedVariant = availableTargets.first?.variants.first
+
+    observers.notify{ $0.availableTargetsDidChange(workbench) }
   }
 
   public func connect(to workbench: Workbench) {
@@ -151,9 +153,13 @@ private var selectedVariants: [ObjectIdentifier: Variant] = [:]
 // MARK: - BuildSystemsManager + Observers
 
 extension BuildSystemsManager: WorkbenchObserver {
+  public func workbenchWillChangeProject(_ workbench: Workbench) {
+    workbench.project?.observers.remove(observer: self)
+  }
+
   public func workbenchDidChangeProject(_ workbench: Workbench) {
     updateTargets(in: workbench)
-    observers.notify{ $0.availableTargetsDidChange(workbench) }
+    workbench.project?.observers.add(observer: self)
   }
 }
 
