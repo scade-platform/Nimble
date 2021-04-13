@@ -107,6 +107,13 @@ public extension Variant {
   }
 
   var ref: VariantRef { VariantRef(value: self) }
+
+  var fqn: (name: String, target: String, system: String)? {
+    guard let target = self.target?.name,
+          let system = self.target?.buildSystem.name else { return nil }
+
+    return (name, target, system)
+  }
 }
 
 

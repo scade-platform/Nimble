@@ -42,12 +42,33 @@ public class BuildSystemTask: WorkbenchProcess, BuildTask {}
 public class BuildSystemsManager {
   public struct WorkbenchTargets {
     var all: [Target] { byBuildSystem.values.flatMap{$0} }
+
     var byBuildSystem: [ObjectIdentifier: [Target]] = [:]
+
+    var groupedByName: [(String, [Target])] {
+      var groups: [String: [Target]] = [:]
+
+      // Group targets by name
+      all.forEach {
+        var targets = groups[$0.name] ?? []
+        targets.append($0)
+        groups.updateValue(targets, forKey: $0.name)
+      }
+
+      return groups
+        .map{($0.key, $0.value.sorted(by: { t1, t2 in t1.buildSystem.name.lowercased() < t2.buildSystem.name.lowercased()}))}
+        .sorted{$0.0.lowercased() < $1.0.lowercased()}
+    }
 
     fileprivate mutating func append(_ target: Target) {
       var targets = byBuildSystem[target.buildSystem.id, default: []]
       targets.append(target)
       byBuildSystem[target.buildSystem.id] = targets
+    }
+
+    func find(variant: (name: String, target: String, system: String)) -> Variant? {
+      let target = all.filter{$0.name == variant.target && $0.buildSystem.name == variant.system}.first
+      return target?.variants.first{ $0.name == variant.name }
     }
   }
 
@@ -61,20 +82,36 @@ public class BuildSystemsManager {
 
   public var activeBuildSystem: BuildSystem? = Automatic.shared {
     didSet {
-      observers.notify{ $0.activeBuildSystemDidChange(activeBuildSystem, deactivatedBuildSystem: oldValue)}
+      observers.notify{
+        $0.activeBuildSystemDidChange(activeBuildSystem, deactivatedBuildSystem: oldValue)}
     }
   }
 
   private init() {}
 
-  private func updateTargets(in workbench: Workbench) {
-    var targets = WorkbenchTargets()
-    let availableTargets = activeBuildSystem?.collectTargets(from: workbench) ?? []
+  private func selectVariant(_ fqn: (String, String, String)?, in workbench: Workbench) {
+    guard let targets = workbenchTargets[workbench.id]?.groupedByName else { return }
 
-    availableTargets.forEach { targets.append($0) }
+    if let fqn = fqn, let variant = workbenchTargets[workbench.id]?.find(variant: fqn) {
+      workbench.selectedVariant = variant
+    } else {
+      workbench.selectedVariant = targets.first?.1.first?.variants.first
+    }
+  }
+
+  private func updateTargets(in workbench: Workbench) {
+    // Store selected variant's "fqn"
+    let selectedFQN = workbench.selectedVariant?.fqn
+
+    // Load targets
+    var targets = WorkbenchTargets()
+    activeBuildSystem?.collectTargets(from: workbench).forEach {
+      targets.append($0)
+    }
     workbenchTargets[workbench.id] = targets
 
-    workbench.selectedVariant = availableTargets.first?.variants.first
+    // Update selection using stored "fqn"
+    selectVariant(selectedFQN, in: workbench)
 
     observers.notify{ $0.availableTargetsDidChange(workbench) }
   }
@@ -97,8 +134,16 @@ public class BuildSystemsManager {
     observers.notify{ $0.buildSystemDidRegister(buildSystem) }
   }
 
+  public func find(variant: (name: String, target: String, system: String), in workbench: Workbench) -> Variant? {
+    return workbenchTargets[workbench.id]?.find(variant: variant)
+  }
+
   public func targets(in workbench: Workbench) -> [Target] {
     return workbenchTargets[workbench.id]?.all ?? []
+  }
+
+  public func targetsGroupedByName(in workbench: Workbench) -> [(String, [Target])] {
+    return workbenchTargets[workbench.id]?.groupedByName ?? []
   }
 
   fileprivate func targets(in workbench: Workbench, from buildSystem: BuildSystem) -> [Target] {
@@ -130,14 +175,14 @@ public extension BuildSystemsObserver {
 
 public extension Workbench {
   var selectedVariant: Variant? {
-    get { return selectedVariants[self.id] }
+    get { return selectedVariants[self.id]?.value }
     set {
-      guard selectedVariants[self.id] !== newValue  else { return }
+      guard selectedVariants[self.id]?.value !== newValue  else { return }
 
       if newValue == nil {
         selectedVariants.removeValue(forKey: self.id)
       } else {
-        selectedVariants[self.id] = newValue
+        selectedVariants[self.id] = newValue?.ref
       }
 
       BuildSystemsManager.shared.observers.notify {
@@ -147,7 +192,7 @@ public extension Workbench {
   }
 }
 
-private var selectedVariants: [ObjectIdentifier: Variant] = [:]
+private var selectedVariants: [ObjectIdentifier: VariantRef] = [:]
 
 
 // MARK: - BuildSystemsManager + Observers

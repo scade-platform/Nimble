@@ -12,7 +12,7 @@ import BuildSystem
 import os.log
 
 class ToolbarTargetControl : NSControl {
-  private struct VariantsGroupMenuItem {
+  fileprivate struct VariantsGroupMenuItem {
     let title: String
   }
 
@@ -54,24 +54,6 @@ class ToolbarTargetControl : NSControl {
 
   var activeTarget: Target? {
     activeVariant?.target
-  }
-
-  var workbenchTargets: [Target] {
-    guard let workbench = self.workbench else { return [] }
-    return BuildSystemsManager.shared.targets(in: workbench)
-  }
-
-  private var targetsGroupedByName: [String: [Target]] {
-    var groups: [String: [Target]] = [:]
-
-    // Group targets by name
-    workbenchTargets.forEach {
-      var targets = groups[$0.name] ?? []
-      targets.append($0)
-      groups.updateValue(targets, forKey: $0.name)
-    }
-
-    return groups
   }
 
   override var isEnabled: Bool {
@@ -204,11 +186,10 @@ class ToolbarTargetControl : NSControl {
   }
 
   private func createTargetsMenu() -> NSMenu? {
+    guard let workbench = self.workbench else { return nil }
     let menu = NSMenu()
 
-    let sortedTargets = targetsGroupedByName.map{($0.key, $0.value)}.sorted{$0.0 < $1.0}
-
-    for (name, targets) in sortedTargets {
+    for (name, targets) in BuildSystemsManager.shared.targetsGroupedByName(in: workbench) {
       guard targets.count > 1 else {
         addMenuItem(target: targets.first!, to: menu)
         continue
@@ -359,19 +340,21 @@ class ToolbarTargetControl : NSControl {
   @objc func itemDidSelect(_ sender: Any?) {
     guard let item = sender as? NSMenuItem else { return }
     
-    var selectedVariant: Variant? = nil
+    var selectedVariant: Variant?
+    switch item.representedObject {
 
-    if let variant = item.representedObject as? Variant {
-      selectedVariant = variant
-
-    } else if let target = item.representedObject as? Target {
+    case let target as Target:
       selectedVariant = target.variants.first
 
-    } else if item.representedObject is VariantsGroupMenuItem,
-              let submenu = item.submenu {
+    case let variant as Variant:
+      selectedVariant = variant
 
-      itemDidSelect(submenu.items.first)
+    case is String, is VariantsGroupMenuItem:
+      itemDidSelect(item.submenu?.items.first)
       return
+
+    default:
+      selectedVariant = nil
     }
 
     NSApp.currentWorkbench?.selectedVariant = selectedVariant
@@ -406,24 +389,34 @@ class ToolbarTargetControl : NSControl {
 }
 
 extension ToolbarTargetControl: NSUserInterfaceValidations {
+  func isActiveGroup(_ item: NSMenuItem?) -> Bool {
+    guard let item = item,
+          item.representedObject is VariantsGroupMenuItem else { return false }
+
+    return item.submenu?.items.contains {
+      ($0.representedObject as AnyObject) === activeVariant || isActiveGroup($0) } ?? false
+  }
+
   func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
     guard let item = item as? NSMenuItem else {return true}
+    switch item.representedObject {
 
-    if let target = item.representedObject as? Target {
+    case let target as Target:
       item.state = (target === activeTarget) ? .on : .off
 
-    } else if let variant = item.representedObject as? Variant {
+    case let variant as Variant:
       item.state = (variant === activeVariant) ? .on : .off
 
-    } else if let group = item.representedObject as? VariantsGroupMenuItem {
-      guard let activeVariant = activeVariant,
-            let activeGroup = activeTarget?.group(for: activeVariant),
-            let activeGroupName = activeTarget?.variantsGroups[safe: Int(activeGroup)] else { return true}
+    case is String:
+      let isActive = item.submenu?.items.contains{ ($0.representedObject as AnyObject) === activeTarget } ?? false
+      item.state =  isActive ? .on : .off
 
-      item.state = (group.title == activeGroupName) ? .on : .off
+    case is VariantsGroupMenuItem:
+      item.state = isActiveGroup(item) ? .on : .off
+
+    default:
+      break
     }
-
-
 
     return true
   }
