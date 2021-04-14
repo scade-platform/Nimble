@@ -19,24 +19,28 @@ class SPMBuildSystem: BuildSystem {
 
   private func makeAndroidVariants(target: SPMTarget) -> [Variant] {
     return AndroidBuildTarget.allCases.compactMap {
-      guard let t = makeAndroidSwiftToolchain(for: $0) else { return nil }
-      return UserDefinedToolchainVariant(target: target, buildSystem: self, toolchain: t)
+      guard let toolchain = makeAndroidSwiftToolchain(for: $0) else { return nil }
+      return UserDefinedToolchainVariant(target: target, toolchain: toolchain)
     }
   }
   
-  func targets(in workbench: Workbench) -> [Target] {
+  func collectTargets(from workbench: Workbench) -> [Target] {
     guard let folders = workbench.project?.folders else { return [] }
-    let targets = folders.filter{canHandle(folder: $0)}.map{SPMTarget(folder: $0, workbench: workbench)}
+
+    let targets = folders.filter{canHandle(folder: $0)}.map{
+      SPMTarget(folder: $0, workbench: workbench, buildSystem: self)
+    }
+
     targets.forEach{
       // creating default Mac variant
-      $0.variants.append(MacVariant(target: $0, buildSystem: self))
+      $0.variants.append(MacVariant(target: $0))
 
       // creating variants for all android platforms
       $0.variants += makeAndroidVariants(target: $0)
 
       // creating variants for all user defined platforms
       for toolchain in SwiftExtensions.Settings.platforms {
-        $0.variants.append(UserDefinedToolchainVariant(target: $0, buildSystem: self, toolchain: toolchain))
+        $0.variants.append(UserDefinedToolchainVariant(target: $0, toolchain: toolchain))
       }
     }
     return targets
@@ -136,16 +140,21 @@ class SPMTarget: Target {
     }
     return nil
   }()
-  
-  let folder: Folder
 
   var variants: [Variant] = []
 
+  var buildSystem: BuildSystem { spmBuildSystem }
+
+  let folder: Folder
+
   weak var workbench: Workbench?
-  
-  init(folder: Folder, workbench: Workbench) {
+
+  weak var spmBuildSystem: SPMBuildSystem!
+
+  init(folder: Folder, workbench: Workbench, buildSystem: SPMBuildSystem) {
     self.folder = folder
     self.workbench = workbench
+    self.spmBuildSystem = buildSystem
   }
 
   func contains(folder: Folder) -> Bool {
@@ -161,12 +170,10 @@ public class SPMVariant {
 
   var name: String
 
-  weak var spmTarget : SPMTarget?
-  weak var buildSystem : BuildSystem?
+  weak var spmTarget : SPMTarget!
 
-  init(target: SPMTarget, buildSystem: SPMBuildSystem, name: String) {
+  init(target: SPMTarget, name: String) {
     self.spmTarget = target
-    self.buildSystem = buildSystem
     self.name = name
   }
 
@@ -242,8 +249,8 @@ fileprivate class MacVariant: SPMVariant, SwiftVariant {
     BuildSystemIcons.mac
   }
 
-  init(target: SPMTarget, buildSystem: SPMBuildSystem) {
-    super.init(target: target, buildSystem: buildSystem, name: "Mac")
+  init(target: SPMTarget) {
+    super.init(target: target, name: "Mac")
   }
   
   override func createProcess(source: Folder) -> Process {
@@ -305,9 +312,9 @@ fileprivate class UserDefinedToolchainVariant: SPMVariant, SwiftVariant {
 
   private var _toolchain: SwiftToolchain
 
-  init(target: SPMTarget, buildSystem: SPMBuildSystem, toolchain: SwiftToolchain) {
+  init(target: SPMTarget, toolchain: SwiftToolchain) {
     self._toolchain = toolchain
-    super.init(target: target, buildSystem: buildSystem, name: toolchain.name)
+    super.init(target: target, name: toolchain.name)
   }
   
   override func createProcess(source: Folder) -> Process {

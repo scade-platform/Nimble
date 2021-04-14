@@ -12,7 +12,10 @@ import BuildSystem
 import os.log
 
 class ToolbarTargetControl : NSControl {
-  
+  fileprivate struct VariantsGroupMenuItem {
+    let title: String
+  }
+
   @IBOutlet weak var leftParentView: NSView?
   @IBOutlet weak var leftImage: NSImageView?
   @IBOutlet weak var leftLable: NSTextField?
@@ -22,31 +25,45 @@ class ToolbarTargetControl : NSControl {
   @IBOutlet weak var rightParentView: NSView? 
   @IBOutlet weak var rightImage: NSImageView?
   @IBOutlet weak var rightLable: NSTextField?
-  
-  //Last target and variant selected by user
-  private var userSelection: (target: Target, variant: Variant)?
-  
-  //Current target which could be selected by the control
-  private var activeTarget: Target?
-  
-  //Temp storage for menu item targets
-  private var menuItemTargets: [Target] = []
-  //Dictinory with targets by name
-  private var automaticTargets: [String: [Target]] = [:]
-  
-  weak var borderLayer: CALayer?
-  
+
+  private weak var borderLayer: CALayer?
+
+  private var targetsMenu: NSMenu?
+  private var variantsMenu: NSMenu?
+
+  /// TODO: move to an extension and disable explicit passing of the reference to view everywhere
+  private var workbench: Workbench? {
+    self.window?.windowController as? Workbench
+  }
+
+  private var _activeVariant: VariantRef?
+  var activeVariant: Variant? {
+    get { _activeVariant?.value  }
+    set {
+      if let newValue = newValue, newValue !== _activeVariant?.value {
+        select(variant: newValue)
+      }
+
+      if newValue?.target !== activeTarget {
+        variantsMenu = createVariantsMenu(newValue)
+      }
+
+      _activeVariant = newValue?.ref
+    }
+  }
+
+  var activeTarget: Target? {
+    activeVariant?.target
+  }
+
   override var isEnabled: Bool {
     didSet {
-      if isEnabled {
-        leftLable?.textColor = .labelColor
-        rightLable?.textColor = .labelColor
-      } else {
-        //Disable means there aren't any targets
-        dropTarget()
-        
-        leftLable?.textColor = .disabledControlTextColor
-        rightLable?.textColor = .disabledControlTextColor
+      let textColor: NSColor = isEnabled ? .labelColor : .disabledControlTextColor
+      leftLable?.textColor = textColor
+      rightLable?.textColor = textColor
+
+      if !isEnabled {
+        clear()
       }
     }
   }
@@ -75,16 +92,8 @@ class ToolbarTargetControl : NSControl {
   
   required init?(coder: NSCoder) {
     super.init(coder: coder)
-    self.wantsLayer = true
-    let layer = CAGradientLayer()
-    
-    layer.masksToBounds = true
-    layer.cornerRadius = 4.5
-    layer.colors = [self.bottomBackgroundColor.cgColor, self.topBackgroundColor.cgColor]
-    self.layer = layer
-    addGradienBorder(colors: [self.bottomBorderColor, self.topBorderColor])
-    
-    
+
+    setupVisuals()
   }
   
   override func layout() {
@@ -94,7 +103,40 @@ class ToolbarTargetControl : NSControl {
       addGradienBorder(colors: [self.bottomBorderColor, self.topBorderColor])
     }
   }
-  
+
+  override func awakeFromNib() {
+    super.awakeFromNib()
+
+    self.separatorImage?.imageScaling = .scaleProportionallyDown
+    self.separatorImage?.image = separatorTemplate
+
+    clear()
+  }
+
+  override func viewWillMove(toWindow newWindow: NSWindow?) {
+    switch newWindow {
+    case .some(_):
+      self.activeVariant = (newWindow?.windowController as? Workbench)?.selectedVariant
+      BuildSystemsManager.shared.observers.add(observer: self)
+    default:
+      BuildSystemsManager.shared.observers.remove(observer: self)
+    }
+  }
+
+
+  private func setupVisuals() {
+    let layer = CAGradientLayer()
+    layer.masksToBounds = true
+    layer.cornerRadius = 4.5
+    layer.colors = [self.bottomBackgroundColor.cgColor,
+                    self.topBackgroundColor.cgColor]
+
+    self.wantsLayer = true
+    self.layer = layer
+
+    addGradienBorder(colors: [self.bottomBorderColor, self.topBorderColor])
+  }
+
   private func addGradienBorder(colors:[NSColor], width:CGFloat = 1) {
     let gradientLayer = CAGradientLayer()
     gradientLayer.frame =  CGRect(origin: .zero, size: self.bounds.size)
@@ -127,265 +169,255 @@ class ToolbarTargetControl : NSControl {
   }
   
   private static var controlBackgroundColor: NSColor {
-    NSColor(named: "ControlBackgroundColor", bundle: Bundle(for: ToolbarTargetControl.self)) ?? NSColor.controlColor
+    NSColor(named: "ControlBackgroundColor",
+            bundle: Bundle(for: ToolbarTargetControl.self)) ?? NSColor.controlColor
   }
-  
-  override func awakeFromNib() {
-    super.awakeFromNib()
-    
-    self.separatorImage?.imageScaling = .scaleProportionallyDown
-    self.separatorImage?.image = separatorTemplate
-    
-    dropTarget()
-  }
-  
-  func dropTarget() {
-    self.activeTarget = nil
-    self.userSelection = nil
-    if let window = self.window {
-      selectedVariants.removeValue(forKey: ObjectIdentifier(window))
-    }
-    
+
+
+  private func clear() {
     self.leftImage?.isHidden = true
     self.leftLable?.stringValue = "No Targets"
-    
+
     self.separatorImage?.isHidden = true
-    
+
     self.rightParentView?.isHidden = true
     self.rightImage?.isHidden = true
     self.rightLable?.stringValue = ""
-    
-    menuItemTargets = []
-    automaticTargets = [:]
   }
-  
-  override func viewWillMove(toWindow newWindow: NSWindow?) {
-    guard let window = self.window, newWindow == nil else { return }
-    selectedVariants.removeValue(forKey: ObjectIdentifier(window))
-  }
-  
-  func updateTargets(in workbench: Workbench) {
-    menuItemTargets = []
-    automaticTargets = [:]
-    
-    guard let buildSystem = BuildSystemsManager.shared.activeBuildSystem else { return }
-    if let automatic = buildSystem as? Automatic {
-      automaticTargets = [:]
-      menuItemTargets = automatic.targets(in: workbench)
-      for target in menuItemTargets {
-        if let _ = automaticTargets[target.name] {
-          automaticTargets[target.name]?.append(target)
-        } else {
-          automaticTargets[target.name] = [target]
-        }
+
+  private func createTargetsMenu() -> NSMenu? {
+    guard let workbench = self.workbench else { return nil }
+    let menu = NSMenu()
+
+    for (name, targets) in BuildSystemsManager.shared.targetsGroupedByName(in: workbench) {
+      guard targets.count > 1 else {
+        addMenuItem(target: targets.first!, to: menu)
+        continue
       }
-    } else {
-      menuItemTargets = buildSystem.targets(in: workbench)
+
+      let targetItem = NSMenuItem(title: name,
+                                  action: #selector(itemDidSelect(_:)), keyEquivalent: "")
+      targetItem.target = self
+      targetItem.representedObject = name
+
+      let bsSubmenu = NSMenu()
+      targets.forEach {
+        let bsItem = NSMenuItem(title: $0.buildSystem.name,
+                                action: #selector(itemDidSelect(_:)), keyEquivalent: "")
+
+        bsItem.target = self
+        bsItem.representedObject = $0
+        bsItem.submenu = createSubmenus(for: $0)
+
+        bsSubmenu.addItem(bsItem)
+      }
+
+      targetItem.submenu = bsSubmenu
+      menu.addItem(targetItem)
     }
+
+    guard !menu.items.isEmpty else { return nil }
+    return menu
   }
-  
-  func autoSelectTarget(in workbench: Workbench) {
-    guard let targets = BuildSystemsManager.shared.activeBuildSystem?.targets(in: workbench) else {
-      return
-    }
-    
-    let currentTargetName = activeTarget?.name ?? ""
-    let currentVariantName = workbench.selectedVariant?.name ?? ""
-    
-    if menuItemTargets.isEmpty ||
-      menuItemTargets.count != targets.count {
-      activeTarget = nil
-      workbench.selectedVariant = nil
-      updateTargets(in: workbench)
-    }
-    
-    guard activeTarget == nil, workbench.selectedVariant == nil else { return }
-    
-    var buildTarget: Target
-    var variant: Variant
-    
-    if let t = menuItemTargets.first(where: {$0.name == currentTargetName}),
-       let v = t.variants.first(where: {$0.name == currentVariantName}) {
-      buildTarget = t
-      variant = v
-    } else if let t = menuItemTargets.first,
-              let v = t.variants.first {
-      buildTarget = t
-      variant = v
-    } else {
-      return
-    }
-    
-    
-    set(target: buildTarget)
-    separatorImage?.isHidden = false
-    set(variant: variant)
-    
-    if !(rightLable?.stringValue.isEmpty ?? true) || rightImage != nil {
-      rightParentView?.isHidden = false
-    }
-    
-    if userSelection == nil {
-      self.userSelection = (buildTarget, variant)
-    }
-    
-    if OSLog.isLogOn {
-      os_log("Auto-selected build target: %{public}s", log: .targetSelector, type: .info, buildTarget.name)
-    }
-    
-    activeTarget = buildTarget
-    workbench.selectedVariant = variant
+
+  private func createVariantsMenu(_ variant: Variant?) -> NSMenu? {
+    guard let target = variant?.target,
+          let menu = createSubmenus(for: target) else { return nil}
+
+    menu.delegate = self
+
+    guard !menu.items.isEmpty else { return nil }
+    return menu
   }
-  
+
   private func addMenuItem(target: Target, to menu: NSMenu) {
     let item = NSMenuItem(title: target.name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
     item.target = self
     item.representedObject = target
-    item.submenu = creatSubmenus(target: target)
+    item.submenu = createSubmenus(for: target)
     menu.addItem(item)
   }
   
-  private func creatSubmenus(target: Target) -> NSMenu? {
-    guard !target.variants.isEmpty else {
-      return nil
-    }
-    return createSubmenus(for: target.variants)
-  }
-  
-  private func createSubmenus(for variants: [Variant]) -> NSMenu? {
+  private func createSubmenus(for target: Target) -> NSMenu? {
+    guard !target.variants.isEmpty else { return nil }
+
     let menu = NSMenu()
-    for variant in variants {
-      let item = NSMenuItem(title: variant.name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
-      item.target = self
-      item.representedObject = variant
-      menu.addItem(item)
+    let groups = target.variantsGroups
+
+    if groups.count > 0 {
+      // Split groups into groups and subgroups
+      var groupItems: [NSMenuItem] = []
+      var subgroupItems: [(UInt, NSMenuItem)] = []
+
+      let allGroupItems: [NSMenuItem] = groups.map {
+        let item = createGroupItem(for: $0)
+        if let parent = target.group(for: $0) {
+          subgroupItems.append((parent, item))
+        } else {
+          groupItems.append(item)
+        }
+        return item
+      }
+
+      func appendItem(_ item: NSMenuItem, at index: UInt?) {
+        guard let index = index, index < allGroupItems.count else { return }
+        allGroupItems[Int(index)].submenu?.items.append(item)
+      }
+
+      func appendSeparator(at index: UInt?) {
+        guard let index = index,
+              index < allGroupItems.count,
+              var items = allGroupItems[Int(index)].submenu?.items,
+              items.count > 0 else { return }
+
+        items.append(.separator())
+        allGroupItems[Int(index)].submenu?.items = items
+      }
+
+      // Add variants into groups
+      var prevVariant: Variant?
+      target.variants.forEach {
+        let index = target.group(for: $0)
+        if let prevVariant = prevVariant, type(of: prevVariant) != type(of: $0) {
+          appendSeparator(at: index)
+        }
+        appendItem(createItem(for: $0), at: index)
+        prevVariant = $0
+      }
+
+      var splittedGroups: Set<UInt> = []
+      subgroupItems.forEach {
+        if !splittedGroups.contains($0.0) {
+          appendSeparator(at: $0.0)
+          splittedGroups.insert($0.0)
+        }
+        appendItem($0.1, at: $0.0)
+      }
+      menu.items = groupItems
+
+    } else {
+      menu.items = target.variants.map { createItem(for: $0) }
     }
+
     return menu
   }
-  
+
+  private func createItem(for variant: Variant) -> NSMenuItem {
+    let item = NSMenuItem(title: variant.name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
+    item.target = self
+    item.representedObject = variant
+    return item
+  }
+
+  private func createGroupItem(for group: String) -> NSMenuItem {
+    let item = NSMenuItem(title: group, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
+    item.target = self
+    item.submenu = NSMenu()
+    item.representedObject = VariantsGroupMenuItem(title: group)
+    return item
+  }
+
   @IBAction func leftButtonDidClick(_ sender: Any) {
-    if OSLog.isLogOn {
-      os_log("Target selector did clicked", log: .targetSelector, type: .info)
-    }
-    
-    guard self.isEnabled else {
-      return
-    }
-    
-    let menu = NSMenu()
-    if BuildSystemsManager.shared.activeBuildSystem is Automatic {
-      let sortedAutomaticTargets = automaticTargets.map{($0.key, $0.value)}.sorted{$0.0 < $1.0}
-      for (name, targets) in sortedAutomaticTargets {
-        let allVariants = targets.map{$0.variants}
-        let buildSystemNames = allVariants.compactMap{ $0.first?.buildSystem?.name }
-        let item = NSMenuItem(title: name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
-        item.target = self
-        item.representedObject = name
-        let buildSystemSubmenu = NSMenu()
-        for (index, (name, variants)) in zip(buildSystemNames, allVariants).enumerated() {
-          let buildSystemMenuItem = NSMenuItem(title: name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
-          buildSystemMenuItem.target = self
-          buildSystemMenuItem.representedObject = targets[index]
-          buildSystemMenuItem.submenu = createSubmenus(for: variants)
-          buildSystemSubmenu.addItem(buildSystemMenuItem)
-        }
-        item.submenu = buildSystemSubmenu
-        menu.addItem(item)
-      }
-    } else {
-      guard !menuItemTargets.isEmpty else {
-        return
-      }
-      menuItemTargets.forEach{addMenuItem(target: $0, to: menu)}
-    }
-    
-    guard !menu.items.isEmpty else {
-      return
-    }
-     let frame = leftParentView?.window?.convertToScreen(leftParentView!.convert(leftParentView!.bounds, to: nil))
-         let location = frame?.origin ?? NSEvent.mouseLocation
+    guard isEnabled, let menu = targetsMenu else { return }
+
+    let frame = leftParentView?.window?.convertToScreen(leftParentView!.convert(leftParentView!.bounds, to: nil))
+    let location = frame?.origin ?? NSEvent.mouseLocation
+
     menu.popUp(positioning: menu.item(at: 0), at: location, in: nil)
   }
-  
+
+
   @IBAction func rightButtonDidClick(_ sender: Any) {
-    guard self.isEnabled, let workbench = NSApp.currentWorkbench, let variant = workbench.selectedVariant, let target = variant.target else {
-      return
-    }
-    if let menu = creatSubmenus(target: target) {
-      menu.delegate = self
-      let frame = rightParentView?.window?.convertToScreen(rightParentView!.convert(rightParentView!.bounds, to: nil))
-      let location = frame?.origin ?? NSEvent.mouseLocation
-      menu.popUp(positioning: menu.item(at: 0), at: location, in: nil)
-    }
+    guard isEnabled, let menu = variantsMenu else { return }
+
+    let frame = rightParentView?.window?.convertToScreen(rightParentView!.convert(rightParentView!.bounds, to: nil))
+    let location = frame?.origin ?? NSEvent.mouseLocation
+
+    menu.popUp(positioning: menu.item(at: 0), at: location, in: nil)
   }
-  
+
+
   @objc func itemDidSelect(_ sender: Any?) {
-    guard let item = sender as? NSMenuItem else {
-      return
-    }
+    guard let item = sender as? NSMenuItem else { return }
     
-    let selectedVariant: Variant?
-    if let variant = item.representedObject as? Variant {
-      set(target: variant.target)
-      separatorImage?.isHidden = false
-      set(variant: variant)
-      selectedVariant = variant
-    } else if let target = item.representedObject as? Target {
-      set(target: target)
-      separatorImage?.isHidden = false
+    var selectedVariant: Variant?
+    switch item.representedObject {
+
+    case let target as Target:
       selectedVariant = target.variants.first
-      set(variant: selectedVariant)
-    } else {
+
+    case let variant as Variant:
+      selectedVariant = variant
+
+    case is String, is VariantsGroupMenuItem:
+      itemDidSelect(item.submenu?.items.first)
+      return
+
+    default:
       selectedVariant = nil
     }
-    
-    if !(rightLable?.stringValue.isEmpty ?? true) || rightImage != nil {
-      rightParentView?.isHidden = false
-    }
-    
-    guard let workbench = NSApp.currentWorkbench, let variant = selectedVariant else {
-      return
-    }
-    
-    userSelection = (variant.target!, variant)
-    activeTarget = variant.target
-    workbench.selectedVariant = variant
+
+    NSApp.currentWorkbench?.selectedVariant = selectedVariant
   }
-  
-  private func set(target: Target?) {
-    if let targetIcon = target?.icon {
+
+  private func select(variant: Variant) {
+    // Target visuals
+    if let targetIcon = variant.target?.icon {
       leftImage?.isHidden = false
       leftImage?.image = targetIcon.image
     } else {
       leftImage?.isHidden = true
     }
-    leftLable?.stringValue = target?.name ?? ""
-  }
-  
-  private func set(variant: Variant?) {
-    if let variantIcon = variant?.icon {
+    leftLable?.stringValue = variant.target?.name ?? ""
+
+    // Variant visuals
+    if let variantIcon = variant.icon {
       rightImage?.isHidden = false
       rightImage?.image = variantIcon.image
     } else {
       rightImage?.isHidden = true
     }
-    rightLable?.stringValue = variant?.name ?? ""
+    rightLable?.stringValue = variant.name
+
+    // Visuals
+    separatorImage?.isHidden = false
+
+    if !(rightLable?.stringValue.isEmpty ?? true) || rightImage != nil {
+      rightParentView?.isHidden = false
+    }
   }
 }
 
 extension ToolbarTargetControl: NSUserInterfaceValidations {
+  func isActiveGroup(_ item: NSMenuItem?) -> Bool {
+    guard let item = item,
+          item.representedObject is VariantsGroupMenuItem else { return false }
+
+    return item.submenu?.items.contains {
+      ($0.representedObject as AnyObject) === activeVariant || isActiveGroup($0) } ?? false
+  }
+
   func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
     guard let item = item as? NSMenuItem else {return true}
-    if let target = item.representedObject as? Target {
-      item.state = (target.id  == activeTarget?.id) ? .on : .off
-    } else if let varint = item.representedObject as? Variant {
-//      item.state = (varint.target?.id == activeTarget?.id && varint.name == userSelection?.variant.name) ? .on : .off
-      if let variantValidator = varint as? NSUserInterfaceValidations {
-        variantValidator.validateUserInterfaceItem(item)
-      }
-    } else if let name = item.representedObject as? String {
-      item.state = (activeTarget?.name == name) ? .on : .off
+    switch item.representedObject {
+
+    case let target as Target:
+      item.state = (target === activeTarget) ? .on : .off
+
+    case let variant as Variant:
+      item.state = (variant === activeVariant) ? .on : .off
+
+    case is String:
+      let isActive = item.submenu?.items.contains{ ($0.representedObject as AnyObject) === activeTarget } ?? false
+      item.state =  isActive ? .on : .off
+
+    case is VariantsGroupMenuItem:
+      item.state = isActiveGroup(item) ? .on : .off
+
+    default:
+      break
     }
+
     return true
   }
 }
@@ -403,73 +435,16 @@ extension ToolbarTargetControl : NSMenuDelegate {
   }
 }
 
-extension ToolbarTargetControl : WorkbenchObserver {
-  func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) {
-    guard let buildSystem = BuildSystemsManager.shared.activeBuildSystem else { return }
-    let avalibleTargets = buildSystem.targets(in: workbench)
-    guard let file = document?.fileURL?.file, let target = avalibleTargets.first(where: {($0.contains(file: file))}) else {
-      guard let (selectedTarget, selectedVariant) = userSelection, avalibleTargets.contains(where: {$0.name == selectedTarget.name}) else {
-        self.userSelection = nil
-        self.activeTarget = nil
-        workbench.selectedVariant = nil
-        return
-      }
-      
-      
-      set(target: selectedTarget)
-      separatorImage?.isHidden = false
-      set(variant: selectedVariant)
-      
-      activeTarget = selectedTarget
-      workbench.selectedVariant = selectedVariant
-      
-      return
-    }
-    set(target: target)
-    separatorImage?.isHidden = false
-    let selectedVariant = target.variants.first
-    set(variant: selectedVariant)
-    
-    activeTarget = target
-    workbench.selectedVariant = selectedVariant
-    
-    if !(rightLable?.stringValue.isEmpty ?? true) || rightImage != nil {
-      rightParentView?.isHidden = false
-    }
-  }
-}
-
-extension ToolbarTargetControl: ProjectObserver {
-  func projectFoldersDidChange(_: Project) {
-    menuItemTargets = []
-    automaticTargets = [:]
-  }
-}
+// MARK: - BuildSystemsObserver
 
 extension ToolbarTargetControl: BuildSystemsObserver {
-  func activeBuildSystemDidChange(deactivatedBuildSystem: BuildSystem?, activeBuildSystem: BuildSystem?) {
-    self.activeTarget = nil
-    self.userSelection = nil
-    if let window = self.window {
-      selectedVariants.removeValue(forKey: ObjectIdentifier(window))
-    }
-    
-    menuItemTargets = []
-    automaticTargets = [:]
+  func availableTargetsDidChange(_ workbench: Workbench) {
+    guard self.workbench === workbench else { return }
+    self.targetsMenu = createTargetsMenu()
+  }
+
+  func workbenchDidChangeVariant(_ workbench: Workbench, variant: Variant?) {
+    guard self.workbench === workbench else { return }
+    self.activeVariant = variant
   }
 }
-
-
-extension OSLog {
-  private static let subsystem = "com.nimble.BuildSystem"
-  
-  static let targetSelector = OSLog(subsystem: subsystem, category: "targetSelector")
-  
-  @Setting("nimble.log", defaultValue: [])
-  public static var logsSystems: [String]
-  
-  static var isLogOn : Bool {
-    return OSLog.logsSystems.contains(OSLog.subsystem)
-  }
-}
-

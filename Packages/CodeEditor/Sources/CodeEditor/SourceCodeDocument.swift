@@ -20,10 +20,7 @@ public protocol SourceCodeDocument: Document {
 
 public struct SourceCodeDocumentRef {
   public private(set) weak var value: SourceCodeDocument?
-
-  public init(value: SourceCodeDocument) {
-    self.value = value
-  }
+  public init(value: SourceCodeDocument) { self.value = value }
 }
 
 public protocol SourceCodeDocumentObserver: DocumentObserver {

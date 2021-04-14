@@ -23,6 +23,10 @@ public protocol LanguageService: class {
   func format(doc: SourceCodeDocument) -> Void
 }
 
+public struct LanguageServiceRef {
+  public private(set) weak var value: LanguageService?
+  public init(value: LanguageService) { self.value = value }
+}
 
 public extension LanguageService {
   func complete(in: SourceCodeDocument,
@@ -30,13 +34,5 @@ public extension LanguageService {
                 handler: @escaping (String.Index, [CodeEditor.CompletionItem]) -> Void) -> Void {}
 
   func format(doc: SourceCodeDocument) -> Void { }
-}
-
-public struct LanguageServiceRef {
-  public private(set) weak var value: LanguageService?
-
-  public init(value: LanguageService) {
-    self.value = value
-  }
 }
 

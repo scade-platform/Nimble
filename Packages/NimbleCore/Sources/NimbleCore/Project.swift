@@ -24,7 +24,9 @@ public final class Project {
       }      
     }
   }
-  
+
+  public weak var workbench: Workbench?
+
   public var url: URL? {
     set {
       guard let newValue = newValue else {

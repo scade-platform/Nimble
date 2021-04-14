@@ -23,6 +23,7 @@ open class Command {
     public static let selected = State(rawValue: 1 << 1)
 
     public static let `default`: State = [.enabled]
+    public static let disabled: State = []
   }
 
   // Actions
@@ -37,7 +38,7 @@ open class Command {
   // Toolbar item
   public let toolbarIcon: NSImage?
   public let toolbarControlClass: NSControl.Type?
-  open var alignment: ToolbarAlignment
+  public let alignment: ToolbarAlignment
 
   public fileprivate(set) weak var group: CommandGroup?
 
