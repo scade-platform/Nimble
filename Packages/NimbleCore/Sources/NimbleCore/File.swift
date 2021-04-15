@@ -129,7 +129,10 @@ fileprivate class FilePresenter: NSObject, NSFilePresenter {
   }
   
   func presentedItemDidChange() {
-    presentedElement.observers.notify{$0.fileDidChange(presentedElement)}
+    DispatchQueue.main.async { [weak self] in
+      guard let self = self else { return }
+      self.presentedElement.observers.notify{$0.fileDidChange(self.presentedElement)}
+    }
   }
 }
 
