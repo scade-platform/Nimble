@@ -49,7 +49,7 @@ public final class SKLocalServer: LSPServer {
   private var serverConnection: LocalConnection
       
   var server: SourceKitServer! = nil
-  var currentVariant: SwiftVariant? = nil
+  var toolchain: SwiftToolchain? = nil
   
   init() {
     clientConnection = LocalConnection()
@@ -58,13 +58,13 @@ public final class SKLocalServer: LSPServer {
   }
 
   public func start(with variant: Variant?) throws {
-    currentVariant = variant as? SwiftVariant
+    let toolchain = (variant as? SwiftVariant)?.toolchain
 
-    print("Using toolchain: \(currentVariant?.toolchain?.name)")
+    print("Using toolchain: \(toolchain?.name)")
 
     // Setup toolchain (compiler) location
     var installPath: AbsolutePath? = nil
-    if let compilerPath = currentVariant?.toolchain?.compiler {
+    if let compilerPath = toolchain?.compiler {
       installPath = AbsolutePath(compilerPath)
     }
     ToolchainRegistry.shared = ToolchainRegistry(installPath: installPath, localFileSystem)
@@ -74,7 +74,7 @@ public final class SKLocalServer: LSPServer {
     var serverOptions = SourceKitServer.Options()
     serverOptions.buildSetup.flags.swiftCompilerFlags.append(contentsOf: SKLocalServer.swiftCompilerFlags)
 
-    if let toolchain = currentVariant?.toolchain {
+    if let toolchain = toolchain {
       serverOptions.buildSetup.flags.swiftCompilerFlags += toolchain.compilerFlags
 
       if let target = toolchain.target {
@@ -118,6 +118,7 @@ public final class SKLocalServer: LSPServer {
     }
     
     isRunning = true
+    self.toolchain = toolchain
   }
   
   public func stop() {
@@ -133,8 +134,8 @@ public final class SKLocalServer: LSPServer {
   }
 
   public func shouldRestart(for variant: Variant?) -> Bool {
-    guard let variant = variant as? SwiftVariant else { return false }
-    return variant.toolchain != currentVariant?.toolchain
+    guard let toolchain = (variant as? SwiftVariant)?.toolchain else { return false }
+    return self.toolchain != toolchain
   }
 }
 
