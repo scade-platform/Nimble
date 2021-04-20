@@ -10,16 +10,16 @@ import Foundation
 
 //MARK: - Glogal settings
 
-///Centralized storage of settings
+///Centralized storage of settings.
 public final class Settings {
   
-  ///Function to deserialize settings from the storing place
+  ///Function to deserialize settings from the storing place.
   private let loader: () -> Storage
   
-  ///Instance of `Storage` loaded by loader
+  ///Instance of `Storage` loaded by loader.
   private lazy var storage: Storage = loader()
 
-  ///Storage of `RuntimeData`
+  ///Storage of `RuntimeData`.
   private lazy var runtime: RuntimeStorage = .clear
   
   fileprivate init(loader: @escaping () -> Storage = { .empty }) {
@@ -28,9 +28,10 @@ public final class Settings {
   
   //MARK: - Instance of Settings
   
+  ///The default shared `Settings` instance.
   public static var shared: Settings = Settings(loader: Settings.defaultLoad)
   
-  //By default settings storing as YAML file
+  //By default settings storing as YAML file.
   private static func defaultLoad() -> Storage {
     guard let path = Settings.defaultPath,
           let content = try? String(contentsOf: path) else { return .empty }
@@ -43,7 +44,7 @@ public final class Settings {
     }
   }
   
-  ///Default path to settings file
+  ///Default path to settings file.
   public static let defaultPath: Path? = {
     guard let dir = try? (Path.applicationSupport/"Nimble"/"User").mkdir(.p) else {
       return nil
@@ -51,6 +52,8 @@ public final class Settings {
     return dir/"settings.yml"
   }()
   
+  ///Update `Storage` value and notify observers.
+  ///Default loader reads settings file on FS.
   public func reload() {
     self.storage = loader()
     
@@ -112,6 +115,7 @@ public final class Settings {
   
   //MARK: - Setting register
   
+  ///Add new setting field to Settings.
   public func register<S: SettingDefinitionProtocol>(_ settingDefenition: S) where S: SettingCoder {
     //Define every setting only once
     assert(!isDefined(settingDefenition.key))
@@ -121,6 +125,7 @@ public final class Settings {
   
   // MARK: - Settings content
   
+  ///Text represantation of `Settings`.
   public var content: String {
     var workingCopy = self.storage
     
