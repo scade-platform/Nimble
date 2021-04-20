@@ -8,15 +8,15 @@
 
 import Foundation
 
-struct RawCodingKey: CodingKey, Equatable {
-  var intValue: Int? = nil
-  let stringValue: String
+public struct RawCodingKey: CodingKey, Equatable {
+  public var intValue: Int? = nil
+  public let stringValue: String
     
-  init?(intValue: Int) {
+  public init?(intValue: Int) {
     return nil
   }
   
-  init?(stringValue: String) {
+  public init?(stringValue: String) {
     self.stringValue = stringValue
   }
 }

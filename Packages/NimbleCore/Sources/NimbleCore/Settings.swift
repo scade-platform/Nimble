@@ -8,172 +8,123 @@
 
 import Foundation
 
-// MARK: - Setting
+//MARK: - Glogal settings
 
-@propertyWrapper
-final public class Setting<T: Codable> {
-  let key: String
-  let defaultValue: T
-
-  public var observers = ObserverSet<SettingObserver>()
-
-  public var wrappedValue: T {
-    get { return Settings.shared.get(key)! }
-    set {
-      Settings.shared.set(key, value: newValue)
-      valueDidChange()
-    }
-  }
-
-  public var projectedValue: Setting {
-    return self
-  }
-
-  public init(_ key: String, defaultValue: T) {
-    self.key = key
-    self.defaultValue = defaultValue
-  }
-}
-
-public protocol SettingObserver {
-  func settingValueDidChange<T: Codable>(_ setting: Setting<T>)
-}
-
-protocol SettingProtocol: class {
-  typealias DecodingContainer = KeyedDecodingContainer<RawCodingKey>
-  typealias EncodingContainer = KeyedEncodingContainer<RawCodingKey>
-
-  var key: String { get }
-  var `default`: Any { get }
-
-  func valueDidChange()
-
-  static func encode(value: Any, to: inout EncodingContainer, forKey: RawCodingKey) throws
-  static func decode(from: DecodingContainer, forKey: RawCodingKey) throws -> Any
-}
-
-
-public struct SettingRef {
-  let coder: SettingProtocol.Type
-  weak var setting: SettingProtocol? = nil
+///Centralized storage of settings
+public final class Settings {
   
-  var defaultValue: Any { setting!.default }
-
-  public var isSet: Bool {
-    guard let key = setting?.key else { return false}
-    return Settings.shared.isSet(key)
-  }
+  ///Function to deserialize settings from the storing place
+  private let loader: () -> Storage
   
-  init(_ setting: SettingProtocol) {
-    self.coder = type(of: setting)
-    self.setting = setting
-  }
+  ///Instance of `Storage` loaded by loader
+  private lazy var storage: Storage = loader()
 
-  public func get<T: Codable>() -> T? {
-    guard let key = setting?.key else { return nil }
-    return Settings.shared.get(key)
-  }
-
-  public func set<T: Codable>(_ value: T, `override`: Bool = true) {
-    guard let key = setting?.key else { return }
-
-    if `override` || !Settings.shared.isSet(key) {
-      Settings.shared.set(key, value: value)
-      setting?.valueDidChange()
-    }
-  }
-
-}
-
-fileprivate extension SettingProtocol {
-  var ref: SettingRef { SettingRef(self) }
-}
-
-extension Setting: SettingProtocol {
-  var `default`: Any {
-    return self.defaultValue
-  }
-
-  func valueDidChange() {
-    observers.notify {
-      $0.settingValueDidChange(self)
-    }
-  }
-
-  static func encode(value: Any, to container: inout EncodingContainer, forKey key: RawCodingKey) throws {
-    try container.encode((value as! T), forKey: key)
-  }
+  ///Storage of `RuntimeData`
+  private lazy var runtime: RuntimeStorage = .clear
   
-  static func decode(from container: DecodingContainer, forKey key: RawCodingKey) throws -> Any {
-    let val = try container.decode(T.self, forKey: key)
-    return val
-  }
-}
-
-public extension Setting where T: Comparable {
-  var isDefault: Bool { wrappedValue == defaultValue }
-}
-
-
-
-// MARK: - Global settings
-
-public class Settings {
-  struct Store {
-    var data: [String: Any]
-    weak var settings: Settings? = nil
-    
-    static var empty: Store { Store(data: [:]) }
-  }
-    
-  private let loader: () -> Store
-
-  private lazy var store: Store = loader()
-
-  private lazy var runtime: Store = .empty
-
-  fileprivate var refs: [String: SettingRef] = [:]
-
-  public subscript(_ key: String) -> SettingRef? {
-    return refs[key]
-  }
-
-  init(loader: @escaping () -> Store = { .empty }) {
+  fileprivate init(loader: @escaping () -> Storage = { .empty }) {
     self.loader = loader
   }
-      
+  
+  //MARK: - Instance of Settings
+  
+  public static var shared: Settings = Settings(loader: Settings.defaultLoad)
+  
+  //By default settings storing as YAML file
+  private static func defaultLoad() -> Storage {
+    guard let path = Settings.defaultPath,
+          let content = try? String(contentsOf: path) else { return .empty }
+    
+    do {
+      return try YAMLDecoder().decode(Storage.self, from: content, userInfo: [.settings: shared])
+    } catch {
+      print("Error decoding settings file \(error)")
+      return .empty
+    }
+  }
+  
+  ///Default path to settings file
+  public static let defaultPath: Path? = {
+    guard let dir = try? (Path.applicationSupport/"Nimble"/"User").mkdir(.p) else {
+      return nil
+    }
+    return dir/"settings.yml"
+  }()
+  
+  //MARK: - Access to settings
+  
+  ///Check if setting by given key is defined
+  fileprivate func isDefined(_ key: String) -> Bool {
+    runtime.definedSettingKeys.contains(key)
+  }
+  
   fileprivate func get<T: Codable>(_ key: String) -> T? {
-    assert(refs[key] != nil)
+    assert(isDefined(key))
 
-    if let value = runtime.data[key] {
+    if let value = runtime[key]?.data {
       return value as? T
     }
 
-    if let value = store.data[key] {
+    if let value = storage.data[key] {
       return value as? T
     }
-
-    return refs[key]?.defaultValue as? T
+    
+    if let value = runtime[key]?.defaultValueProvider() {
+      return value as? T
+    }
+    
+    return nil
   }
   
   fileprivate func set<T: Codable>(_ key: String, value: T) {
-    assert(refs[key] != nil)
-    runtime.data[key] = value
-  }
-
-  fileprivate func isSet(_ key: String) -> Bool {
-    return runtime.data[key] != nil || store.data[key] != nil
-  }
-
-  public var content: String {
-    var store = Store(data: self.store.data, settings: self)
+    assert(isDefined(key))
+    runtime[key]!.data = value
     
-    refs.forEach {
-      store.data[$0.key] = store.data[$0.key, default: $0.value.defaultValue]
+    //Notify all observers
+    let setting = Setting<T>(key)
+    runtime[key]!.observers.notify{
+      $0.settingValueDidChange(setting)
     }
-              
+  }
+  
+  fileprivate func defaultValue<T: Codable>(for key: String) -> T {
+    assert(isDefined(key))
+    return runtime[key]!.defaultValueProvider() as! T
+  }
+  
+  fileprivate func add(observer: SettingObserver, for key: String) {
+    assert(isDefined(key))
+    runtime[key]!.observers.add(observer: observer)
+  }
+  
+  fileprivate func remove(observer: SettingObserver, for key: String) {
+    assert(isDefined(key))
+    runtime[key]!.observers.remove(observer: observer)
+  }
+  
+  
+  //MARK: - Setting register
+  
+  public func register<S: SettingDefinitionProtocol>(_ settingDefenition: S) where S: SettingCoder {
+    //Define every setting only once
+    assert(!isDefined(settingDefenition.key))
+    
+    runtime[settingDefenition.key] = RuntimeData(settingDefenition)
+  }
+  
+  
+  // MARK: - Settings content
+  
+  public var content: String {
+    var workingCopy = self.storage
+    
+    //Set default value for registered in runtime but not stored setting
+    runtime.definedSettingKeys.forEach {
+      workingCopy.data[$0] = workingCopy.data[$0, default: self.runtime[$0]!.defaultValueProvider()]
+    }
+    
     do {
-      let content = try YAMLEncoder().encode(store)
+      let content = try YAMLEncoder().encode(workingCopy)
       
       guard let dictionary: [String: Any] = try Yams.load(yaml: content) as? [String: Any] else {
         return content
@@ -206,8 +157,6 @@ public class Settings {
     return result
   }
   
- 
-  
   private func optionalToString(optional: Any?, defaultValue: String) -> String {
     switch optional {
     case let value? where value is NSNull: return defaultValue
@@ -215,119 +164,250 @@ public class Settings {
     case nil: return defaultValue
     }
   }
-
-  
-  public func add<T: Codable>(_ setting: Setting<T>) {
-    assert(refs[setting.key] == nil)
-    refs[setting.key] = setting.ref
-  }
-
-  public func reload() {
-    self.store = loader()
-    for (_, ref) in refs {
-      ref.setting?.valueDidChange()
-    }
-  }
   
 }
 
+//MARK: - Storage
 
-extension Settings {
-  private static func defaultLoad() -> Store {
-    guard let path = Settings.defaultPath,
-          let content = try? String(contentsOf: path) else { return .empty }
+fileprivate extension Settings {
+  ///Inner storage which `Settings` uses to store, serealize and deserealize the setting values
+  struct Storage: Codable {
+    var data: [String: Any]
     
-    do {
-      return try YAMLDecoder().decode(Store.self, from: content, userInfo: [.settings: shared])
-    } catch {
-      print("Error decoding settings file \(error)")
-      return .empty
-    }
-  }
-  
-  public static let defaultPath: Path? = {
-    guard let dir = try? (Path.applicationSupport/"Nimble"/"User").mkdir(.p) else {
-      return nil
-    }
-    return dir/"settings.yml"
-  }()
-  
-  public static var shared: Settings = Settings(loader: Settings.defaultLoad)
-}
-
-
-
-// MARK: - Settings Group
-
-public protocol SettingsGroup {
-  static var shared: Self { get }
-}
-
-public extension SettingsGroup {
-  static func register() {
-    let mirror = Mirror(reflecting: self.shared)
-    for child in mirror.children {
-      if let setting = child.value as? SettingProtocol {
-        Settings.shared.refs[setting.key] = setting.ref
-      }
-    }
-  }
-}
-
-// MARK: - Codable
-
-public enum SettingCodingError: Error {
-  case decodingError(String)
-}
-
-extension Settings.Store: Codable {
-  init(from decoder: Decoder) throws {
-    self.data = [:]
-    self.settings = decoder.userInfo[.settings] as? Settings
+    weak var settings: Settings? = nil
     
-    guard let defs = settings?.refs else {
-      throw SettingCodingError.decodingError("Settings definitions not available")
+    static var empty: Storage { Storage() }
+    
+    init(data: [String: Any] = [:]) {
+      self.data = data
     }
     
-    let container = try decoder.container(keyedBy: RawCodingKey.self)
-        
-    container.allKeys.forEach {
-      let key = $0.stringValue
-      guard let coder = defs[key]?.coder else { return }
+    init(from decoder: Decoder) throws {
+      self.data = [:]
+      self.settings = decoder.userInfo[.settings] as? Settings
       
-      do {
-        self.data[key] = try coder.decode(from: container, forKey: $0)
-      } catch {
-        print("Error decoding settings: \(error)")
+      guard let runtime = settings?.runtime else {
+        throw SettingCodingError.decodingError("Settings definitions not available")
+      }
+      
+      let container = try decoder.container(keyedBy: RawCodingKey.self)
+          
+      container.allKeys.forEach {
+        let key = $0.stringValue
+        guard let coder = runtime[key]?.coder else {
+          print("Coder for setting by key \"\(key)\" is not available")
+          return
+        }
+        
+        do {
+          self.data[key] = try coder.decode(from: container, forKey: $0)
+        } catch {
+          print("Error decoding settings: \(error)")
+        }
+      }
+    }
+    
+    func encode(to encoder: Encoder) {
+      let settings = self.settings ?? encoder.userInfo[.settings] as? Settings
+      
+      guard let runtime = settings?.runtime else {
+        return
+      }
+          
+      var container = encoder.container(keyedBy: RawCodingKey.self)
+      
+      data.forEach {
+        guard let coder = runtime[$0.key]?.coder else {
+          print("Coder for setting by key \"\($0.key)\" is not available")
+          return
+        }
+        
+        do {
+          let key = RawCodingKey(stringValue: $0.key)!
+          try coder.encode(value: $0.value, to: &container, forKey: key)
+        } catch {
+          print("Error encoding settings: \(error)")
+        }
       }
     }
   }
   
-  func encode(to encoder: Encoder) {
-    let settings = self.settings ?? encoder.userInfo[.settings] as? Settings
+  ///Inner storage which `Settings` uses to store runtime data
+  struct RuntimeStorage {
     
-    guard let defs = settings?.refs else {
-      return
+    static var clear: RuntimeStorage { RuntimeStorage() }
+    
+    private var data: [String: RuntimeData] = [:]
+    
+    var definedSettingKeys: Set<String> {
+      Set(data.keys)
     }
-        
-    var container = encoder.container(keyedBy: RawCodingKey.self)
     
-    data.forEach {
-      guard let coder = defs[$0.key]?.coder else { return }
-      
-      do {
-        let key = RawCodingKey(stringValue: $0.key)!
-        try coder.encode(value: $0.value, to: &container, forKey: key)
-      } catch {
-        print("Error encoding settings: \(error)")
+    subscript(_ key: String) -> RuntimeData? {
+      get {
+        data[key]
+      }
+      set {
+        data[key] = newValue
       }
     }
   }
+  
+  struct RuntimeData {
+    let key: String
+    
+    let defaultValueProvider: () -> Any
+    let coder: SettingCoder.Type
+    
+    var data: Any? = nil
+    var observers: ObserverSet<SettingObserver>
+    
+    init<S: SettingDefinitionProtocol>(_ settingDefinition: S) where S: SettingCoder {
+      self.key = settingDefinition.key
+      self.defaultValueProvider = settingDefinition.defaultValueProvider
+      self.coder = S.self
+      self.observers = ObserverSet()
+    }
+  }
+  
+  enum SettingCodingError: Error {
+    case decodingError(String)
+  }
 }
-
 
 // MARK: - CodingUserInfoKey
 
 fileprivate extension CodingUserInfoKey {
   static let settings = CodingUserInfoKey(rawValue: "settings")!
+}
+
+//MARK: - SettingCoder
+
+public protocol SettingCoder {
+  typealias DecodingContainer = KeyedDecodingContainer<RawCodingKey>
+  typealias EncodingContainer = KeyedEncodingContainer<RawCodingKey>
+  
+  static func encode(value: Any, to container: inout EncodingContainer, forKey key: RawCodingKey) throws
+  static func decode(from container: DecodingContainer, forKey key: RawCodingKey) throws -> Any
+}
+
+//MARK: - SettingDefinitionProtocol
+
+public protocol SettingDefinitionProtocol {
+  associatedtype ValueType: Codable
+  typealias DefaultValueProvider = () -> ValueType
+
+  var defaultValueProvider: DefaultValueProvider { get }
+  var key: String { get }
+}
+
+
+public extension SettingDefinitionProtocol where Self: SettingCoder {
+  
+  static func encode(value: Any, to container: inout EncodingContainer, forKey key: RawCodingKey) throws {
+    try container.encode((value as! ValueType), forKey: key)
+  }
+  
+  static func decode(from container: DecodingContainer, forKey key: RawCodingKey) throws -> Any {
+    let val = try container.decode(ValueType.self, forKey: key)
+    return val
+  }
+}
+
+//MARK: - SettingCommonProtocol
+public protocol SettingCommonProtocol {
+  var key: String { get }
+}
+
+public extension SettingCommonProtocol {
+  func add(observer: SettingObserver) {
+    Settings.shared.add(observer: observer, for: key)
+  }
+  
+  func remove(observer: SettingObserver) {
+    Settings.shared.remove(observer: observer, for: key)
+  }
+  
+  func add<C: Collection>(observers: C) where C.Element == SettingObserver {
+    for observer in observers {
+      add(observer: observer)
+    }
+  }
+}
+
+
+//MARK: - SettingDefinition
+
+@propertyWrapper
+public struct SettingDefinition<T: Codable> : SettingDefinitionProtocol {
+  public typealias DefaultValueProvider = () -> T
+  
+  public let defaultValueProvider: DefaultValueProvider
+  public let key: String
+  
+  public var wrappedValue: T {
+    get {
+      return Settings.shared.get(key)!
+    }
+    set {
+      Settings.shared.set(key, value: newValue)
+    }
+  }
+  
+  public var projectedValue: SettingDefinition {
+    return self
+  }
+  
+  public lazy var defaultValue = defaultValueProvider()
+  
+  public init(_ key: String, defaultValueProvider: @escaping DefaultValueProvider) {
+    self.key = key
+    self.defaultValueProvider = defaultValueProvider
+    Settings.shared.register(self)
+  }
+  
+  public init(_ key: String, defaultValue: @escaping @autoclosure DefaultValueProvider) {
+    self.key = key
+    self.defaultValueProvider = defaultValue
+    Settings.shared.register(self)
+  }
+}
+
+extension SettingDefinition: SettingCoder {}
+extension SettingDefinition: SettingCommonProtocol {}
+
+
+//MARK: - Setting
+@propertyWrapper
+public struct Setting<T: Codable> {
+  public var key: String
+  
+  public var wrappedValue: T {
+    get {
+      return Settings.shared.get(key)!
+    }
+    
+    set {
+      Settings.shared.set(key, value: newValue)
+    }
+  }
+  
+  public lazy var defaultValue: T = {
+    Settings.shared.defaultValue(for: key)!
+  }()
+  
+  public var projectedValue: Setting {
+    return self
+  }
+  
+  public init(_ key: String) {
+    self.key = key
+  }
+}
+
+extension Setting: SettingCommonProtocol {}
+
+//MARK: - SettingObserver
+public protocol SettingObserver {
+  func settingValueDidChange<T: Codable>(_ setting: Setting<T>)
 }
