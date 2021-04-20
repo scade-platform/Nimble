@@ -57,6 +57,8 @@ public final class Settings {
   public func reload() {
     self.storage = loader()
     
+    //TODO: Update runtime storage
+    
     for key in runtime.definedSettingKeys {
       runtime[key]!.notifyObservers()
     }
@@ -355,7 +357,10 @@ public extension SettingDefinitionProtocol where Self: SettingCoder {
 
 //MARK: - SettingCommonProtocol
 public protocol SettingCommonProtocol {
+  associatedtype ValueType: Codable
+  
   var key: String { get }
+  var defaultValue: ValueType { get }
 }
 
 public extension SettingCommonProtocol {
@@ -372,6 +377,14 @@ public extension SettingCommonProtocol {
       add(observer: observer)
     }
   }
+  
+  //TODO: Add validators
+}
+
+public extension SettingCommonProtocol where ValueType: Comparable {
+  var isDefault: Bool {
+    defaultValue == Settings.shared.get(key)!
+  }
 }
 
 
@@ -384,6 +397,7 @@ public struct SettingDefinition<T: Codable> : SettingDefinitionProtocol {
   public let defaultValueProvider: DefaultValueProvider
   public let key: String
   
+  //Property wrapper fields
   public var wrappedValue: T {
     get {
       Settings.shared.get(key)!
@@ -394,10 +408,17 @@ public struct SettingDefinition<T: Codable> : SettingDefinitionProtocol {
   }
   
   public var projectedValue: SettingDefinition {
-    return self
+    get {
+      self
+    }
+    set {
+      self = newValue
+    }
   }
   
-  public lazy var defaultValue = defaultValueProvider()
+  public var defaultValue: T {
+    defaultValueProvider()
+  }
   
   public init(_ key: String, defaultValueProvider: @escaping DefaultValueProvider) {
     self.key = key
@@ -422,6 +443,7 @@ extension SettingDefinition: SettingCommonProtocol {}
 public struct Setting<T: Codable> {
   public let key: String
   
+  //Property wrapper fields
   public var wrappedValue: T {
     get {
       Settings.shared.get(key)!
@@ -431,12 +453,17 @@ public struct Setting<T: Codable> {
     }
   }
   
-  public lazy var defaultValue: T = {
-    Settings.shared.defaultValue(for: key)!
-  }()
-  
   public var projectedValue: Setting {
-    return self
+    get {
+      self
+    }
+    set {
+      self = newValue
+    }
+  }
+  
+  public var defaultValue: T {
+    Settings.shared.defaultValue(for: key)!
   }
   
   public init(_ key: String) {
@@ -460,6 +487,7 @@ public protocol SettingsGroup {
 
 public extension SettingsGroup {
   static func register() {
+    //Triger field creation of `SettingGroup` with `SettingDefenitions`.
     let _ = self.shared
   }
 }
