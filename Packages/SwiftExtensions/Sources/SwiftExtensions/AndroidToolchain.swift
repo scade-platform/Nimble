@@ -37,8 +37,11 @@ public func androidToolchainName(for target: AndroidBuildTarget) -> String {
 
 // Makes SwiftToolchain struct for path to compiler, path to NDK, and build target
 public func makeAndroidSwiftToolchain(for target: AndroidBuildTarget, compiler: String? = nil, ndk: String? = nil) -> SwiftToolchain? {
-  guard let compiler = compiler ?? Settings.androidSwiftCompiler,
-        let ndk = ndk ?? Settings.androidToolchainNdk else { return nil }
+  let compiler = compiler ?? Settings.shared.androidSwiftCompiler
+  let ndk = ndk ?? Settings.shared.androidToolchainNdk
+  guard !compiler.isEmpty, !ndk.isEmpty else {
+    return nil
+  }
 
   let tuple = ToolchainTuple(target: target, compiler: compiler, ndk: ndk)
 

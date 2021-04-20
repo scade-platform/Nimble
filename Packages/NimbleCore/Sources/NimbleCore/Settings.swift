@@ -51,6 +51,14 @@ public final class Settings {
     return dir/"settings.yml"
   }()
   
+  public func reload() {
+    self.storage = loader()
+    
+    for key in runtime.definedSettingKeys {
+      runtime[key]!.notifyObservers()
+    }
+  }
+  
   //MARK: - Access to settings
   
   ///Check if setting by given key is defined
@@ -78,27 +86,26 @@ public final class Settings {
   
   fileprivate func set<T: Codable>(_ key: String, value: T) {
     assert(isDefined(key))
-    runtime[key]!.data = value
     
-    //Notify all observers
-    let setting = Setting<T>(key)
-    runtime[key]!.observers.notify{
-      $0.settingValueDidChange(setting)
-    }
+    runtime[key]!.data = value
+    runtime[key]!.notifyObservers()
   }
   
   fileprivate func defaultValue<T: Codable>(for key: String) -> T {
     assert(isDefined(key))
+    
     return runtime[key]!.defaultValueProvider() as! T
   }
   
   fileprivate func add(observer: SettingObserver, for key: String) {
     assert(isDefined(key))
+    
     runtime[key]!.observers.add(observer: observer)
   }
   
   fileprivate func remove(observer: SettingObserver, for key: String) {
     assert(isDefined(key))
+    
     runtime[key]!.observers.remove(observer: observer)
   }
   
@@ -108,8 +115,7 @@ public final class Settings {
   public func register<S: SettingDefinitionProtocol>(_ settingDefenition: S) where S: SettingCoder {
     //Define every setting only once
     assert(!isDefined(settingDefenition.key))
-    
-    runtime[settingDefenition.key] = RuntimeData(settingDefenition)
+    runtime[settingDefenition.key] = TypedRuntimeData(settingDefenition)
   }
   
   
@@ -253,26 +259,53 @@ fileprivate extension Settings {
     }
   }
   
-  struct RuntimeData {
+  struct TypedRuntimeData<T: Codable>: RuntimeData {
     let key: String
     
-    let defaultValueProvider: () -> Any
+    let typedDefaultValueProvider: () -> T
     let coder: SettingCoder.Type
     
-    var data: Any? = nil
+    var typedData: T? = nil
     var observers: ObserverSet<SettingObserver>
     
-    init<S: SettingDefinitionProtocol>(_ settingDefinition: S) where S: SettingCoder {
+    var data: Any? {
+      get { typedData }
+      set {
+        typedData = newValue as? T
+      }
+    }
+    
+    var defaultValueProvider: () -> Any {
+      typedDefaultValueProvider
+    }
+    
+    init<S: SettingDefinitionProtocol>(_ settingDefinition: S) where S: SettingCoder, T == S.ValueType{
       self.key = settingDefinition.key
-      self.defaultValueProvider = settingDefinition.defaultValueProvider
+      self.typedDefaultValueProvider = settingDefinition.defaultValueProvider
       self.coder = S.self
       self.observers = ObserverSet()
+    }
+    
+    func notifyObservers() {
+      let setting = Setting<T>(key)
+      self.observers.notify{$0.settingValueDidChange(setting)}
     }
   }
   
   enum SettingCodingError: Error {
     case decodingError(String)
   }
+}
+
+fileprivate protocol RuntimeData {
+  var key: String { get }
+  var defaultValueProvider: () -> Any { get }
+  var coder: SettingCoder.Type { get }
+  
+  var data: Any? { get set }
+  var observers: ObserverSet<SettingObserver> { get set }
+  
+  func notifyObservers()
 }
 
 // MARK: - CodingUserInfoKey
@@ -314,6 +347,7 @@ public extension SettingDefinitionProtocol where Self: SettingCoder {
   }
 }
 
+
 //MARK: - SettingCommonProtocol
 public protocol SettingCommonProtocol {
   var key: String { get }
@@ -347,7 +381,7 @@ public struct SettingDefinition<T: Codable> : SettingDefinitionProtocol {
   
   public var wrappedValue: T {
     get {
-      return Settings.shared.get(key)!
+      Settings.shared.get(key)!
     }
     set {
       Settings.shared.set(key, value: newValue)
@@ -378,15 +412,15 @@ extension SettingDefinition: SettingCommonProtocol {}
 
 
 //MARK: - Setting
+
 @propertyWrapper
 public struct Setting<T: Codable> {
-  public var key: String
+  public let key: String
   
   public var wrappedValue: T {
     get {
-      return Settings.shared.get(key)!
+      Settings.shared.get(key)!
     }
-    
     set {
       Settings.shared.set(key, value: newValue)
     }
@@ -408,6 +442,19 @@ public struct Setting<T: Codable> {
 extension Setting: SettingCommonProtocol {}
 
 //MARK: - SettingObserver
+
 public protocol SettingObserver {
   func settingValueDidChange<T: Codable>(_ setting: Setting<T>)
+}
+
+// MARK: - Settings Group
+
+public protocol SettingsGroup {
+  static var shared: Self { get }
+}
+
+public extension SettingsGroup {
+  static func register() {
+    let _ = self.shared
+  }
 }

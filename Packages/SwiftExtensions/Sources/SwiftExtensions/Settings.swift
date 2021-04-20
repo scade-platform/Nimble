@@ -8,27 +8,21 @@
 import Foundation
 import NimbleCore
 
-public struct Settings {
-  @Setting("swift.toolchain", defaultValue: "")
-  public static var swiftToolchain: String
+public struct Settings: SettingsGroup {
+  public static var shared = Settings()
+  
+  @SettingDefinition("swift.toolchain", defaultValue: "")
+  public var swiftToolchain: String
 
-  @Setting("swift.platforms", defaultValue: [])
-  public static var platforms: [SwiftToolchain]
+  @SettingDefinition("swift.platforms", defaultValue: [])
+  public var platforms: [SwiftToolchain]
 
-  @Setting("com.android.toolchain.swift", defaultValue: nil)
-  public static var androidSwiftCompiler: String?
+  @SettingDefinition("com.android.toolchain.swift", defaultValue: "")
+  public var androidSwiftCompiler: String
 
-  @Setting("com.android.toolchain.sdk", defaultValue: nil)
-  public static var androidToolchainSdk: String?
+  @SettingDefinition("com.android.toolchain.sdk", defaultValue: "")
+  public var androidToolchainSdk: String
 
-  @Setting("com.android.toolchain.ndk", defaultValue: nil)
-  public static var androidToolchainNdk: String?
-
-  public static func register() {
-    NimbleCore.Settings.shared.add($swiftToolchain)
-    NimbleCore.Settings.shared.add($platforms)
-    NimbleCore.Settings.shared.add($androidSwiftCompiler)
-    NimbleCore.Settings.shared.add($androidToolchainSdk)
-    NimbleCore.Settings.shared.add($androidToolchainNdk)
-  }
+  @SettingDefinition("com.android.toolchain.ndk", defaultValue: "")
+  public var androidToolchainNdk: String
 }

@@ -39,7 +39,7 @@ class SPMBuildSystem: BuildSystem {
       $0.variants += makeAndroidVariants(target: $0)
 
       // creating variants for all user defined platforms
-      for toolchain in SwiftExtensions.Settings.platforms {
+      for toolchain in SwiftExtensions.Settings.shared.platforms {
         $0.variants.append(UserDefinedToolchainVariant(target: $0, toolchain: toolchain))
       }
     }
@@ -258,7 +258,7 @@ fileprivate class MacVariant: SPMVariant, SwiftVariant {
     proc.currentDirectoryURL = source.url
     proc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
     
-    let toolchain = SwiftExtensions.Settings.swiftToolchain
+    let toolchain = SwiftExtensions.Settings.shared.swiftToolchain
     if !toolchain.isEmpty {
       proc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
       if !FileManager.default.fileExists(atPath: proc.executableURL!.path) {

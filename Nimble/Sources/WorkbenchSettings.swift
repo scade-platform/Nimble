@@ -12,11 +12,11 @@ import KPCTabsControl
 extension CloseButtonPosition: Codable {}
 
 struct WorkbenchSettings: SettingsGroup {
-  static let shared = WorkbenchSettings()
+  static var shared = WorkbenchSettings()
 
-  @Setting("workbench.showFileIconsInTabs", defaultValue: true)
+  @SettingDefinition("workbench.showFileIconsInTabs", defaultValue: true)
   var showFileIconsInTabs: Bool
 
-  @Setting("workbench.tabCloseButtonPosition", defaultValue: .left)
+  @SettingDefinition("workbench.tabCloseButtonPosition", defaultValue: .left)
   var tabCloseButtonPosition: CloseButtonPosition
 }

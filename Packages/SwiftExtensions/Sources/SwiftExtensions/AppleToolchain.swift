@@ -31,7 +31,7 @@ public func appleToolchainName(for platform: AppleBuildPlatform) -> String {
 
 // Makes SwiftToolchain struct for a build target, an apple build platform and a toolchain path
 public func makeAppleSwiftToolchain(for platform: AppleBuildPlatform, path: String? = nil) -> SwiftToolchain? {
-  var compiler = path ?? Settings.swiftToolchain
+  var compiler = path ?? Settings.shared.swiftToolchain
   
   if compiler.isEmpty{
     compiler = (try? Process.exec("/usr/bin/xcode-select", arguments: ["--print-path"])) ?? ""
