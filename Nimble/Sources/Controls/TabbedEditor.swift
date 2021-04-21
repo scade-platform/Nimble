@@ -106,8 +106,8 @@ class TabbedEditor: NSViewController, WorkbenchViewController {
         
     updateVisuals()
 
-    WorkbenchSettings.shared.$showFileIconsInTabs.observers.add(observer: self)
-    WorkbenchSettings.shared.$tabCloseButtonPosition.observers.add(observer: self)
+    WorkbenchSettings.shared.$showFileIconsInTabs.add(observer: self)
+    WorkbenchSettings.shared.$tabCloseButtonPosition.add(observer: self)
 
     ThemeManager.shared.observers.add(observer: self)
   }

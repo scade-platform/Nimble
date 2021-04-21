@@ -14,9 +14,9 @@ extension CloseButtonPosition: Codable {}
 struct WorkbenchSettings: SettingsGroup {
   static let shared = WorkbenchSettings()
 
-  @Setting("workbench.showFileIconsInTabs", defaultValue: true)
-  var showFileIconsInTabs: Bool
+  @SettingDefinition("workbench.showFileIconsInTabs", defaultValue: true)
+  private(set) var showFileIconsInTabs: Bool
 
-  @Setting("workbench.tabCloseButtonPosition", defaultValue: .left)
-  var tabCloseButtonPosition: CloseButtonPosition
+  @SettingDefinition("workbench.tabCloseButtonPosition", defaultValue: .left)
+  private(set) var tabCloseButtonPosition: CloseButtonPosition
 }

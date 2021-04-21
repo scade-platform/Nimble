@@ -42,7 +42,7 @@ class SPMWizard: CreationWizard {
         //generate SPM package
         let proc = Process()
         proc.currentDirectoryURL = projectPath.url
-        let toolchain = SwiftExtensions.Settings.swiftToolchain
+        let toolchain = SwiftExtensions.Settings.shared.swiftToolchain
         if !toolchain.isEmpty {
           proc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
         } else {

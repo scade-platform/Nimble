@@ -22,7 +22,6 @@ final class BuildSystemPlugin: Plugin {
     setupMainMenu()
     setupCommands()
     
-    Settings.shared.add(OSLog.$logsSystems)
     BuildSystemsManager.shared.observers.add(observer: self)
   }
 
@@ -108,19 +107,3 @@ extension BuildSystemPlugin: BuildSystemsObserver {
   }
 }
 
-// MARK: - OSLog utils
-
-///TODO: remove it or move somewhere else "nimble.log" setting in the BuildSystem plugin ????!!!!!!!
-
-extension OSLog {
-  private static let subsystem = "com.nimble.BuildSystem"
-
-  static let targetSelector = OSLog(subsystem: subsystem, category: "targetSelector")
-
-  @Setting("nimble.log", defaultValue: [])
-  public static var logsSystems: [String]
-
-  static var isLogOn : Bool {
-    return OSLog.logsSystems.contains(OSLog.subsystem)
-  }
-}

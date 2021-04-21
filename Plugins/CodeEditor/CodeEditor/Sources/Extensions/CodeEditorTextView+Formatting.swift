@@ -13,11 +13,11 @@ import Foundation
 
 extension CodeEditorTextView {
 
-  var indentChar: Character { CodeEditorSettings.insertSpaces ? " " : "\t" }
+  var indentChar: Character { CodeEditorSettings.shared.insertSpaces ? " " : "\t" }
 
   var indentString: String {
     return String(repeating: indentChar,
-                  count: CodeEditorSettings.insertSpaces ? CodeEditorSettings.tabSize : 1)
+                  count: CodeEditorSettings.shared.insertSpaces ? CodeEditorSettings.shared.tabSize : 1)
   }
 
   var lineComment: String? {
@@ -107,7 +107,7 @@ extension CodeEditorTextView {
   override func insertText(_ string: Any, replacementRange: NSRange) {
     guard var input = string as? String else { return }
 
-    if CodeEditorSettings.insertSpaces {
+    if CodeEditorSettings.shared.insertSpaces {
       input = input.replacingOccurrences(of: "\t", with: indentString)
     }
 
@@ -249,7 +249,7 @@ extension CodeEditorTextView {
   }
 
   func linesUnindent() {
-    self.unindent(selectedRange(), using: indentChar, indentLength: CodeEditorSettings.tabSize)
+    self.unindent(selectedRange(), using: indentChar, indentLength: CodeEditorSettings.shared.tabSize)
   }
 
 
