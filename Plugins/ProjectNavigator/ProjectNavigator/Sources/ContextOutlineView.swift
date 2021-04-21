@@ -40,26 +40,13 @@ class ContextOutlineView : NSOutlineView {
 extension ContextOutlineView : ContextMenuProvider {
   
   static func menuItems(for file: File) -> [NSMenuItem] {
-    var docClasses = DocumentManager.shared.selectDocumentClasses(for: file)
-    let _ = docClasses.partition(by: { !$0.isDefault(for: file)})
-
-    var openAsItems: [NSMenuItem] = docClasses.map {
-      createMenuItem(title: title(of: $0), selector: #selector(openAsAction), for: file)
-    }
-
-    if openAsItems.count > 1 {
-      openAsItems.insert(NSMenuItem.separator(), at: 1)
-    }
-
-    return [
-      createMenuItem(title: "Show in Finder", selector: #selector(showInFinderAction), for: file),
-      createMenuItem(title: "Open with External Editor", selector: #selector(openInExternalEditorAction), for: file),
-      createSubMenuItem(title: "Open As", items: openAsItems),
-      NSMenuItem.separator(),
-      createMenuItem(title: "Rename", selector: #selector(renameAction), for: file),
-      NSMenuItem.separator(),
-      createMenuItem(title: "Delete", selector: #selector(deleteAction), for: file)
-    ]
+    return Self.commonMenuItems(for: file) +
+      [
+        NSMenuItem.separator(),
+        createMenuItem(title: "Rename", selector: #selector(renameAction), for: file),
+        NSMenuItem.separator(),
+        createMenuItem(title: "Delete", selector: #selector(deleteAction), for: file)
+      ]
   }
   
   static func menuItems(for folder: Folder) -> [NSMenuItem] {
@@ -84,21 +71,47 @@ extension ContextOutlineView : ContextMenuProvider {
     NSMenuItem.separator(),
     createMenuItem(title: "Delete", selector: #selector(deleteAction), for: folder)]
     
-    if let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench, let project = currentWorkbench.project, project.folders.contains(folder) {
-      items.append(createMenuItem(title: "Remove Folder from Project", selector: #selector(removeAction), for: folder))
+    if let project = NSApp.currentWorkbench?.project,
+       project.folders.contains(folder) {
+      items.append(createMenuItem(title: "Remove Folder from Project",
+                                  selector: #selector(removeAction), for: folder))
     }
     return items
+  }
+
+  static func menuItems(for document: Document) -> [NSMenuItem] {
+    guard let path = document.path,
+          let file = File(path: path) else { return [] }
+
+    return Self.commonMenuItems(for: file)
+  }
+
+  private static func commonMenuItems(for file: File) -> [NSMenuItem] {
+    var docClasses = DocumentManager.shared.selectDocumentClasses(for: file)
+    let _ = docClasses.partition(by: { !$0.isDefault(for: file)})
+
+    var openAsItems: [NSMenuItem] = docClasses.map {
+      createMenuItem(title: title(of: $0), selector: #selector(openAsAction), for: file)
+    }
+
+    if openAsItems.count > 1 {
+      openAsItems.insert(NSMenuItem.separator(), at: 1)
+    }
+
+    return [
+      createMenuItem(title: "Show in Finder", selector: #selector(showInFinderAction), for: file),
+      createMenuItem(title: "Open with External Editor", selector: #selector(openInExternalEditorAction), for: file),
+      createSubMenuItem(title: "Open As", items: openAsItems),
+    ]
   }
   
   // MARK: - Menu actions
   
   @objc func removeAction(_ sender: NSMenuItem?) {
     guard let folder = sender?.representedObject as? Folder,
-          let currentWorkbench = NSDocumentController.shared.currentDocument?.windowForSheet?.windowController as? Workbench
-    else {
-      return
-    }
-    currentWorkbench.project?.remove(folder)
+          let workbench = NSApp.currentWorkbench else { return }
+
+    workbench.project?.remove(folder)
     self.reloadSelected()
   }
   
