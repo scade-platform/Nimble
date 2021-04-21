@@ -124,19 +124,30 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   
   public override func encodeRestorableState(with coder: NSCoder) {
     super.encodeRestorableState(with: coder)
-    let documentUrls = documents.compactMap{$0.fileURL}
-    coder.encode(documentUrls, forKey: "openDocuments")
+
+    let values = documents
+      .filter { $0.fileURL != nil}
+      .map { DocumentSessionState(doc: $0) }
+
+    coder.encode(values, forKey: "openDocuments")
     PluginManager.shared.encodeRestorableState(in: self, coder: coder)
   }
   
   public override func restoreState(with coder: NSCoder) {
     super.restoreState(with: coder)
-    if let documentsURL = coder.decodeObject(forKey: "openDocuments") as? [URL] {
-      for documentURL in documentsURL {
-        guard let document = DocumentManager.shared.open(url: documentURL) else { continue }
-        self.open(document, show: true, openNewEditor: true)
+
+    if let stateValues = coder.decodeObject(forKey: "openDocuments") as? [DocumentSessionState] {
+      let docManager = DocumentManager.shared
+      for state in stateValues {
+        guard let url = state.url,
+              let path = Path(url: url),
+              let docType = docManager.findDocumentType(by: state.type),
+              let doc = docManager.open(path: path, docType: docType) else { continue }
+
+        self.open(doc, show: true, openNewEditor: true)
       }
     }
+    
     PluginManager.shared.restoreState(in: self, coder: coder)
   }
   

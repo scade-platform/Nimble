@@ -132,7 +132,7 @@ public class DocumentManager {
   
   private var documentClasses: [Document.Type] = []
   private var openedDocuments: [(ref: WeakRef<NSDocument>, type: Document.Type)] = []
-    
+
   public var typeIdentifiers: Set<String> {
     documentClasses.reduce(into: []) { $0.formUnion($1.typeIdentifiers) }
   }
@@ -140,13 +140,15 @@ public class DocumentManager {
   public var creatableDocuments: [CreatableDocument.Type] {
     documentClasses.compactMap{ $0 as? CreatableDocument.Type }
   }
-  
-  
+
+  public func findDocumentType(by name: String) -> Document.Type? {
+    return documentClasses.first { String(describing: $0) == name }
+  }
+
   public func registerDocumentClass<T: Document>(_ docClass: T.Type) {
     documentClasses.append(docClass)
   }
 
-  
   public func open(url: URL) -> Document? {
     guard let path = Path(url: url) else { return nil }
 
@@ -165,17 +167,21 @@ public class DocumentManager {
     return open(file: file, docType: type)
   }
 
-  public func open(file: File, docType: Document.Type) -> Document? {
-    if let doc = searchOpenedDocument(file, docType: docType) {
+  public func open(path: Path, docType: Document.Type) -> Document? {
+    if let doc = searchOpenedDocument(path, docType: docType) {
       return doc
     }
             
-    guard let doc = try? docType.init(contentsOf: file.path.url, ofType: file.url.uti) else {
-      return try? defaultDocument?.init(contentsOf: file.path.url, ofType: file.url.uti)
+    guard let doc = try? docType.init(contentsOf: path.url, ofType: path.url.uti) else {
+      return try? defaultDocument?.init(contentsOf: path.url, ofType: path.url.uti)
     }
 
     openedDocuments.append((WeakRef<NSDocument>(value: doc), docType))
     return doc
+  }
+
+  public func open(file: File, docType: Document.Type) -> Document? {
+    return open(path: file.path, docType: docType)
   }
   
   public func open(withContents contents: Data, ofType uti: String) -> Document? {
@@ -211,19 +217,50 @@ public class DocumentManager {
     return classes.first{$0.isDefault(for: uti)} ?? classes.first ?? defaultDocument
   }
     
-  private func searchOpenedDocument(_ file: File, docType: Document.Type) -> Document? {
+  private func searchOpenedDocument(_ docPath: Path, docType: Document.Type) -> Document? {
     openedDocuments.removeAll{ $0.ref.value == nil }
 
     let docRef = openedDocuments.first {
       if $0.type == docType {
         guard let path = ($0.ref.value as? Document)?.path else { return false}
 
-        return path == file.path
+        return path == docPath
       } 
       return false
     }
     
     return docRef?.ref.value as? Document
+  }
+}
+
+// MARK: - DocumentSessionState
+
+public class DocumentSessionState: NSObject, NSCoding {
+  public let url: URL?
+  public let type: String
+
+  enum Keys: String {
+    case url = "url"
+    case type = "type"
+  }
+
+  required public init(coder aDecoder: NSCoder) {
+    url = aDecoder.decodeObject(forKey: Keys.url.rawValue) as? URL
+    type = aDecoder.decodeObject(forKey: Keys.type.rawValue) as? String ?? ""
+  }
+
+  public init(url: URL?, type: String) {
+    self.url = url
+    self.type = type
+  }
+
+  public convenience init(doc: Document) {
+    self.init(url: doc.fileURL, type: String(describing: Swift.type(of: doc)))
+  }
+
+  public func encode(with aCoder: NSCoder) {
+    aCoder.encode(url, forKey: Keys.url.rawValue)
+    aCoder.encode(type, forKey: Keys.type.rawValue)
   }
 }
 
