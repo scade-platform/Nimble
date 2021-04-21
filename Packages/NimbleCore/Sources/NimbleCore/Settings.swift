@@ -19,7 +19,7 @@ public final class Settings {
   ///Instance of `Storage` loaded by loader.
   private lazy var storage: Storage = loader()
 
-  ///Storage of `RuntimeData`.
+  ///Storage of `RuntimeData`. New instances create with clear storage.
   private lazy var runtime: RuntimeStorage = .clear
   
   fileprivate init(loader: @escaping () -> Storage = { .empty }) {
@@ -356,6 +356,7 @@ public extension SettingDefinitionProtocol where Self: SettingCoder {
 
 
 //MARK: - SettingCommonProtocol
+
 public protocol SettingCommonProtocol {
   associatedtype ValueType: Codable
   

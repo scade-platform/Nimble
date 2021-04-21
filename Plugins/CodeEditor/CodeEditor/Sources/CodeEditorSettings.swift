@@ -10,11 +10,11 @@ import Foundation
 import NimbleCore
 
 struct CodeEditorSettings: SettingsGroup {
-  static var shared: CodeEditorSettings = CodeEditorSettings()
+  static let shared: CodeEditorSettings = CodeEditorSettings()
   
   @SettingDefinition("editor.tabSize", defaultValue: 4)
-  var tabSize: Int
+  private(set) var tabSize: Int
 
   @SettingDefinition("editor.insertSpaces", defaultValue: false)
-  var insertSpaces: Bool
+  private(set) var insertSpaces: Bool
 }
