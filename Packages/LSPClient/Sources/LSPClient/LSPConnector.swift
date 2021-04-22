@@ -155,7 +155,6 @@ extension LSPConnector: BuildSystemsObserver {
 
         // Store current context
         let workspaceFolders = server.client.workspaceFolders
-        let openedDocuments = server.client.openedDocuments.keys
 
         // Stop the servers
         server.stop()
@@ -163,9 +162,11 @@ extension LSPConnector: BuildSystemsObserver {
 
         // Restart with the previous context
         if let server = self.createServer(for: lang, workspaceFolders: workspaceFolders) {
-          workbench.documents.compactMap {$0 as? SourceCodeDocument}.forEach {
-            guard openedDocuments.contains(ObjectIdentifier($0)) else { return }
-            server.client.openDocument(doc: $0)
+          workbench.documents.compactMap {$0 as? SourceCodeDocument}.forEach { doc in
+            guard let docPath = doc.fileURL?.absoluteString,
+                  workspaceFolders.contains(where: {folderUrl in docPath.hasPrefix(folderUrl.absoluteString)}) else { return }
+
+            server.client.openDocument(doc: doc)
           }
         }
       }
