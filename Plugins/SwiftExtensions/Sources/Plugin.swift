@@ -38,6 +38,7 @@ final class SwiftExtensionsPlugin: Plugin {
 
   private func registerSettings() {
     SwiftExtensions.Settings.register()
+    SwiftExtensions.Settings.shared.$androidToolchainNdk.add(validator: SwiftExtensions.Settings.shared)
   }
 }
 

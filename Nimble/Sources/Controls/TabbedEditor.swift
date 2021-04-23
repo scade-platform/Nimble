@@ -195,7 +195,7 @@ extension TabbedEditor: ThemeObserver {
 }
 
 extension TabbedEditor: SettingObserver {
-  func settingValueDidChange<T: Codable>(_ setting: Setting<T>) {
+  func settingValueDidChange<S: SettingProtocol, T>(_ setting: S) where S.ValueType == T {
     self.updateVisuals()
   }
 }

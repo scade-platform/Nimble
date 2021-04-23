@@ -270,13 +270,25 @@ extension CodeEditorView: WorkbenchEditor {
   }
 
   func publish(diagnostics: [Diagnostic]) {
-    self.diagnostics = diagnostics.compactMap { $0 as? SourceCodeDiagnostic }
-    self.showDiagnostics()
+    guard let textStorage = document?.textStorage else { return }
+    
+    let settingsDignostics = diagnostics.compactMap{$0 as? SettingDiagnostic}.map{EditorSettingDiagnostic(textStorage.string, diagnostic: $0)}
+    
+    if !settingsDignostics.isEmpty {
+      self.diagnostics = settingsDignostics
+      self.showDiagnostics()
+    } else {
+      self.diagnostics = diagnostics.compactMap { $0 as? SourceCodeDiagnostic }
+      self.showDiagnostics()
+    }
+    
+    
   }
 
   func languageDidChange(language: Language?) {
     statusBarView.updateSelectedSyntax()
   }
+  
 }
 
 

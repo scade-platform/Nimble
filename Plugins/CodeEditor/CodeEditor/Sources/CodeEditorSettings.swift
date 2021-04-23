@@ -8,6 +8,7 @@
 
 import Foundation
 import NimbleCore
+import CodeEditor
 
 struct CodeEditorSettings: SettingsGroup {
   static let shared: CodeEditorSettings = CodeEditorSettings()
@@ -17,4 +18,40 @@ struct CodeEditorSettings: SettingsGroup {
 
   @SettingDefinition("editor.insertSpaces", defaultValue: false)
   private(set) var insertSpaces: Bool
+}
+
+
+struct EditorSettingDiagnostic {
+  let settingDiagnostic: SettingDiagnostic
+  let content: String
+  
+  init(_ content: String, diagnostic: SettingDiagnostic ) {
+    self.content = content
+    self.settingDiagnostic = diagnostic
+  }
+}
+
+extension EditorSettingDiagnostic: SourceCodeDiagnostic {
+  var fixes: [SourceCodeQuickfix] {
+    //TODO: Add quik fix
+    return []
+  }
+  
+  func range(in: String) -> Range<Int>? {
+    guard let range: Range<String.Index> = content.range(of: settingDiagnostic.key) else {
+      return nil
+    }
+    
+    return content.range(for: range)
+  }
+  
+  var message: String {
+    settingDiagnostic.message
+  }
+  
+  var severity: DiagnosticSeverity {
+    settingDiagnostic.severity
+  }
+  
+  
 }

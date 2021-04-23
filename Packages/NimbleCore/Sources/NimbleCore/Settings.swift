@@ -114,6 +114,12 @@ public final class Settings {
     runtime[key]!.observers.remove(observer: observer)
   }
   
+  fileprivate func add(validator: SettingValidator, for key: String) {
+    assert(isDefined(key))
+    
+    runtime[key]!.validators.append(validator)
+  }
+  
   
   //MARK: - Setting register
   
@@ -176,6 +182,11 @@ public final class Settings {
     case let value?: return String(describing: value)
     case nil: return defaultValue
     }
+  }
+  
+  public func validate() -> [SettingDiagnostic] {
+    //TODO: Add `SettingDiagnostic` which contain information about place in document
+    runtime.definedSettingKeys.flatMap{runtime[$0]!.validate()}
   }
   
 }
@@ -274,6 +285,7 @@ fileprivate extension Settings {
     
     var typedData: T? = nil
     var observers: ObserverSet<SettingObserver>
+    var validators: [SettingValidator]
     
     var data: Any? {
       get { typedData }
@@ -291,11 +303,21 @@ fileprivate extension Settings {
       self.typedDefaultValueProvider = settingDefinition.defaultValueProvider
       self.coder = S.self
       self.observers = ObserverSet()
+      self.validators = []
     }
     
     func notifyObservers() {
       let setting = Setting<T>(key)
       self.observers.notify{$0.settingValueDidChange(setting)}
+    }
+    
+    func validate() -> [SettingDiagnostic] {
+      let setting = Setting<T>(key)
+      var result: [SettingDiagnostic] = []
+      validators.forEach {
+        result.append(contentsOf: $0.validateSetting(setting))
+      }
+      return result
     }
   }
   
@@ -311,8 +333,10 @@ fileprivate protocol RuntimeData {
   
   var data: Any? { get set }
   var observers: ObserverSet<SettingObserver> { get set }
+  var validators: [SettingValidator] { get set }
   
   func notifyObservers()
+  func validate() -> [SettingDiagnostic]
 }
 
 // MARK: - CodingUserInfoKey
@@ -331,40 +355,33 @@ public protocol SettingCoder {
   static func decode(from container: DecodingContainer, forKey key: RawCodingKey) throws -> Any
 }
 
-//MARK: - SettingDefinitionProtocol
 
-public protocol SettingDefinitionProtocol {
-  associatedtype ValueType: Codable
-  typealias DefaultValueProvider = () -> ValueType
+//MARK: - SettingProtocol
 
-  var defaultValueProvider: DefaultValueProvider { get }
-  var key: String { get }
-}
-
-
-public extension SettingDefinitionProtocol where Self: SettingCoder {
-  
-  static func encode(value: Any, to container: inout EncodingContainer, forKey key: RawCodingKey) throws {
-    try container.encode((value as! ValueType), forKey: key)
-  }
-  
-  static func decode(from container: DecodingContainer, forKey key: RawCodingKey) throws -> Any {
-    let val = try container.decode(ValueType.self, forKey: key)
-    return val
-  }
-}
-
-
-//MARK: - SettingCommonProtocol
-
-public protocol SettingCommonProtocol {
+public protocol SettingProtocol {
   associatedtype ValueType: Codable
   
   var key: String { get }
   var defaultValue: ValueType { get }
+  var wrappedValue: ValueType { get set }
 }
 
-public extension SettingCommonProtocol {
+public extension SettingProtocol {
+  
+  static func == <R: SettingProtocol> (lhs: Self, rhs: R) -> Bool {
+    lhs.key == rhs.key
+  }
+  
+  static func ~= <R: SettingProtocol> (pattern: Self, value: R) -> Bool {
+    return pattern == value
+  }
+  
+  var value: ValueType {
+    wrappedValue
+  }
+  
+  //ObservableSetting
+  
   func add(observer: SettingObserver) {
     Settings.shared.add(observer: observer, for: key)
   }
@@ -379,12 +396,53 @@ public extension SettingCommonProtocol {
     }
   }
   
-  //TODO: Add validators
+  
+  //ValidatedSetting
+  
+  func add(validator: SettingValidator) {
+    Settings.shared.add(validator: validator, for: key)
+  }
+  
+  func add<C: Collection>(validators: C) where C.Element == SettingValidator {
+    for validator in validators {
+      add(validator: validator)
+    }
+  }
+
+  func error(_ message: String) -> SettingDiagnostic {
+    SettingDiagnostic(self.key, message: message, severity: .error)
+  }
+  
+  func warning(_ message: String) -> SettingDiagnostic {
+    SettingDiagnostic(self.key, message: message, severity: .warning)
+  }
 }
 
-public extension SettingCommonProtocol where ValueType: Comparable {
+public extension SettingProtocol where ValueType: Comparable {
   var isDefault: Bool {
     defaultValue == Settings.shared.get(key)!
+  }
+}
+
+
+//MARK: - SettingDefinitionProtocol
+
+public protocol SettingDefinitionProtocol where Self : SettingProtocol {
+  typealias DefaultValueProvider = () -> ValueType
+
+  var defaultValueProvider: DefaultValueProvider { get }
+}
+
+
+public extension SettingDefinitionProtocol where Self: SettingCoder {
+  
+  static func encode(value: Any, to container: inout EncodingContainer, forKey key: RawCodingKey) throws {
+    try container.encode((value as! ValueType), forKey: key)
+  }
+  
+  static func decode(from container: DecodingContainer, forKey key: RawCodingKey) throws -> Any {
+    let val = try container.decode(ValueType.self, forKey: key)
+    return val
   }
 }
 
@@ -435,13 +493,12 @@ public struct SettingDefinition<T: Codable> : SettingDefinitionProtocol {
 }
 
 extension SettingDefinition: SettingCoder {}
-extension SettingDefinition: SettingCommonProtocol {}
 
 
 //MARK: - Setting
 
 @propertyWrapper
-public struct Setting<T: Codable> {
+public struct Setting<T: Codable> : SettingProtocol {
   public let key: String
   
   //Property wrapper fields
@@ -472,13 +529,34 @@ public struct Setting<T: Codable> {
   }
 }
 
-extension Setting: SettingCommonProtocol {}
-
 //MARK: - SettingObserver
 
 public protocol SettingObserver {
-  func settingValueDidChange<T: Codable>(_ setting: Setting<T>)
+  func settingValueDidChange<S: SettingProtocol, T>(_ setting: S) where S.ValueType == T
 }
+
+//MARK: - SettingValidator
+
+public protocol SettingValidator {
+  func validateSetting<S: SettingProtocol, T>(_ setting: S) -> [SettingDiagnostic] where S.ValueType == T
+}
+
+public struct SettingDiagnostic: Diagnostic {
+  public let key: String
+  public var message: String
+  public var severity: DiagnosticSeverity
+  
+  fileprivate init(_ key: String, message: String, severity: DiagnosticSeverity) {
+    self.key = key
+    self.message = message
+    self.severity = severity
+  }
+}
+
+public extension Array where Element == SettingDiagnostic {
+  static var valid: [Element] { [] }
+}
+
 
 // MARK: - Settings Group
 
