@@ -102,6 +102,12 @@ public final class Settings {
     return runtime[key]!.defaultValueProvider() as! T
   }
   
+  fileprivate func description(for key: String) -> String {
+    assert(isDefined(key))
+    
+    return runtime[key]!.description
+  }
+  
   fileprivate func add(observer: SettingObserver, for key: String) {
     assert(isDefined(key))
     
@@ -142,18 +148,7 @@ public final class Settings {
       workingCopy.data[$0] = workingCopy.data[$0, default: self.runtime[$0]!.defaultValueProvider()]
     }
     
-    do {
-      let content = try YAMLEncoder().encode(workingCopy)
-      
-      guard let dictionary: [String: Any] = try Yams.load(yaml: content) as? [String: Any] else {
-        return content
-      }
-      
-      return dictionaryToString(dictionary)
-    } catch {
-      print("Error encoding settings file \(error)")
-      return ""
-    }
+    return dictionaryToString(workingCopy.data)
   }
   
   private func dictionaryToString(_ dictionary: [String: Any], level: Int = 0) -> String {
@@ -161,17 +156,31 @@ public final class Settings {
     let sortedKeys = dictionary.keys.sorted { $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending }
     for key in sortedKeys {
       if !result.isEmpty {
-        result += "\n"
+        result += "\n\n"
       }
       if let subDict = dictionary[key] as? [String: String] {
+        result += desriptionToComment(runtime[key]!.description)
         result += "\(key):\n"
         result += dictionaryToString(subDict, level: level + 2)
       } else {
         for _ in 0..<level {
           result += " "
         }
+        result += desriptionToComment(runtime[key]!.description)
         result += "\(key): \(optionalToString(optional: dictionary[key], defaultValue: ""))"
       }
+    }
+    return result
+  }
+  
+  private func desriptionToComment(_ description: String) -> String {
+    guard !description.isEmpty else {
+      return ""
+    }
+    let lines = description.split(separator: "\n")
+    var result = ""
+    lines.forEach{
+      result += "#\($0)\n"
     }
     return result
   }
@@ -279,6 +288,7 @@ fileprivate extension Settings {
   
   struct TypedRuntimeData<T: Codable>: RuntimeData {
     let key: String
+    let description: String
     
     let typedDefaultValueProvider: () -> T
     let coder: SettingCoder.Type
@@ -300,6 +310,7 @@ fileprivate extension Settings {
     
     init<S: SettingDefinitionProtocol>(_ settingDefinition: S) where S: SettingCoder, T == S.ValueType{
       self.key = settingDefinition.key
+      self.description = settingDefinition.description
       self.typedDefaultValueProvider = settingDefinition.defaultValueProvider
       self.coder = S.self
       self.observers = ObserverSet()
@@ -328,6 +339,7 @@ fileprivate extension Settings {
 
 fileprivate protocol RuntimeData {
   var key: String { get }
+  var description: String { get }
   var defaultValueProvider: () -> Any { get }
   var coder: SettingCoder.Type { get }
   
@@ -362,6 +374,7 @@ public protocol SettingProtocol {
   associatedtype ValueType: Codable
   
   var key: String { get }
+  var description: String { get }
   var defaultValue: ValueType { get }
   var wrappedValue: ValueType { get set }
 }
@@ -455,6 +468,7 @@ public struct SettingDefinition<T: Codable> : SettingDefinitionProtocol {
   
   public let defaultValueProvider: DefaultValueProvider
   public let key: String
+  public let description: String
   
   //Property wrapper fields
   public var wrappedValue: T {
@@ -479,16 +493,24 @@ public struct SettingDefinition<T: Codable> : SettingDefinitionProtocol {
     defaultValueProvider()
   }
   
-  public init(_ key: String, defaultValueProvider: @escaping DefaultValueProvider) {
+  public init(_ key: String, description: String = "", defaultValueProvider: @escaping DefaultValueProvider, validator: SettingValidator? = nil) {
     self.key = key
     self.defaultValueProvider = defaultValueProvider
+    self.description = description
     Settings.shared.register(self)
+    if let v = validator {
+      self.add(validator: v)
+    }
   }
   
-  public init(_ key: String, defaultValue: @escaping @autoclosure DefaultValueProvider) {
+  public init(_ key: String, description: String = "", defaultValue: @escaping @autoclosure DefaultValueProvider, validator: SettingValidator? = nil) {
     self.key = key
     self.defaultValueProvider = defaultValue
+    self.description = description
     Settings.shared.register(self)
+    if let v = validator {
+      self.add(validator: v)
+    }
   }
 }
 
@@ -524,6 +546,10 @@ public struct Setting<T: Codable> : SettingProtocol {
     Settings.shared.defaultValue(for: key)!
   }
   
+  public var description: String {
+    Settings.shared.description(for: key)
+  }
+  
   public init(_ key: String) {
     self.key = key
   }
@@ -555,6 +581,10 @@ public struct SettingDiagnostic: Diagnostic {
 
 public extension Array where Element == SettingDiagnostic {
   static var valid: [Element] { [] }
+  
+  var isValid: Bool {
+    isEmpty
+  }
 }
 
 
