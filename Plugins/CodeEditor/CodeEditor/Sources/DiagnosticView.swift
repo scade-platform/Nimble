@@ -450,6 +450,21 @@ class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegateImpl {
     row.messageView.textColor = ThemeManager.shared.currentTheme?.general.foreground
     row.messageView.drawsBackground = true
     row.messageView.backgroundColor = DiagnosticViewUtils.textColumnColor(for: diagnostic)
+    
+    //Supprt clickable links to diagnostic row
+    if let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) {
+      let matches = detector.matches(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count))
+      if !matches.isEmpty {
+        let attributedString = NSMutableAttributedString(string: text)
+        attributedString.addAttribute(.font, value: row.font!, range: text.range)
+        for match in matches {
+          guard let range = Range(match.range, in: text) else { continue }
+          let url = URL(string: String(text[range]))!
+          attributedString.addAttribute(.link, value: url, range: match.range)
+        }
+        row.messageView.attributedStringValue = attributedString
+      }
+    }
     row.messageView.sizeToFit()
   }
 }
