@@ -11,7 +11,14 @@ import NimbleCore
 public struct Settings: SettingsGroup {
   public static let shared = Settings()
   
-  @SettingDefinition("swift.toolchain", defaultValue: "")
+  @SettingDefinition("swift.toolchain",
+                     description: """
+                                  Path to the directory with Swift toolchain.
+                                  Default value is empy string.
+                                  Default value means that will using default toolchain from Xcode.
+                                  """,
+                     defaultValue: "",
+                     validator: SwiftToolchainValidator())
   public private(set) var swiftToolchain: String
 
   @SettingDefinition("swift.platforms", defaultValue: [])
@@ -39,6 +46,7 @@ fileprivate extension Settings {
     @Setting("com.android.toolchain.ndk")
     private var androidToolchainNdk: String
     
+    let targetVersion = "21.0.0"
     
     func validateSetting<S: SettingProtocol, T>(_ setting: S) -> [SettingDiagnostic] where S.ValueType == T {
       guard setting == $androidToolchainNdk else {
@@ -62,9 +70,8 @@ fileprivate extension Settings {
         return [$androidToolchainNdk.warning("Cannot find Android NDK version to validate. Required version is 21 or higher.")]
       }
       
-      let targetVersion = "21.0.0"
       guard  version.compare(targetVersion, options: .numeric) == .orderedDescending ||  version.compare(targetVersion, options: .numeric) == .orderedSame else {
-        return [$androidToolchainNdk.warning("Android NDK version is \"\(version)\". Required version is 21 or higher.")]
+        return [$androidToolchainNdk.warning("Android NDK version is \"\(version)\". Required version is \(targetVersion) or higher.")]
       }
       
       return .valid
@@ -91,6 +98,8 @@ fileprivate extension Settings {
     
     @Setting("com.android.toolchain.sdk")
     private var androidToolchainSdk: String
+    
+    let targetVersion = "android-24"
     
     func validateSetting<S: SettingProtocol, T>(_ setting: S) -> [SettingDiagnostic] where S.ValueType == T {
       guard setting == $androidToolchainSdk else {
@@ -121,9 +130,9 @@ fileprivate extension Settings {
         }
       }
       
-      let targetVersion = "android-24"
+      
       guard  latestVersion.compare(targetVersion, options: .numeric) == .orderedDescending || latestVersion.compare(targetVersion, options: .numeric) == .orderedSame else {
-        return [$androidToolchainSdk.error("Android SDK version is \"\(latestVersion)\". Required version is `android-24` or higher.")]
+        return [$androidToolchainSdk.error("Android SDK version is \"\(latestVersion)\". Required version is \(targetVersion) or higher.")]
       }
       
       
@@ -131,4 +140,96 @@ fileprivate extension Settings {
     }
     
   }
+  
+  struct SwiftToolchainValidator: SettingValidator {
+    @Setting("swift.toolchain")
+    private var swiftToolchain: String
+    
+    let targetVersion = "5.3.2"
+    
+    func validateSetting<S: SettingProtocol, T>(_ setting: S) -> [SettingDiagnostic] where S.ValueType == T {
+      guard setting == $swiftToolchain else {
+        return .valid
+      }
+      
+      if swiftToolchain.isEmpty {
+        //Validate XCode version
+        guard let pathToXcodeToolchain = Path("/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain"), pathToXcodeToolchain.exists else {
+          return [$swiftToolchain.error("Xcode not found.")]
+        }
+        guard let currentVersion = getVersion(pathToXcodeToolchain) else {
+          return [$swiftToolchain.warning("Could not validate Xcode toolchain version.")]
+        }
+        
+        guard  currentVersion.compare(targetVersion, options: .numeric) == .orderedDescending || currentVersion.compare(targetVersion, options: .numeric) == .orderedSame else {
+          return [$swiftToolchain.error("Swift Toolchain version is \(currentVersion). Swift Toolchain needs to be \(targetVersion) or higher.")]
+        }
+        
+        return .valid
+        
+      } else {
+        //Validate user toolchain version
+        guard let pathToUserToolchain = Path(swiftToolchain), pathToUserToolchain.exists else {
+          return [$swiftToolchain.error("Toolchain not found.")]
+        }
+        guard let currentVersion = getVersion(pathToUserToolchain) else {
+          return [$swiftToolchain.warning("Could not validate toolchain version.")]
+        }
+        
+        guard  currentVersion.compare(targetVersion, options: .numeric) == .orderedDescending || currentVersion.compare(targetVersion, options: .numeric) == .orderedSame else {
+          return [$swiftToolchain.error("Swift Toolchain version is \(currentVersion). Swift Toolchain needs to be \(targetVersion) or higher.")]
+        }
+        
+        return .valid
+      }
+    }
+    
+    private func getVersion(_ pathToToolchain: Path) -> String? {
+      let pathToSwift = pathToToolchain/"usr/bin/swift"
+      guard pathToSwift.exists, pathToSwift.isExecutable else {
+        return nil
+      }
+      
+      guard let versionOutput = runVersionCommand(pathToSwift) else {
+        return nil
+      }
+      
+      guard let versionWordIndex = versionOutput.range(of: "version") else {
+        return nil
+      }
+      
+      let version = versionOutput[versionWordIndex.upperBound...versionOutput[versionOutput.index(after: versionWordIndex.upperBound)...].firstIndex(of: " ")!]
+      
+      
+      return String(version.trimmingCharacters(in: CharacterSet(charactersIn: " ")))
+    }
+    
+    private func runVersionCommand(_ pathToSwift: Path) -> String? {
+      let proc = Process()
+      proc.executableURL = pathToSwift.url
+      proc.arguments = ["--version"]
+      let out = Pipe()
+      proc.standardOutput = out
+      do {
+        try proc.run()
+      } catch {
+        return nil
+      }
+      
+      proc.waitUntilExit()
+
+      if proc.terminationReason != .exit || proc.terminationStatus != 0 {
+        return nil
+      }
+      
+      let data = out.fileHandleForReading.readDataToEndOfFile()
+      guard let str = String(data: data, encoding: .utf8) else {
+        return nil
+      }
+      
+      return str
+    }
+    
+  }
+  
 }
