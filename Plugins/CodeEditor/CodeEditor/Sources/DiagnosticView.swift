@@ -452,19 +452,7 @@ class SingleDiagnosticRowViewDelegate: DiagnosticRowViewDelegateImpl {
     row.messageView.backgroundColor = DiagnosticViewUtils.textColumnColor(for: diagnostic)
     
     //Supprt clickable links to diagnostic row
-    if let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) {
-      let matches = detector.matches(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count))
-      if !matches.isEmpty {
-        let attributedString = NSMutableAttributedString(string: text)
-        attributedString.addAttribute(.font, value: row.font!, range: text.range)
-        for match in matches {
-          guard let range = Range(match.range, in: text) else { continue }
-          let url = URL(string: String(text[range]))!
-          attributedString.addAttribute(.link, value: url, range: match.range)
-        }
-        row.messageView.attributedStringValue = attributedString
-      }
-    }
+    row.messageView.applyClickableLinks(isWrapped: false)
     row.messageView.sizeToFit()
   }
 }
@@ -536,6 +524,8 @@ class SummaryDiagnosticsRowViewDelegate: DiagnosticRowViewDelegateImpl {
       row.messageView.textColor = ThemeManager.shared.currentTheme?.general.foreground
       row.messageView.drawsBackground = true
       row.messageView.backgroundColor = DiagnosticViewUtils.textColumnColor(for: diagnostic)
+      //Supprt clickable links to diagnostic row
+      row.messageView.applyClickableLinks(isWrapped: true)
       row.messageView.sizeToFit()
 
       return row.messageView.backgroundColor
@@ -634,6 +624,31 @@ fileprivate extension NSTextView {
     let atrStr = NSAttributedString(string: string, attributes: [NSAttributedString.Key.font : font])
     let tabsCount = string.filter{$0 == "\t"}.count
     return atrStr.size().width + (self.defaultParagraphStyle?.defaultTabInterval ?? 0.0) * CGFloat(tabsCount)
+  }
+}
+
+fileprivate extension NSTextField {
+  func applyClickableLinks(isWrapped: Bool) {
+    if let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) {
+      let text = self.stringValue
+      let matches = detector.matches(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count))
+      if !matches.isEmpty {
+        let attributedString = NSMutableAttributedString(string: text)
+        attributedString.addAttribute(.font, value: self.font!, range: text.range)
+        attributedString.addAttribute(.foregroundColor, value: self.textColor ?? .black, range: text.range)
+        if isWrapped {
+          let paragraphStyle = NSMutableParagraphStyle()
+          paragraphStyle.lineBreakMode = .byTruncatingTail
+          attributedString.addAttribute(.paragraphStyle, value: paragraphStyle, range: text.range)
+        }
+        for match in matches {
+          guard let range = Range(match.range, in: text) else { continue }
+          let url = URL(string: String(text[range]))!
+          attributedString.addAttribute(.link, value: url, range: match.range)
+        }
+        self.attributedStringValue = attributedString
+      }
+    }
   }
 }
 
