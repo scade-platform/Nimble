@@ -43,9 +43,8 @@ extension ContextOutlineView : ContextMenuProvider {
     return Self.commonMenuItems(for: file) +
       [
         NSMenuItem.separator(),
-        createMenuItem(title: "Rename", selector: #selector(renameAction), for: file),
-        NSMenuItem.separator(),
-        createMenuItem(title: "Delete", selector: #selector(deleteAction), for: file)
+        createMenuItem(title: "Rename...", selector: #selector(renameAction), for: file),
+        createMenuItem(title: "Delete File", selector: #selector(deleteAction), for: file)
       ]
   }
   
@@ -62,15 +61,15 @@ extension ContextOutlineView : ContextMenuProvider {
     docItem.representedObject = folder
     
     var items = [
-    createMenuItem(title: "Show in Finder", selector: #selector(showInFinderAction), for: folder),
-    NSMenuItem.separator(),
-    docItem,
-    createMenuItem(title: "New Folder...", selector: #selector(createNewFolderAction), for: folder),
-    NSMenuItem.separator(),
-    createMenuItem(title: "Rename", selector: #selector(renameAction), for: folder),
-    NSMenuItem.separator(),
-    createMenuItem(title: "Delete", selector: #selector(deleteAction), for: folder)]
-    
+      createMenuItem(title: "Show in Finder", selector: #selector(showInFinderAction), for: folder),
+      NSMenuItem.separator(),
+      docItem,
+      createMenuItem(title: "Rename...", selector: #selector(renameAction), for: folder),
+      NSMenuItem.separator(),
+      createMenuItem(title: "New Folder...", selector: #selector(createNewFolderAction), for: folder),
+      createMenuItem(title: "Delete Folder", selector: #selector(deleteAction), for: folder),
+    ]
+
     if let project = NSApp.currentWorkbench?.project,
        project.folders.contains(folder) {
       items.append(createMenuItem(title: "Remove Folder from Project",
@@ -100,6 +99,7 @@ extension ContextOutlineView : ContextMenuProvider {
 
     return [
       createMenuItem(title: "Show in Finder", selector: #selector(showInFinderAction), for: file),
+      NSMenuItem.separator(),
       createMenuItem(title: "Open with External Editor", selector: #selector(openInExternalEditorAction), for: file),
       createSubMenuItem(title: "Open As", items: openAsItems),
     ]
@@ -186,7 +186,7 @@ extension ContextOutlineView : ContextMenuProvider {
     showImputTextAlert(message: "Please enter a name:", nil, handler: {name in
       guard !name.isEmpty else { return }
       let parentPath = folder.path
-      try? parentPath.join(name).touch()
+      let _ = try? parentPath.join(name).touch()
       self.reloadSelected()
     })
   }
@@ -198,7 +198,7 @@ extension ContextOutlineView : ContextMenuProvider {
     showImputTextAlert(message: "Please enter a name:", nil, handler: {name in
       guard !name.isEmpty else { return }
       let parentPath = folder.path
-      try? parentPath.join(name).mkdir()
+      let _ = try? parentPath.join(name).mkdir()
       self.reloadSelected()
     })
   }
