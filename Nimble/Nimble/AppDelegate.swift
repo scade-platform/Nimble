@@ -88,8 +88,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
       ChangeAreaVisibility(title: "Inspector", icon: Bundle.main.loadBottonImage(name: "rightSideBar")) { $0.inspectorArea }
     ]
 
-    let visibilityGroup = CommandGroup(name: "AreaVisibilityCommands", commands: visibilityCommands)
-    CommandManager.shared.register(group: visibilityGroup)
+    CommandManager.shared.register(commands: visibilityCommands, group: "AreaVisibilityCommands")
 
     ///TODO: move to the central place for common commands
     let zoomIn = Command(name: "Zoom In", keyEquivalent: "cmd+plus") { workbench in
@@ -168,19 +167,34 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
   private func setupCommandsMenus() {
     guard let mainMenu = NSApplication.shared.mainMenu else { return }
-    for cmd in CommandManager.shared.commands {
-      addMenuItem(for: cmd, into: mainMenu)
+
+    CommandManager.shared.groups.filter{$0.commands.count > 0}.forEach {
+      addMenuItems(for: $0, into: mainMenu)
     }
+
+    CommandManager.shared.commands.filter{$0.group == nil}.forEach {
+      addMenuItem(for: $0, into: mainMenu)
+    }
+
     CommandManager.shared.observers.add(observer: self)
   }
   
+  func addMenuItems(for group: CommandGroup, into menu: NSMenu) {
+    guard let menuPath = group.menuPath,
+          let mainMenuItem = menu.createMenu(for: menuPath)?.submenu else { return }
+
+    group.commands.forEach {
+      mainMenuItem.addItem($0.createMenuItem())
+    }
+
+    mainMenuItem.addItem(.separator())
+  }
+
   func addMenuItem(for command: Command, into menu: NSMenu) {
-    guard let commandMenuItem = command.createMenuItem() else {
-      return
-    }
-    if let mainMenuItem = menu.findItem(with: command.menuPath!)?.submenu {
-      mainMenuItem.addItem(commandMenuItem)
-    }
+    guard let menuPath = command.menuPath,
+          let mainMenuItem = menu.createMenu(for: menuPath)?.submenu else { return }
+
+    mainMenuItem.addItem(command.createMenuItem())
   }
 
   func applicationWillFinishLaunching(_ notification: Notification) {
