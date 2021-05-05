@@ -14,8 +14,6 @@ public protocol WorkbenchEditor: NSViewController {
   func focus() -> Bool
   
   func publish(diagnostics: [Diagnostic])
-  
-  func didOpenDocument(_ document: Document)
 }
 
 
@@ -34,7 +32,7 @@ public extension WorkbenchEditor {
   
   func publish(diagnostics: [Diagnostic]) { }
   
-  func didOpenDocument(_ document: Document) { }
+  //func didOpenDocument(_ document: Document) { }
 }
 
 // MARK: - Editor Command Actions

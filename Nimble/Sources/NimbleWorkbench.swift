@@ -282,15 +282,8 @@ extension NimbleWorkbench: Workbench {
     if opened {
       observers.notify { $0.workbenchDidOpenDocument(self, document: doc) }
       invalidateRestorableState()
-
-      if show {
-        doc.editor?.didOpenDocument(doc)
-      }
     }
   }
-  
-  
-  
   
   @discardableResult
   public func close(_ doc: Document) -> Bool {
