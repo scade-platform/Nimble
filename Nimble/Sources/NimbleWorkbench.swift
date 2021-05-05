@@ -15,11 +15,21 @@ import NimbleCore
 public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   
   lazy var toolbarItems: [NSToolbarItem] = {
-    var items: [NSToolbarItem] = []
+    // Filter out groups that do not group inside the toolbar
 
-    items.append(contentsOf: CommandManager.shared.commands.filter({$0.group == nil}).map{$0.createToolbarItem()})
-    items.append(contentsOf: CommandManager.shared.groups.map{$0.createToolbarItem()})
+    var items = CommandManager.shared.commands
+      .filter{
+        guard let group = $0.group else { return true }
+        return !group.toolbarGroup
+      }.map{
+        $0.createToolbarItem()
+      }
 
+    let groupItems = CommandManager.shared.groups
+      .filter{$0.toolbarGroup}
+      .map{$0.createToolbarItem()}
+
+    items.append(contentsOf: groupItems)
     return items
    }()
 
@@ -386,20 +396,33 @@ extension NimbleWorkbench: NSToolbarDelegate {
   }
 
   public func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-    let commandsWithoutGroups = CommandManager.shared.commands.filter { $0.group == nil && ($0.toolbarIcon != nil || $0.toolbarControlClass != nil) }
-    
-    var leftGroup: [Any] = commandsWithoutGroups.filter{ if case .left(orderPriority: _) = $0.alignment {return true} else {return false}}
-    leftGroup.append(contentsOf: CommandManager.shared.groups.filter { if case .left(orderPriority: _) = $0.alignment {return true} else {return false}})
+    let commands = CommandManager.shared.commands.filter {
+      guard $0.toolbarIcon != nil || $0.toolbarControlClass != nil else { return false }
+      guard let group = $0.group else { return true }
+      return !group.toolbarGroup
+    }
+
+    let groups = CommandManager.shared.groups.filter {
+      return $0.toolbarGroup
+    }
+
+    // Left group
+    var leftGroup: [Any] = commands.filter{$0.alignment.is(.left)}
+    leftGroup.append(contentsOf: groups.filter{ $0.alignment.is(.left)})
     let sortedLeftGroup = leftGroup.sorted{l, r in sortedPredicate(l, r, {$0 < $1})}
-    
-    var centerGroup: [Any] = commandsWithoutGroups.filter{ if case .center(orderPriority: _) = $0.alignment {return true} else {return false}}
-    centerGroup.append(contentsOf: CommandManager.shared.groups.filter { if case .center(orderPriority: _) = $0.alignment {return true} else {return false}})
+
+    // Center group
+    var centerGroup: [Any] = commands.filter{$0.alignment.is(.center)}
+    centerGroup.append(contentsOf: groups.filter{ $0.alignment.is(.center)})
     let sortedCenterGroup = centerGroup.sorted{l, r in sortedPredicate(l, r, {$0 < $1})}
-    
-    var rightGroup: [Any] = commandsWithoutGroups.filter{ if case .right(orderPriority: _) = $0.alignment {return true} else {return false}}
-    rightGroup.append(contentsOf: CommandManager.shared.groups.filter { if case .right(orderPriority: _) = $0.alignment {return true} else {return false}})
+
+    // Right group
+    var rightGroup: [Any] = commands.filter{$0.alignment.is(.right)}
+    rightGroup.append(contentsOf: groups.filter{ $0.alignment.is(.right)})
     let sortedRightGroup = rightGroup.sorted{l, r in sortedPredicate(l, r, {$0 > $1})}
-    
+
+
+    // Result
     var ids: [NSToolbarItem.Identifier] = sortedLeftGroup.compactMap(extractIdentifier(_:))
     
     ids.append(.flexibleSpace)

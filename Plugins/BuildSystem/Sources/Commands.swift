@@ -15,7 +15,10 @@ import BuildSystem
 
 class BuildSystemCommand: Command {
   init(name: String, keyEquivalent: String? = nil, toolbarIcon: NSImage? = nil, orderPriority: Int = 100) {
-    super.init(name: name, menuPath: "Tools", keyEquivalent: keyEquivalent, toolbarIcon: toolbarIcon, alignment: .left(orderPriority: orderPriority))
+    super.init(name: name,
+               keyEquivalent: keyEquivalent,
+               toolbarIcon: toolbarIcon,
+               alignment: .left(orderPriority: orderPriority))
   }
 
   func currentTask(in workbench: Workbench) -> BuildTask? {

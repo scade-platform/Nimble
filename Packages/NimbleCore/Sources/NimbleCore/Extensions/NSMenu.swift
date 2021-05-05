@@ -20,4 +20,23 @@ public extension NSMenu {
       return currentItem?.submenu?.findItem(with: components[1...].joined(separator: "/"))
     }
   }
+
+  func createMenu(for path: String) -> NSMenuItem? {
+    var menu : NSMenu? = self
+    var menuItem: NSMenuItem? = nil
+
+    path.split(separator: "/").forEach {
+      let title = String($0)
+      if let item = menu?.item(withTitle: title) {
+        menuItem = item
+      } else {
+        menuItem = NSMenuItem(title: title, action: nil, keyEquivalent: "")
+        menuItem?.submenu = NSMenu(title: title)
+        menu?.addItem(menuItem!)
+      }
+      menu = menuItem?.submenu
+    }
+
+    return menuItem
+  }
 }

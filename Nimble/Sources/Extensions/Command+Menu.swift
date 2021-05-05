@@ -11,14 +11,13 @@ import NimbleCore
 
 extension Command {
   var menuItem: NSMenuItem? {
-    guard let menuPath = self.menuPath,
+    guard let menuPath = self.menuPath ?? self.group?.menuPath,
           let menuItem = NSApp.mainMenu?.findItem(with: menuPath) else { return nil }
     
     return menuItem.submenu?.items.first{ ($0.representedObject as AnyObject?) === self }
   }
 
-  func createMenuItem() -> NSMenuItem? {
-    guard menuPath != nil else { return nil }
+  func createMenuItem() -> NSMenuItem {
     let (key, mask) = keyboardShortcut?.keyEquivalent ?? ("", [])
     let menuItem = NSMenuItem(title: self.name, action: #selector(execute), keyEquivalent: key)
 

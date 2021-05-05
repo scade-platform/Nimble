@@ -34,12 +34,13 @@ open class Command {
   // Menu item
   public let menuPath: String?
   public let keyboardShortcut: KeyboardShortcut?
-  
+    
   // Toolbar item
   public let toolbarIcon: NSImage?
   public let toolbarControlClass: NSControl.Type?
   public let alignment: ToolbarAlignment
 
+  // Grouping
   public fileprivate(set) weak var group: CommandGroup?
 
   public var groupIndex: Int? {
@@ -47,11 +48,12 @@ open class Command {
   }
 
   public init(name: String,
-              keyEquivalent: String? = nil ,
+              menuPath: String? = nil,
+              keyEquivalent: String? = nil,
               handler: (@escaping Handler) = { _ in return } ) {
 
     self.name = name
-    self.menuPath = nil
+    self.menuPath = menuPath
     self.keyboardShortcut = keyEquivalent.map{KeyboardShortcut($0)} ?? nil
     self.toolbarIcon = nil
     self.toolbarControlClass = nil
@@ -61,8 +63,8 @@ open class Command {
 
   public init(name: String,              
               menuPath: String? = nil,
-              keyEquivalent: String? = nil ,
-              toolbarIcon: NSImage? = nil,
+              keyEquivalent: String? = nil,
+              toolbarIcon: NSImage?,
               alignment: ToolbarAlignment = .left(orderPriority: 100),
               handler: (@escaping Handler) = { _ in return } ) {
 
@@ -78,7 +80,7 @@ open class Command {
   public init(name: String,
               menuPath: String? = nil,
               keyEquivalent: String? = nil ,
-              controlClass: NSControl.Type? = nil,
+              controlClass: NSControl.Type?,
               alignment: ToolbarAlignment = .left(orderPriority: 100),
               handler: (@escaping Handler) = { _ in return } ) {
 
@@ -121,7 +123,9 @@ public class CommandGroup {
 
   public let name: String
   public let title: String
-  
+  public let menuPath: String?
+  public let toolbarGroup: Bool
+
   open var alignment: ToolbarAlignment
 
   public var commands: [Command] {
@@ -134,9 +138,18 @@ public class CommandGroup {
     }
   }
 
-  public init(name: String, alignment: ToolbarAlignment =  .right(orderPriority: 100), commands: [Command] = []){
+  // Create group using 'register' in the CommandManager to avoid leaks,
+  // as commands are stored in groups by weak references
+  fileprivate init(name: String,
+                   menuPath: String?,
+                   toolbarGroup: Bool,
+                   alignment: ToolbarAlignment,
+                   commands: [Command]){
+
     self.name = name
     self.title = name
+    self.menuPath = menuPath
+    self.toolbarGroup = toolbarGroup
     self.alignment = alignment
     self.commands = commands
   }
@@ -207,12 +220,21 @@ public class CommandManager {
     commands.forEach {self.register(command: $0)}
   }
 
-  public func register(group: CommandGroup, registerCommands: Bool = true) {
+  public func register(commands: [Command],
+                       group: String,
+                       menuPath: String? = nil,
+                       toolbarGroup: Bool = true,
+                       alignment: ToolbarAlignment = .right(orderPriority: 100)) {
+
+    let group = CommandGroup(name: group,
+                             menuPath: menuPath,
+                             toolbarGroup: toolbarGroup,
+                             alignment: alignment,
+                             commands: commands)
+
     guard _groups[group.name] == nil else { return }
 
-    if registerCommands {
-      group.commands.forEach { self.register(command: $0) }
-    }
+    commands.forEach { self.register(command: $0) }
     
     groups.append(group)
     _groups[group.name] = WeakRef<CommandGroup>(value: group)
@@ -236,4 +258,20 @@ public enum ToolbarAlignment {
   
   //The higher the `orderPriority`, the more to the left the element
   case right(orderPriority: Int)
+
+
+  public enum Case {
+    case left, center, right
+  }
+
+  public func `is`(_ `case`: Case) -> Bool {
+    switch self {
+    case .left:
+      return `case` == .left
+    case .center:
+      return `case` == .center
+    case .right:
+      return `case` == .right
+    }
+  }
 }

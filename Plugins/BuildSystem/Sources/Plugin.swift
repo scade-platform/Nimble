@@ -60,7 +60,8 @@ final class BuildSystemPlugin: Plugin {
     let buildSystemMenu = NSMenu(title: "Build System")
     buildSystemMenuItem.submenu = buildSystemMenu
     toolsMenu.addItem(buildSystemMenuItem)
-    
+    toolsMenu.addItem(.separator())
+
     let autoItem = NSMenuItem(title: "Automatic", action: #selector(switchBuildSystem(_:)), keyEquivalent: "")
     autoItem.target = self
     autoItem.representedObject = Automatic.shared
@@ -78,8 +79,14 @@ final class BuildSystemPlugin: Plugin {
     self.buildSystemMenu = buildSystemMenu
   }
   
-  private func setupCommands() {
-    CommandManager.shared.register(commands: [Run(), Stop(), Build(), Clean(), CleanAll(), SelectTarget()])
+  private func setupCommands() {    
+    CommandManager.shared.register(commands: [Run(), Stop(), Build(), Clean(), CleanAll()],
+                                   group: "Build Commands",
+                                   menuPath: "Tools",
+                                   toolbarGroup: false,
+                                   alignment: .left(orderPriority: 10))
+
+    CommandManager.shared.register(command: SelectTarget())
   }
   
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
