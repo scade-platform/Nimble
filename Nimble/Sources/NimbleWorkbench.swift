@@ -436,7 +436,8 @@ extension NimbleWorkbench: NSToolbarDelegate {
   }
 
   public func toolbarAllowedItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-      return self.toolbarDefaultItemIdentifiers(toolbar)
+    let set: Set<NSToolbarItem.Identifier> = Set(self.toolbarDefaultItemIdentifiers(toolbar))
+    return Array(set)
   }
 
   public func toolbarSelectableItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
