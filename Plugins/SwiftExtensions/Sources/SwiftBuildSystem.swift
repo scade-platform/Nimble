@@ -136,6 +136,7 @@ fileprivate class SwiftTarget: Target {
   init(document: Document, workbench: Workbench, buildSystem: SwiftBuildSystem) {
     self.document = document
     self.workbench = workbench
+    self.swiftBuildSystem = buildSystem
   }
   
   func contains(file: File) -> Bool {
