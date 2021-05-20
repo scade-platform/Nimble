@@ -22,11 +22,13 @@ class ToolbarTargetControl : NSControl {
   
   @IBOutlet weak var separatorImage: NSImageView?
   
-  @IBOutlet weak var rightParentView: NSView? 
+  @IBOutlet weak var rightParentView: NSView?
   @IBOutlet weak var rightImage: NSImageView?
   @IBOutlet weak var rightLable: NSTextField?
 
   private weak var borderLayer: CALayer?
+  private var trackingArea: NSTrackingArea? = nil
+  
 
   private var targetsMenu: NSMenu?
   private var variantsMenu: NSMenu?
@@ -90,6 +92,15 @@ class ToolbarTargetControl : NSControl {
     NSColor(named: "BottomBorderGradientColor", bundle: Bundle(for: ToolbarTargetControl.self)) ?? ToolbarTargetControl.sharedBorderColor
   }()
   
+  private var highlightColor: NSColor {
+    //TODO: Use assert color
+    if self.effectiveAppearance.name == .vibrantLight {
+      return NSColor(srgbRed: 0.949, green: 0.949, blue: 0.949, alpha: 1)
+    } else {
+      return NSColor(srgbRed: 0.192, green: 0.176, blue: 0.192, alpha: 1)
+    }
+  }
+  
   required init?(coder: NSCoder) {
     super.init(coder: coder)
 
@@ -97,10 +108,14 @@ class ToolbarTargetControl : NSControl {
   }
   
   override func layout() {
-    if let layer = self.layer as? CAGradientLayer {
-      //change colors after system theme changed
-      layer.colors = [self.bottomBackgroundColor.cgColor, self.topBackgroundColor.cgColor]
-      addGradienBorder(colors: [self.bottomBorderColor, self.topBorderColor])
+    if #available(macOS 11, *) {
+      //Do nothing
+    } else {
+      if let layer = self.layer as? CAGradientLayer {
+        //change colors after system theme changed
+        layer.colors = [self.bottomBackgroundColor.cgColor, self.topBackgroundColor.cgColor]
+        addGradienBorder(colors: [self.bottomBorderColor, self.topBorderColor])
+      }
     }
   }
 
@@ -125,16 +140,58 @@ class ToolbarTargetControl : NSControl {
 
 
   private func setupVisuals() {
-    let layer = CAGradientLayer()
-    layer.masksToBounds = true
-    layer.cornerRadius = 4.5
-    layer.colors = [self.bottomBackgroundColor.cgColor,
-                    self.topBackgroundColor.cgColor]
+    if #available(macOS 11, *) {
+      let layer = CALayer()
+      layer.masksToBounds = true
+      layer.cornerRadius = 4.5
+      layer.backgroundColor = .clear
+      self.wantsLayer = true
+      self.layer = layer
+    } else {
+      let layer = CAGradientLayer()
+      layer.masksToBounds = true
+      layer.cornerRadius = 4.5
+      layer.colors = [self.bottomBackgroundColor.cgColor,
+                      self.topBackgroundColor.cgColor]
 
-    self.wantsLayer = true
-    self.layer = layer
+      self.wantsLayer = true
+      self.layer = layer
 
-    addGradienBorder(colors: [self.bottomBorderColor, self.topBorderColor])
+      addGradienBorder(colors: [self.bottomBorderColor, self.topBorderColor])
+    }
+  }
+  
+  override func updateTrackingAreas() {
+    guard #available(macOS 11, *) else {
+      super.updateTrackingAreas()
+      return
+    }
+    
+    if let ta = trackingArea {
+      self.removeTrackingArea(ta)
+    }
+
+    let opts: NSTrackingArea.Options = [.mouseEnteredAndExited, .activeAlways]
+    trackingArea = NSTrackingArea(rect: self.bounds, options: opts, owner: self)
+
+    self.addTrackingArea(trackingArea!)
+  }
+  
+  override func mouseEntered(with theEvent: NSEvent) {
+    guard self.isEnabled else { return }
+    let colourAnim = CABasicAnimation(keyPath: "backgroundColor")
+    colourAnim.fromValue = self.layer?.backgroundColor
+    colourAnim.toValue = highlightColor.cgColor
+    colourAnim.duration = 1.0
+    colourAnim.fillMode = .forwards
+    colourAnim.isRemovedOnCompletion = false
+    self.layer?.add(colourAnim, forKey: "backgroundColor")
+    self.layer?.backgroundColor = highlightColor.cgColor
+  }
+  
+  override func mouseExited(with event: NSEvent) {
+    guard self.isEnabled else { return }
+    self.layer?.backgroundColor = .clear
   }
 
   private func addGradienBorder(colors:[NSColor], width:CGFloat = 1) {
@@ -358,6 +415,7 @@ class ToolbarTargetControl : NSControl {
     }
 
     NSApp.currentWorkbench?.selectedVariant = selectedVariant
+    self.layer?.backgroundColor = .clear
   }
 
   private func select(variant: Variant) {
