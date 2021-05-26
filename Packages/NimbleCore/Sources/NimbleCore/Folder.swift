@@ -61,6 +61,11 @@ public class Folder: FileSystemElement {
     let files = try self.path.ls().files
     return files.filter{$0.basename() != ".DS_Store"}.compactMap{File(path: $0)}.sorted{$0.name.lowercased() < $1.name.lowercased()}
   }
+
+  public func contains(_ other: FileSystemElement) -> Bool {
+    guard self.path != other.path else { return false }
+    return (try? other.path.realpath().string.starts(with: self.path.realpath().string)) ?? false
+  }  
 }
 
 

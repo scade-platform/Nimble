@@ -33,11 +33,13 @@ struct LSPDiagnostic: SourceCodeDiagnostic {
   }
 
   var fixes: [SourceCodeQuickfix] {
-    return wrapped.codeActions?.compactMap {$0.quickFix} ?? []
+    var fixes = wrapped.codeActions?.compactMap {$0.quickFix} ?? [] 
     
-//    return wrapped.relatedInformation?.flatMap { relInfo in
-//      relInfo.codeActions?.compactMap {$0.quickFix} ?? []
-//    } ?? []
+    fixes.append(contentsOf: wrapped.relatedInformation?.flatMap { relInfo in
+      relInfo.codeActions?.compactMap {$0.quickFix} ?? []
+    } ?? [])
+
+    return fixes
   }
 
   func range(`in` text: String) -> Range<Int>? {
