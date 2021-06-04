@@ -29,7 +29,7 @@ final class SwiftExtensionsPlugin: Plugin {
   }
 
   public func activate(in workbench: Workbench) {
-    SwiftLanguageService.shared.connect(to: workbench)
+    SwiftLanguageService.shared.connect(to: workbench, from: self)
   }
 
   public func deactivate(in workbench: Workbench) {

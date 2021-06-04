@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.3
 
 import PackageDescription
 
@@ -16,7 +16,7 @@ let package = Package(
       .package(path: "../../BuildSystem"),
       .package(path: "../../LSPClient"),
       
-      .package(url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("release/5.3")),
+      .package(name: "SourceKitLSP", url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("release/5.3")),
       .package(url: "https://github.com/FLORG1/swift-format.git", .branch("swift-5.3-branch")),
     ],
     targets: [
@@ -28,7 +28,10 @@ let package = Package(
           "LSPClient",
           "SourceKitLSP",
           "CodeEditor",
-          "SwiftFormat"
+          .product(name: "SwiftFormat", package: "swift-format")
+        ],
+        resources: [
+          .process("Resources/swift-format")
         ]
       ),
     ]
