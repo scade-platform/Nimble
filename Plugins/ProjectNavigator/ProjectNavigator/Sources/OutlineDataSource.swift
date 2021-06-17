@@ -104,19 +104,27 @@ class FolderItem {
       //save not changed items
       items.append(item)
     }
+    
+    if items.isEmpty, files.isEmpty {
+      self.folder.isOpened = false
+    }
   }
   
   func startMonitoring() {
     folder.observers.add(observer: self)
+    self.items.filter{ $0.data.isEmpty }.forEach{ $0.startMonitoring() }
   }
   
   func stopMonitoring() {
     folder.observers.remove(observer: self)
+    self.items.filter{ $0.data.isEmpty }.forEach{ $0.stopMonitoring() }
   }
   
   func reload() {
     outline?.reloadItem(self, reloadChildren: true)
-    outline?.expandItem(self)
+    if self.folder.isOpened {
+      outline?.expandItem(self)
+    }
   }
 }
 
