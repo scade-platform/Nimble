@@ -19,6 +19,9 @@ public final class Project {
   
   private var projectFolders: [ProjectFolder] {
     didSet {
+      guard oldValue != projectFolders else {
+        return
+      }
       observers.notify {
         $0.projectFoldersDidChange(self)
       }      
@@ -138,7 +141,7 @@ public final class Project {
 }
 
 
-fileprivate struct ProjectFolder {
+fileprivate struct ProjectFolder: Equatable {
   let folder: Folder
   let relativePath: String?
   

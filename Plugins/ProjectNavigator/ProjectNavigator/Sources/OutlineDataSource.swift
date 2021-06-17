@@ -44,7 +44,7 @@ class OpenedDocumentsItem: OutlineRootItem {
 }
 
 class ProjectFoldersItem: OutlineRootItem {
-  private var folderItems: [FolderItem] = []
+  private var folderItems: Set<FolderItem> = []
 
   init(_ workbench: Workbench, _ outline: NSOutlineView?) {
     super.init(title: "FOLDERS",
@@ -55,12 +55,14 @@ class ProjectFoldersItem: OutlineRootItem {
   }
   
   var folders: [FolderItem] {
-    return folderItems
+    return Array(folderItems)
   }
 
   func update(){
     let folders = workbench?.project?.folders ?? []
-    folderItems = folders.map{FolderItem($0, outline: outline)}
+    let newItems = folders.map{ FolderItem($0, outline: outline) }
+    folderItems = folderItems.intersection(newItems)
+    folderItems = folderItems.union(newItems)
   }
 
 }
@@ -129,6 +131,17 @@ extension FolderItem : FolderObserver {
   }
 }
 
+extension FolderItem: Hashable {
+  static func == (lhs: FolderItem, rhs: FolderItem) -> Bool {
+    return lhs.folder == rhs.folder
+  }
+  
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(self.folder)
+  }
+  
+  
+}
 
 
 // MARK: - OutlineDataSource
