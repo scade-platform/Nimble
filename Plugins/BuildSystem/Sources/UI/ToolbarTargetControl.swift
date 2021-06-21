@@ -30,7 +30,21 @@ class ToolbarTargetControl : NSControl {
   private var trackingArea: NSTrackingArea? = nil
   
 
-  private var targetsMenu: NSMenu?
+  private var targetsMenu: NSMenu? {
+    didSet {
+      //If targetsMenu is empty or nil clear control
+      guard let menu = targetsMenu else {
+        clear()
+        return
+      }
+      
+      guard !menu.items.isEmpty else {
+        clear()
+        return
+      }
+    
+    }
+  }
   private var variantsMenu: NSMenu?
 
   /// TODO: move to an extension and disable explicit passing of the reference to view everywhere
@@ -63,10 +77,6 @@ class ToolbarTargetControl : NSControl {
       let textColor: NSColor = isEnabled ? .labelColor : .disabledControlTextColor
       leftLable?.textColor = textColor
       rightLable?.textColor = textColor
-
-      if !isEnabled {
-        clear()
-      }
     }
   }
   
