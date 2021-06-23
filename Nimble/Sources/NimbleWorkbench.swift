@@ -512,6 +512,16 @@ extension NimbleWorkbench {
     close(doc)
     invalidateRestorableState()
   }
+
+  @IBAction func copy(_ sender: Any?) {
+    guard let doc = currentDocument as? EditableDocument else { return }
+    doc.onCopy()
+  }
+
+  @IBAction func paste(_ sender: Any?) {
+    guard let doc = currentDocument as? EditableDocument else { return }
+    doc.onPaste()
+  }
   
   @IBAction func closeAll(_ sender: Any?) {
     documents.forEach{close($0)}

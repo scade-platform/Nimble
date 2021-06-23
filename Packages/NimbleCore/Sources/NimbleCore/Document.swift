@@ -92,6 +92,12 @@ public protocol CreatableDocument where Self: Document {
   static func createDocument(url: URL?) -> Document?
 }
 
+public protocol EditableDocument where Self: Document {
+  func onCopy()
+
+  func onPaste()
+}
+
 public extension CreatableDocument where Self: Document {
   static func createDocument() -> Document? {
     createDocument(url: nil)
