@@ -55,7 +55,15 @@ class ProjectFoldersItem: OutlineRootItem {
   }
   
   var folders: [FolderItem] {
-    return Array(folderItems)
+    let items = Array(folderItems)
+    
+    let sortedByAlphabetItems = items.sorted{ firstItem, secondItem in
+      let firstItemFolderName = firstItem.folder.name
+      let secondItemFolderName = secondItem.folder.name
+      return firstItemFolderName.localizedStandardCompare(secondItemFolderName) == ComparisonResult.orderedAscending
+    }
+    
+    return sortedByAlphabetItems
   }
 
   func update(){
@@ -63,6 +71,7 @@ class ProjectFoldersItem: OutlineRootItem {
     let newItems = folders.map{ FolderItem($0, outline: outline) }
     folderItems = folderItems.intersection(newItems)
     folderItems = folderItems.union(newItems)
+    
   }
 
 }
@@ -122,9 +131,7 @@ class FolderItem {
   
   func reload() {
     outline?.reloadItem(self, reloadChildren: true)
-    if self.folder.isOpened {
-      outline?.expandItem(self)
-    }
+    outline?.expandItem(self)
   }
 }
 
