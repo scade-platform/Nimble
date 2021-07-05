@@ -139,13 +139,16 @@ class ToolbarTargetControl : NSControl {
   }
 
   override func viewWillMove(toWindow newWindow: NSWindow?) {
-    switch newWindow {
-    case .some(_):
-      self.activeVariant = (newWindow?.windowController as? Workbench)?.selectedVariant
-      BuildSystemsManager.shared.observers.add(observer: self)
-    default:
+    //Window is deallocated
+    guard newWindow != nil else {
       BuildSystemsManager.shared.observers.remove(observer: self)
+      return
     }
+    
+    //`newWindow` in full-screen mode doesn't have `windowController`
+    //so Workbench should be called through NSApp extension
+    self.activeVariant = NSApp.currentWorkbench?.selectedVariant
+    BuildSystemsManager.shared.observers.add(observer: self)
   }
 
 
