@@ -11,34 +11,52 @@ import CodeEditor
 
 extension CodeEditorTextView {
 
-}
-
-
-//MARK: - Navigation event
-
-extension NSEvent {
+  //MARK: - Navigation event
   
-  var leftArrowKeyCode: Int {
-    return 123
-  }
+  //TODO: User key bindings
   
-  var rightArrowKeyCode: Int {
-    return 124
-  }
-  
-  var downArrowKeyCode: Int {
-    return 125
-  }
-  
-  var upArrowKeyCode: Int {
-    return 126
-  }
-  
-  var isNavigation: Bool {
-    //TODO: Use user bindings not hard code arrows
-    guard type == .keyDown, keyCode >= leftArrowKeyCode && keyCode <= upArrowKeyCode else {
-      return false
+  //cmd + left
+  override func moveToBeginningOfLine(_ sender: Any?) {
+    guard let firstCharIndex = currentLineSubstring.firstCharIndex, firstCharIndex < selectedIndex else {
+      super.moveToBeginningOfLine(sender)
+      return
     }
-    return true
+    
+    let nsRange = NSRange(firstCharIndex ..< firstCharIndex, in: string)
+    setSelectedRange(nsRange)
+  }
+  
+  //cmd + backspace
+  override func deleteToBeginningOfLine(_ sender: Any?) {
+    guard let firstCharIndex = currentLineSubstring.firstCharIndex, firstCharIndex < selectedIndex else {
+      super.deleteToBeginningOfLine(sender)
+      return
+    }
+    
+    let nsRange = NSRange(firstCharIndex ..< selectedIndex, in: string)
+    insertText("", replacementRange: nsRange)
+  }
+    
+  //option + left
+  override func moveWordLeft(_ sender: Any?) {
+    super.moveWordLeft(sender)
+  }
+  
+  //option + right
+  override func moveWordRight(_ sender: Any?) {
+    super.moveWordRight(sender)
   }
 }
+
+fileprivate extension CodeEditorTextView {
+  var currentLineSubstring: Substring {
+    string[string.lineRange(at: selectedIndex)]
+  }
+}
+
+fileprivate extension Substring {
+  var firstCharIndex: String.Index? {
+    firstIndex(where: { !$0.isWhitespace })
+  }
+}
+
