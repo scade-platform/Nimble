@@ -196,10 +196,10 @@
 				E4EB0CF4255C138A0011885A /* CodeEditorTextView+Commands.swift */,
 				D79820AD25261621000F6AD1 /* CodeEditorTextView+Formatting.swift */,
 				D7A538C424804E79007C25EE /* CodeEditorTextView+Snippets.swift */,
+				0C916BE726928D8B000CEAD4 /* CodeEditorTextView+Navigation.swift */,
 				D7BD02842489585D00FAAA90 /* NSLayoutManager.swift */,
 				E4EB0CF6255C1F0C0011885A /* NSTextView.swift */,
 				D7A538C0248018C2007C25EE /* String.swift */,
-				0C916BE726928D8B000CEAD4 /* CodeEditorTextView+Navigation.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
