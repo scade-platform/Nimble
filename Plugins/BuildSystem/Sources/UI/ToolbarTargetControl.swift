@@ -11,7 +11,7 @@ import NimbleCore
 import BuildSystem
 import os.log
 
-class ToolbarTargetControl : NSControl {
+class ToolbarTargetControl : NSControl, CommandControl {
   fileprivate struct VariantsGroupMenuItem {
     let title: String
   }
@@ -28,6 +28,7 @@ class ToolbarTargetControl : NSControl {
 
   private weak var borderLayer: CALayer?
   private var trackingArea: NSTrackingArea? = nil
+  weak var workbench: Workbench?
   
 
   private var targetsMenu: NSMenu? {
@@ -46,11 +47,6 @@ class ToolbarTargetControl : NSControl {
     }
   }
   private var variantsMenu: NSMenu?
-
-  /// TODO: move to an extension and disable explicit passing of the reference to view everywhere
-  private var workbench: Workbench? {
-    self.window?.windowController as? Workbench
-  }
 
   private var _activeVariant: VariantRef?
   var activeVariant: Variant? {
@@ -139,15 +135,11 @@ class ToolbarTargetControl : NSControl {
   }
 
   override func viewWillMove(toWindow newWindow: NSWindow?) {
-    //Window is deallocated
     guard newWindow != nil else {
       BuildSystemsManager.shared.observers.remove(observer: self)
       return
     }
     
-    //`newWindow` in full-screen mode doesn't have `windowController`
-    //so Workbench should be called through NSApp extension
-    self.activeVariant = NSApp.currentWorkbench?.selectedVariant
     BuildSystemsManager.shared.observers.add(observer: self)
   }
 

@@ -22,7 +22,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
         guard let group = $0.group else { return true }
         return !group.toolbarGroup
       }.map{
-        $0.createToolbarItem()
+        $0.createToolbarItem(for: self)
       }
 
     let groupItems = CommandManager.shared.groups

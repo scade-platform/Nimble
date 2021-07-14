@@ -37,7 +37,7 @@ open class Command {
     
   // Toolbar item
   public let toolbarIcon: NSImage?
-  public let toolbarControlClass: NSControl.Type?
+  public let toolbarControlClass: CommandControl.Type?
   public let alignment: ToolbarAlignment
 
   // Grouping
@@ -80,7 +80,7 @@ open class Command {
   public init(name: String,
               menuPath: String? = nil,
               keyEquivalent: String? = nil ,
-              controlClass: NSControl.Type?,
+              controlClass: CommandControl.Type?,
               alignment: ToolbarAlignment = .left(orderPriority: 100),
               handler: (@escaping Handler) = { _ in return } ) {
 
@@ -274,4 +274,8 @@ public enum ToolbarAlignment {
       return `case` == .right
     }
   }
+}
+
+public protocol CommandControl where Self: NSControl {
+  var workbench: Workbench? { get set }
 }

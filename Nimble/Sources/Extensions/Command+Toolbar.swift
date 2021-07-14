@@ -19,18 +19,20 @@ extension Command {
     return workbench.toolbarItems.first{$0.itemIdentifier == self.toolbarItemIdentifier}
   }
 
-  func createToolbarItem() -> NSToolbarItem {
+  func createToolbarItem(for workbench: Workbench) -> NSToolbarItem {
     let item = ToolbarItem(itemIdentifier: self.toolbarItemIdentifier)
     item.label = self.name
     
-    item.view = self.view
+    item.view = self.createView(for: workbench)
     return item
   }
   
-  var view: NSView {
+  
+  func createView(for workbench: Workbench) -> NSView {
     guard self.toolbarControlClass == nil else {
       let control = self.toolbarControlClass!.loadFromNib()
       control.target = self
+      control.workbench = workbench
       return control
     }
     
