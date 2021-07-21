@@ -19,9 +19,7 @@ extension CodeEditorTextView {
       super.moveToBeginningOfLine(sender)
       return
     }
-    
-    let nsRange = NSRange(firstCharIndex ..< firstCharIndex, in: string)
-    setSelectedRange(nsRange)
+    setSelectedIndex(firstCharIndex)
   }
   
   //cmd + backspace
@@ -30,23 +28,25 @@ extension CodeEditorTextView {
       super.deleteToBeginningOfLine(sender)
       return
     }
-    
-    let nsRange = NSRange(firstCharIndex ..< selectedIndex, in: string)
-    insertText("", replacementRange: nsRange)
+    insertText("", replacementRange: firstCharIndex ..< selectedIndex)
   }
     
   //option + left
   override func moveWordLeft(_ sender: Any?) {
     let previouseWordIndex = findPreviousWordBeginingPosition(currentIndex: selectedIndex)
-    let nsRange = NSRange(previouseWordIndex ..< previouseWordIndex, in: string)
-    setSelectedRange(nsRange)
+    setSelectedIndex(previouseWordIndex)
   }
   
   //option + right
   override func moveWordRight(_ sender: Any?) {
     let nextWordIndex = findNextWordEndingPosition(currentIndex: selectedIndex)
-    let nsRange = NSRange(nextWordIndex ..< nextWordIndex, in: string)
-    setSelectedRange(nsRange)
+    setSelectedIndex(nextWordIndex)
+  }
+  
+  //option + backspace
+  override func deleteWordBackward(_ sender: Any?) {
+    let previouseWordIndex = findPreviousWordBeginingPosition(currentIndex: selectedIndex)
+    insertText("", replacementRange: previouseWordIndex ..< selectedIndex)
   }
 }
 
@@ -54,6 +54,20 @@ fileprivate extension CodeEditorTextView {
   
   var currentLineSubstring: Substring {
     string[string.lineRange(at: selectedIndex)]
+  }
+  
+  func setSelectedIndex(_ index: String.Index) {
+    setSelectedRange(index ..< index)
+  }
+  
+  func setSelectedRange(_ charRange: Range<String.Index>) {
+    let nsRange = NSRange(charRange, in: string)
+    setSelectedRange(nsRange)
+  }
+  
+  func insertText(_ text: String, replacementRange: Range<String.Index>) {
+    let nsRange = NSRange(replacementRange, in: string)
+    insertText(text, replacementRange: nsRange)
   }
   
   func findPreviousWordBeginingPosition(currentIndex: String.Index) -> String.Index {
