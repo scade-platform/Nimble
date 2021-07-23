@@ -21,7 +21,7 @@
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
-			dstSubfolderSpec = 10;
+			dstSubfolderSpec = 11;
 			files = (
 				D70AA4D523FC5479007367E7 /* LSPClient in Embed Frameworks */,
 			);

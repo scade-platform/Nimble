@@ -29,7 +29,7 @@
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
-			dstSubfolderSpec = 10;
+			dstSubfolderSpec = 11;
 			files = (
 				D79820BC25360F09000F6AD1 /* SwiftExtensions in Embed Frameworks */,
 				D7831D0D2656D08400AEE944 /* lib_InternalSwiftSyntaxParser.dylib in Embed Frameworks */,
