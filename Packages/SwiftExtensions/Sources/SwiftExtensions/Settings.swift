@@ -162,7 +162,7 @@ fileprivate extension Settings {
         }
         
         guard currentVersion.compare(targetVersion, options: .numeric) == .orderedSame else {
-          return [$swiftToolchain.error("Swift Toolchain version is \(currentVersion). Swift Toolchain needs to be \(targetVersion) or higher.")]
+          return [$swiftToolchain.error("Swift Toolchain version is \(currentVersion). Swift Toolchain needs to be \(targetVersion).")]
         }
         
         return .valid
@@ -177,7 +177,7 @@ fileprivate extension Settings {
         }
         
         guard currentVersion.compare(targetVersion, options: .numeric) == .orderedSame else {
-          return [$swiftToolchain.error("Swift Toolchain version is \(currentVersion). Swift Toolchain needs to be \(targetVersion) or higher.")]
+          return [$swiftToolchain.error("Swift Toolchain version is \(currentVersion). Swift Toolchain needs to be \(targetVersion).")]
         }
         
         return .valid
