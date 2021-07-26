@@ -154,14 +154,14 @@ fileprivate extension Settings {
       
       if swiftToolchain.isEmpty {
         //Validate XCode version
-        guard let pathToXcodeToolchain = Path("/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain"), pathToXcodeToolchain.exists else {
+        guard let pathToXcodeToolchain = Xcode.toolchainDirectory, pathToXcodeToolchain.exists else {
           return [$swiftToolchain.error("Xcode not found.")]
         }
         guard let currentVersion = getVersion(pathToXcodeToolchain) else {
           return [$swiftToolchain.warning("Could not validate Xcode toolchain version.")]
         }
         
-        guard  currentVersion.compare(targetVersion, options: .numeric) == .orderedDescending || currentVersion.compare(targetVersion, options: .numeric) == .orderedSame else {
+        guard currentVersion.compare(targetVersion, options: .numeric) == .orderedSame else {
           return [$swiftToolchain.error("Swift Toolchain version is \(currentVersion). Swift Toolchain needs to be \(targetVersion) or higher.")]
         }
         
@@ -176,7 +176,7 @@ fileprivate extension Settings {
           return [$swiftToolchain.warning("Could not validate toolchain version.")]
         }
         
-        guard  currentVersion.compare(targetVersion, options: .numeric) == .orderedDescending || currentVersion.compare(targetVersion, options: .numeric) == .orderedSame else {
+        guard currentVersion.compare(targetVersion, options: .numeric) == .orderedSame else {
           return [$swiftToolchain.error("Swift Toolchain version is \(currentVersion). Swift Toolchain needs to be \(targetVersion) or higher.")]
         }
         
@@ -194,40 +194,48 @@ fileprivate extension Settings {
         return nil
       }
       
-      guard let versionWordIndex = versionOutput.range(of: "version") else {
-        return nil
-      }
+      let version = parseSwiftVersion(from: versionOutput)
       
-      let version = versionOutput[versionWordIndex.upperBound...versionOutput[versionOutput.index(after: versionWordIndex.upperBound)...].firstIndex(of: " ")!]
-      
-      
-      return String(version.trimmingCharacters(in: CharacterSet(charactersIn: " ")))
+      return version
     }
     
     private func runVersionCommand(_ pathToSwift: Path) -> String? {
-      let proc = Process()
-      proc.executableURL = pathToSwift.url
-      proc.arguments = ["--version"]
-      let out = Pipe()
-      proc.standardOutput = out
-      do {
-        try proc.run()
-      } catch {
+      guard let version = try? Process.exec(pathToSwift.string, arguments:  ["--version"]) else {
         return nil
       }
       
-      proc.waitUntilExit()
-
-      if proc.terminationReason != .exit || proc.terminationStatus != 0 {
+      return version
+    }
+    
+    private func parseSwiftVersion(from output: String) -> String? {
+      guard isValidSwiftVersionOutput(output) else {
+        return nil
+      }
+      return parseVersion(from: output)
+    }
+    
+    private func isValidSwiftVersionOutput(_ output: String) -> Bool {
+      guard let regex = "Apple Swift version [0-9]+.[0-9]+.[0-9]+.*".asRegex else {
+        return false
+      }
+      return regex.hasMatch(in: output)
+    }
+    
+    private func parseVersion(from output: String) -> String? {
+      guard let regex = "[0-9]+.[0-9]+.[0-9]+".asRegex else {
         return nil
       }
       
-      let data = out.fileHandleForReading.readDataToEndOfFile()
-      guard let str = String(data: data, encoding: .utf8) else {
+      guard let match = regex.firstMatch(in: output) else {
         return nil
       }
       
-      return str
+      guard let stringRange = Range(match.range, in: output) else {
+        return nil
+      }
+      
+      let version = String(output[stringRange])
+      return version
     }
     
   }

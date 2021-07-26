@@ -169,15 +169,15 @@ fileprivate class SingleDocumentVariant: Variant {
   }
 
   lazy var sdkPath: String? = {
-    guard let sdkFolder = Folder(path: "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/") else {
+    guard let xcodeDeveloperDir = Xcode.developerDirectory else  {
       return nil
     }
-    for folder in (try? sdkFolder.subfolders()) ?? [] {
-      if folder.name.starts(with: "MacOSX10"), folder.name.hasSuffix(".sdk") {
-        return folder.path.string
-      }
+    let sdkDirPath = xcodeDeveloperDir/"Platforms/MacOSX.platform/Developer/SDKs/"
+    let macSdkDirPath = sdkDirPath/"MacOSX.sdk"
+    guard macSdkDirPath.exists, macSdkDirPath.isDirectory else {
+      return nil
     }
-    return nil
+    return macSdkDirPath.string
   }()
   
   init(target: SwiftTarget) {
