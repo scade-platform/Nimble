@@ -8,8 +8,6 @@
 
 import Foundation
 import CodeEditor
-import SwiftFormat
-import SwiftFormatConfiguration
 
 /// Swift Language Support not presented by the SourceKit-LSP
 
@@ -36,10 +34,6 @@ public final class SwiftLanguageService: LanguageService {
 
   public var supportedFeatures: [LanguageServiceFeature] = [.format]
 
-  private lazy var formatter: SwiftFormatter = {
-    /// TODO: configuration loading
-    return SwiftFormatter(configuration: Configuration())
-  }()
 
   private init() {}
 
@@ -74,7 +68,6 @@ public final class SwiftLanguageService: LanguageService {
       doc.editor?.workbench?.publish(diagnosticMessage: "Formater: please fix all errors.", severity: .error, source: .path(doc.path!))
       return
     }
-    
     
     var stream = FormatterOutputStream(doc: doc)
     stream.write(str)
