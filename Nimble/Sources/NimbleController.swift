@@ -130,7 +130,6 @@ class NimbleController: NSDocumentController {
     self.openRecentDocumentMenuDelegate = OpenRecentDocumentMenuDelegate(self)
     self.openRecentProjectMenuDelegate = OpenRecentProjectMenuDelegate(self)
     
-    
     self.openRecentDocumentMenu?.delegate = openRecentDocumentMenuDelegate
     self.openRecentProjectMenu?.delegate = openRecentProjectMenuDelegate
   }
@@ -250,11 +249,6 @@ fileprivate class OpenRecentDocumentMenuDelegate: OpenRecentMenuDelegate {
     return documentMenuItems + separator + folderMenuItems + separator
   }
   
-  @objc override func openRecent(_ sender: Any?) {
-    guard let url = (sender as? NSMenuItem)?.representedObject as? URL else { return }
-    nimbleController?.open(url: url)
-  }
-  
   private func createDocumentMenuItems(from urls: [URL]) -> [NSMenuItem] {
     let documentURLs = urls.filter{!$0.hasDirectoryPath}
     return documentURLs.map{ self.createMenuItem(for: $0) }
@@ -263,6 +257,11 @@ fileprivate class OpenRecentDocumentMenuDelegate: OpenRecentMenuDelegate {
   private func createFolderMenuItems(from urls: [URL]) -> [NSMenuItem] {
     let folderURLs = urls.filter{$0.hasDirectoryPath}
     return folderURLs.map{ self.createMenuItem(for: $0) }
+  }
+  
+  @objc override func openRecent(_ sender: Any?) {
+    guard let url = (sender as? NSMenuItem)?.representedObject as? URL else { return }
+    nimbleController?.open(url: url)
   }
 }
 
