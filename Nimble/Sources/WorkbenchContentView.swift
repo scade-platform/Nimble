@@ -153,7 +153,7 @@ class WorkbenchContentViewController: NSViewController, WorkbenchViewController 
     guard let settingsMenuItem = self.settingsMenuItem else { return }
     
     settingsMenuItem.target = self
-    settingsMenuItem.identifier = NSUserInterfaceItemIdentifier(rawValue: AppDelegate.settingsMenuId)
+    settingsMenuItem.identifier = NSUserInterfaceItemIdentifier(rawValue: "settingsMenu")
     settingsMenuItem.action = #selector(openSettings(_:))
   }
   

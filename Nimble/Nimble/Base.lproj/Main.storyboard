@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -411,9 +412,6 @@
                                                         </connections>
                                                     </menuItem>
                                                 </items>
-                                                <connections>
-                                                    <outlet property="delegate" destination="Voe-Tx-rLC" id="01I-XI-NaO"/>
-                                                </connections>
                                             </menu>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="0nh-gH-rgH"/>
@@ -476,24 +474,18 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Nimble" customModuleProvider="target">
-                    <connections>
-                        <outlet property="fileMenu" destination="bib-Uj-vzu" id="Hh0-pr-YYQ"/>
-                        <outlet property="newDocumentMenu" destination="QXJ-Yr-aLs" id="4kE-0F-fp9"/>
-                        <outlet property="openRecentDocumentMenu" destination="oas-Oc-fiZ" id="WUc-Sz-dmT"/>
-                    </connections>
-                </customObject>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Nimble" customModuleProvider="target"/>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-921" y="-605"/>
         </scene>
-        <!--View Controller-->
+        <!--Workbench Content View Controller-->
         <scene sceneID="cIk-BW-C3M">
             <objects>
                 <customObject id="tZw-M3-YI2" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
-                <viewController id="vqu-Td-bqq" sceneMemberID="viewController">
-                    <containerView key="view" id="ZvK-9S-uMV" customClass="WorkbenchContentViewController" customModule="Nimble" customModuleProvider="target">
+                <viewController id="vqu-Td-bqq" customClass="WorkbenchContentViewController" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
+                    <containerView key="view" id="ZvK-9S-uMV" customClass="WorkbenchContentView" customModule="Nimble" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <connections>
