@@ -24,7 +24,9 @@ class WorkbenchContentView: NSView, WorkbenchView {
 
 class WorkbenchContentViewController: NSViewController, WorkbenchViewController {
   
-  private let themeMenuId = "themeMenu"
+  private var themeMenuId: NSUserInterfaceItemIdentifier {
+    NSUserInterfaceItemIdentifier(rawValue: "themeMenu")
+  }
   
   var documentController: NimbleController? {
     NSDocumentController.shared as? NimbleController
@@ -35,6 +37,9 @@ class WorkbenchContentViewController: NSViewController, WorkbenchViewController 
   
   @MainMenuItem(.appName/"Preferences/Theme")
   private var themeMenuItem: NSMenuItem?
+  
+  @MainMenuItem(.appName/"Preferences/Settings")
+  private var settingsMenuItem: NSMenuItem?
   
   private var newDocumentMenu: NSMenu? {
     newDocumentMenuItem?.submenu
@@ -49,14 +54,18 @@ class WorkbenchContentViewController: NSViewController, WorkbenchViewController 
     [NSMenuItem.separator()]
   }
   
+  var settingsController: SettingsController?
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     setupApplicationMenu()
+    settingsController = SettingsController()
   }
   
   private func setupApplicationMenu(){
     setupNewDocumentMenu()
     setupThemesMenu()
+    setupSettingsMenu()
   }
   
   private func setupNewDocumentMenu() {
@@ -113,7 +122,7 @@ class WorkbenchContentViewController: NSViewController, WorkbenchViewController 
   private func createDefaultThemeMenuItem() -> [NSMenuItem] {
     let defaultThemeItem = NSMenuItem(title: "Default", action: #selector(switchTheme(_:)), keyEquivalent: "")
     defaultThemeItem.target = self
-    defaultThemeItem.identifier = NSUserInterfaceItemIdentifier(rawValue: themeMenuId)
+    defaultThemeItem.identifier = themeMenuId
     return [defaultThemeItem]
   }
   
@@ -132,7 +141,7 @@ class WorkbenchContentViewController: NSViewController, WorkbenchViewController 
       let themeItem = NSMenuItem(title: theme.name,
                                  action: #selector(self.switchTheme(_:)), keyEquivalent: "")
       themeItem.target = self
-      themeItem.identifier = NSUserInterfaceItemIdentifier(rawValue: themeMenuId)
+      themeItem.identifier = themeMenuId
       themeItem.representedObject = theme
       return themeItem
     }
@@ -140,6 +149,13 @@ class WorkbenchContentViewController: NSViewController, WorkbenchViewController 
     return themeMenuItems
   }
   
+  private func setupSettingsMenu() {
+    guard let settingsMenuItem = self.settingsMenuItem else { return }
+    
+    settingsMenuItem.target = self
+    settingsMenuItem.identifier = NSUserInterfaceItemIdentifier(rawValue: AppDelegate.settingsMenuId)
+    settingsMenuItem.action = #selector(openSettings(_:))
+  }
   
   //MARK: - Menu item actions
   
@@ -158,12 +174,17 @@ class WorkbenchContentViewController: NSViewController, WorkbenchViewController 
   @objc private func switchTheme(_ item: NSMenuItem?) {
     ThemeManager.shared.selectedTheme = item?.representedObject as? Theme
   }
+
+  @objc private func openSettings(_ sender: Any?) {
+    settingsController?.openSettingsEditor()
+  }
+
 }
 
 extension WorkbenchContentViewController: NSUserInterfaceValidations {
   func validateUserInterfaceItem(_ item: NSValidatedUserInterfaceItem) -> Bool {
     if let menuItem = item as? NSMenuItem {
-      switch menuItem.identifier?.rawValue {
+      switch menuItem.identifier {
       case themeMenuId:
         setThemeMenuItemState(to: menuItem)
       default:

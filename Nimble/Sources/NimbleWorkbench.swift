@@ -81,6 +81,10 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   var debugView: DebugView? {
     workbenchCentralView?.children[1] as? DebugView
   }
+  
+  var settingsController: SettingsController? {
+    (self.contentViewController as? WorkbenchContentViewController)?.settingsController
+  }
 
   public override func windowDidLoad() {
     super.windowDidLoad()
@@ -153,8 +157,12 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
               let path = Path(url: url),
               let docType = docManager.findDocumentType(by: state.type),
               let doc = docManager.open(path: path, docType: docType) else { continue }
-
-        self.open(doc, show: true, openNewEditor: true)
+        
+        if let settingsPath = Settings.defaultPath, settingsPath == path {
+          settingsController?.openSettingsEditor(in: self)
+        } else {
+          self.open(doc, show: true, openNewEditor: true)
+        }
       }
     }
     
