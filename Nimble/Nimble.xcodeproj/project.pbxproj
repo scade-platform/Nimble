@@ -12,6 +12,10 @@
 		0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */; };
 		0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */; };
 		0C838D0526D7B90C00A9A236 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C838D0426D7B90C00A9A236 /* AppDelegate.swift */; };
+		0C838D1D26D7BF5700A9A236 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C838D1A26D7BF5700A9A236 /* SettingsController.swift */; };
+		0C838D1E26D7BF5700A9A236 /* IconsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C838D1B26D7BF5700A9A236 /* IconsController.swift */; };
+		0C838D1F26D7BF5700A9A236 /* CommandsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C838D1C26D7BF5700A9A236 /* CommandsController.swift */; };
+		0C838D2126D7BF8000A9A236 /* WorkbenchContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C838D2026D7BF8000A9A236 /* WorkbenchContentView.swift */; };
 		0CA297B423A903340025A4EF /* BinaryFileDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA297B323A903340025A4EF /* BinaryFileDocument.swift */; };
 		0CAAE9A324370523003CAE92 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAAE9A224370523003CAE92 /* Bundle.swift */; };
 		0CAAE9AD24370BEE003CAE92 /* WorkbenchArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAAE9AC24370BEE003CAE92 /* WorkbenchArea.swift */; };
@@ -57,6 +61,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0C838D1426D7BF3C00A9A236 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9F45CD901D396D4200149654;
+			remoteInfo = KPCTabsControlDemo;
+		};
+		0C838D1626D7BF3C00A9A236 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9FC4B5582195ACE7000F2119;
+			remoteInfo = KPCTabsControlTests;
+		};
 		D7D4615C238ECCE20090FC34 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
@@ -88,6 +106,10 @@
 		0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedPane.swift; sourceTree = "<group>"; };
 		0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnsupportedPane.xib; sourceTree = "<group>"; };
 		0C838D0426D7B90C00A9A236 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		0C838D1A26D7BF5700A9A236 /* SettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
+		0C838D1B26D7BF5700A9A236 /* IconsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconsController.swift; sourceTree = "<group>"; };
+		0C838D1C26D7BF5700A9A236 /* CommandsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandsController.swift; sourceTree = "<group>"; };
+		0C838D2026D7BF8000A9A236 /* WorkbenchContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkbenchContentView.swift; sourceTree = "<group>"; };
 		0CA297B323A903340025A4EF /* BinaryFileDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryFileDocument.swift; sourceTree = "<group>"; };
 		0CAAE9A224370523003CAE92 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		0CAAE9AC24370BEE003CAE92 /* WorkbenchArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchArea.swift; sourceTree = "<group>"; };
@@ -151,6 +173,16 @@
 				0CB6F11324FE46B800960EDA /* WizardView.xib */,
 			);
 			path = Wizard;
+			sourceTree = "<group>";
+		};
+		0C838D1926D7BF5700A9A236 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0C838D1A26D7BF5700A9A236 /* SettingsController.swift */,
+				0C838D1B26D7BF5700A9A236 /* IconsController.swift */,
+				0C838D1C26D7BF5700A9A236 /* CommandsController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		D721CFA42385EC1800FD1B00 /* Extensions */ = {
@@ -252,7 +284,9 @@
 				D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */,
 				0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */,
 				0CAAE9AC24370BEE003CAE92 /* WorkbenchArea.swift */,
+				0C838D2026D7BF8000A9A236 /* WorkbenchContentView.swift */,
 				D7F156962442079A00AFBE67 /* WorkbenchSettings.swift */,
+				0C838D1926D7BF5700A9A236 /* Controllers */,
 				D72F959D222DF2F4009F2EC3 /* Controls */,
 				D721CFA42385EC1800FD1B00 /* Extensions */,
 			);
@@ -263,6 +297,8 @@
 			isa = PBXGroup;
 			children = (
 				D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */,
+				0C838D1526D7BF3C00A9A236 /* KPCTabsControlDemo.app */,
+				0C838D1726D7BF3C00A9A236 /* KPCTabsControlTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -344,6 +380,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		0C838D1526D7BF3C00A9A236 /* KPCTabsControlDemo.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = KPCTabsControlDemo.app;
+			remoteRef = 0C838D1426D7BF3C00A9A236 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0C838D1726D7BF3C00A9A236 /* KPCTabsControlTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = KPCTabsControlTests.xctest;
+			remoteRef = 0C838D1626D7BF3C00A9A236 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -415,10 +465,13 @@
 				0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */,
 				D724C5EF237C418B00E80958 /* ConsoleView.swift in Sources */,
 				0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */,
+				0C838D1F26D7BF5700A9A236 /* CommandsController.swift in Sources */,
+				0C838D1E26D7BF5700A9A236 /* IconsController.swift in Sources */,
 				D7F156AD244C93EE00AFBE67 /* Command+Menu.swift in Sources */,
 				D721CFA72385EC3200FD1B00 /* NSOpenPanel.swift in Sources */,
 				0C838D0526D7B90C00A9A236 /* AppDelegate.swift in Sources */,
 				0C2A26D42429E2F800AA8B51 /* InspectorView.swift in Sources */,
+				0C838D2126D7BF8000A9A236 /* WorkbenchContentView.swift in Sources */,
 				D7D461652390083C0090FC34 /* Document.swift in Sources */,
 				0CAAE9AD24370BEE003CAE92 /* WorkbenchArea.swift in Sources */,
 				D77AAF102501682700C63C19 /* DiagnosticView.swift in Sources */,
@@ -427,6 +480,7 @@
 				0CB6F11424FE46B800960EDA /* WizardView.swift in Sources */,
 				D77AAF14250816CF00C63C19 /* DiagnosticStatusBar.swift in Sources */,
 				0CD0FB4623A776BD003B01DE /* EditorView.swift in Sources */,
+				0C838D1D26D7BF5700A9A236 /* SettingsController.swift in Sources */,
 				D70A5421254B872D00730F52 /* KeyboardShortcut.swift in Sources */,
 				D724C5F0237C418B00E80958 /* DropView.swift in Sources */,
 			);
