@@ -17,7 +17,6 @@ let package = Package(
       .package(path: "../../LSPClient"),
       
       .package(name: "SourceKitLSP", url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("release/5.3")),
-      .package(url: "https://github.com/FLORG1/swift-format.git", .branch("swift-5.3-branch")),
     ],
     targets: [
       .target(
@@ -28,7 +27,6 @@ let package = Package(
           "LSPClient",
           "SourceKitLSP",
           "CodeEditor",
-          .product(name: "SwiftFormat", package: "swift-format")
         ],
         resources: [
           .process("Resources/swift-format")
