@@ -11,13 +11,17 @@
 		0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */; };
 		0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */; };
 		0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */; };
+		0C838D0526D7B90C00A9A236 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C838D0426D7B90C00A9A236 /* AppDelegate.swift */; };
+		0C838D1D26D7BF5700A9A236 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C838D1A26D7BF5700A9A236 /* SettingsController.swift */; };
+		0C838D1E26D7BF5700A9A236 /* IconsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C838D1B26D7BF5700A9A236 /* IconsController.swift */; };
+		0C838D1F26D7BF5700A9A236 /* CommandsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C838D1C26D7BF5700A9A236 /* CommandsController.swift */; };
+		0C838D2126D7BF8000A9A236 /* WorkbenchContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C838D2026D7BF8000A9A236 /* WorkbenchContentView.swift */; };
 		0CA297B423A903340025A4EF /* BinaryFileDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA297B323A903340025A4EF /* BinaryFileDocument.swift */; };
 		0CAAE9A324370523003CAE92 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAAE9A224370523003CAE92 /* Bundle.swift */; };
 		0CAAE9AD24370BEE003CAE92 /* WorkbenchArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAAE9AC24370BEE003CAE92 /* WorkbenchArea.swift */; };
 		0CB6F11424FE46B800960EDA /* WizardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6F11224FE46B800960EDA /* WizardView.swift */; };
 		0CB6F11524FE46B800960EDA /* WizardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CB6F11324FE46B800960EDA /* WizardView.xib */; };
 		0CCD455325D6BEE0000923E3 /* KPCTabsControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */; };
-		0CCD45CC25D6CCAC000923E3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCD45CA25D6CCAC000923E3 /* AppDelegate.swift */; };
 		0CCD45CE25D6CD4B000923E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CCD45CD25D6CD4B000923E3 /* Assets.xcassets */; };
 		0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3523A39503003B01DE /* StatusBarView.swift */; };
 		0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */; };
@@ -43,10 +47,7 @@
 		D77AAF122508143A00C63C19 /* DiagnosticStatusBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D77AAF112508143A00C63C19 /* DiagnosticStatusBar.xib */; };
 		D77AAF14250816CF00C63C19 /* DiagnosticStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77AAF13250816CF00C63C19 /* DiagnosticStatusBar.swift */; };
 		D788ED452239C2750072C21E /* NimbleWorkbench.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */; };
-		D78FFF1024242B6500EB70E2 /* SettingsEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = D78FFF0F24242B6500EB70E2 /* SettingsEditor.xib */; };
 		D78FFF1924255CE100EB70E2 /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = D78FFF1824255CE100EB70E2 /* Icons */; };
-		D78FFF1B2426A1E300EB70E2 /* SettingsDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78FFF1A2426A1E300EB70E2 /* SettingsDocument.swift */; };
-		D78FFF1D2426A3ED00EB70E2 /* SettingsEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D78FFF1C2426A3ED00EB70E2 /* SettingsEditor.swift */; };
 		D79BE0BD2385AD4000D96619 /* NimbleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6607722F41D1500CBB386 /* NimbleController.swift */; };
 		D7C9528823FC3AF400AE7E5D /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7C9528723FC3AF400AE7E5D /* NimbleCore */; };
 		D7C9528923FC3AF400AE7E5D /* NimbleCore in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D7C9528723FC3AF400AE7E5D /* NimbleCore */; };
@@ -60,6 +61,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		0C838D1426D7BF3C00A9A236 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9F45CD901D396D4200149654;
+			remoteInfo = KPCTabsControlDemo;
+		};
+		0C838D1626D7BF3C00A9A236 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9FC4B5582195ACE7000F2119;
+			remoteInfo = KPCTabsControlTests;
+		};
 		D7D4615C238ECCE20090FC34 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
@@ -90,13 +105,17 @@
 		0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDocument.swift; sourceTree = "<group>"; };
 		0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedPane.swift; sourceTree = "<group>"; };
 		0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnsupportedPane.xib; sourceTree = "<group>"; };
+		0C838D0426D7B90C00A9A236 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		0C838D1A26D7BF5700A9A236 /* SettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
+		0C838D1B26D7BF5700A9A236 /* IconsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconsController.swift; sourceTree = "<group>"; };
+		0C838D1C26D7BF5700A9A236 /* CommandsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandsController.swift; sourceTree = "<group>"; };
+		0C838D2026D7BF8000A9A236 /* WorkbenchContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkbenchContentView.swift; sourceTree = "<group>"; };
 		0CA297B323A903340025A4EF /* BinaryFileDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BinaryFileDocument.swift; sourceTree = "<group>"; };
 		0CAAE9A224370523003CAE92 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		0CAAE9AC24370BEE003CAE92 /* WorkbenchArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchArea.swift; sourceTree = "<group>"; };
 		0CB6607722F41D1500CBB386 /* NimbleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleController.swift; sourceTree = "<group>"; };
 		0CB6F11224FE46B800960EDA /* WizardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WizardView.swift; sourceTree = "<group>"; };
 		0CB6F11324FE46B800960EDA /* WizardView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WizardView.xib; sourceTree = "<group>"; };
-		0CCD45CA25D6CCAC000923E3 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0CCD45CD25D6CD4B000923E3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0CD0FB3523A39503003B01DE /* StatusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
 		0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootSplitView.swift; sourceTree = "<group>"; };
@@ -120,10 +139,7 @@
 		D77AAF0F2501682700C63C19 /* DiagnosticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticView.swift; sourceTree = "<group>"; };
 		D77AAF112508143A00C63C19 /* DiagnosticStatusBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiagnosticStatusBar.xib; sourceTree = "<group>"; };
 		D77AAF13250816CF00C63C19 /* DiagnosticStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticStatusBar.swift; sourceTree = "<group>"; };
-		D78FFF0F24242B6500EB70E2 /* SettingsEditor.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingsEditor.xib; sourceTree = "<group>"; };
 		D78FFF1824255CE100EB70E2 /* Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Icons; sourceTree = "<group>"; };
-		D78FFF1A2426A1E300EB70E2 /* SettingsDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDocument.swift; sourceTree = "<group>"; };
-		D78FFF1C2426A3ED00EB70E2 /* SettingsEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsEditor.swift; sourceTree = "<group>"; };
 		D7CBF7CB222878F10088715C /* Nimble.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nimble.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7CBF7D5222878F40088715C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D7CBF7D7222878F40088715C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -159,6 +175,16 @@
 			path = Wizard;
 			sourceTree = "<group>";
 		};
+		0C838D1926D7BF5700A9A236 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0C838D1A26D7BF5700A9A236 /* SettingsController.swift */,
+				0C838D1B26D7BF5700A9A236 /* IconsController.swift */,
+				0C838D1C26D7BF5700A9A236 /* CommandsController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		D721CFA42385EC1800FD1B00 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -188,7 +214,6 @@
 				D77AAF0825011AC300C63C19 /* NimbleSidebarArea.swift */,
 				D71D04FB2466163B00200127 /* NimbleStatusBar.swift */,
 				0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */,
-				D78FFF1C2426A3ED00EB70E2 /* SettingsEditor.swift */,
 				0CD0FB3523A39503003B01DE /* StatusBarView.swift */,
 				D724C5EB237C418B00E80958 /* TabbedEditor.swift */,
 				0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */,
@@ -197,7 +222,6 @@
 				D77AAF112508143A00C63C19 /* DiagnosticStatusBar.xib */,
 				D77AAF0D2501674800C63C19 /* DiagnosticView.xib */,
 				D71D04F9246615F400200127 /* NimbleStatusBar.xib */,
-				D78FFF0F24242B6500EB70E2 /* SettingsEditor.xib */,
 				D724C5E7237C418B00E80958 /* TabbedEditor.xib */,
 				0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */,
 				D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */,
@@ -243,7 +267,6 @@
 			isa = PBXGroup;
 			children = (
 				0CCD45CD25D6CD4B000923E3 /* Assets.xcassets */,
-				0CCD45CA25D6CCAC000923E3 /* AppDelegate.swift */,
 				D7DBD8B7257A9610008F44AC /* Nimble.entitlements */,
 				D78FFF1824255CE100EB70E2 /* Icons */,
 				D7CBF7D7222878F40088715C /* Info.plist */,
@@ -255,13 +278,15 @@
 		D7CBF8AE2229268C0088715C /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				0C838D0426D7B90C00A9A236 /* AppDelegate.swift */,
 				0CA297B323A903340025A4EF /* BinaryFileDocument.swift */,
 				0CB6607722F41D1500CBB386 /* NimbleController.swift */,
 				D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */,
 				0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */,
-				D78FFF1A2426A1E300EB70E2 /* SettingsDocument.swift */,
 				0CAAE9AC24370BEE003CAE92 /* WorkbenchArea.swift */,
+				0C838D2026D7BF8000A9A236 /* WorkbenchContentView.swift */,
 				D7F156962442079A00AFBE67 /* WorkbenchSettings.swift */,
+				0C838D1926D7BF5700A9A236 /* Controllers */,
 				D72F959D222DF2F4009F2EC3 /* Controls */,
 				D721CFA42385EC1800FD1B00 /* Extensions */,
 			);
@@ -272,6 +297,8 @@
 			isa = PBXGroup;
 			children = (
 				D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */,
+				0C838D1526D7BF3C00A9A236 /* KPCTabsControlDemo.app */,
+				0C838D1726D7BF3C00A9A236 /* KPCTabsControlTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -353,6 +380,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		0C838D1526D7BF3C00A9A236 /* KPCTabsControlDemo.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = KPCTabsControlDemo.app;
+			remoteRef = 0C838D1426D7BF3C00A9A236 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		0C838D1726D7BF3C00A9A236 /* KPCTabsControlTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = KPCTabsControlTests.xctest;
+			remoteRef = 0C838D1626D7BF3C00A9A236 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -375,7 +416,6 @@
 				D724C5F3237C418B00E80958 /* ConsoleView.xib in Resources */,
 				0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */,
 				D71D04FA246615F400200127 /* NimbleStatusBar.xib in Resources */,
-				D78FFF1024242B6500EB70E2 /* SettingsEditor.xib in Resources */,
 				D724C5EE237C418B00E80958 /* TabbedEditor.xib in Resources */,
 				0CCD45CE25D6CD4B000923E3 /* Assets.xcassets in Resources */,
 				D77AAF0E2501674800C63C19 /* DiagnosticView.xib in Resources */,
@@ -409,13 +449,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CCD45CC25D6CCAC000923E3 /* AppDelegate.swift in Sources */,
 				D77AAF0925011AC300C63C19 /* NimbleSidebarArea.swift in Sources */,
 				0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */,
 				0CAAE9A324370523003CAE92 /* Bundle.swift in Sources */,
 				D71D04FC2466163B00200127 /* NimbleStatusBar.swift in Sources */,
 				D72F959F222DF7AF009F2EC3 /* WorkbenchSidebar.swift in Sources */,
-				D78FFF1D2426A3ED00EB70E2 /* SettingsEditor.swift in Sources */,
 				D79BE0BD2385AD4000D96619 /* NimbleController.swift in Sources */,
 				D724C5F2237C418B00E80958 /* TabbedEditor.swift in Sources */,
 				0CA297B423A903340025A4EF /* BinaryFileDocument.swift in Sources */,
@@ -427,18 +465,22 @@
 				0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */,
 				D724C5EF237C418B00E80958 /* ConsoleView.swift in Sources */,
 				0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */,
+				0C838D1F26D7BF5700A9A236 /* CommandsController.swift in Sources */,
+				0C838D1E26D7BF5700A9A236 /* IconsController.swift in Sources */,
 				D7F156AD244C93EE00AFBE67 /* Command+Menu.swift in Sources */,
 				D721CFA72385EC3200FD1B00 /* NSOpenPanel.swift in Sources */,
+				0C838D0526D7B90C00A9A236 /* AppDelegate.swift in Sources */,
 				0C2A26D42429E2F800AA8B51 /* InspectorView.swift in Sources */,
+				0C838D2126D7BF8000A9A236 /* WorkbenchContentView.swift in Sources */,
 				D7D461652390083C0090FC34 /* Document.swift in Sources */,
 				0CAAE9AD24370BEE003CAE92 /* WorkbenchArea.swift in Sources */,
 				D77AAF102501682700C63C19 /* DiagnosticView.swift in Sources */,
-				D78FFF1B2426A1E300EB70E2 /* SettingsDocument.swift in Sources */,
 				D724C5F1237C418B00E80958 /* NavigatorView.swift in Sources */,
 				D724C5F4237C418B00E80958 /* DebugView.swift in Sources */,
 				0CB6F11424FE46B800960EDA /* WizardView.swift in Sources */,
 				D77AAF14250816CF00C63C19 /* DiagnosticStatusBar.swift in Sources */,
 				0CD0FB4623A776BD003B01DE /* EditorView.swift in Sources */,
+				0C838D1D26D7BF5700A9A236 /* SettingsController.swift in Sources */,
 				D70A5421254B872D00730F52 /* KeyboardShortcut.swift in Sources */,
 				D724C5F0237C418B00E80958 /* DropView.swift in Sources */,
 			);

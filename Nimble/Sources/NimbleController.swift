@@ -14,6 +14,23 @@ import NimbleCore
 
 class NimbleController: NSDocumentController {
   
+  @MainMenuItem("File/Open Recent")
+  private var openRecentDocumentMenuItem: NSMenuItem?
+  
+  @MainMenuItem("Project/Open Recent")
+  private var openRecentProjectMenuItem: NSMenuItem?
+  
+  private var openRecentDocumentMenu: NSMenu? {
+    openRecentDocumentMenuItem?.submenu
+  }
+  
+  private var openRecentProjectMenu: NSMenu? {
+    openRecentProjectMenuItem?.submenu
+  }
+  
+  private var openRecentDocumentMenuDelegate: OpenRecentMenuDelegate?
+  private var openRecentProjectMenuDelegate: OpenRecentMenuDelegate?
+  
   static func openDocumentHandler(_ doc: NSDocument?, documentWasAlreadyOpen: Bool, error: Error?) {
     ///TODO: process errors
   }
@@ -33,7 +50,6 @@ class NimbleController: NSDocumentController {
   func open(url: URL, in workbench: Workbench? = nil) {
     if url.typeIdentifierConforms(to: ProjectDocument.docType) {
       openProject(withContentsOf: url, in: workbench)
-
     } else if let path = Path(url: url) {
       open(path: path, in: workbench)
     }
@@ -44,6 +60,7 @@ class NimbleController: NSDocumentController {
     if path.isDirectory {
       guard let folder = Folder(path: path) else { return }
       workbench?.project?.add(folder)
+      noteNewRecentDocumentURL(folder.url)
     } else if path.isFile {
       openDocument(withContentsOf: path.url, in: workbench, display: true)
     }
@@ -108,43 +125,15 @@ class NimbleController: NSDocumentController {
       super.openDocument(withContentsOf: url, display: true, completionHandler: completionHandler)
     }
   }
-    
-  func updateOpenRecentMenu(_ menu: NSMenu) {
-    var urls: [URL] = recentDocumentURLs
-    var action: Selector? = #selector(openRecentDocument(_:))
-    
-    if let menuId = menu.identifier?.rawValue, menuId == AppDelegate.openRecentProjectMenuId {
-      urls = recentDocumentURLs.filter {
-        $0.typeIdentifierConforms(to: ProjectDocument.docType)
-      }
-      action = #selector(openRecentProject(_:))
-    }
-    
-    var items: [NSMenuItem] = urls.map {
-      let item = NSMenuItem(title: $0.lastPathComponent, action: action, keyEquivalent: "")
-      
-      let icon = NSWorkspace.shared.icon(forFile: $0.path)
-      icon.size = NSSize(width: 16, height: 16)
-      
-      item.image = icon
-      item.representedObject = $0
-      
-      return item
-    }
-    
-    items.append(NSMenuItem.separator())
-    menu.items.replaceSubrange(0..<menu.items.count - 1, with: items)
-  }
   
-  @objc func openRecentDocument(_ sender: Any?) {
-    guard let url = (sender as? NSMenuItem)?.representedObject as? URL else { return }
-    openDocument(withContentsOf: url, display: true)
+  func setupOpenRecentMenu() {
+    self.openRecentDocumentMenuDelegate = OpenRecentDocumentMenuDelegate(self)
+    self.openRecentProjectMenuDelegate = OpenRecentProjectMenuDelegate(self)
+    
+    self.openRecentDocumentMenu?.delegate = openRecentDocumentMenuDelegate
+    self.openRecentProjectMenu?.delegate = openRecentProjectMenuDelegate
   }
-  
-  @objc func openRecentProject(_ sender: Any?) {
-    guard let url = (sender as? NSMenuItem)?.representedObject as? URL else { return }
-    openProject(withContentsOf: url)
-  }
+    
 }
 
 // MARK: - DocumentController
@@ -197,5 +186,99 @@ extension NimbleController {
         /// TODO: implement
       }
     }
+  }
+}
+
+// MARK: - Open Recent menu
+
+//Abstract class for Open Recent menu delegate.
+//There are two different open recent menus: for documents and for projects.
+//This class contains basic implementation of menu dalegate and utils methods.
+fileprivate class OpenRecentMenuDelegate: NSObject, NSMenuDelegate  {
+  weak var nimbleController: NimbleController?
+  
+  var separator: [NSMenuItem] {
+    [.separator()]
+  }
+  
+  init(_ controller: NimbleController) {
+    self.nimbleController = controller
+  }
+  
+  func menuNeedsUpdate(_ menu: NSMenu) {
+    let recentDocumentURLs: [URL] = nimbleController?.recentDocumentURLs ?? []
+    let urls = filterURLs(from: recentDocumentURLs)
+    let menuItems = prepareMenuItems(for: urls)
+    menu.items.replaceSubrange(0..<menu.items.count - 1, with: menuItems)
+  }
+  
+  func filterURLs(from urls: [URL]) -> [URL] {
+    fatalError("Subclasses need to implement the `filterURLs(from:)` method.")
+  }
+  
+  func prepareMenuItems(for urls: [URL]) -> [NSMenuItem] {
+    fatalError("Subclasses need to implement the `prepareMenuItems(from:)` method.")
+  }
+  
+  @objc func openRecent(_ sender: Any?) {
+    fatalError("Subclasses need to implement the `openRecent(_:)` method.")
+  }
+  
+  func createMenuItem(for url: URL) -> NSMenuItem {
+    let item = NSMenuItem(title: url.lastPathComponent, action: #selector(openRecent(_:)), keyEquivalent: "")
+    
+    let icon = NSWorkspace.shared.icon(forFile: url.path)
+    icon.size = NSSize(width: 16, height: 16)
+    
+    item.image = icon
+    item.representedObject = url
+    item.target = self
+    
+    return item
+  }
+}
+
+fileprivate class OpenRecentDocumentMenuDelegate: OpenRecentMenuDelegate {
+  override func filterURLs(from urls: [URL]) -> [URL] {
+    urls.filter { !$0.typeIdentifierConforms(to: ProjectDocument.docType) }
+  }
+  
+  override func prepareMenuItems(for urls: [URL]) -> [NSMenuItem] {
+    let documentMenuItems = createDocumentMenuItems(from: urls)
+    let folderMenuItems = createFolderMenuItems(from: urls)
+    return documentMenuItems + separator + folderMenuItems + separator
+  }
+  
+  private func createDocumentMenuItems(from urls: [URL]) -> [NSMenuItem] {
+    let documentURLs = urls.filter{!$0.hasDirectoryPath}
+    return documentURLs.map{ self.createMenuItem(for: $0) }
+  }
+  
+  private func createFolderMenuItems(from urls: [URL]) -> [NSMenuItem] {
+    let folderURLs = urls.filter{$0.hasDirectoryPath}
+    return folderURLs.map{ self.createMenuItem(for: $0) }
+  }
+  
+  @objc override func openRecent(_ sender: Any?) {
+    guard let url = (sender as? NSMenuItem)?.representedObject as? URL else { return }
+    nimbleController?.open(url: url)
+  }
+}
+
+
+fileprivate class OpenRecentProjectMenuDelegate: OpenRecentMenuDelegate {
+
+  override func filterURLs(from urls: [URL]) -> [URL] {
+    urls.filter { $0.typeIdentifierConforms(to: ProjectDocument.docType) }
+  }
+  
+  override func prepareMenuItems(for urls: [URL]) -> [NSMenuItem] {
+    let menuItems = urls.map{ self.createMenuItem(for: $0) }
+    return menuItems + separator
+  }
+  
+  @objc override func openRecent(_ sender: Any?) {
+    guard let url = (sender as? NSMenuItem)?.representedObject as? URL else { return }
+    nimbleController?.openProject(withContentsOf: url)
   }
 }

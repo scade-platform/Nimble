@@ -81,6 +81,10 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   var debugView: DebugView? {
     workbenchCentralView?.children[1] as? DebugView
   }
+  
+  var settingsController: SettingsController? {
+    (self.contentViewController as? WorkbenchContentViewController)?.settingsController
+  }
 
   public override func windowDidLoad() {
     super.windowDidLoad()
@@ -153,8 +157,12 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
               let path = Path(url: url),
               let docType = docManager.findDocumentType(by: state.type),
               let doc = docManager.open(path: path, docType: docType) else { continue }
-
-        self.open(doc, show: true, openNewEditor: true)
+        
+        if let settingsPath = Settings.defaultPath, settingsPath == path {
+          settingsController?.openSettingsEditor(in: self)
+        } else {
+          self.open(doc, show: true, openNewEditor: true)
+        }
       }
     }
     
@@ -549,21 +557,6 @@ extension NimbleWorkbench {
     }
   }
 }
-
-
-// MARK: - NimbleWorkbenchView (Window root view)
-
-class NimbleWorkbenchView: NSView, WorkbenchView {
-  public override func performKeyEquivalent(with event: NSEvent) -> Bool {
-    guard let shortcut = event.keyboardShortcut,
-          let cmd = CommandManager.shared.command(shortcut: shortcut),
-          let workbench = self.workbench, cmd.enabled(in: workbench) else { return super.performKeyEquivalent(with: event) }
-
-    cmd.run(in: workbench)
-    return true
-  }
-}
-
 
 
 // MARK: - WorkbenchView
