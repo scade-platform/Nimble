@@ -9,7 +9,7 @@
 import Cocoa
 import NimbleCore
 
-class IconController: IconsProvider {
+class IconsController: IconsProvider {
   func icon<T>(for obj: T) -> Icon? {
     switch obj {
     case is File, is Document:

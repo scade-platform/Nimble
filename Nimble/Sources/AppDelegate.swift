@@ -13,11 +13,11 @@ import NimbleCore
 class AppDelegate: NSObject, NSApplicationDelegate {
   let documentController = NimbleController()
   var commandsController: CommandsController?
-  var iconController: IconController?
+  var iconsController: IconsController?
 
   func applicationWillFinishLaunching(_ notification: Notification) {
     commandsController = CommandsController()
-    iconController = IconController()
+    iconsController = IconsController()
     
     // Register workbench settings
     WorkbenchSettings.register()
@@ -25,7 +25,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     // Loading plugins
     PluginManager.shared.load()
     
-    IconsManager.shared.register(provider: iconController!)
+    IconsManager.shared.register(provider: iconsController!)
   }
 
   func applicationDidFinishLaunching(_ notification: Notification) {
