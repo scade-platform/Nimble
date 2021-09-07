@@ -64,7 +64,8 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
 
     self.textContainer!.lineFragmentPadding = 0.0
     self.textContainer!.replaceLayoutManager(layoutManager)
-    self.layoutManager!.allowsNonContiguousLayout = true
+    //TODO: add lazy layout for DiagnosticView to use this flag to improve perfomance
+//    self.layoutManager!.allowsNonContiguousLayout = true
 
     // set layout values (wraps lines)
     self.minSize = self.frame.size
