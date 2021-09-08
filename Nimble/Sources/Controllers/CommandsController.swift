@@ -55,22 +55,13 @@ class CommandsController {
   }
   
   private func registerZoomCommands() {
-    let zoomCommands = createZoomCommands()
-    CommandManager.shared.register(commands: zoomCommands, group: "Zoom", menuPath: "View", toolbarGroup: false)
-  }
-  
-  private func createZoomCommands() -> [Command] {
-    let zoomIn = createZoomInCommand()
-    let zoomOut = createZoomOutCommand()
-    return [zoomIn, zoomOut]
-  }
-  
-  private func createZoomInCommand() -> Command {
-    return createZoomCommand(name: "Zoom In", keyEquivalent: "cmd+plus") { $0.zoomIn() }
-  }
-  
-  private func createZoomOutCommand() -> Command {
-    return createZoomCommand(name: "Zoom Out", keyEquivalent: "cmd+minus") { $0.zoomOut() }
+    let commands = [
+      createZoomCommand(name: "Actual Size", keyEquivalent: "cmd+0") { $0.zoomActualSize() },
+      createZoomCommand(name: "Zoom In", keyEquivalent: "cmd+plus") { $0.zoomIn() },
+      createZoomCommand(name: "Zoom Out", keyEquivalent: "cmd+minus") { $0.zoomOut() }
+    ]
+
+    CommandManager.shared.register(commands: commands, group: "Zoom", menuPath: "View", toolbarGroup: false)
   }
   
   private func createZoomCommand(name: String , keyEquivalent: String, handler: @escaping (WorkbenchEditorZoomSupport) -> Void) -> Command {

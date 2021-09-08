@@ -40,6 +40,7 @@ public extension WorkbenchEditor {
 public protocol WorkbenchEditorZoomSupport where Self: WorkbenchEditor {
   func zoomIn()
   func zoomOut()
+  func zoomActualSize()
 }
 
 
