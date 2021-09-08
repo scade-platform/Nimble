@@ -56,7 +56,7 @@ class CommandsController {
   
   private func registerZoomCommands() {
     let zoomCommands = createZoomCommands()
-    CommandManager.shared.register(commands: zoomCommands)
+    CommandManager.shared.register(commands: zoomCommands, group: "Zoom", menuPath: "View", toolbarGroup: false)
   }
   
   private func createZoomCommands() -> [Command] {
