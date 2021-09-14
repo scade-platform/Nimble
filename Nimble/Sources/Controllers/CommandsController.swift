@@ -56,20 +56,13 @@ class CommandsController {
   
   private func registerZoomCommands() {
     let commands = [
-      createZoomCommand(name: "Actual Size", keyEquivalent: "cmd+0") { $0.zoomActualSize() },
-      createZoomCommand(name: "Zoom In", keyEquivalent: "cmd+plus") { $0.zoomIn() },
-      createZoomCommand(name: "Zoom Out", keyEquivalent: "cmd+minus") { $0.zoomOut() }
+      ZoomCommand.create(name: "Actual Size", keyEquivalent: "cmd+0") { $0.zoomActualSize() },
+      ZoomToFitCommand.create(name: "Zoom to Fit", keyEquivalent: "cmd+9") { $0.zoomToFit() },
+      ZoomCommand.create(name: "Zoom In", keyEquivalent: "cmd+plus") { $0.zoomIn() },
+      ZoomCommand.create(name: "Zoom Out", keyEquivalent: "cmd+minus") { $0.zoomOut() }
     ]
 
     CommandManager.shared.register(commands: commands, group: "Zoom", menuPath: "View", toolbarGroup: false)
-  }
-  
-  private func createZoomCommand(name: String , keyEquivalent: String, handler: @escaping (WorkbenchEditorZoomSupport) -> Void) -> Command {
-    let zoomCommand = Command(name: name, keyEquivalent: keyEquivalent) { workbench in
-      guard let editor = workbench.currentDocument?.editor as? WorkbenchEditorZoomSupport else { return }
-      handler(editor)
-    }
-    return zoomCommand
   }
   
   // MARK: - Commands menu

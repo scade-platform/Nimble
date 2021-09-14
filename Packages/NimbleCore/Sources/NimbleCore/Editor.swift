@@ -43,5 +43,6 @@ public protocol WorkbenchEditorZoomSupport where Self: WorkbenchEditor {
   func zoomActualSize()
 }
 
-
-
+public protocol WorkbenchEditorZoomToFitSupport where Self: WorkbenchEditor {
+  func zoomToFit()
+}
