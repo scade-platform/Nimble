@@ -58,6 +58,7 @@
 		D7F156AD244C93EE00AFBE67 /* Command+Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F156AC244C93EE00AFBE67 /* Command+Menu.swift */; };
 		D7F156B6244C93FE00AFBE67 /* Command+Toolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F156B5244C93FE00AFBE67 /* Command+Toolbar.swift */; };
 		D7F156B8244C946200AFBE67 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F156B7244C946200AFBE67 /* Command.swift */; };
+		E491BB7C26F10A1A0079F180 /* ZoomCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = E491BB7B26F10A1A0079F180 /* ZoomCommands.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -150,6 +151,7 @@
 		D7F156AC244C93EE00AFBE67 /* Command+Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Command+Menu.swift"; sourceTree = "<group>"; };
 		D7F156B5244C93FE00AFBE67 /* Command+Toolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Command+Toolbar.swift"; sourceTree = "<group>"; };
 		D7F156B7244C946200AFBE67 /* Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Command.swift; sourceTree = "<group>"; };
+		E491BB7B26F10A1A0079F180 /* ZoomCommands.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomCommands.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,6 +280,7 @@
 		D7CBF8AE2229268C0088715C /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				E491BB7A26F109FD0079F180 /* Commands */,
 				0C838D0426D7B90C00A9A236 /* AppDelegate.swift */,
 				0CA297B323A903340025A4EF /* BinaryFileDocument.swift */,
 				0CB6607722F41D1500CBB386 /* NimbleController.swift */,
@@ -301,6 +304,14 @@
 				0C838D1726D7BF3C00A9A236 /* KPCTabsControlTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		E491BB7A26F109FD0079F180 /* Commands */ = {
+			isa = PBXGroup;
+			children = (
+				E491BB7B26F10A1A0079F180 /* ZoomCommands.swift */,
+			);
+			path = Commands;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -468,6 +479,7 @@
 				0C838D1F26D7BF5700A9A236 /* CommandsController.swift in Sources */,
 				0C838D1E26D7BF5700A9A236 /* IconsController.swift in Sources */,
 				D7F156AD244C93EE00AFBE67 /* Command+Menu.swift in Sources */,
+				E491BB7C26F10A1A0079F180 /* ZoomCommands.swift in Sources */,
 				D721CFA72385EC3200FD1B00 /* NSOpenPanel.swift in Sources */,
 				0C838D0526D7B90C00A9A236 /* AppDelegate.swift in Sources */,
 				0C2A26D42429E2F800AA8B51 /* InspectorView.swift in Sources */,
