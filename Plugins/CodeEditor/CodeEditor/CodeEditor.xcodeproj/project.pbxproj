@@ -26,7 +26,6 @@
 		D7D4712623FC983E00CC9BAA /* DiagnosticRowView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7D4711323FC983E00CC9BAA /* DiagnosticRowView.xib */; };
 		D7D4712723FC983E00CC9BAA /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4711423FC983E00CC9BAA /* StatusBarView.swift */; };
 		D7D4712823FC983E00CC9BAA /* CurrentLineHighlighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4711623FC983E00CC9BAA /* CurrentLineHighlighting.swift */; };
-		D7D4712923FC983E00CC9BAA /* TextContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4711723FC983E00CC9BAA /* TextContainer.swift */; };
 		D7D4712A23FC983E00CC9BAA /* CodeEditorMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4711823FC983E00CC9BAA /* CodeEditorMenu.swift */; };
 		D7D4712B23FC983E00CC9BAA /* CodeEditorCompletionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D7D4711923FC983E00CC9BAA /* CodeEditorCompletionView.xib */; };
 		D7D4712C23FC983E00CC9BAA /* CodeEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4711A23FC983E00CC9BAA /* CodeEditor.swift */; };
@@ -93,7 +92,6 @@
 		D7D4711323FC983E00CC9BAA /* DiagnosticRowView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DiagnosticRowView.xib; sourceTree = "<group>"; };
 		D7D4711423FC983E00CC9BAA /* StatusBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
 		D7D4711623FC983E00CC9BAA /* CurrentLineHighlighting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CurrentLineHighlighting.swift; sourceTree = "<group>"; };
-		D7D4711723FC983E00CC9BAA /* TextContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextContainer.swift; sourceTree = "<group>"; };
 		D7D4711823FC983E00CC9BAA /* CodeEditorMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeEditorMenu.swift; sourceTree = "<group>"; };
 		D7D4711923FC983E00CC9BAA /* CodeEditorCompletionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CodeEditorCompletionView.xib; sourceTree = "<group>"; };
 		D7D4711A23FC983E00CC9BAA /* CodeEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeEditor.swift; sourceTree = "<group>"; };
@@ -209,7 +207,6 @@
 			children = (
 				D7D4714423FC9B2B00CC9BAA /* Sources */,
 				D7D4711623FC983E00CC9BAA /* CurrentLineHighlighting.swift */,
-				D7D4711723FC983E00CC9BAA /* TextContainer.swift */,
 			);
 			path = CotEditor;
 			sourceTree = "<group>";
@@ -346,7 +343,6 @@
 				D7D4711F23FC983E00CC9BAA /* CodeEditorView.swift in Sources */,
 				D7D4715A23FC9BBE00CC9BAA /* String+Additions.swift in Sources */,
 				D7D4715523FC9BBE00CC9BAA /* Geometry.swift in Sources */,
-				D7D4712923FC983E00CC9BAA /* TextContainer.swift in Sources */,
 				D7D4715823FC9BBE00CC9BAA /* String+Constants.swift in Sources */,
 				E4EB0CF7255C1F0C0011885A /* NSTextView.swift in Sources */,
 				D7D4712D23FC983E00CC9BAA /* CodeEditorTextView.swift in Sources */,
