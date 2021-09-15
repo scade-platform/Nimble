@@ -25,7 +25,7 @@ class ZoomToFitCommand : Command {
 
   static func create(name: String , keyEquivalent: String,
                      handler: @escaping (WorkbenchEditorZoomToFitSupport) -> Void) -> Command {
-    let command = ZoomCommand(name: name, keyEquivalent: keyEquivalent) { workbench in
+    let command = ZoomToFitCommand(name: name, keyEquivalent: keyEquivalent) { workbench in
       guard let editor = workbench.currentDocument?.editor as? WorkbenchEditorZoomToFitSupport else { return }
       handler(editor)
     }
