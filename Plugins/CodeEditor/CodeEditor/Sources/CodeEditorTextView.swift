@@ -298,7 +298,49 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
 
   override func drawBackground(in rect: NSRect) {
     super.drawBackground(in: rect)
-    self.drawCurrentLine(in: rect)
+//    self.drawCurrentLine(in: rect)
+    self.highlightCurrentLine(in: rect)
+  }
+  
+  private func highlightCurrentLine(in rect: NSRect) {
+    let selectedRange = self.selectedRange()
+    let str: NSString = self.string as NSString
+    if selectedRange.location <= str.length {
+      let lineRange = str.lineRange(for: NSMakeRange(selectedRange.location, 0))
+      let lineRect = highlightRect(for: lineRange)
+      guard let color = lineHighLightColor else {
+        return
+      }
+      color.withAlphaComponent(0.3).set()
+      NSBezierPath.fill(lineRect)
+    }
+  }
+  
+  // Returns a rectangle suitable for highlighting a background rectangle for the given text range.
+  private func highlightRect(for range: NSRange) -> NSRect {
+    var er = NSMaxRange(range) - 1
+    let startLineRange = (self.string as NSString).lineRange(for: NSMakeRange(range.location, 0))
+    let str: NSString = self.string as NSString
+    
+    if er >= str.length {
+      return NSZeroRect
+    }
+    
+    if er < range.location {
+      er = range.location
+    }
+    
+    let endLineRange = (self.string as NSString).lineRange(for: NSMakeRange(er, 0));
+    let gr = self.layoutManager!.glyphRange(forCharacterRange: NSMakeRange(startLineRange.location, NSMaxRange(endLineRange) - startLineRange.location - 1), actualCharacterRange: nil)
+    let br = self.layoutManager!.boundingRect(forGlyphRange: gr, in: self.textContainer!)
+    let b = self.bounds
+    let h = br.size.height
+    let w = b.size.width
+    let y = br.origin.y
+    let continerOrigin = self.textContainerOrigin
+    var resultRect = NSMakeRect(0, y, w, h)
+    resultRect = NSOffsetRect(resultRect, continerOrigin.x, continerOrigin.y)
+    return resultRect
   }
 
 
