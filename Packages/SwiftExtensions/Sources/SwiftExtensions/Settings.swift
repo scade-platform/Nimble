@@ -145,7 +145,7 @@ fileprivate extension Settings {
     @Setting("swift.toolchain")
     private var swiftToolchain: String
     
-    let targetVersion = "5.3.2"
+    let minimalVersion = "5.3.2"
     
     func validateSetting<S: SettingProtocol, T>(_ setting: S) -> [SettingDiagnostic] where S.ValueType == T {
       guard setting == $swiftToolchain else {
@@ -161,8 +161,8 @@ fileprivate extension Settings {
           return [$swiftToolchain.warning("Could not validate Xcode toolchain version.")]
         }
         
-        guard currentVersion.compare(targetVersion, options: .numeric) == .orderedSame else {
-          return [$swiftToolchain.error("Swift Toolchain version is \(currentVersion). Swift Toolchain needs to be \(targetVersion).")]
+        guard isValid(version: currentVersion) else {
+          return [$swiftToolchain.error("Swift Toolchain version is \(currentVersion). Swift Toolchain needs to be greater or equal \(minimalVersion).")]
         }
         
         return .valid
@@ -176,8 +176,8 @@ fileprivate extension Settings {
           return [$swiftToolchain.warning("Could not validate toolchain version.")]
         }
         
-        guard currentVersion.compare(targetVersion, options: .numeric) == .orderedSame else {
-          return [$swiftToolchain.error("Swift Toolchain version is \(currentVersion). Swift Toolchain needs to be \(targetVersion).")]
+        guard  isValid(version: currentVersion) else {
+          return [$swiftToolchain.error("Swift Toolchain version is \(currentVersion). Swift Toolchain needs to be greater or equal \(minimalVersion).")]
         }
         
         return .valid
@@ -238,6 +238,10 @@ fileprivate extension Settings {
       return version
     }
     
+    private func isValid(version: String) -> Bool {
+      //Valid version greater or equal of minimal version
+      version.compare(minimalVersion, options: .numeric) == .orderedSame || version.compare(minimalVersion, options: .numeric) == .orderedDescending
+    }
   }
   
 }
