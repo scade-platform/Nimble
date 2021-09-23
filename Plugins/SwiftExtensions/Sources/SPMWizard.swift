@@ -19,8 +19,10 @@
 //
 
 import Cocoa
+
 import NimbleCore
 import SwiftExtensions
+
 
 class SPMWizard: CreationWizard {
   var icon: Icon? {

@@ -18,7 +18,7 @@
 //
 
 import AppKit
-import Oniguruma
+@_implementationOnly import Oniguruma
 
 
 // MARK: Grammar
@@ -271,7 +271,7 @@ final public class BeginWhilePattern: RangeMatchPattern {
 // MARK: -
 
 public struct MatchRegex: Decodable {
-  public typealias Regex = Oniguruma.Regex
+  typealias Regex = Oniguruma.Regex
   
   // A0_G0, A0_G1, A1_G0, A1_G1
   private let regex: [Regex?]
@@ -296,7 +296,7 @@ public struct MatchRegex: Decodable {
     self.regex = regex
   }
   
-  public func get(allowA: Bool, allowG: Bool) -> Regex? {
+  func get(allowA: Bool, allowG: Bool) -> Regex? {
     if regex.count == 1 {
       return regex[0]
     }

@@ -24,6 +24,7 @@ import NimbleCore
 import BuildSystem
 import SwiftExtensions
 
+
 class SPMBuildSystem: BuildSystem {  
   var name: String {
     return "Swift Package"
@@ -175,7 +176,7 @@ class SPMTarget: Target {
 }
 
 
-public class SPMVariant {
+class SPMVariant {
   var target: Target? {
     spmTarget
   }

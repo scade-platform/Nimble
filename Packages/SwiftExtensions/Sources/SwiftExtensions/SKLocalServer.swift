@@ -17,9 +17,9 @@
 //  See the License for the specific language governing permissions and
 //  limitations under the License.
 //
+import os.log
 
 import Foundation
-import os.log
 
 import LSPClient
 import NimbleCore
@@ -27,15 +27,16 @@ import BuildSystem
 
 
 // SourceKitLSP
-import SKCore
-import SKSupport
-import SourceKit
-import TSCBasic
-import TSCLibc
-import TSCUtility
-import LSPLogging
-import Build
 import LanguageServerProtocol
+
+@_implementationOnly import SKCore
+@_implementationOnly import SKSupport
+@_implementationOnly import SourceKit
+@_implementationOnly import TSCBasic
+@_implementationOnly import TSCLibc
+@_implementationOnly import TSCUtility
+@_implementationOnly import LSPLogging
+@_implementationOnly import Build
 
 
 public final class SKLocalServer: LSPServer {
@@ -72,7 +73,7 @@ public final class SKLocalServer: LSPServer {
   public func start(with variant: Variant?) throws {
     let toolchain = (variant as? SwiftVariant)?.toolchain
 
-    print("Using toolchain: \(toolchain?.name)")
+    print("Using toolchain: \(toolchain?.name ?? "None")")
 
     // Setup toolchain (compiler) location
     var installPath: AbsolutePath? = nil
@@ -173,5 +174,3 @@ fileprivate extension BuildFlags {
     self.linkerFlags.append(contentsOf: flags.linkerFlags)
   }
 }
-
-

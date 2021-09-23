@@ -1,0 +1,16 @@
+//
+//  build.xcconfig
+//  SwiftExtensions
+//
+//  Created by Grigory Markin on 19.09.21.
+//  Copyright © 2021 SCADE. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+
+#include "../../plugin.xcconfig"
+
+OTHER_LDFLAGS = $(inherited) -lSwiftExtensions -lNimbleCore -lLSPClient -lBuildSystem
+

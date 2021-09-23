@@ -23,10 +23,10 @@ import BuildSystem
 import LSPClient
 import SwiftExtensions
 
+
 public final class SwiftExtensionsModule: Module {
   public static let plugin: Plugin = SwiftExtensionsPlugin()
 }
-
 
 final class SwiftExtensionsPlugin: Plugin {
   func load() {
@@ -40,11 +40,11 @@ final class SwiftExtensionsPlugin: Plugin {
     registerSettings()
   }
 
-  public func activate(in workbench: Workbench) {
+  func activate(in workbench: Workbench) {
     SwiftLanguageService.shared.connect(to: workbench, from: self)
   }
 
-  public func deactivate(in workbench: Workbench) {
+  func deactivate(in workbench: Workbench) {
     SwiftLanguageService.shared.disconnect(from: workbench)
   }
 

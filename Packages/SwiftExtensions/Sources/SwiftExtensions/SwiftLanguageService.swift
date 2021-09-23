@@ -21,6 +21,11 @@
 import Foundation
 import CodeEditor
 
+// TEMPORARLY NOT USED. WE USE BINARY CALL INSTEAD
+//import SwiftFormat
+//import SwiftFormatConfiguration
+
+
 /// Swift Language Support not presented by the SourceKit-LSP
 
 public final class SwiftLanguageService: LanguageService {
@@ -46,6 +51,15 @@ public final class SwiftLanguageService: LanguageService {
 
   public var supportedFeatures: [LanguageServiceFeature] = [.format]
 
+
+/*
+  TEMPORARLY NOT USED. WE USE BINARY CALL INSTEAD
+
+  private lazy var formatter: SwiftFormatter = {
+    /// TODO: configuration loading
+    return SwiftFormatter(configuration: Configuration())
+  }()
+*/
 
   private init() {}
 

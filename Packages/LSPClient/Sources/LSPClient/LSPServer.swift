@@ -29,7 +29,7 @@ import LanguageServerProtocolJSONRPC
 
 // MARK: - LSPServer
 
-public protocol LSPServer: class {
+public protocol LSPServer: AnyObject {
   var client: LSPClient { get }
   var isRunning: Bool { get }
 

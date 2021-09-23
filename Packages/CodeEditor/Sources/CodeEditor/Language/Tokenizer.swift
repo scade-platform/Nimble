@@ -18,10 +18,11 @@
 //
 
 import AppKit
-import Oniguruma
 import NimbleCore
 
-public protocol Tokenizer: class {
+@_implementationOnly import Oniguruma
+
+public protocol Tokenizer: AnyObject {
   func tokenize(_ str: String, in range: Range<String.Index>) -> TokenizerResult?
   func tokenize(_ str: String) -> TokenizerResult?
 }
@@ -110,7 +111,7 @@ fileprivate extension SyntaxNode {
   }
 }
 
-public protocol TokenizerRepository: class {
+public protocol TokenizerRepository: AnyObject {
   subscript(ref: GrammarRef) -> Tokenizer? { get }
 }
 
