@@ -138,7 +138,7 @@ class CodeEditorView: NSViewController {
 
       let color = d.severity == .error ? NSColor.red : NSColor.yellow
 
-      let line = text.lineNumber(at: range.lowerBound)
+      let line = text.lineNumber(at: range.lowerBound) + 1
       if line != lastLine {
         if !diagnosticsOnLine.isEmpty {
           addDiagnosticsView(diagnosticsOnLine: diagnosticsOnLine, lastLine: lastLine)
@@ -335,7 +335,11 @@ extension CodeEditorView: NSTextViewDelegate {
       let snippetView = SnippetPlaceholderView()
 
       snippetView.range = m.range(at: 0)
-      snippetView.text = string[m.range(at: 1)] ?? ""
+      if let str = string[m.range(at: 1)] {
+        snippetView.text = String(str)
+      } else {
+        snippetView.text = ""
+      }
 
       snippets.append((snippetView.range, snippetView))
     }

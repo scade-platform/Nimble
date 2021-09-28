@@ -87,7 +87,7 @@ public final class CodeEditorDocument: NimbleDocument {
     guard let str =  String(bytes: data, encoding: .utf8) else {
       throw NSError.init(domain: "CodeEditor", code: 1, userInfo: ["FileUrl": self.fileURL ?? ""])
     }
-    let content = str.replacingLineEndings(with: .lf)
+    let content = str.replacingOccurrences(of: "\\r\\n|[\\n\\r\\u2028\\u2029]", with: "\n", options: .regularExpression)
     textStorage.replaceCharacters(in: textStorage.range, with: content)
   }
   

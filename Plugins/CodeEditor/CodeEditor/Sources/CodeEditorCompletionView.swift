@@ -474,3 +474,9 @@ extension CodeEditorCompletionView: NSTableViewDelegate {
     return completions.count > 0
   }
 }
+
+fileprivate extension CGPoint {
+  func offsetBy(dx: CGFloat, dy: CGFloat) -> CGPoint {
+    CGPoint(x: self.x + dx, y: self.y + dy)
+  }
+}

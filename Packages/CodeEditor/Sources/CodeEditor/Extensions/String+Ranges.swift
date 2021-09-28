@@ -16,12 +16,21 @@ public extension String {
     return  NSRange(location: 0, length: (self as NSString).length)
   }
   
+  var numberOfLines: Int {
+    return self.lineNumber(at: self.index(before: self.endIndex))
+  }
+  
   subscript(value: Int) -> Character {
     return self[index(at: value)]
   }
     
   subscript(value: Range<Int>) -> Substring {
     return self[self.index(at: value.lowerBound)..<self.index(at: value.upperBound)]
+  }
+  
+  subscript(range: NSRange) -> Substring? {
+    guard let range = Range(range, in: self) else { return nil }
+    return self[range]
   }
   
   func index(at offset: Int) -> Index {
@@ -57,6 +66,12 @@ public extension String {
           let ub = lines.last?.upperBound else { return startIndex..<endIndex }
 
     return lb..<ub
+  }
+  
+  func lineNumber(at location: Int) -> Int {
+    let nsRange = NSRange(location..<location)
+    guard let range = Range(nsRange, in: self) else { return 1 }
+    return lineNumber(at: range.lowerBound)
   }
 
   func lineNumber(at index: Index) -> Int {

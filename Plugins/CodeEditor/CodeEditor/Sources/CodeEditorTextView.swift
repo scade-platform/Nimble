@@ -10,7 +10,7 @@ import Cocoa
 
 // MARK: -
 
-final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
+final class CodeEditorTextView: NSTextView {
 
   // MARK: - CodeEditorView
 
@@ -18,10 +18,6 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     self.delegate as? CodeEditorView
   }
 
-  // MARK: - CurrentLineHighlighting
-
-  var needsUpdateLineHighlight = true
-  var lineHighLightRects: [NSRect] = []
   var lineHighLightColor: NSColor? = nil
     
   // MARK: - Line numbers
@@ -50,7 +46,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     
     // workaround for: the text selection highlight can remain between lines (2017-09 macOS 10.13).
     self.scaleUnitSquare(to: NSSize(width: 0.5, height: 0.5))
-    self.scaleUnitSquare(to: self.convert(.unit, from: nil))  // reset scale
+    self.scaleUnitSquare(to: self.convert(CGSize(width: 1, height: 1), from: nil))  // reset scale
 
     // setup layoutManager and textContainer
 //    let textContainer = TextContainer()
@@ -69,7 +65,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
 
     // set layout values (wraps lines)
     self.minSize = self.frame.size
-    self.maxSize = .infinite
+    self.maxSize = NSSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
     self.isHorizontallyResizable = false
     self.isVerticallyResizable = true
     self.autoresizingMask = .width
@@ -94,7 +90,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     self.invalidateDefaultParagraphStyle()
     
     //TODO: make it optional, if no wrapping enabled, turn on horizontal scrolling
-    self.wrapsLines = true
+//    self.wrapsLines = true
     
     //TODO: compute it as an overscroll ration relative to the self.frame
     self.textContainerInset.height = 100.0
@@ -193,28 +189,6 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   }
   
   
-  /// change text layout orientation
-  override func setLayoutOrientation(_ orientation: NSLayoutManager.TextLayoutOrientation) {
-    
-    // -> need to send KVO notification manually on Swift (2016-09-12 on macOS 10.12 SDK)
-    self.willChangeValue(forKey: #keyPath(layoutOrientation))
-    super.setLayoutOrientation(orientation)
-    self.didChangeValue(forKey: #keyPath(layoutOrientation))
-    
-    //  self.invalidateNonContiguousLayout()
-    
-    // reset writing direction
-    if orientation == .vertical {
-      self.baseWritingDirection = .leftToRight
-    }
-    
-    // reset text wrapping width
-    if self.wrapsLines {
-      let keyPath = (orientation == .vertical) ? \NSSize.height : \NSSize.width
-      self.frame.size[keyPath: keyPath] = self.visibleRect.width * self.scale
-    }
-  }
-  
   // MARK: Public Accessors
   
   /// tab width in number of spaces
@@ -262,7 +236,7 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
   private func invalidateDefaultParagraphStyle() {
     assert(Thread.isMainThread)
     
-    let paragraphStyle = NSParagraphStyle.default.mutable
+    let paragraphStyle = NSParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
     
     // set line height
     //   -> The actual line height will be calculated in LayoutManager and ATSTypesetter based on this line height multiple.
@@ -270,12 +244,14 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     //      if the first character of the document is drawn with another font (typically by a composite font).
     //   -> Round line height for workaround to avoid expanding current line highlight when line height is 1.0. (2016-09 on macOS Sierra 10.12)
     //      e.g. Times
-    paragraphStyle.lineHeightMultiple = self.lineHeight.rounded(to: 5)
+    paragraphStyle.lineHeightMultiple = self.lineHeight
+    
     
     // calculate tab interval
     if let font = self.font {
+      let spaceWidth = " ".size(withAttributes: [NSAttributedString.Key.font: font]).width
       paragraphStyle.tabStops = []
-      paragraphStyle.defaultTabInterval = CGFloat(self.tabWidth) * font.spaceWidth
+      paragraphStyle.defaultTabInterval = CGFloat(self.tabWidth) * spaceWidth
     }
     
     paragraphStyle.baseWritingDirection = self.baseWritingDirection
@@ -298,10 +274,12 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
 
   override func drawBackground(in rect: NSRect) {
     super.drawBackground(in: rect)
-//    self.drawCurrentLine(in: rect)
     self.highlightCurrentLine(in: rect)
   }
   
+  //TODO: add hightliting for last line
+  //TODD: remove hightliting for line with selected text
+  //TODO: refactoring
   private func highlightCurrentLine(in rect: NSRect) {
     let selectedRange = self.selectedRange()
     let str: NSString = self.string as NSString
@@ -331,16 +309,13 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
     }
     
     let endLineRange = (self.string as NSString).lineRange(for: NSMakeRange(er, 0));
-    let gr = self.layoutManager!.glyphRange(forCharacterRange: NSMakeRange(startLineRange.location, NSMaxRange(endLineRange) - startLineRange.location - 1), actualCharacterRange: nil)
-    let br = self.layoutManager!.boundingRect(forGlyphRange: gr, in: self.textContainer!)
+    let lineRange = NSMakeRange(startLineRange.location, NSMaxRange(endLineRange) - startLineRange.location - 1)
+    let br = self.boundingRect(for: lineRange)!
     let b = self.bounds
     let h = br.size.height
     let w = b.size.width
     let y = br.origin.y
-    let continerOrigin = self.textContainerOrigin
-    var resultRect = NSMakeRect(0, y, w, h)
-    resultRect = NSOffsetRect(resultRect, continerOrigin.x, continerOrigin.y)
-    return resultRect
+    return NSMakeRect(0, y, w, h)
   }
 
 
@@ -350,7 +325,6 @@ final class CodeEditorTextView: NSTextView, CurrentLineHighlighting {
 
     super.setSelectedRanges(ranges, affinity: affinity, stillSelecting: stillSelectingFlag)
 
-    self.needsUpdateLineHighlight = true
     self.lineNumberView?.needsDisplay = true
   }
 
