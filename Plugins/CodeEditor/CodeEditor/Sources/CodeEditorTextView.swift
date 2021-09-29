@@ -242,44 +242,26 @@ final class CodeEditorTextView: NSTextView {
     self.highlightCurrentLine(in: rect)
   }
   
-  //TODO: add hightliting for last line
   //TODD: remove hightliting for line with selected text
-  //TODO: refactoring
   private func highlightCurrentLine(in rect: NSRect) {
-    let selectedRange = self.selectedRange()
-    let str: NSString = self.string as NSString
-    if selectedRange.location <= str.length {
-      let lineRange = str.lineRange(for: NSMakeRange(selectedRange.location, 0))
-      let lineRect = highlightRect(for: lineRange)
-      guard let color = lineHighLightColor else {
-        return
-      }
-      color.withAlphaComponent(0.3).set()
-      NSBezierPath.fill(lineRect)
+    guard let stringRange = Range(self.selectedRange(), in: self.string) else {
+      return
     }
+    let lineRange = self.string.lineRange(for: stringRange)
+    let lineRect = highlightRect(for: lineRange)
+    guard let color = lineHighLightColor else {
+      return
+    }
+    color.withAlphaComponent(0.3).set()
+    NSBezierPath.fill(lineRect)
   }
   
   // Returns a rectangle suitable for highlighting a background rectangle for the given text range.
-  private func highlightRect(for range: NSRange) -> NSRect {
-    var er = NSMaxRange(range) - 1
-    let startLineRange = (self.string as NSString).lineRange(for: NSMakeRange(range.location, 0))
-    let str: NSString = self.string as NSString
-    
-    if er >= str.length {
-      return NSZeroRect
-    }
-    
-    if er < range.location {
-      er = range.location
-    }
-    
-    let endLineRange = (self.string as NSString).lineRange(for: NSMakeRange(er, 0));
-    let lineRange = NSMakeRange(startLineRange.location, NSMaxRange(endLineRange) - startLineRange.location - 1)
-    let br = self.boundingRect(for: lineRange)!
-    let b = self.bounds
-    let h = br.size.height
-    let w = b.size.width
-    let y = br.origin.y
+  private func highlightRect(for range: Range<String.Index>) -> NSRect {
+    let boundingRect = self.boundingRect(for: range)!
+    let y = boundingRect.origin.y
+    let w = self.bounds.size.width
+    let h = boundingRect.size.height
     return NSMakeRect(0, y, w, h)
   }
 

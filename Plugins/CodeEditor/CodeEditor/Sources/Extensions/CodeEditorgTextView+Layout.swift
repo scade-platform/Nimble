@@ -35,5 +35,10 @@ extension CodeEditorTextView {
     
     return textViewCoordinatesRect
   }
+  
+  func boundingRect(for range: Range<String.Index>) -> NSRect? {
+    let nsRange = NSRange(range, in: self.string)
+    return boundingRect(for: nsRange)
+  }
 }
 
