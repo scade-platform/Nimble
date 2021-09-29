@@ -28,18 +28,10 @@ final class CodeEditorTextView: NSTextView {
 
   var snippetViews: [NSView] = []
 
-  // MARK: -
-
   required init?(coder: NSCoder) {
-    // set paragraph style values
 
-//    if let theme = ThemeManager.shared.theme {
-//      lineHeight = theme.lineHeight
-//      tabWidth = theme.tabWidth
-//    } else {
     lineHeight = 1.0
     tabWidth = 4
-//    }
     super.init(coder: coder)
     
     self.drawsBackground = true
@@ -47,13 +39,6 @@ final class CodeEditorTextView: NSTextView {
     // workaround for: the text selection highlight can remain between lines (2017-09 macOS 10.13).
     self.scaleUnitSquare(to: NSSize(width: 0.5, height: 0.5))
     self.scaleUnitSquare(to: self.convert(CGSize(width: 1, height: 1), from: nil))  // reset scale
-
-    // setup layoutManager and textContainer
-//    let textContainer = TextContainer()
-//    // // TODO: move to settings
-//    textContainer.isHangingIndentEnabled = true //defaults[.enablesHangingIndent]
-//    textContainer.hangingIndentWidth = 2 //defaults[.hangingIndentWidth]
-//    self.replaceTextContainer(textContainer)
 
     let layoutManager = CodeEditorLayoutManager()
     layoutManager.delegate = self
@@ -138,11 +123,6 @@ final class CodeEditorTextView: NSTextView {
                                            name: NSText.didChangeNotification, object: self)
   }
   
-//  override var wantsUpdateLayer: Bool { return true }
-//
-//  override func updateLayer() {
-//      layer?.backgroundColor = backgroundColor.cgColor
-//  }
   
   @objc private func frameDidChange(notification: NSNotification) {
     self.lineNumberView?.needsDisplay = true
@@ -169,13 +149,6 @@ final class CodeEditorTextView: NSTextView {
   
   /// scroll to display specific range
   override func scrollRangeToVisible(_ range: NSRange) {
-    
-    // scroll line by line if an arrow key is pressed
-    // -> Perform only when the scroll target is near by the visible area.
-    //    Otherwise with the noncontiguous layout:
-    //    - Scroll jumps when the cursor is initially in the end part of document.
-    //    - Scroll doesn't reach to the bottom with command+down arrow.
-    //    (2018-12 macOS 10.14)
     if NSEvent.modifierFlags.contains(.numericPad),
       let rect = self.boundingRect(for: range),
       let lineHeight = self.enclosingScrollView?.lineScroll,
@@ -237,13 +210,6 @@ final class CodeEditorTextView: NSTextView {
     assert(Thread.isMainThread)
     
     let paragraphStyle = NSParagraphStyle.default.mutableCopy() as! NSMutableParagraphStyle
-    
-    // set line height
-    //   -> The actual line height will be calculated in LayoutManager and ATSTypesetter based on this line height multiple.
-    //      Because the default Cocoa Text System calculate line height differently
-    //      if the first character of the document is drawn with another font (typically by a composite font).
-    //   -> Round line height for workaround to avoid expanding current line highlight when line height is 1.0. (2016-09 on macOS Sierra 10.12)
-    //      e.g. Times
     paragraphStyle.lineHeightMultiple = self.lineHeight
     
     
@@ -258,8 +224,7 @@ final class CodeEditorTextView: NSTextView {
     
     self.defaultParagraphStyle = paragraphStyle
 
-    // add paragraph style also to the typing attributes
-    //   -> textColor and font are added automatically.
+
     self.typingAttributes[.paragraphStyle] = paragraphStyle
     
     // tell line height also to scroll view so that scroll view can scroll line by line
