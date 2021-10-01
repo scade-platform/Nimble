@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # updates the header for all .swift files
 
@@ -15,6 +16,12 @@ def update_source(filename, header):
         if (line.startswith("import")):
             break
         if line == "\n":
+            continue
+        if line.find("Created by") != -1:
+            # skip lines with authors 
+            continue
+        if line.find("Copyright") != -1:
+            oldHeader += "//  Copyright © 2021 SCADE Inc. All rights reserved.\n"
             continue
         oldHeader += line
     print("updating " + filename)
