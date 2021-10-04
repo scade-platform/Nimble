@@ -21,7 +21,8 @@ extension NSLayoutManager {
 
   var spaceWidth: CGFloat {
     guard let font = self.firstTextView?.font else { return 0 }
-    return font.spaceWidth
+    let spaceWidth = " ".size(withAttributes: [NSAttributedString.Key.font: font]).width
+    return spaceWidth
   }
 
   var lineHeight: CGFloat {

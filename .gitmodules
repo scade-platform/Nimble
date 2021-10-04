@@ -1,6 +1,3 @@
-[submodule "Plugins/CodeEditor/CotEditor"]
-	path = Plugins/CodeEditor/CotEditor
-	url = https://github.com/coteditor/CotEditor.git
 [submodule "Nimble/Dependencies/KPCTabsControl"]
 	path = Nimble/Dependencies/KPCTabsControl
 	url = git@github.com:FLORG1/KPCTabsControl.git

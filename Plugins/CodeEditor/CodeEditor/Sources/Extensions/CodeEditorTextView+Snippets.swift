@@ -13,6 +13,12 @@ extension NSAttributedString.Key {
   static let snippet = NSAttributedString.Key("Snippet")
 }
 
+extension NSTextStorage {
+  var range: NSRange {
+    NSRange(..<self.length)
+  }
+}
+
 // MARK: - CodeEditorTextView + Snippets
 
 extension CodeEditorTextView {
@@ -81,7 +87,7 @@ extension CodeEditorTextView {
       return false
     }
 
-    let substr = string[selectedRange().lowerBound..<snippet.range.lowerBound]
+    let substr = String(string[selectedRange().lowerBound..<snippet.range.lowerBound])
 
     if substr.numberOfLines < 4 {
       window?.makeFirstResponder(snippet.view)

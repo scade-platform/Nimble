@@ -634,12 +634,12 @@ fileprivate extension NSTextField {
       let matches = detector.matches(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count))
       if !matches.isEmpty {
         let attributedString = NSMutableAttributedString(string: text)
-        attributedString.addAttribute(.font, value: self.font!, range: text.range)
-        attributedString.addAttribute(.foregroundColor, value: self.textColor ?? .black, range: text.range)
+        attributedString.addAttribute(.font, value: self.font!, range: text.nsRange)
+        attributedString.addAttribute(.foregroundColor, value: self.textColor ?? .black, range: text.nsRange)
         if isWrapped {
           let paragraphStyle = NSMutableParagraphStyle()
           paragraphStyle.lineBreakMode = .byTruncatingTail
-          attributedString.addAttribute(.paragraphStyle, value: paragraphStyle, range: text.range)
+          attributedString.addAttribute(.paragraphStyle, value: paragraphStyle, range: text.nsRange)
         }
         for match in matches {
           guard let range = Range(match.range, in: text) else { continue }
