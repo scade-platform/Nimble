@@ -195,7 +195,6 @@ fileprivate extension Settings {
       }
       
       let version = parseSwiftVersion(from: versionOutput)
-      
       return version
     }
     
@@ -211,18 +210,26 @@ fileprivate extension Settings {
       guard isValidSwiftVersionOutput(output) else {
         return nil
       }
-      return parseVersion(from: output)
+      let swiftVersionFirstString = prepareSwiftVersionOutput(output)
+      return parseVersion(from: swiftVersionFirstString)
     }
     
     private func isValidSwiftVersionOutput(_ output: String) -> Bool {
-      guard let regex = "Apple Swift version [0-9]+.[0-9]+.[0-9]+.*".asRegex else {
+      guard let regex = ".*Apple Swift version (\\d+\\.)?(\\d+\\.)?(\\d+).*".asRegex else {
         return false
       }
       return regex.hasMatch(in: output)
     }
     
+    private func prepareSwiftVersionOutput(_ output: String) -> String {
+      //Since Swift 5.5, the version command displays the swift-driver version first
+      //There remove this version
+      let substringRange = output.range(of: "Apple Swift version")!
+      return String(output[substringRange.lowerBound...])
+    }
+    
     private func parseVersion(from output: String) -> String? {
-      guard let regex = "[0-9]+.[0-9]+.[0-9]+".asRegex else {
+      guard let regex = "(\\d+\\.)?(\\d+\\.)?(\\d+)".asRegex else {
         return nil
       }
       
