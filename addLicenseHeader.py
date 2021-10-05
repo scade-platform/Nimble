@@ -14,7 +14,7 @@ def update_source(filename, header):
     oldHeader = ""
     oldHeaderSize = 0
     for line in fileLines:
-        if (line.startswith("import")):
+        if line.startswith("import"):
             break
         if line == "\n":
             continue
@@ -28,6 +28,9 @@ def update_source(filename, header):
             continue
         oldHeader += line
         oldHeaderSize += len(line)
+    if oldHeader.find(header) != -1:
+        #file already has needed header
+        return
     print("updating " + filename)
     fileBody = fileContent[oldHeaderSize:]
     newFileContent = oldHeader + header + fileBody
@@ -40,13 +43,13 @@ def recursive_traversal(dir, header):
     # print("listing " + dir)
     for fn in fns:
         #skip all files starts with . (.build, .git, etc.)
-        if (fn.startswith(".")):
+        if fn.startswith("."):
             continue
         fullfn = os.path.join(dir,fn)
-        if (os.path.isdir(fullfn)):
+        if os.path.isdir(fullfn):
             recursive_traversal(fullfn, header)
         else:
-            if (fullfn.endswith(".swift")):
+            if fullfn.endswith(".swift"):
                 update_source(fullfn, header)
     
 
