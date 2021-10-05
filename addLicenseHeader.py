@@ -12,6 +12,7 @@ def update_source(filename, header):
     reader.close()
     fileContent = ''.join(fileLines)
     oldHeader = ""
+    oldHeaderSize = 0
     for line in fileLines:
         if (line.startswith("import")):
             break
@@ -19,20 +20,22 @@ def update_source(filename, header):
             continue
         if line.find("Created by") != -1:
             # skip lines with authors 
+            oldHeaderSize += len(line)
             continue
         if line.find("Copyright") != -1:
+            oldHeaderSize += len(line)
             oldHeader += "//  Copyright © 2021 SCADE Inc. All rights reserved.\n"
             continue
         oldHeader += line
+        oldHeaderSize += len(line)
     print("updating " + filename)
-    fileBody = fileContent[len(oldHeader):]
+    fileBody = fileContent[oldHeaderSize:]
     newFileContent = oldHeader + header + fileBody
     open(filename, "w").write(newFileContent)
 
         
 
 def recursive_traversal(dir, header):
-    global excludedir
     fns = os.listdir(dir)
     # print("listing " + dir)
     for fn in fns:
