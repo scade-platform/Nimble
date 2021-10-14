@@ -1,0 +1,24 @@
+name: archive-sign
+on: workflow_dispatch
+jobs:
+  archive:
+    runs-on: self-hosted
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Archive, Sign and Notarize
+      run: ./archive-sign.sh Nimble Nimble-Archive Nimble NimblePlugins-Archive ./Nimble/Nimble/exportOptionsPlist.plist ./Nimble/Nimble/Nimble.entitlements
+      env: 
+        DEVELOPER_ID: ${{ secrets.APPLE_DEVELOPER_ID }}
+        AC_USERNAME: ${{ secrets.APPLE_DEVELOPER_USERNAME }}
+        AC_PASSWORD: ${{ secrets.APPLE_ALTOOL_PASSWORD }}
+        PROVIDER_SHORTNAME: ${{ secrets.APPLE_DEVELOPER_SHORTNAME }}
+        
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Nimble.dmg
+        path: ./ArchiveDir/Nimble.dmg
