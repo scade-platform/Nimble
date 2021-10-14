@@ -7,18 +7,22 @@ jobs:
   build:
     runs-on: [self-hosted, macOS]    
     steps:
+    - id: get_version
+      uses: battila7/get-version-action@v2
+
     - name: Checkout
       uses: actions/checkout@v2
       with:
-        submodules: recursive
-
-    - name: Detect version
-      uses: FLORG1/github-version-action@v1
-      with:
-        var-name: TAG_VERSION        
+        submodules: recursive      
 
     - name: Build
-      run: export TAG_VERSION; ./build.sh
+      run: ./archive-sign.sh Nimble Nimble-Archive Nimble NimblePlugins-Archive ./Nimble/Nimble/exportOptionsPlist.plist ./Nimble/Nimble/Nimble.entitlements
+      env:
+        DEVELOPER_ID: ${{ secrets.APPLE_DEVELOPER_ID }}
+        AC_USERNAME: ${{ secrets.APPLE_DEVELOPER_USERNAME }}
+        AC_PASSWORD: ${{ secrets.APPLE_ALTOOL_PASSWORD }}
+        PROVIDER_SHORTNAME: ${{ secrets.APPLE_DEVELOPER_SHORTNAME }}
+        TAG_VERSION: ${{ steps.get_version.outputs.version-without-v }}
     
     - name: Create Release
       uses: ncipollo/release-action@v1
@@ -26,5 +30,5 @@ jobs:
         prerelease: true
         allowUpdates: true
         replacesArtifacts: true
-        artifacts: "Nimble.dmg"
+        artifacts: "ArchiveDir/Nimble.dmg"
         token: ${{ secrets.GITHUB_TOKEN }}
