@@ -11,6 +11,7 @@
 		0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */; };
 		0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */; };
 		0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */; };
+		0C7B198527185DDE003E7087 /* exportOptionsPlist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C7B198127185DDE003E7087 /* exportOptionsPlist.plist */; };
 		0C838D0526D7B90C00A9A236 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C838D0426D7B90C00A9A236 /* AppDelegate.swift */; };
 		0C838D1D26D7BF5700A9A236 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C838D1A26D7BF5700A9A236 /* SettingsController.swift */; };
 		0C838D1E26D7BF5700A9A236 /* IconsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C838D1B26D7BF5700A9A236 /* IconsController.swift */; };
@@ -106,6 +107,7 @@
 		0C2C1A4722F176B200AC2E5D /* ProjectDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDocument.swift; sourceTree = "<group>"; };
 		0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnsupportedPane.swift; sourceTree = "<group>"; };
 		0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = UnsupportedPane.xib; sourceTree = "<group>"; };
+		0C7B198127185DDE003E7087 /* exportOptionsPlist.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = exportOptionsPlist.plist; sourceTree = "<group>"; };
 		0C838D0426D7B90C00A9A236 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0C838D1A26D7BF5700A9A236 /* SettingsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		0C838D1B26D7BF5700A9A236 /* IconsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IconsController.swift; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 		D7CBF7CD222878F10088715C /* Nimble */ = {
 			isa = PBXGroup;
 			children = (
+				0C7B198127185DDE003E7087 /* exportOptionsPlist.plist */,
 				0CCD45CD25D6CD4B000923E3 /* Assets.xcassets */,
 				D7DBD8B7257A9610008F44AC /* Nimble.entitlements */,
 				D78FFF1824255CE100EB70E2 /* Icons */,
@@ -427,6 +430,7 @@
 				D724C5F3237C418B00E80958 /* ConsoleView.xib in Resources */,
 				0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */,
 				D71D04FA246615F400200127 /* NimbleStatusBar.xib in Resources */,
+				0C7B198527185DDE003E7087 /* exportOptionsPlist.plist in Resources */,
 				D724C5EE237C418B00E80958 /* TabbedEditor.xib in Resources */,
 				0CCD45CE25D6CD4B000923E3 /* Assets.xcassets in Resources */,
 				D77AAF0E2501674800C63C19 /* DiagnosticView.xib in Resources */,
