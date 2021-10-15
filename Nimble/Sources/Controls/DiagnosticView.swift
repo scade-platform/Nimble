@@ -33,9 +33,11 @@ class DiagnosticView: NSViewController, WorkbenchViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-
     table?.delegate = self
     table?.dataSource = self
+	table?.tableColumns.forEach({ (column) in
+		column.headerCell.attributedStringValue =  NSAttributedString(string: column.title, attributes: [NSAttributedString.Key.font: NSFont.systemFont(ofSize: 13)])
+	})
   }
 
   override func viewDidAppear() {
