@@ -3,36 +3,18 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		D70AA4D123FC5449007367E7 /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70AA4D023FC5449007367E7 /* Plugin.swift */; };
-		D70AA4D423FC5479007367E7 /* LSPClient in Frameworks */ = {isa = PBXBuildFile; productRef = D70AA4D323FC5479007367E7 /* LSPClient */; };
-		D70AA4D523FC5479007367E7 /* LSPClient in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D70AA4D323FC5479007367E7 /* LSPClient */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		D7D4BD2323FCA6250063BD8F /* CodeEditor in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD2223FCA6250063BD8F /* CodeEditor */; };
-		D7D4BD2723FCA6A90063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD2623FCA6A90063BD8F /* NimbleCore */; };
 		D7D4BD5023FCB2010063BD8F /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = D7D4BD4F23FCB2010063BD8F /* package.yml */; };
 		D7EC136C239EF6E100DA0DA0 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7EC136A239EF6E100DA0DA0 /* Info.plist */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		D79601D323FB693D00F87B44 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 11;
-			files = (
-				D70AA4D523FC5479007367E7 /* LSPClient in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		D70AA4D023FC5449007367E7 /* Plugin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
-		D766FF23247D5A1F003646B0 /* SourceKitLSP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SourceKitLSP.framework; path = PackageFrameworks/SourceKitLSP.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D791038827010F6500148E9E /* build.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = build.xcconfig; sourceTree = "<group>"; };
 		D7D4BD4F23FCB2010063BD8F /* package.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = package.yml; sourceTree = "<group>"; };
 		D7EC1361239EF4D100DA0DA0 /* LSPClient.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LSPClient.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7EC136A239EF6E100DA0DA0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -43,9 +25,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7D4BD2323FCA6250063BD8F /* CodeEditor in Frameworks */,
-				D7D4BD2723FCA6A90063BD8F /* NimbleCore in Frameworks */,
-				D70AA4D423FC5479007367E7 /* LSPClient in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,20 +39,12 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		D766FF22247D59EA003646B0 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				D766FF23247D5A1F003646B0 /* SourceKitLSP.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		D7EC1358239EF4D100DA0DA0 = {
 			isa = PBXGroup;
 			children = (
+				D791038827010F6500148E9E /* build.xcconfig */,
 				D7EC136A239EF6E100DA0DA0 /* Info.plist */,
 				D7D4BD4F23FCB2010063BD8F /* package.yml */,
-				D766FF22247D59EA003646B0 /* Frameworks */,
 				D7EC1362239EF4D100DA0DA0 /* Products */,
 				D70AA4CF23FC5449007367E7 /* Sources */,
 			);
@@ -94,10 +65,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D7EC1367239EF4D100DA0DA0 /* Build configuration list for PBXNativeTarget "LSPClient.plugin" */;
 			buildPhases = (
+				D79103912701134D00148E9E /* ShellScript */,
 				D7EC135D239EF4D100DA0DA0 /* Sources */,
 				D7EC135E239EF4D100DA0DA0 /* Frameworks */,
 				D7EC135F239EF4D100DA0DA0 /* Resources */,
-				D79601D323FB693D00F87B44 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -105,9 +76,6 @@
 			);
 			name = LSPClient.plugin;
 			packageProductDependencies = (
-				D70AA4D323FC5479007367E7 /* LSPClient */,
-				D7D4BD2223FCA6250063BD8F /* CodeEditor */,
-				D7D4BD2623FCA6A90063BD8F /* NimbleCore */,
 			);
 			productName = LanguageServerClient;
 			productReference = D7EC1361239EF4D100DA0DA0 /* LSPClient.plugin */;
@@ -159,6 +127,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D79103912701134D00148E9E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Build plugin's SPM package\n${PROJECT_DIR}/../../build-plugin-package.sh -e _SourceKitLSP\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D7EC135D239EF4D100DA0DA0 /* Sources */ = {
@@ -283,6 +273,7 @@
 		};
 		D7EC1368239EF4D100DA0DA0 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D791038827010F6500148E9E /* build.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -294,7 +285,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.LSPClient;
 				PRODUCT_MODULE_NAME = LSPClientPlugin;
 				PRODUCT_NAME = LSPClient;
@@ -307,6 +298,7 @@
 		};
 		D7EC1369239EF4D100DA0DA0 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D791038827010F6500148E9E /* build.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
@@ -319,7 +311,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.LSPClient;
 				PRODUCT_MODULE_NAME = LSPClientPlugin;
 				PRODUCT_NAME = LSPClient;
@@ -352,21 +344,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		D70AA4D323FC5479007367E7 /* LSPClient */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = LSPClient;
-		};
-		D7D4BD2223FCA6250063BD8F /* CodeEditor */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CodeEditor;
-		};
-		D7D4BD2623FCA6A90063BD8F /* NimbleCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = NimbleCore;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D7EC1359239EF4D100DA0DA0 /* Project object */;
 }

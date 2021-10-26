@@ -19,17 +19,17 @@
 //
 
 import Foundation
-import Yams
+@_implementationOnly import Yams
 
 // MARK: - Module
 
-public protocol Module: class {
+public protocol Module: AnyObject {
   static var plugin: Plugin { get }
 }
 
 // MARK: - Plugin
 
-public protocol Plugin: class {
+public protocol Plugin: AnyObject {
   var id: String { get }
   
   func load() -> Void

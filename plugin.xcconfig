@@ -1,0 +1,24 @@
+//
+//  plugin.xcconfig
+//
+//  Created by Grigory Markin on 19.08.2021.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+#include "build.xcconfig"
+
+// Default location of a plugin package (can be overridden in a plugin build config)
+PACKAGE_DIR = $(PROJECT_DIR)/../../Packages/$(PROJECT_NAME)
+
+//PACKAGE_BUILD_DIR[arch=arm64] = $(PACKAGE_DIR)/.build/arm64-apple-macosx/$(CONFIGURATION)
+//PACKAGE_BUILD_DIR[arch=x86_64] = $(PACKAGE_DIR)/.build/x86_64-apple-macosx/$(CONFIGURATION)
+
+PACKAGE_BUILD_DIR = $(PACKAGE_DIR)/.build/x86_64-apple-macosx/$(CONFIGURATION)
+
+SWIFT_INCLUDE_PATHS = $(inherited) $(PACKAGE_BUILD_DIR)
+LIBRARY_SEARCH_PATHS = $(inherited) $(PACKAGE_BUILD_DIR)
+
+// Link each product to the NimbleCore per default
+OTHER_LDFLAGS = $(inherited) -lNimbleCore

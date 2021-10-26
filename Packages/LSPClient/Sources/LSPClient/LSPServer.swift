@@ -139,8 +139,8 @@ public final class LSPExternalServer: LSPServer {
     proc.standardOutput = pipeOut
         
     connection = JSONRPCConnection(protocol: LSPServerManager.communicationProtocol,
-                                   inFD: pipeOut.fileHandleForReading.fileDescriptor,
-                                   outFD: pipeIn.fileHandleForWriting.fileDescriptor)
+                                   inFD: pipeOut.fileHandleForReading,
+                                   outFD: pipeIn.fileHandleForWriting)
         
     client = LSPClient(connection, initializationOptions: opts)
     

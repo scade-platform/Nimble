@@ -20,8 +20,10 @@
 
 
 import Foundation
+@_implementationOnly import Yams
 
-public extension YAMLDecoder {
+
+extension YAMLDecoder {
   static func decode<T: Decodable>(from file: Path) -> T? {
     guard let content = try? String(contentsOf: file) else { return nil }
     do {

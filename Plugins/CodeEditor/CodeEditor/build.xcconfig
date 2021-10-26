@@ -10,7 +10,8 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 
-#include "../../plugin.xcconfig"
+#include "../../../plugin.xcconfig"
 
-OTHER_LDFLAGS = $(inherited) -lSwiftExtensions -lLSPClient -lBuildSystem
+PACKAGE_DIR = $(PROJECT_DIR)/../../../Packages/CodeEditor
+OTHER_LDFLAGS = $(inherited) -lCodeEditor
 

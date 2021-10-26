@@ -20,7 +20,7 @@
 
 import Cocoa
 import ColorCode
-
+@_implementationOnly import Yams
 
 public final class Theme: Decodable {
   public enum Style {

@@ -18,8 +18,8 @@
 //  limitations under the License.
 //
 
-import Yams
 import Foundation
+@_implementationOnly import Yams
 
 
 public final class Project {

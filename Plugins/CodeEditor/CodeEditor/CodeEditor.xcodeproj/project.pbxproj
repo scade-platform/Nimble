@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -33,32 +33,16 @@
 		D7D4712F23FC983E00CC9BAA /* CodeEditorDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D4711D23FC983E00CC9BAA /* CodeEditorDocument.swift */; };
 		D7D4713123FC985F00CC9BAA /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = D7D4713023FC985F00CC9BAA /* Fonts */; };
 		D7D4713323FC986A00CC9BAA /* Themes in Resources */ = {isa = PBXBuildFile; fileRef = D7D4713223FC986A00CC9BAA /* Themes */; };
-		D7D4713623FC98FB00CC9BAA /* CodeEditor in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4713523FC98FB00CC9BAA /* CodeEditor */; };
-		D7D4713723FC98FB00CC9BAA /* CodeEditor in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D7D4713523FC98FB00CC9BAA /* CodeEditor */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		D7D4BD1723FCA0F20063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD1623FCA0F20063BD8F /* NimbleCore */; };
 		E4EB0CF5255C138A0011885A /* CodeEditorTextView+Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EB0CF4255C138A0011885A /* CodeEditorTextView+Commands.swift */; };
 		E4EB0CF7255C1F0C0011885A /* NSTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4EB0CF6255C1F0C0011885A /* NSTextView.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		D741548B236C99F800A1B80C /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 11;
-			files = (
-				D7D4713723FC98FB00CC9BAA /* CodeEditor in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0C916BE726928D8B000CEAD4 /* CodeEditorTextView+Navigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorTextView+Navigation.swift"; sourceTree = "<group>"; };
 		0CA581E926FC92CF001AF85C /* CodeEditorgTextView+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorgTextView+Layout.swift"; sourceTree = "<group>"; };
 		0CF422D023B4BB90000E1921 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D741547D236C99AE00A1B80C /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D791038D27010F9F00148E9E /* build.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = build.xcconfig; sourceTree = "<group>"; };
 		D79820AD25261621000F6AD1 /* CodeEditorTextView+Formatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorTextView+Formatting.swift"; sourceTree = "<group>"; tabWidth = 2; usesTabs = 0; };
 		D79820AF252F88D1000F6AD1 /* CodeEditorSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeEditorSettings.swift; sourceTree = "<group>"; };
 		D7A538C424804E79007C25EE /* CodeEditorTextView+Snippets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodeEditorTextView+Snippets.swift"; sourceTree = "<group>"; };
@@ -91,8 +75,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7D4713623FC98FB00CC9BAA /* CodeEditor in Frameworks */,
-				D7D4BD1723FCA0F20063BD8F /* NimbleCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -112,6 +94,7 @@
 		D7D2D58022B1B48C0017B45D = {
 			isa = PBXGroup;
 			children = (
+				D791038D27010F9F00148E9E /* build.xcconfig */,
 				D741547D236C99AE00A1B80C /* Info.plist */,
 				0CF422D023B4BB90000E1921 /* Assets.xcassets */,
 				D7D2D58A22B1B48C0017B45D /* Products */,
@@ -181,10 +164,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D7D2D58F22B1B48C0017B45D /* Build configuration list for PBXNativeTarget "CodeEditor.plugin" */;
 			buildPhases = (
+				D79103942701144600148E9E /* Run Script */,
 				D7D2D58522B1B48C0017B45D /* Sources */,
 				D7D2D58622B1B48C0017B45D /* Frameworks */,
 				D7D2D58722B1B48C0017B45D /* Resources */,
-				D741548B236C99F800A1B80C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -192,8 +175,6 @@
 			);
 			name = CodeEditor.plugin;
 			packageProductDependencies = (
-				D7D4713523FC98FB00CC9BAA /* CodeEditor */,
-				D7D4BD1623FCA0F20063BD8F /* NimbleCore */,
 			);
 			productName = CodeEditor;
 			productReference = D7D2D58922B1B48C0017B45D /* CodeEditor.plugin */;
@@ -251,6 +232,29 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D79103942701144600148E9E /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Build plugin's SPM package\n${PROJECT_DIR}/../../../build-plugin-package.sh\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D7D2D58522B1B48C0017B45D /* Sources */ = {
@@ -395,6 +399,7 @@
 		};
 		D7D2D59022B1B48C0017B45D /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D791038D27010F9F00148E9E /* build.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -427,6 +432,7 @@
 		};
 		D7D2D59122B1B48C0017B45D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D791038D27010F9F00148E9E /* build.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -478,17 +484,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		D7D4713523FC98FB00CC9BAA /* CodeEditor */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CodeEditor;
-		};
-		D7D4BD1623FCA0F20063BD8F /* NimbleCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = NimbleCore;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D7D2D58122B1B48C0017B45D /* Project object */;
 }

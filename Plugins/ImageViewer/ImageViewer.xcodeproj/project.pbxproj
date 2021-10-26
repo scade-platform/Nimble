@@ -3,11 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D7D4BD4123FCADEF0063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD4023FCADEF0063BD8F /* NimbleCore */; };
 		E42DC0B922D26A7900486CC1 /* ImageViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42DC0B622D26A7900486CC1 /* ImageViewerController.swift */; };
 		E42DC0BA22D26A7900486CC1 /* ImageViewer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42DC0B722D26A7900486CC1 /* ImageViewer.swift */; };
 		E42DC0BB22D26A7900486CC1 /* ImageDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E42DC0B822D26A7900486CC1 /* ImageDocument.swift */; };
@@ -15,6 +14,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		D791038A27010F8700148E9E /* build.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = build.xcconfig; sourceTree = "<group>"; };
 		E42DC0A722D269ED00486CC1 /* ImageViewer.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ImageViewer.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42DC0AA22D269ED00486CC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E42DC0B622D26A7900486CC1 /* ImageViewerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewerController.swift; sourceTree = "<group>"; };
@@ -28,7 +28,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7D4BD4123FCADEF0063BD8F /* NimbleCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,6 +37,7 @@
 		E42DC09E22D269ED00486CC1 = {
 			isa = PBXGroup;
 			children = (
+				D791038A27010F8700148E9E /* build.xcconfig */,
 				E42DC0AA22D269ED00486CC1 /* Info.plist */,
 				E42DC0B522D26A7900486CC1 /* Sources */,
 				E42DC0A822D269ED00486CC1 /* Products */,
@@ -71,6 +71,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E42DC0AD22D269ED00486CC1 /* Build configuration list for PBXNativeTarget "ImageViewer" */;
 			buildPhases = (
+				D79103922701138900148E9E /* ShellScript */,
 				E42DC0A322D269ED00486CC1 /* Sources */,
 				E42DC0A422D269ED00486CC1 /* Frameworks */,
 				E42DC0A522D269ED00486CC1 /* Resources */,
@@ -81,7 +82,6 @@
 			);
 			name = ImageViewer;
 			packageProductDependencies = (
-				D7D4BD4023FCADEF0063BD8F /* NimbleCore */,
 			);
 			productName = ImageViewer;
 			productReference = E42DC0A722D269ED00486CC1 /* ImageViewer.plugin */;
@@ -128,6 +128,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D79103922701138900148E9E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Build plugin's SPM package\n${PROJECT_DIR}/../../build-plugin-package.sh\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E42DC0A322D269ED00486CC1 /* Sources */ = {
@@ -256,6 +278,7 @@
 		};
 		E42DC0AE22D269ED00486CC1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D791038A27010F8700148E9E /* build.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -273,6 +296,7 @@
 		};
 		E42DC0AF22D269ED00486CC1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D791038A27010F8700148E9E /* build.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -310,13 +334,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		D7D4BD4023FCADEF0063BD8F /* NimbleCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = NimbleCore;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E42DC09F22D269ED00486CC1 /* Project object */;
 }

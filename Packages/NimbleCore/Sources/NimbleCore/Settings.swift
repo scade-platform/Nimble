@@ -19,6 +19,7 @@
 //
 
 import Foundation
+@_implementationOnly import Yams
 
 //MARK: - Glogal settings
 

@@ -18,6 +18,8 @@
 //
 
 import AppKit
+
+@_implementationOnly import Yams
 @_implementationOnly import Oniguruma
 
 

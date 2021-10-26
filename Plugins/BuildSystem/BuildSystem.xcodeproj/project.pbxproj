@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,20 +13,16 @@
 		0CCDB14424580CB700A83CEC /* ToolbarTargetControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CCDB14224580CB700A83CEC /* ToolbarTargetControl.swift */; };
 		0CCDB14524580CB700A83CEC /* ToolbarTargetControl.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CCDB14324580CB700A83CEC /* ToolbarTargetControl.xib */; };
 		D7BD82DC245319780058815F /* Commands.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BD82DB245319780058815F /* Commands.swift */; };
-		D7D0FFE02471CB62001A0EFC /* BuildSystem in Frameworks */ = {isa = PBXBuildFile; productRef = D7D0FFDF2471CB62001A0EFC /* BuildSystem */; };
-		D7D0FFE22471CB62001A0EFC /* BuildSystem in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D7D0FFDF2471CB62001A0EFC /* BuildSystem */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		D7D4BD4623FCAE130063BD8F /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7D4BD4523FCAE130063BD8F /* NimbleCore */; };
 		D7F156AA244767FD00AFBE67 /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = D7F156A9244767FD00AFBE67 /* package.yml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		D7D0FFE12471CB62001A0EFC /* Embed Frameworks */ = {
+		D79103A12707032300148E9E /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
-			dstSubfolderSpec = 11;
+			dstSubfolderSpec = 10;
 			files = (
-				D7D0FFE22471CB62001A0EFC /* BuildSystem in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -41,6 +37,7 @@
 		0C92E52723950E3E00B073DE /* Plugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
 		0CCDB14224580CB700A83CEC /* ToolbarTargetControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToolbarTargetControl.swift; sourceTree = "<group>"; };
 		0CCDB14324580CB700A83CEC /* ToolbarTargetControl.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ToolbarTargetControl.xib; sourceTree = "<group>"; };
+		D791038F27010FAB00148E9E /* build.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = build.xcconfig; sourceTree = "<group>"; };
 		D7BD82DB245319780058815F /* Commands.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Commands.swift; sourceTree = "<group>"; };
 		D7F156A9244767FD00AFBE67 /* package.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = package.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -50,8 +47,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7D4BD4623FCAE130063BD8F /* NimbleCore in Frameworks */,
-				D7D0FFE02471CB62001A0EFC /* BuildSystem in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -68,6 +63,7 @@
 		0C92E50F23950DEE00B073DE = {
 			isa = PBXGroup;
 			children = (
+				D791038F27010FAB00148E9E /* build.xcconfig */,
 				0C92E51B23950DEE00B073DE /* Info.plist */,
 				0C0809FF23E433E500E78444 /* Assets.xcassets */,
 				D7F156A9244767FD00AFBE67 /* package.yml */,
@@ -112,10 +108,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0C92E51E23950DEE00B073DE /* Build configuration list for PBXNativeTarget "BuildSystem.plugin" */;
 			buildPhases = (
+				D79103952701148200148E9E /* ShellScript */,
 				0C92E51423950DEE00B073DE /* Sources */,
 				0C92E51523950DEE00B073DE /* Frameworks */,
 				0C92E51623950DEE00B073DE /* Resources */,
-				D7D0FFE12471CB62001A0EFC /* Embed Frameworks */,
+				D79103A12707032300148E9E /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -123,8 +120,6 @@
 			);
 			name = BuildSystem.plugin;
 			packageProductDependencies = (
-				D7D4BD4523FCAE130063BD8F /* NimbleCore */,
-				D7D0FFDF2471CB62001A0EFC /* BuildSystem */,
 			);
 			productName = BuildSystem;
 			productReference = 0C92E51823950DEE00B073DE /* BuildSystem.plugin */;
@@ -174,6 +169,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D79103952701148200148E9E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Build plugin's SPM package\n${PROJECT_DIR}/../../build-plugin-package.sh\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0C92E51423950DEE00B073DE /* Sources */ = {
@@ -301,6 +318,7 @@
 		};
 		0C92E51F23950DEE00B073DE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D791038F27010FAB00148E9E /* build.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
@@ -326,6 +344,7 @@
 		};
 		0C92E52023950DEE00B073DE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D791038F27010FAB00148E9E /* build.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -368,17 +387,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		D7D0FFDF2471CB62001A0EFC /* BuildSystem */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = BuildSystem;
-		};
-		D7D4BD4523FCAE130063BD8F /* NimbleCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = NimbleCore;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0C92E51023950DEE00B073DE /* Project object */;
 }

@@ -9,26 +9,9 @@
 /* Begin PBXBuildFile section */
 		0CB6F12224FFE0DD00960EDA /* SPMWizardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CB6F12124FFE0DD00960EDA /* SPMWizardView.xib */; };
 		D778B8CA24769E7200F93860 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7EC1376239EFC6D00DA0DA0 /* Info.plist */; };
-		D791748C26FA86FA00935C9F /* SPMBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D766FF28247D6728003646B0 /* SPMBuildSystem.swift */; };
-		D791748D26FA86FD00935C9F /* SPMWizard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6F11D24FFDA4000960EDA /* SPMWizard.swift */; };
-		D791748E26FA870000935C9F /* SPMWizardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6F12324FFE10100960EDA /* SPMWizardView.swift */; };
-		D791748F26FA870300935C9F /* SwiftBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D766FF26247D6727003646B0 /* SwiftBuildSystem.swift */; };
 		D7BEC81722B915D100A8F48B /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEC81622B915D100A8F48B /* Plugin.swift */; };
 		D7D4BD4E23FCAFEC0063BD8F /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = D7D4BD4D23FCAFEC0063BD8F /* package.yml */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		D791748B26FA5B5300935C9F /* Embed Libraries */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Embed Libraries";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0CB6F11D24FFDA4000960EDA /* SPMWizard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPMWizard.swift; sourceTree = "<group>"; };
@@ -56,13 +39,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D791748226FA350600935C9F /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		D79820C325365CBD000F6AD1 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -81,7 +57,6 @@
 				D7BEC80D22B9158B00A8F48B /* Products */,
 				D7EC1388239F0D6200DA0DA0 /* Resources */,
 				D7BEC81522B915BB00A8F48B /* Sources */,
-				D791748226FA350600935C9F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -125,7 +100,6 @@
 				D7BEC80822B9158B00A8F48B /* Sources */,
 				D7BEC80922B9158B00A8F48B /* Frameworks */,
 				D7BEC80A22B9158B00A8F48B /* Resources */,
-				D791748B26FA5B5300935C9F /* Embed Libraries */,
 			);
 			buildRules = (
 			);
@@ -202,7 +176,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Build plugin's SPM package\n${PROJECT_DIR}/../../build-plugin-package.sh -e SwiftPM -e SourceKitLSP\n\n";
+			shellScript = "# Build plugin's SPM package\n${PROJECT_DIR}/../../build-plugin-package.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -211,10 +185,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D791748D26FA86FD00935C9F /* SPMWizard.swift in Sources */,
-				D791748C26FA86FA00935C9F /* SPMBuildSystem.swift in Sources */,
-				D791748F26FA870300935C9F /* SwiftBuildSystem.swift in Sources */,
-				D791748E26FA870000935C9F /* SPMWizardView.swift in Sources */,
 				D7BEC81722B915D100A8F48B /* Plugin.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

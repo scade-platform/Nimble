@@ -12,5 +12,5 @@
 
 #include "../../plugin.xcconfig"
 
-OTHER_LDFLAGS = $(inherited) -lSwiftExtensions -lLSPClient -lBuildSystem
+OTHER_LDFLAGS = $(inherited) -lBuildSystem
 

@@ -3,14 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		D71E1BCB241ED6A300711B5A /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D71E1BC9241ED6A300711B5A /* Info.plist */; };
 		D71E1CF7241ED6DF00711B5A /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = D71E1CF6241ED6DF00711B5A /* Icons */; };
 		D71E1CF9241ED6F600711B5A /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71E1CF8241ED6F600711B5A /* Plugin.swift */; };
-		D71E1CFE241ED81700711B5A /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D71E1CFD241ED81700711B5A /* NimbleCore */; };
 		D71E1D0E241FF61A00711B5A /* Provider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71E1D0D241FF61A00711B5A /* Provider.swift */; };
 /* End PBXBuildFile section */
 
@@ -20,6 +19,7 @@
 		D71E1CF6241ED6DF00711B5A /* Icons */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Icons; sourceTree = "<group>"; };
 		D71E1CF8241ED6F600711B5A /* Plugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
 		D71E1D0D241FF61A00711B5A /* Provider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Provider.swift; sourceTree = "<group>"; };
+		D791038B27010F9500148E9E /* build.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = build.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,7 +27,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D71E1CFE241ED81700711B5A /* NimbleCore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -37,11 +36,11 @@
 		D71E1BAA241ED3E600711B5A = {
 			isa = PBXGroup;
 			children = (
+				D791038B27010F9500148E9E /* build.xcconfig */,
 				D71E1CF6241ED6DF00711B5A /* Icons */,
 				D71E1BC9241ED6A300711B5A /* Info.plist */,
 				D71E1BB4241ED3E600711B5A /* Products */,
 				D71E1BCD241ED6BF00711B5A /* Sources */,
-				D71E1CFC241ED81700711B5A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -62,13 +61,6 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		D71E1CFC241ED81700711B5A /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -76,6 +68,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D71E1BB9241ED3E600711B5A /* Build configuration list for PBXNativeTarget "FileIcons" */;
 			buildPhases = (
+				D7910393270113D400148E9E /* ShellScript */,
 				D71E1BAF241ED3E600711B5A /* Sources */,
 				D71E1BB0241ED3E600711B5A /* Frameworks */,
 				D71E1BB1241ED3E600711B5A /* Resources */,
@@ -86,7 +79,6 @@
 			);
 			name = FileIcons;
 			packageProductDependencies = (
-				D71E1CFD241ED81700711B5A /* NimbleCore */,
 			);
 			productName = AFileIcon;
 			productReference = D71E1BB3241ED3E600711B5A /* FileIcons.plugin */;
@@ -136,6 +128,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D7910393270113D400148E9E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Build plugin's SPM package\n${PROJECT_DIR}/../../build-plugin-package.sh\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D71E1BAF241ED3E600711B5A /* Sources */ = {
@@ -261,6 +275,7 @@
 		};
 		D71E1BBA241ED3E600711B5A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D791038B27010F9500148E9E /* build.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
@@ -285,6 +300,7 @@
 		};
 		D71E1BBB241ED3E600711B5A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D791038B27010F9500148E9E /* build.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Manual;
@@ -328,13 +344,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		D71E1CFD241ED81700711B5A /* NimbleCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = NimbleCore;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D71E1BAB241ED3E600711B5A /* Project object */;
 }

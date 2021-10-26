@@ -11,7 +11,7 @@ let package = Package(
     .library(name: "BuildSystem", type: .dynamic, targets: ["BuildSystem"]),
   ],
   dependencies: [
-    .package(path: "../../NimbleCore"),
+    .package(path: "../NimbleCore"),
   ],
   targets: [
     .target(
