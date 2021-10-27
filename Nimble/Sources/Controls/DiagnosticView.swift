@@ -38,6 +38,9 @@ class DiagnosticView: NSViewController, WorkbenchViewController {
 	table?.tableColumns.forEach({ (column) in
 		column.headerCell.attributedStringValue =  NSAttributedString(string: column.title, attributes: [NSAttributedString.Key.font: NSFont.systemFont(ofSize: 13)])
 	})
+	if #available(macOS 11, *) {
+		table?.style = .plain
+	}
   }
 
   override func viewDidAppear() {
