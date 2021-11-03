@@ -1,6 +1,6 @@
 //
-//  nimble.xcconfig
-//  Scade
+//  build.xcconfig
+//  Nimble
 //
 //  Created by Grigory Markin on 26.09.21.
 //  Copyright © 2021 SCADE. All rights reserved.
@@ -8,3 +8,7 @@
 
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
+
+#include "../plugin.xcconfig"
+
+PACKAGE_DIR = $(PROJECT_DIR)/../Packages/NimbleCore

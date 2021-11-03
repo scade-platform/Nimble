@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		0CB6F12224FFE0DD00960EDA /* SPMWizardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CB6F12124FFE0DD00960EDA /* SPMWizardView.xib */; };
+		D73E894827333F6200EA473C /* SPMWizard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6F11D24FFDA4000960EDA /* SPMWizard.swift */; };
+		D73E894927333F6900EA473C /* SwiftBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D766FF26247D6727003646B0 /* SwiftBuildSystem.swift */; };
+		D73E894A27333F6E00EA473C /* SPMBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D766FF28247D6728003646B0 /* SPMBuildSystem.swift */; };
+		D73E894B27333F7400EA473C /* SPMWizardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6F12324FFE10100960EDA /* SPMWizardView.swift */; };
 		D778B8CA24769E7200F93860 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7EC1376239EFC6D00DA0DA0 /* Info.plist */; };
 		D7BEC81722B915D100A8F48B /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEC81622B915D100A8F48B /* Plugin.swift */; };
 		D7D4BD4E23FCAFEC0063BD8F /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = D7D4BD4D23FCAFEC0063BD8F /* package.yml */; };
@@ -185,7 +189,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D73E894A27333F6E00EA473C /* SPMBuildSystem.swift in Sources */,
 				D7BEC81722B915D100A8F48B /* Plugin.swift in Sources */,
+				D73E894B27333F7400EA473C /* SPMWizardView.swift in Sources */,
+				D73E894827333F6200EA473C /* SPMWizard.swift in Sources */,
+				D73E894927333F6900EA473C /* SwiftBuildSystem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

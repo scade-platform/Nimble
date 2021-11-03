@@ -31,7 +31,7 @@ import LanguageServerProtocol
 
 @_implementationOnly import SKCore
 @_implementationOnly import SKSupport
-@_implementationOnly import SourceKit
+@_implementationOnly import SourceKitLSP
 @_implementationOnly import TSCBasic
 @_implementationOnly import TSCLibc
 @_implementationOnly import TSCUtility
@@ -112,8 +112,8 @@ public final class SKLocalServer: LSPServer {
     serverConnection.start(handler: server)
     clientConnection.start(handler: client)
         
-    Logger.shared.disableNSLog = true
-    Logger.shared.disableOSLog = true
+    // Logger.shared.disableNSLog = true
+    // Logger.shared.disableOSLog = true
     
     Logger.shared.setLogLevel("warning")
     Logger.shared.addLogHandler { [weak self] message, logLevel in

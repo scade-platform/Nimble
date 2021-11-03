@@ -26,7 +26,7 @@
          location = "group:Plugins/LSPClient/LSPClient.xcodeproj">
       </FileRef>
       <FileRef
-         location = "group:Plugins/ProjectNavigator/ProjectNavigator/ProjectNavigator.xcodeproj">
+         location = "group:Plugins/ProjectNavigator/ProjectNavigator.xcodeproj">
       </FileRef>
       <FileRef
          location = "group:Plugins/SwiftExtensions/SwiftExtensions.xcodeproj">
@@ -35,6 +35,15 @@
    <Group
       location = "container:"
       name = "Packages">
+      <FileRef
+         location = "group:Packages/FileIcons">
+      </FileRef>
+      <FileRef
+         location = "group:Packages/ProjectNavigator">
+      </FileRef>
+      <FileRef
+         location = "group:Packages/ImageViewer">
+      </FileRef>
       <FileRef
          location = "group:Packages/SwiftExtensions">
       </FileRef>

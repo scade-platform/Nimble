@@ -98,10 +98,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D7CBF8CE222ACD770088715C"
-               BuildableName = "ProjectNavigator.plugin"
-               BlueprintName = "ProjectNavigator"
-               ReferencedContainer = "container:../Plugins/ProjectNavigator/ProjectNavigator/ProjectNavigator.xcodeproj">
+               BlueprintIdentifier = "D7BEC80B22B9158B00A8F48B"
+               BuildableName = "SwiftExtensions.plugin"
+               BlueprintName = "SwiftExtensions.plugin"
+               ReferencedContainer = "container:../Plugins/SwiftExtensions/SwiftExtensions.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -112,10 +112,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D7BEC80B22B9158B00A8F48B"
-               BuildableName = "SwiftExtensions.plugin"
-               BlueprintName = "SwiftExtensions.plugin"
-               ReferencedContainer = "container:../Plugins/SwiftExtensions/SwiftExtensions.xcodeproj">
+               BlueprintIdentifier = "D7CBF8CE222ACD770088715C"
+               BuildableName = "ProjectNavigator.plugin"
+               BlueprintName = "ProjectNavigator"
+               ReferencedContainer = "container:../Plugins/ProjectNavigator/ProjectNavigator.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry

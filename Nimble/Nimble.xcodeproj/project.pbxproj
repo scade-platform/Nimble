@@ -40,6 +40,7 @@
 		D724C5F4237C418B00E80958 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5ED237C418B00E80958 /* DebugView.swift */; };
 		D72F959C222DF2D9009F2EC3 /* WorkbenchSidebar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */; };
 		D72F959F222DF7AF009F2EC3 /* WorkbenchSidebar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72F959E222DF7AF009F2EC3 /* WorkbenchSidebar.swift */; };
+		D73E89472733035200EA473C /* build.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = D73E89462733035200EA473C /* build.xcconfig */; };
 		D73FA62424004D31001DB4C3 /* Ansi in Frameworks */ = {isa = PBXBuildFile; productRef = D73FA62324004D31001DB4C3 /* Ansi */; };
 		D73FA62524004D31001DB4C3 /* Ansi in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D73FA62324004D31001DB4C3 /* Ansi */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D77AAF0925011AC300C63C19 /* NimbleSidebarArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77AAF0825011AC300C63C19 /* NimbleSidebarArea.swift */; };
@@ -50,10 +51,8 @@
 		D788ED452239C2750072C21E /* NimbleWorkbench.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */; };
 		D78FFF1924255CE100EB70E2 /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = D78FFF1824255CE100EB70E2 /* Icons */; };
 		D79BE0BD2385AD4000D96619 /* NimbleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6607722F41D1500CBB386 /* NimbleController.swift */; };
-		D7C9528823FC3AF400AE7E5D /* NimbleCore in Frameworks */ = {isa = PBXBuildFile; productRef = D7C9528723FC3AF400AE7E5D /* NimbleCore */; };
-		D7C9528923FC3AF400AE7E5D /* NimbleCore in Embed Frameworks */ = {isa = PBXBuildFile; productRef = D7C9528723FC3AF400AE7E5D /* NimbleCore */; };
 		D7CBF7D6222878F40088715C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D4222878F40088715C /* Main.storyboard */; };
-		D7D46163238ED16B0090FC34 /* KPCTabsControl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		D7D46163238ED16B0090FC34 /* KPCTabsControl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D7D461652390083C0090FC34 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D461642390083C0090FC34 /* Document.swift */; };
 		D7F156972442079A00AFBE67 /* WorkbenchSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F156962442079A00AFBE67 /* WorkbenchSettings.swift */; };
 		D7F156AD244C93EE00AFBE67 /* Command+Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F156AC244C93EE00AFBE67 /* Command+Menu.swift */; };
@@ -93,7 +92,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				D7C9528923FC3AF400AE7E5D /* NimbleCore in Embed Frameworks */,
 				D73FA62524004D31001DB4C3 /* Ansi in Embed Frameworks */,
 				D7D46163238ED16B0090FC34 /* KPCTabsControl.framework in Embed Frameworks */,
 			);
@@ -136,6 +134,7 @@
 		D724C5ED237C418B00E80958 /* DebugView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
 		D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkbenchSidebar.xib; sourceTree = "<group>"; };
 		D72F959E222DF7AF009F2EC3 /* WorkbenchSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchSidebar.swift; sourceTree = "<group>"; };
+		D73E89462733035200EA473C /* build.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = build.xcconfig; sourceTree = "<group>"; };
 		D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KPCTabsControl.xcodeproj; path = Dependencies/KPCTabsControl/KPCTabsControl.xcodeproj; sourceTree = "<group>"; };
 		D77AAF0825011AC300C63C19 /* NimbleSidebarArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleSidebarArea.swift; sourceTree = "<group>"; };
 		D77AAF0D2501674800C63C19 /* DiagnosticView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiagnosticView.xib; sourceTree = "<group>"; };
@@ -162,7 +161,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0CCD455325D6BEE0000923E3 /* KPCTabsControl.framework in Frameworks */,
-				D7C9528823FC3AF400AE7E5D /* NimbleCore in Frameworks */,
 				D73FA62424004D31001DB4C3 /* Ansi in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -251,6 +249,7 @@
 		D7CBF7C2222878F10088715C = {
 			isa = PBXGroup;
 			children = (
+				D73E89462733035200EA473C /* build.xcconfig */,
 				D7CBF7CD222878F10088715C /* Nimble */,
 				D7CBF8AE2229268C0088715C /* Sources */,
 				D7CBF7CC222878F10088715C /* Products */,
@@ -324,6 +323,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D7CBF7E6222878F40088715C /* Build configuration list for PBXNativeTarget "Nimble" */;
 			buildPhases = (
+				D7E1DBAF2732FC6300693667 /* ShellScript */,
 				D7CBF7C7222878F10088715C /* Sources */,
 				D7CBF7C8222878F10088715C /* Frameworks */,
 				D7CBF7C9222878F10088715C /* Resources */,
@@ -336,7 +336,6 @@
 			);
 			name = Nimble;
 			packageProductDependencies = (
-				D7C9528723FC3AF400AE7E5D /* NimbleCore */,
 				D73FA62324004D31001DB4C3 /* Ansi */,
 			);
 			productName = Nimble;
@@ -425,6 +424,7 @@
 				0CB6F11524FE46B800960EDA /* WizardView.xib in Resources */,
 				D77AAF122508143A00C63C19 /* DiagnosticStatusBar.xib in Resources */,
 				D72F959C222DF2D9009F2EC3 /* WorkbenchSidebar.xib in Resources */,
+				D73E89472733035200EA473C /* build.xcconfig in Resources */,
 				D78FFF1924255CE100EB70E2 /* Icons in Resources */,
 				D7CBF7D6222878F40088715C /* Main.storyboard in Resources */,
 				D724C5F3237C418B00E80958 /* ConsoleView.xib in Resources */,
@@ -456,6 +456,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# Copy all plugins into the app's Plugin folder\nPLUGINS_DIR=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/Contents/Plugins\n\nmkdir -p ${PLUGINS_DIR}\nrm -rf ${PLUGINS_DIR}/*\n\n# Copy all *.plugin files \nfor i in `find ${BUILT_PRODUCTS_DIR} -name \"*.plugin\" -type d`; do\n  PLUGIN_NAME=`basename \"$i\"` \n  ditto $i $PLUGINS_DIR/$PLUGIN_NAME\ndone\n";
+		};
+		D7E1DBAF2732FC6300693667 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Build core SPM package\n${PROJECT_DIR}/../build-plugin-package.sh -e NimbleCore\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -633,10 +650,11 @@
 		};
 		D7CBF7E7222878F40088715C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D73E89462733035200EA473C /* build.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Nimble/Nimble.entitlements;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
@@ -659,10 +677,11 @@
 		};
 		D7CBF7E8222878F40088715C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D73E89462733035200EA473C /* build.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Nimble/Nimble.entitlements;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
@@ -722,10 +741,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D73FA62224004D31001DB4C3 /* XCRemoteSwiftPackageReference "Ansi" */;
 			productName = Ansi;
-		};
-		D7C9528723FC3AF400AE7E5D /* NimbleCore */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = NimbleCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
