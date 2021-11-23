@@ -23,7 +23,7 @@ import NimbleCore
 
 // MARK: - BuildSystem base protocol
 
-public protocol BuildSystem : class {
+public protocol BuildSystem: AnyObject {
   var name: String { get }
 
   func run(_ variant: Variant)
@@ -167,7 +167,7 @@ public class BuildSystemsManager {
 
 // MARK: - BuildSystemsObserver
 
-public protocol BuildSystemsObserver : class {
+public protocol BuildSystemsObserver : AnyObject {
   func buildSystemDidRegister(_ buildSystem: BuildSystem)
   func activeBuildSystemDidChange(_ buildSystem: BuildSystem?, deactivatedBuildSystem: BuildSystem?)
   func availableTargetsDidChange(_ workbench: Workbench)

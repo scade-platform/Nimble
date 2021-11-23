@@ -21,7 +21,7 @@
 import Foundation
 import NimbleCore
 
-public protocol Target : class {
+public protocol Target: AnyObject {
   var name: String { get }
 
   var icon: Icon? { get }

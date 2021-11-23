@@ -177,7 +177,7 @@ fileprivate struct ProjectFolder: Equatable {
 }
 
 
-public protocol ProjectObserver: class {
+public protocol ProjectObserver: AnyObject {
   func projectFoldersDidChange(_: Project)
 }
 

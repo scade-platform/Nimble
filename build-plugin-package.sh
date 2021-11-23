@@ -25,19 +25,28 @@ else
 fi
 
 
-swift build --product $PACKAGE_NAME --configuration $CONFIGURATION
-
+#swift build --product $PACKAGE_NAME --configuration $CONFIGURATION
+swift build --configuration $CONFIGURATION
 
 # Embed libraries
 INSTALL_DIR="${BUILT_PRODUCT_CONTENTS_DIR}/Frameworks"
-mkdir -p $INSTALL_DIR
+INSTALL_RESOURCES_DIR="${BUILT_PRODUCT_CONTENTS_DIR}/Resources"
 
-function embed_package {
+mkdir -p $INSTALL_DIR
+mkdir -p $INSTALL_RESOURCES_DIR
+
+function embed_package {    
     local LIB_NAME="lib${1}.dylib"
     local LIB_PATH="${PACKAGE_BUILD_DIR}/${LIB_NAME}"
-    if [ -f "${LIB_PATH}" ]; then
+    if [ -f ${LIB_PATH} ]; then
         cp ${LIB_PATH} ${INSTALL_DIR}
         /usr/bin/codesign --force --sign "${CODE_SIGN_IDENTITY}" "${INSTALL_DIR}/${LIB_NAME}"
+    fi
+    
+    # Copy target resources to the plugin directory
+    local BUNDLE_PATH="${PACKAGE_BUILD_DIR}/${PACKAGE_NAME}_${1}.bundle"
+    if [ -d ${BUNDLE_PATH} ]; then
+        cp -R ${BUNDLE_PATH}/* ${INSTALL_RESOURCES_DIR}/
     fi
 }
 

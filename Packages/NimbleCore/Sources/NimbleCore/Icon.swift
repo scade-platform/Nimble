@@ -177,7 +177,7 @@ public extension IconsManager {
 
 // MARK: - IconsProvider
 
-public protocol IconsProvider: class {
+public protocol IconsProvider: AnyObject {
   func icon<T>(for obj: T) -> Icon?
 }
 

@@ -25,7 +25,7 @@ public enum LanguageServiceFeature {
   case completion, format
 }
 
-public protocol LanguageService: class {
+public protocol LanguageService: AnyObject {
   var supportedFeatures: [LanguageServiceFeature] { get }
 
   func complete(in: SourceCodeDocument,

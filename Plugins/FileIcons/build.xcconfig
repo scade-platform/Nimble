@@ -12,5 +12,5 @@
 
 #include "../../plugin.xcconfig"
 
-OTHER_LDFLAGS = $(inherited)
+OTHER_LDFLAGS = $(inherited) -lFileIcons
 

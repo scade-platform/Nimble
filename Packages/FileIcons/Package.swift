@@ -5,11 +5,11 @@ import PackageDescription
 let package = Package(
     name: "FileIcons",
     platforms: [
-        .macOS(.v10_14),
+        .macOS(.v10_15),
     ],
     products: [
         // Make it dynamic if you want to share code with other plugins
-        .library(name: "FileIcons", targets: ["FileIcons"]),
+      .library(name: "FileIcons", type: .static, targets: ["FileIcons"]),
     ],
     dependencies: [
       .package(path: "../NimbleCore")

@@ -22,7 +22,7 @@ import Cocoa
 
 // MARK: - Workbench
 
-public protocol Workbench: class {
+public protocol Workbench: AnyObject {
   var project: Project? { get }
   
   var documents: [Document] { get }
@@ -111,7 +111,7 @@ public extension Workbench {
   }
 }
 
-public protocol WorkbenchObserver: class {
+public protocol WorkbenchObserver: AnyObject {
   func workbenchWillChangeProject(_ workbench: Workbench)
   func workbenchDidChangeProject(_ workbench: Workbench)
   func workbenchDidOpenDocument(_ workbench: Workbench, document: Document)
@@ -135,7 +135,7 @@ public extension WorkbenchObserver {
 
 // MARK: - Area
 
-public protocol WorkbenchArea: class {
+public protocol WorkbenchArea: AnyObject {
   var parts: [WorkbenchPart] { get }
   var isHidden: Bool { get set }
 
@@ -152,7 +152,7 @@ public extension WorkbenchArea {
 
 // MARK: - Part
 
-public protocol WorkbenchPart: class {
+public protocol WorkbenchPart: AnyObject {
   var view: NSView { get }
   var title: String? { get }
   var icon: NSImage? { get }
@@ -171,7 +171,7 @@ public extension WorkbenchPart {
 
 // MARK: - StatusBar
 
-public protocol WorkbenchStatusBar: class {
+public protocol WorkbenchStatusBar: AnyObject {
   var leftBar : [WorkbenchStatusBarItem] { get set }
   var rightBar: [WorkbenchStatusBarItem] { get set }
 
@@ -186,7 +186,7 @@ public protocol WorkbenchStatusBarItem { }
 
 // MARK: - Tasks and processes
 
-public protocol WorkbenchTask: class {
+public protocol WorkbenchTask: AnyObject {
   var observers: ObserverSet<WorkbenchTaskObserver> { get set }
   var isRunning: Bool { get }
 

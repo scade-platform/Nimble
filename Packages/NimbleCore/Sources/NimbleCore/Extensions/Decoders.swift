@@ -65,3 +65,27 @@ public extension JSONDecoder {
     }
   }
 }
+
+// ---------------------------------------------------------------------
+
+public struct Decoders {
+  private init() {}
+
+  public static func decode<T: Decodable>(from file: Path) -> T? {
+    switch file.extension {
+      case "yml":
+        return YAMLDecoder.decode(from: file)
+      case "json":
+        return JSONDecoder.decode(from: file)
+      case "plist":
+        return PropertyListDecoder.decode(from: file)
+      default:
+        return nil
+    }
+  }
+
+  public static func decode<T: Decodable>(from url: URL) -> T? {
+    guard let path = Path(url: url) else { return nil }
+    return self.decode(from: path)
+  }
+}

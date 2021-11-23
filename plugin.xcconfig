@@ -19,6 +19,10 @@ PACKAGE_BUILD_DIR = $(PACKAGE_DIR)/.build/x86_64-apple-macosx/$(CONFIGURATION)
 
 SWIFT_INCLUDE_PATHS = $(inherited) $(PACKAGE_BUILD_DIR)
 LIBRARY_SEARCH_PATHS = $(inherited) $(PACKAGE_BUILD_DIR)
+FRAMEWORK_SEARCH_PATHS = $(inherited) $(PACKAGE_BUILD_DIR)
+
+// Install RPATH for each plugin to point to the embedded Frameworks folder
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/../Frameworks @loader_path/../Frameworks
 
 // Link each product to the NimbleCore per default
 OTHER_LDFLAGS = $(inherited) -lNimbleCore

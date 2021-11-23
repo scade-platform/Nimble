@@ -56,7 +56,7 @@ open class XibView: NSView, NibLoadable {
 }
 
 
-public protocol NibLoadable: class {
+public protocol NibLoadable: AnyObject {
   var nibName: String? { get }
   var nibBundle: Bundle { get }
 }
