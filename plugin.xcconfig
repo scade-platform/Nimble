@@ -9,17 +9,25 @@
 
 #include "build.xcconfig"
 
+///////////////////////////////////////
+// build-plugin-package.sh variables //
+///////////////////////////////////////
+
 // Default location of a plugin package (can be overridden in a plugin build config)
 PACKAGE_DIR = $(PROJECT_DIR)/../../Packages/$(PROJECT_NAME)
+PACKAGE_BUILD_DIR = $(PROJECT_TEMP_DIR)/Packages
 
-//PACKAGE_BUILD_DIR[arch=arm64] = $(PACKAGE_DIR)/.build/arm64-apple-macosx/$(CONFIGURATION)
-//PACKAGE_BUILD_DIR[arch=x86_64] = $(PACKAGE_DIR)/.build/x86_64-apple-macosx/$(CONFIGURATION)
+// Use workspace Xcode cache
+PACKAGES_CACHE_DIR = $(OBJROOT)/../../SourcePackages
 
-PACKAGE_BUILD_DIR = $(PACKAGE_DIR)/.build/x86_64-apple-macosx/$(CONFIGURATION)
 
-SWIFT_INCLUDE_PATHS = $(inherited) $(PACKAGE_BUILD_DIR)
-LIBRARY_SEARCH_PATHS = $(inherited) $(PACKAGE_BUILD_DIR)
-FRAMEWORK_SEARCH_PATHS = $(inherited) $(PACKAGE_BUILD_DIR)
+/////////////////////
+// Xcode variables //
+/////////////////////
+
+SWIFT_INCLUDE_PATHS = $(inherited) $(PACKAGE_BUILD_DIR)/$(CONFIGURATION)
+LIBRARY_SEARCH_PATHS = $(inherited) $(PACKAGE_BUILD_DIR)/$(CONFIGURATION)
+FRAMEWORK_SEARCH_PATHS = $(inherited) $(PACKAGE_BUILD_DIR)/$(CONFIGURATION)
 
 // Install RPATH for each plugin to point to the embedded Frameworks folder
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/../Frameworks @loader_path/../Frameworks
