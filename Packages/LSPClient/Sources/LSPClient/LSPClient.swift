@@ -37,7 +37,7 @@ public final class LSPClient {
 
   private(set) var state: State = .ready
 
-  public private(set) var workspaceFolders: [URL] = []
+  public private(set) var workspaceFolders: [Folder] = []
 
   public private(set) var openedDocuments: [ObjectIdentifier: SourceCodeDocumentRef] = [:]
 
@@ -58,7 +58,7 @@ public final class LSPClient {
     // the first folder as the root folder per default
     guard state == .ready else { return }
 
-    self.workspaceFolders = workspaceFolders
+		self.workspaceFolders = workspaceFolders.compactMap { Folder(url: $0) }
 
     var rootURI: DocumentURI? = nil
     if let rootURL = workspaceFolders.first {

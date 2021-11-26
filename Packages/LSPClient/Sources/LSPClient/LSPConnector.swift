@@ -72,8 +72,16 @@ public final class LSPConnector {
       }
     }
 
+		observeWorkspaceFolders(for: server.client)
+
     return server
   }
+
+	private func observeWorkspaceFolders(for client: LSPClient) {
+		for folder in client.workspaceFolders {
+			folder.observers.add(observer: self)
+		}
+	}
   
   private func findServer(for doc: SourceCodeDocument) -> (LSPServer?, Folder?) {
     guard let proj = workbench?.project,
@@ -91,11 +99,31 @@ public final class LSPConnector {
     }
 
     let runningServer = runningServers[doc.languageId]?.first {
-      $0.client.workspaceFolders.contains(folder.path.url)
+			$0.client.workspaceFolders.map{$0.url}.contains(folder.path.url)
     }
 
     return (runningServer, folder)
   }
+
+	private func restart(server: LSPServer, lang: String) {
+		guard let workbench = workbench else { return }
+		// Store current context
+		let workspaceFoldersURL = server.client.workspaceFolders.map{$0.url}
+
+		// Stop the servers
+		server.stop()
+		self.runningServers[lang]?.removeAll{ $0 === server }
+
+		// Restart with the previous context
+		if let server = self.createServer(for: lang, workspaceFolders: workspaceFoldersURL) {
+			workbench.documents.compactMap {$0 as? SourceCodeDocument}.forEach { doc in
+				guard let docPath = doc.fileURL?.absoluteString,
+							workspaceFoldersURL.contains(where: {folderUrl in docPath.hasPrefix(folderUrl.absoluteString)}) else { return }
+
+				server.client.openDocument(doc: doc)
+			}
+		}
+	}
 }
 
 
@@ -157,23 +185,21 @@ extension LSPConnector: BuildSystemsObserver {
         // Check if the server should be restarted for the provided variant
         guard server.shouldRestart(for: variant) else { return }
 
-        // Store current context
-        let workspaceFolders = server.client.workspaceFolders
-
-        // Stop the servers
-        server.stop()
-        self.runningServers[lang]?.removeAll{ $0 === server }
-
-        // Restart with the previous context
-        if let server = self.createServer(for: lang, workspaceFolders: workspaceFolders) {
-          workbench.documents.compactMap {$0 as? SourceCodeDocument}.forEach { doc in
-            guard let docPath = doc.fileURL?.absoluteString,
-                  workspaceFolders.contains(where: {folderUrl in docPath.hasPrefix(folderUrl.absoluteString)}) else { return }
-
-            server.client.openDocument(doc: doc)
-          }
-        }
+				restart(server: server, lang: lang)
       }
     }
   }
+}
+
+extension LSPConnector : FolderObserver {
+	public func childDidChange(_ folder: Folder, child: Path) {
+		for (lang, servers) in self.runningServers {
+			servers.forEach { server in
+				guard !DocumentManager.shared.documentIsOpen(path: child) else { return }
+				let shouldRestart = server.client.workspaceFolders.contains{ $0 == folder } && !child.string.contains(".build")
+				guard shouldRestart else { return }
+				restart(server: server, lang: lang)
+			}
+		}
+	}
 }
