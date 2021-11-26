@@ -249,6 +249,14 @@ public class DocumentManager {
     
     return docRef?.ref.value as? Document
   }
+
+	public func documentIsOpen(path: Path) -> Bool {
+		guard let file = File(path: path), let type = selectDocumentClass(for: file) else {
+			return false
+		}
+
+		return searchOpenedDocument(path, docType: type) != nil
+	}
 }
 
 // MARK: - DocumentSessionState
