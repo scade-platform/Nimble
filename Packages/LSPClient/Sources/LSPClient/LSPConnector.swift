@@ -152,14 +152,6 @@ extension LSPConnector: BuildSystemsObserver {
   public func workbenchDidChangeVariant(_ workbench: Workbench, variant: Variant?) {
     guard self.workbench === workbench else { return }
 
-//    let langServers = self.runningServers.compactMap {(lang, servers) -> (String, [LSPServer])? in
-//      let filteredServers = servers.filter { server in
-//        server.client.workspaceFolders.contains { target.contains(url: $0) }
-//      }
-//
-//      return filteredServers.count > 0 ? (lang, filteredServers) : nil
-//    }
-
     for (lang, servers) in self.runningServers {
       servers.forEach { server in
         // Check if the server should be restarted for the provided variant
