@@ -42,17 +42,25 @@ archs_len=${#archs[@]}
 if [ $archs_len -gt 1 ]; then
     PACKAGE_PRODUCT_DIR=apple/${CONFIGURATION}
     mkdir -p ${PACKAGE_BUILD_DIR}/${PACKAGE_PRODUCT_DIR}
-
-    echo "Create universal Swift modules"
+    
     for arch in ${ARCHS}; do
+        echo "Create universal Swift modules"
         for mod_file in `ls ${PACKAGE_BUILD_DIR}/${arch}-apple-macosx/${CONFIGURATION}/*.swiftmodule`; do
             dst_dir=${PACKAGE_BUILD_DIR}/${PACKAGE_PRODUCT_DIR}/$(basename $mod_file)
             mkdir -p ${dst_dir}
-            cp ${mod_file} ${dst_dir}/${arch}.swiftmodule
+            cp ${mod_file} ${dst_dir}/${arch}.swiftmodule            
+        done
+
+        echo "Link resource bundles"
+        for bundle_dir in `ls ${PACKAGE_BUILD_DIR}/${arch}-apple-macosx/${CONFIGURATION}/*.bundle`; do
+            dst_dir=${PACKAGE_BUILD_DIR}/${PACKAGE_PRODUCT_DIR}/$(basename $bundle_dir)
+            if [ ! -d $dst_dir ]; then            
+                ln -s ${bundle_dir} ${dst_dir}
+            fi
         done        
     done
 
-    echo "Create universal dylibs"    
+    echo "Create universal dylibs"
     for dylib_file in `ls ${PACKAGE_BUILD_DIR}/${archs[0]}-apple-macosx/${CONFIGURATION}/*.dylib`; do
         dylib_files=""
         for arch in ${archs[*]}; do
@@ -60,7 +68,7 @@ if [ $archs_len -gt 1 ]; then
         done
         dst_file=${PACKAGE_BUILD_DIR}/${PACKAGE_PRODUCT_DIR}/$(basename $dylib_file)
         lipo -create -output ${dst_file} ${dylib_files}
-    done   
+    done
 else
     PACKAGE_PRODUCT_DIR=${ARCHS}-apple-macosx/${CONFIGURATION}
 fi
