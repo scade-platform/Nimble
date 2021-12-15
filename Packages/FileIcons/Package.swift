@@ -9,7 +9,7 @@ let package = Package(
     ],
     products: [
         // Make it dynamic if you want to share code with other plugins
-      .library(name: "FileIcons", type: .static, targets: ["FileIcons"]),
+      .library(name: "FileIcons", targets: ["FileIcons"]),
     ],
     dependencies: [
       .package(path: "../NimbleCore")
