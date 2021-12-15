@@ -6,7 +6,7 @@ on:
     branches: [ master ]
 jobs:
   resolvePackageDependencies:
-    runs-on: [self-hosted, macOS]    
+    runs-on: [self-hosted, macOS, M1]    
     steps:
     - name: Checkout
       uses: actions/checkout@v2
