@@ -113,7 +113,7 @@ public class PluginManager {
 
   private static var searchPaths: [Path] {
     var paths: [Path] = []
-    
+
     if let builtInURL = Bundle.main.builtInPlugInsURL, let builtInPath = Path(url: builtInURL) {
       paths.append(builtInPath)
     }
@@ -121,6 +121,12 @@ public class PluginManager {
     if let userPlugInPath = try? (Path.applicationSupport/"Nimble"/"PlugIns").mkdir(.p) {
       paths.append(userPlugInPath)
     }
+
+#if DEBUG
+    if let buildPath = Bundle.main.executable?.parent.parent.parent.parent {
+      paths.append(buildPath)
+    }
+#endif
         
     return paths
   }
