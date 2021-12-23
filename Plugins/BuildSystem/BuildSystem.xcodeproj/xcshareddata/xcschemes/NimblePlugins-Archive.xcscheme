@@ -42,6 +42,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D7CBF8CE222ACD770088715C"
+               BuildableName = "ProjectNavigator.plugin"
+               BlueprintName = "ProjectNavigator"
+               ReferencedContainer = "container:../ProjectNavigator/ProjectNavigator.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "D71E1BB2241ED3E600711B5A"
                BuildableName = "FileIcons.plugin"
                BlueprintName = "FileIcons"
@@ -88,20 +102,6 @@
                BuildableName = "LangExtensions.plugin"
                BlueprintName = "LangExtensions"
                ReferencedContainer = "container:../LangExtensions/LangExtensions.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D7CBF8CE222ACD770088715C"
-               BuildableName = "ProjectNavigator.plugin"
-               BlueprintName = "ProjectNavigator"
-               ReferencedContainer = "container:../ProjectNavigator/ProjectNavigator/ProjectNavigator.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
