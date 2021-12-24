@@ -14,3 +14,5 @@
 
 OTHER_LDFLAGS = $(inherited) -lLSPClient -lCodeEditor
 
+// ScadeKitExtension and _SourceKit is linked to be loaded automatically (it's not used in the plugin directly)
+OTHER_LDFLAGS = $(OTHER_LDFLAGS) -l_SourceKitLSP

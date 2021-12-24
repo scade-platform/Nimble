@@ -52,7 +52,7 @@ if [ $archs_len -gt 1 ]; then
         done
 
         echo "Link resource bundles"
-        for bundle_dir in `ls ${PACKAGE_BUILD_DIR}/${arch}-apple-macosx/${CONFIGURATION}/*.bundle`; do
+        for bundle_dir in `find ${PACKAGE_BUILD_DIR}/${arch}-apple-macosx/${CONFIGURATION} -name "*.bundle" -type d -d 1`; do
             dst_dir=${PACKAGE_BUILD_DIR}/${PACKAGE_PRODUCT_DIR}/$(basename $bundle_dir)
             if [ ! -d $dst_dir ]; then            
                 ln -s ${bundle_dir} ${dst_dir}

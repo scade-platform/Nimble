@@ -81,9 +81,6 @@ cat > ${TOOLS_ENTITLEMENTS} <<EOF
 </plist>
 EOF
 
-#Sign swift-format binary
-#TODO: IMPROVE IT!
-codesign -s "${DEVELOPER_ID}" -f --timestamp -o runtime --entitlements ${TOOLS_ENTITLEMENTS} "./${WORKING_DIR}/App/${APP_NAME}.app/Contents/Plugins/SwiftExtensions.plugin/Contents/Resources/SwiftExtensions_SwiftExtensions.bundle/Contents/Resources/swift-format"
 
 # Sign plugins
 for plugin in `find ./${WORKING_DIR}/App/${APP_NAME}.app/Contents/Plugins -name "*.plugin" -type d`; do
@@ -107,10 +104,10 @@ for plugin in `find ./${WORKING_DIR}/App/${APP_NAME}.app/Contents/Plugins -name 
             codesign -s "${DEVELOPER_ID}" -f --timestamp "$dylib"
         done
     fi
-    if [ -d "$plugin/Contents/Resources/bin" ]; then
-        for bin in `find $plugin/Contents/Resources/bin -name "*" -type f`; do
-            echo "Signing: $bin"
-            codesign -s "${DEVELOPER_ID}" -f --timestamp -o runtime --entitlements ${TOOLS_ENTITLEMENTS} "$bin"
+    if [ -d "$plugin/Contents/Resources" ]; then
+        for bin in `find $plugin/Contents/Resources -perm +111 -type f`; do
+                echo "Signing: $bin"
+                codesign -s "${DEVELOPER_ID}" -f --timestamp -o runtime --entitlements ${TOOLS_ENTITLEMENTS} "$bin"
         done
     fi
     echo "Signing: $plugin"
@@ -125,10 +122,7 @@ hdiutil create -srcFolder ./${WORKING_DIR}/App -o ./${WORKING_DIR}/${APP_NAME}.d
 codesign -s "${DEVELOPER_ID}" --timestamp "./${WORKING_DIR}/${APP_NAME}.dmg"
 
 #Notarize
-xcrun altool --notarize-app --primary-bundle-id "com.scade.Nimble" --username "${AC_USERNAME}" --password "${AC_PASSWORD}" --asc-provider "${PROVIDER_SHORTNAME}" --file ./${WORKING_DIR}/${APP_NAME}.dmg
-
-# Wait notarization process 5 min
-sleep 300s
+xcrun notarytool submit ./ArchiveDir/Nimble.dmg --apple-id "${AC_USERNAME}" --password "${AC_PASSWORD}" --team-id ${PROVIDER_SHORTNAME} --wait
 
 # Staple Notarize ticket
 xcrun stapler staple ./${WORKING_DIR}/${APP_NAME}.dmg

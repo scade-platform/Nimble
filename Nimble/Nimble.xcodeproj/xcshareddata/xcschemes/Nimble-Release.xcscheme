@@ -70,6 +70,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D7CBF8CE222ACD770088715C"
+               BuildableName = "ProjectNavigator.plugin"
+               BlueprintName = "ProjectNavigator"
+               ReferencedContainer = "container:../Plugins/ProjectNavigator/ProjectNavigator.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "D7EC1360239EF4D100DA0DA0"
                BuildableName = "LSPClient.plugin"
                BlueprintName = "LSPClient.plugin"
@@ -88,34 +102,6 @@
                BuildableName = "LangExtensions.plugin"
                BlueprintName = "LangExtensions"
                ReferencedContainer = "container:../Plugins/LangExtensions/LangExtensions.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D7CBF8CE222ACD770088715C"
-               BuildableName = "ProjectNavigator.plugin"
-               BlueprintName = "ProjectNavigator"
-               ReferencedContainer = "container:../Plugins/ProjectNavigator/ProjectNavigator/ProjectNavigator.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E43269E523E1AF09005C6105"
-               BuildableName = "SVGEditor.plugin"
-               BlueprintName = "SVGEditor.plugin"
-               ReferencedContainer = "container:../../Plugins/SVGEditor/SVGEditor.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry

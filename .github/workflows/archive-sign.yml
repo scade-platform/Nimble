@@ -2,7 +2,7 @@ name: archive-sign
 on: workflow_dispatch
 jobs:
   archive:
-    runs-on: self-hosted
+    runs-on: [self-hosted, M1]
     steps:
     - name: Checkout
       uses: actions/checkout@v2
