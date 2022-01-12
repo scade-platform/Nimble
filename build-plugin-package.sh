@@ -57,7 +57,31 @@ if [ $archs_len -gt 1 ]; then
             if [ ! -d $dst_dir ]; then            
                 ln -s ${bundle_dir} ${dst_dir}
             fi
-        done        
+        done
+
+        echo "Link universal frameworks"
+        for framework_dir in `find ${PACKAGE_BUILD_DIR}/${arch}-apple-macosx/${CONFIGURATION} -name "*.framework" -type d -d 1`; do            
+            framework_name=$(basename $framework_dir)
+            framework_file=${framework_dir}/"${framework_name%.*}"
+                                    
+            # Check if the framework is universal
+            is_universal=true
+            for aarch in ${ARCHS}; do
+                if ! lipo -archs ${framework_file} | grep -q "${aarch}"; then
+                    echo "Framework $framework_name is not universal"
+                    is_universal=false
+                    break
+                fi
+            done
+
+            if [ "$is_universal" = true ]; then
+                echo "Framework $framework_name is universal"
+                dst_dir=${PACKAGE_BUILD_DIR}/${PACKAGE_PRODUCT_DIR}/${framework_name}
+                if [ ! -d $dst_dir ]; then
+                    ln -s ${framework_dir} ${dst_dir}
+                fi                        
+            fi
+        done                
     done
 
     echo "Create universal dylibs"
