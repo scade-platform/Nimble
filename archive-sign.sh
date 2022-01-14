@@ -122,7 +122,7 @@ hdiutil create -srcFolder ./${WORKING_DIR}/App -o ./${WORKING_DIR}/${APP_NAME}.d
 codesign -s "${DEVELOPER_ID}" --timestamp "./${WORKING_DIR}/${APP_NAME}.dmg"
 
 #Notarize
-xcrun notarytool submit ./ArchiveDir/Nimble.dmg --apple-id "${AC_USERNAME}" --password "${AC_PASSWORD}" --team-id ${PROVIDER_SHORTNAME} --wait
+xcrun notarytool submit ./${WORKING_DIR}/${APP_NAME}.dmg --apple-id "${AC_USERNAME}" --password "${AC_PASSWORD}" --team-id ${PROVIDER_SHORTNAME} --wait
 
 # Staple Notarize ticket
 xcrun stapler staple ./${WORKING_DIR}/${APP_NAME}.dmg
