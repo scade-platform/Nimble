@@ -88,13 +88,7 @@ if [ $archs_len -gt 1 ]; then
     for dylib_file in `ls ${PACKAGE_BUILD_DIR}/${archs[0]}-apple-macosx/${CONFIGURATION}/*.dylib`; do
         dylib_files=""
         for arch in ${archs[*]}; do
-            dylib_arch_file=${PACKAGE_BUILD_DIR}/${arch}-apple-macosx/${CONFIGURATION}/$(basename $dylib_file)
-            
-            # Remove rpaths
-            install_name_tool -delete_rpath /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx ${dylib_arch_file}
-            install_name_tool -delete_rpath /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift-5.5/macosx ${dylib_arch_file}
-            
-            dylib_files="${dylib_files} ${dylib_arch_file}"
+            dylib_files="${dylib_files} ${PACKAGE_BUILD_DIR}/${arch}-apple-macosx/${CONFIGURATION}/$(basename $dylib_file)"
         done
         dst_file=${PACKAGE_BUILD_DIR}/${PACKAGE_PRODUCT_DIR}/$(basename $dylib_file)
         lipo -create -output ${dst_file} ${dylib_files}
