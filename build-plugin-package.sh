@@ -93,6 +93,17 @@ if [ $archs_len -gt 1 ]; then
         dst_file=${PACKAGE_BUILD_DIR}/${PACKAGE_PRODUCT_DIR}/$(basename $dylib_file)
         lipo -create -output ${dst_file} ${dylib_files}
     done
+
+    echo "Create universal static libraries"
+    for lib_file in `ls ${PACKAGE_BUILD_DIR}/${archs[0]}-apple-macosx/${CONFIGURATION}/*.a`; do
+        lib_files=""
+        for arch in ${archs[*]}; do
+            lib_files="${lib_files} ${PACKAGE_BUILD_DIR}/${arch}-apple-macosx/${CONFIGURATION}/$(basename $lib_file)"
+        done
+        dst_file=${PACKAGE_BUILD_DIR}/${PACKAGE_PRODUCT_DIR}/$(basename $lib_file)
+        lipo -create -output ${dst_file} ${lib_files}
+    done
+
 else
     PACKAGE_PRODUCT_DIR=${ARCHS}-apple-macosx/${CONFIGURATION}
 fi
