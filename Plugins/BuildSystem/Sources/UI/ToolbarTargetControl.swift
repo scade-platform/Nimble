@@ -69,7 +69,7 @@ class ToolbarTargetControl : NSControl, CommandControl {
       }
 
       if newValue?.target !== activeTarget {
-        variantsMenu = createVariantsMenu(newValue)
+//        variantsMenu = createVariantsMenu(newValue)
       }
 
       _activeVariant = newValue?.ref
@@ -295,8 +295,15 @@ class ToolbarTargetControl : NSControl, CommandControl {
   }
 
   private func createVariantsMenu(_ variant: Variant?) -> NSMenu? {
-    guard let target = variant?.target,
-          let menu = createSubmenus(for: target) else { return nil}
+
+    guard let target = variant?.target, let workbench = target.workbench else {
+      return nil
+    }
+
+    //Triger to update variants
+    let _ = BuildSystemsManager.shared.targetsGroupedByName(in: workbench)
+
+    guard let menu = createSubmenus(for: target) else { return nil}
 
     menu.delegate = self
 
@@ -392,7 +399,7 @@ class ToolbarTargetControl : NSControl, CommandControl {
   }
 
   @IBAction func leftButtonDidClick(_ sender: Any) {
-    guard isEnabled, let menu = targetsMenu else { return }
+    guard isEnabled, let menu = createTargetsMenu() else { return }
 
     let frame = leftParentView?.window?.convertToScreen(leftParentView!.convert(leftParentView!.bounds, to: nil))
     let location = frame?.origin ?? NSEvent.mouseLocation
@@ -402,7 +409,7 @@ class ToolbarTargetControl : NSControl, CommandControl {
 
 
   @IBAction func rightButtonDidClick(_ sender: Any) {
-    guard isEnabled, let menu = variantsMenu else { return }
+    guard isEnabled, let menu = createVariantsMenu(activeVariant) else { return }
 
     let frame = rightParentView?.window?.convertToScreen(rightParentView!.convert(rightParentView!.bounds, to: nil))
     let location = frame?.origin ?? NSEvent.mouseLocation
@@ -515,7 +522,7 @@ extension ToolbarTargetControl : NSMenuDelegate {
 extension ToolbarTargetControl: BuildSystemsObserver {
   func availableTargetsDidChange(_ workbench: Workbench) {
     guard self.workbench === workbench else { return }
-    self.targetsMenu = createTargetsMenu()
+//    self.targetsMenu = createTargetsMenu()
   }
 
   func workbenchDidChangeVariant(_ workbench: Workbench, variant: Variant?) {
