@@ -155,7 +155,6 @@ public class BuildSystemsManager {
   }
 
   public func targetsGroupedByName(in workbench: Workbench) -> [(String, [Target])] {
-    updateTargets(in: workbench)
     return workbenchTargets[workbench.id]?.groupedByName ?? []
   }
 
