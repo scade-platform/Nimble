@@ -43,9 +43,7 @@ public final class SwiftLanguageService: LanguageService {
     guard let pluginPath = pluginPath else {
       return nil
     }
-    //From Bundle.module
-    let bundleName = "SwiftExtensions_SwiftExtensions.bundle"
-    let toolPath = pluginPath/"Contents/Resources/\(bundleName)/Contents/Resources/swift-format"
+    let toolPath = pluginPath/"Contents/Resources/swift-format"
     return toolPath
   }
 
@@ -89,6 +87,8 @@ public final class SwiftLanguageService: LanguageService {
     guard let str = String(data: data, encoding: .utf8) else {
       return
     }
+
+    print(str)
 
     if proc.terminationReason != .exit || proc.terminationStatus != 0 {
       doc.editor?.workbench?.publish(diagnosticMessage: "Formater: please fix all errors.", severity: .error, source: .path(doc.path!))
