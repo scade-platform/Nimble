@@ -99,6 +99,8 @@ final class BuildSystemPlugin: Plugin {
                                    alignment: .left(orderPriority: 10))
 
     CommandManager.shared.register(command: SelectTarget())
+
+    CommandManager.shared.register(command: UpdateBuildSystem())
   }
   
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
