@@ -32,6 +32,7 @@ let package = Package(
           .product(name: "_SourceKitLSP", package: "SourceKitLSP")
         ],
         resources: [
+          .process("Resources/lib_InternalSwiftSyntaxParser.dylib"),
           .process("Resources/swift-format")
         ]
       )
