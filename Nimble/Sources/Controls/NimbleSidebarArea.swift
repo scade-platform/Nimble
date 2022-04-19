@@ -42,7 +42,7 @@ extension NimbleSidebarArea: WorkbenchArea {
 
   public func show(part: WorkbenchPart) {
     guard let child = part as? NSViewController,
-          let pos = self.children.index(of: child) else { return }
+          let pos = self.children.firstIndex(of: child) else { return }
 
     sidebar?.selectView(at: pos)
   }

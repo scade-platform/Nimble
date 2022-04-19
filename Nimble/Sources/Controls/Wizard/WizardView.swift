@@ -219,7 +219,7 @@ extension WizardView: NSOutlineViewDelegate {
   
   public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
     switch item {
-    case let item as WizardsManager:
+    case is WizardsManager:
       guard let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: CellIdentifiers.headerCell),
                                             owner: self) as? NSTableCellView else { return nil }
       view.textField?.stringValue = "PROJECTS"
