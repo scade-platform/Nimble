@@ -192,6 +192,7 @@ class ToolbarTargetControl : NSControl, CommandControl {
     trackingArea = NSTrackingArea(rect: self.bounds, options: opts, owner: self)
 
     self.addTrackingArea(trackingArea!)
+    super.updateTrackingAreas()
   }
   
   override func mouseEntered(with theEvent: NSEvent) {
