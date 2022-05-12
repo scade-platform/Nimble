@@ -5,7 +5,7 @@ on:
       - 'v*'
 jobs:
   build:
-    runs-on: [self-hosted, macOS, M1]    
+    runs-on: self-hosted    
     steps:
     - id: get_version
       uses: battila7/get-version-action@v2
