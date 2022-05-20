@@ -18,7 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0CCBA1732383D1D4006C9188 /* ContextOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextOutlineView.swift; sourceTree = "<group>"; };
+		0CCBA1732383D1D4006C9188 /* ContextOutlineView.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = ContextOutlineView.swift; sourceTree = "<group>"; tabWidth = 2; };
 		0CCBA1752383DEB9006C9188 /* ContextMenuManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextMenuManager.swift; sourceTree = "<group>"; };
 		D724C5F5237DA72200E80958 /* OutlineDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineDataSource.swift; sourceTree = "<group>"; };
 		D724C5F7237DC02C00E80958 /* DocumentTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentTableCellView.swift; sourceTree = "<group>"; };

@@ -151,9 +151,13 @@ extension ContextOutlineView : ContextMenuProvider {
     guard let fileSystemElement = sender?.representedObject as? FileSystemElement else {
       return
     }
-    showImputTextAlert(message: "Please enter a new name:", fileSystemElement, handler: {newName in
-      try! fileSystemElement.path.rename(to: newName)
-      self.reloadSelected()
+    showImputTextAlert(message: "Please enter a new name:", fileSystemElement, handler: { [weak self] newName in
+      do {
+        try fileSystemElement.path.rename(to: newName)
+      } catch {
+        self?.showErrorAlert(error: error)
+      }
+      self?.reloadSelected()
     })
   }
   
@@ -234,6 +238,14 @@ extension ContextOutlineView : ContextMenuProvider {
     alert.addButton(withTitle: "Delete")
     alert.addButton(withTitle: "Cancel")
     return alert.runModal() == .alertFirstButtonReturn
+  }
+
+  private func showErrorAlert(error: Error) {
+    let alert = NSAlert()
+    alert.messageText = error.localizedDescription
+    alert.alertStyle = .critical
+    alert.addButton(withTitle: "OK")
+    alert.runModal()
   }
   
   private func showImputTextAlert(message: String, _ fileSystemElement: FileSystemElement?, handler: @escaping (String) -> Void) {
