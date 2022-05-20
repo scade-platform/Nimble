@@ -41,7 +41,7 @@ public struct Settings: SettingsGroup {
 
   @SettingDefinition("com.android.toolchain.sdk",
                      description: "Path to the directory with Android SDK.",
-                     defaultValue: "",
+                     defaultValue: (Path.home/"Library/Android/sdk").string ,
                      validator: AndroidSDKValidator())
   public private(set) var androidToolchainSdk: String
 
