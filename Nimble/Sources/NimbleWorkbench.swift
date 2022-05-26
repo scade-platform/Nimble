@@ -360,6 +360,10 @@ extension NimbleWorkbench: Workbench {
     task.observers.add(observer: self)
     tasksDictionary[task.id] = (task, onComplete)
   }
+
+  public func openSettings() {
+    settingsController?.openSettingsEditor(in: self)
+  }
 }
 
 

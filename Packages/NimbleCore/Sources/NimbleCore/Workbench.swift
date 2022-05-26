@@ -46,7 +46,6 @@ public protocol Workbench: AnyObject {
   var statusBar: WorkbenchStatusBar { get }
   
   var openedConsoles: [Console] { get }
-              
   
   func open(_ doc: Document, show: Bool)
   
@@ -64,6 +63,8 @@ public protocol Workbench: AnyObject {
   func publish(task: WorkbenchTask, onComplete: @escaping (WorkbenchTask) -> Void)
 
   func invalidateRestorableState()
+
+  func openSettings()
 }
 
 public extension Workbench {
