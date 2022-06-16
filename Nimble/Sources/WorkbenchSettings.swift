@@ -19,16 +19,10 @@
 //
 
 import NimbleCore
-import KPCTabsControl
-
-extension CloseButtonPosition: Codable {}
 
 struct WorkbenchSettings: SettingsGroup {
   static let shared = WorkbenchSettings()
 
   @SettingDefinition("workbench.showFileIconsInTabs", defaultValue: true)
   private(set) var showFileIconsInTabs: Bool
-
-  @SettingDefinition("workbench.tabCloseButtonPosition", defaultValue: .left)
-  private(set) var tabCloseButtonPosition: CloseButtonPosition
 }

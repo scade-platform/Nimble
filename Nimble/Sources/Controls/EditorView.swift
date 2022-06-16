@@ -21,26 +21,14 @@
 import Cocoa
 
 class EditorView: NSViewController {
-  lazy var editor: TabbedEditor = {
-    return TabbedEditor.loadFromNib()
-  }()
   
   override func viewDidLoad() {
     super.viewDidLoad()        
   }
   
   func showEditor() {
-    guard editor.parent != self else { return }
-                          
-    addChild(editor)
-    view.addSubview(editor.view)
-    
-    editor.view.frame.size = view.frame.size
-    editor.view.layoutSubtreeIfNeeded()
   }
   
   func hideEditor() {
-    editor.removeFromParent()
-    editor.view.removeFromSuperview()
   }
 }

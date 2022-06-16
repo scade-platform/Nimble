@@ -237,11 +237,13 @@ extension NimbleWorkbench: Workbench {
   }
   
   public var documents: [Document] {
-    return editorView?.editor.documents ?? []
+    //TODO: Fix this
+    return []
   }
   
   public var currentDocument: Document? {
-    return editorView?.editor.currentDocument
+    //TODO: Fix this
+    return nil
   }
     
   public var navigatorArea: WorkbenchArea? {
@@ -262,74 +264,13 @@ extension NimbleWorkbench: Workbench {
   
   ///TODO: rafctoring needed, we should make editor oriented creation and manage docs outside the UI
   public func open(_ doc: Document, show: Bool, openNewEditor: Bool) {
-    guard let editorView = editorView else { return }
-    
-    editorView.showEditor()
-
-    var opened = false
-
-    // If no document is opened, just create a new tab
-    if documents.count == 0 {
-      editorView.editor.addTab(doc)
-      opened = true
-
-    // If the current document has to be presented create
-    // a new tab or reuse the existing one
-    } else if show {
-      // If the doc is already opened, switch to its tab
-      if let index = editorView.editor.findTab(doc) {
-        editorView.editor.selectTab(index)
-        opened = false
-
-      // Insert a new tab for edited or newly created documents
-      // and if it's forced by the flag 'openNewEditor'
-      } else if let curDoc = currentDocument,
-          openNewEditor || curDoc.isDocumentEdited || curDoc.fileURL == nil  {
-        
-        editorView.editor.insertTab(doc, at: editorView.editor.currentIndex! + 1)
-        opened = true
-
-        // Show in the current tab
-      } else {
-        let curDoc = self.currentDocument
-
-        editorView.editor.show(doc)
-        opened = true
-
-        if let curDoc = curDoc {
-          observers.notify { $0.workbenchDidCloseDocument(self, document: curDoc) }
-        }
-      }
-    
-    // Just insert a tab but not switch to it
-    } else if editorView.editor.findTab(doc) == nil {
-      editorView.editor.insertTab(doc, at: editorView.editor.currentIndex!, select: false)
-      opened = true
-    }
-
-
-
-    if opened {
-      observers.notify { $0.workbenchDidOpenDocument(self, document: doc) }
-      invalidateRestorableState()
-    }
+    //TODO: Implement it
   }
   
   @discardableResult
   public func close(_ doc: Document) -> Bool {
-    let shouldClose: Bool = doc.close()
-    
-    if shouldClose {
-      editorView?.editor.removeTab(doc)
-      
-      if let editorView = editorView, editorView.editor.items.isEmpty {
-        editorView.hideEditor()
-      }
-      
-      observers.notify { $0.workbenchDidCloseDocument(self, document: doc) }
-    }
-    
-    return shouldClose
+    //TODO: Implement it
+    return false
   }
   
   
