@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="EditorTab" customModule="Nimble" customModuleProvider="target">
+            <connections>
+                <outlet property="backgroundView" destination="tFS-1g-kNu" id="wvK-5F-cwH"/>
+                <outlet property="closeButton" destination="BCm-bu-BgG" id="lwR-aU-4Ne"/>
+                <outlet property="imageView" destination="qWf-O4-Pap" id="1nv-0M-Yx1"/>
+                <outlet property="titleLabel" destination="Osf-bL-jQQ" id="bHx-WZ-ud5"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="301" height="111"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="tFS-1g-kNu">
+                    <rect key="frame" x="0.0" y="0.0" width="301" height="111"/>
+                    <subviews>
+                        <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6vE-2P-nAj">
+                            <rect key="frame" x="20" y="20" width="261" height="71"/>
+                            <subviews>
+                                <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BCm-bu-BgG">
+                                    <rect key="frame" x="-1" y="21" width="27" height="28"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="25" id="h0r-0d-3UW"/>
+                                        <constraint firstAttribute="width" secondItem="BCm-bu-BgG" secondAttribute="height" multiplier="1:1" id="poo-eQ-Yeg"/>
+                                    </constraints>
+                                    <buttonCell key="cell" type="squareTextured" bezelStyle="texturedSquare" image="NSStopProgressTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="RVD-U0-O5a">
+                                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                        <font key="font" metaFont="system"/>
+                                    </buttonCell>
+                                </button>
+                                <customView translatesAutoresizingMaskIntoConstraints="NO" id="UDY-jJ-xuE">
+                                    <rect key="frame" x="33" y="3" width="228" height="65"/>
+                                    <subviews>
+                                        <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qWf-O4-Pap">
+                                            <rect key="frame" x="17" y="17" width="25.5" height="31"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="25" id="o5C-OK-fJP"/>
+                                                <constraint firstAttribute="height" constant="25" id="pjs-KK-zUg"/>
+                                            </constraints>
+                                            <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="swift" catalog="system" id="H6X-wj-lOT"/>
+                                        </imageView>
+                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Osf-bL-jQQ">
+                                            <rect key="frame" x="45" y="23" width="139" height="19"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="130" id="zrL-Rx-0At"/>
+                                            </constraints>
+                                            <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="TabbedEditor.swift" id="nAa-kT-PFO">
+                                                <font key="font" metaFont="system" size="16"/>
+                                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            </textFieldCell>
+                                        </textField>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Osf-bL-jQQ" firstAttribute="centerY" secondItem="UDY-jJ-xuE" secondAttribute="centerY" id="87H-zK-At0"/>
+                                        <constraint firstItem="qWf-O4-Pap" firstAttribute="centerY" secondItem="Osf-bL-jQQ" secondAttribute="centerY" id="XxS-2K-NTg"/>
+                                        <constraint firstItem="Osf-bL-jQQ" firstAttribute="centerX" secondItem="UDY-jJ-xuE" secondAttribute="centerX" id="Ybe-KS-2U9"/>
+                                        <constraint firstItem="Osf-bL-jQQ" firstAttribute="leading" secondItem="qWf-O4-Pap" secondAttribute="trailing" constant="5" id="d71-kZ-GOd"/>
+                                    </constraints>
+                                </customView>
+                            </subviews>
+                            <visibilityPriorities>
+                                <integer value="1000"/>
+                                <integer value="1000"/>
+                            </visibilityPriorities>
+                            <customSpacing>
+                                <real value="3.4028234663852886e+38"/>
+                                <real value="3.4028234663852886e+38"/>
+                            </customSpacing>
+                        </stackView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="6vE-2P-nAj" firstAttribute="leading" secondItem="tFS-1g-kNu" secondAttribute="leading" constant="20" id="3D3-b8-R4H"/>
+                        <constraint firstItem="6vE-2P-nAj" firstAttribute="top" secondItem="tFS-1g-kNu" secondAttribute="top" constant="20" id="9Or-Jj-5DL"/>
+                        <constraint firstAttribute="bottom" secondItem="6vE-2P-nAj" secondAttribute="bottom" constant="20" id="OCt-Kl-UfZ"/>
+                        <constraint firstAttribute="trailing" secondItem="6vE-2P-nAj" secondAttribute="trailing" constant="20" id="iAl-LJ-gvz"/>
+                    </constraints>
+                </customView>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="tFS-1g-kNu" secondAttribute="trailing" id="47V-ZG-fmb"/>
+                <constraint firstItem="tFS-1g-kNu" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="6Fc-HP-MhF"/>
+                <constraint firstAttribute="bottom" secondItem="tFS-1g-kNu" secondAttribute="bottom" id="cCg-PE-2wf"/>
+                <constraint firstItem="tFS-1g-kNu" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="dnH-I5-HA5"/>
+            </constraints>
+            <point key="canvasLocation" x="23.5" y="26.5"/>
+        </customView>
+    </objects>
+    <resources>
+        <image name="NSStopProgressTemplate" width="14" height="13"/>
+        <image name="swift" catalog="system" width="18" height="15"/>
+    </resources>
+</document>
