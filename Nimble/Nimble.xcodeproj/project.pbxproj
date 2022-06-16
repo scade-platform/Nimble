@@ -22,7 +22,6 @@
 		0CAAE9AD24370BEE003CAE92 /* WorkbenchArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAAE9AC24370BEE003CAE92 /* WorkbenchArea.swift */; };
 		0CB6F11424FE46B800960EDA /* WizardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6F11224FE46B800960EDA /* WizardView.swift */; };
 		0CB6F11524FE46B800960EDA /* WizardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CB6F11324FE46B800960EDA /* WizardView.xib */; };
-		0CCD455325D6BEE0000923E3 /* KPCTabsControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */; };
 		0CCD45CE25D6CD4B000923E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CCD45CD25D6CD4B000923E3 /* Assets.xcassets */; };
 		0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3523A39503003B01DE /* StatusBarView.swift */; };
 		0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */; };
@@ -35,11 +34,9 @@
 		D71D04FA246615F400200127 /* NimbleStatusBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D71D04F9246615F400200127 /* NimbleStatusBar.xib */; };
 		D71D04FC2466163B00200127 /* NimbleStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71D04FB2466163B00200127 /* NimbleStatusBar.swift */; };
 		D721CFA72385EC3200FD1B00 /* NSOpenPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */; };
-		D724C5EE237C418B00E80958 /* TabbedEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = D724C5E7237C418B00E80958 /* TabbedEditor.xib */; };
 		D724C5EF237C418B00E80958 /* ConsoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5E8237C418B00E80958 /* ConsoleView.swift */; };
 		D724C5F0237C418B00E80958 /* DropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5E9237C418B00E80958 /* DropView.swift */; };
 		D724C5F1237C418B00E80958 /* NavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5EA237C418B00E80958 /* NavigatorView.swift */; };
-		D724C5F2237C418B00E80958 /* TabbedEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5EB237C418B00E80958 /* TabbedEditor.swift */; };
 		D724C5F3237C418B00E80958 /* ConsoleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D724C5EC237C418B00E80958 /* ConsoleView.xib */; };
 		D724C5F4237C418B00E80958 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5ED237C418B00E80958 /* DebugView.swift */; };
 		D72F959C222DF2D9009F2EC3 /* WorkbenchSidebar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */; };
@@ -56,7 +53,6 @@
 		D78FFF1924255CE100EB70E2 /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = D78FFF1824255CE100EB70E2 /* Icons */; };
 		D79BE0BD2385AD4000D96619 /* NimbleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6607722F41D1500CBB386 /* NimbleController.swift */; };
 		D7CBF7D6222878F40088715C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D4222878F40088715C /* Main.storyboard */; };
-		D7D46163238ED16B0090FC34 /* KPCTabsControl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D7D461652390083C0090FC34 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D461642390083C0090FC34 /* Document.swift */; };
 		D7F156972442079A00AFBE67 /* WorkbenchSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F156962442079A00AFBE67 /* WorkbenchSettings.swift */; };
 		D7F156AD244C93EE00AFBE67 /* Command+Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F156AC244C93EE00AFBE67 /* Command+Menu.swift */; };
@@ -64,30 +60,6 @@
 		D7F156B8244C946200AFBE67 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F156B7244C946200AFBE67 /* Command.swift */; };
 		E491BB7C26F10A1A0079F180 /* ZoomCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = E491BB7B26F10A1A0079F180 /* ZoomCommands.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		0C838D1426D7BF3C00A9A236 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9F45CD901D396D4200149654;
-			remoteInfo = KPCTabsControlDemo;
-		};
-		0C838D1626D7BF3C00A9A236 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9FC4B5582195ACE7000F2119;
-			remoteInfo = KPCTabsControlTests;
-		};
-		D7D4615C238ECCE20090FC34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9FA7EDA51AD668BC0060FF79;
-			remoteInfo = KPCTabsControl;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		E42DC02E22CE3C3300486CC1 /* Embed Frameworks */ = {
@@ -97,7 +69,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				D73FA62524004D31001DB4C3 /* Ansi in Embed Frameworks */,
-				D7D46163238ED16B0090FC34 /* KPCTabsControl.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -133,17 +104,14 @@
 		D71D04F9246615F400200127 /* NimbleStatusBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NimbleStatusBar.xib; sourceTree = "<group>"; };
 		D71D04FB2466163B00200127 /* NimbleStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleStatusBar.swift; sourceTree = "<group>"; };
 		D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSOpenPanel.swift; sourceTree = "<group>"; };
-		D724C5E7237C418B00E80958 /* TabbedEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TabbedEditor.xib; sourceTree = "<group>"; };
 		D724C5E8237C418B00E80958 /* ConsoleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsoleView.swift; sourceTree = "<group>"; };
 		D724C5E9237C418B00E80958 /* DropView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropView.swift; sourceTree = "<group>"; };
 		D724C5EA237C418B00E80958 /* NavigatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigatorView.swift; sourceTree = "<group>"; };
-		D724C5EB237C418B00E80958 /* TabbedEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabbedEditor.swift; sourceTree = "<group>"; };
 		D724C5EC237C418B00E80958 /* ConsoleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConsoleView.xib; sourceTree = "<group>"; };
 		D724C5ED237C418B00E80958 /* DebugView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
 		D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkbenchSidebar.xib; sourceTree = "<group>"; };
 		D72F959E222DF7AF009F2EC3 /* WorkbenchSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchSidebar.swift; sourceTree = "<group>"; };
 		D73E89462733035200EA473C /* build.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = build.xcconfig; sourceTree = "<group>"; };
-		D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KPCTabsControl.xcodeproj; path = Dependencies/KPCTabsControl/KPCTabsControl.xcodeproj; sourceTree = "<group>"; };
 		D77AAF0825011AC300C63C19 /* NimbleSidebarArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleSidebarArea.swift; sourceTree = "<group>"; };
 		D77AAF0D2501674800C63C19 /* DiagnosticView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiagnosticView.xib; sourceTree = "<group>"; };
 		D77AAF0F2501682700C63C19 /* DiagnosticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticView.swift; sourceTree = "<group>"; };
@@ -153,7 +121,7 @@
 		D7CBF7CB222878F10088715C /* Nimble.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nimble.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7CBF7D5222878F40088715C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D7CBF7D7222878F40088715C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleWorkbench.swift; sourceTree = "<group>"; };
+		D7CBF8AF2229280E0088715C /* NimbleWorkbench.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = NimbleWorkbench.swift; sourceTree = "<group>"; tabWidth = 2; };
 		D7D461642390083C0090FC34 /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
 		D7DBD8B7257A9610008F44AC /* Nimble.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Nimble.entitlements; sourceTree = "<group>"; };
 		D7F156962442079A00AFBE67 /* WorkbenchSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchSettings.swift; sourceTree = "<group>"; };
@@ -168,7 +136,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CCD455325D6BEE0000923E3 /* KPCTabsControl.framework in Frameworks */,
 				D73FA62424004D31001DB4C3 /* Ansi in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -253,14 +220,12 @@
 				D71D04FB2466163B00200127 /* NimbleStatusBar.swift */,
 				0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */,
 				0CD0FB3523A39503003B01DE /* StatusBarView.swift */,
-				D724C5EB237C418B00E80958 /* TabbedEditor.swift */,
 				0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */,
 				D72F959E222DF7AF009F2EC3 /* WorkbenchSidebar.swift */,
 				D724C5EC237C418B00E80958 /* ConsoleView.xib */,
 				D77AAF112508143A00C63C19 /* DiagnosticStatusBar.xib */,
 				D77AAF0D2501674800C63C19 /* DiagnosticView.xib */,
 				D71D04F9246615F400200127 /* NimbleStatusBar.xib */,
-				D724C5E7237C418B00E80958 /* TabbedEditor.xib */,
 				0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */,
 				D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */,
 			);
@@ -270,7 +235,6 @@
 		D751F28622F8818300D33972 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */,
 			);
 			name = Dependencies;
 			sourceTree = "<group>";
@@ -332,16 +296,6 @@
 				D721CFA42385EC1800FD1B00 /* Extensions */,
 			);
 			path = Sources;
-			sourceTree = "<group>";
-		};
-		D7D46157238ECCE20090FC34 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */,
-				0C838D1526D7BF3C00A9A236 /* KPCTabsControlDemo.app */,
-				0C838D1726D7BF3C00A9A236 /* KPCTabsControlTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		E491BB7A26F109FD0079F180 /* Commands */ = {
@@ -415,42 +369,12 @@
 			);
 			productRefGroup = D7CBF7CC222878F10088715C /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = D7D46157238ECCE20090FC34 /* Products */;
-					ProjectRef = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				D7CBF7CA222878F10088715C /* Nimble */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		0C838D1526D7BF3C00A9A236 /* KPCTabsControlDemo.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = KPCTabsControlDemo.app;
-			remoteRef = 0C838D1426D7BF3C00A9A236 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0C838D1726D7BF3C00A9A236 /* KPCTabsControlTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = KPCTabsControlTests.xctest;
-			remoteRef = 0C838D1626D7BF3C00A9A236 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = KPCTabsControl.framework;
-			remoteRef = D7D4615C238ECCE20090FC34 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D7CBF7C9222878F10088715C /* Resources */ = {
@@ -468,7 +392,6 @@
 				0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */,
 				D71D04FA246615F400200127 /* NimbleStatusBar.xib in Resources */,
 				0C7B198527185DDE003E7087 /* exportOptionsPlist.plist in Resources */,
-				D724C5EE237C418B00E80958 /* TabbedEditor.xib in Resources */,
 				0CCD45CE25D6CD4B000923E3 /* Assets.xcassets in Resources */,
 				D77AAF0E2501674800C63C19 /* DiagnosticView.xib in Resources */,
 			);
@@ -526,7 +449,6 @@
 				46C86FA328AAD97E00D953E8 /* ActionAreaView.swift in Sources */,
 				D72F959F222DF7AF009F2EC3 /* WorkbenchSidebar.swift in Sources */,
 				D79BE0BD2385AD4000D96619 /* NimbleController.swift in Sources */,
-				D724C5F2237C418B00E80958 /* TabbedEditor.swift in Sources */,
 				46E0B79E28BB9A1700092CDD /* SeparatorView.swift in Sources */,
 				0CA297B423A903340025A4EF /* BinaryFileDocument.swift in Sources */,
 				0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */,
