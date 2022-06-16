@@ -30,6 +30,10 @@
 		46C86FA328AAD97E00D953E8 /* ActionAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C86FA228AAD97E00D953E8 /* ActionAreaView.swift */; };
 		46D8BC6428BE344700E8A1FB /* WorkbenchDiagnosticMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D8BC6328BE344700E8A1FB /* WorkbenchDiagnosticMock.swift */; };
 		46E0B79E28BB9A1700092CDD /* SeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E0B79D28BB9A1700092CDD /* SeparatorView.swift */; };
+		4C4AE7DB285AE0C000BF2A4C /* TabbedEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4AE7DA285AE0C000BF2A4C /* TabbedEditor.swift */; };
+		4C4AE7E3285AEA7D00BF2A4C /* TabbedEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C4AE7E2285AEA7D00BF2A4C /* TabbedEditor.xib */; };
+		4C4AE7EC285AED1200BF2A4C /* EditorTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4AE7EA285AED1200BF2A4C /* EditorTab.swift */; };
+		4C4AE7ED285AED1200BF2A4C /* EditorTab.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C4AE7EB285AED1200BF2A4C /* EditorTab.xib */; };
 		D70A5421254B872D00730F52 /* KeyboardShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70A5420254B872D00730F52 /* KeyboardShortcut.swift */; };
 		D71D04FA246615F400200127 /* NimbleStatusBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D71D04F9246615F400200127 /* NimbleStatusBar.xib */; };
 		D71D04FC2466163B00200127 /* NimbleStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71D04FB2466163B00200127 /* NimbleStatusBar.swift */; };
@@ -100,6 +104,10 @@
 		46C86FA228AAD97E00D953E8 /* ActionAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionAreaView.swift; sourceTree = "<group>"; };
 		46D8BC6328BE344700E8A1FB /* WorkbenchDiagnosticMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchDiagnosticMock.swift; sourceTree = "<group>"; };
 		46E0B79D28BB9A1700092CDD /* SeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeparatorView.swift; sourceTree = "<group>"; };
+		4C4AE7DA285AE0C000BF2A4C /* TabbedEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbedEditor.swift; sourceTree = "<group>"; };
+		4C4AE7E2285AEA7D00BF2A4C /* TabbedEditor.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TabbedEditor.xib; sourceTree = "<group>"; };
+		4C4AE7EA285AED1200BF2A4C /* EditorTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTab.swift; sourceTree = "<group>"; };
+		4C4AE7EB285AED1200BF2A4C /* EditorTab.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditorTab.xib; sourceTree = "<group>"; };
 		D70A5420254B872D00730F52 /* KeyboardShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcut.swift; sourceTree = "<group>"; };
 		D71D04F9246615F400200127 /* NimbleStatusBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NimbleStatusBar.xib; sourceTree = "<group>"; };
 		D71D04FB2466163B00200127 /* NimbleStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleStatusBar.swift; sourceTree = "<group>"; };
@@ -186,6 +194,23 @@
 				46E0B79D28BB9A1700092CDD /* SeparatorView.swift */,
 			);
 			path = SeparatorView;
+		4C4AE7D9285AE0AF00BF2A4C /* TabbedEditor */ = {
+			isa = PBXGroup;
+			children = (
+				4C4AE7E5285AEBF300BF2A4C /* EditorTab */,
+				4C4AE7DA285AE0C000BF2A4C /* TabbedEditor.swift */,
+				4C4AE7E2285AEA7D00BF2A4C /* TabbedEditor.xib */,
+			);
+			path = TabbedEditor;
+			sourceTree = "<group>";
+		};
+		4C4AE7E5285AEBF300BF2A4C /* EditorTab */ = {
+			isa = PBXGroup;
+			children = (
+				4C4AE7EA285AED1200BF2A4C /* EditorTab.swift */,
+				4C4AE7EB285AED1200BF2A4C /* EditorTab.xib */,
+			);
+			path = EditorTab;
 			sourceTree = "<group>";
 		};
 		D721CFA42385EC1800FD1B00 /* Extensions */ = {
@@ -208,6 +233,7 @@
 				46D8BC5F28BE342F00E8A1FB /* DiagnosticView */,
 				46E0B79928BB99EE00092CDD /* SeparatorView */,
 				469FC76C28AB792300191B8F /* ActionArea */,
+				4C4AE7D9285AE0AF00BF2A4C /* TabbedEditor */,
 				0C2B6BD124F8FC1500DCA8B0 /* Wizard */,
 				D724C5E8237C418B00E80958 /* ConsoleView.swift */,
 				D724C5ED237C418B00E80958 /* DebugView.swift */,
@@ -256,7 +282,9 @@
 				D751F28622F8818300D33972 /* Dependencies */,
 				D7C9528623FC3AF400AE7E5D /* Frameworks */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		D7CBF7CC222878F10088715C /* Products */ = {
 			isa = PBXGroup;
@@ -386,11 +414,13 @@
 				D77AAF122508143A00C63C19 /* DiagnosticStatusBar.xib in Resources */,
 				D72F959C222DF2D9009F2EC3 /* WorkbenchSidebar.xib in Resources */,
 				D73E89472733035200EA473C /* build.xcconfig in Resources */,
+				4C4AE7E3285AEA7D00BF2A4C /* TabbedEditor.xib in Resources */,
 				D78FFF1924255CE100EB70E2 /* Icons in Resources */,
 				D7CBF7D6222878F40088715C /* Main.storyboard in Resources */,
 				D724C5F3237C418B00E80958 /* ConsoleView.xib in Resources */,
 				0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */,
 				D71D04FA246615F400200127 /* NimbleStatusBar.xib in Resources */,
+				4C4AE7ED285AED1200BF2A4C /* EditorTab.xib in Resources */,
 				0C7B198527185DDE003E7087 /* exportOptionsPlist.plist in Resources */,
 				0CCD45CE25D6CD4B000923E3 /* Assets.xcassets in Resources */,
 				D77AAF0E2501674800C63C19 /* DiagnosticView.xib in Resources */,
@@ -450,6 +480,7 @@
 				D72F959F222DF7AF009F2EC3 /* WorkbenchSidebar.swift in Sources */,
 				D79BE0BD2385AD4000D96619 /* NimbleController.swift in Sources */,
 				46E0B79E28BB9A1700092CDD /* SeparatorView.swift in Sources */,
+				4C4AE7DB285AE0C000BF2A4C /* TabbedEditor.swift in Sources */,
 				0CA297B423A903340025A4EF /* BinaryFileDocument.swift in Sources */,
 				0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */,
 				D788ED452239C2750072C21E /* NimbleWorkbench.swift in Sources */,
@@ -463,6 +494,7 @@
 				0C838D1E26D7BF5700A9A236 /* IconsController.swift in Sources */,
 				D7F156AD244C93EE00AFBE67 /* Command+Menu.swift in Sources */,
 				E491BB7C26F10A1A0079F180 /* ZoomCommands.swift in Sources */,
+				4C4AE7EC285AED1200BF2A4C /* EditorTab.swift in Sources */,
 				D721CFA72385EC3200FD1B00 /* NSOpenPanel.swift in Sources */,
 				0C838D0526D7B90C00A9A236 /* AppDelegate.swift in Sources */,
 				0C2A26D42429E2F800AA8B51 /* InspectorView.swift in Sources */,
