@@ -8,6 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="TabbedEditor" customModule="Nimble" customModuleProvider="target">
             <connections>
+                <outlet property="collectionViewScrollView" destination="QA7-th-zxH" id="HQ4-IX-PxM"/>
                 <outlet property="editorContainerView" destination="4Op-aa-wRd" id="7bB-ki-Vxb"/>
                 <outlet property="tabsCollectionView" destination="NSv-Gh-gJV" id="9p6-pf-06j"/>
                 <outlet property="view" destination="nU4-SA-Bej" id="j4P-8h-u8b"/>
@@ -19,16 +20,16 @@
             <rect key="frame" x="0.0" y="0.0" width="443" height="252"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <scrollView wantsLayer="YES" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QA7-th-zxH">
+                <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="0.0" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="QA7-th-zxH">
                     <rect key="frame" x="0.0" y="222" width="443" height="30"/>
                     <clipView key="contentView" id="Mk4-cJ-RQP">
-                        <rect key="frame" x="1" y="1" width="441" height="28"/>
+                        <rect key="frame" x="0.0" y="0.0" width="443" height="30"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <collectionView id="NSv-Gh-gJV">
-                                <rect key="frame" x="0.0" y="0.0" width="441" height="158"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" minimumLineSpacing="10" scrollDirection="horizontal" id="6w4-Tv-7LY">
+                            <collectionView selectable="YES" id="NSv-Gh-gJV">
+                                <rect key="frame" x="0.0" y="0.0" width="443" height="30"/>
+                                <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" scrollDirection="horizontal" id="fyK-nK-x4S">
                                     <size key="itemSize" width="50" height="50"/>
                                 </collectionViewFlowLayout>
                                 <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -38,12 +39,12 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="dxK-Qa-hi7"/>
                     </constraints>
-                    <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="kLT-m4-jVB">
-                        <rect key="frame" x="1" y="144" width="233" height="15"/>
+                    <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="kLT-m4-jVB" customClass="HiddenScroller" customModule="Nimble" customModuleProvider="target">
+                        <rect key="frame" x="-100" y="-100" width="233" height="15"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
-                    <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="cB7-eN-fk0">
-                        <rect key="frame" x="426" y="1" width="16" height="28"/>
+                    <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="cB7-eN-fk0">
+                        <rect key="frame" x="-100" y="-100" width="16" height="28"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>

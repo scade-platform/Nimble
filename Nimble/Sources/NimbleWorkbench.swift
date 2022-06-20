@@ -98,6 +98,8 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     (self.contentViewController as? WorkbenchContentViewController)?.settingsController
   }
 
+  private let tabbedEditorViewModel = TabbedEditorViewModel()
+
   public override func windowDidLoad() {
     super.windowDidLoad()
    
@@ -113,6 +115,9 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     
     guard let inspectorView = inspectorView else { return }
     inspectorView.isHidden = true
+
+    guard let editorView = editorView else { return }
+    editorView.tabbedEditorViewModel = tabbedEditorViewModel
     
     DocumentManager.shared.defaultDocument = BinaryFileDocument.self
 
@@ -264,12 +269,18 @@ extension NimbleWorkbench: Workbench {
   
   ///TODO: rafctoring needed, we should make editor oriented creation and manage docs outside the UI
   public func open(_ doc: Document, show: Bool, openNewEditor: Bool) {
-    //TODO: Implement it
+    guard let editorView = editorView else { return }
+    editorView.showEditor()
+
+    // Show doc in tabbed editor
+
+    observers.notify { $0.workbenchDidOpenDocument(self, document: doc) }
   }
   
   @discardableResult
   public func close(_ doc: Document) -> Bool {
     //TODO: Implement it
+    editorView?.hideEditor()
     return false
   }
   
