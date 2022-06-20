@@ -19,16 +19,36 @@
 //
 
 import Cocoa
+import NimbleCore
 
 class EditorView: NSViewController {
+  var tabbedEditorViewModel: TabbedEditorViewModel? {
+    didSet {
+      guard let viewModel = tabbedEditorViewModel else { return }
+      tabbedEditor.viewModel = viewModel
+    }
+  }
+
+  lazy var tabbedEditor: TabbedEditor = {
+    return TabbedEditor.loadFromNib()
+  }()
   
   override func viewDidLoad() {
     super.viewDidLoad()
   }
   
   func showEditor() {
+    guard tabbedEditor.parent != self else { return }
+
+    addChild(tabbedEditor)
+    view.addSubview(tabbedEditor.view)
+
+    tabbedEditor.view.frame.size = view.frame.size
+    tabbedEditor.view.layoutSubtreeIfNeeded()
   }
   
   func hideEditor() {
+    tabbedEditor.removeFromParent()
+    tabbedEditor.view.removeFromSuperview()
   }
 }
