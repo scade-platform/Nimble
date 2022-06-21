@@ -18,14 +18,14 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="208" height="30"/>
+            <rect key="frame" x="0.0" y="0.0" width="214" height="30"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="tFS-1g-kNu">
-                    <rect key="frame" x="0.0" y="0.0" width="208" height="30"/>
+                    <rect key="frame" x="0.0" y="0.0" width="214" height="30"/>
                     <subviews>
                         <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nDo-Xe-cCr">
-                            <rect key="frame" x="35" y="5" width="138" height="20"/>
+                            <rect key="frame" x="35" y="5" width="143" height="20"/>
                             <subviews>
                                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="qWf-O4-Pap">
                                     <rect key="frame" x="0.0" y="-3" width="20.5" height="26"/>
@@ -36,7 +36,7 @@
                                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="swift" catalog="system" id="H6X-wj-lOT"/>
                                 </imageView>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Osf-bL-jQQ">
-                                    <rect key="frame" x="23" y="2" width="117" height="16"/>
+                                    <rect key="frame" x="23" y="2" width="122" height="16"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="TabbedEditor.swift" id="nAa-kT-PFO">
                                         <font key="font" metaFont="system"/>
                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -65,17 +65,18 @@
                             </buttonCell>
                         </button>
                         <box horizontalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="ioI-vA-57H">
-                            <rect key="frame" x="200" y="6" width="5" height="18"/>
+                            <rect key="frame" x="206" y="6" width="5" height="18"/>
                         </box>
                     </subviews>
                     <constraints>
-                        <constraint firstItem="nDo-Xe-cCr" firstAttribute="centerX" secondItem="tFS-1g-kNu" secondAttribute="centerX" id="0ey-jv-oe8"/>
                         <constraint firstItem="BCm-bu-BgG" firstAttribute="leading" secondItem="tFS-1g-kNu" secondAttribute="leading" constant="5" id="3JC-Le-nDB"/>
                         <constraint firstAttribute="height" constant="30" id="5VY-O6-tjO"/>
+                        <constraint firstItem="nDo-Xe-cCr" firstAttribute="leading" secondItem="BCm-bu-BgG" secondAttribute="trailing" constant="5" id="7Cs-Af-O4m"/>
                         <constraint firstItem="BCm-bu-BgG" firstAttribute="centerY" secondItem="nDo-Xe-cCr" secondAttribute="centerY" id="Tf6-81-4bx"/>
                         <constraint firstItem="nDo-Xe-cCr" firstAttribute="centerY" secondItem="tFS-1g-kNu" secondAttribute="centerY" id="mlE-4G-IVE"/>
                         <constraint firstAttribute="trailing" secondItem="ioI-vA-57H" secondAttribute="trailing" constant="5" id="pdm-cb-mfk"/>
                         <constraint firstItem="ioI-vA-57H" firstAttribute="height" secondItem="tFS-1g-kNu" secondAttribute="height" multiplier="0.6" id="taC-FV-vIs"/>
+                        <constraint firstItem="ioI-vA-57H" firstAttribute="leading" secondItem="nDo-Xe-cCr" secondAttribute="trailing" constant="30" id="u3U-Al-c2I"/>
                         <constraint firstItem="ioI-vA-57H" firstAttribute="centerY" secondItem="tFS-1g-kNu" secondAttribute="centerY" id="z8T-rg-cBy"/>
                     </constraints>
                 </customView>
