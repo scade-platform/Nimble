@@ -36,13 +36,14 @@ class EditorTab: NSCollectionViewItem {
   @IBOutlet private weak var backgroundView: NSView!
   @IBOutlet private weak var tabIconView: NSImageView!
 
-
   var model: EditorTabModel = .empty {
     didSet {
       guard isViewLoaded else { return }
       titleLabel.stringValue = model.title
       if let image = model.icon {
         tabIconView.image = image
+      } else {
+        tabIconView.isHidden = true
       }
     }
   }
@@ -54,6 +55,29 @@ class EditorTab: NSCollectionViewItem {
   }
 
   // TODO: Close tab handler
+
+  static func calculateSize(for model: EditorTabModel) -> NSSize {
+    let height = 30.0
+    let closeButtonWidth = 25.0
+    let indent = 5.0
+    let indentRight = 30.0
+    let imageWidth = 20.0
+    let lineWidth = 1.0
+    let moreSpace = 10.0
+
+    let titleAttrinbutedString = NSString(string: model.title)
+    let titleSize = titleAttrinbutedString.size(withAttributes: [ .font: NSFont.systemFont(ofSize: 13)])
+
+    var resultWidth: Double = 0.0
+    resultWidth = indent + closeButtonWidth + indent
+    resultWidth += model.icon != nil ? imageWidth : 0.0
+    resultWidth += titleSize.width.rounded(.up)
+    resultWidth += indentRight
+    resultWidth += lineWidth + indent
+    resultWidth += moreSpace
+
+    return NSSize(width: resultWidth, height: height)
+  }
 
 }
 

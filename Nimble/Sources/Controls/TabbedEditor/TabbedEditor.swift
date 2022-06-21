@@ -37,8 +37,7 @@ final class TabbedEditor: NSViewController {
 
 extension TabbedEditor: NSCollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
-    print("Size: \(indexPath.item)")
-    return NSSize(width: 200, height: 30)
+    viewModel.tabSize(for: indexPath)
   }
 }
 
@@ -54,7 +53,6 @@ extension TabbedEditor: NSCollectionViewDataSource {
   }
 
   func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-    print("Object: \(indexPath.item)")
     let item = collectionView.makeItem(withIdentifier: EditorTab.itemId, for: indexPath)
     guard let editorTab = item as? EditorTab else {
       return item

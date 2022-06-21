@@ -8,6 +8,7 @@
 
 import Foundation
 import NimbleCore
+import AppKit
 
 final class TabbedEditorViewModel {
   private var openedDocuments: [Document] = []
@@ -25,6 +26,11 @@ final class TabbedEditorViewModel {
 //    let editorTabModel = EditorTabModel(document: openedDocuments[indexPath.item])
     let editorTabModelMock = EditorTabModel(title: "Document\(indexPath.item)", icon: nil)
     tab.model = editorTabModelMock
+  }
+
+  func tabSize(for indexPath: IndexPath) -> NSSize {
+    let editorTabModelMock = EditorTabModel(title: "Document\(indexPath.item)")
+    return EditorTab.calculateSize(for: editorTabModelMock)
   }
 
   private func findOpenedDocument(_ document: Document) -> Int? {
