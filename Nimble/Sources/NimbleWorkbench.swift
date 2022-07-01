@@ -167,6 +167,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
       for state in stateValues {
         guard let url = state.url,
               let path = Path(url: url),
+              path.exists && path.isReadable,
               let docType = docManager.findDocumentType(by: state.type),
               let doc = docManager.open(path: path, docType: docType) else { continue }
         
