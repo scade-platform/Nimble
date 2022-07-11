@@ -18,18 +18,13 @@ final class TabbedEditorViewModel {
     10
   }
 
-  var numberOfSections: Int {
-    1
-  }
-
-  func setup(tab: EditorTab, for indexPath: IndexPath) {
-//    let editorTabModel = EditorTabModel(document: openedDocuments[indexPath.item])
-    let editorTabModelMock = EditorTabModel(title: "Document\(indexPath.item)", icon: nil)
-    tab.model = editorTabModelMock
+  func editorTabItems() -> [EditorTabItem] {
+    var mock = (0 ..< 10).map { EditorTabItem(title: "Document\($0)", icon: nil) }
+    return mock
   }
 
   func tabSize(for indexPath: IndexPath) -> NSSize {
-    let editorTabModelMock = EditorTabModel(title: "Document\(indexPath.item)")
+    let editorTabModelMock = EditorTabItem(title: "Document\(indexPath.item)")
     return EditorTab.calculateSize(for: editorTabModelMock)
   }
 

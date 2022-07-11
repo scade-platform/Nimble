@@ -9,38 +9,37 @@
 import Cocoa
 import NimbleCore
 
-struct EditorTabModel {
+struct EditorTabItem: Hashable {
   let title: String
-  let icon: NSImage?
+  let iconImage: NSImage?
 
   init(document: Document) {
     self.title = document.title
-    self.icon = document.icon?.image
+    self.iconImage = document.icon?.image
   }
 
   init(title: String, icon: NSImage? = nil) {
     self.title = title
-    self.icon = icon
+    self.iconImage = icon
   }
 
-  static var empty = EditorTabModel(title: "")
+  static var empty = EditorTabItem(title: "")
 }
 
+
 class EditorTab: NSCollectionViewItem {
-  static var itemId: NSUserInterfaceItemIdentifier {
-    NSUserInterfaceItemIdentifier("EditorTab")
-  }
+  static let reuseIdentifier = NSUserInterfaceItemIdentifier("EditorTabReuseIdentifier")
 
   @IBOutlet private weak var closeButton: HiddenButton!
   @IBOutlet private weak var titleLabel: NSTextField!
   @IBOutlet private weak var backgroundView: NSView!
   @IBOutlet private weak var tabIconView: NSImageView!
 
-  var model: EditorTabModel = .empty {
+  var item: EditorTabItem = .empty {
     didSet {
       guard isViewLoaded else { return }
-      titleLabel.stringValue = model.title
-      if let image = model.icon {
+      titleLabel.stringValue = item.title
+      if let image = item.iconImage {
         tabIconView.image = image
       } else {
         tabIconView.isHidden = true
@@ -56,7 +55,7 @@ class EditorTab: NSCollectionViewItem {
 
   // TODO: Close tab handler
 
-  static func calculateSize(for model: EditorTabModel) -> NSSize {
+  static func calculateSize(for item: EditorTabItem) -> NSSize {
     let height = 30.0
     let closeButtonWidth = 25.0
     let indent = 5.0
@@ -65,12 +64,12 @@ class EditorTab: NSCollectionViewItem {
     let lineWidth = 1.0
     let moreSpace = 10.0
 
-    let titleAttrinbutedString = NSString(string: model.title)
+    let titleAttrinbutedString = NSString(string: item.title)
     let titleSize = titleAttrinbutedString.size(withAttributes: [ .font: NSFont.systemFont(ofSize: 13)])
 
     var resultWidth: Double = 0.0
     resultWidth = indent + closeButtonWidth + indent
-    resultWidth += model.icon != nil ? imageWidth : 0.0
+    resultWidth += item.iconImage != nil ? imageWidth : 0.0
     resultWidth += titleSize.width.rounded(.up)
     resultWidth += indentRight
     resultWidth += lineWidth + indent
