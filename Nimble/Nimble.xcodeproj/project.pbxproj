@@ -639,6 +639,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15.1;
 				MARKETING_VERSION = 0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.Nimble;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -666,6 +667,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15.1;
 				MARKETING_VERSION = 0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.Nimble;
 				PRODUCT_NAME = "$(TARGET_NAME)";

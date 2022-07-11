@@ -8,6 +8,7 @@
 
 import Foundation
 import AppKit
+import NimbleCore
 
 final class TabbedEditor: NSViewController {
   @IBOutlet private weak var tabsCollectionView: NSCollectionView!
@@ -16,21 +17,49 @@ final class TabbedEditor: NSViewController {
 
   var viewModel: TabbedEditorViewModel!
 
+  enum Section {
+    case tabs
+  }
+  var dataSource: NSCollectionViewDiffableDataSource<Section, EditorTabItem>! = nil
+
   override func viewDidLoad() {
     super.viewDidLoad()
-    setupTabCollectionView()
+    setupTabsCollectionView()
+    loadTabs()
   }
 
-  private func setupTabCollectionView() {
+  private func setupTabsCollectionView() {
     self.tabsCollectionView.backgroundColors = [.clear]
-
-    self.tabsCollectionView.register(EditorTab.self, forItemWithIdentifier: EditorTab.itemId)
-
+    self.tabsCollectionView.register(EditorTab.self, forItemWithIdentifier: EditorTab.reuseIdentifier)
     self.tabsCollectionView.delegate = self
-    self.tabsCollectionView.dataSource = self
-
-    self.tabsCollectionView.reloadData()
   }
+
+  private func loadTabs() {
+    self.dataSource = self.makeDataSource()
+
+    var snapshot = NSDiffableDataSourceSnapshot<Section, EditorTabItem>()
+    snapshot.appendSections([.tabs])
+    snapshot.appendItems(viewModel.editorTabItems())
+    self.dataSource.apply(snapshot, animatingDifferences: false)
+  }
+}
+
+// MARK: - Data Source
+
+private extension TabbedEditor {
+  func makeDataSource() -> NSCollectionViewDiffableDataSource<Section, EditorTabItem> {
+    return NSCollectionViewDiffableDataSource
+    <Section, EditorTabItem>(collectionView: self.tabsCollectionView, itemProvider: {
+      (collectionView: NSCollectionView, indexPath: IndexPath, editorTabItem: EditorTabItem) -> NSCollectionViewItem? in
+      let item = collectionView.makeItem(withIdentifier: EditorTab.reuseIdentifier, for: indexPath)
+      guard let editorTab = item as? EditorTab else {
+        return item
+      }
+      editorTab.item = editorTabItem
+      return editorTab
+    })
+  }
+
 }
 
 // MARK: - TabbedEditor + NSCollectionViewDelegate
@@ -39,26 +68,8 @@ extension TabbedEditor: NSCollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
     viewModel.tabSize(for: indexPath)
   }
-}
 
-// MARK: - TabbedEditor + NSCollectionViewDataSource
-
-extension TabbedEditor: NSCollectionViewDataSource {
-  func numberOfSections(in collectionView: NSCollectionView) -> Int {
-    viewModel.numberOfSections
+  func collectionView(_ collectionView: NSCollectionView, canDragItemsAt indexes: IndexSet, with event: NSEvent) -> Bool {
+    return true
   }
-
-  func collectionView(_ collectionView: NSCollectionView, numberOfItemsInSection section: Int) -> Int {
-    viewModel.numberOfTabs
-  }
-
-  func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-    let item = collectionView.makeItem(withIdentifier: EditorTab.itemId, for: indexPath)
-    guard let editorTab = item as? EditorTab else {
-      return item
-    }
-    viewModel.setup(tab: editorTab, for: indexPath)
-    return editorTab
-  }
-
 }

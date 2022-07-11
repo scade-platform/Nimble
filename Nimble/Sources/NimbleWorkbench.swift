@@ -127,6 +127,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     toolbar.delegate = self
 
     self.window?.toolbar = toolbar
+    self.window?.isMovableByWindowBackground = false
 
     PluginManager.shared.activate(in: self)
   }
