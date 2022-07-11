@@ -11,32 +11,11 @@ import NimbleCore
 import AppKit
 
 final class TabbedEditorViewModel {
-  private var openedDocuments: [Document] = []
-  private var currentDocument: Document? = nil
 
-  var numberOfTabs: Int {
-    10
-  }
-
-  func editorTabItems() -> [EditorTabItem] {
-    var mock = (0 ..< 10).map { EditorTabItem(title: "Document\($0)", icon: nil) }
-    return mock
-  }
+  var editorTabItems: [EditorTabItem] = (0 ..< 10).map { EditorTabItem(title: "Document\($0)", icon: nil) }
 
   func tabSize(for indexPath: IndexPath) -> NSSize {
-    let editorTabModelMock = EditorTabItem(title: "Document\(indexPath.item)")
+    let editorTabModelMock = editorTabItems[indexPath.item]
     return EditorTab.calculateSize(for: editorTabModelMock)
-  }
-
-  private func findOpenedDocument(_ document: Document) -> Int? {
-    let docType = type(of: document)
-
-    return openedDocuments.firstIndex {
-      if type(of: $0) == docType {
-        guard let p1 = $0.path, let p2 = document.path else { return false }
-        return p1 == p2
-      }
-      return false
-    }
   }
 }

@@ -19,11 +19,7 @@ final class TabbedEditor: NSViewController {
   @IBOutlet private weak var editorContainerView: NSView!
   @IBOutlet private weak var collectionViewScrollView: NSScrollView!
 
-  // Queue you use to read and writing file promises.
-  private var filePromiseQueue: OperationQueue = {
-      let queue = OperationQueue()
-      return queue
-  }()
+  private var indexPathsOfItemsBeingDragged: Set<IndexPath>!
 
   var viewModel: TabbedEditorViewModel!
 
@@ -50,7 +46,7 @@ final class TabbedEditor: NSViewController {
 
     var snapshot = NSDiffableDataSourceSnapshot<Section, EditorTabItem>()
     snapshot.appendSections([.tabs])
-    snapshot.appendItems(viewModel.editorTabItems())
+    snapshot.appendItems(viewModel.editorTabItems)
     self.dataSource.apply(snapshot, animatingDifferences: false)
   }
 }
@@ -87,106 +83,54 @@ extension TabbedEditor: NSCollectionViewDelegateFlowLayout {
   }
 
   func collectionView(_ collectionView: NSCollectionView, pasteboardWriterForItemAt indexPath: IndexPath) -> NSPasteboardWriting? {
+    return NSPasteboardItem(pasteboardPropertyList: [], ofType: .tabDragType)
+  }
 
-    let provider = FilePromiseProvider(fileType: "public.data", delegate: self)
-    guard dataSource.itemIdentifier(for: IndexPath(item: indexPath.item, section: 0)) != nil else {
-      return provider
-    }
-    do {
-      let data = try NSKeyedArchiver.archivedData(withRootObject: indexPath, requiringSecureCoding: false)
-      provider.userInfo = [FilePromiseProvider.UserInfoKeys.indexPathKey: data]
-    } catch {
-      fatalError("failed to archive indexPath to pasteboard")
-    }
-    return provider
+  func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexPaths: Set<IndexPath>) {
+    indexPathsOfItemsBeingDragged = indexPaths
+  }
+
+  func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, endedAt screenPoint: NSPoint, dragOperation operation: NSDragOperation) {
+    indexPathsOfItemsBeingDragged = nil
   }
 
   func collectionView(_ collectionView: NSCollectionView,
                       validateDrop draggingInfo: NSDraggingInfo,
                       proposedIndexPath proposedDropIndexPath: AutoreleasingUnsafeMutablePointer<NSIndexPath>,
                       dropOperation proposedDropOperation: UnsafeMutablePointer<NSCollectionView.DropOperation>) -> NSDragOperation {
-    return [.move]
+    guard indexPathsOfItemsBeingDragged != nil else {
+      return []
+    }
+    return .move
   }
 
   func collectionView(_ collectionView: NSCollectionView,
                       acceptDrop draggingInfo: NSDraggingInfo,
                       indexPath: IndexPath,
                       dropOperation: NSCollectionView.DropOperation) -> Bool {
-      if let draggingSource = draggingInfo.draggingSource as? NSCollectionView, draggingSource == tabsCollectionView {
-          dropInternalTabs(collectionView, draggingInfo: draggingInfo, indexPath: indexPath)
-      }
-      return true
+    if let draggingSource = draggingInfo.draggingSource as? NSCollectionView, draggingSource == tabsCollectionView {
+      dropInternalTabs(collectionView, draggingInfo: draggingInfo, indexPath: indexPath)
+    }
+    return true
   }
 
   func dropInternalTabs(_ collectionView: NSCollectionView, draggingInfo: NSDraggingInfo, indexPath: IndexPath) {
-      var snapshot = self.dataSource.snapshot()
+    var snapshot = self.dataSource.snapshot()
 
-      draggingInfo.enumerateDraggingItems(
-          options: NSDraggingItemEnumerationOptions.concurrent,
-          for: collectionView,
-          classes: [NSPasteboardItem.self],
-          searchOptions: [:],
-          using: {(draggingItem, idx, stop) in
-              if let pasteboardItem = draggingItem.item as? NSPasteboardItem {
-                  do {
-                      if let indexPathData = pasteboardItem.data(forType: .tabDragType), let editorTabIndexPath =
-                          try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(indexPathData) as? IndexPath {
-                              if let editorTabItem = self.dataSource.itemIdentifier(for: editorTabIndexPath) {
-                                  // Find out the proper indexPath drop point.
-                                  let dropItemLocation = snapshot.itemIdentifiers[indexPath.item]
-                                  if indexPath.item == 0 {
-                                      // Item is being dropped at the beginning.
-                                      snapshot.moveItem(editorTabItem, beforeItem: dropItemLocation)
-                                  } else {
-                                      // Item is being dropped between items or at the very end.
-                                      snapshot.moveItem(editorTabItem, afterItem: dropItemLocation)
-                                  }
-                              }
-                          }
-                  } catch {
-                      Swift.debugPrint("failed to unarchive indexPath for dropped photo item.")
-                  }
-              }
-          })
-      dataSource.apply(snapshot, animatingDifferences: true)
+    guard indexPathsOfItemsBeingDragged != nil else {
+      return
+    }
+    let indexPathOfFirstItemBeingDragged = indexPathsOfItemsBeingDragged.first!
+    let editorTabItem = self.dataSource.itemIdentifier(for: indexPathOfFirstItemBeingDragged)!
+    let dropItemLocation = snapshot.itemIdentifiers[indexPath.item]
+    if indexPath.item == 0 {
+      // Item is being dropped at the beginning.
+      snapshot.moveItem(editorTabItem, beforeItem: dropItemLocation)
+    } else {
+      // Item is being dropped between items or at the very end.
+      snapshot.moveItem(editorTabItem, afterItem: dropItemLocation)
+    }
+    dataSource.apply(snapshot, animatingDifferences: true)
   }
-}
-
-// MARK: - NSFilePromiseProviderDelegate
-
-extension TabbedEditor: NSFilePromiseProviderDelegate {
-    func filePromiseProvider(_ filePromiseProvider: NSFilePromiseProvider, fileNameForType fileType: String) -> String {
-        // Return the photoItem's URL file name.
-        let editorTabItem = editorTabFromFilePromiserProvider(filePromiseProvider: filePromiseProvider)
-      return (editorTabItem?.title)!
-    }
-
-    func filePromiseProvider(_ filePromiseProvider: NSFilePromiseProvider,
-                             writePromiseTo url: URL,
-                             completionHandler: @escaping (Error?) -> Void) {
-      completionHandler(nil)
-    }
-
-    func operationQueue(for filePromiseProvider: NSFilePromiseProvider) -> OperationQueue {
-        return filePromiseQueue
-    }
-
-    func editorTabFromFilePromiserProvider(filePromiseProvider: NSFilePromiseProvider) -> EditorTabItem? {
-        var returnEditorTab: EditorTabItem?
-        if let userInfo = filePromiseProvider.userInfo as? [String: AnyObject] {
-            do {
-                if let indexPathData = userInfo[FilePromiseProvider.UserInfoKeys.indexPathKey] as? Data {
-                    if let indexPath =
-                        try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(indexPathData) as? IndexPath {
-                            returnEditorTab = dataSource.itemIdentifier(for: indexPath)
-                        }
-                }
-            } catch {
-                fatalError("failed to unarchive indexPath from promise provider.")
-            }
-        }
-        return returnEditorTab
-    }
-
 }
 
