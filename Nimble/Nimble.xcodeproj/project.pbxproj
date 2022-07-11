@@ -36,6 +36,7 @@
 		4C4AE7ED285AED1200BF2A4C /* EditorTab.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C4AE7EB285AED1200BF2A4C /* EditorTab.xib */; };
 		4C4AE7EF285B72A500BF2A4C /* TabbedEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4AE7EE285B72A500BF2A4C /* TabbedEditorViewModel.swift */; };
 		4C4AE7FB2860C87C00BF2A4C /* HiddenScroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4AE7FA2860C87C00BF2A4C /* HiddenScroller.swift */; };
+		4CC28958287BE43E00F24053 /* FilePromiseProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CC28957287BE43E00F24053 /* FilePromiseProvider.swift */; };
 		D70A5421254B872D00730F52 /* KeyboardShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70A5420254B872D00730F52 /* KeyboardShortcut.swift */; };
 		D71D04FA246615F400200127 /* NimbleStatusBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D71D04F9246615F400200127 /* NimbleStatusBar.xib */; };
 		D71D04FC2466163B00200127 /* NimbleStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71D04FB2466163B00200127 /* NimbleStatusBar.swift */; };
@@ -112,6 +113,7 @@
 		4C4AE7EB285AED1200BF2A4C /* EditorTab.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditorTab.xib; sourceTree = "<group>"; };
 		4C4AE7EE285B72A500BF2A4C /* TabbedEditorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbedEditorViewModel.swift; sourceTree = "<group>"; };
 		4C4AE7FA2860C87C00BF2A4C /* HiddenScroller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiddenScroller.swift; sourceTree = "<group>"; };
+		4CC28957287BE43E00F24053 /* FilePromiseProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilePromiseProvider.swift; sourceTree = "<group>"; };
 		D70A5420254B872D00730F52 /* KeyboardShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcut.swift; sourceTree = "<group>"; };
 		D71D04F9246615F400200127 /* NimbleStatusBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NimbleStatusBar.xib; sourceTree = "<group>"; };
 		D71D04FB2466163B00200127 /* NimbleStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleStatusBar.swift; sourceTree = "<group>"; };
@@ -202,6 +204,7 @@
 			isa = PBXGroup;
 			children = (
 				4C4AE7F92860C85A00BF2A4C /* HiddenScrollView */,
+				4CC28956287BE3F600F24053 /* FilesPromiseProvider */,
 				4C4AE7E5285AEBF300BF2A4C /* EditorTab */,
 				4C4AE7DA285AE0C000BF2A4C /* TabbedEditor.swift */,
 				4C4AE7E2285AEA7D00BF2A4C /* TabbedEditor.xib */,
@@ -225,6 +228,14 @@
 				4C4AE7FA2860C87C00BF2A4C /* HiddenScroller.swift */,
 			);
 			path = HiddenScrollView;
+			sourceTree = "<group>";
+		};
+		4CC28956287BE3F600F24053 /* FilesPromiseProvider */ = {
+			isa = PBXGroup;
+			children = (
+				4CC28957287BE43E00F24053 /* FilePromiseProvider.swift */,
+			);
+			path = FilesPromiseProvider;
 			sourceTree = "<group>";
 		};
 		D721CFA42385EC1800FD1B00 /* Extensions */ = {
@@ -520,6 +531,7 @@
 				D77AAF102501682700C63C19 /* DiagnosticView.swift in Sources */,
 				D724C5F1237C418B00E80958 /* NavigatorView.swift in Sources */,
 				D724C5F4237C418B00E80958 /* DebugView.swift in Sources */,
+				4CC28958287BE43E00F24053 /* FilePromiseProvider.swift in Sources */,
 				0CB6F11424FE46B800960EDA /* WizardView.swift in Sources */,
 				D77AAF14250816CF00C63C19 /* DiagnosticStatusBar.swift in Sources */,
 				0CD0FB4623A776BD003B01DE /* EditorView.swift in Sources */,
