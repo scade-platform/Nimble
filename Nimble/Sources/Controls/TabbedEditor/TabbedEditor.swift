@@ -19,7 +19,17 @@ final class TabbedEditor: NSViewController {
   @IBOutlet private weak var editorContainerView: NSView!
   @IBOutlet private weak var collectionViewScrollView: NSScrollView!
 
-  private var indexPathsOfItemsBeingDragged: Set<IndexPath>!
+  private var indexPathsOfItemBeingDragged: IndexPath!
+  private var isDragAnimating: Bool = false
+  private var draggingSnapshot: NSDiffableDataSourceSnapshot<Section, EditorTabItem>!
+
+  var draggingEditorTabItem: EditorTabItem? {
+    guard let draggingSnapshot = draggingSnapshot,
+          let indexPathsOfItemBeingDragged = indexPathsOfItemBeingDragged else {
+      return nil
+    }
+    return draggingSnapshot.itemIdentifiers[indexPathsOfItemBeingDragged.item]
+  }
 
   var viewModel: TabbedEditorViewModel!
 
@@ -87,20 +97,24 @@ extension TabbedEditor: NSCollectionViewDelegateFlowLayout {
   }
 
   func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, willBeginAt screenPoint: NSPoint, forItemsAt indexPaths: Set<IndexPath>) {
-    indexPathsOfItemsBeingDragged = indexPaths
+    indexPathsOfItemBeingDragged = indexPaths.first
+    draggingSnapshot = self.dataSource.snapshot()
   }
 
   func collectionView(_ collectionView: NSCollectionView, draggingSession session: NSDraggingSession, endedAt screenPoint: NSPoint, dragOperation operation: NSDragOperation) {
-    indexPathsOfItemsBeingDragged = nil
+    indexPathsOfItemBeingDragged = nil
+    draggingSnapshot = nil
   }
 
   func collectionView(_ collectionView: NSCollectionView,
                       validateDrop draggingInfo: NSDraggingInfo,
                       proposedIndexPath proposedDropIndexPath: AutoreleasingUnsafeMutablePointer<NSIndexPath>,
                       dropOperation proposedDropOperation: UnsafeMutablePointer<NSCollectionView.DropOperation>) -> NSDragOperation {
-    guard indexPathsOfItemsBeingDragged != nil else {
+    guard indexPathsOfItemBeingDragged != nil else {
       return []
     }
+    let proposedIndexPath = proposedDropIndexPath.pointee as IndexPath
+    dropInternalTabs(to: proposedIndexPath)
     return .move
   }
 
@@ -108,29 +122,40 @@ extension TabbedEditor: NSCollectionViewDelegateFlowLayout {
                       acceptDrop draggingInfo: NSDraggingInfo,
                       indexPath: IndexPath,
                       dropOperation: NSCollectionView.DropOperation) -> Bool {
-    if let draggingSource = draggingInfo.draggingSource as? NSCollectionView, draggingSource == tabsCollectionView {
-      dropInternalTabs(collectionView, draggingInfo: draggingInfo, indexPath: indexPath)
-    }
     return true
   }
 
-  func dropInternalTabs(_ collectionView: NSCollectionView, draggingInfo: NSDraggingInfo, indexPath: IndexPath) {
-    var snapshot = self.dataSource.snapshot()
-
-    guard indexPathsOfItemsBeingDragged != nil else {
+  private func dropInternalTabs(to dropIndexPath: IndexPath) {
+    guard !isDragAnimating else {
       return
     }
-    let indexPathOfFirstItemBeingDragged = indexPathsOfItemsBeingDragged.first!
-    let editorTabItem = self.dataSource.itemIdentifier(for: indexPathOfFirstItemBeingDragged)!
-    let dropItemLocation = snapshot.itemIdentifiers[indexPath.item]
-    if indexPath.item == 0 {
-      // Item is being dropped at the beginning.
-      snapshot.moveItem(editorTabItem, beforeItem: dropItemLocation)
-    } else {
-      // Item is being dropped between items or at the very end.
-      snapshot.moveItem(editorTabItem, afterItem: dropItemLocation)
+    guard let draggingEditorTabItem = draggingEditorTabItem else {
+      return
     }
-    dataSource.apply(snapshot, animatingDifferences: true)
+    guard indexPathsOfItemBeingDragged != dropIndexPath else {
+      return
+    }
+    let indexPathOfDraggingItemAfterDrop: IndexPath
+    if dropIndexPath.item >= draggingSnapshot.numberOfItems {
+      let lastItem = draggingSnapshot.itemIdentifiers.last!
+      indexPathOfDraggingItemAfterDrop = IndexPath(item: draggingSnapshot.indexOfItem(lastItem)!, section: 0)
+      draggingSnapshot.moveItem(draggingEditorTabItem, afterItem: lastItem)
+    } else {
+      let dropItemLocation = draggingSnapshot.itemIdentifiers[dropIndexPath.item]
+      indexPathOfDraggingItemAfterDrop = dropIndexPath
+      if dropIndexPath.item < indexPathsOfItemBeingDragged.item {
+        // Item is being dropped at the beginning.
+        draggingSnapshot.moveItem(draggingEditorTabItem, beforeItem: dropItemLocation)
+      } else {
+        // Item is being dropped between items or at the very end.
+        draggingSnapshot.moveItem(draggingEditorTabItem, afterItem: dropItemLocation)
+      }
+    }
+    isDragAnimating = true
+    dataSource.apply(draggingSnapshot, animatingDifferences: true) { [weak self] in
+      self?.indexPathsOfItemBeingDragged = indexPathOfDraggingItemAfterDrop
+      self?.isDragAnimating = false
+    }
   }
 }
 
