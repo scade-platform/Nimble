@@ -29,7 +29,7 @@
                             <collectionView selectable="YES" id="NSv-Gh-gJV">
                                 <rect key="frame" x="0.0" y="0.0" width="443" height="30"/>
                                 <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
-                                <collectionViewFlowLayout key="collectionViewLayout" minimumInteritemSpacing="10" scrollDirection="horizontal" id="fyK-nK-x4S">
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" id="fyK-nK-x4S">
                                     <size key="itemSize" width="50" height="50"/>
                                 </collectionViewFlowLayout>
                                 <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
