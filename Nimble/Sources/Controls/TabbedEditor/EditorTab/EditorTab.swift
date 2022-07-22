@@ -37,17 +37,29 @@ class EditorTab: NSCollectionViewItem {
   @IBOutlet private weak var titleLabel: NSTextField!
   @IBOutlet private weak var backgroundView: NSView!
   @IBOutlet private weak var tabIconView: NSImageView!
+  @IBOutlet private weak var separatorView: NSView!
+
+  override var isSelected: Bool {
+    didSet {
+      updateSelectionHighlighting()
+    }
+  }
+
+  override var highlightState: NSCollectionViewItem.HighlightState {
+    didSet {
+      updateSelectionHighlighting()
+    }
+  }
 
   var item: EditorTabItem = .empty {
     didSet {
-      guard isViewLoaded else { return }
-      titleLabel.stringValue = item.title
-      if let image = item.iconImage {
-        tabIconView.image = image
-      } else {
-        tabIconView.isHidden = true
-      }
+      setupUI()
     }
+  }
+
+  private var showAsHighlighted: Bool {
+    (highlightState == .forSelection) ||
+    (isSelected && highlightState != .forDeselection)
   }
 
   override func viewDidLoad() {
@@ -56,13 +68,30 @@ class EditorTab: NSCollectionViewItem {
     // TODO: Hide close button
   }
 
+  private func setupUI() {
+    guard isViewLoaded else { return }
+
+    titleLabel.stringValue = item.title
+    if let image = item.iconImage {
+      tabIconView.image = image
+    } else {
+      tabIconView.isHidden = true
+    }
+  }
+
+  private func updateSelectionHighlighting() {
+    guard isViewLoaded else { return }
+    separatorView.isHidden = showAsHighlighted
+    view.layer?.backgroundColor = showAsHighlighted ? NSColor.selectedControlColor.cgColor : .clear
+  }
+
   // TODO: Close tab handler
 
   static func calculateSize(for item: EditorTabItem) -> NSSize {
     let height = 30.0
     let closeButtonWidth = 25.0
     let indent = 5.0
-    let indentRight = 30.0
+    let indentRight = 10.0
     let imageWidth = 20.0
     let lineWidth = 1.0
     let moreSpace = 10.0
