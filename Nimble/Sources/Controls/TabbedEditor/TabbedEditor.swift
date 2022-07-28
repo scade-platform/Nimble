@@ -9,6 +9,7 @@
 import Foundation
 import AppKit
 import NimbleCore
+import Combine
 
 extension NSPasteboard.PasteboardType {
   static let tabDragType = NSPasteboard.PasteboardType("com.scade.editorTabs")
@@ -22,6 +23,8 @@ final class TabbedEditor: NSViewController {
   private var indexPathsOfItemBeingDragged: IndexPath!
   private var isDragAnimating: Bool = false
   private var draggingSnapshot: NSDiffableDataSourceSnapshot<Section, EditorTabItem>!
+
+  private var subscriptions: Set<AnyCancellable> = []
 
   var draggingEditorTabItem: EditorTabItem? {
     guard let draggingSnapshot = draggingSnapshot,
@@ -41,7 +44,7 @@ final class TabbedEditor: NSViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     setupTabsCollectionView()
-    loadTabs()
+    bindToViewModel()
   }
 
   private func setupTabsCollectionView() {
@@ -49,15 +52,46 @@ final class TabbedEditor: NSViewController {
     self.tabsCollectionView.register(EditorTab.self, forItemWithIdentifier: EditorTab.reuseIdentifier)
     self.tabsCollectionView.delegate = self
     self.tabsCollectionView.registerForDraggedTypes([.tabDragType])
-  }
 
-  private func loadTabs() {
     self.dataSource = self.makeDataSource()
-
     var snapshot = NSDiffableDataSourceSnapshot<Section, EditorTabItem>()
     snapshot.appendSections([.tabs])
-    snapshot.appendItems(viewModel.editorTabItems)
+    snapshot.appendItems(viewModel.editorTabItems.elements)
     self.dataSource.apply(snapshot, animatingDifferences: false)
+  }
+
+  private func bindToViewModel() {
+    viewModel.editorTabItemsPublisher
+      .sink { [weak self] tabItems in
+        guard var snapshot = self?.dataSource.snapshot() else {
+          return
+        }
+        snapshot.appendItems(tabItems.elements)
+        self?.dataSource.apply(snapshot, animatingDifferences: false)
+      }
+      .store(in: &subscriptions)
+
+    viewModel.currentEditorTabIndexPublisher
+      .sink { [weak self] currentTabItemIndex in
+        guard let self = self else {
+          return
+        }
+        let snapshot = self.dataSource.snapshot()
+        guard let index = currentTabItemIndex else {
+          // TODO: Hide editor
+          return
+        }
+        let tabItem = snapshot.itemIdentifiers[index] as EditorTabItem
+        guard let editor = tabItem.document.editor else {
+          return
+        }
+
+        // TODO: Use constaints
+        editor.view.frame = self.editorContainerView.frame
+        self.addChild(editor)
+        self.editorContainerView.addSubview(editor.view)
+      }
+      .store(in: &subscriptions)
   }
 }
 
@@ -72,7 +106,7 @@ private extension TabbedEditor {
       guard let editorTab = item as? EditorTab else {
         return item
       }
-      editorTab.item = editorTabItem
+      editorTab.present(item: editorTabItem)
       return editorTab
     })
   }
