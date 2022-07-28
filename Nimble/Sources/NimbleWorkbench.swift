@@ -274,14 +274,15 @@ extension NimbleWorkbench: Workbench {
     editorView.showEditor()
 
     // Show doc in tabbed editor
+    tabbedEditorViewModel.open(doc, show: show, openNewEditor: openNewEditor)
 
     observers.notify { $0.workbenchDidOpenDocument(self, document: doc) }
   }
   
   @discardableResult
   public func close(_ doc: Document) -> Bool {
-    //TODO: Implement it
-    editorView?.hideEditor()
+    tabbedEditorViewModel.close(doc)
+//    editorView?.hideEditor()
     return false
   }
   

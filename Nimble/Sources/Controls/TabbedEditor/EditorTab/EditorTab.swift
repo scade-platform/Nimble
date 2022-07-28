@@ -9,27 +9,6 @@
 import Cocoa
 import NimbleCore
 
-struct EditorTabItem: Hashable {
-  let title: String
-  let iconImage: NSImage?
-  let path: String
-
-  init(document: Document) {
-    self.title = document.title
-    self.iconImage = document.icon?.image
-    self.path = document.path?.string ?? ""
-  }
-
-  init(title: String, icon: NSImage? = nil) {
-    self.title = title
-    self.iconImage = icon
-    self.path = ""
-  }
-
-  static var empty = EditorTabItem(title: "")
-}
-
-
 class EditorTab: NSCollectionViewItem {
   static let reuseIdentifier = NSUserInterfaceItemIdentifier("EditorTabReuseIdentifier")
 
@@ -51,12 +30,6 @@ class EditorTab: NSCollectionViewItem {
     }
   }
 
-  var item: EditorTabItem = .empty {
-    didSet {
-      setupUI()
-    }
-  }
-
   private var showAsHighlighted: Bool {
     (highlightState == .forSelection) ||
     (isSelected && highlightState != .forDeselection)
@@ -68,7 +41,7 @@ class EditorTab: NSCollectionViewItem {
     // TODO: Hide close button
   }
 
-  private func setupUI() {
+  func present(item: EditorTabItem) {
     guard isViewLoaded else { return }
 
     titleLabel.stringValue = item.title
