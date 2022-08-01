@@ -21,22 +21,25 @@ import Foundation
 import Path
 
 public class Xcode {
-  public static var developerDirectory: Path? {
+
+  public static var share = Xcode()
+
+  public var developerDirectory: Path? {
     getPathToXcodeDeveloperDirectory()
   }
   
-  public static var toolchainDirectory: Path? {
+  public var toolchainDirectory: Path? {
     getPathToXcodeToolchain()
   }
   
-  private static func getPathToXcodeToolchain() -> Path? {
+  private func getPathToXcodeToolchain() -> Path? {
     guard let pathToXcodeDeveloperDirectory = developerDirectory else {
       return nil
     }
     return pathToXcodeDeveloperDirectory/"Toolchains/XcodeDefault.xctoolchain"
   }
 
-  private static func getPathToXcodeDeveloperDirectory() -> Path? {
+  private func getPathToXcodeDeveloperDirectory() -> Path? {
     guard let commandOutput = try? Process.exec("/usr/bin/xcode-select", arguments:  ["-p"]) else {
       return nil
     }

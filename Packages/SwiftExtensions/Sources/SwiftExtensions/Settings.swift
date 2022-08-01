@@ -166,7 +166,7 @@ fileprivate extension Settings {
       
       if swiftToolchain.isEmpty {
         //Validate XCode version
-        guard let pathToXcodeToolchain = Xcode.toolchainDirectory, pathToXcodeToolchain.exists else {
+        guard let pathToXcodeToolchain = Xcode.share.toolchainDirectory, pathToXcodeToolchain.exists else {
           return [$swiftToolchain.error("Xcode not found.")]
         }
         guard let currentVersion = getVersion(pathToXcodeToolchain) else {

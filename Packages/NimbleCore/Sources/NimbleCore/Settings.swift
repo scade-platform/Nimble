@@ -87,6 +87,10 @@ public final class Settings {
   fileprivate func get<T: Codable>(_ key: String) -> T? {
     assert(isDefined(key))
 
+    if runtime[key]?.isRuntime ?? false {
+      return runtime[key]?.defaultValueProvider() as? T
+    }
+
     if let value = runtime[key]?.data {
       return value as? T
     }
@@ -155,12 +159,12 @@ public final class Settings {
   ///Text represantation of `Settings`.
   public var content: String {
     var workingCopy = self.storage
-    
+
     //Set default value for registered in runtime but not stored setting
     runtime.definedSettingKeys.forEach {
       workingCopy.data[$0] = workingCopy.data[$0, default: self.runtime[$0]!.defaultValueProvider()]
     }
-    
+
     return dictionaryToString(workingCopy.data)
   }
   
@@ -240,6 +244,12 @@ fileprivate extension Settings {
           
       container.allKeys.forEach {
         let key = $0.stringValue
+
+        guard let isRuntimeSetting = runtime[key]?.isRuntime, !isRuntimeSetting else {
+          // Skip all runtime settings
+          return
+        }
+        
         guard let coder = runtime[key]?.coder else {
           print("Coder for setting by key \"\(key)\" is not available")
           return
@@ -263,6 +273,11 @@ fileprivate extension Settings {
       var container = encoder.container(keyedBy: RawCodingKey.self)
       
       data.forEach {
+        guard let isRuntimeSetting = runtime[$0.key]?.isRuntime, !isRuntimeSetting else {
+          // Skip all runtime settings
+          return
+        }
+
         guard let coder = runtime[$0.key]?.coder else {
           print("Coder for setting by key \"\($0.key)\" is not available")
           return
@@ -302,6 +317,7 @@ fileprivate extension Settings {
   struct TypedRuntimeData<T: Codable>: RuntimeData {
     let key: String
     let description: String
+    let isRuntime: Bool
     
     let typedDefaultValueProvider: () -> T
     let coder: SettingCoder.Type
@@ -328,6 +344,7 @@ fileprivate extension Settings {
       self.coder = S.self
       self.observers = ObserverSet()
       self.validators = []
+      self.isRuntime = settingDefinition.isRuntime
     }
     
     func notifyObservers() {
@@ -355,6 +372,7 @@ fileprivate protocol RuntimeData {
   var description: String { get }
   var defaultValueProvider: () -> Any { get }
   var coder: SettingCoder.Type { get }
+  var isRuntime: Bool { get }
   
   var data: Any? { get set }
   var observers: ObserverSet<SettingObserver> { get set }
@@ -456,6 +474,7 @@ public extension SettingProtocol where ValueType: Comparable {
 public protocol SettingDefinitionProtocol where Self : SettingProtocol {
   typealias DefaultValueProvider = () -> ValueType
 
+  var isRuntime: Bool { get }
   var defaultValueProvider: DefaultValueProvider { get }
 }
 
@@ -478,10 +497,12 @@ public extension SettingDefinitionProtocol where Self: SettingCoder {
 @propertyWrapper
 public struct SettingDefinition<T: Codable> : SettingDefinitionProtocol {
   public typealias DefaultValueProvider = () -> T
+  public typealias RuntimeValueProvider = () -> T
   
   public let defaultValueProvider: DefaultValueProvider
   public let key: String
   public let description: String
+  public let isRuntime: Bool
   
   //Property wrapper fields
   public var wrappedValue: T {
@@ -489,6 +510,7 @@ public struct SettingDefinition<T: Codable> : SettingDefinitionProtocol {
       Settings.shared.get(key)!
     }
     set {
+      guard !isRuntime else { return }
       Settings.shared.set(key, value: newValue)
     }
   }
@@ -508,6 +530,7 @@ public struct SettingDefinition<T: Codable> : SettingDefinitionProtocol {
   
   public init(_ key: String, description: String = "", defaultValueProvider: @escaping DefaultValueProvider, validator: SettingValidator? = nil) {
     self.key = key
+    self.isRuntime = false
     self.defaultValueProvider = defaultValueProvider
     self.description = description
     Settings.shared.register(self)
@@ -518,7 +541,19 @@ public struct SettingDefinition<T: Codable> : SettingDefinitionProtocol {
   
   public init(_ key: String, description: String = "", defaultValue: @escaping @autoclosure DefaultValueProvider, validator: SettingValidator? = nil) {
     self.key = key
+    self.isRuntime = false
     self.defaultValueProvider = defaultValue
+    self.description = description
+    Settings.shared.register(self)
+    if let v = validator {
+      self.add(validator: v)
+    }
+  }
+
+  public init(_ key: String, description: String = "", runtimeValueProvider: @escaping RuntimeValueProvider, validator: SettingValidator? = nil) {
+    self.key = key
+    self.defaultValueProvider = runtimeValueProvider
+    self.isRuntime = true
     self.description = description
     Settings.shared.register(self)
     if let v = validator {

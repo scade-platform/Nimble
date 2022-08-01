@@ -181,7 +181,7 @@ fileprivate class SingleDocumentVariant: Variant {
   }
 
   lazy var sdkPath: String? = {
-    guard let xcodeDeveloperDir = Xcode.developerDirectory else  {
+    guard let xcodeDeveloperDir = Xcode.share.developerDirectory else  {
       return nil
     }
     let sdkDirPath = xcodeDeveloperDir/"Platforms/MacOSX.platform/Developer/SDKs/"
