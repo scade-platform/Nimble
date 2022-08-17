@@ -62,15 +62,15 @@ class EditorTab: NSCollectionViewItem {
 
   static func calculateSize(for item: EditorTabItem) -> NSSize {
     let height = 30.0
-    let closeButtonWidth = 25.0
+    let closeButtonWidth = 26.0
     let indent = 5.0
-    let indentRight = 10.0
+    let indentRight = 30.0
     let imageWidth = 20.0
     let lineWidth = 1.0
     let moreSpace = 10.0
 
     let titleAttrinbutedString = NSString(string: item.title)
-    let titleSize = titleAttrinbutedString.size(withAttributes: [ .font: NSFont.systemFont(ofSize: 13)])
+    let titleSize = titleAttrinbutedString.size(withAttributes: [ .font: NSFont.systemFont(ofSize: 12)])
 
     var resultWidth: Double = 0.0
     resultWidth = indent + closeButtonWidth + indent
