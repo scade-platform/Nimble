@@ -63,11 +63,12 @@ final class TabbedEditor: NSViewController {
   private func bindToViewModel() {
     viewModel.editorTabItemsPublisher
       .sink { [weak self] tabItems in
-        guard var snapshot = self?.dataSource.snapshot() else {
+        guard let self = self, !self.isDragAnimating else {
           return
         }
+        var snapshot = self.dataSource.snapshot()
         snapshot.appendItems(tabItems.elements)
-        self?.dataSource.apply(snapshot, animatingDifferences: false)
+        self.dataSource.apply(snapshot, animatingDifferences: false)
       }
       .store(in: &subscriptions)
 
@@ -186,6 +187,7 @@ extension TabbedEditor: NSCollectionViewDelegateFlowLayout {
       }
     }
     isDragAnimating = true
+    viewModel.editorTabItems.swapAt(indexPathOfDraggingItemAfterDrop.item, indexPathsOfItemBeingDragged.item)
     dataSource.apply(draggingSnapshot, animatingDifferences: true) { [weak self] in
       self?.indexPathsOfItemBeingDragged = indexPathOfDraggingItemAfterDrop
       self?.isDragAnimating = false
