@@ -46,34 +46,10 @@ struct EditorTabItem: Hashable {
 
 
 final class TabbedEditorViewModel {
-  private var currentEditorTabIndexSubject =  CurrentValueSubject<Int?, Never>(nil)
-  private var editorTabItemsSubject =  CurrentValueSubject<OrderedSet<EditorTabItem>, Never>([])
+  @Published var currentEditorTabIndex: Int? = nil
 
-  var currentEditorTabIndex: Int? {
-    get {
-      currentEditorTabIndexSubject.value
-    }
-    set {
-      currentEditorTabIndexSubject.value = newValue
-    }
-  }
-
-  var editorTabItems: OrderedSet<EditorTabItem> {
-    get {
-      editorTabItemsSubject.value
-    }
-    set {
-      editorTabItemsSubject.value = newValue
-    }
-  }
-
-  var currentEditorTabIndexPublisher: AnyPublisher<Int?, Never> {
-    currentEditorTabIndexSubject.eraseToAnyPublisher()
-  }
-
-  var editorTabItemsPublisher: AnyPublisher<OrderedSet<EditorTabItem>, Never> {
-    editorTabItemsSubject.eraseToAnyPublisher()
-  }
+  private var editorTabItems: OrderedSet<EditorTabItem> = []
+  var editorTabItemsPublisher = PassthroughSubject<[EditorTabItem], Never>()
 
   private var currentEditorTabItem: EditorTabItem? {
       guard let currentTabItemIndex = currentEditorTabIndex else {
@@ -116,6 +92,7 @@ final class TabbedEditorViewModel {
     } else {
       (_, index) = editorTabItems.append(newEditorTabItem)
     }
+    editorTabItemsPublisher.send(editorTabItems.elements)
     if selectAfterAdd {
       currentEditorTabIndex = index
     }
@@ -138,6 +115,7 @@ final class TabbedEditorViewModel {
       // Show in the current tab
       guard let index = currentEditorTabIndex else { return }
       editorTabItems.update(documentTabItem, at: index)
+      editorTabItemsPublisher.send(editorTabItems.elements)
       // TODO: Notify about close document
     }
   }
@@ -158,5 +136,13 @@ final class TabbedEditorViewModel {
       return
     }
     editorTabItems.remove(at: documentTabIndex)
+  }
+
+  public func swapTabs(_ firstIndex: IndexPath, with secondIndex: IndexPath) {
+    editorTabItems.swapAt(firstIndex.item, secondIndex.item)
+  }
+
+  public func selectTab(at indexPath: IndexPath?) {
+    currentEditorTabIndex = indexPath?.item
   }
 }
