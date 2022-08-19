@@ -56,30 +56,31 @@ final class TabbedEditor: NSViewController {
     self.dataSource = self.makeDataSource()
     var snapshot = NSDiffableDataSourceSnapshot<Section, EditorTabItem>()
     snapshot.appendSections([.tabs])
-    snapshot.appendItems(viewModel.editorTabItems.elements)
     self.dataSource.apply(snapshot, animatingDifferences: false)
   }
 
   private func bindToViewModel() {
     viewModel.editorTabItemsPublisher
       .sink { [weak self] tabItems in
-        guard let self = self, !self.isDragAnimating else {
+        guard let self = self else {
           return
         }
         var snapshot = self.dataSource.snapshot()
-        snapshot.appendItems(tabItems.elements)
+        snapshot.appendItems(tabItems)
         self.dataSource.apply(snapshot, animatingDifferences: false)
       }
       .store(in: &subscriptions)
 
-    viewModel.currentEditorTabIndexPublisher
+    viewModel.$currentEditorTabIndex
       .sink { [weak self] currentTabItemIndex in
         guard let self = self else {
           return
         }
         let snapshot = self.dataSource.snapshot()
         guard let index = currentTabItemIndex else {
-          // TODO: Hide editor
+          if let previouseItemIndex = self.viewModel.currentEditorTabIndex {
+            self.removeEditorForTabItem(at: previouseItemIndex, for: snapshot)
+          }
           return
         }
         let tabItem = snapshot.itemIdentifiers[index] as EditorTabItem
@@ -87,12 +88,25 @@ final class TabbedEditor: NSViewController {
           return
         }
 
+        if let previouseItemIndex = self.viewModel.currentEditorTabIndex {
+          self.removeEditorForTabItem(at: previouseItemIndex, for: snapshot)
+        }
+
         // TODO: Use constaints
         editor.view.frame = self.editorContainerView.frame
         self.addChild(editor)
         self.editorContainerView.addSubview(editor.view)
+        self.tabsCollectionView.selectItems(at: [IndexPath(item: index, section: 0)], scrollPosition: .right)
       }
       .store(in: &subscriptions)
+  }
+
+  private func removeEditorForTabItem(at index: Int, for snapshot: NSDiffableDataSourceSnapshot<Section, EditorTabItem>) {
+    let tabItem = snapshot.itemIdentifiers[index] as EditorTabItem
+    if let editor = tabItem.document.editor {
+      editor.removeFromParent()
+      editor.view.removeFromSuperview()
+    }
   }
 }
 
@@ -119,6 +133,10 @@ private extension TabbedEditor {
 extension TabbedEditor: NSCollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
     viewModel.tabSize(for: indexPath)
+  }
+
+  func collectionView(_ collectionView: NSCollectionView, didSelectItemsAt indexPaths: Set<IndexPath>) {
+    viewModel.selectTab(at: indexPaths.first)
   }
 
   // MARK: - Drag and Drop
@@ -187,7 +205,7 @@ extension TabbedEditor: NSCollectionViewDelegateFlowLayout {
       }
     }
     isDragAnimating = true
-    viewModel.editorTabItems.swapAt(indexPathOfDraggingItemAfterDrop.item, indexPathsOfItemBeingDragged.item)
+    viewModel.swapTabs(indexPathOfDraggingItemAfterDrop, with: indexPathsOfItemBeingDragged)
     dataSource.apply(draggingSnapshot, animatingDifferences: true) { [weak self] in
       self?.indexPathsOfItemBeingDragged = indexPathOfDraggingItemAfterDrop
       self?.isDragAnimating = false
