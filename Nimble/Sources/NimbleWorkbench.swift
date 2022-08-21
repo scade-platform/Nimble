@@ -97,7 +97,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   var settingsController: SettingsController? {
     (self.contentViewController as? WorkbenchContentViewController)?.settingsController
   }
-
+    
   public override func windowDidLoad() {
     super.windowDidLoad()
    
@@ -109,11 +109,14 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     self.windowFrameAutosaveName = "NimbleWindow"
     
     guard let debugView = debugView else { return }
-    debugView.isHidden = true
-    
+    debugView.isHidden = false
+      debugView.collapseCallback = { [weak self] in
+          self?.collapseDebugView()
+      }
+      
     guard let inspectorView = inspectorView else { return }
     inspectorView.isHidden = true
-    
+      
     DocumentManager.shared.defaultDocument = BinaryFileDocument.self
 
     let toolbar = NSToolbar(identifier: NSToolbar.Identifier("MainToolbar"))
@@ -125,6 +128,25 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
 
     PluginManager.shared.activate(in: self)
   }
+    
+    private var lastDebugViewPosition: CGFloat = 0
+    
+    private func collapseDebugView() {
+        let currentPosition = workbenchCentralView?.splitViewItems.last?.viewController.view.frame.height ?? 0
+        if lastDebugViewPosition == 0 || currentPosition != lastDebugViewPosition && currentPosition != 28 {
+            lastDebugViewPosition = currentPosition
+        }
+        guard let splitViewFrame = workbenchCentralView?.splitView.frame else { return }
+        let updatedPosition = currentPosition != 28 ? splitViewFrame.maxY : lastDebugViewPosition
+        
+        let duration: TimeInterval = 0.25
+        NSAnimationContext.runAnimationGroup { context in
+            context.duration = duration
+            context.allowsImplicitAnimation = true
+            workbenchCentralView?.splitView.setPosition(updatedPosition, ofDividerAt: 0)
+            workbenchCentralView?.splitView.layoutSubtreeIfNeeded()
+        }
+    }
     
   public func windowWillClose(_ notification: Notification) {
     let tasks = self.tasks
@@ -195,6 +217,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   func currentDocumentWillChange(_ doc: Document?) {
     editorMenuItem?.submenu = nil
     statusBarView?.editorBar = []
+    debugView?.editorBar = []
   }
   
   func currentDocumentDidChange(_ doc: Document?) {
@@ -211,7 +234,8 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
         editorMenuItem?.isEnabled = true
       }
 
-      statusBarView?.editorBar = editor.statusBarItems
+      debugView?.editorBar = editor.statusBarItems
+      //statusBarView?.editorBar = editor.statusBarItems
       editor.focus()
     }
 

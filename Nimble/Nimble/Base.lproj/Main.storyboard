@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -546,12 +546,55 @@
         <scene sceneID="lFy-fe-dBa">
             <objects>
                 <viewController id="vVK-t1-2nf" customClass="DebugView" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="QYh-oE-JSq" customClass="WorkbenchSidebar" customModule="Nimble" customModuleProvider="target">
+                    <customView key="view" id="zFx-Pz-E40">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </view>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <subviews>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="gAs-0Y-kEk">
+                                <rect key="frame" x="0.0" y="272" width="450" height="28"/>
+                                <subviews>
+                                    <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lvv-hA-K13">
+                                        <rect key="frame" x="10" y="0.0" width="0.0" height="28"/>
+                                    </stackView>
+                                    <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6Wa-uR-yRZ">
+                                        <rect key="frame" x="430" y="0.0" width="0.0" height="28"/>
+                                    </stackView>
+                                    <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S7b-bi-R8J">
+                                        <rect key="frame" x="440" y="0.0" width="0.0" height="28"/>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="6Wa-uR-yRZ" firstAttribute="trailing" secondItem="S7b-bi-R8J" secondAttribute="leading" constant="-10" id="12o-xd-pFQ"/>
+                                    <constraint firstItem="Lvv-hA-K13" firstAttribute="leading" secondItem="gAs-0Y-kEk" secondAttribute="leading" constant="10" id="2hd-Ys-7Wx"/>
+                                    <constraint firstAttribute="bottom" secondItem="S7b-bi-R8J" secondAttribute="bottom" id="39h-vW-d6R"/>
+                                    <constraint firstItem="S7b-bi-R8J" firstAttribute="top" secondItem="gAs-0Y-kEk" secondAttribute="top" id="5EO-fc-G8b"/>
+                                    <constraint firstAttribute="height" constant="28" id="BDk-gm-R2U"/>
+                                    <constraint firstAttribute="bottom" secondItem="Lvv-hA-K13" secondAttribute="bottom" id="HQE-W3-aTp"/>
+                                    <constraint firstItem="6Wa-uR-yRZ" firstAttribute="top" secondItem="gAs-0Y-kEk" secondAttribute="top" id="HyG-y9-iXR"/>
+                                    <constraint firstItem="Lvv-hA-K13" firstAttribute="top" secondItem="gAs-0Y-kEk" secondAttribute="top" id="Psf-wn-ZQN"/>
+                                    <constraint firstAttribute="bottom" secondItem="6Wa-uR-yRZ" secondAttribute="bottom" id="YWn-dZ-Xmg"/>
+                                    <constraint firstAttribute="trailing" secondItem="S7b-bi-R8J" secondAttribute="trailing" constant="10" id="ah3-ST-ZQj"/>
+                                </constraints>
+                            </customView>
+                            <customView translatesAutoresizingMaskIntoConstraints="NO" id="YiO-lO-2AZ" customClass="WorkbenchSidebar" customModule="Nimble" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                            </customView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="YiO-lO-2AZ" firstAttribute="top" secondItem="gAs-0Y-kEk" secondAttribute="top" id="Ib7-lW-Irm"/>
+                            <constraint firstItem="gAs-0Y-kEk" firstAttribute="leading" secondItem="zFx-Pz-E40" secondAttribute="leading" id="MEZ-fY-UxI"/>
+                            <constraint firstItem="YiO-lO-2AZ" firstAttribute="leading" secondItem="zFx-Pz-E40" secondAttribute="leading" id="asZ-Yu-a8y"/>
+                            <constraint firstAttribute="trailing" secondItem="gAs-0Y-kEk" secondAttribute="trailing" id="fD1-Wj-EEu"/>
+                            <constraint firstAttribute="bottom" secondItem="YiO-lO-2AZ" secondAttribute="bottom" id="lJZ-JN-Ebu"/>
+                            <constraint firstAttribute="trailing" secondItem="YiO-lO-2AZ" secondAttribute="trailing" id="o8H-e6-mR2"/>
+                            <constraint firstItem="gAs-0Y-kEk" firstAttribute="top" secondItem="zFx-Pz-E40" secondAttribute="top" id="ztN-vP-1RW"/>
+                        </constraints>
+                    </customView>
                     <connections>
-                        <outlet property="sidebar" destination="QYh-oE-JSq" id="8c8-Ae-SM7"/>
+                        <outlet property="editorBarStackView" destination="6Wa-uR-yRZ" id="oKE-nf-jbx"/>
+                        <outlet property="leftBarStackView" destination="Lvv-hA-K13" id="lhO-2d-cfr"/>
+                        <outlet property="rightBarStackView" destination="S7b-bi-R8J" id="RyQ-In-NmH"/>
+                        <outlet property="sidebar" destination="YiO-lO-2AZ" id="n6c-rv-NdJ"/>
                     </connections>
                 </viewController>
                 <customObject id="f3g-ad-EMA" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

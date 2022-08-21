@@ -27,6 +27,8 @@
 		0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3523A39503003B01DE /* StatusBarView.swift */; };
 		0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */; };
 		0CD0FB4623A776BD003B01DE /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB4523A776BD003B01DE /* EditorView.swift */; };
+		469FC77528AB7C3600191B8F /* ActionAreaBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 469FC77428AB7C3600191B8F /* ActionAreaBar.xib */; };
+		46C86FA328AAD97E00D953E8 /* ActionAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C86FA228AAD97E00D953E8 /* ActionAreaView.swift */; };
 		D70A5421254B872D00730F52 /* KeyboardShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70A5420254B872D00730F52 /* KeyboardShortcut.swift */; };
 		D71D04FA246615F400200127 /* NimbleStatusBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D71D04F9246615F400200127 /* NimbleStatusBar.xib */; };
 		D71D04FC2466163B00200127 /* NimbleStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71D04FB2466163B00200127 /* NimbleStatusBar.swift */; };
@@ -121,6 +123,8 @@
 		0CD0FB3523A39503003B01DE /* StatusBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarView.swift; sourceTree = "<group>"; };
 		0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootSplitView.swift; sourceTree = "<group>"; };
 		0CD0FB4523A776BD003B01DE /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
+		469FC77428AB7C3600191B8F /* ActionAreaBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ActionAreaBar.xib; sourceTree = "<group>"; };
+		46C86FA228AAD97E00D953E8 /* ActionAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionAreaView.swift; sourceTree = "<group>"; };
 		D70A5420254B872D00730F52 /* KeyboardShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcut.swift; sourceTree = "<group>"; };
 		D71D04F9246615F400200127 /* NimbleStatusBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NimbleStatusBar.xib; sourceTree = "<group>"; };
 		D71D04FB2466163B00200127 /* NimbleStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleStatusBar.swift; sourceTree = "<group>"; };
@@ -187,6 +191,15 @@
 			path = Controllers;
 			sourceTree = "<group>";
 		};
+		469FC76C28AB792300191B8F /* ActionArea */ = {
+			isa = PBXGroup;
+			children = (
+				46C86FA228AAD97E00D953E8 /* ActionAreaView.swift */,
+				469FC77428AB7C3600191B8F /* ActionAreaBar.xib */,
+			);
+			path = ActionArea;
+			sourceTree = "<group>";
+		};
 		D721CFA42385EC1800FD1B00 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -204,6 +217,7 @@
 		D72F959D222DF2F4009F2EC3 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				469FC76C28AB792300191B8F /* ActionArea */,
 				0C2B6BD124F8FC1500DCA8B0 /* Wizard */,
 				D724C5E8237C418B00E80958 /* ConsoleView.swift */,
 				D724C5ED237C418B00E80958 /* DebugView.swift */,
@@ -421,6 +435,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				469FC77528AB7C3600191B8F /* ActionAreaBar.xib in Resources */,
 				0CB6F11524FE46B800960EDA /* WizardView.xib in Resources */,
 				D77AAF122508143A00C63C19 /* DiagnosticStatusBar.xib in Resources */,
 				D72F959C222DF2D9009F2EC3 /* WorkbenchSidebar.xib in Resources */,
@@ -485,6 +500,7 @@
 				0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */,
 				0CAAE9A324370523003CAE92 /* Bundle.swift in Sources */,
 				D71D04FC2466163B00200127 /* NimbleStatusBar.swift in Sources */,
+				46C86FA328AAD97E00D953E8 /* ActionAreaView.swift in Sources */,
 				D72F959F222DF7AF009F2EC3 /* WorkbenchSidebar.swift in Sources */,
 				D79BE0BD2385AD4000D96619 /* NimbleController.swift in Sources */,
 				D724C5F2237C418B00E80958 /* TabbedEditor.swift in Sources */,

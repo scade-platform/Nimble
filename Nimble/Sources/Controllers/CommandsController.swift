@@ -61,7 +61,7 @@ class CommandsController {
   private func createAreaVisibilityCommands() -> [Command] {
     [
       ChangeAreaVisibility(title: "Navigator", icon: Bundle.main.loadBottonImage(name: "leftSideBar")) { $0.navigatorArea },
-      ChangeAreaVisibility(title: "Debug area", icon: Bundle.main.loadBottonImage(name: "bottomArea")) { $0.debugArea },
+      //ChangeAreaVisibility(title: "Debug area", icon: Bundle.main.loadBottonImage(name: "bottomArea")) { $0.debugArea },
       ChangeAreaVisibility(title: "Inspector", icon: Bundle.main.loadBottonImage(name: "rightSideBar")) { $0.inspectorArea }
     ]
   }

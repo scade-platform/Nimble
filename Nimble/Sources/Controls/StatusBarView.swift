@@ -55,7 +55,7 @@ class StatusBarView: NSViewController {
 extension StatusBarView : WorkbenchStatusBar {
   var leftBar: [WorkbenchStatusBarItem] {
     get {
-      return leftBarStackView.subviews.compactMap {$0 as? WorkbenchStatusBarItem}
+      return leftBarStackView.subviews.compactMap {$0 as? WorkbenchStatusBarItem }
     }
     set {
       leftBarStackView.subviews.forEach{ $0.removeFromSuperview() }
@@ -80,8 +80,10 @@ extension StatusBarView : WorkbenchStatusBar {
   }
 
   var statusMessage: String {
-    get { workbenchBar.statusMessage.stringValue  }
-    set { workbenchBar.statusMessage.stringValue = newValue }
+    get {
+        workbenchBar.statusMessage.stringValue  }
+    set {
+        workbenchBar.statusMessage.stringValue = newValue }
   }
 
   func setStatusMessage(_ message: String, duration: Int) {
