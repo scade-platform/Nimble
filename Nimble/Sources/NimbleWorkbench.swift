@@ -133,11 +133,11 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     
     private func collapseDebugView() {
         let currentPosition = workbenchCentralView?.splitViewItems.last?.viewController.view.frame.height ?? 0
-        if lastDebugViewPosition == 0 || currentPosition != lastDebugViewPosition && currentPosition != 28 {
+        if lastDebugViewPosition == 0 || currentPosition != lastDebugViewPosition && currentPosition != 56 && currentPosition != 28 {
             lastDebugViewPosition = currentPosition
         }
         guard let splitViewFrame = workbenchCentralView?.splitView.frame else { return }
-        let updatedPosition = currentPosition != 28 ? splitViewFrame.maxY : lastDebugViewPosition
+        let updatedPosition: CGFloat = currentPosition != 56 && currentPosition != 28 ? splitViewFrame.maxY : lastDebugViewPosition
         
         let duration: TimeInterval = 0.25
         NSAnimationContext.runAnimationGroup { context in
