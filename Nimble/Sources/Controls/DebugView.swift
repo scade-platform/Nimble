@@ -36,6 +36,7 @@ class DebugView: NimbleSidebarArea {
     private let outputsAreaView = ActionAreaBar.loadFromNib()
     
     var collapseCallback: (() -> Void)?
+    var openCallback: (() -> Void)?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -78,12 +79,14 @@ class DebugView: NimbleSidebarArea {
         problemsAreaView.actionCallback = { [weak self] in
             guard let self = self else { return }
             self.sidebar?.selectView(at: 0)
+            self.openCallback?()
         }
         
         outputsAreaView.setup(image: IconsManager.Icons.file.image)
         outputsAreaView.actionCallback = { [weak self] in
             guard let self = self else { return }
             self.sidebar?.selectView(at: 1)
+            self.openCallback?()
         }
     }
 }

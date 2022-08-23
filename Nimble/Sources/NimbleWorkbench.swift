@@ -107,11 +107,17 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     // Restore window position
     window?.setFrameUsingName("NimbleWindow")
     self.windowFrameAutosaveName = "NimbleWindow"
+      
+      lastDebugViewPosition = workbenchCentralView?.splitViewItems.last?.viewController.view.frame.height ?? 0
     
     guard let debugView = debugView else { return }
     debugView.isHidden = false
       debugView.collapseCallback = { [weak self] in
           self?.collapseDebugView()
+      }
+      
+      debugView.openCallback = { [weak self] in
+          self?.openDebugView()
       }
       
     guard let inspectorView = inspectorView else { return }
@@ -130,6 +136,11 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   }
     
     private var lastDebugViewPosition: CGFloat = 0
+    //private var isDebugViewCollapsed: Bool = false
+    
+    private func openDebugView() {
+       // changePositionOfDebugView(position: lastDebugViewPosition)
+    }
     
     private func collapseDebugView() {
         let currentPosition = workbenchCentralView?.splitViewItems.last?.viewController.view.frame.height ?? 0
@@ -139,11 +150,16 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
         guard let splitViewFrame = workbenchCentralView?.splitView.frame else { return }
         let updatedPosition: CGFloat = currentPosition != 56 && currentPosition != 28 ? splitViewFrame.maxY : lastDebugViewPosition
         
+       // isDebugViewCollapsed = currentPosition == 56 || currentPosition == 28
+        changePositionOfDebugView(position: updatedPosition)
+    }
+    
+    private func changePositionOfDebugView(position: CGFloat) {
         let duration: TimeInterval = 0.25
         NSAnimationContext.runAnimationGroup { context in
             context.duration = duration
             context.allowsImplicitAnimation = true
-            workbenchCentralView?.splitView.setPosition(updatedPosition, ofDividerAt: 0)
+            workbenchCentralView?.splitView.setPosition(position, ofDividerAt: 0)
             workbenchCentralView?.splitView.layoutSubtreeIfNeeded()
         }
     }
