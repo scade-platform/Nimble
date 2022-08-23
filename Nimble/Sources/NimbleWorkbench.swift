@@ -136,21 +136,29 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   }
     
     private var lastDebugViewPosition: CGFloat = 0
-    //private var isDebugViewCollapsed: Bool = false
+    private var isDebugViewCollapsed: Bool {
+        get {
+            return currentDebugViewPosition == 56 || currentDebugViewPosition == 28
+        }
+    }
+    private var currentDebugViewPosition: CGFloat {
+        get {
+            return workbenchCentralView?.splitViewItems.last?.viewController.view.frame.height ?? 0
+        }
+    }
     
     private func openDebugView() {
-       // changePositionOfDebugView(position: lastDebugViewPosition)
+        guard isDebugViewCollapsed else { return }
+        changePositionOfDebugView(position: lastDebugViewPosition)
     }
     
     private func collapseDebugView() {
-        let currentPosition = workbenchCentralView?.splitViewItems.last?.viewController.view.frame.height ?? 0
-        if lastDebugViewPosition == 0 || currentPosition != lastDebugViewPosition && currentPosition != 56 && currentPosition != 28 {
-            lastDebugViewPosition = currentPosition
+        if lastDebugViewPosition == 0 || currentDebugViewPosition != lastDebugViewPosition && currentDebugViewPosition != 56 && currentDebugViewPosition != 28 {
+            lastDebugViewPosition = currentDebugViewPosition
         }
         guard let splitViewFrame = workbenchCentralView?.splitView.frame else { return }
-        let updatedPosition: CGFloat = currentPosition != 56 && currentPosition != 28 ? splitViewFrame.maxY : lastDebugViewPosition
+        let updatedPosition: CGFloat = currentDebugViewPosition != 56 && currentDebugViewPosition != 28 ? splitViewFrame.maxY : lastDebugViewPosition
         
-       // isDebugViewCollapsed = currentPosition == 56 || currentPosition == 28
         changePositionOfDebugView(position: updatedPosition)
     }
     
