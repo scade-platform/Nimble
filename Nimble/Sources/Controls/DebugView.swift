@@ -65,26 +65,31 @@ class DebugView: NimbleSidebarArea {
     handleActions()
 
     self.sidebar?.selectView(at: 0)
+    problemsAreaView.changeState(state: .on)
     self.sidebar?.stackView?.edgeInsets = NSEdgeInsets(top: 2.0, left: 10.0, bottom: 2.0, right: 0.0)
   }
     
     func handleActions() {
-        actionAreaView.setup(image: Bundle.main.loadBottonImage(name: "bottomArea"))
+        actionAreaView.setup(image: NSImage(named: "debugAreaBar"))
         actionAreaView.actionCallback = { [weak self] in
             guard let self = self else { return }
             self.collapseCallback?()
         }
         
-        problemsAreaView.setup(image: IconsManager.Icons.warning.image)
+        problemsAreaView.setup(image: NSImage(named: "exclamationmark.triangle"))
         problemsAreaView.actionCallback = { [weak self] in
             guard let self = self else { return }
+            self.problemsAreaView.changeState(state: .on)
+            self.outputsAreaView.changeState(state: .off)
             self.sidebar?.selectView(at: 0)
             self.openCallback?()
         }
         
-        outputsAreaView.setup(image: IconsManager.Icons.file.image)
+        outputsAreaView.setup(image: NSImage(named: "doc.plaintext"))
         outputsAreaView.actionCallback = { [weak self] in
             guard let self = self else { return }
+            self.problemsAreaView.changeState(state: .off)
+            self.outputsAreaView.changeState(state: .on)
             self.sidebar?.selectView(at: 1)
             self.openCallback?()
         }

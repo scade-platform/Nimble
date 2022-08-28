@@ -21,12 +21,6 @@ final class ActionAreaBar: NSViewController, WorkbenchViewController {
 
     @objc func buttonPressed() {
         actionCallback?()
-//        guard let debugArea = workbench?.debugArea else { return }
-//        workbench?.debugArea?.isHidden = !debugArea.isHidden
-//
-//        guard let selectedColor = NSColor(named: "SelectedSegmentColor", bundle: Bundle.main) else { return }
-//
-//        button.image = debugArea.isHidden ? areaImage : areaImage?.imageWithTint(selectedColor)
        }
 
     var actionCallback: (() -> Void)?
@@ -41,6 +35,15 @@ final class ActionAreaBar: NSViewController, WorkbenchViewController {
     func setup(image: NSImage?) {
         areaImage = image
         button.image = areaImage
+    }
+    
+    func changeState(state: NSControl.StateValue) {
+        button.state = state
+        switch button.state {
+        case .on: button.contentTintColor = .systemBlue
+        case .off: button.contentTintColor = .systemGray
+        default: ()
+        }
     }
     
     override func viewDidLoad() {
