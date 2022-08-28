@@ -34,6 +34,7 @@ class DebugView: NimbleSidebarArea {
     private let actionAreaView = ActionAreaBar.loadFromNib()
     private let problemsAreaView = ActionAreaBar.loadFromNib()
     private let outputsAreaView = ActionAreaBar.loadFromNib()
+    private let separatorView = SeparatorView()
     
     var collapseCallback: (() -> Void)?
     var openCallback: (() -> Void)?
@@ -47,18 +48,17 @@ class DebugView: NimbleSidebarArea {
       leftBar.append(problemsAreaView.view as! WorkbenchStatusBarItem)
       leftBar.append(outputsAreaView.view as! WorkbenchStatusBarItem)
       rightBar.append(actionAreaView.view as! WorkbenchStatusBarItem)
+      rightBar.append(separatorView)
       rightBar.append(diagnosticBar.view as! WorkbenchStatusBarItem)
       editorBar.append(workbenchBar.view as! WorkbenchStatusBarItem)
 
       statusMessage = ""
 
     let diagnosticsView = DiagnosticView.loadFromNib()
-   // diagnosticsView.title = "PROBLEMS"
     self.diagnosticsView = diagnosticsView
     self.add(part: diagnosticsView)
 
     let consoleView = ConsoleView.loadFromNib()
-  //  consoleView.title = "OUTPUT"
     self.consoleView = consoleView
     self.add(part: consoleView)
       
