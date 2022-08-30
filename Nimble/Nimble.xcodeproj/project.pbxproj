@@ -29,6 +29,7 @@
 		0CD0FB4623A776BD003B01DE /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB4523A776BD003B01DE /* EditorView.swift */; };
 		469FC77528AB7C3600191B8F /* ActionAreaBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = 469FC77428AB7C3600191B8F /* ActionAreaBar.xib */; };
 		46C86FA328AAD97E00D953E8 /* ActionAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C86FA228AAD97E00D953E8 /* ActionAreaView.swift */; };
+		46D8BC6428BE344700E8A1FB /* WorkbenchDiagnosticMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D8BC6328BE344700E8A1FB /* WorkbenchDiagnosticMock.swift */; };
 		46E0B79E28BB9A1700092CDD /* SeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E0B79D28BB9A1700092CDD /* SeparatorView.swift */; };
 		D70A5421254B872D00730F52 /* KeyboardShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70A5420254B872D00730F52 /* KeyboardShortcut.swift */; };
 		D71D04FA246615F400200127 /* NimbleStatusBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D71D04F9246615F400200127 /* NimbleStatusBar.xib */; };
@@ -126,6 +127,7 @@
 		0CD0FB4523A776BD003B01DE /* EditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorView.swift; sourceTree = "<group>"; };
 		469FC77428AB7C3600191B8F /* ActionAreaBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ActionAreaBar.xib; sourceTree = "<group>"; };
 		46C86FA228AAD97E00D953E8 /* ActionAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionAreaView.swift; sourceTree = "<group>"; };
+		46D8BC6328BE344700E8A1FB /* WorkbenchDiagnosticMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchDiagnosticMock.swift; sourceTree = "<group>"; };
 		46E0B79D28BB9A1700092CDD /* SeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeparatorView.swift; sourceTree = "<group>"; };
 		D70A5420254B872D00730F52 /* KeyboardShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcut.swift; sourceTree = "<group>"; };
 		D71D04F9246615F400200127 /* NimbleStatusBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NimbleStatusBar.xib; sourceTree = "<group>"; };
@@ -202,6 +204,15 @@
 			path = ActionArea;
 			sourceTree = "<group>";
 		};
+		46D8BC5F28BE342F00E8A1FB /* DiagnosticView */ = {
+			isa = PBXGroup;
+			children = (
+				D77AAF0F2501682700C63C19 /* DiagnosticView.swift */,
+				46D8BC6328BE344700E8A1FB /* WorkbenchDiagnosticMock.swift */,
+			);
+			path = DiagnosticView;
+			sourceTree = "<group>";
+		};
 		46E0B79928BB99EE00092CDD /* SeparatorView */ = {
 			isa = PBXGroup;
 			children = (
@@ -227,13 +238,13 @@
 		D72F959D222DF2F4009F2EC3 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				46D8BC5F28BE342F00E8A1FB /* DiagnosticView */,
 				46E0B79928BB99EE00092CDD /* SeparatorView */,
 				469FC76C28AB792300191B8F /* ActionArea */,
 				0C2B6BD124F8FC1500DCA8B0 /* Wizard */,
 				D724C5E8237C418B00E80958 /* ConsoleView.swift */,
 				D724C5ED237C418B00E80958 /* DebugView.swift */,
 				D77AAF13250816CF00C63C19 /* DiagnosticStatusBar.swift */,
-				D77AAF0F2501682700C63C19 /* DiagnosticView.swift */,
 				D724C5E9237C418B00E80958 /* DropView.swift */,
 				0CD0FB4523A776BD003B01DE /* EditorView.swift */,
 				0C2A26D32429E2F800AA8B51 /* InspectorView.swift */,
@@ -507,6 +518,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46D8BC6428BE344700E8A1FB /* WorkbenchDiagnosticMock.swift in Sources */,
 				D77AAF0925011AC300C63C19 /* NimbleSidebarArea.swift in Sources */,
 				0C2C1A4822F176B200AC2E5D /* ProjectDocument.swift in Sources */,
 				0CAAE9A324370523003CAE92 /* Bundle.swift in Sources */,

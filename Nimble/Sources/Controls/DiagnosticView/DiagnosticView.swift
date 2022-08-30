@@ -21,7 +21,6 @@
 import Cocoa
 import NimbleCore
 
-
 class DiagnosticView: NSViewController, WorkbenchViewController {
   @IBOutlet weak var table: NSTableView? = nil
 
@@ -30,7 +29,9 @@ class DiagnosticView: NSViewController, WorkbenchViewController {
       table?.reloadData()
     }
   }
-
+    
+  private let diagnosticMock: (DiagnosticSource, Diagnostic) = (DiagnosticSource.other(""), WorkbenchDiagnosticMock(message: "", severity: .information))
+    
   override func viewDidLoad() {
     super.viewDidLoad()
     table?.delegate = self
@@ -70,14 +71,14 @@ extension DiagnosticView: WorkbenchObserver {
 
 extension DiagnosticView: NSTableViewDataSource {
   func numberOfRows(in tableView: NSTableView) -> Int {
-    return diagnostics.count
+      return diagnostics.count == 0 ? 1 : diagnostics.count
   }
 }
 
 
 extension DiagnosticView: NSTableViewDelegate {
   func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
-    let item = diagnostics[row]
+    let item = diagnostics.count == 0 ? diagnosticMock : diagnostics[row]
 
     var cell: NSTableCellView? = nil
     if tableColumn == tableView.tableColumns[0] {
@@ -91,8 +92,8 @@ extension DiagnosticView: NSTableViewDelegate {
       default:
         break
       }
-
-
+        
+      cell?.imageView?.isHidden = diagnostics.count == 0
 
     } else if tableColumn == tableView.tableColumns[1] {
       cell = tableView.makeCell(id: "MessageCell")

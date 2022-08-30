@@ -131,7 +131,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     toolbar.delegate = self
 
     self.window?.toolbar = toolbar
-
+    
     PluginManager.shared.activate(in: self)
   }
     
@@ -153,11 +153,11 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     }
     
     private func collapseDebugView() {
-        if lastDebugViewPosition == 0 || currentDebugViewPosition != lastDebugViewPosition && currentDebugViewPosition != 56 && currentDebugViewPosition != 28 {
+        if lastDebugViewPosition == 0 || currentDebugViewPosition != lastDebugViewPosition && currentDebugViewPosition != 28 {
             lastDebugViewPosition = currentDebugViewPosition
         }
         guard let splitViewFrame = workbenchCentralView?.splitView.frame else { return }
-        let updatedPosition: CGFloat = currentDebugViewPosition != 56 && currentDebugViewPosition != 28 ? splitViewFrame.maxY : lastDebugViewPosition
+        let updatedPosition: CGFloat = currentDebugViewPosition != 28 ? splitViewFrame.maxY : lastDebugViewPosition
         
         changePositionOfDebugView(position: updatedPosition)
     }
@@ -387,7 +387,7 @@ extension NimbleWorkbench: Workbench {
   }
   
   public func publish(diagnostics: [Diagnostic], for source: DiagnosticSource) {
-    if case .path(let path) = source, let doc = documents.first(where: {$0.path == path}){
+    if case .path(let path) = source, let doc = documents.first(where: {$0.path == path}) {
       doc.editor?.publish(diagnostics: diagnostics)
     }
 
@@ -396,8 +396,8 @@ extension NimbleWorkbench: Workbench {
     } else {
       self.diagnostics[source] = diagnostics
     }
-
-    observers.notify{ $0.workbenchDidPublishDiagnostic(self, diagnostic: diagnostics, source: source) }
+      
+    observers.notify{ $0.workbenchDidPublishDiagnostic(self, diagnostic: self.diagnostics[source] ?? diagnostics, source: source) }
   }
 
   public func publish(task: WorkbenchTask) {
