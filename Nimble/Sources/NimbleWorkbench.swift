@@ -98,6 +98,23 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     (self.contentViewController as? WorkbenchContentViewController)?.settingsController
   }
     
+    private var lastDebugViewPosition: CGFloat = 0
+    private var isDebugViewCollapsed: Bool {
+        get {
+            return currentDebugViewPosition == 56 || currentDebugViewPosition == 28
+        }
+    }
+    private var currentDebugViewPosition: CGFloat {
+        get {
+            return workbenchCentralView?.splitViewItems.last?.viewController.view.frame.height ?? 0
+        }
+    }
+    
+    private func openDebugView() {
+        guard isDebugViewCollapsed else { return }
+        changePositionOfDebugView(position: lastDebugViewPosition)
+    }
+    
   public override func windowDidLoad() {
     super.windowDidLoad()
    
@@ -108,7 +125,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     window?.setFrameUsingName("NimbleWindow")
     self.windowFrameAutosaveName = "NimbleWindow"
       
-      lastDebugViewPosition = workbenchCentralView?.splitViewItems.last?.viewController.view.frame.height ?? 0
+    lastDebugViewPosition = workbenchCentralView?.splitViewItems.last?.viewController.view.frame.height ?? 0
     
     guard let debugView = debugView else { return }
     debugView.isHidden = false
@@ -134,23 +151,6 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     
     PluginManager.shared.activate(in: self)
   }
-    
-    private var lastDebugViewPosition: CGFloat = 0
-    private var isDebugViewCollapsed: Bool {
-        get {
-            return currentDebugViewPosition == 56 || currentDebugViewPosition == 28
-        }
-    }
-    private var currentDebugViewPosition: CGFloat {
-        get {
-            return workbenchCentralView?.splitViewItems.last?.viewController.view.frame.height ?? 0
-        }
-    }
-    
-    private func openDebugView() {
-        guard isDebugViewCollapsed else { return }
-        changePositionOfDebugView(position: lastDebugViewPosition)
-    }
     
     private func collapseDebugView() {
         if lastDebugViewPosition == 0 || currentDebugViewPosition != lastDebugViewPosition && currentDebugViewPosition != 28 {
