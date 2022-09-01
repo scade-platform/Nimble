@@ -9,10 +9,6 @@
 import Cocoa
 import NimbleCore
 
-extension ActionAreaBar: WorkbenchPart {
-  var icon: NSImage? { return nil }
-}
-
 final class ActionAreaBar: NSViewController, WorkbenchViewController {
     
     @IBOutlet weak var button: NSButton!
