@@ -76,7 +76,7 @@ class DebugView: NimbleSidebarArea {
             self.collapseCallback?()
         }
         
-        problemsAreaView.setup(image: NSImage(named: "exclamationmark.triangle"))
+        problemsAreaView.setup(image: IconsManager.Icons.warning.image)
         problemsAreaView.actionCallback = { [weak self] in
             guard let self = self else { return }
             self.problemsAreaView.changeState(state: .on)
@@ -84,8 +84,7 @@ class DebugView: NimbleSidebarArea {
             self.sidebar?.selectView(at: 0)
             self.openCallback?()
         }
-        
-        outputsAreaView.setup(image: NSImage(named: "doc.plaintext"))
+        outputsAreaView.setup(image: IconsManager.Icons.file.image)
         outputsAreaView.actionCallback = { [weak self] in
             guard let self = self else { return }
             self.problemsAreaView.changeState(state: .off)

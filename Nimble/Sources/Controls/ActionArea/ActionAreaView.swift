@@ -30,14 +30,16 @@ final class ActionAreaBar: NSViewController, WorkbenchViewController {
     
     func setup(image: NSImage?) {
         areaImage = image
-        button.image = areaImage
+        button.image = areaImage?.imageWithTint(.systemGray)
     }
     
     func changeState(state: NSControl.StateValue) {
         button.state = state
         switch button.state {
-        case .on: button.contentTintColor = .systemBlue
-        case .off: button.contentTintColor = .systemGray
+        case .on:
+            button.image = areaImage?.imageWithTint(.systemBlue)
+        case .off:
+            button.image = areaImage?.imageWithTint(.systemGray)
         default: ()
         }
     }

@@ -15,14 +15,14 @@
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="c22-O7-iKe" customClass="ActionAreaView" customModule="Nimble" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="24" height="28"/>
+            <rect key="frame" x="0.0" y="0.0" width="26" height="32"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Jtu-K5-9EU">
-                    <rect key="frame" x="0.0" y="8" width="24" height="12"/>
+                    <rect key="frame" x="0.0" y="9" width="26" height="14"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="12" id="FBF-Ke-CHe"/>
-                        <constraint firstAttribute="width" constant="24" id="HYI-4e-TlU"/>
+                        <constraint firstAttribute="height" constant="14" id="FBF-Ke-CHe"/>
+                        <constraint firstAttribute="width" constant="26" id="HYI-4e-TlU"/>
                     </constraints>
                     <buttonCell key="cell" type="bevel" bezelStyle="rounded" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="3j3-2o-WsP">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
