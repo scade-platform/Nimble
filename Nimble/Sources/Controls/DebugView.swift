@@ -21,32 +21,135 @@
 import Cocoa
 import NimbleCore
 
-
 class DebugView: NimbleSidebarArea {
   weak var consoleView: ConsoleView? = nil
   weak var diagnosticsView: DiagnosticView? = nil
+    
+    @IBOutlet weak var leftBarStackView: NSStackView!
+    @IBOutlet weak var editorBarStackView: NSStackView!
+    @IBOutlet weak var rightBarStackView: NSStackView!
+    
+    private let diagnosticBar = DiagnosticStatusBar.loadFromNib()
+    private let workbenchBar = NimbleStatusBar.loadFromNib()
+    private let actionAreaView = ActionAreaBar.loadFromNib()
+    private let problemsAreaView = ActionAreaBar.loadFromNib()
+    private let outputsAreaView = ActionAreaBar.loadFromNib()
+    private let separatorView = SeparatorView()
+    
+    var collapseCallback: (() -> Void)?
+    var openCallback: (() -> Void)?
 
   override func viewDidLoad() {
     super.viewDidLoad()
 
     self.sidebar?.showTabIcon = false
     self.sidebar?.showTabTitle = true
+      
+      leftBar.append(problemsAreaView.view as! WorkbenchStatusBarItem)
+      leftBar.append(outputsAreaView.view as! WorkbenchStatusBarItem)
+      rightBar.append(actionAreaView.view as! WorkbenchStatusBarItem)
+      rightBar.append(separatorView)
+      rightBar.append(diagnosticBar.view as! WorkbenchStatusBarItem)
+      editorBar.append(workbenchBar.view as! WorkbenchStatusBarItem)
+
+      statusMessage = ""
 
     let diagnosticsView = DiagnosticView.loadFromNib()
-    diagnosticsView.title = "PROBLEMS"
     self.diagnosticsView = diagnosticsView
     self.add(part: diagnosticsView)
 
     let consoleView = ConsoleView.loadFromNib()
-    consoleView.title = "OUTPUT"
     self.consoleView = consoleView
     self.add(part: consoleView)
+      
+    handleActions()
 
     self.sidebar?.selectView(at: 0)
+    problemsAreaView.changeState(state: .on)
     self.sidebar?.stackView?.edgeInsets = NSEdgeInsets(top: 2.0, left: 10.0, bottom: 2.0, right: 0.0)
   }
+    
+    func handleActions() {
+        actionAreaView.setup(image: NSImage(named: "debugAreaBar"))
+        actionAreaView.actionCallback = { [weak self] in
+            guard let self = self else { return }
+            self.collapseCallback?()
+        }
+        
+        problemsAreaView.setup(image: IconsManager.Icons.warning.image)
+        problemsAreaView.actionCallback = { [weak self] in
+            guard let self = self else { return }
+            self.problemsAreaView.changeState(state: .on)
+            self.outputsAreaView.changeState(state: .off)
+            self.sidebar?.selectView(at: 0)
+            self.openCallback?()
+        }
+        outputsAreaView.setup(image: IconsManager.Icons.file.image)
+        outputsAreaView.actionCallback = { [weak self] in
+            guard let self = self else { return }
+            self.problemsAreaView.changeState(state: .off)
+            self.outputsAreaView.changeState(state: .on)
+            self.sidebar?.selectView(at: 1)
+            self.openCallback?()
+        }
+    }
 }
 
+// MARK: WorkbenchStatusBar && WorkbenchViewController
+extension DebugView: WorkbenchStatusBar, WorkbenchViewController {
+  var leftBar: [WorkbenchStatusBarItem] {
+    get {
+      return leftBarStackView.subviews.compactMap { $0 as? WorkbenchStatusBarItem }
+    }
+    set {
+      leftBarStackView.subviews.forEach { $0.removeFromSuperview() }
+      newValue.forEach {
+        guard let view = $0 as? NSView else { return }
+        leftBarStackView.addView(view, in: .trailing)
+      }
+    }
+  }
+    
+  var rightBar: [WorkbenchStatusBarItem] {
+    get {
+      return rightBarStackView.subviews.compactMap { $0 as? WorkbenchStatusBarItem }
+    }
+    set {
+      rightBarStackView.subviews.forEach{ $0.removeFromSuperview() }
+      newValue.forEach {
+        guard let view = $0 as? NSView else { return }
+        rightBarStackView.insertView(view, at: 0, in: .leading)
+      }
+    }
+  }
+    
+    var statusMessage: String {
+      get { workbenchBar.statusMessage.stringValue  }
+      set { workbenchBar.statusMessage.stringValue = newValue }
+    }
+
+    func setStatusMessage(_ message: String, duration: Int) {
+      self.statusMessage = message
+      DispatchQueue.main.asyncAfter(deadline: .now() + Double(duration)) { [weak self] in
+        if let currentMessage = self?.statusMessage, currentMessage == message {
+          self?.statusMessage = ""
+        }
+      }
+    }
+    
+    var editorBar: [WorkbenchStatusBarItem] {
+      get {
+        return editorBarStackView.subviews.compactMap {$0 as? WorkbenchStatusBarItem }
+      }
+      set {
+        editorBarStackView.subviews.forEach { $0.removeFromSuperview() }
+        newValue.forEach {
+          guard let view = $0 as? NSView else { return }
+          editorBarStackView.insertView(view, at: 0, in: .leading)
+        }
+      }
+    }
+}
 
 extension DebugView {
 //  public func add(part: WorkbenchPart) {

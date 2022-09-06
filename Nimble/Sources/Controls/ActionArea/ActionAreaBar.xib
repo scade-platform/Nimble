@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="ActionAreaBar" customModule="Nimble" customModuleProvider="target">
+            <connections>
+                <outlet property="button" destination="Jtu-K5-9EU" id="XC2-SK-hMA"/>
+                <outlet property="view" destination="c22-O7-iKe" id="WEQ-5v-i6E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="c22-O7-iKe" customClass="ActionAreaView" customModule="Nimble" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="26" height="32"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Jtu-K5-9EU">
+                    <rect key="frame" x="0.0" y="9" width="26" height="14"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="14" id="FBF-Ke-CHe"/>
+                        <constraint firstAttribute="width" constant="26" id="HYI-4e-TlU"/>
+                    </constraints>
+                    <buttonCell key="cell" type="bevel" bezelStyle="rounded" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="3j3-2o-WsP">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstItem="Jtu-K5-9EU" firstAttribute="leading" secondItem="c22-O7-iKe" secondAttribute="leading" id="DFS-2V-c72"/>
+                <constraint firstItem="Jtu-K5-9EU" firstAttribute="centerY" secondItem="c22-O7-iKe" secondAttribute="centerY" id="gyn-Um-cka"/>
+                <constraint firstAttribute="trailing" secondItem="Jtu-K5-9EU" secondAttribute="trailing" id="irA-Gv-QCX"/>
+            </constraints>
+            <point key="canvasLocation" x="-0.5" y="-352"/>
+        </customView>
+    </objects>
+</document>

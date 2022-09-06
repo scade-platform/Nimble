@@ -50,7 +50,7 @@ class DiagnosticStatusBar: NSViewController, WorkbenchViewController {
     errorsCount.sizeToFit()
     warningsCount.sizeToFit()
 
-    let width = errorsCount.frame.size.width + warningsCount.frame.size.width + 65
+    let width = errorsCount.frame.size.width + warningsCount.frame.size.width + 40
     self.view.setFrameSize(NSSize(width: width, height: self.view.frame.size.height))
     self.view.invalidateIntrinsicContentSize()
   }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -22,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="of2-mN-rbR">
-                    <rect key="frame" x="0.0" y="11" width="14" height="14"/>
+                    <rect key="frame" x="0.0" y="8" width="14" height="20"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="14" id="DxU-Li-AdZ"/>
                         <constraint firstAttribute="width" constant="14" id="GYf-Zc-DTn"/>
@@ -38,7 +38,7 @@
                     </textFieldCell>
                 </textField>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7dS-5I-7Sb">
-                    <rect key="frame" x="53" y="11" width="14" height="14"/>
+                    <rect key="frame" x="53" y="8" width="14" height="20"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="14" id="D8N-Ht-Tr9"/>
                         <constraint firstAttribute="width" constant="14" id="ErJ-MU-gxd"/>
@@ -68,6 +68,6 @@
         </customView>
     </objects>
     <resources>
-        <image name="NSActionTemplate" width="14" height="14"/>
+        <image name="NSActionTemplate" width="15" height="15"/>
     </resources>
 </document>

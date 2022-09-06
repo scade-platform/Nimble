@@ -26,7 +26,7 @@ class EditorView: NSViewController {
   }()
   
   override func viewDidLoad() {
-    super.viewDidLoad()        
+    super.viewDidLoad()
   }
   
   func showEditor() {
