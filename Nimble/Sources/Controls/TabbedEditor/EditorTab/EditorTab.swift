@@ -59,6 +59,13 @@ class EditorTab: NSCollectionViewItem {
   }
 
   // TODO: Close tab handler
+  @IBAction func closeDidClick(_ sender: NSButton) {
+    guard let index = collectionView?.indexPath(for: self),
+          let delegate = collectionView?.delegate as? TabbedEditorDelegate else {
+      return
+    }
+    delegate.closeTab(at: index)
+  }
 
   static func calculateSize(for item: EditorTabItem) -> NSSize {
     let height = 30.0

@@ -38,7 +38,7 @@
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Osf-bL-jQQ">
                                     <rect key="frame" x="23" y="3" width="121" height="15"/>
                                     <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="TabbedEditor.swift" id="nAa-kT-PFO">
-                                        <font key="font" metaFont="system" size="12"/>
+                                        <font key="font" metaFont="cellTitle"/>
                                         <color key="textColor" name="selectedTextColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
@@ -63,6 +63,9 @@
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
+                            <connections>
+                                <action selector="closeDidClick:" target="UFX-MY-Q04" id="b3i-Gk-Fzn"/>
+                            </connections>
                         </button>
                         <box horizontalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="ioI-vA-57H">
                             <rect key="frame" x="205" y="6" width="5" height="18"/>
