@@ -46,24 +46,41 @@ struct EditorTabItem: Hashable {
 
 
 final class TabbedEditorViewModel {
-  @Published var currentEditorTabIndex: Int? = nil
+  private let editorTabItemsSubject = CurrentValueSubject<OrderedSet<EditorTabItem>, Never>([])
+  private let currentTabIndexSubject = CurrentValueSubject<Int?, Never>(nil)
 
-  private var editorTabItems: OrderedSet<EditorTabItem> = []
-  var editorTabItemsPublisher = PassthroughSubject<[EditorTabItem], Never>()
+  var editorTabItemsPublisher: AnyPublisher<[EditorTabItem], Never> {
+    editorTabItemsSubject.map(\.elements).eraseToAnyPublisher()
+  }
 
-  private var currentEditorTabItem: EditorTabItem? {
-      guard let currentTabItemIndex = currentEditorTabIndex else {
-        return nil
+  var currentTabIndexPublisher: AnyPublisher<Int?, Never> {
+    currentTabIndexSubject.eraseToAnyPublisher()
+  }
+
+  var currentDocumentPublisher: AnyPublisher<Document?, Never>
+
+  init() {
+    currentDocumentPublisher = editorTabItemsSubject.combineLatest(currentTabIndexSubject)
+      .map { (tabs, index) -> Document? in
+        guard let index = index,
+              !tabs.isEmpty,
+              index >= tabs.startIndex,
+              index < tabs.endIndex else {
+          return nil
+        }
+        return tabs[index].document
       }
-      return editorTabItems[currentTabItemIndex]
+      .eraseToAnyPublisher()
   }
 
   func tabSize(for indexPath: IndexPath) -> NSSize {
+    let editorTabItems = editorTabItemsSubject.value
     let editorTabItem = editorTabItems[indexPath.item]
     return EditorTab.calculateSize(for: editorTabItem)
   }
 
   public func open(_ document: Document, show: Bool, openNewEditor: Bool) {
+    let editorTabItems = editorTabItemsSubject.value
     // If no document is opened, just create a new tab
     guard !editorTabItems.isEmpty else {
       addTabItem(for: document)
@@ -82,9 +99,10 @@ final class TabbedEditorViewModel {
 
   private func addTabItem(for document: Document, afterCurrentTab: Bool = false, selectAfterAdd: Bool = true) {
     let newEditorTabItem = EditorTabItem(document: document)
+    var editorTabItems = editorTabItemsSubject.value
     let index: Int
     if afterCurrentTab {
-      guard let currentEditorTabIndex = currentEditorTabIndex else {
+      guard let currentEditorTabIndex = currentTabIndexSubject.value else {
         return
       }
       let newIndex = currentEditorTabIndex + 1 <= editorTabItems.endIndex ? currentEditorTabIndex + 1 : editorTabItems.endIndex
@@ -92,30 +110,32 @@ final class TabbedEditorViewModel {
     } else {
       (_, index) = editorTabItems.append(newEditorTabItem)
     }
-    editorTabItemsPublisher.send(editorTabItems.elements)
+    editorTabItemsSubject.value = editorTabItems
     if selectAfterAdd {
-      currentEditorTabIndex = index
+      currentTabIndexSubject.value = index
     }
   }
 
   private func present(_ document: Document, openNewEditor: Bool) {
     let documentTabItem = EditorTabItem(document: document)
+    var editorTabItems = editorTabItemsSubject.value
     // If the doc is already opened, switch to its tab
     if let documentTabIndex = editorTabItems.firstIndex(of: documentTabItem) {
-      currentEditorTabIndex = documentTabIndex
+      currentTabIndexSubject.value = documentTabIndex
       return
     }
     // Insert a new tab for edited or newly created documents
     // and if it's forced by the flag 'openNewEditor'
-    if let currentTabItem = currentEditorTabItem {
+    if let currentTabItemIndex = currentTabIndexSubject.value {
+      let currentTabItem = editorTabItems[currentTabItemIndex]
       if openNewEditor || currentTabItem.isEdited || currentTabItem.document.fileURL == nil {
         addTabItem(for: document, afterCurrentTab: true)
       }
     } else {
       // Show in the current tab
-      guard let index = currentEditorTabIndex else { return }
+      guard let index = currentTabIndexSubject.value else { return }
       editorTabItems.update(documentTabItem, at: index)
-      editorTabItemsPublisher.send(editorTabItems.elements)
+      editorTabItemsSubject.value = editorTabItems
       // TODO: Notify about close document
     }
   }
@@ -127,22 +147,36 @@ final class TabbedEditorViewModel {
         removeTabItem(with: document)
     }
     return shouldClose
-
   }
 
   private func removeTabItem(with document: Document) {
     let documentTabItem = EditorTabItem(document: document)
+    var editorTabItems = editorTabItemsSubject.value
     guard let documentTabIndex = editorTabItems.firstIndex(of: documentTabItem) else {
       return
     }
     editorTabItems.remove(at: documentTabIndex)
+    editorTabItemsSubject.value = editorTabItems
   }
 
-  public func swapTabs(_ firstIndex: IndexPath, with secondIndex: IndexPath) {
-    editorTabItems.swapAt(firstIndex.item, secondIndex.item)
+  public func closeTab(at index: IndexPath) {
+    var editorTabItems = editorTabItemsSubject.value
+    editorTabItems.remove(at: index.item)
+    editorTabItemsSubject.send(editorTabItems)
+    if index.item < editorTabItems.endIndex {
+      currentTabIndexSubject.value = index.item
+    } else if index.item - 1 >= 0 {
+      currentTabIndexSubject.value = index.item - 1
+    } else {
+      currentTabIndexSubject.value = nil
+    }
   }
 
   public func selectTab(at indexPath: IndexPath?) {
-    currentEditorTabIndex = indexPath?.item
+    currentTabIndexSubject.value = indexPath?.item
+  }
+
+  public func updateData(_ items: [EditorTabItem])  {
+    editorTabItemsSubject.value = OrderedSet(items)
   }
 }

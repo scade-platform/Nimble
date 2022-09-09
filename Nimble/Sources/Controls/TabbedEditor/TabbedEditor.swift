@@ -23,6 +23,11 @@ final class TabbedEditor: NSViewController {
   private var indexPathsOfItemBeingDragged: IndexPath!
   private var isDragAnimating: Bool = false
   private var draggingSnapshot: NSDiffableDataSourceSnapshot<Section, EditorTabItem>!
+  private var isDragging: Bool {
+    draggingSnapshot != nil
+  }
+
+  private weak var currentEditorViewController: NSViewController?
 
   private var subscriptions: Set<AnyCancellable> = []
 
@@ -65,43 +70,59 @@ final class TabbedEditor: NSViewController {
         guard let self = self else {
           return
         }
-        var snapshot = self.dataSource.snapshot()
+        guard !self.isDragging else {
+          return
+        }
+        var snapshot = NSDiffableDataSourceSnapshot<Section, EditorTabItem>()
+        snapshot.appendSections([.tabs])
         snapshot.appendItems(tabItems)
         self.dataSource.apply(snapshot, animatingDifferences: false)
       }
       .store(in: &subscriptions)
 
-    viewModel.$currentEditorTabIndex
-      .sink { [weak self] currentTabItemIndex in
+    viewModel.currentTabIndexPublisher
+      .sink { [ weak self] currentTabItemIndex in
         guard let self = self else {
           return
         }
-        let snapshot = self.dataSource.snapshot()
         guard let index = currentTabItemIndex else {
-          if let previouseItemIndex = self.viewModel.currentEditorTabIndex {
-            self.removeEditorForTabItem(at: previouseItemIndex, for: snapshot)
-          }
+          self.tabsCollectionView.selectItems(at: [], scrollPosition: .left)
           return
         }
-        let tabItem = snapshot.itemIdentifiers[index] as EditorTabItem
-        guard let editor = tabItem.document.editor else {
-          return
-        }
-
-        if let previouseItemIndex = self.viewModel.currentEditorTabIndex {
-          self.removeEditorForTabItem(at: previouseItemIndex, for: snapshot)
-        }
-
-        // TODO: Use constaints
-        editor.view.frame = self.editorContainerView.frame
-        self.addChild(editor)
-        self.editorContainerView.addSubview(editor.view)
         self.tabsCollectionView.selectItems(at: [IndexPath(item: index, section: 0)], scrollPosition: .right)
+      }
+      .store(in: &subscriptions)
+
+    viewModel.currentDocumentPublisher
+      .sink { [weak self] document in
+        guard let self = self else {
+          return
+        }
+        guard !self.isDragging else {
+          return
+        }
+        guard let documentEditor = document?.editor else {
+          self.currentEditorViewController?.removeFromParent()
+          self.currentEditorViewController?.view.removeFromSuperview()
+          self.currentEditorViewController = nil
+          return
+        }
+
+        self.currentEditorViewController?.removeFromParent()
+        self.currentEditorViewController?.view.removeFromSuperview()
+
+        documentEditor.view.frame = self.editorContainerView.frame
+        self.addChild(documentEditor)
+        self.editorContainerView.addSubview(documentEditor.view)
+        self.currentEditorViewController = documentEditor
       }
       .store(in: &subscriptions)
   }
 
   private func removeEditorForTabItem(at index: Int, for snapshot: NSDiffableDataSourceSnapshot<Section, EditorTabItem>) {
+    guard index >= 0, index < snapshot.numberOfItems else {
+      return
+    }
     let tabItem = snapshot.itemIdentifiers[index] as EditorTabItem
     if let editor = tabItem.document.editor {
       editor.removeFromParent()
@@ -205,11 +226,21 @@ extension TabbedEditor: NSCollectionViewDelegateFlowLayout {
       }
     }
     isDragAnimating = true
-    viewModel.swapTabs(indexPathOfDraggingItemAfterDrop, with: indexPathsOfItemBeingDragged)
+    viewModel.updateData(draggingSnapshot.itemIdentifiers)
     dataSource.apply(draggingSnapshot, animatingDifferences: true) { [weak self] in
       self?.indexPathsOfItemBeingDragged = indexPathOfDraggingItemAfterDrop
       self?.isDragAnimating = false
     }
   }
+}
+
+extension TabbedEditor: TabbedEditorDelegate {
+  func closeTab(at index: IndexPath) {
+    viewModel.closeTab(at: index)
+  }
+}
+
+protocol TabbedEditorDelegate {
+  func closeTab(at index: IndexPath)
 }
 
