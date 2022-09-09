@@ -98,7 +98,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     (self.contentViewController as? WorkbenchContentViewController)?.settingsController
   }
 
-  private let tabbedEditorViewModel = TabbedEditorViewModel()
+  private var tabbedEditorViewModel: TabbedEditorViewModel!
 
   public override func windowDidLoad() {
     super.windowDidLoad()
@@ -117,6 +117,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     inspectorView.isHidden = true
 
     guard let editorView = editorView else { return }
+    tabbedEditorViewModel = TabbedEditorViewModel(responder: self)
     editorView.tabbedEditorViewModel = tabbedEditorViewModel
     
     DocumentManager.shared.defaultDocument = BinaryFileDocument.self
@@ -243,13 +244,11 @@ extension NimbleWorkbench: Workbench {
   }
   
   public var documents: [Document] {
-    //TODO: Fix this
-    return []
+    tabbedEditorViewModel.documents
   }
   
   public var currentDocument: Document? {
-    //TODO: Fix this
-    return nil
+    tabbedEditorViewModel.currentDocument
   }
     
   public var navigatorArea: WorkbenchArea? {
@@ -275,15 +274,11 @@ extension NimbleWorkbench: Workbench {
 
     // Show doc in tabbed editor
     tabbedEditorViewModel.open(doc, show: show, openNewEditor: openNewEditor)
-
-    observers.notify { $0.workbenchDidOpenDocument(self, document: doc) }
   }
   
   @discardableResult
   public func close(_ doc: Document) -> Bool {
     tabbedEditorViewModel.close(doc)
-//    editorView?.hideEditor()
-    return false
   }
   
   
@@ -320,6 +315,18 @@ extension NimbleWorkbench: Workbench {
   }
 }
 
+extension NimbleWorkbench: TabbedEditorResponder {
+  func documentDidOpen(_ document: Document) {
+    observers.notify { $0.workbenchDidOpenDocument(self, document: document) }
+  }
+
+  func documentDidClose(_ document: Document) {
+    if documents.isEmpty {
+      editorView?.hideEditor()
+    }
+    observers.notify { $0.workbenchDidCloseDocument(self, document: document) }
+  }
+}
 
 // MARK: - WorkbenchTaskObserver
 
