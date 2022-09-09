@@ -44,6 +44,11 @@ struct EditorTabItem: Hashable {
   }
 }
 
+protocol TabbedEditorResponder {
+  func documentDidOpen(_ document: Document)
+  func documentDidClose(_ document: Document)
+}
+
 
 final class TabbedEditorViewModel {
   private let editorTabItemsSubject = CurrentValueSubject<OrderedSet<EditorTabItem>, Never>([])
@@ -58,8 +63,26 @@ final class TabbedEditorViewModel {
   }
 
   var currentDocumentPublisher: AnyPublisher<Document?, Never>
+  private let responder: TabbedEditorResponder
 
-  init() {
+  var currentDocument: Document? {
+    let editorTabItems = editorTabItemsSubject.value
+    let currentIndex = currentTabIndexSubject.value
+    guard let index = currentIndex,
+          !editorTabItems.isEmpty,
+          index >= editorTabItems.startIndex,
+          index < editorTabItems.endIndex else {
+      return nil
+    }
+    return editorTabItems[index].document
+  }
+
+  var documents: [Document] {
+    editorTabItemsSubject.value.elements.map { $0.document }
+  }
+
+  init(responder: TabbedEditorResponder) {
+    self.responder = responder
     currentDocumentPublisher = editorTabItemsSubject.combineLatest(currentTabIndexSubject)
       .map { (tabs, index) -> Document? in
         guard let index = index,
@@ -84,6 +107,7 @@ final class TabbedEditorViewModel {
     // If no document is opened, just create a new tab
     guard !editorTabItems.isEmpty else {
       addTabItem(for: document)
+      responder.documentDidOpen(document)
       return
     }
     // If the current document has to be presented create
@@ -94,7 +118,7 @@ final class TabbedEditorViewModel {
       // Just insert a tab but not switch to it
       addTabItem(for: document, afterCurrentTab: true, selectAfterAdd: false)
     }
-    // TODO: Notify about opened document
+    responder.documentDidOpen(document)
   }
 
   private func addTabItem(for document: Document, afterCurrentTab: Bool = false, selectAfterAdd: Bool = true) {
@@ -113,6 +137,12 @@ final class TabbedEditorViewModel {
     editorTabItemsSubject.value = editorTabItems
     if selectAfterAdd {
       currentTabIndexSubject.value = index
+    } else {
+      if editorTabItems.endIndex > index + 1 {
+        self.currentTabIndexSubject.value = index + 1
+      } else {
+        self.currentTabIndexSubject.value = index
+      }
     }
   }
 
@@ -130,13 +160,15 @@ final class TabbedEditorViewModel {
       let currentTabItem = editorTabItems[currentTabItemIndex]
       if openNewEditor || currentTabItem.isEdited || currentTabItem.document.fileURL == nil {
         addTabItem(for: document, afterCurrentTab: true)
+      } else {
+        // Show in the current tab
+        guard let index = currentTabIndexSubject.value else { return }
+        let oldItem = editorTabItems.remove(at: index)
+        editorTabItems.insert(documentTabItem, at: index)
+        editorTabItemsSubject.value = editorTabItems
+        currentTabIndexSubject.value = index
+        responder.documentDidClose(oldItem.document)
       }
-    } else {
-      // Show in the current tab
-      guard let index = currentTabIndexSubject.value else { return }
-      editorTabItems.update(documentTabItem, at: index)
-      editorTabItemsSubject.value = editorTabItems
-      // TODO: Notify about close document
     }
   }
 
@@ -144,7 +176,8 @@ final class TabbedEditorViewModel {
     let shouldClose: Bool = document.close()
 
     if shouldClose {
-        removeTabItem(with: document)
+      removeTabItem(with: document)
+      responder.documentDidClose(document)
     }
     return shouldClose
   }
@@ -161,7 +194,7 @@ final class TabbedEditorViewModel {
 
   public func closeTab(at index: IndexPath) {
     var editorTabItems = editorTabItemsSubject.value
-    editorTabItems.remove(at: index.item)
+    let removedItem = editorTabItems.remove(at: index.item)
     editorTabItemsSubject.send(editorTabItems)
     if index.item < editorTabItems.endIndex {
       currentTabIndexSubject.value = index.item
@@ -170,6 +203,7 @@ final class TabbedEditorViewModel {
     } else {
       currentTabIndexSubject.value = nil
     }
+    responder.documentDidClose(removedItem.document)
   }
 
   public func selectTab(at indexPath: IndexPath?) {
