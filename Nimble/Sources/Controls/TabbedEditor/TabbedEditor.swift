@@ -112,9 +112,16 @@ final class TabbedEditor: NSViewController {
         self.currentEditorViewController?.removeFromParent()
         self.currentEditorViewController?.view.removeFromSuperview()
 
-        documentEditor.view.frame = self.editorContainerView.frame
         self.addChild(documentEditor)
         self.editorContainerView.addSubview(documentEditor.view)
+        documentEditor.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate( [
+          documentEditor.view.topAnchor.constraint(equalTo: self.editorContainerView.topAnchor),
+          documentEditor.view.bottomAnchor.constraint(equalTo: self.editorContainerView.bottomAnchor),
+          documentEditor.view.leadingAnchor.constraint(equalTo: self.editorContainerView.leadingAnchor),
+          documentEditor.view.trailingAnchor.constraint(equalTo: self.editorContainerView.trailingAnchor)
+        ])
+
         self.currentEditorViewController = documentEditor
       }
       .store(in: &subscriptions)

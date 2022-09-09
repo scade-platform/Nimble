@@ -298,7 +298,9 @@
 				D751F28622F8818300D33972 /* Dependencies */,
 				D7C9528623FC3AF400AE7E5D /* Frameworks */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		D7CBF7CC222878F10088715C /* Products */ = {
 			isa = PBXGroup;
@@ -677,7 +679,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 10.15.1;
 				MARKETING_VERSION = 0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.Nimble;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -705,7 +707,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MACOSX_DEPLOYMENT_TARGET = 10.15.1;
 				MARKETING_VERSION = 0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.Nimble;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -18,7 +18,7 @@
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <customView id="nU4-SA-Bej">
             <rect key="frame" x="0.0" y="0.0" width="443" height="252"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="0.0" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="QA7-th-zxH">
                     <rect key="frame" x="0.0" y="222" width="443" height="30"/>

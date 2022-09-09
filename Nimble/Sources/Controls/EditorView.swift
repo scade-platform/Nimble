@@ -42,9 +42,13 @@ class EditorView: NSViewController {
 
     addChild(tabbedEditor)
     view.addSubview(tabbedEditor.view)
-
-    tabbedEditor.view.frame.size = view.frame.size
-    tabbedEditor.view.layoutSubtreeIfNeeded()
+    tabbedEditor.view.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate( [
+      tabbedEditor.view.topAnchor.constraint(equalTo: view.topAnchor),
+      tabbedEditor.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      tabbedEditor.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      tabbedEditor.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+    ])
   }
   
   func hideEditor() {
