@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="TabbedEditor" customModule="Nimble" customModuleProvider="target">
+            <connections>
+                <outlet property="collectionViewScrollView" destination="QA7-th-zxH" id="HQ4-IX-PxM"/>
+                <outlet property="editorContainerView" destination="4Op-aa-wRd" id="7bB-ki-Vxb"/>
+                <outlet property="tabsCollectionView" destination="NSv-Gh-gJV" id="9p6-pf-06j"/>
+                <outlet property="view" destination="nU4-SA-Bej" id="j4P-8h-u8b"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="nU4-SA-Bej">
+            <rect key="frame" x="0.0" y="0.0" width="443" height="252"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView wantsLayer="YES" borderType="none" autohidesScrollers="YES" horizontalLineScroll="0.0" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" usesPredominantAxisScrolling="NO" horizontalScrollElasticity="none" translatesAutoresizingMaskIntoConstraints="NO" id="QA7-th-zxH">
+                    <rect key="frame" x="0.0" y="222" width="443" height="30"/>
+                    <clipView key="contentView" id="Mk4-cJ-RQP">
+                        <rect key="frame" x="0.0" y="0.0" width="443" height="30"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView selectable="YES" id="NSv-Gh-gJV">
+                                <rect key="frame" x="0.0" y="0.0" width="443" height="30"/>
+                                <autoresizingMask key="autoresizingMask" heightSizable="YES"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" id="fyK-nK-x4S">
+                                    <size key="itemSize" width="50" height="50"/>
+                                </collectionViewFlowLayout>
+                                <color key="primaryBackgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </collectionView>
+                        </subviews>
+                    </clipView>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="dxK-Qa-hi7"/>
+                    </constraints>
+                    <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="kLT-m4-jVB" customClass="HiddenScroller" customModule="Nimble" customModuleProvider="target">
+                        <rect key="frame" x="-100" y="-100" width="233" height="15"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="cB7-eN-fk0">
+                        <rect key="frame" x="-100" y="-100" width="16" height="28"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                </scrollView>
+                <box verticalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Ags-w0-we6">
+                    <rect key="frame" x="0.0" y="219" width="443" height="5"/>
+                </box>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="4Op-aa-wRd">
+                    <rect key="frame" x="0.0" y="0.0" width="443" height="221"/>
+                </customView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="QA7-th-zxH" firstAttribute="leading" secondItem="nU4-SA-Bej" secondAttribute="leading" id="7WT-AD-tU3"/>
+                <constraint firstAttribute="trailing" secondItem="QA7-th-zxH" secondAttribute="trailing" id="Mxs-8N-IeE"/>
+                <constraint firstItem="4Op-aa-wRd" firstAttribute="top" secondItem="Ags-w0-we6" secondAttribute="bottom" id="QxB-FU-hYz"/>
+                <constraint firstItem="Ags-w0-we6" firstAttribute="leading" secondItem="nU4-SA-Bej" secondAttribute="leading" id="Y7Z-Nn-edR"/>
+                <constraint firstAttribute="trailing" secondItem="4Op-aa-wRd" secondAttribute="trailing" id="YwF-rO-g8g"/>
+                <constraint firstAttribute="bottom" secondItem="4Op-aa-wRd" secondAttribute="bottom" id="f0f-MV-HOp"/>
+                <constraint firstItem="Ags-w0-we6" firstAttribute="top" secondItem="QA7-th-zxH" secondAttribute="bottom" id="p9b-gu-PSv"/>
+                <constraint firstItem="4Op-aa-wRd" firstAttribute="leading" secondItem="nU4-SA-Bej" secondAttribute="leading" id="q3R-yQ-b68"/>
+                <constraint firstItem="QA7-th-zxH" firstAttribute="top" secondItem="nU4-SA-Bej" secondAttribute="top" id="yqq-lo-Ln9"/>
+                <constraint firstAttribute="trailing" secondItem="Ags-w0-we6" secondAttribute="trailing" id="yvP-wS-Ilt"/>
+            </constraints>
+            <point key="canvasLocation" x="3.5" y="-71"/>
+        </customView>
+    </objects>
+</document>

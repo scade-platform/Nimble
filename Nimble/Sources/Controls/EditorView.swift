@@ -19,9 +19,17 @@
 //
 
 import Cocoa
+import NimbleCore
 
 class EditorView: NSViewController {
-  lazy var editor: TabbedEditor = {
+  var tabbedEditorViewModel: TabbedEditorViewModel? {
+    didSet {
+      guard let viewModel = tabbedEditorViewModel else { return }
+      tabbedEditor.viewModel = viewModel
+    }
+  }
+
+  lazy var tabbedEditor: TabbedEditor = {
     return TabbedEditor.loadFromNib()
   }()
   
@@ -30,17 +38,21 @@ class EditorView: NSViewController {
   }
   
   func showEditor() {
-    guard editor.parent != self else { return }
-                          
-    addChild(editor)
-    view.addSubview(editor.view)
-    
-    editor.view.frame.size = view.frame.size
-    editor.view.layoutSubtreeIfNeeded()
+    guard tabbedEditor.parent != self else { return }
+
+    addChild(tabbedEditor)
+    view.addSubview(tabbedEditor.view)
+    tabbedEditor.view.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate( [
+      tabbedEditor.view.topAnchor.constraint(equalTo: view.topAnchor),
+      tabbedEditor.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      tabbedEditor.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      tabbedEditor.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+    ])
   }
   
   func hideEditor() {
-    editor.removeFromParent()
-    editor.view.removeFromSuperview()
+    tabbedEditor.removeFromParent()
+    tabbedEditor.view.removeFromSuperview()
   }
 }

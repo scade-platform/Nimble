@@ -22,7 +22,6 @@
 		0CAAE9AD24370BEE003CAE92 /* WorkbenchArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CAAE9AC24370BEE003CAE92 /* WorkbenchArea.swift */; };
 		0CB6F11424FE46B800960EDA /* WizardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6F11224FE46B800960EDA /* WizardView.swift */; };
 		0CB6F11524FE46B800960EDA /* WizardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CB6F11324FE46B800960EDA /* WizardView.xib */; };
-		0CCD455325D6BEE0000923E3 /* KPCTabsControl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */; };
 		0CCD45CE25D6CD4B000923E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0CCD45CD25D6CD4B000923E3 /* Assets.xcassets */; };
 		0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3523A39503003B01DE /* StatusBarView.swift */; };
 		0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */; };
@@ -31,15 +30,19 @@
 		46C86FA328AAD97E00D953E8 /* ActionAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46C86FA228AAD97E00D953E8 /* ActionAreaView.swift */; };
 		46D8BC6428BE344700E8A1FB /* WorkbenchDiagnosticMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D8BC6328BE344700E8A1FB /* WorkbenchDiagnosticMock.swift */; };
 		46E0B79E28BB9A1700092CDD /* SeparatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E0B79D28BB9A1700092CDD /* SeparatorView.swift */; };
+		4C4845D828CB169B00AF4652 /* TabbedEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4845D028CB169A00AF4652 /* TabbedEditor.swift */; };
+		4C4845D928CB169B00AF4652 /* TabbedEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C4845D128CB169A00AF4652 /* TabbedEditor.xib */; };
+		4C4845DA28CB169B00AF4652 /* HiddenScroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4845D328CB169A00AF4652 /* HiddenScroller.swift */; };
+		4C4845DB28CB169B00AF4652 /* TabbedEditorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4845D428CB169A00AF4652 /* TabbedEditorViewModel.swift */; };
+		4C4845DC28CB169B00AF4652 /* EditorTab.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C4845D628CB169A00AF4652 /* EditorTab.xib */; };
+		4C4845DD28CB169B00AF4652 /* EditorTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C4845D728CB169A00AF4652 /* EditorTab.swift */; };
 		D70A5421254B872D00730F52 /* KeyboardShortcut.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70A5420254B872D00730F52 /* KeyboardShortcut.swift */; };
 		D71D04FA246615F400200127 /* NimbleStatusBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D71D04F9246615F400200127 /* NimbleStatusBar.xib */; };
 		D71D04FC2466163B00200127 /* NimbleStatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71D04FB2466163B00200127 /* NimbleStatusBar.swift */; };
 		D721CFA72385EC3200FD1B00 /* NSOpenPanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */; };
-		D724C5EE237C418B00E80958 /* TabbedEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = D724C5E7237C418B00E80958 /* TabbedEditor.xib */; };
 		D724C5EF237C418B00E80958 /* ConsoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5E8237C418B00E80958 /* ConsoleView.swift */; };
 		D724C5F0237C418B00E80958 /* DropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5E9237C418B00E80958 /* DropView.swift */; };
 		D724C5F1237C418B00E80958 /* NavigatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5EA237C418B00E80958 /* NavigatorView.swift */; };
-		D724C5F2237C418B00E80958 /* TabbedEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5EB237C418B00E80958 /* TabbedEditor.swift */; };
 		D724C5F3237C418B00E80958 /* ConsoleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = D724C5EC237C418B00E80958 /* ConsoleView.xib */; };
 		D724C5F4237C418B00E80958 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D724C5ED237C418B00E80958 /* DebugView.swift */; };
 		D72F959C222DF2D9009F2EC3 /* WorkbenchSidebar.xib in Resources */ = {isa = PBXBuildFile; fileRef = D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */; };
@@ -56,7 +59,6 @@
 		D78FFF1924255CE100EB70E2 /* Icons in Resources */ = {isa = PBXBuildFile; fileRef = D78FFF1824255CE100EB70E2 /* Icons */; };
 		D79BE0BD2385AD4000D96619 /* NimbleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6607722F41D1500CBB386 /* NimbleController.swift */; };
 		D7CBF7D6222878F40088715C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D7CBF7D4222878F40088715C /* Main.storyboard */; };
-		D7D46163238ED16B0090FC34 /* KPCTabsControl.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D7D461652390083C0090FC34 /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D461642390083C0090FC34 /* Document.swift */; };
 		D7F156972442079A00AFBE67 /* WorkbenchSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F156962442079A00AFBE67 /* WorkbenchSettings.swift */; };
 		D7F156AD244C93EE00AFBE67 /* Command+Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F156AC244C93EE00AFBE67 /* Command+Menu.swift */; };
@@ -64,30 +66,6 @@
 		D7F156B8244C946200AFBE67 /* Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F156B7244C946200AFBE67 /* Command.swift */; };
 		E491BB7C26F10A1A0079F180 /* ZoomCommands.swift in Sources */ = {isa = PBXBuildFile; fileRef = E491BB7B26F10A1A0079F180 /* ZoomCommands.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		0C838D1426D7BF3C00A9A236 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9F45CD901D396D4200149654;
-			remoteInfo = KPCTabsControlDemo;
-		};
-		0C838D1626D7BF3C00A9A236 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9FC4B5582195ACE7000F2119;
-			remoteInfo = KPCTabsControlTests;
-		};
-		D7D4615C238ECCE20090FC34 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 9FA7EDA51AD668BC0060FF79;
-			remoteInfo = KPCTabsControl;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		E42DC02E22CE3C3300486CC1 /* Embed Frameworks */ = {
@@ -97,7 +75,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				D73FA62524004D31001DB4C3 /* Ansi in Embed Frameworks */,
-				D7D46163238ED16B0090FC34 /* KPCTabsControl.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -129,21 +106,24 @@
 		46C86FA228AAD97E00D953E8 /* ActionAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionAreaView.swift; sourceTree = "<group>"; };
 		46D8BC6328BE344700E8A1FB /* WorkbenchDiagnosticMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchDiagnosticMock.swift; sourceTree = "<group>"; };
 		46E0B79D28BB9A1700092CDD /* SeparatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeparatorView.swift; sourceTree = "<group>"; };
+		4C4845D028CB169A00AF4652 /* TabbedEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabbedEditor.swift; sourceTree = "<group>"; };
+		4C4845D128CB169A00AF4652 /* TabbedEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TabbedEditor.xib; sourceTree = "<group>"; };
+		4C4845D328CB169A00AF4652 /* HiddenScroller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HiddenScroller.swift; sourceTree = "<group>"; };
+		4C4845D428CB169A00AF4652 /* TabbedEditorViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabbedEditorViewModel.swift; sourceTree = "<group>"; };
+		4C4845D628CB169A00AF4652 /* EditorTab.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EditorTab.xib; sourceTree = "<group>"; };
+		4C4845D728CB169A00AF4652 /* EditorTab.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditorTab.swift; sourceTree = "<group>"; };
 		D70A5420254B872D00730F52 /* KeyboardShortcut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardShortcut.swift; sourceTree = "<group>"; };
 		D71D04F9246615F400200127 /* NimbleStatusBar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NimbleStatusBar.xib; sourceTree = "<group>"; };
 		D71D04FB2466163B00200127 /* NimbleStatusBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleStatusBar.swift; sourceTree = "<group>"; };
 		D721CFA62385EC3200FD1B00 /* NSOpenPanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSOpenPanel.swift; sourceTree = "<group>"; };
-		D724C5E7237C418B00E80958 /* TabbedEditor.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TabbedEditor.xib; sourceTree = "<group>"; };
 		D724C5E8237C418B00E80958 /* ConsoleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsoleView.swift; sourceTree = "<group>"; };
 		D724C5E9237C418B00E80958 /* DropView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropView.swift; sourceTree = "<group>"; };
 		D724C5EA237C418B00E80958 /* NavigatorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigatorView.swift; sourceTree = "<group>"; };
-		D724C5EB237C418B00E80958 /* TabbedEditor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabbedEditor.swift; sourceTree = "<group>"; };
 		D724C5EC237C418B00E80958 /* ConsoleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConsoleView.xib; sourceTree = "<group>"; };
 		D724C5ED237C418B00E80958 /* DebugView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
 		D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WorkbenchSidebar.xib; sourceTree = "<group>"; };
 		D72F959E222DF7AF009F2EC3 /* WorkbenchSidebar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkbenchSidebar.swift; sourceTree = "<group>"; };
 		D73E89462733035200EA473C /* build.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = build.xcconfig; sourceTree = "<group>"; };
-		D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KPCTabsControl.xcodeproj; path = Dependencies/KPCTabsControl/KPCTabsControl.xcodeproj; sourceTree = "<group>"; };
 		D77AAF0825011AC300C63C19 /* NimbleSidebarArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NimbleSidebarArea.swift; sourceTree = "<group>"; };
 		D77AAF0D2501674800C63C19 /* DiagnosticView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DiagnosticView.xib; sourceTree = "<group>"; };
 		D77AAF0F2501682700C63C19 /* DiagnosticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiagnosticView.swift; sourceTree = "<group>"; };
@@ -168,7 +148,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0CCD455325D6BEE0000923E3 /* KPCTabsControl.framework in Frameworks */,
 				D73FA62424004D31001DB4C3 /* Ansi in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -221,6 +200,35 @@
 			path = SeparatorView;
 			sourceTree = "<group>";
 		};
+		4C4845CF28CB169A00AF4652 /* TabbedEditor */ = {
+			isa = PBXGroup;
+			children = (
+				4C4845D228CB169A00AF4652 /* HiddenScrollView */,
+				4C4845D528CB169A00AF4652 /* EditorTab */,
+				4C4845D028CB169A00AF4652 /* TabbedEditor.swift */,
+				4C4845D128CB169A00AF4652 /* TabbedEditor.xib */,
+				4C4845D428CB169A00AF4652 /* TabbedEditorViewModel.swift */,
+			);
+			path = TabbedEditor;
+			sourceTree = "<group>";
+		};
+		4C4845D228CB169A00AF4652 /* HiddenScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				4C4845D328CB169A00AF4652 /* HiddenScroller.swift */,
+			);
+			path = HiddenScrollView;
+			sourceTree = "<group>";
+		};
+		4C4845D528CB169A00AF4652 /* EditorTab */ = {
+			isa = PBXGroup;
+			children = (
+				4C4845D628CB169A00AF4652 /* EditorTab.xib */,
+				4C4845D728CB169A00AF4652 /* EditorTab.swift */,
+			);
+			path = EditorTab;
+			sourceTree = "<group>";
+		};
 		D721CFA42385EC1800FD1B00 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -238,6 +246,7 @@
 		D72F959D222DF2F4009F2EC3 /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				4C4845CF28CB169A00AF4652 /* TabbedEditor */,
 				46D8BC5F28BE342F00E8A1FB /* DiagnosticView */,
 				46E0B79928BB99EE00092CDD /* SeparatorView */,
 				469FC76C28AB792300191B8F /* ActionArea */,
@@ -253,14 +262,12 @@
 				D71D04FB2466163B00200127 /* NimbleStatusBar.swift */,
 				0CD0FB3A23A39E8D003B01DE /* RootSplitView.swift */,
 				0CD0FB3523A39503003B01DE /* StatusBarView.swift */,
-				D724C5EB237C418B00E80958 /* TabbedEditor.swift */,
 				0C6B8FAB2339F43C00B0FA48 /* UnsupportedPane.swift */,
 				D72F959E222DF7AF009F2EC3 /* WorkbenchSidebar.swift */,
 				D724C5EC237C418B00E80958 /* ConsoleView.xib */,
 				D77AAF112508143A00C63C19 /* DiagnosticStatusBar.xib */,
 				D77AAF0D2501674800C63C19 /* DiagnosticView.xib */,
 				D71D04F9246615F400200127 /* NimbleStatusBar.xib */,
-				D724C5E7237C418B00E80958 /* TabbedEditor.xib */,
 				0C6B8FAE2339F46600B0FA48 /* UnsupportedPane.xib */,
 				D72F959B222DF2D9009F2EC3 /* WorkbenchSidebar.xib */,
 			);
@@ -270,7 +277,6 @@
 		D751F28622F8818300D33972 /* Dependencies */ = {
 			isa = PBXGroup;
 			children = (
-				D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */,
 			);
 			name = Dependencies;
 			sourceTree = "<group>";
@@ -292,7 +298,9 @@
 				D751F28622F8818300D33972 /* Dependencies */,
 				D7C9528623FC3AF400AE7E5D /* Frameworks */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
 		};
 		D7CBF7CC222878F10088715C /* Products */ = {
 			isa = PBXGroup;
@@ -332,16 +340,6 @@
 				D721CFA42385EC1800FD1B00 /* Extensions */,
 			);
 			path = Sources;
-			sourceTree = "<group>";
-		};
-		D7D46157238ECCE20090FC34 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */,
-				0C838D1526D7BF3C00A9A236 /* KPCTabsControlDemo.app */,
-				0C838D1726D7BF3C00A9A236 /* KPCTabsControlTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		E491BB7A26F109FD0079F180 /* Commands */ = {
@@ -415,42 +413,12 @@
 			);
 			productRefGroup = D7CBF7CC222878F10088715C /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = D7D46157238ECCE20090FC34 /* Products */;
-					ProjectRef = D751F28722F881B800D33972 /* KPCTabsControl.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				D7CBF7CA222878F10088715C /* Nimble */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		0C838D1526D7BF3C00A9A236 /* KPCTabsControlDemo.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = KPCTabsControlDemo.app;
-			remoteRef = 0C838D1426D7BF3C00A9A236 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		0C838D1726D7BF3C00A9A236 /* KPCTabsControlTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = KPCTabsControlTests.xctest;
-			remoteRef = 0C838D1626D7BF3C00A9A236 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		D7D4615D238ECCE20090FC34 /* KPCTabsControl.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = KPCTabsControl.framework;
-			remoteRef = D7D4615C238ECCE20090FC34 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		D7CBF7C9222878F10088715C /* Resources */ = {
@@ -465,12 +433,13 @@
 				D78FFF1924255CE100EB70E2 /* Icons in Resources */,
 				D7CBF7D6222878F40088715C /* Main.storyboard in Resources */,
 				D724C5F3237C418B00E80958 /* ConsoleView.xib in Resources */,
+				4C4845D928CB169B00AF4652 /* TabbedEditor.xib in Resources */,
 				0C6B8FAF2339F46600B0FA48 /* UnsupportedPane.xib in Resources */,
 				D71D04FA246615F400200127 /* NimbleStatusBar.xib in Resources */,
 				0C7B198527185DDE003E7087 /* exportOptionsPlist.plist in Resources */,
-				D724C5EE237C418B00E80958 /* TabbedEditor.xib in Resources */,
 				0CCD45CE25D6CD4B000923E3 /* Assets.xcassets in Resources */,
 				D77AAF0E2501674800C63C19 /* DiagnosticView.xib in Resources */,
+				4C4845DC28CB169B00AF4652 /* EditorTab.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -526,15 +495,17 @@
 				46C86FA328AAD97E00D953E8 /* ActionAreaView.swift in Sources */,
 				D72F959F222DF7AF009F2EC3 /* WorkbenchSidebar.swift in Sources */,
 				D79BE0BD2385AD4000D96619 /* NimbleController.swift in Sources */,
-				D724C5F2237C418B00E80958 /* TabbedEditor.swift in Sources */,
 				46E0B79E28BB9A1700092CDD /* SeparatorView.swift in Sources */,
 				0CA297B423A903340025A4EF /* BinaryFileDocument.swift in Sources */,
 				0CD0FB3B23A39E8D003B01DE /* RootSplitView.swift in Sources */,
+				4C4845DB28CB169B00AF4652 /* TabbedEditorViewModel.swift in Sources */,
 				D788ED452239C2750072C21E /* NimbleWorkbench.swift in Sources */,
 				D7F156B6244C93FE00AFBE67 /* Command+Toolbar.swift in Sources */,
 				D7F156972442079A00AFBE67 /* WorkbenchSettings.swift in Sources */,
 				D7F156B8244C946200AFBE67 /* Command.swift in Sources */,
 				0C6B8FAC2339F43C00B0FA48 /* UnsupportedPane.swift in Sources */,
+				4C4845DD28CB169B00AF4652 /* EditorTab.swift in Sources */,
+				4C4845DA28CB169B00AF4652 /* HiddenScroller.swift in Sources */,
 				D724C5EF237C418B00E80958 /* ConsoleView.swift in Sources */,
 				0CD0FB3723A39503003B01DE /* StatusBarView.swift in Sources */,
 				0C838D1F26D7BF5700A9A236 /* CommandsController.swift in Sources */,
@@ -547,6 +518,7 @@
 				0C838D2126D7BF8000A9A236 /* WorkbenchContentView.swift in Sources */,
 				D7D461652390083C0090FC34 /* Document.swift in Sources */,
 				0CAAE9AD24370BEE003CAE92 /* WorkbenchArea.swift in Sources */,
+				4C4845D828CB169B00AF4652 /* TabbedEditor.swift in Sources */,
 				D77AAF102501682700C63C19 /* DiagnosticView.swift in Sources */,
 				D724C5F1237C418B00E80958 /* NavigatorView.swift in Sources */,
 				D724C5F4237C418B00E80958 /* DebugView.swift in Sources */,
@@ -707,6 +679,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15.1;
 				MARKETING_VERSION = 0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.Nimble;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -734,6 +707,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15.1;
 				MARKETING_VERSION = 0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.Nimble;
 				PRODUCT_NAME = "$(TARGET_NAME)";

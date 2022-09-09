@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="EditorTab" customModule="Nimble" customModuleProvider="target">
+            <connections>
+                <outlet property="backgroundView" destination="tFS-1g-kNu" id="wvK-5F-cwH"/>
+                <outlet property="closeButton" destination="BCm-bu-BgG" id="lwR-aU-4Ne"/>
+                <outlet property="tabIconView" destination="qWf-O4-Pap" id="drO-mi-BME"/>
+                <outlet property="titleLabel" destination="Osf-bL-jQQ" id="bHx-WZ-ud5"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="208" height="30"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+            <subviews>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="tFS-1g-kNu">
+                    <rect key="frame" x="0.0" y="0.0" width="208" height="30"/>
+                    <subviews>
+                        <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="5" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nDo-Xe-cCr">
+                            <rect key="frame" x="35" y="5" width="142" height="20"/>
+                            <subviews>
+                                <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="qWf-O4-Pap">
+                                    <rect key="frame" x="0.0" y="-3" width="20.5" height="26"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="20" id="o5C-OK-fJP"/>
+                                        <constraint firstAttribute="height" constant="20" id="pjs-KK-zUg"/>
+                                    </constraints>
+                                    <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="swift" catalog="system" id="H6X-wj-lOT"/>
+                                </imageView>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Osf-bL-jQQ">
+                                    <rect key="frame" x="23" y="3" width="121" height="15"/>
+                                    <textFieldCell key="cell" lineBreakMode="clipping" alignment="left" title="TabbedEditor.swift" id="nAa-kT-PFO">
+                                        <font key="font" metaFont="cellTitle"/>
+                                        <color key="textColor" name="selectedTextColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                            </subviews>
+                            <visibilityPriorities>
+                                <integer value="1000"/>
+                                <integer value="1000"/>
+                            </visibilityPriorities>
+                            <customSpacing>
+                                <real value="3.4028234663852886e+38"/>
+                                <real value="3.4028234663852886e+38"/>
+                            </customSpacing>
+                        </stackView>
+                        <button verticalHuggingPriority="750" imageHugsTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BCm-bu-BgG" customClass="HiddenButton" customModule="Nimble" customModuleProvider="target">
+                            <rect key="frame" x="5" y="1.5" width="25.5" height="29"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="25" id="b88-ND-OYZ"/>
+                                <constraint firstAttribute="width" constant="25" id="p9J-xb-7a8"/>
+                            </constraints>
+                            <buttonCell key="cell" type="squareTextured" bezelStyle="texturedSquare" image="NSStopProgressTemplate" imagePosition="only" alignment="center" imageScaling="proportionallyDown" inset="2" id="RVD-U0-O5a">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="closeDidClick:" target="UFX-MY-Q04" id="b3i-Gk-Fzn"/>
+                            </connections>
+                        </button>
+                        <box horizontalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="ioI-vA-57H">
+                            <rect key="frame" x="205" y="6" width="5" height="18"/>
+                        </box>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="BCm-bu-BgG" firstAttribute="leading" secondItem="tFS-1g-kNu" secondAttribute="leading" constant="5" id="3JC-Le-nDB"/>
+                        <constraint firstAttribute="height" constant="30" id="5VY-O6-tjO"/>
+                        <constraint firstItem="nDo-Xe-cCr" firstAttribute="leading" secondItem="BCm-bu-BgG" secondAttribute="trailing" constant="5" id="7Cs-Af-O4m"/>
+                        <constraint firstItem="ioI-vA-57H" firstAttribute="centerY" secondItem="tFS-1g-kNu" secondAttribute="centerY" id="9cv-EQ-1R9"/>
+                        <constraint firstItem="BCm-bu-BgG" firstAttribute="centerY" secondItem="nDo-Xe-cCr" secondAttribute="centerY" id="Tf6-81-4bx"/>
+                        <constraint firstItem="nDo-Xe-cCr" firstAttribute="centerY" secondItem="tFS-1g-kNu" secondAttribute="centerY" id="mlE-4G-IVE"/>
+                        <constraint firstAttribute="trailing" secondItem="ioI-vA-57H" secondAttribute="trailing" id="pdm-cb-mfk"/>
+                        <constraint firstItem="ioI-vA-57H" firstAttribute="height" secondItem="tFS-1g-kNu" secondAttribute="height" multiplier="0.6" id="taC-FV-vIs"/>
+                        <constraint firstItem="ioI-vA-57H" firstAttribute="leading" secondItem="nDo-Xe-cCr" secondAttribute="trailing" constant="30" id="u3U-Al-c2I"/>
+                        <constraint firstItem="ioI-vA-57H" firstAttribute="centerY" secondItem="tFS-1g-kNu" secondAttribute="centerY" id="z8T-rg-cBy"/>
+                    </constraints>
+                </customView>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="tFS-1g-kNu" secondAttribute="trailing" id="47V-ZG-fmb"/>
+                <constraint firstItem="tFS-1g-kNu" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="6Fc-HP-MhF"/>
+                <constraint firstAttribute="bottom" secondItem="tFS-1g-kNu" secondAttribute="bottom" id="cCg-PE-2wf"/>
+                <constraint firstItem="tFS-1g-kNu" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="dnH-I5-HA5"/>
+            </constraints>
+            <point key="canvasLocation" x="-49" y="25"/>
+        </customView>
+        <collectionViewItem id="UFX-MY-Q04" customClass="EditorTab" customModule="Nimble" customModuleProvider="target">
+            <connections>
+                <outlet property="backgroundView" destination="tFS-1g-kNu" id="3Sc-ld-fIh"/>
+                <outlet property="closeButton" destination="BCm-bu-BgG" id="3jT-Vo-2sd"/>
+                <outlet property="separatorView" destination="ioI-vA-57H" id="EwO-XA-OUT"/>
+                <outlet property="tabIconView" destination="qWf-O4-Pap" id="ir7-Un-Th6"/>
+                <outlet property="titleLabel" destination="Osf-bL-jQQ" id="vgX-6v-fu7"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="xVm-jo-lta"/>
+            </connections>
+        </collectionViewItem>
+    </objects>
+    <resources>
+        <image name="NSStopProgressTemplate" width="14" height="13"/>
+        <image name="swift" catalog="system" width="18" height="15"/>
+    </resources>
+</document>
