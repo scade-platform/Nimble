@@ -285,6 +285,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.LSPClient;
 				PRODUCT_MODULE_NAME = LSPClientPlugin;
 				PRODUCT_NAME = LSPClient;
@@ -310,6 +311,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.15.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.scade.nimble.LSPClient;
 				PRODUCT_MODULE_NAME = LSPClientPlugin;
 				PRODUCT_NAME = LSPClient;

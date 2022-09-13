@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "ProjectNavigator",
     platforms: [
-        .macOS(.v10_14),
+        .macOS(.v10_15),
     ],
     products: [
         // Make it dynamic if you want to share code with other plugins

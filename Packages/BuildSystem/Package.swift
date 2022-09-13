@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
   name: "BuildSystem",
   platforms: [
-    .macOS(.v10_14),
+    .macOS(.v10_15),
   ],
   products: [
     .library(name: "BuildSystem", type: .dynamic, targets: ["BuildSystem"]),
