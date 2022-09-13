@@ -170,7 +170,6 @@ extension LSPConnector: WorkbenchObserver {
 
   public func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) {
     if document == nil {
-      workbench.statusBar.statusMessage = ""
     }
   }
 }

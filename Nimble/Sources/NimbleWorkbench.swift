@@ -243,36 +243,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     let mainMenu = NSApplication.shared.mainMenu
     return mainMenu?.items.first(where: {$0.title == "Editor"})
   }()
-  
-  func currentDocumentWillChange(_ doc: Document?) {
-    editorMenuItem?.submenu = nil
-    statusBarView?.editorBar = []
-    debugView?.editorBar = []
-  }
-  
-  func currentDocumentDidChange(_ doc: Document?) {
-    if let editor = doc?.editor {
 
-      (document as? ProjectDocument)?.undoManager = doc?.undoManager
-
-      let editorMenu = type(of: editor).editorMenu
-
-      editorMenu?.title = "Editor"
-
-      if editorMenuItem?.submenu != editorMenu {
-        editorMenuItem?.submenu = editorMenu
-        editorMenuItem?.isEnabled = true
-      }
-
-      debugView?.editorBar = editor.statusBarItems
-      //statusBarView?.editorBar = editor.statusBarItems
-      editor.focus()
-    }
-
-    observers.notify {
-      $0.workbenchActiveDocumentDidChange(self, document: doc)
-    }
-  }
 }
 
 
@@ -373,6 +344,34 @@ extension NimbleWorkbench: TabbedEditorResponder {
       editorView?.hideEditor()
     }
     observers.notify { $0.workbenchDidCloseDocument(self, document: document) }
+  }
+
+  func currentDocumentWillChange(_ document: Document?) {
+    editorMenuItem?.submenu = nil
+    debugView?.editorBar = []
+  }
+
+  func currentDocumentDidChange(_ document: Document?) {
+    if let editor = document?.editor {
+
+      (self.document as? ProjectDocument)?.undoManager = document?.undoManager
+
+      let editorMenu = type(of: editor).editorMenu
+
+      editorMenu?.title = "Editor"
+
+      if editorMenuItem?.submenu != editorMenu {
+        editorMenuItem?.submenu = editorMenu
+        editorMenuItem?.isEnabled = true
+      }
+
+      debugView?.editorBar = editor.statusBarItems
+      editor.focus()
+    }
+
+    observers.notify {
+      $0.workbenchActiveDocumentDidChange(self, document: document)
+    }
   }
 }
 

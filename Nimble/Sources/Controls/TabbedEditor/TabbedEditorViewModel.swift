@@ -47,6 +47,8 @@ struct EditorTabItem: Hashable {
 protocol TabbedEditorResponder {
   func documentDidOpen(_ document: Document)
   func documentDidClose(_ document: Document)
+  func currentDocumentWillChange(_ document: Document?)
+  func currentDocumentDidChange(_ document: Document?)
 }
 
 
@@ -136,7 +138,9 @@ final class TabbedEditorViewModel {
     }
     editorTabItemsSubject.value = editorTabItems
     if selectAfterAdd {
+      responder.currentDocumentWillChange(currentDocument)
       currentTabIndexSubject.value = index
+      responder.currentDocumentDidChange(currentDocument)
     } else {
       if editorTabItems.endIndex > index + 1 {
         self.currentTabIndexSubject.value = index + 1
@@ -151,7 +155,9 @@ final class TabbedEditorViewModel {
     var editorTabItems = editorTabItemsSubject.value
     // If the doc is already opened, switch to its tab
     if let documentTabIndex = editorTabItems.firstIndex(of: documentTabItem) {
+      responder.currentDocumentWillChange(currentDocument)
       currentTabIndexSubject.value = documentTabIndex
+      responder.currentDocumentDidChange(currentDocument)
       return
     }
     // Insert a new tab for edited or newly created documents
@@ -166,7 +172,9 @@ final class TabbedEditorViewModel {
         let oldItem = editorTabItems.remove(at: index)
         editorTabItems.insert(documentTabItem, at: index)
         editorTabItemsSubject.value = editorTabItems
+        responder.currentDocumentWillChange(currentDocument)
         currentTabIndexSubject.value = index
+        responder.currentDocumentDidChange(currentDocument)
         responder.documentDidClose(oldItem.document)
       }
     }
@@ -196,6 +204,7 @@ final class TabbedEditorViewModel {
     var editorTabItems = editorTabItemsSubject.value
     let removedItem = editorTabItems.remove(at: index.item)
     editorTabItemsSubject.send(editorTabItems)
+    responder.currentDocumentWillChange(currentDocument)
     if index.item < editorTabItems.endIndex {
       currentTabIndexSubject.value = index.item
     } else if index.item - 1 >= 0 {
@@ -204,10 +213,13 @@ final class TabbedEditorViewModel {
       currentTabIndexSubject.value = nil
     }
     responder.documentDidClose(removedItem.document)
+    responder.currentDocumentDidChange(currentDocument)
   }
 
   public func selectTab(at indexPath: IndexPath?) {
+    responder.currentDocumentWillChange(currentDocument)
     currentTabIndexSubject.value = indexPath?.item
+    responder.currentDocumentDidChange(currentDocument)
   }
 
   public func updateData(_ items: [EditorTabItem])  {
