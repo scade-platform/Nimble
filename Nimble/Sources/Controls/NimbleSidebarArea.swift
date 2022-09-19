@@ -24,6 +24,7 @@ import NimbleCore
 
 public class NimbleSidebarArea: NSViewController {
   @IBOutlet var sidebar: WorkbenchSidebar? = nil
+  var stateChanged: ((Int) -> Void)?
 }
 
 
@@ -44,6 +45,7 @@ extension NimbleSidebarArea: WorkbenchArea {
     guard let child = part as? NSViewController,
           let pos = self.children.firstIndex(of: child) else { return }
 
+    stateChanged?(pos)
     sidebar?.selectView(at: pos)
   }
 }
