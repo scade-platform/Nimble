@@ -102,10 +102,10 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   private let collapsedDebugViewHeight: CGFloat = 30
   private var isDebugViewCollapsed: Bool {
     get {
-      return currentDebugViewPosition < collapsedDebugViewHeight
+      return currentDebugViewHeight < collapsedDebugViewHeight
     }
   }
-  private var currentDebugViewPosition: CGFloat {
+  private var currentDebugViewHeight: CGFloat {
     get {
       return workbenchCentralView?.splitViewItems.last?.viewController.view.frame.height ?? 0
     }
@@ -163,12 +163,11 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   }
     
   private func collapseDebugView() {
-    if (lastDebugViewPosition == 0 || currentDebugViewPosition != lastDebugViewPosition) && currentDebugViewPosition > collapsedDebugViewHeight {
-      let splitViewFrame = workbenchCentralView?.splitView.frame ?? .zero
-      lastDebugViewPosition = splitViewFrame.height - currentDebugViewPosition
-    }
     guard let splitViewFrame = workbenchCentralView?.splitView.frame else { return }
-    let updatedPosition: CGFloat = currentDebugViewPosition > collapsedDebugViewHeight ? splitViewFrame.maxY : lastDebugViewPosition
+    if (lastDebugViewPosition == 0 || currentDebugViewHeight != lastDebugViewPosition) && currentDebugViewHeight > collapsedDebugViewHeight {
+      lastDebugViewPosition = splitViewFrame.height - currentDebugViewHeight
+    }
+    let updatedPosition: CGFloat = currentDebugViewHeight > collapsedDebugViewHeight ? splitViewFrame.maxY : lastDebugViewPosition
     
     debugView?.consoleView?.bottomStack.isHidden = updatedPosition == splitViewFrame.maxY
     
