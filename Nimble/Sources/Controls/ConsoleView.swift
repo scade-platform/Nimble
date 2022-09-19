@@ -31,6 +31,8 @@ class ConsoleView: NSViewController, WorkbenchViewController {
   @IBOutlet weak var closeButton: NSButton!
   @IBOutlet weak var clearButton: NSButton!
   
+  @IBOutlet weak var bottomStack: NSStackView!
+  
   private var consolesStorage : [String: NimbleTextConsole] = [:]
   private var prevOpenedConsole: Console? = nil
   
