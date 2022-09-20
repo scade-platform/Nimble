@@ -169,7 +169,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     }
     let updatedPosition: CGFloat = currentDebugViewHeight > collapsedDebugViewHeight ? splitViewFrame.maxY : lastDebugViewPosition
     
-    debugView?.consoleView?.bottomStack.isHidden = updatedPosition == splitViewFrame.maxY
+    debugView?.consoleView?.bottomStackView.isHidden = updatedPosition == splitViewFrame.maxY
     
     changePositionOfDebugView(position: updatedPosition)
   }

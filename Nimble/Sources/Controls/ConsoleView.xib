@@ -8,7 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ConsoleView" customModule="Nimble" customModuleProvider="target">
             <connections>
-                <outlet property="bottomStack" destination="Bed-oD-Mwo" id="P7W-h8-dMt"/>
+                <outlet property="bottomStackView" destination="Bed-oD-Mwo" id="P7W-h8-dMt"/>
                 <outlet property="clearButton" destination="KC3-0c-zVn" id="UJp-WX-6yS"/>
                 <outlet property="closeButton" destination="N6a-kt-c8u" id="Cwn-ri-qfS"/>
                 <outlet property="consoleSelectionButton" destination="6sq-ed-dLL" id="Vfz-2o-Cpt"/>
