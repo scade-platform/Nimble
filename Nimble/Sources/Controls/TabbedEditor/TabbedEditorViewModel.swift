@@ -118,15 +118,22 @@ final class TabbedEditorViewModel {
       present(document, openNewEditor: openNewEditor)
     } else {
       // Just insert a tab but not switch to it
-      addTabItem(for: document, afterCurrentTab: true, selectAfterAdd: false)
+      addTabItem(for: document, afterCurrentTab: true, selectAfterAdd: openNewEditor)
     }
     responder.documentDidOpen(document)
   }
 
   private func addTabItem(for document: Document, afterCurrentTab: Bool = false, selectAfterAdd: Bool = true) {
+    print("ADD_TAB_ITEM: \(document.title)")
     let newEditorTabItem = EditorTabItem(document: document)
     var editorTabItems = editorTabItemsSubject.value
     let index: Int
+    if let documentTabIndex = editorTabItems.firstIndex(of: newEditorTabItem) {
+      responder.currentDocumentWillChange(currentDocument)
+      currentTabIndexSubject.value = documentTabIndex
+      responder.currentDocumentDidChange(currentDocument)
+      return
+    }
     if afterCurrentTab {
       guard let currentEditorTabIndex = currentTabIndexSubject.value else {
         return

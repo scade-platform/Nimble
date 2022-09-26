@@ -23,7 +23,7 @@
 		D724C5F5237DA72200E80958 /* OutlineDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineDataSource.swift; sourceTree = "<group>"; };
 		D724C5F7237DC02C00E80958 /* DocumentTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentTableCellView.swift; sourceTree = "<group>"; };
 		D788ED61223AC30A0072C21E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		D788ED66223B20270072C21E /* OutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OutlineView.swift; sourceTree = "<group>"; };
+		D788ED66223B20270072C21E /* OutlineView.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = OutlineView.swift; sourceTree = "<group>"; tabWidth = 2; };
 		D788ED6B223B22C10072C21E /* OutlineView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OutlineView.xib; sourceTree = "<group>"; };
 		D791038627010F4900148E9E /* build.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = build.xcconfig; sourceTree = "<group>"; };
 		D7CBF8CF222ACD770088715C /* ProjectNavigator.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProjectNavigator.plugin; sourceTree = BUILT_PRODUCTS_DIR; };

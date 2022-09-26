@@ -52,6 +52,9 @@ open class OutlineView: NSViewController, WorkbenchPart {
   
   @IBAction func itemDoubleClicked(_ sender: Any) {
     guard selectedItem is File, let prevDoc = prevSelectedDocument else { return }
+    guard !(workbench?.documents.contains(where: { $0.path == prevDoc.path }) ?? true) else {
+      return
+    }
     workbench?.open(prevDoc, show: false)
   }
   
