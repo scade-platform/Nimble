@@ -98,22 +98,23 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     (self.contentViewController as? WorkbenchContentViewController)?.settingsController
   }
     
-    private var lastDebugViewPosition: CGFloat = 0
-    private var isDebugViewCollapsed: Bool {
-        get {
-            return currentDebugViewPosition == 56 || currentDebugViewPosition == 28
-        }
+  private var lastDebugViewPosition: CGFloat = 0
+  private let collapsedDebugViewHeight: CGFloat = 30
+  private var isDebugViewCollapsed: Bool {
+    get {
+      return currentDebugViewHeight < collapsedDebugViewHeight
     }
-    private var currentDebugViewPosition: CGFloat {
-        get {
-            return workbenchCentralView?.splitViewItems.last?.viewController.view.frame.height ?? 0
-        }
+  }
+  private var currentDebugViewHeight: CGFloat {
+    get {
+      return workbenchCentralView?.splitViewItems.last?.viewController.view.frame.height ?? 0
     }
-    
-    private func openDebugView() {
-        guard isDebugViewCollapsed else { return }
-        changePositionOfDebugView(position: lastDebugViewPosition)
-    }
+  }
+  
+  private func openDebugView() {
+    guard isDebugViewCollapsed else { return }
+    changePositionOfDebugView(position: lastDebugViewPosition)
+  }
 
   private var tabbedEditorViewModel: TabbedEditorViewModel!
 
@@ -126,9 +127,12 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     // Restore window position
     window?.setFrameUsingName("NimbleWindow")
     self.windowFrameAutosaveName = "NimbleWindow"
-      
-    lastDebugViewPosition = workbenchCentralView?.splitViewItems.last?.viewController.view.frame.height ?? 0
     
+    
+    let position = workbenchCentralView?.splitView.frame.maxY ?? 0
+    lastDebugViewPosition = position / 2
+    workbenchCentralView?.splitView.setPosition(position, ofDividerAt: 0)
+
     guard let debugView = debugView else { return }
     debugView.isHidden = false
       debugView.collapseCallback = { [weak self] in
@@ -158,25 +162,27 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     PluginManager.shared.activate(in: self)
   }
     
-    private func collapseDebugView() {
-        if lastDebugViewPosition == 0 || currentDebugViewPosition != lastDebugViewPosition && currentDebugViewPosition != 28 {
-            lastDebugViewPosition = currentDebugViewPosition
-        }
-        guard let splitViewFrame = workbenchCentralView?.splitView.frame else { return }
-        let updatedPosition: CGFloat = currentDebugViewPosition != 28 ? splitViewFrame.maxY : lastDebugViewPosition
-        
-        changePositionOfDebugView(position: updatedPosition)
+  private func collapseDebugView() {
+    guard let splitViewFrame = workbenchCentralView?.splitView.frame else { return }
+    if (lastDebugViewPosition == 0 || currentDebugViewHeight != lastDebugViewPosition) && currentDebugViewHeight > collapsedDebugViewHeight {
+      lastDebugViewPosition = splitViewFrame.height - currentDebugViewHeight
     }
+    let updatedPosition: CGFloat = currentDebugViewHeight > collapsedDebugViewHeight ? splitViewFrame.maxY : lastDebugViewPosition
     
-    private func changePositionOfDebugView(position: CGFloat) {
-        let duration: TimeInterval = 0.25
-        NSAnimationContext.runAnimationGroup { context in
-            context.duration = duration
-            context.allowsImplicitAnimation = true
-            workbenchCentralView?.splitView.setPosition(position, ofDividerAt: 0)
-            workbenchCentralView?.splitView.layoutSubtreeIfNeeded()
-        }
+    debugView?.consoleView?.bottomStackView.isHidden = updatedPosition == splitViewFrame.maxY
+    
+    changePositionOfDebugView(position: updatedPosition)
+  }
+    
+  private func changePositionOfDebugView(position: CGFloat) {
+    let duration: TimeInterval = 0.25
+    NSAnimationContext.runAnimationGroup { context in
+      context.duration = duration
+      context.allowsImplicitAnimation = true
+      workbenchCentralView?.splitView.setPosition(position, ofDividerAt: 0)
+      workbenchCentralView?.splitView.layoutSubtreeIfNeeded()
     }
+  }
     
   public func windowWillClose(_ notification: Notification) {
     let tasks = self.tasks

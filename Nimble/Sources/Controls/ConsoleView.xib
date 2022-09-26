@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="ConsoleView" customModule="Nimble" customModuleProvider="target">
             <connections>
+                <outlet property="bottomStackView" destination="Bed-oD-Mwo" id="P7W-h8-dMt"/>
                 <outlet property="clearButton" destination="KC3-0c-zVn" id="UJp-WX-6yS"/>
                 <outlet property="closeButton" destination="N6a-kt-c8u" id="Cwn-ri-qfS"/>
                 <outlet property="consoleSelectionButton" destination="6sq-ed-dLL" id="Vfz-2o-Cpt"/>
@@ -22,20 +23,20 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LPN-tK-UIz">
-                    <rect key="frame" x="0.0" y="10" width="480" height="577"/>
+                    <rect key="frame" x="0.0" y="0.0" width="480" height="587"/>
                     <subviews>
                         <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FaY-ic-0Uz">
-                            <rect key="frame" x="0.0" y="176" width="480" height="401"/>
+                            <rect key="frame" x="0.0" y="186" width="480" height="401"/>
                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="ruM-Th-wN2">
-                                <rect key="frame" x="0.0" y="0.0" width="480" height="401"/>
+                                <rect key="frame" x="0.0" y="0.0" width="460" height="401"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="489-L5-7Z7">
-                                        <rect key="frame" x="0.0" y="0.0" width="470" height="391"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="450" height="391"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        <size key="minSize" width="470" height="391"/>
+                                        <size key="minSize" width="450" height="391"/>
                                         <size key="maxSize" width="480" height="10000000"/>
                                         <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     </textView>
@@ -47,16 +48,17 @@
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                             <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="BGL-Ee-E9j">
-                                <rect key="frame" x="459" y="5" width="16" height="391"/>
+                                <rect key="frame" x="460" y="5" width="15" height="391"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                         </scrollView>
                         <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bed-oD-Mwo">
-                            <rect key="frame" x="0.0" y="0.0" width="359" height="168"/>
+                            <rect key="frame" x="0.0" y="0.0" width="359" height="178"/>
                             <subviews>
                                 <popUpButton translatesAutoresizingMaskIntoConstraints="NO" id="6sq-ed-dLL">
-                                    <rect key="frame" x="-2" y="116" width="304" height="54"/>
+                                    <rect key="frame" x="-5" y="140" width="305" height="38"/>
                                     <constraints>
+                                        <constraint firstAttribute="height" constant="38" id="qDc-J3-9lP"/>
                                         <constraint firstAttribute="width" constant="300" id="rD1-bj-TLf"/>
                                     </constraints>
                                     <popUpButtonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" lineBreakMode="truncatingTail" inset="2" id="pHo-q2-rE9">
@@ -83,7 +85,10 @@
                                     </connections>
                                 </button>
                                 <box horizontalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Wow-0W-mpu">
-                                    <rect key="frame" x="331" y="72" width="5" height="96"/>
+                                    <rect key="frame" x="331" y="152" width="5" height="15"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="15" id="Udc-5f-dX6"/>
+                                    </constraints>
                                 </box>
                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="KC3-0c-zVn">
                                     <rect key="frame" x="342" y="151" width="17" height="17"/>
@@ -100,6 +105,12 @@
                                     </connections>
                                 </button>
                             </subviews>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="359" id="VVy-zG-YCv"/>
+                                <constraint firstItem="KC3-0c-zVn" firstAttribute="centerY" secondItem="6sq-ed-dLL" secondAttribute="centerY" id="cz7-j6-FQf"/>
+                                <constraint firstItem="N6a-kt-c8u" firstAttribute="centerY" secondItem="6sq-ed-dLL" secondAttribute="centerY" id="f1M-zf-W1X"/>
+                                <constraint firstItem="Wow-0W-mpu" firstAttribute="centerY" secondItem="N6a-kt-c8u" secondAttribute="centerY" id="kbJ-QZ-msa"/>
+                            </constraints>
                             <visibilityPriorities>
                                 <integer value="1000"/>
                                 <integer value="1000"/>
@@ -131,7 +142,7 @@
                 <constraint firstItem="LPN-tK-UIz" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="SLw-HX-0px"/>
                 <constraint firstItem="LPN-tK-UIz" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="dPh-Fo-UQy"/>
                 <constraint firstAttribute="trailing" secondItem="LPN-tK-UIz" secondAttribute="trailing" id="fcD-Zx-FrO"/>
-                <constraint firstAttribute="bottom" secondItem="LPN-tK-UIz" secondAttribute="bottom" constant="10" id="roe-Xr-82M"/>
+                <constraint firstAttribute="bottom" secondItem="LPN-tK-UIz" secondAttribute="bottom" id="roe-Xr-82M"/>
             </constraints>
             <userDefinedRuntimeAttributes>
                 <userDefinedRuntimeAttribute type="color" keyPath="backgrondColor">
