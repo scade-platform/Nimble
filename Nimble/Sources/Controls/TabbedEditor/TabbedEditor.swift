@@ -108,6 +108,9 @@ final class TabbedEditor: NSViewController {
           self.currentEditorViewController = nil
           return
         }
+        guard self.currentEditorViewController !== documentEditor else {
+          return
+        }
 
         self.currentEditorViewController?.removeFromParent()
         self.currentEditorViewController?.view.removeFromSuperview()
