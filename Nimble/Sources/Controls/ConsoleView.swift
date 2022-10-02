@@ -30,6 +30,7 @@ class ConsoleView: NSViewController, WorkbenchViewController {
   
   @IBOutlet weak var closeButton: NSButton!
   @IBOutlet weak var clearButton: NSButton!
+  @IBOutlet weak var separator: NSBox!
   
   @IBOutlet weak var bottomStackView: NSStackView!
   
@@ -76,6 +77,7 @@ class ConsoleView: NSViewController, WorkbenchViewController {
       self?.consoleSelectionButton.isHidden = value
       self?.clearButton.isHidden = value
       self?.closeButton.isHidden = value
+      self?.separator.isHidden = value
     }
   }
   

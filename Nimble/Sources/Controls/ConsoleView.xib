@@ -12,6 +12,7 @@
                 <outlet property="clearButton" destination="KC3-0c-zVn" id="UJp-WX-6yS"/>
                 <outlet property="closeButton" destination="N6a-kt-c8u" id="Cwn-ri-qfS"/>
                 <outlet property="consoleSelectionButton" destination="6sq-ed-dLL" id="Vfz-2o-Cpt"/>
+                <outlet property="separator" destination="Wow-0W-mpu" id="Dyj-WM-cI8"/>
                 <outlet property="textView" destination="489-L5-7Z7" id="LKt-ag-auG"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>

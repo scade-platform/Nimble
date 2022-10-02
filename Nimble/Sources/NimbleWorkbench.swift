@@ -113,6 +113,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
   
   private func openDebugView() {
     guard isDebugViewCollapsed else { return }
+    controlBottomStackVisibilityOfConsole()
     changePositionOfDebugView(position: lastDebugViewPosition)
   }
 
@@ -169,7 +170,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     }
     let updatedPosition: CGFloat = currentDebugViewHeight > collapsedDebugViewHeight ? splitViewFrame.maxY : lastDebugViewPosition
     
-    debugView?.consoleView?.bottomStackView.isHidden = updatedPosition == splitViewFrame.maxY
+    controlBottomStackVisibilityOfConsole()
     
     changePositionOfDebugView(position: updatedPosition)
   }
@@ -182,6 +183,10 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
       workbenchCentralView?.splitView.setPosition(position, ofDividerAt: 0)
       workbenchCentralView?.splitView.layoutSubtreeIfNeeded()
     }
+  }
+  
+  private func controlBottomStackVisibilityOfConsole() {
+    debugView?.consoleView?.bottomStackView.isHidden = currentDebugViewHeight > collapsedDebugViewHeight
   }
     
   public func windowWillClose(_ notification: Notification) {
