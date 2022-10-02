@@ -55,7 +55,12 @@ open class OutlineView: NSViewController, WorkbenchPart {
     guard !(workbench?.documents.contains(where: { $0.path == prevDoc.path }) ?? true) else {
       return
     }
-    workbench?.open(prevDoc, show: false)
+    if let curDoc = workbench?.currentDocument {
+      workbench?.open(prevDoc, show: true, openNewEditor: false)
+      workbench?.open(curDoc, show: true)
+    } else {
+      workbench?.open(prevDoc, show: false)
+    }
   }
   
   override open func viewDidLoad() {

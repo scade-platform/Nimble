@@ -118,7 +118,7 @@ final class TabbedEditorViewModel {
       present(document, openNewEditor: openNewEditor)
     } else {
       // Just insert a tab but not switch to it
-      addTabItem(for: document, afterCurrentTab: true, selectAfterAdd: openNewEditor)
+      addTabItem(for: document, afterCurrentTab: true, selectAfterAdd: show)
     }
     responder.documentDidOpen(document)
   }
