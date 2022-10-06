@@ -20,10 +20,11 @@
 
 import Cocoa
 import NimbleCore
+import SwiftUI
 
 class DebugView: NimbleSidebarArea {
-  weak var consoleView: ConsoleView? = nil
-  weak var diagnosticsView: DiagnosticView? = nil
+    weak var consoleView: ConsoleView? = nil
+    weak var diagnosticsView: DiagnosticView? = nil
     
     @IBOutlet weak var leftBarStackView: NSStackView!
     @IBOutlet weak var editorBarStackView: NSStackView!
@@ -53,10 +54,17 @@ class DebugView: NimbleSidebarArea {
       editorBar.append(workbenchBar.view as! WorkbenchStatusBarItem)
 
       statusMessage = ""
+    
+    if #available(macOS 11.0, *) {
+      let hostedOutlineView = HostedNimbleOutlineView()
+      self.add(part: hostedOutlineView)
+//      let view = NSHostingView(rootView: NimbleOutlineView())
+//      self.add(part: view)
+    }
 
-    let diagnosticsView = DiagnosticView.loadFromNib()
-    self.diagnosticsView = diagnosticsView
-    self.add(part: diagnosticsView)
+//    let diagnosticsView = DiagnosticView.loadFromNib()
+//    self.diagnosticsView = diagnosticsView
+//    self.add(part: diagnosticsView)
 
     let consoleView = ConsoleView.loadFromNib()
     self.consoleView = consoleView
