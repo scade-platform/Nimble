@@ -16,7 +16,7 @@ class EditorTab: NSCollectionViewItem {
   @IBOutlet private weak var titleLabel: NSTextField!
   @IBOutlet private weak var backgroundView: NSView!
   @IBOutlet private weak var tabIconView: NSImageView!
-  @IBOutlet private weak var separatorView: NSView!
+  @IBOutlet private weak var separatorView: NSView?
 
   override var isSelected: Bool {
     didSet {
@@ -54,7 +54,7 @@ class EditorTab: NSCollectionViewItem {
 
   private func updateSelectionHighlighting() {
     guard isViewLoaded else { return }
-    separatorView.isHidden = showAsHighlighted
+    separatorView?.isHidden = showAsHighlighted
     view.layer?.backgroundColor = showAsHighlighted ? NSColor.selectedControlColor.cgColor : .clear
   }
 
