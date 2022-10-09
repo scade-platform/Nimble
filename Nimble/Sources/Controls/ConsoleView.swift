@@ -157,7 +157,10 @@ class ConsoleView: NSViewController, WorkbenchViewController {
       return
     }
     consolesStorage.removeValue(forKey: console.title)
-    consoleSelectionButton.removeItem(withTitle: console.title)
+    let index = consoleSelectionButton.indexOfItem(withTitle: console.title)
+    if index > 0 {
+      consoleSelectionButton.removeItem(at: index)
+    }
     console.stopReadingFromBuffer()
   }
   
