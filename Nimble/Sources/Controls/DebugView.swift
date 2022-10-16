@@ -55,12 +55,8 @@ class DebugView: NimbleSidebarArea {
 
       statusMessage = ""
     
-    if #available(macOS 11.0, *) {
       let hostedOutlineView = HostedNimbleOutlineView()
       self.add(part: hostedOutlineView)
-//      let view = NSHostingView(rootView: NimbleOutlineView())
-//      self.add(part: view)
-    }
 
 //    let diagnosticsView = DiagnosticView.loadFromNib()
 //    self.diagnosticsView = diagnosticsView

@@ -16,7 +16,7 @@ where Data.Element: Identifiable {
     /// Stored as `Any` to make the property available on all platforms.
     private var _styleStorage: Any?
 
-    @available(macOS 11.0, *)
+   // @available(macOS 11.0, *)
     var style: NSOutlineView.Style {
         get {
             _styleStorage
@@ -103,7 +103,7 @@ where Data.Element: Identifiable {
     ///     element in `data`. An `NSTableCellView` subclass is preferred.
     ///     The `NSView` should return the correct `fittingSize`
     ///     as it is used to determine the height of the cell.
-    @available(macOS 11.0, *)
+    //@available(macOS 11.0, *)
     public init(
         _ data: Data,
         children: KeyPath<Data.Element, Data?>,
@@ -127,9 +127,9 @@ where Data.Element: Identifiable {
             selectionChanged: { selection = $0 },
             separatorInsets: separatorInsets)
         controller.setIndentation(to: indentation)
-        if #available(macOS 11.0, *) {
+        //if #available(macOS 11.0, *) {
             controller.setStyle(to: style)
-        }
+       // }
         return controller
     }
 
@@ -148,7 +148,7 @@ where Data.Element: Identifiable {
 public extension OutlineView {
 
     /// Sets the style for the `OutlineView`.
-    @available(macOS 11.0, *)
+    //@available(macOS 11.0, *)
     func outlineViewStyle(_ style: NSOutlineView.Style) -> Self {
         var mutableSelf = self
         mutableSelf.style = style

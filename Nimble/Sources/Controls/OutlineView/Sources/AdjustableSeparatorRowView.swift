@@ -2,7 +2,7 @@ import AppKit
 import ObjectiveC
 
 /// An NSTableRowView with an adjustable separator line.
-@available(macOS 11.0, *)
+//@available(macOS 11.0, *)
 final class AdjustableSeparatorRowView: NSTableRowView {
     var separatorInsets: NSEdgeInsets?
 

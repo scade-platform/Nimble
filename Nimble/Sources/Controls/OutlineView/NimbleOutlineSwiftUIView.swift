@@ -5,47 +5,49 @@
 
 import SwiftUI
 import Cocoa
+import NimbleCore
 
 struct FileItem: Hashable, Identifiable, CustomStringConvertible {
-    var id = UUID()
-    var name: String
-    var children: [FileItem]? = nil
-    var description: String {
-        switch children {
-        case nil:
-            return "📄 \(name)"
-        case .some(let children):
-            return children.isEmpty ? "📂 \(name)" : "📁 \(name)"
-        }
+  var id = UUID()
+  var name: String
+  var children: [FileItem]? = nil
+  var severity: DiagnosticSeverity = .warning
+  var description: String {
+    switch children {
+    case nil:
+      return "📄 \(name)"
+    case .some(let children):
+      return children.isEmpty ? "📂 \(name)" : "📁 \(name)"
     }
+  }
 }
+//let testData = [
+//    FileItem(name: "doc001.txt"),
+//    FileItem(
+//        name: "users",
+//        children: [
+//            FileItem(
+//                name: "user1234",
+//                children: [
+//                    FileItem(
+//                        name: "Photos",
+//                        children: [
+//                            FileItem(name: "photo001.jpg"),
+//                            FileItem(name: "photo002.jpg")]),
+//                    FileItem(
+//                        name: "Movies",
+//                        children: [FileItem(name: "movie001.mp4")]),
+//                    FileItem(name: "Documents", children: [])]),
+//            FileItem(
+//                name: "newuser",
+//                children: [FileItem(name: "Documents", children: [])])
+//        ]
+//    )
+//]
 
-let data = [
-    FileItem(name: "doc001.txt"),
-    FileItem(
-        name: "users",
-        children: [
-            FileItem(
-                name: "user1234",
-                children: [
-                    FileItem(
-                        name: "Photos",
-                        children: [
-                            FileItem(name: "photo001.jpg"),
-                            FileItem(name: "photo002.jpg")]),
-                    FileItem(
-                        name: "Movies",
-                        children: [FileItem(name: "movie001.mp4")]),
-                    FileItem(name: "Documents", children: [])]),
-            FileItem(
-                name: "newuser",
-                children: [FileItem(name: "Documents", children: [])])
-        ]
-    )
-]
-
-@available(macOS 11.0, *)
+//@available(macOS 11.0, *)
 struct NimbleOutlineSwiftUIView: View {
+    @ObservedObject var model: HostedNimbleOutlineViewModel = .init(data: [FileItem]())
     @Environment(\.colorScheme) var colorScheme
 
     @State var selection: FileItem?
@@ -56,7 +58,7 @@ struct NimbleOutlineSwiftUIView: View {
         VStack {
             outlineView
             Divider()
-            configBar
+           // configBar
         }
         .background(
             colorScheme == .light
@@ -67,7 +69,7 @@ struct NimbleOutlineSwiftUIView: View {
 
     var outlineView: some View {
         OutlineView(
-            data,
+            model.data,
             children: \.children,
             selection: $selection,
             separatorInsets: { fileItem in
@@ -100,7 +102,7 @@ struct NimbleOutlineSwiftUIView: View {
     }
 }
 
-@available(macOS 11.0, *)
+//@available(macOS 11.0, *)
 struct NimbleOutlineSwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
       NimbleOutlineSwiftUIView()

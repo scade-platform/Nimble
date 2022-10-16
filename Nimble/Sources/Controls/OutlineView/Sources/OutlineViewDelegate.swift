@@ -34,21 +34,21 @@ where Data.Element: Identifiable {
         _ outlineView: NSOutlineView,
         rowViewForItem item: Any
     ) -> NSTableRowView? {
-        if #available(macOS 11.0, *) {
+//        if #available(macOS 11.0, *) {
             // Release any unused row views.
             releaseUnusedRowViews(from: outlineView)
             let rowView = AdjustableSeparatorRowView(frame: .zero)
             rowView.separatorInsets = separatorInsets?(typedItem(item).value)
             return rowView
-        } else {
-            return nil
-        }
+//        } else {
+//            return nil
+//        }
     }
 
     // There seems to be a memory leak on macOS 11 where row views returned
     // from `rowViewForItem` are never freed. This hack patches the leak.
     func releaseUnusedRowViews(from outlineView: NSOutlineView) {
-        guard #available(macOS 11.0, *) else { return }
+//        guard #available(macOS 11.0, *) else { return }
 
         // Equivalent to _rowData._rowViewPurgatory
         let purgatoryPath = unmangle("^qnvC`s`-^qnvUhdvOtqf`snqx")
@@ -75,15 +75,15 @@ where Data.Element: Identifiable {
         // I am not able to find a better way to compute the final width of the cell
         // other than hard-coding some of the constants.
         let columnHorizontalInset: CGFloat
-        if #available(macOS 11.0, *) {
+       // if #available(macOS 11.0, *) {
             if outlineView.effectiveStyle == .plain {
                 columnHorizontalInset = 18
             } else {
                 columnHorizontalInset = 9
             }
-        } else {
-            columnHorizontalInset = 9
-        }
+//        } else {
+//            columnHorizontalInset = 9
+//        }
 
         let column = outlineView.tableColumns.first.unsafelyUnwrapped
         let indentInset = CGFloat(outlineView.level(forItem: item)) * outlineView.indentationPerLevel
