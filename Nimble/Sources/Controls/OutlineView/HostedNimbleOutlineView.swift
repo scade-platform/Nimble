@@ -19,6 +19,9 @@ class HostedNimbleOutlineViewModel<Data: Sequence>: ObservableObject where Data.
 }
 
 let testData = [
+//
+//
+//  FileItem(name: "Language Server", children: [FileItem(name: "Message1"), FileItem(name: "Message2")])
     FileItem(name: "doc001.txt"),
     FileItem(
         name: "users",
@@ -48,8 +51,23 @@ class HostedNimbleOutlineView: NSViewController, WorkbenchViewController {
   private var diagnostics: [(DiagnosticSource, Diagnostic)] = [] {
     didSet {
       print(diagnostics)
-      let test = diagnostics.compactMap({ FileItem(name: $0.1.message)})
-      model.data = test
+
+      var keyNameSet: Set<String> = Set(diagnostics.compactMap({ $0.0.string }))
+      var result: [FileItem] = []
+      keyNameSet.forEach { name in
+        var errorMessages: [FileItem] = []
+        diagnostics.forEach { (key, value) in
+          if key.string == name {
+            errorMessages.append(FileItem(name: value.message))
+          }
+        }
+        result.append(FileItem(name: name, children: errorMessages))
+      }
+      
+      model.data = result
+      
+//      let test = diagnostics.compactMap({ FileItem(name: $0.0.string)})
+//      model.data = test
     }
   }
   
