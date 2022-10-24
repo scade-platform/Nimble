@@ -21,7 +21,7 @@ class FileItemView: NSTableCellView {
     super.init(frame: .zero)
     let countView = createCountView(fileItem: fileItem)
     addSubview(field)
-    //addSubview(img)
+    addSubview(img)
     
     img.image = fileItem.image
     img.translatesAutoresizingMaskIntoConstraints = false
@@ -30,7 +30,6 @@ class FileItemView: NSTableCellView {
     
     if let countView = countView {
       addSubview(countView)
-      addSubview(img)
       NSLayoutConstraint.activate([
         img.widthAnchor.constraint(equalToConstant: 14),
         img.heightAnchor.constraint(equalToConstant: 14),
@@ -49,7 +48,14 @@ class FileItemView: NSTableCellView {
       ])
     } else {
       NSLayoutConstraint.activate([
-        field.leadingAnchor.constraint(equalTo: leadingAnchor),
+        img.widthAnchor.constraint(equalToConstant: 14),
+        img.heightAnchor.constraint(equalToConstant: 14),
+        img.leadingAnchor.constraint(equalTo: leadingAnchor),
+        img.topAnchor.constraint(equalTo: topAnchor, constant: 5),
+        img.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
+        
+        field.leadingAnchor.constraint(equalTo: img.trailingAnchor, constant: 4),
+        //field.leadingAnchor.constraint(equalTo: leadingAnchor),
         field.trailingAnchor.constraint(equalTo: trailingAnchor),
         field.topAnchor.constraint(equalTo: topAnchor, constant: 4),
         field.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),
