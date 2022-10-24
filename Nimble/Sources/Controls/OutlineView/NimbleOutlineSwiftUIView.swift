@@ -42,7 +42,6 @@ struct NimbleOutlineSwiftUIView: View {
         VStack {
             outlineView
             Divider()
-           // configBar
         }
         .background(
             colorScheme == .light
@@ -70,19 +69,6 @@ struct NimbleOutlineSwiftUIView: View {
         .outlineViewIndentation(20)
         .rowSeparator(separatorEnabled ? .visible : .hidden)
         .rowSeparatorColor(NSColor(separatorColor))
-    }
-
-    var configBar: some View {
-        HStack {
-            Spacer()
-            ColorPicker(
-                "Set separator color:",
-                selection: $separatorColor)
-            Button(
-                "Toggle separator",
-                action: { separatorEnabled.toggle() })
-        }
-        .padding([.leading, .bottom, .trailing], 8)
     }
 }
 
