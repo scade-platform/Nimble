@@ -1,6 +1,5 @@
 import Cocoa
 
-@available(macOS 10.15, *)
 class OutlineViewDelegate<Data: Sequence>: NSObject, NSOutlineViewDelegate
 where Data.Element: Identifiable {
     let content: (Data.Element) -> NSView

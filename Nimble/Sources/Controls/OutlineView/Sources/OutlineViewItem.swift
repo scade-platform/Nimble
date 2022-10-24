@@ -6,7 +6,6 @@
 ///
 /// Reference: AppKit Release Notes for macOS 10.14 - API Changes - `NSOutlineView`
 /// https://developer.apple.com/documentation/macos-release-notes/appkit-release-notes-for-macos-10_14
-@available(macOS 10.15, *)
 struct OutlineViewItem<Data: Sequence>: Equatable, Hashable, Identifiable
 where Data.Element: Identifiable {
     var childrenPath: KeyPath<Data.Element, Data?>

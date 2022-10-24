@@ -1,6 +1,5 @@
 import Cocoa
 
-@available(macOS 10.15, *)
 struct OutlineViewUpdater<Data: Sequence>
 where Data.Element: Identifiable {
     /// Perform updates on the outline view based on the change in state.
@@ -62,7 +61,6 @@ where Data.Element: Identifiable {
     }
 }
 
-@available(macOS 10.15, *)
 fileprivate extension Sequence where Element: Identifiable {
     func dictionaryFromIdentity() -> [Element.ID: Element] {
         Dictionary(map { ($0.id, $0) }, uniquingKeysWith: { _, latest in latest })

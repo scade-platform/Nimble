@@ -1,6 +1,5 @@
 import Cocoa
 
-@available(macOS 10.15, *)
 public class OutlineViewController<Data: Sequence>: NSViewController
 where Data.Element: Identifiable {
     let outlineView = NSOutlineView()
@@ -74,7 +73,6 @@ where Data.Element: Identifiable {
 }
 
 // MARK: - Performing updates
-@available(macOS 10.15, *)
 extension OutlineViewController {
     func updateData(newValue: Data) {
         let newState = newValue.map { OutlineViewItem(value: $0, children: childrenPath) }
@@ -98,7 +96,6 @@ extension OutlineViewController {
             in: outlineView)
     }
 
-    //@available(macOS 11.0, *)
     func setStyle(to style: NSOutlineView.Style) {
         outlineView.style = style
     }

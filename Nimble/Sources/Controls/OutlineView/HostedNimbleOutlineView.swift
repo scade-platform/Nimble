@@ -45,14 +45,13 @@ let testData = [
     )
 ]
 
-//@available(macOS 11.0, *)
 class HostedNimbleOutlineView: NSViewController, WorkbenchViewController {
   
   private var diagnostics: [(DiagnosticSource, Diagnostic)] = [] {
     didSet {
       print(diagnostics)
 
-      var keyNameSet: Set<String> = Set(diagnostics.compactMap({ $0.0.string }))
+      let keyNameSet: Set<String> = Set(diagnostics.compactMap({ $0.0.string }))
       var result: [FileItem] = []
       keyNameSet.forEach { name in
         var errorMessages: [FileItem] = []
@@ -105,7 +104,6 @@ class HostedNimbleOutlineView: NSViewController, WorkbenchViewController {
   }
 }
 
-//@available(macOS 11.0, *)
 extension HostedNimbleOutlineView: WorkbenchPart {
   var icon: NSImage? { return nil }
 }

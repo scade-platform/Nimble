@@ -15,37 +15,21 @@ struct FileItem: Hashable, Identifiable, CustomStringConvertible {
   var description: String {
     switch children {
     case nil:
-      return "📄 \(name)"
+      return name
     case .some(let children):
-      return children.isEmpty ? "📂 \(name)" : "📁 \(name)"
+      return children.isEmpty ? name : name
+    }
+  }
+  var image: NSImage {
+    switch severity {
+    case .error: return IconsManager.Icons.error.image
+    case .warning: return IconsManager.Icons.warning.image
+    case .information: return IconsManager.Icons.error.image
+    case .hint: return IconsManager.Icons.error.image
     }
   }
 }
-//let testData = [
-//    FileItem(name: "doc001.txt"),
-//    FileItem(
-//        name: "users",
-//        children: [
-//            FileItem(
-//                name: "user1234",
-//                children: [
-//                    FileItem(
-//                        name: "Photos",
-//                        children: [
-//                            FileItem(name: "photo001.jpg"),
-//                            FileItem(name: "photo002.jpg")]),
-//                    FileItem(
-//                        name: "Movies",
-//                        children: [FileItem(name: "movie001.mp4")]),
-//                    FileItem(name: "Documents", children: [])]),
-//            FileItem(
-//                name: "newuser",
-//                children: [FileItem(name: "Documents", children: [])])
-//        ]
-//    )
-//]
 
-//@available(macOS 11.0, *)
 struct NimbleOutlineSwiftUIView: View {
     @ObservedObject var model: HostedNimbleOutlineViewModel = .init(data: [FileItem]())
     @Environment(\.colorScheme) var colorScheme
@@ -102,7 +86,6 @@ struct NimbleOutlineSwiftUIView: View {
     }
 }
 
-//@available(macOS 11.0, *)
 struct NimbleOutlineSwiftUIView_Previews: PreviewProvider {
     static var previews: some View {
       NimbleOutlineSwiftUIView()
