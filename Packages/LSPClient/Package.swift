@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "LSPClient",
     platforms: [
-        .macOS(.v10_15),
+        .macOS("10.15.4"),
     ],
     products: [        
         .library(name: "LSPClient", type: .dynamic, targets: ["LSPClient"]),
@@ -15,7 +15,7 @@ let package = Package(
       .package(path: "../BuildSystem"),
       .package(path: "../CodeEditor"),
             
-      .package(name: "SourceKitLSP", url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("release/5.5"))
+      .package(name: "SourceKitLSP", url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("release/5.7"))
     ],
     targets: [
       .target(

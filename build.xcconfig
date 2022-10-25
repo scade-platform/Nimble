@@ -7,7 +7,7 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-MACOSX_DEPLOYMENT_TARGET = 10.15.1
+MACOSX_DEPLOYMENT_TARGET = 11.0
 
 // Custom variables
 BUILT_PRODUCT_CONTENTS_DIR = $(BUILT_PRODUCTS_DIR)/$(WRAPPER_NAME)/Contents
