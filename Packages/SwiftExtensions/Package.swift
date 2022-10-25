@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "SwiftExtensions",
     platforms: [
-        .macOS(.v10_15),
+        .macOS("10.15.4"),
     ],
 
     products: [
@@ -18,7 +18,7 @@ let package = Package(
       .package(path: "../BuildSystem"),
       .package(path: "../LSPClient"),
       
-      .package(name: "SourceKitLSP", url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("release/5.5")),
+      .package(name: "SourceKitLSP", url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("release/5.7")),
     ],
 
     targets: [
