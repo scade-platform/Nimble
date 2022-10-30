@@ -31,49 +31,49 @@ struct FileItem: Hashable, Identifiable, CustomStringConvertible {
 }
 
 struct NimbleOutlineSwiftUIView: View {
-    @ObservedObject var model: HostedNimbleOutlineViewModel = .init(data: [FileItem]())
-    @Environment(\.colorScheme) var colorScheme
-
-    @State var selection: FileItem?
-    @State var separatorColor: Color = Color(NSColor.separatorColor)
-    @State var separatorEnabled = false
-
-    var body: some View {
-        VStack {
-            outlineView
-            Divider()
-        }
-        .background(
-            colorScheme == .light
-                ? Color(NSColor.textBackgroundColor)
-                : Color.clear
-        )
+  @ObservedObject var model: HostedNimbleOutlineViewModel = .init(data: [FileItem]())
+  @Environment(\.colorScheme) var colorScheme
+  
+  @State var selection: FileItem?
+  @State var separatorColor: Color = Color(NSColor.separatorColor)
+  @State var separatorEnabled = false
+  
+  var body: some View {
+    VStack {
+      outlineView
+      Divider()
     }
-
-    var outlineView: some View {
-        OutlineView(
-            model.data,
-            children: \.children,
-            selection: $selection,
-            separatorInsets: { fileItem in
-                NSEdgeInsets(
-                    top: 0,
-                    left: 23,
-                    bottom: 0,
-                    right: 0)
-            }
-        ) { fileItem in
-            FileItemView(fileItem: fileItem)
-        }
-        .outlineViewStyle(.inset)
-        .outlineViewIndentation(20)
-        .rowSeparator(separatorEnabled ? .visible : .hidden)
-        .rowSeparatorColor(NSColor(separatorColor))
+    .background(
+      colorScheme == .light
+      ? Color(NSColor.textBackgroundColor)
+      : Color.clear
+    )
+  }
+  
+  var outlineView: some View {
+    OutlineView(
+      model.data,
+      children: \.children,
+      selection: $selection,
+      separatorInsets: { fileItem in
+        NSEdgeInsets(
+          top: 0,
+          left: 23,
+          bottom: 0,
+          right: 0)
+      }
+    ) { fileItem in
+      FileItemView(fileItem: fileItem)
     }
+    .outlineViewStyle(.inset)
+    .outlineViewIndentation(20)
+    .rowSeparator(separatorEnabled ? .visible : .hidden)
+    .rowSeparatorColor(NSColor(separatorColor))
+  }
 }
 
 struct NimbleOutlineSwiftUIView_Previews: PreviewProvider {
-    static var previews: some View {
-      NimbleOutlineSwiftUIView()
-    }
+  static var previews: some View {
+    NimbleOutlineSwiftUIView()
+  }
 }

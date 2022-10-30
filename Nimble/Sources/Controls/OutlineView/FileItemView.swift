@@ -55,7 +55,6 @@ class FileItemView: NSTableCellView {
         img.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
         
         field.leadingAnchor.constraint(equalTo: img.trailingAnchor, constant: 4),
-        //field.leadingAnchor.constraint(equalTo: leadingAnchor),
         field.trailingAnchor.constraint(equalTo: trailingAnchor),
         field.topAnchor.constraint(equalTo: topAnchor, constant: 4),
         field.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -4),

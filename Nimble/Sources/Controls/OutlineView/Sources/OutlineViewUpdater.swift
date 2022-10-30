@@ -16,7 +16,6 @@ where Data.Element: Identifiable {
         let newNonOptionalState = newState ?? []
 
         guard oldState != nil || newState != nil else {
-            // Early exit. No state to compare.
             return
         }
 
