@@ -22,8 +22,6 @@ class HostedNimbleOutlineView: NSViewController, WorkbenchViewController {
   
   private var diagnostics: [(DiagnosticSource, Diagnostic)] = [] {
     didSet {
-      print(diagnostics)
-      
       let keyNameSet: Set<String> = Set(diagnostics.compactMap({ $0.0.string }))
       var result: [FileItem] = []
       keyNameSet.forEach { name in
