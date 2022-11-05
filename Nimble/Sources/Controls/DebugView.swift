@@ -45,22 +45,18 @@ class DebugView: NimbleSidebarArea {
 
     self.sidebar?.showTabIcon = false
     self.sidebar?.showTabTitle = true
-      
-      leftBar.append(problemsAreaView.view as! WorkbenchStatusBarItem)
-      leftBar.append(outputsAreaView.view as! WorkbenchStatusBarItem)
-      rightBar.append(actionAreaView.view as! WorkbenchStatusBarItem)
-      rightBar.append(separatorView)
-      rightBar.append(diagnosticBar.view as! WorkbenchStatusBarItem)
-      editorBar.append(workbenchBar.view as! WorkbenchStatusBarItem)
-
-      statusMessage = ""
     
-      let hostedOutlineView = HostedNimbleOutlineView()
-      self.add(part: hostedOutlineView)
-
-//    let diagnosticsView = DiagnosticView.loadFromNib()
-//    self.diagnosticsView = diagnosticsView
-//    self.add(part: diagnosticsView)
+    leftBar.append(problemsAreaView.view as! WorkbenchStatusBarItem)
+    leftBar.append(outputsAreaView.view as! WorkbenchStatusBarItem)
+    rightBar.append(actionAreaView.view as! WorkbenchStatusBarItem)
+    rightBar.append(separatorView)
+    rightBar.append(diagnosticBar.view as! WorkbenchStatusBarItem)
+    editorBar.append(workbenchBar.view as! WorkbenchStatusBarItem)
+    
+    statusMessage = ""
+    
+    let hostedOutlineView = HostedNimbleOutlineView()
+    self.add(part: hostedOutlineView)
 
     let consoleView = ConsoleView.loadFromNib()
     self.consoleView = consoleView

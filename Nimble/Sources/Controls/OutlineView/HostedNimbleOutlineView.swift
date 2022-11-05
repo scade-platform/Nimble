@@ -28,7 +28,7 @@ class HostedNimbleOutlineView: NSViewController, WorkbenchViewController {
         var errorMessages: [FileItem] = []
         diagnostics.forEach { (key, value) in
           if key.string == name {
-            errorMessages.append(FileItem(name: value.message))
+            errorMessages.append(FileItem(name: value.message, severity: value.severity))
           }
         }
         result.append(FileItem(name: name, children: errorMessages))
@@ -56,7 +56,7 @@ class HostedNimbleOutlineView: NSViewController, WorkbenchViewController {
       myView.topAnchor.constraint(equalTo: view.topAnchor),
       myView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       myView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      myView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+      myView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 10)
     ])
   }
   
