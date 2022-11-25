@@ -56,12 +56,7 @@ public struct OutlineView<Data: Sequence>: NSViewControllerRepresentable where D
   ///     element in `data`. An `NSTableCellView` subclass is preferred.
   ///     The `NSView` should return the correct `fittingSize`
   ///     as it is used to determine the height of the cell.
-  public init(
-    _ data: Data,
-    children: KeyPath<Data.Element, Data?>,
-    selection: Binding<Data.Element?>,
-    content: @escaping (Data.Element) -> NSView
-  ) {
+  public init(_ data: Data, children: KeyPath<Data.Element, Data?>, selection: Binding<Data.Element?>, content: @escaping (Data.Element) -> NSView) {
     self.data = data
     self.children = children
     self._selection = selection
@@ -100,13 +95,7 @@ public struct OutlineView<Data: Sequence>: NSViewControllerRepresentable where D
   ///     element in `data`. An `NSTableCellView` subclass is preferred.
   ///     The `NSView` should return the correct `fittingSize`
   ///     as it is used to determine the height of the cell.
-  public init(
-    _ data: Data,
-    children: KeyPath<Data.Element, Data?>,
-    selection: Binding<Data.Element?>,
-    separatorInsets: @escaping (Data.Element) -> NSEdgeInsets,
-    content: @escaping (Data.Element) -> NSView
-  ) {
+  public init(_ data: Data, children: KeyPath<Data.Element, Data?>, selection: Binding<Data.Element?>, separatorInsets: @escaping (Data.Element) -> NSEdgeInsets, content: @escaping (Data.Element) -> NSView) {
     self.data = data
     self.children = children
     self._selection = selection
@@ -127,10 +116,7 @@ public struct OutlineView<Data: Sequence>: NSViewControllerRepresentable where D
     return controller
   }
   
-  public func updateNSViewController(
-    _ outlineController: OutlineViewController<Data>,
-    context: Context
-  ) {
+  public func updateNSViewController(_ outlineController: OutlineViewController<Data>, context: Context) {
     outlineController.updateData(newValue: data)
     outlineController.changeSelectedItem(to: selection)
     outlineController.setRowSeparator(visibility: separatorVisibility)

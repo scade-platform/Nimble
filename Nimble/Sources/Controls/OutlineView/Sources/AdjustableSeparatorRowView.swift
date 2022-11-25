@@ -42,11 +42,7 @@ final class AdjustableSeparatorRowView: NSTableRowView {
       height: 1)
     
     // Inset the separator frame by the separatorInsets.
-    return CGRect(
-      x: separatorRect.origin.x + separatorInsets.left,
-      y: separatorRect.origin.y + separatorInsets.top,
-      width: separatorRect.width - separatorInsets.left - separatorInsets.right,
-      height: separatorRect.height - separatorInsets.top - separatorInsets.bottom)
+    return CGRect(x: separatorRect.origin.x + separatorInsets.left, y: separatorRect.origin.y + separatorInsets.top, width: separatorRect.width - separatorInsets.left - separatorInsets.right, height: separatorRect.height - separatorInsets.top - separatorInsets.bottom)
   }
   
   /// Stores the original implementation of `_separatorRect` if successfully swizzled.

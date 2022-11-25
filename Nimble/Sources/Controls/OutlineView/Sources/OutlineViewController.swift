@@ -10,13 +10,7 @@ public class OutlineViewController<Data: Sequence>: NSViewController where Data.
   
   let childrenPath: KeyPath<Data.Element, Data?>
   
-  init(
-    data: Data,
-    children: KeyPath<Data.Element, Data?>,
-    content: @escaping (Data.Element) -> NSView,
-    selectionChanged: @escaping (Data.Element?) -> Void,
-    separatorInsets: ((Data.Element) -> NSEdgeInsets)?
-  ) {
+  init(data: Data, children: KeyPath<Data.Element, Data?>, content: @escaping (Data.Element) -> NSView, selectionChanged: @escaping (Data.Element?) -> Void, separatorInsets: ((Data.Element) -> NSEdgeInsets)?) {
     scrollView.documentView = outlineView
     scrollView.hasVerticalScroller = true
     scrollView.hasHorizontalRuler = true

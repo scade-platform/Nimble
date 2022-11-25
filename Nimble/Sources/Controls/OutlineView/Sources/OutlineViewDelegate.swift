@@ -10,28 +10,17 @@ class OutlineViewDelegate<Data: Sequence>: NSObject, NSOutlineViewDelegate where
     item as! OutlineViewItem<Data>
   }
   
-  init(
-    content: @escaping (Data.Element) -> NSView,
-    selectionChanged: @escaping (Data.Element?) -> Void,
-    separatorInsets: ((Data.Element) -> NSEdgeInsets)?
-  ) {
+  init(content: @escaping (Data.Element) -> NSView, selectionChanged: @escaping (Data.Element?) -> Void, separatorInsets: ((Data.Element) -> NSEdgeInsets)?) {
     self.content = content
     self.selectionChanged = selectionChanged
     self.separatorInsets = separatorInsets
   }
   
-  func outlineView(
-    _ outlineView: NSOutlineView,
-    viewFor tableColumn: NSTableColumn?,
-    item: Any
-  ) -> NSView? {
+  func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
     content(typedItem(item).value)
   }
   
-  func outlineView(
-    _ outlineView: NSOutlineView,
-    rowViewForItem item: Any
-  ) -> NSTableRowView? {
+  func outlineView(_ outlineView: NSOutlineView, rowViewForItem item: Any) -> NSTableRowView? {
     releaseUnusedRowViews(from: outlineView)
     let rowView = AdjustableSeparatorRowView(frame: .zero)
     rowView.separatorInsets = separatorInsets?(typedItem(item).value)
@@ -54,10 +43,7 @@ class OutlineViewDelegate<Data: Sequence>: NSObject, NSOutlineViewDelegate where
     }
   }
   
-  func outlineView(
-    _ outlineView: NSOutlineView,
-    heightOfRowByItem item: Any
-  ) -> CGFloat {
+  func outlineView(_ outlineView: NSOutlineView, heightOfRowByItem item: Any) -> CGFloat {
     // It appears that for outline views with automatic row heights, the
     // initial height of the row still needs to be provided. Not providing
     // a height for each cell would lead to the outline view defaulting to the
@@ -105,10 +91,7 @@ class OutlineViewDelegate<Data: Sequence>: NSObject, NSOutlineViewDelegate where
     }
   }
   
-  func selectRow(
-    for item: OutlineViewItem<Data>?,
-    in outlineView: NSOutlineView
-  ) {
+  func selectRow(for item: OutlineViewItem<Data>?, in outlineView: NSOutlineView) {
     // Returns -1 if row is not found.
     let index = outlineView.row(forItem: selectedItem)
     if index != -1 {
@@ -118,10 +101,7 @@ class OutlineViewDelegate<Data: Sequence>: NSObject, NSOutlineViewDelegate where
     }
   }
   
-  func changeSelectedItem(
-    to item: OutlineViewItem<Data>?,
-    in outlineView: NSOutlineView
-  ) {
+  func changeSelectedItem(to item: OutlineViewItem<Data>?, in outlineView: NSOutlineView) {
     guard selectedItem?.id != item?.id else { return }
     selectedItem = item
     selectRow(for: selectedItem, in: outlineView)

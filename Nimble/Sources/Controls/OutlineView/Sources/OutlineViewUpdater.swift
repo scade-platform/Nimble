@@ -5,12 +5,7 @@ struct OutlineViewUpdater<Data: Sequence> where Data.Element: Identifiable {
     /// - NOTE: Calls to this method must be surrounded by
     ///  `NSOutlineView.beginUpdates` and `NSOutlineView.endUpdates`.
     ///  `OutlineViewDataSource.items` should be updated to the new state before calling this method.
-    func performUpdates(
-        outlineView: NSOutlineView,
-        oldState: [OutlineViewItem<Data>]?,
-        newState: [OutlineViewItem<Data>]?,
-        parent: OutlineViewItem<Data>?
-    ) {
+    func performUpdates(outlineView: NSOutlineView, oldState: [OutlineViewItem<Data>]?, newState: [OutlineViewItem<Data>]?, parent: OutlineViewItem<Data>?) {
         let oldNonOptionalState = oldState ?? []
         let newNonOptionalState = newState ?? []
 
