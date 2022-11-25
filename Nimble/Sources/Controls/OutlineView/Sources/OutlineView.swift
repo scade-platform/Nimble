@@ -1,8 +1,7 @@
 import SwiftUI
 import Cocoa
 
-public struct OutlineView<Data: Sequence>: NSViewControllerRepresentable
-where Data.Element: Identifiable {
+public struct OutlineView<Data: Sequence>: NSViewControllerRepresentable where Data.Element: Identifiable {
   public typealias NSViewControllerType = OutlineViewController<Data>
   
   let data: Data

@@ -1,7 +1,6 @@
 import Cocoa
 
-class OutlineViewDelegate<Data: Sequence>: NSObject, NSOutlineViewDelegate
-where Data.Element: Identifiable {
+class OutlineViewDelegate<Data: Sequence>: NSObject, NSOutlineViewDelegate where Data.Element: Identifiable {
   let content: (Data.Element) -> NSView
   let selectionChanged: (Data.Element?) -> Void
   let separatorInsets: ((Data.Element) -> NSEdgeInsets)?

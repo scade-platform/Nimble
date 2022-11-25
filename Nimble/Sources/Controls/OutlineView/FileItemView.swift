@@ -7,6 +7,7 @@ import NimbleCore
 
 class FileItemView: NSTableCellView {
   let stackErrors = NSStackView()
+  
   init(fileItem: FileItem) {
     let field = NSTextField(string: fileItem.description)
     field.isEditable = false

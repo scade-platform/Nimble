@@ -1,7 +1,6 @@
 import Cocoa
 
-struct OutlineViewUpdater<Data: Sequence>
-where Data.Element: Identifiable {
+struct OutlineViewUpdater<Data: Sequence> where Data.Element: Identifiable {
     /// Perform updates on the outline view based on the change in state.
     /// - NOTE: Calls to this method must be surrounded by
     ///  `NSOutlineView.beginUpdates` and `NSOutlineView.endUpdates`.

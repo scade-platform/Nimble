@@ -1,7 +1,6 @@
 import Cocoa
 
-public class OutlineViewController<Data: Sequence>: NSViewController
-where Data.Element: Identifiable {
+public class OutlineViewController<Data: Sequence>: NSViewController where Data.Element: Identifiable {
   let outlineView = NSOutlineView()
   let scrollView = NSScrollView(frame: NSRect(x: 0, y: 0, width: 400, height: 400))
   

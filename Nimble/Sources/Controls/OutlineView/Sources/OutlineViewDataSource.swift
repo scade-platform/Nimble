@@ -1,7 +1,6 @@
 import Cocoa
 
-class OutlineViewDataSource<Data: Sequence>: NSObject, NSOutlineViewDataSource
-where Data.Element: Identifiable {
+class OutlineViewDataSource<Data: Sequence>: NSObject, NSOutlineViewDataSource where Data.Element: Identifiable {
   var items: [OutlineViewItem<Data>]
   
   init(items: [OutlineViewItem<Data>]) {
