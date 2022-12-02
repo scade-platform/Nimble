@@ -55,5 +55,5 @@ Copyright © 2022 SCADE Inc. All rights reserved.
 
 The source code is licensed under the terms of the __Apache License, Version 2.0__. See [LICENSE](LICENSE.txt) for details.
 
-# Articles
+## Articles
 * Nimble and Vapor - Introduction
