@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21225" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21225"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -29,15 +30,15 @@
                         <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FaY-ic-0Uz">
                             <rect key="frame" x="0.0" y="186" width="480" height="401"/>
                             <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="ruM-Th-wN2">
-                                <rect key="frame" x="0.0" y="0.0" width="460" height="401"/>
+                                <rect key="frame" x="0.0" y="0.0" width="480" height="401"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" spellingCorrection="YES" smartInsertDelete="YES" id="489-L5-7Z7">
-                                        <rect key="frame" x="0.0" y="0.0" width="450" height="391"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="470" height="391"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                        <size key="minSize" width="450" height="391"/>
+                                        <size key="minSize" width="470" height="391"/>
                                         <size key="maxSize" width="480" height="10000000"/>
                                         <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                     </textView>
@@ -49,7 +50,7 @@
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                             <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="BGL-Ee-E9j">
-                                <rect key="frame" x="460" y="5" width="15" height="391"/>
+                                <rect key="frame" x="459" y="5" width="16" height="391"/>
                                 <autoresizingMask key="autoresizingMask"/>
                             </scroller>
                         </scrollView>
@@ -57,7 +58,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="359" height="178"/>
                             <subviews>
                                 <popUpButton translatesAutoresizingMaskIntoConstraints="NO" id="6sq-ed-dLL">
-                                    <rect key="frame" x="-5" y="140" width="305" height="38"/>
+                                    <rect key="frame" x="-5" y="140" width="21" height="38"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="38" id="qDc-J3-9lP"/>
                                         <constraint firstAttribute="width" constant="300" id="rD1-bj-TLf"/>
@@ -72,34 +73,48 @@
                                     </connections>
                                 </popUpButton>
                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="N6a-kt-c8u">
-                                    <rect key="frame" x="308" y="151" width="17" height="17"/>
+                                    <rect key="frame" x="24" y="144" width="21" height="32"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="N6a-kt-c8u" secondAttribute="height" multiplier="1:1" id="XCJ-Qy-2Ew"/>
-                                        <constraint firstAttribute="width" constant="17" id="ehM-ie-FFW"/>
+                                        <constraint firstAttribute="width" constant="21" id="ehM-ie-FFW"/>
                                     </constraints>
-                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="cancel" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="E1M-KL-6ud">
+                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" imagePosition="overlaps" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="E1M-KL-6ud">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="system"/>
+                                        <imageReference key="image" image="xmark.circle" catalog="system" symbolScale="large" renderingMode="hierarchical" variableValue="1">
+                                            <hierarchicalColors>
+                                                <color name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color name="labelColor" catalog="System" colorSpace="catalog"/>
+                                            </hierarchicalColors>
+                                        </imageReference>
                                     </buttonCell>
                                     <connections>
                                         <action selector="closeCurrentConsole:" target="-2" id="XHo-OR-2bF"/>
                                     </connections>
                                 </button>
                                 <box horizontalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Wow-0W-mpu">
-                                    <rect key="frame" x="331" y="152" width="5" height="15"/>
+                                    <rect key="frame" x="51" y="152" width="5" height="15"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="15" id="Udc-5f-dX6"/>
                                     </constraints>
                                 </box>
                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="KC3-0c-zVn">
-                                    <rect key="frame" x="342" y="151" width="17" height="17"/>
+                                    <rect key="frame" x="342" y="148" width="17.5" height="25"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="17" id="Ti7-ax-RzG"/>
                                         <constraint firstAttribute="width" secondItem="KC3-0c-zVn" secondAttribute="height" multiplier="1:1" id="dKG-GT-IZc"/>
                                     </constraints>
-                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="garbage" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="5iM-Tp-Ya3">
+                                    <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="5iM-Tp-Ya3">
                                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                         <font key="font" metaFont="system"/>
+                                        <imageReference key="image" image="trash" catalog="system" symbolScale="default" renderingMode="hierarchical-single">
+                                            <hierarchicalColors>
+                                                <color name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                <color name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                                <color name="tertiaryLabelColor" catalog="System" colorSpace="catalog"/>
+                                            </hierarchicalColors>
+                                        </imageReference>
                                     </buttonCell>
                                     <connections>
                                         <action selector="clearCurrentConsole:" target="-2" id="kWw-9y-4L8"/>
@@ -154,7 +169,7 @@
         </customView>
     </objects>
     <resources>
-        <image name="cancel" width="512" height="512"/>
-        <image name="garbage" width="512" height="512"/>
+        <image name="trash" catalog="system" width="15" height="17"/>
+        <image name="xmark.circle" catalog="system" width="20" height="20"/>
     </resources>
 </document>
