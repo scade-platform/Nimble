@@ -56,7 +56,7 @@ Copyright © 2022 SCADE Inc. All rights reserved.
 The source code is licensed under the terms of the __Apache License, Version 2.0__. See [LICENSE](LICENSE.txt) for details.
 
 ## Articles
-* [Nimble - Introduction] (https://crossplatformscade.hashnode.dev/nimble-native-open-source-extendable-macos-code-editor)
-* [Nimble and Vapor - Introduction] (https://crossplatformscade.hashnode.dev/how-to-build-and-run-a-vapor-project-on-native-open-source-macos-nimble-editor)
-* [AutoCompletion in Nimble] (https://crossplatformscade.hashnode.dev/autocompletion-in-native-open-source-macos-nimble-editor)
-* [Create and Link Swift Packages] (https://dev.to/cdfcreator/create-and-link-swift-packages-from-nimble-to-cross-platform-native-app-projects-29j8)
+* [Nimble - Introduction](https://crossplatformscade.hashnode.dev/nimble-native-open-source-extendable-macos-code-editor)
+* [Nimble and Vapor - Introduction](https://crossplatformscade.hashnode.dev/how-to-build-and-run-a-vapor-project-on-native-open-source-macos-nimble-editor)
+* [AutoCompletion in Nimble](https://crossplatformscade.hashnode.dev/autocompletion-in-native-open-source-macos-nimble-editor)
+* [Create and Link Swift Packages](https://dev.to/cdfcreator/create-and-link-swift-packages-from-nimble-to-cross-platform-native-app-projects-29j8)
