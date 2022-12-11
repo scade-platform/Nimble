@@ -14,31 +14,31 @@ import Collections
 
 struct EditorTabItem: Hashable {
   let document: Document
-
+  
   func hash(into hasher: inout Hasher) {
     hasher.combine(path)
   }
-
+  
   var title: String {
     return isEdited ? "*\(document.title)" : document.title
   }
-
+  
   var path: String {
     document.path?.string ?? title
   }
-
+  
   var iconImage: NSImage? {
     document.icon?.image
   }
-
+  
   var isEdited: Bool {
     document.isDocumentEdited
   }
-
+  
   init(document: Document) {
     self.document = document
   }
-
+  
   static func ==(lhs: EditorTabItem, rhs: EditorTabItem) -> Bool {
     lhs.path == rhs.path
   }
@@ -49,24 +49,26 @@ protocol TabbedEditorResponder {
   func documentDidClose(_ document: Document)
   func currentDocumentWillChange(_ document: Document?)
   func currentDocumentDidChange(_ document: Document?)
+  func documentUpdates()
 }
 
 
 final class TabbedEditorViewModel {
   private let editorTabItemsSubject = CurrentValueSubject<OrderedSet<EditorTabItem>, Never>([])
   private let currentTabIndexSubject = CurrentValueSubject<Int?, Never>(nil)
-
+  private var observingFileByPath: [Path: File] = [:]
+  
   var editorTabItemsPublisher: AnyPublisher<[EditorTabItem], Never> {
     editorTabItemsSubject.map(\.elements).eraseToAnyPublisher()
   }
-
+  
   var currentTabIndexPublisher: AnyPublisher<Int?, Never> {
     currentTabIndexSubject.eraseToAnyPublisher()
   }
-
+  
   var currentDocumentPublisher: AnyPublisher<Document?, Never>
   private let responder: TabbedEditorResponder
-
+  
   var currentDocument: Document? {
     let editorTabItems = editorTabItemsSubject.value
     let currentIndex = currentTabIndexSubject.value
@@ -78,11 +80,11 @@ final class TabbedEditorViewModel {
     }
     return editorTabItems[index].document
   }
-
+  
   var documents: [Document] {
     editorTabItemsSubject.value.elements.map { $0.document }
   }
-
+  
   init(responder: TabbedEditorResponder) {
     self.responder = responder
     currentDocumentPublisher = editorTabItemsSubject.combineLatest(currentTabIndexSubject)
@@ -97,16 +99,17 @@ final class TabbedEditorViewModel {
       }
       .eraseToAnyPublisher()
   }
-
+  
   func tabSize(for indexPath: IndexPath) -> NSSize {
     let editorTabItems = editorTabItemsSubject.value
     let editorTabItem = editorTabItems[indexPath.item]
     return EditorTab.calculateSize(for: editorTabItem)
   }
-
+  
   public func open(_ document: Document, show: Bool, openNewEditor: Bool) {
     let editorTabItems = editorTabItemsSubject.value
     // If no document is opened, just create a new tab
+    observeFile(of: document)
     guard !editorTabItems.isEmpty else {
       addTabItem(for: document)
       responder.documentDidOpen(document)
@@ -122,7 +125,18 @@ final class TabbedEditorViewModel {
     }
     responder.documentDidOpen(document)
   }
-
+  
+  private func observeFile(of document: Document) {
+    guard let path = document.path,
+          observingFileByPath[path] == nil,
+          let file = File(path: path)
+    else {
+      return
+    }
+    file.observers.add(observer: self)
+    observingFileByPath[path] = file
+  }
+  
   private func addTabItem(for document: Document, afterCurrentTab: Bool = false, selectAfterAdd: Bool = true) {
     let newEditorTabItem = EditorTabItem(document: document)
     var editorTabItems = editorTabItemsSubject.value
@@ -155,7 +169,7 @@ final class TabbedEditorViewModel {
       }
     }
   }
-
+  
   private func present(_ document: Document, openNewEditor: Bool) {
     let documentTabItem = EditorTabItem(document: document)
     var editorTabItems = editorTabItemsSubject.value
@@ -185,7 +199,7 @@ final class TabbedEditorViewModel {
       }
     }
   }
-
+  
   public func close(_ document: Document) -> Bool {
     let editorTabItems = editorTabItemsSubject.value
     guard let index = editorTabItems.firstIndex(where: { $0.document.path == document.path }) else {
@@ -193,17 +207,7 @@ final class TabbedEditorViewModel {
     }
     return closeTab(at: IndexPath(item: index, section: 0))
   }
-
-  private func removeTabItem(with document: Document) {
-    let documentTabItem = EditorTabItem(document: document)
-    var editorTabItems = editorTabItemsSubject.value
-    guard let documentTabIndex = editorTabItems.firstIndex(of: documentTabItem) else {
-      return
-    }
-    editorTabItems.remove(at: documentTabIndex)
-    editorTabItemsSubject.value = editorTabItems
-  }
-
+  
   @discardableResult
   public func closeTab(at index: IndexPath) -> Bool {
     var editorTabItems = editorTabItemsSubject.value
@@ -220,31 +224,40 @@ final class TabbedEditorViewModel {
         currentTabIndexSubject.value = nil
       }
       responder.documentDidClose(removedItem.document)
+      stopFileObserving(for: removedItem.document)
       responder.currentDocumentDidChange(currentDocument)
     }
     return shouldClose
   }
-
+  
+  private func stopFileObserving(for document: Document) {
+    guard let path = document.path, let file = observingFileByPath[path] else {
+      return
+    }
+    file.observers.remove(observer: self)
+    observingFileByPath[path] = nil
+  }
+  
   public func selectTab(at indexPath: IndexPath?) {
     currentDocumentWillChange(currentDocument)
     currentTabIndexSubject.value = indexPath?.item
     currentDocumentDidChange(currentDocument)
   }
-
+  
   public func updateData(_ items: [EditorTabItem])  {
     editorTabItemsSubject.value = OrderedSet(items)
   }
-
+  
   public func refreshTabs() {
     editorTabItemsSubject.value = editorTabItemsSubject.value
     currentTabIndexSubject.value = currentTabIndexSubject.value
   }
-
+  
   func currentDocumentWillChange(_ document: Document?) {
     document?.observers.remove(observer: self)
     responder.currentDocumentWillChange(document)
   }
-
+  
   func currentDocumentDidChange(_ document: Document?) {
     document?.observers.add(observer: self)
     responder.currentDocumentDidChange(document)
@@ -254,5 +267,44 @@ final class TabbedEditorViewModel {
 extension TabbedEditorViewModel: DocumentObserver {
   func documentDidChange(_ document: Document) {
     refreshTabs()
+  }
+}
+
+extension TabbedEditorViewModel: FileObserver {
+  func fileDidChange(_ file: NimbleCore.File) {
+    // do nothing
+  }
+  
+  func fileDidMoved(_ file: File, newPath: Path) {
+    let oldPath = file.path
+    var editorTabItems = editorTabItemsSubject.value
+    guard let removedIndex = editorTabItems.firstIndex(where: { $0.path == oldPath.string }) else {
+      return
+    }
+    NSDocumentController.shared.openDocument(withContentsOf: newPath.url, display: false) { [weak self] doc, _, _ in
+      guard let renamedDocument = doc as? Document else { return }
+      guard let self = self else { return }
+      let selectAfterReplace = removedIndex == self.currentTabIndexSubject.value
+      let removedItem = editorTabItems.remove(at: removedIndex)
+      removedItem.document.close()
+      self.stopFileObserving(for: removedItem.document)
+      self.observeFile(of: renamedDocument)
+      let newDocumentTabItem = EditorTabItem(document: renamedDocument)
+      do {
+        let oldDocData =  try removedItem.document.data(ofType: "public.text")
+        try renamedDocument.read(from: oldDocData, ofType: "public.text")
+      } catch {
+        return
+      }
+      let newIndex = removedIndex <= editorTabItems.endIndex ? removedIndex : editorTabItems.endIndex
+      editorTabItems.insert(newDocumentTabItem, at: newIndex)
+      self.editorTabItemsSubject.value = editorTabItems
+      if selectAfterReplace {
+        self.currentTabIndexSubject.value = removedIndex
+      } else {
+        self.currentTabIndexSubject.value = self.currentTabIndexSubject.value
+      }
+      self.responder.documentUpdates()
+    }
   }
 }

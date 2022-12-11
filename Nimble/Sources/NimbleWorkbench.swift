@@ -384,6 +384,12 @@ extension NimbleWorkbench: TabbedEditorResponder {
       $0.workbenchActiveDocumentDidChange(self, document: document)
     }
   }
+
+  func documentUpdates() {
+    observers.notify {
+      $0.workbenchDidUpdateDocuments(self)
+    }
+  }
 }
 
 // MARK: - WorkbenchTaskObserver

@@ -121,6 +121,7 @@ class CodeEditorView: NSViewController {
   }
       
   private func showDiagnostics() {
+    guard textView != nil else { return }
     guard let textStorage = document?.textStorage else { return }
     
     let text = textStorage.string

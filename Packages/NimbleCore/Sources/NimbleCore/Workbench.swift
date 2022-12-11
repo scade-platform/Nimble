@@ -121,6 +121,7 @@ public protocol WorkbenchObserver: AnyObject {
   func workbenchDidSaveDocument(_ workbench: Workbench, document: Document)
   func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?)
   func workbenchDidPublishDiagnostic(_ workbench: Workbench, diagnostic: [Diagnostic], source: DiagnosticSource)
+  func workbenchDidUpdateDocuments(_ workbench: Workbench)
 }
 
 public extension WorkbenchObserver {
@@ -132,6 +133,7 @@ public extension WorkbenchObserver {
   func workbenchDidSaveDocument(_ workbench: Workbench, document: Document) { return }
   func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) { return }
   func workbenchDidPublishDiagnostic(_ workbench: Workbench, diagnostic: [Diagnostic], source: DiagnosticSource) { return }
+  func workbenchDidUpdateDocuments(_ workbench: Workbench) { return }
 }
 
 // MARK: - Area

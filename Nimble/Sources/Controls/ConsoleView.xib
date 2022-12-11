@@ -73,7 +73,7 @@
                                     </connections>
                                 </popUpButton>
                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="N6a-kt-c8u">
-                                    <rect key="frame" x="24" y="144" width="21" height="32"/>
+                                    <rect key="frame" x="304" y="144" width="21" height="32"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="N6a-kt-c8u" secondAttribute="height" multiplier="1:1" id="XCJ-Qy-2Ew"/>
                                         <constraint firstAttribute="width" constant="21" id="ehM-ie-FFW"/>
@@ -94,7 +94,7 @@
                                     </connections>
                                 </button>
                                 <box horizontalHuggingPriority="750" boxType="separator" translatesAutoresizingMaskIntoConstraints="NO" id="Wow-0W-mpu">
-                                    <rect key="frame" x="51" y="152" width="5" height="15"/>
+                                    <rect key="frame" x="331" y="152" width="5" height="15"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="15" id="Udc-5f-dX6"/>
                                     </constraints>
