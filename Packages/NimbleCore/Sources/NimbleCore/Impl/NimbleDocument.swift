@@ -165,6 +165,10 @@ fileprivate class DocumentFilePresenter: NSObject, NSFilePresenter {
   }
 
   private func documentModificationDate() -> Date? {
+    guard Thread.isMainThread else {
+        unregister()
+        return nil
+    }
     doc?.fileURL?.removeCachedResourceValue(forKey: .contentModificationDateKey)
 
     return try? doc?

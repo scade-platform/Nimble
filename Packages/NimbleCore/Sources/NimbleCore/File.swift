@@ -116,8 +116,8 @@ extension FileSystemElement {
 
 public protocol FileObserver {
   func fileDidChange(_ file: File)
+  func fileDidMoved(_ file: File, newPath: Path)
 }
-
 
 fileprivate class FilePresenter: NSObject, NSFilePresenter {
   let presentedElement: File
@@ -138,9 +138,17 @@ fileprivate class FilePresenter: NSObject, NSFilePresenter {
   func presentedItemDidChange() {
     DispatchQueue.main.async { [weak self] in
       guard let self = self else { return }
-      self.presentedElement.observers.notify{$0.fileDidChange(self.presentedElement)}
+      self.presentedElement.observers.notify{ $0.fileDidChange(self.presentedElement) }
     }
   }
+
+    func presentedItemDidMove(to newURL: URL) {
+        guard let newPath = Path(url: newURL) else { return }
+        DispatchQueue.main.async { [weak self] in
+          guard let self = self else { return }
+            self.presentedElement.observers.notify{ $0.fileDidMoved(self.presentedElement, newPath: newPath) }
+        }
+    }
 }
 
 

@@ -198,6 +198,10 @@ extension OutlineDataSource: WorkbenchObserver {
     document.observers.add(observer: self)
     openedDocuments.reload()
   }
+
+  func workbenchDidUpdateDocuments(_ workbench: Workbench) {
+    openedDocuments.reload()
+  }
   
   func workbenchDidCloseDocument(_ workbench: Workbench, document: Document) {
     document.observers.remove(observer: self)
