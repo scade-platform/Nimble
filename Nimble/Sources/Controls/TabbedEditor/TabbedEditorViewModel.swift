@@ -14,9 +14,10 @@ import Collections
 
 struct EditorTabItem: Hashable {
   let document: Document
+  private let id: String
   
   func hash(into hasher: inout Hasher) {
-    hasher.combine(path)
+    hasher.combine(id)
   }
   
   var title: String {
@@ -37,10 +38,15 @@ struct EditorTabItem: Hashable {
   
   init(document: Document) {
     self.document = document
+    if let path = document.path {
+      id = path.string
+    } else {
+      id = UUID().description
+    }
   }
   
   static func ==(lhs: EditorTabItem, rhs: EditorTabItem) -> Bool {
-    lhs.path == rhs.path
+    lhs.id == rhs.path
   }
 }
 
