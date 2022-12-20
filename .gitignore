@@ -2,6 +2,7 @@
 .build
 Package.resolved
 xcuserdata
+.swiftpm
 
 # User defined plugins
 NimblePlugins

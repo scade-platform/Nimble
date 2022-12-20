@@ -148,16 +148,6 @@ final class CleanAll: BuildSystemCommand {
   }
 }
 
-final class UpdateBuildSystem: Command {
-    init() {
-        super.init(name: "Find Android Device", menuPath: "Tools")
-    }
-
-    override func run(in workbench: Workbench) {
-        guard let project = workbench.project else { return }
-        BuildSystemsManager.shared.projectFoldersDidChange(project)
-    }
-}
 
 // MARK: - Select target
 
