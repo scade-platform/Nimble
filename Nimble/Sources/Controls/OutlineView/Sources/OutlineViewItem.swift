@@ -23,10 +23,7 @@ struct OutlineViewItem<Data: Sequence>: Equatable, Hashable, Identifiable where 
     value.id
   }
   
-  static func == (
-    lhs: OutlineViewItem<Data>,
-    rhs: OutlineViewItem<Data>
-  ) -> Bool {
+  static func == (lhs: OutlineViewItem<Data>, rhs: OutlineViewItem<Data>) -> Bool {
     lhs.value.id == rhs.value.id
   }
   
