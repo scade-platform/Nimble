@@ -89,6 +89,9 @@ final class TabbedEditor: NSViewController {
           self.tabsCollectionView.selectItems(at: [], scrollPosition: .left)
           return
         }
+        guard !self.tabsCollectionView.selectionIndexes.contains(index) else {
+          return
+        }
         self.tabsCollectionView.deselectAll(nil)
         self.tabsCollectionView.selectItems(at: [IndexPath(item: index, section: 0)], scrollPosition: .right)
       }
