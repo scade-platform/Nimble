@@ -21,14 +21,7 @@ open class OutlineView: NSViewController, WorkbenchPart {
     Bundle(for: type(of: self)).image(forResource: "navigatorPart")
   }()
       
-  public weak var workbench: Workbench? = nil {
-    didSet {
-      workbench?.observers.add(observer: self)
-    }
-    willSet {
-      workbench?.observers.remove(observer: self)
-    }
-  }
+  public weak var workbench: Workbench? = nil
   
   var selectedItem: Any? {
     guard let outlineView = outlineView else { return nil }
@@ -145,9 +138,3 @@ open class OutlineView: NSViewController, WorkbenchPart {
   }
 }
 
-
-extension OutlineView: WorkbenchObserver {
-  public func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) {
-    
-  }
-}
