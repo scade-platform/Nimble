@@ -197,15 +197,29 @@ extension OutlineDataSource: WorkbenchObserver {
   func workbenchDidOpenDocument(_ workbench: Workbench, document: Document) {
     document.observers.add(observer: self)
     openedDocuments.reload()
+    if let row =  outline?.row(forItem: document) {
+      outline?.selectRowIndexes([row], byExtendingSelection: false)
+    }
   }
 
   func workbenchDidUpdateDocuments(_ workbench: Workbench) {
+    let selectedIndex = outline?.selectedRowIndexes
     openedDocuments.reload()
+    if let index = selectedIndex {
+      outline?.selectRowIndexes(index, byExtendingSelection: false)
+    }
   }
   
   func workbenchDidCloseDocument(_ workbench: Workbench, document: Document) {
     document.observers.remove(observer: self)
     openedDocuments.reload()
+  }
+
+  func workbenchActiveDocumentDidChange(_ workbench: Workbench, document: Document?) {
+    guard let doc = document, let selectedDocRow = outline?.row(forItem: doc) else {
+      return
+    }
+    outline?.selectRowIndexes([selectedDocRow], byExtendingSelection: false)
   }
 }
 
