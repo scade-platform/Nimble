@@ -39,12 +39,18 @@ class EditorView: NSViewController {
   
   func showEditor() {
     guard tabbedEditor.parent != self else { return }
+    guard let window = self.view.window else {
+      return
+    }
 
     addChild(tabbedEditor)
     view.addSubview(tabbedEditor.view)
+
+    let contentLayoutRect = window.contentLayoutRect
+    let topOffset = window.frame.height - contentLayoutRect.height
     tabbedEditor.view.translatesAutoresizingMaskIntoConstraints = false
     NSLayoutConstraint.activate( [
-      tabbedEditor.view.topAnchor.constraint(equalTo: view.topAnchor),
+      tabbedEditor.view.topAnchor.constraint(equalTo: view.topAnchor, constant: topOffset),
       tabbedEditor.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
       tabbedEditor.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       tabbedEditor.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
