@@ -30,7 +30,8 @@ class BuildSystemCommand: Command {
     super.init(name: name,
                keyEquivalent: keyEquivalent,
                toolbarIcon: toolbarIcon,
-               alignment: .left(orderPriority: orderPriority))
+               alignmentGroup: .left(orderPriority: 0),
+               alignment: .right(orderPriority: orderPriority))
   }
 
   func currentTask(in workbench: Workbench) -> BuildTask? {
@@ -157,6 +158,7 @@ final class SelectTarget: Command {
                menuPath: nil,
                keyEquivalent: nil,
                controlClass: ToolbarTargetControl.self,
+               alignmentGroup: .center(orderPriority: 0),
                alignment: .left(orderPriority: 30))
   }
 

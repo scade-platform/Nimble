@@ -51,6 +51,9 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
 
   public private(set) var tasksDictionary: [ObjectIdentifier: (WorkbenchTask, ((WorkbenchTask) -> Void)?)] = [:]
 
+  let navigatorPanelSeparatorIdentifier = NSToolbarItem.Identifier(rawValue: "NavigatorPanel")
+  let inspectorPanelSeparatorIdentifier = NSToolbarItem.Identifier(rawValue: "InspectorPanel")
+
   // Document property of the WindowController always refer to the project
   public override var document: AnyObject? {
     get { super.document }
@@ -155,6 +158,7 @@ public class NimbleWorkbench: NSWindowController, NSWindowDelegate {
     let toolbar = NSToolbar(identifier: NSToolbar.Identifier("MainToolbar"))
     toolbar.allowsUserCustomization = true
     toolbar.displayMode = .default
+    toolbar.showsBaselineSeparator = false
     toolbar.delegate = self
 
     self.window?.toolbar = toolbar
@@ -411,17 +415,6 @@ extension NimbleWorkbench: WorkbenchTaskObserver {
 extension NimbleWorkbench: NSToolbarDelegate {
   ///TODO: implement ordering functionality
 
-//  public func toolbarDefaultItemIdentifiers(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
-//    var items: [NSToolbarItem.Identifier] = CommandManager.shared.commands.compactMap {
-//      guard $0.group == nil && $0.toolbarIcon != nil else { return nil }
-//      return $0.toolbarItemIdentifier
-//    }
-//
-//    items.append(.flexibleSpace)
-//    items.append(contentsOf: CommandManager.shared.groups.map { $0.toolbarItemIdentifier })
-//    return items
-//  }
-
 //  public func toolbarAllowedItems(_ toolbar: NSToolbar) -> [NSToolbarItem.Identifier] {
 //    var items: [NSToolbarItem.Identifier] = CommandManager.shared.commands.compactMap {
 //      guard $0.group == nil && $0.toolbarIcon != nil else { return nil }
@@ -436,11 +429,20 @@ extension NimbleWorkbench: NSToolbarDelegate {
 //    return items
 //  }
 
-
   public func toolbar(_ toolbar: NSToolbar,
                       itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
                       willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
-    
+    if let mainView {
+      if itemIdentifier == navigatorPanelSeparatorIdentifier {
+        if !(navigatorArea?.isHidden ?? true) {
+          return NSTrackingSeparatorToolbarItem(identifier: itemIdentifier, splitView: mainView.splitView, dividerIndex: 0)
+        }
+      } else if itemIdentifier == inspectorPanelSeparatorIdentifier {
+        if !(inspectorArea?.isHidden ?? true) {
+          return NSTrackingSeparatorToolbarItem(identifier: itemIdentifier, splitView: mainView.splitView, dividerIndex: 1)
+        }
+      }
+    }
     return toolbarItems.first{ $0.itemIdentifier == itemIdentifier }
   }
 
@@ -455,7 +457,45 @@ extension NimbleWorkbench: NSToolbarDelegate {
       return $0.toolbarGroup
     }
 
-    // Left group
+
+    let (leftCommands, leftGroups) = filterCommandAndGroup(for: .left, commands: commands, groups: groups)
+    let sortedLeftGroup = sortAlignGroup(commands: leftCommands, groups: leftGroups)
+
+    let (centerCommands, centerGroups) = filterCommandAndGroup(for: .center, commands: commands, groups: groups)
+    let sortedCenterGroup = sortAlignGroup(commands: centerCommands, groups: centerGroups)
+
+    let (rightCommands, rightGroups) = filterCommandAndGroup(for: .right, commands: commands, groups: groups)
+    let sortedRightGroup = sortAlignGroup(commands: rightCommands, groups: rightGroups)
+
+    // Result
+    var ids: [NSToolbarItem.Identifier] = sortedLeftGroup
+    ids.append(navigatorPanelSeparatorIdentifier)
+    ids.append(contentsOf: sortedCenterGroup)
+    ids.append(inspectorPanelSeparatorIdentifier)
+    ids.append(contentsOf: sortedRightGroup)
+    return ids
+  }
+
+  private func filterCommandAndGroup(for alignment: ToolbarAlignment.Case, commands: [Command], groups: [CommandGroup]) -> ([Command], [CommandGroup]) {
+    let resultCommands: [Command] = commands.filter { command in
+      if let alignGroup = command.alignmentGroup {
+        return alignGroup.is(alignment)
+      } else {
+        return command.alignment.is(alignment)
+      }
+    }
+
+    let resultGrops: [CommandGroup] = groups.filter { group in
+      if let alignGroup = group.alignmentGroup {
+        return alignGroup.is(alignment)
+      } else {
+        return group.alignment.is(alignment)
+      }
+    }
+    return (resultCommands, resultGrops)
+  }
+
+  private func sortAlignGroup(commands: [Command], groups: [CommandGroup]) -> [NSToolbarItem.Identifier] {
     var leftGroup: [Any] = commands.filter{$0.alignment.is(.left)}
     leftGroup.append(contentsOf: groups.filter{ $0.alignment.is(.left)})
     let sortedLeftGroup = leftGroup.sorted{l, r in sortedPredicate(l, r, {$0 < $1})}
@@ -470,16 +510,13 @@ extension NimbleWorkbench: NSToolbarDelegate {
     rightGroup.append(contentsOf: groups.filter{ $0.alignment.is(.right)})
     let sortedRightGroup = rightGroup.sorted{l, r in sortedPredicate(l, r, {$0 > $1})}
 
-
-    // Result
     var ids: [NSToolbarItem.Identifier] = sortedLeftGroup.compactMap(extractIdentifier(_:))
-    
+
     ids.append(.flexibleSpace)
     ids.append(contentsOf: sortedCenterGroup.compactMap(extractIdentifier(_:)))
 
     ids.append(.flexibleSpace)
     ids.append(contentsOf: sortedRightGroup.compactMap(extractIdentifier(_:)))
-    
 
     return ids
   }

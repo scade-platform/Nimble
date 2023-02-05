@@ -96,7 +96,8 @@ final class BuildSystemPlugin: Plugin {
                                    group: "Build Commands",
                                    menuPath: "Tools",
                                    toolbarGroup: false,
-                                   alignment: .left(orderPriority: 10))
+                                   alignmentGroup: .left(orderPriority: 0),
+                                   alignment: .right(orderPriority: 10))
 
     CommandManager.shared.register(command: SelectTarget())
   }

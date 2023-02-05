@@ -46,10 +46,11 @@ open class Command {
   // Menu item
   public let menuPath: String?
   public let keyboardShortcut: KeyboardShortcut?
-    
+
   // Toolbar item
   public let toolbarIcon: NSImage?
   public let toolbarControlClass: CommandControl.Type?
+  public let alignmentGroup: ToolbarAlignment?
   public let alignment: ToolbarAlignment
 
   // Grouping
@@ -71,12 +72,14 @@ open class Command {
     self.toolbarControlClass = nil
     self.alignment = .left(orderPriority: 100)
     self.handler = handler
+    self.alignmentGroup = nil
   }
 
-  public init(name: String,              
+  public init(name: String,
               menuPath: String? = nil,
               keyEquivalent: String? = nil,
               toolbarIcon: NSImage?,
+              alignmentGroup: ToolbarAlignment? = nil,
               alignment: ToolbarAlignment = .left(orderPriority: 100),
               handler: (@escaping Handler) = { _ in return } ) {
 
@@ -86,6 +89,7 @@ open class Command {
     self.toolbarIcon = toolbarIcon
     self.toolbarControlClass = nil
     self.alignment = alignment
+    self.alignmentGroup = alignmentGroup
     self.handler = handler
   }
 
@@ -93,6 +97,7 @@ open class Command {
               menuPath: String? = nil,
               keyEquivalent: String? = nil ,
               controlClass: CommandControl.Type?,
+              alignmentGroup: ToolbarAlignment? = nil,
               alignment: ToolbarAlignment = .left(orderPriority: 100),
               handler: (@escaping Handler) = { _ in return } ) {
 
@@ -102,6 +107,7 @@ open class Command {
     self.toolbarIcon = nil
     self.toolbarControlClass = controlClass
     self.alignment = alignment
+    self.alignmentGroup = alignmentGroup
     self.handler = handler
   }
 
@@ -139,6 +145,7 @@ public class CommandGroup {
   public let toolbarGroup: Bool
 
   open var alignment: ToolbarAlignment
+  open var alignmentGroup: ToolbarAlignment?
 
   public var commands: [Command] {
     get { return _commands.compactMap{$0.value} }
@@ -155,6 +162,7 @@ public class CommandGroup {
   fileprivate init(name: String,
                    menuPath: String?,
                    toolbarGroup: Bool,
+                   alignmentGroup: ToolbarAlignment? = nil,
                    alignment: ToolbarAlignment,
                    commands: [Command]){
 
@@ -162,6 +170,7 @@ public class CommandGroup {
     self.title = name
     self.menuPath = menuPath
     self.toolbarGroup = toolbarGroup
+    self.alignmentGroup = alignmentGroup
     self.alignment = alignment
     self.commands = commands
   }
@@ -236,11 +245,13 @@ public class CommandManager {
                        group: String,
                        menuPath: String? = nil,
                        toolbarGroup: Bool = true,
+                       alignmentGroup: ToolbarAlignment? = nil,
                        alignment: ToolbarAlignment = .right(orderPriority: 100)) {
 
     let group = CommandGroup(name: group,
                              menuPath: menuPath,
                              toolbarGroup: toolbarGroup,
+                             alignmentGroup: alignmentGroup,
                              alignment: alignment,
                              commands: commands)
 
