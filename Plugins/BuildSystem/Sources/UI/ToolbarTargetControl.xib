@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -24,7 +24,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="72" height="23"/>
                                     <subviews>
                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LZQ-cE-3vn">
-                                            <rect key="frame" x="0.0" y="5" width="14" height="14"/>
+                                            <rect key="frame" x="0.0" y="2" width="14" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="14" id="2we-Oo-5gp"/>
                                                 <constraint firstAttribute="width" constant="14" id="fbq-uG-oxf"/>
@@ -40,7 +40,7 @@
                                             </textFieldCell>
                                         </textField>
                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lG4-dI-2Zh">
-                                            <rect key="frame" x="63" y="5" width="9" height="13"/>
+                                            <rect key="frame" x="63" y="3" width="9" height="18"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="9" id="NS3-9d-EBC"/>
                                             </constraints>
@@ -95,7 +95,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="92" height="23"/>
                                     <subviews>
                                         <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lS8-5x-2jn">
-                                            <rect key="frame" x="0.0" y="5" width="14" height="14"/>
+                                            <rect key="frame" x="0.0" y="2" width="14" height="20"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="14" id="Wnn-My-OcS"/>
                                                 <constraint firstAttribute="width" constant="14" id="pIl-zl-gVo"/>
@@ -179,7 +179,7 @@
         </customView>
     </objects>
     <resources>
-        <image name="NSActionTemplate" width="14" height="14"/>
-        <image name="NSRightFacingTriangleTemplate" width="9" height="12"/>
+        <image name="NSActionTemplate" width="15" height="15"/>
+        <image name="NSRightFacingTriangleTemplate" width="10" height="14"/>
     </resources>
 </document>

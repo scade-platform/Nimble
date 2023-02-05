@@ -50,6 +50,9 @@ class ChangeAreaVisibility: Command {
   override func run(in workbench: Workbench) {
     let area = self.area(workbench)
     area?.isHidden = !(area?.isHidden ?? true)
+    if let nimbleWorkbench = workbench as? NimbleWorkbench {
+      nimbleWorkbench.updateToolBar()
+    }
   }
 }
 

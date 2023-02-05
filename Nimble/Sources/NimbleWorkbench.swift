@@ -429,6 +429,17 @@ extension NimbleWorkbench: NSToolbarDelegate {
 //    return items
 //  }
 
+  func updateToolBar() {
+    guard let toolbar = window?.toolbar else {
+      return
+    }
+    toolbar.items.forEach { _ in toolbar.removeItem(at: 0) }
+    let items = toolbarDefaultItemIdentifiers(toolbar).reversed()
+    for item in items {
+      toolbar.insertItem(withItemIdentifier: item, at: 0)
+    }
+  }
+
   public func toolbar(_ toolbar: NSToolbar,
                       itemForItemIdentifier itemIdentifier: NSToolbarItem.Identifier,
                       willBeInsertedIntoToolbar flag: Bool) -> NSToolbarItem? {
@@ -459,13 +470,13 @@ extension NimbleWorkbench: NSToolbarDelegate {
 
 
     let (leftCommands, leftGroups) = filterCommandAndGroup(for: .left, commands: commands, groups: groups)
-    let sortedLeftGroup = sortAlignGroup(commands: leftCommands, groups: leftGroups)
+    let sortedLeftGroup = createAlignGroupItems(commands: leftCommands, groups: leftGroups, insertSpaces: !(navigatorArea?.isHidden ?? true))
 
     let (centerCommands, centerGroups) = filterCommandAndGroup(for: .center, commands: commands, groups: groups)
-    let sortedCenterGroup = sortAlignGroup(commands: centerCommands, groups: centerGroups)
+    let sortedCenterGroup = createAlignGroupItems(commands: centerCommands, groups: centerGroups)
 
     let (rightCommands, rightGroups) = filterCommandAndGroup(for: .right, commands: commands, groups: groups)
-    let sortedRightGroup = sortAlignGroup(commands: rightCommands, groups: rightGroups)
+    let sortedRightGroup = createAlignGroupItems(commands: rightCommands, groups: rightGroups, insertSpaces: !(inspectorArea?.isHidden ?? true))
 
     // Result
     var ids: [NSToolbarItem.Identifier] = sortedLeftGroup
@@ -495,7 +506,7 @@ extension NimbleWorkbench: NSToolbarDelegate {
     return (resultCommands, resultGrops)
   }
 
-  private func sortAlignGroup(commands: [Command], groups: [CommandGroup]) -> [NSToolbarItem.Identifier] {
+  private func createAlignGroupItems(commands: [Command], groups: [CommandGroup], insertSpaces: Bool = true) -> [NSToolbarItem.Identifier] {
     var leftGroup: [Any] = commands.filter{$0.alignment.is(.left)}
     leftGroup.append(contentsOf: groups.filter{ $0.alignment.is(.left)})
     let sortedLeftGroup = leftGroup.sorted{l, r in sortedPredicate(l, r, {$0 < $1})}
@@ -512,10 +523,16 @@ extension NimbleWorkbench: NSToolbarDelegate {
 
     var ids: [NSToolbarItem.Identifier] = sortedLeftGroup.compactMap(extractIdentifier(_:))
 
-    ids.append(.flexibleSpace)
+    if insertSpaces {
+      ids.append(.flexibleSpace)
+    }
+
     ids.append(contentsOf: sortedCenterGroup.compactMap(extractIdentifier(_:)))
 
-    ids.append(.flexibleSpace)
+    if insertSpaces {
+      ids.append(.flexibleSpace)
+    }
+
     ids.append(contentsOf: sortedRightGroup.compactMap(extractIdentifier(_:)))
 
     return ids
