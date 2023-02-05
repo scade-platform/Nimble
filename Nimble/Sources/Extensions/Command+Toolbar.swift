@@ -65,12 +65,25 @@ extension Command {
   }
 
   private class ToolbarItemButtonCell: NSButtonCell {
-      // override func drawImage(_ image: NSImage, withFrame frame: NSRect, in controlView: NSView) {
-      //   let color = NSColor(named: "ButtonIconColor", bundle: Bundle.main) ?? .darkGray
-      //   let img = image.imageWithTint(color)
-      //   //set top and bottom paddings for image
-      //   super.drawImage(img, withFrame: frame.insetBy(dx: 0, dy: 2), in: controlView)
-      // }
+    private let needToScale: Bool
+
+    init(needToScale: Bool = false) {
+      self.needToScale = needToScale
+      super.init(imageCell: nil)
+    }
+
+    required init(coder: NSCoder) {
+      fatalError("init(coder:) has not been implemented")
+    }
+
+    override func drawImage(_ image: NSImage, withFrame frame: NSRect, in controlView: NSView) {
+      guard needToScale else {
+        super.drawImage(image, withFrame: frame, in: controlView)
+        return
+      }
+      //set top and bottom paddings for image
+      super.drawImage(image, withFrame: frame.insetBy(dx: 0, dy: 2), in: controlView)
+    }
   }
 
   private class ToolbarItem: NSToolbarItem {

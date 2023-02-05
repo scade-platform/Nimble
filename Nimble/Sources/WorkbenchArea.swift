@@ -40,26 +40,11 @@ class ChangeAreaVisibility: Command {
   private let area: (Workbench) -> WorkbenchArea?
   private let areaTitle: String
 
-  init(title: String, icon: NSImage?, area: @escaping (Workbench) -> WorkbenchArea?) {
+  init(title: String, icon: NSImage?, alignment: ToolbarAlignment, area: @escaping (Workbench) -> WorkbenchArea?) {
     self.area = area
     self.areaTitle = title
 
-    super.init(name: "Hide or show the \(title)", menuPath: "View", toolbarIcon: icon)
-  }
-
-  override func validate(in workbench: Workbench) -> State {
-    guard let area = self.area(workbench) else {
-      return []
-    }
-
-    self.menuItem?.title = "\(area.isHidden ? "Show" : "Hide") \(areaTitle)"
-
-    var state = super.validate(in: workbench)
-    if !area.isHidden {
-      state.insert(.selected)
-    }
-
-    return state
+    super.init(name: "Hide or show the \(title)", menuPath: "View", toolbarIcon: icon, alignment: alignment)
   }
 
   override func run(in workbench: Workbench) {

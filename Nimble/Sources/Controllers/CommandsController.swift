@@ -55,14 +55,15 @@ class CommandsController {
   
   private func registerAreaVisibilityCommands() {
     let visibilityCommands = createAreaVisibilityCommands()
-    CommandManager.shared.register(commands: visibilityCommands, group: "AreaVisibilityCommands")
+    CommandManager.shared.register(commands: visibilityCommands)
   }
   
   private func createAreaVisibilityCommands() -> [Command] {
-    [
-      ChangeAreaVisibility(title: "Navigator", icon: Bundle.main.loadBottonImage(name: "leftSideBar")) { $0.navigatorArea },
-      //ChangeAreaVisibility(title: "Debug area", icon: Bundle.main.loadBottonImage(name: "bottomArea")) { $0.debugArea },
-      ChangeAreaVisibility(title: "Inspector", icon: Bundle.main.loadBottonImage(name: "rightSideBar")) { $0.inspectorArea }
+    let leftIcon = Bundle.main.loadBottonImage(name: "sidebar.left")
+    let rightIcon = Bundle.main.loadBottonImage(name: "sidebar.right")
+    return [
+      ChangeAreaVisibility(title: "Navigator", icon: leftIcon, alignment: .left(orderPriority: 0)) { $0.navigatorArea },
+      ChangeAreaVisibility(title: "Inspector", icon: rightIcon, alignment: .right(orderPriority: 0)) { $0.inspectorArea }
     ]
   }
   
