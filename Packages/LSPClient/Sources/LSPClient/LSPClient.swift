@@ -30,6 +30,8 @@ public final class LSPClient {
   }
 
   private var initializing = DispatchGroup()
+  private var serialQueue = DispatchQueue(label: "LSPClient-serial-queue",
+                                          target: DispatchQueue.global(qos: .userInteractive))
 
   private var diagnosticPublishers = [Path: DispatchSourceTimer]()
 
@@ -101,18 +103,27 @@ public final class LSPClient {
 
   public func openDocument(doc: SourceCodeDocument) {
     guard let url = doc.fileURL else { return }
-    waitInitAndExecute {
-      $0.open(url: url, with: doc.text, as: doc.languageId)
-      $0.connect(to: doc)
+    waitInitAndExecute { [weak self] client in
+      guard let self else { return }
+      self.serialQueue.async {
+        client.open(url: url, with: doc.text, as: doc.languageId)
+        client.connect(to: doc)
+      }
     }
   }
     
   
   public func closeDocument(doc: SourceCodeDocument) {
     guard let url = doc.fileURL else { return }
-    waitInitAndExecute {
-      $0.close(url: url)
-      $0.disconnect(from: doc)
+    waitInitAndExecute { [weak self] client in
+      guard let self else { return }
+      self.serialQueue.async {
+        guard self.hasOpened(doc: doc) else {
+          return
+        }
+        client.close(url: url)
+        client.disconnect(from: doc)
+      }
     }
   }
 
@@ -243,9 +254,15 @@ extension LSPClient: SourceCodeDocumentObserver {
     guard let doc = document as? SourceCodeDocument,
           let url = oldFileUrl else { return }
     
-    waitInitAndExecute {
-      $0.close(url: url)
-      $0.disconnect(from: doc)
+    waitInitAndExecute { [weak self] client in
+      guard let self else { return }
+      self.serialQueue.async {
+        guard self.hasOpened(doc: doc) else {
+          return
+        }
+        client.close(url: url)
+        client.disconnect(from: doc)
+      }
     }
   }
   
