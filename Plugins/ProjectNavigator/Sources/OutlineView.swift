@@ -24,8 +24,8 @@ open class OutlineView: NSViewController, WorkbenchPart {
   public weak var workbench: Workbench? = nil
   
   var selectedItem: Any? {
-    guard let outlineView = outlineView else { return nil }
-    return outlineView.item(atRow: outlineView.selectedRow)
+    guard let outlineView = outlineView, let lastSelectedRow = outlineView.selectedRowIndexes.last  else { return nil }
+    return outlineView.item(atRow: lastSelectedRow)
   }
   
   @IBAction func itemClicked(_ sender: Any) {

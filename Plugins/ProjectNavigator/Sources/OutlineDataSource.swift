@@ -198,7 +198,7 @@ extension OutlineDataSource: WorkbenchObserver {
     document.observers.add(observer: self)
     openedDocuments.reload()
     if let row =  outline?.row(forItem: document) {
-      outline?.selectRowIndexes([row], byExtendingSelection: false)
+      outline?.selectRowIndexes([row], byExtendingSelection: true)
     }
   }
 
@@ -219,7 +219,15 @@ extension OutlineDataSource: WorkbenchObserver {
     guard let doc = document, let selectedDocRow = outline?.row(forItem: doc) else {
       return
     }
-    outline?.selectRowIndexes([selectedDocRow], byExtendingSelection: false)
+    if let index = outline?.selectedRowIndexes.last,
+        let item = outline?.item(atRow: index),
+        let file = item as? File,
+       file.path == doc.path {
+      outline?.selectRowIndexes([selectedDocRow], byExtendingSelection: true)
+    } else {
+      outline?.selectRowIndexes([selectedDocRow], byExtendingSelection: false)
+    }
+
   }
 }
 
