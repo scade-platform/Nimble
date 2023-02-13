@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="20037" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="21507" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="20037"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="21507"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -14,19 +14,20 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView id="c22-O7-iKe">
-            <rect key="frame" x="0.0" y="0.0" width="209" height="647"/>
+        <customView misplaced="YES" id="c22-O7-iKe">
+            <rect key="frame" x="0.0" y="0.0" width="240" height="647"/>
             <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
             <subviews>
                 <stackView orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QPz-7o-a1m">
-                    <rect key="frame" x="0.0" y="619" width="209" height="28"/>
+                    <rect key="frame" x="0.0" y="619" width="240" height="28"/>
                     <edgeInsets key="edgeInsets" left="4" right="0.0" top="0.0" bottom="0.0"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="28" identifier="buttonsBarHeight" id="Bf8-8G-mAU"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="240" id="M70-Ek-ehe"/>
                     </constraints>
                 </stackView>
                 <tabView drawsBackground="NO" type="noTabsNoBorder" translatesAutoresizingMaskIntoConstraints="NO" id="N5i-7a-vj0">
-                    <rect key="frame" x="0.0" y="0.0" width="209" height="619"/>
+                    <rect key="frame" x="0.0" y="0.0" width="240" height="619"/>
                     <font key="font" metaFont="system"/>
                 </tabView>
             </subviews>

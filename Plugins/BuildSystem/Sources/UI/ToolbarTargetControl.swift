@@ -198,12 +198,12 @@ class ToolbarTargetControl : NSControl, CommandControl {
     guard self.isEnabled else { return }
     let colourAnim = CABasicAnimation(keyPath: "backgroundColor")
     colourAnim.fromValue = self.layer?.backgroundColor
-    colourAnim.toValue = highlightColor.cgColor
+    colourAnim.toValue = NSColor.controlBackgroundColor.cgColor
     colourAnim.duration = 1.0
     colourAnim.fillMode = .forwards
     colourAnim.isRemovedOnCompletion = false
     self.layer?.add(colourAnim, forKey: "backgroundColor")
-    self.layer?.backgroundColor = highlightColor.cgColor
+    self.layer?.backgroundColor = NSColor.controlBackgroundColor.cgColor
   }
   
   override func mouseExited(with event: NSEvent) {
