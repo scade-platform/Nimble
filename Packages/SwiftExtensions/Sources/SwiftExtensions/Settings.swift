@@ -50,6 +50,9 @@ public struct Settings: SettingsGroup {
                      defaultValue: "",
                      validator: AndroidNDKValidator())
   public private(set) var androidToolchainNdk: String
+
+  @SettingDefinition("swift.lsp.useInternalClient", defaultValue: true)
+  public private(set) var useInternalSwiftLSPClient: Bool
 }
 
 fileprivate extension Settings {

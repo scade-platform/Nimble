@@ -30,14 +30,17 @@ public final class SwiftExtensionsModule: Module {
 
 final class SwiftExtensionsPlugin: Plugin {
   func load() {
-    LSPServerManager.shared.registerProvider(SKLocalServerProvider())
+    registerSettings()
+
+    if SwiftExtensions.Settings.shared.useInternalSwiftLSPClient {
+        LSPServerManager.shared.registerProvider(SKLocalServerProvider())
+    }
 
     BuildSystemsManager.shared.register(buildSystem: SwiftBuildSystem())
     BuildSystemsManager.shared.register(buildSystem: SPMBuildSystem())
 
     WizardsManager.shared.register(wizard: SPMWizard())
 
-    registerSettings()
   }
 
   func activate(in workbench: Workbench) {

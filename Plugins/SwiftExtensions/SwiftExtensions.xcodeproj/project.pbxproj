@@ -27,7 +27,7 @@
 		D77F337923A4619500E3AFC8 /* bin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bin; sourceTree = "<group>"; };
 		D791747F26F7C4E500935C9F /* build.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = build.xcconfig; sourceTree = "<group>"; };
 		D7BEC80C22B9158B00A8F48B /* SwiftExtensions.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftExtensions.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
-		D7BEC81622B915D100A8F48B /* Plugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; };
+		D7BEC81622B915D100A8F48B /* Plugin.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = Plugin.swift; sourceTree = "<group>"; tabWidth = 2; };
 		D7D4BD4D23FCAFEC0063BD8F /* package.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = package.yml; sourceTree = "<group>"; };
 		D7EC1376239EFC6D00DA0DA0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
