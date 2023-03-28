@@ -654,17 +654,17 @@
             <objects>
                 <customObject id="5Tn-zl-jEV" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
                 <viewController id="vg4-4s-T5h" customClass="InspectorView" customModule="Nimble" customModuleProvider="target" sceneMemberID="viewController">
-                    <visualEffectView key="view" appearanceType="inheritedVibrantLight" blendingMode="behindWindow" material="sidebar" state="followsWindowActiveState" id="UsA-Xn-Waa">
+                    <visualEffectView key="view" appearanceType="inheritedVibrantLight" blendingMode="behindWindow" material="contentBackground" state="followsWindowActiveState" id="UsA-Xn-Waa">
                         <rect key="frame" x="0.0" y="0.0" width="235" height="400"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="3cH-oe-q4d" customClass="WorkbenchSidebar" customModule="Nimble" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="235" height="362"/>
+                                <rect key="frame" x="0.0" y="0.0" width="235" height="400"/>
                             </customView>
                         </subviews>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="3cH-oe-q4d" secondAttribute="trailing" id="Alk-KV-sZN"/>
-                            <constraint firstItem="3cH-oe-q4d" firstAttribute="top" secondItem="UsA-Xn-Waa" secondAttribute="top" constant="38" id="gM1-cM-jJF"/>
+                            <constraint firstItem="3cH-oe-q4d" firstAttribute="top" secondItem="UsA-Xn-Waa" secondAttribute="top" id="gM1-cM-jJF"/>
                             <constraint firstItem="3cH-oe-q4d" firstAttribute="leading" secondItem="UsA-Xn-Waa" secondAttribute="leading" id="xrg-wG-vCT"/>
                             <constraint firstAttribute="bottom" secondItem="3cH-oe-q4d" secondAttribute="bottom" id="y9t-vI-g6p"/>
                         </constraints>
