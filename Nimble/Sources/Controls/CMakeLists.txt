@@ -1,0 +1,29 @@
+
+target_sources(Nimble
+    PRIVATE
+    ${CMAKE_CURRENT_LIST_DIR}/NimbleSidebarArea.swift
+    ${CMAKE_CURRENT_LIST_DIR}/NimbleStatusBar.swift
+    ${CMAKE_CURRENT_LIST_DIR}/ConsoleView.xib
+    ${CMAKE_CURRENT_LIST_DIR}/UnsupportedPane.xib
+    ${CMAKE_CURRENT_LIST_DIR}/RootSplitView.swift
+    ${CMAKE_CURRENT_LIST_DIR}/NavigatorView.swift
+    ${CMAKE_CURRENT_LIST_DIR}/WorkbenchSidebar.swift
+    ${CMAKE_CURRENT_LIST_DIR}/DebugView.swift
+    ${CMAKE_CURRENT_LIST_DIR}/InspectorView.swift
+    ${CMAKE_CURRENT_LIST_DIR}/ConsoleView.swift
+    ${CMAKE_CURRENT_LIST_DIR}/DiagnosticStatusBar.swift
+    ${CMAKE_CURRENT_LIST_DIR}/DiagnosticStatusBar.xib
+    ${CMAKE_CURRENT_LIST_DIR}/NimbleStatusBar.xib
+    ${CMAKE_CURRENT_LIST_DIR}/DiagnosticView.xib
+    ${CMAKE_CURRENT_LIST_DIR}/EditorView.swift
+    ${CMAKE_CURRENT_LIST_DIR}/WorkbenchSidebar.xib
+    ${CMAKE_CURRENT_LIST_DIR}/DropView.swift
+    ${CMAKE_CURRENT_LIST_DIR}/StatusBarView.swift
+    ${CMAKE_CURRENT_LIST_DIR}/UnsupportedPane.swift
+    )
+
+include(${CMAKE_CURRENT_LIST_DIR}/SeparatorView/CMakeLists.txt)
+include(${CMAKE_CURRENT_LIST_DIR}/ActionArea/CMakeLists.txt)
+include(${CMAKE_CURRENT_LIST_DIR}/TabbedEditor/CMakeLists.txt)
+include(${CMAKE_CURRENT_LIST_DIR}/Wizard/CMakeLists.txt)
+include(${CMAKE_CURRENT_LIST_DIR}/DiagnosticView/CMakeLists.txt)    
