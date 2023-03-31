@@ -22,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="of2-mN-rbR">
-                    <rect key="frame" x="0.0" y="8" width="14" height="20"/>
+                    <rect key="frame" x="0.0" y="6" width="14" height="25"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="14" id="DxU-Li-AdZ"/>
                         <constraint firstAttribute="width" constant="14" id="GYf-Zc-DTn"/>
@@ -38,7 +38,7 @@
                     </textFieldCell>
                 </textField>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7dS-5I-7Sb">
-                    <rect key="frame" x="53" y="8" width="14" height="20"/>
+                    <rect key="frame" x="53" y="6" width="14" height="25"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="14" id="D8N-Ht-Tr9"/>
                         <constraint firstAttribute="width" constant="14" id="ErJ-MU-gxd"/>
@@ -68,6 +68,6 @@
         </customView>
     </objects>
     <resources>
-        <image name="NSActionTemplate" width="15" height="15"/>
+        <image name="NSActionTemplate" width="20" height="20"/>
     </resources>
 </document>

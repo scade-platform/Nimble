@@ -100,7 +100,7 @@
                                     </constraints>
                                 </box>
                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="KC3-0c-zVn">
-                                    <rect key="frame" x="342" y="148" width="17.5" height="25"/>
+                                    <rect key="frame" x="62" y="148" width="17.5" height="25"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="17" id="Ti7-ax-RzG"/>
                                         <constraint firstAttribute="width" secondItem="KC3-0c-zVn" secondAttribute="height" multiplier="1:1" id="dKG-GT-IZc"/>
