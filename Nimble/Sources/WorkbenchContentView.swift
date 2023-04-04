@@ -47,10 +47,10 @@ class WorkbenchContentViewController: NSViewController, WorkbenchViewController 
   @MainMenuItem("File/New")
   private var newDocumentMenuItem: NSMenuItem?
   
-  @MainMenuItem(.appName/"Preferences/Theme")
+  @MainMenuItem(.appName/"Settings.../Theme")
   private var themeMenuItem: NSMenuItem?
   
-  @MainMenuItem(.appName/"Preferences/Settings")
+  @MainMenuItem(.appName/"Settings.../Settings")
   private var settingsMenuItem: NSMenuItem?
   
   private var newDocumentMenu: NSMenu? {

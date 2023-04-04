@@ -23,9 +23,9 @@
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="VOq-y0-SEH"/>
-                                        <menuItem title="Preferences" id="BOF-NM-1cW">
+                                        <menuItem title="Settings..." id="BOF-NM-1cW">
                                             <modifierMask key="keyEquivalentModifierMask"/>
-                                            <menu key="submenu" id="B9C-Xw-5eB">
+                                            <menu key="submenu" title="Settings..." id="B9C-Xw-5eB">
                                                 <items>
                                                     <menuItem title="Settings" keyEquivalent="," id="CT3-bD-ReG"/>
                                                     <menuItem isSeparatorItem="YES" id="ltS-9b-he6"/>
