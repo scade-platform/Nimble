@@ -30,7 +30,7 @@ for arch in ${ARCHS}; do
     swift build \
         --configuration $CONFIGURATION \
         --cache-path $PACKAGES_CACHE_DIR \
-        --build-path $PACKAGE_BUILD_DIR \
+        --scratch-path $PACKAGE_BUILD_DIR \
         --triple ${arch}-apple-macosx
 done
 

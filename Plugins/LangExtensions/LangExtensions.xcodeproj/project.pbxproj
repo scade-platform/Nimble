@@ -39,7 +39,6 @@
 		D73C4FD12396D34300B00066 /* powershell in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FA72396D34100B00066 /* powershell */; };
 		D73C4FD22396D34300B00066 /* python in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FA82396D34200B00066 /* python */; };
 		D73C4FD32396D34300B00066 /* shellscript in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FA92396D34200B00066 /* shellscript */; };
-		D73C4FD42396D34300B00066 /* swift in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FAA2396D34200B00066 /* swift */; };
 		D73C4FD52396D34300B00066 /* groovy in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FAB2396D34200B00066 /* groovy */; };
 		D73C4FD62396D34300B00066 /* r in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FAC2396D34200B00066 /* r */; };
 		D73C4FD72396D34300B00066 /* sql in Resources */ = {isa = PBXBuildFile; fileRef = D73C4FAD2396D34200B00066 /* sql */; };
@@ -241,7 +240,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D73C4FD42396D34300B00066 /* swift in Resources */,
 				D73C4FCE2396D34300B00066 /* git in Resources */,
 				D73C4FCC2396D34300B00066 /* json in Resources */,
 				D73C4FBC2396D34300B00066 /* bat in Resources */,

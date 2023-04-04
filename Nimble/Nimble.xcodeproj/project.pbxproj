@@ -326,7 +326,6 @@
 		D7CBF8AE2229268C0088715C /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				E491BB7A26F109FD0079F180 /* Commands */,
 				0C838D0426D7B90C00A9A236 /* AppDelegate.swift */,
 				0CA297B323A903340025A4EF /* BinaryFileDocument.swift */,
 				0CB6607722F41D1500CBB386 /* NimbleController.swift */,
@@ -335,6 +334,7 @@
 				0CAAE9AC24370BEE003CAE92 /* WorkbenchArea.swift */,
 				0C838D2026D7BF8000A9A236 /* WorkbenchContentView.swift */,
 				D7F156962442079A00AFBE67 /* WorkbenchSettings.swift */,
+				E491BB7A26F109FD0079F180 /* Commands */,
 				0C838D1926D7BF5700A9A236 /* Controllers */,
 				D72F959D222DF2F4009F2EC3 /* Controls */,
 				D721CFA42385EC1800FD1B00 /* Extensions */,
@@ -670,10 +670,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../Plugins/InterfaceBuilder/InterfaceBuilder/Libraries",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Nimble/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -698,10 +695,7 @@
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../Plugins/InterfaceBuilder/InterfaceBuilder/Libraries",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = Nimble/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

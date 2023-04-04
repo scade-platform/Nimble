@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		D70AA4D123FC5449007367E7 /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70AA4D023FC5449007367E7 /* Plugin.swift */; };
 		D7D4BD5023FCB2010063BD8F /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = D7D4BD4F23FCB2010063BD8F /* package.yml */; };
-		D7EC136C239EF6E100DA0DA0 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7EC136A239EF6E100DA0DA0 /* Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -121,7 +120,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D7EC136C239EF6E100DA0DA0 /* Info.plist in Resources */,
 				D7D4BD5023FCB2010063BD8F /* package.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
