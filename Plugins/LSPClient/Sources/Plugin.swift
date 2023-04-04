@@ -20,7 +20,7 @@
 
 import NimbleCore
 import LSPClient
-
+import struct LSPClient.Settings
 
 public final class LSPClientModule: Module {
   public static let plugin: Plugin = LSPClientPlugin()
@@ -28,7 +28,9 @@ public final class LSPClientModule: Module {
 
 
 final class LSPClientPlugin: Plugin {
-  func load() { }
+  func load() {
+    Settings.register()
+  }
   
   public func activate(in workbench: Workbench) {
     LSPServerManager.shared.connect(to: workbench)

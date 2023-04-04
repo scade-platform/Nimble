@@ -58,6 +58,9 @@ public protocol LSPServerProvider {
 // MARK: - LSPServerManager
 
 public final class LSPServerManager {
+  @Setting("lsp.servers")
+  private var externalServers: [LSPExternalServerProvider]
+
   static let communicationProtocol: MessageRegistry = {
     let requests: [_RequestType.Type] = []
     let notifications: [NotificationType.Type] = [
@@ -69,6 +72,8 @@ public final class LSPServerManager {
   
   public static let shared: LSPServerManager = {
     let manager = LSPServerManager()
+
+    // Register providers from Plugins
     if let LSPClientPlugin = PluginManager.shared.plugins["com.scade.nimble.LSPClient"] {
       let providers = LSPClientPlugin.extensions([LSPExternalServerProvider].self,
                                                  at: "languageServers").flatMap{$0}
@@ -77,6 +82,12 @@ public final class LSPServerManager {
         manager.registerProvider($0)
       }
     }
+
+    // Register providers from User Settings
+    manager.externalServers.forEach {
+      manager.registerProvider($0)
+    }
+
     return manager
   }()
   
@@ -97,17 +108,17 @@ public final class LSPServerManager {
     connectors.removeValue(forKey: key)
   }
   
-  public func registerProvider(_ provider: LSPServerProvider) {
+  public func registerProvider(_ provider: LSPServerProvider, override: Bool = true) {
     provider.languages.forEach {
+      guard override || !providers.keys.contains($0) else { return }
       providers[$0] = provider
     }
   }
-  
+
   public func createServer(for lang: String) -> LSPServer? {
     guard let provider = providers[lang] else { return nil }
     return provider.createServer()
   }
-    
 }
 
 
@@ -191,4 +202,9 @@ public struct LSPExternalServerProvider: LSPServerProvider, Decodable {
   public func createServer() -> LSPServer {
     return LSPExternalServer(executable, args: arguments, env: environment, opts: initializationOptions)
   }
+}
+
+
+extension LSPExternalServerProvider: Encodable {
+
 }

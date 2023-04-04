@@ -32,8 +32,8 @@ final class SwiftExtensionsPlugin: Plugin {
   func load() {
     registerSettings()
 
-    if SwiftExtensions.Settings.shared.useInternalSwiftLSPClient {
-        LSPServerManager.shared.registerProvider(SKLocalServerProvider())
+    if !SwiftExtensions.Settings.shared.disableEmbeddedServer {
+      LSPServerManager.shared.registerProvider(SKLocalServerProvider(), override: false)
     }
 
     BuildSystemsManager.shared.register(buildSystem: SwiftBuildSystem())

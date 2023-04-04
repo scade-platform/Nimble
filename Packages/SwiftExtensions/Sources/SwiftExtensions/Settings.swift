@@ -36,6 +36,9 @@ public struct Settings: SettingsGroup {
   @SettingDefinition("swift.platforms", defaultValue: [])
   public private(set) var platforms: [SwiftToolchain]
 
+  @SettingDefinition("swift.lsp.disableEmbeddedServer", defaultValue: false)
+  public private(set) var disableEmbeddedServer: Bool
+
   @SettingDefinition("com.android.toolchain.swift", defaultValue: "")
   public private(set) var androidSwiftCompiler: String
 
@@ -50,9 +53,6 @@ public struct Settings: SettingsGroup {
                      defaultValue: "",
                      validator: AndroidNDKValidator())
   public private(set) var androidToolchainNdk: String
-
-  @SettingDefinition("swift.lsp.useInternalClient", defaultValue: true)
-  public private(set) var useInternalSwiftLSPClient: Bool
 }
 
 fileprivate extension Settings {
