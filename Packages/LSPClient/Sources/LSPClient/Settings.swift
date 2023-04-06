@@ -24,7 +24,7 @@ import NimbleCore
 public struct Settings: SettingsGroup {
   public static let shared = Settings()
 
-  @SettingDefinition("lsp.servers",
+  @SettingDefinition("editor.lsp.servers",
                      description: """
                                   List of exteral Language Servers (LSP).
                                   Default value is empy list.

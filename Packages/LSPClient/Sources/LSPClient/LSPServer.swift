@@ -58,7 +58,7 @@ public protocol LSPServerProvider {
 // MARK: - LSPServerManager
 
 public final class LSPServerManager {
-  @Setting("lsp.servers")
+  @Setting("editor.lsp.servers")
   private var externalServers: [LSPExternalServerProvider]
 
   static let communicationProtocol: MessageRegistry = {
