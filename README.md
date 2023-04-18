@@ -49,6 +49,10 @@ Nimble is a document-based Cocoa application written in Swift.
 
 We designed Nimble to be extendable by plugins. The [.xctemplate](/Templates) allows every developer to create their own plugin in several clicks. To help you quickly implement your ideas, we provide an API which was initially designed for our personal use and iteratively improved to its current state. Our plugins, such as  [ProjectNavigator](/Plugins/ProjectNavigator), [CodeEditor](/Plugins/CodeEditor), [BuildSystem](/Plugins/BuildSystem) and [SwiftExtensions](/Plugins/SwiftExtensions) show examples of using this API.
 
+## Contribution
+
+<p>Consider contributing by creating a pull request (PR) or opening an issue. By creating an issue, you can alert the repository's maintainers to any bugs or missing documentation you've found. 🐛📝 If you're feeling confident and want to make a bigger impact, creating a PR, can be a great way to help others. 📖💡 Remember, contributing to open source is a collaborative effort, and any contribution, big or small, is always appreciated! 🙌 So why not take the first step and start contributing today? 😊</p>
+
 ## License
 
 Copyright © 2022 SCADE Inc. All rights reserved.
