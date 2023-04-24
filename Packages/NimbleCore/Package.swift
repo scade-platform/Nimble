@@ -12,7 +12,7 @@ let package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/mxcl/Path.swift.git", from: "0.16.3"),
-    .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.6"),
+    .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.0"),
     .package(url: "https://github.com/gr-markin/SwiftSVG", .branch("master")),
     .package(url: "https://github.com/1024jp/WFColorCode.git", .exact("2.8.0")),
     .package(url: "https://github.com/apple/swift-collections", .upToNextMajor(from: "1.0.0"))

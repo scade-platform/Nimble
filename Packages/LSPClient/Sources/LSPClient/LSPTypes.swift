@@ -133,7 +133,7 @@ struct LSPCompletionItem: CodeEditor.CompletionItem {
   var insertText: String? { item.insertText }
 
   var textEdit: CodeEditor.TextEdit? {
-    guard let textEdit = item.textEdit else { return nil }
+    guard case .textEdit(let textEdit) = item.textEdit else { return nil }
     return LSPTextEdit(textEdit: textEdit)
   }
 

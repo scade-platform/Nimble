@@ -15,7 +15,7 @@ let package = Package(
       .package(path: "../BuildSystem"),
       .package(path: "../CodeEditor"),
             
-      .package(name: "SourceKitLSP", url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("release/5.7"))
+      .package(name: "SourceKitLSP", url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("release/5.8"))
     ],
     targets: [
       .target(
