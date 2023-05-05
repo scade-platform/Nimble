@@ -25,17 +25,16 @@ import Foundation
 
 ///Centralized storage of settings.
 public final class Settings {
+  ///Function to deserialize settings from the storage.
+  private let loader: () throws -> Storage
   
-  ///Function to deserialize settings from the storing place.
-  private let loader: () -> Storage
-  
-  ///Instance of `Storage` loaded by loader.
-  private lazy var storage: Storage = loader()
+  ///Instance of  the`Storage` loaded by the loader.
+  private lazy var storage: Storage? = try? loader()
 
-  ///Storage of `RuntimeData`. New instances create with clear storage.
+  ///Storage of the `RuntimeData`. New instances are created with an empty storage.
   private lazy var runtime: RuntimeStorage = .clear
-  
-  fileprivate init(loader: @escaping () -> Storage = { .empty }) {
+
+  fileprivate init(loader: @escaping () throws -> Storage = { .empty }) {
     self.loader = loader
   }
   
@@ -45,18 +44,13 @@ public final class Settings {
   public static var shared: Settings = Settings(loader: Settings.defaultLoad)
   
   //By default settings storing as YAML file.
-  private static func defaultLoad() -> Storage {
+  private static func defaultLoad() throws -> Storage  {
     guard let path = Settings.defaultPath,
           let content = try? String(contentsOf: path) else { return .empty }
-    
-    do {
-      return try YAMLDecoder().decode(Storage.self, from: content, userInfo: [.settings: shared])
-    } catch {
-      print("Error decoding settings file \(error)")
-      return .empty
-    }
+
+    return try YAMLDecoder().decode(Storage.self, from: content, userInfo: [.settings: shared])
   }
-  
+
   ///Default path to settings file.
   public static let defaultPath: Path? = {
     guard let dir = try? (Path.applicationSupport/"Nimble"/"User").mkdir(.p) else {
@@ -68,7 +62,7 @@ public final class Settings {
   ///Update `Storage` value and notify observers.
   ///Default loader reads settings file on FS.
   public func reload() {
-    self.storage = loader()
+    self.storage = try? loader()
     
     //TODO: Update runtime storage
     
@@ -95,7 +89,7 @@ public final class Settings {
       return value as? T
     }
 
-    if let value = storage.data[key] {
+    if let value = storage?.data[key] {
       return value as? T
     }
     
@@ -157,62 +151,77 @@ public final class Settings {
   // MARK: - Settings content
   
   ///Text represantation of `Settings`.
-  public var content: String {
-    var workingCopy = self.storage
+  public var content: String? {
+    guard var workingCopy = self.storage else { return nil }
 
     //Set default value for registered in runtime but not stored setting
     runtime.definedSettingKeys.forEach {
       workingCopy.data[$0] = workingCopy.data[$0, default: self.runtime[$0]!.defaultValueProvider()]
     }
 
-    return dictionaryToString(workingCopy.data)
-  }
-  
-  private func dictionaryToString(_ dictionary: [String: Any], level: Int = 0) -> String {
-    var result = ""
-    let sortedKeys = dictionary.keys.sorted { $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending }
-    for key in sortedKeys {
-      if !result.isEmpty {
-        result += "\n\n"
+    let encoder = YAMLEncoder()
+
+    return workingCopy.data.keys
+      .sorted {
+        $0.localizedCaseInsensitiveCompare($1) == ComparisonResult.orderedAscending
       }
-      if let subDict = dictionary[key] as? [String: String] {
-        result += desriptionToComment(runtime[key]!.description)
-        result += "\(key):\n"
-        result += dictionaryToString(subDict, level: level + 2)
-      } else {
-        for _ in 0..<level {
-          result += " "
-        }
-        result += desriptionToComment(runtime[key]!.description)
-        result += "\(key): \(optionalToString(optional: dictionary[key], defaultValue: ""))"
+      .compactMap {
+        guard let encodable = workingCopy.encodable(for: $0),
+              let setting = try? encoder.encode(encodable, userInfo: [.settings: Settings.shared]) else { return nil }
+
+        var res = (runtime[$0]?.description ?? "").split(separator: "\n").map{"# \($0)"}
+        res.append(setting)
+
+        return res.joined(separator: "\n")
       }
-    }
-    return result
-  }
-  
-  private func desriptionToComment(_ description: String) -> String {
-    guard !description.isEmpty else {
-      return ""
-    }
-    let lines = description.split(separator: "\n")
-    var result = ""
-    lines.forEach{
-      result += "#\($0)\n"
-    }
-    return result
-  }
-  
-  private func optionalToString(optional: Any?, defaultValue: String) -> String {
-    switch optional {
-    case let value? where value is NSNull: return defaultValue
-    case let value?: return String(describing: value)
-    case nil: return defaultValue
-    }
+      .joined(separator: "\n\n")
   }
   
   public func validate() -> [SettingDiagnostic] {
+    do {
+      let _ = try self.loader()
+    } catch let error as DecodingError {
+
+      var diagnostics: [SettingDiagnostic] = []
+
+      switch error {
+      case .dataCorrupted(let ctx):
+        let diag: SettingDiagnostic
+        if let error = ctx.underlyingError as? YamlError {
+          switch error {
+          case .parser( _, let msg, let mark, _):
+            diag = SettingDiagnostic(.mark(line: mark.line, column: mark.column),
+                                     message: msg,
+                                     severity: .error)
+          default:
+            diag = SettingDiagnostic(.codingPath(ctx.codingPath),
+                                     message: ctx.debugDescription,
+                                     severity: .error)
+          }
+
+        } else {
+          diag = SettingDiagnostic(.codingPath(ctx.codingPath),
+                                   message: ctx.debugDescription,
+                                   severity: .error)
+        }
+
+        diagnostics = [diag]
+        break
+
+      default:
+        break
+      }
+
+      return diagnostics
+
+    } catch {
+      print("Error decoding settings file \(error)")
+      return []
+    }
+
+
     //TODO: Add `SettingDiagnostic` which contain information about place in document
-    runtime.definedSettingKeys.flatMap{runtime[$0]!.validate()}
+    return runtime.definedSettingKeys.flatMap{runtime[$0]!.validate()}
   }
   
 }
@@ -220,12 +229,13 @@ public final class Settings {
 //MARK: - Storage
 
 fileprivate extension Settings {
+
   ///Inner storage which `Settings` uses to store, serealize and deserealize the setting values
   struct Storage: Codable {
     var data: [String: Any]
-    
+
     weak var settings: Settings? = nil
-    
+
     static var empty: Storage { Storage() }
     
     init(data: [String: Any] = [:]) {
@@ -265,34 +275,60 @@ fileprivate extension Settings {
     
     func encode(to encoder: Encoder) {
       let settings = self.settings ?? encoder.userInfo[.settings] as? Settings
-      
+      var container = encoder.container(keyedBy: RawCodingKey.self)
+
       guard let runtime = settings?.runtime else {
         return
       }
-          
-      var container = encoder.container(keyedBy: RawCodingKey.self)
-      
-      data.forEach {
-        guard let isRuntimeSetting = runtime[$0.key]?.isRuntime, !isRuntimeSetting else {
-          // Skip all runtime settings
+
+      data
+        .filter{
+          !(runtime[$0.key]?.isRuntime ?? true)
+        }
+        .forEach {
+          encodable(for: $0.key)?.encode(to: &container, with: settings?.runtime)
+        }
+    }
+
+    func encodable(for key: String) -> SettingEncodable? {
+      guard let value = self.data[key] else { return nil }
+      return SettingEncodable(key: key, value: value)
+    }
+
+    // Encodable wrapper for storage data
+
+    struct SettingEncodable: Encodable {
+      let key: String
+      let value: Any
+
+      var rawKey: RawCodingKey { RawCodingKey(stringValue: key)! }
+
+      func encode(to encoder: Encoder) {
+        let settings = encoder.userInfo[.settings] as? Settings
+        var container = encoder.container(keyedBy: RawCodingKey.self)
+
+        encode(to: &container, with: settings?.runtime)
+      }
+
+      func encode(to container: inout KeyedEncodingContainer<RawCodingKey>, with runtime: RuntimeStorage?) {
+        guard let runtime = runtime else {
           return
         }
 
-        guard let coder = runtime[$0.key]?.coder else {
-          print("Coder for setting by key \"\($0.key)\" is not available")
+        guard let coder = runtime[key]?.coder else {
+          print("Coder for setting by key \"\(key)\" is not available")
           return
         }
-        
+
         do {
-          let key = RawCodingKey(stringValue: $0.key)!
-          try coder.encode(value: $0.value, to: &container, forKey: key)
+          try coder.encode(value: value, to: &container, forKey: rawKey)
         } catch {
           print("Error encoding settings: \(error)")
         }
       }
     }
   }
-  
+
   ///Inner storage which `Settings` uses to store runtime data
   struct RuntimeStorage {
     
@@ -454,11 +490,11 @@ public extension SettingProtocol {
   }
 
   func error(_ message: String) -> SettingDiagnostic {
-    SettingDiagnostic(self.key, message: message, severity: .error)
+    SettingDiagnostic(.key(self.key), message: message, severity: .error)
   }
   
   func warning(_ message: String) -> SettingDiagnostic {
-    SettingDiagnostic(self.key, message: message, severity: .warning)
+    SettingDiagnostic(.key(self.key), message: message, severity: .warning)
   }
 }
 
@@ -616,12 +652,23 @@ public protocol SettingValidator {
 }
 
 public struct SettingDiagnostic: Diagnostic {
-  public let key: String
+  public enum Location {
+    case none
+    case key(String)
+    case mark(line: Int, column: Int)
+
+    static func codingPath(_ path: [CodingKey]) -> Location {
+      guard let key = path.first?.stringValue else { return .none }
+      return .key(key)
+    }
+  }
+
+  public let location: Location
   public var message: String
   public var severity: DiagnosticSeverity
   
-  fileprivate init(_ key: String, message: String, severity: DiagnosticSeverity) {
-    self.key = key
+  fileprivate init(_ location: Location, message: String, severity: DiagnosticSeverity) {
+    self.location = location
     self.message = message
     self.severity = severity
   }

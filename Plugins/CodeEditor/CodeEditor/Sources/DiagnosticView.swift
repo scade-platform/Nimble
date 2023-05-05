@@ -101,7 +101,7 @@ class DiagnosticView: NSStackView {
           let textStorage = textView.textStorage,
           let textContainer = textView.textContainer else { return }
 
-    var lineRange = NSRange(textStorage.string.lineRange(line: line - 1))
+    var lineRange = NSRange(textStorage.string.lineRange(line: line))
 
     // Adjust lineRange to remove NEWLINE symbol
     // Otherwise the line width would span to the text view's width
@@ -187,7 +187,7 @@ class DiagnosticView: NSStackView {
   func wrappedLineTopOffset() -> CGFloat?  {
     guard let textView = self.textView, let textStorage = textView.textStorage, let layoutManager = textView.layoutManager else { return nil }
     
-    var lineRange = NSRange(textStorage.string.lineRange(line: line - 1))
+    var lineRange = NSRange(textStorage.string.lineRange(line: line))
     if lineRange.lowerBound == textStorage.string.offset(at: textStorage.string.endIndex) {
       let lastCharIndex = textStorage.string.index(before: textStorage.string.endIndex)
       let bound = textStorage.string.offset(at: lastCharIndex)

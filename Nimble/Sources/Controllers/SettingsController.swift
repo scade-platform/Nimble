@@ -43,7 +43,7 @@ class SettingsController {
     self.settingsDocument = settingsDocument
     settingsDocument.observers.add(observer: self)
     
-    if let content = Settings.shared.content.data(using: .utf8) {
+    if let content = Settings.shared.content?.data(using: .utf8) {
       _ = try? settingsDocument.read(from: content, ofType: "public.text")
     }
 

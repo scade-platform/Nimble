@@ -107,8 +107,8 @@ public extension String {
   
   func lineRange(line lineNumber: Int) -> Range<Index> {
     var line = lineRange(at: startIndex)
-    
-    for _ in 0..<lineNumber {
+
+    for _ in 0..<lineNumber - 1 {
       line = lineRange(at: line.upperBound)
     }
         

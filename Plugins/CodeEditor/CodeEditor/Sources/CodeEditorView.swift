@@ -285,7 +285,13 @@ extension CodeEditorView: WorkbenchEditor {
   func publish(diagnostics: [Diagnostic]) {
     guard let textStorage = document?.textStorage else { return }
     
-    let settingsDignostics = diagnostics.compactMap{$0 as? SettingDiagnostic}.map{EditorSettingDiagnostic(textStorage.string, diagnostic: $0)}
+    let settingsDignostics = diagnostics
+      .compactMap {
+        $0 as? SettingDiagnostic
+      }
+      .map{
+        EditorSettingDiagnostic(textStorage.string, diagnostic: $0)
+      }
     
     if !settingsDignostics.isEmpty {
       self.diagnostics = settingsDignostics

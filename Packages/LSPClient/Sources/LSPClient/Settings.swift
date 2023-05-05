@@ -27,13 +27,13 @@ public struct Settings: SettingsGroup {
   @SettingDefinition("editor.lsp.servers",
                      description: """
                                   List of exteral Language Servers (LSP).
-                                  Default value is empy list.
-                                  An external server can be specified using the following structure
+                                  Default value is an empty list.
+                                  An external server can be specified as an object with following fields
                                     - languages: List of supported languages (required)
                                     - executable: Path to the server executable (required)
                                     - arguments: List of arguments that should be passed to the executable (optional)
-                                    - environment: Dictionary of environment variables and values for the server process (optional)
-                                    - initializationOptions: LSP Any value passed to the server during the init phase, for more details, please, refer to the documentation of the Language Server Protocol (optional)
+                                    - environment: Dictionary of environment variables and corresponding values for the server process (optional)
+                                    - initializationOptions: List of LSP Any values passed to the server during the init phase, for more details, please, refer to the documentation of the Language Server Protocol (optional)
                                   """,
                      defaultValue: [])
   public private(set) var servers: [LSPExternalServerProvider]

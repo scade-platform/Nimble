@@ -50,11 +50,20 @@ extension EditorSettingDiagnostic: SourceCodeDiagnostic {
   }
   
   func range(in: String) -> Range<Int>? {
-    guard let range: Range<String.Index> = content.range(of: settingDiagnostic.key) else {
+    switch settingDiagnostic.location {
+    case .key(let key):
+      guard let range: Range<String.Index> = content.range(of: key) else {
+        return nil
+      }
+      return content.range(for: range)
+
+    case .mark(let line, let column):
+      let lineRange = content.lineRange(line: line) as Range<Int>
+      return lineRange.lowerBound..<lineRange.lowerBound + column
+
+    default:
       return nil
     }
-    
-    return content.range(for: range)
   }
   
   var message: String {
