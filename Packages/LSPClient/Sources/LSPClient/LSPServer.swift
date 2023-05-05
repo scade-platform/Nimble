@@ -154,15 +154,24 @@ public final class LSPExternalServer: LSPServer {
                                    outFD: pipeIn.fileHandleForWriting)
         
     client = LSPClient(connection, initializationOptions: opts)
-    
+    connection.start(receiveHandler: client)
+
     proc.terminationHandler = {[weak self] proc in
-      self?.connection.close()
+      self?.terminate()
     }
   }
-  
+
+  private func terminate() {
+    connection.close()
+  }
+
   public func start(with buildVariant: Variant?) throws {
-    try proc.run()
-    connection.start(receiveHandler: client)
+    do {
+      try proc.run()
+    } catch {
+      terminate()
+      throw error
+    }
   }
   
   public func stop() {

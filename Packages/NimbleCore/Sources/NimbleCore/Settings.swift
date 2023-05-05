@@ -48,7 +48,8 @@ public final class Settings {
     guard let path = Settings.defaultPath,
           let content = try? String(contentsOf: path) else { return .empty }
 
-    return try YAMLDecoder().decode(Storage.self, from: content, userInfo: [.settings: shared])
+    let storage = try YAMLDecoder().decode(Storage.self, from: content, userInfo: [.settings: shared])
+    return storage
   }
 
   ///Default path to settings file.
@@ -193,6 +194,12 @@ public final class Settings {
             diag = SettingDiagnostic(.mark(line: mark.line, column: mark.column),
                                      message: msg,
                                      severity: .error)
+
+          case .scanner(_, let msg, let mark, _):
+            diag = SettingDiagnostic(.mark(line: mark.line, column: mark.column),
+                                     message: msg,
+                                     severity: .error)
+
           default:
             diag = SettingDiagnostic(.codingPath(ctx.codingPath),
                                      message: ctx.debugDescription,
