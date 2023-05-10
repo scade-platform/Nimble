@@ -179,6 +179,7 @@ final class TabbedEditorViewModel {
   private func present(_ document: Document, openNewEditor: Bool) {
     let documentTabItem = EditorTabItem(document: document)
     var editorTabItems = editorTabItemsSubject.value
+
     // If the doc is already opened, switch to its tab
     if let documentTabIndex = editorTabItems.firstIndex(of: documentTabItem) {
       currentDocumentWillChange(currentDocument)
@@ -186,15 +187,37 @@ final class TabbedEditorViewModel {
       currentDocumentDidChange(currentDocument)
       return
     }
-    // Insert a new tab for edited or newly created documents
-    // and if it's forced by the flag 'openNewEditor'
+
     if let currentTabItemIndex = currentTabIndexSubject.value {
       let currentTabItem = editorTabItems[currentTabItemIndex]
+
+      // Insert a new tab for edited or newly created documents
+      // and if it's forced by the flag 'openNewEditor'
       if openNewEditor || currentTabItem.isEdited || currentTabItem.document.fileURL == nil {
         addTabItem(for: document, afterCurrentTab: true)
-      } else {
-        // Show in the current tab
-        guard let index = currentTabIndexSubject.value else { return }
+
+      // Otherwise reuse the existing tab
+      } else if let index = currentTabIndexSubject.value  {
+        let oldItem = editorTabItems.remove(at: index)
+
+        // If current document should be closed, reuse the tab
+        if oldItem.document.close() {
+          currentDocumentWillChange(currentDocument)
+
+          editorTabItems.insert(documentTabItem, at: index)
+          editorTabItemsSubject.value = editorTabItems
+          currentTabIndexSubject.value = index
+
+          responder.documentDidClose(oldItem.document)
+          stopFileObserving(for: oldItem.document)
+
+          currentDocumentDidChange(currentDocument)
+        // Otherwise add a new one
+        } else {
+          addTabItem(for: document, afterCurrentTab: true)
+        }
+
+/*
         let oldItem = editorTabItems.remove(at: index)
         editorTabItems.insert(documentTabItem, at: index)
         editorTabItemsSubject.value = editorTabItems
@@ -202,6 +225,7 @@ final class TabbedEditorViewModel {
         currentTabIndexSubject.value = index
         currentDocumentDidChange(currentDocument)
         responder.documentDidClose(oldItem.document)
+ */
       }
     }
   }
@@ -211,17 +235,22 @@ final class TabbedEditorViewModel {
     guard let index = editorTabItems.firstIndex(where: { $0.document.path == document.path }) else {
       return false
     }
+    return closeTab(at: index)
+  }
+
+  @discardableResult
+  public func closeTab(at index: Int) -> Bool {
     return closeTab(at: IndexPath(item: index, section: 0))
   }
-  
+
   @discardableResult
   public func closeTab(at index: IndexPath) -> Bool {
     var editorTabItems = editorTabItemsSubject.value
     let removedItem = editorTabItems.remove(at: index.item)
-    let shouldClose: Bool = removedItem.document.close()
-    if shouldClose {
-      editorTabItemsSubject.send(editorTabItems)
+
+    if removedItem.document.close() {
       responder.currentDocumentWillChange(currentDocument)
+      editorTabItemsSubject.send(editorTabItems)
       if index.item < editorTabItems.endIndex {
         currentTabIndexSubject.value = index.item
       } else if index.item - 1 >= 0 {
@@ -232,8 +261,10 @@ final class TabbedEditorViewModel {
       responder.documentDidClose(removedItem.document)
       stopFileObserving(for: removedItem.document)
       responder.currentDocumentDidChange(currentDocument)
+
+      return true
     }
-    return shouldClose
+    return false
   }
   
   private func stopFileObserving(for document: Document) {

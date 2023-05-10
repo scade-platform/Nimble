@@ -349,6 +349,8 @@ extension NimbleWorkbench: Workbench {
   }
 }
 
+// MARK: - TabbedEditorResponder
+
 extension NimbleWorkbench: TabbedEditorResponder {
   func documentDidOpen(_ document: Document) {
     observers.notify { $0.workbenchDidOpenDocument(self, document: document) }
