@@ -31,20 +31,15 @@ class SettingsController {
   }
   
   func openSettingsEditor(in workbench: Workbench? = nil) {
-    guard self.settingsDocument == nil else {
-      //Settings have already opened
-      return
-    }
-    
-    guard let settingsDocument = openSettingDocument() else {
-      return
-    }
-    
-    self.settingsDocument = settingsDocument
-    settingsDocument.observers.add(observer: self)
-    
-    if let content = Settings.shared.content?.data(using: .utf8) {
-      _ = try? settingsDocument.read(from: content, ofType: "public.text")
+    if self.settingsDocument == nil {
+      guard let settingsDocument = openSettingDocument() else { return }
+
+      self.settingsDocument = settingsDocument
+      settingsDocument.observers.add(observer: self)
+
+      if let content = Settings.shared.content?.data(using: .utf8) {
+        _ = try? settingsDocument.read(from: content, ofType: "public.text")
+      }
     }
 
     openEditor(in: workbench ?? documentController?.currentWorkbench)

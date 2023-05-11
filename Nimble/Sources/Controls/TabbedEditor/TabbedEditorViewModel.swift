@@ -216,16 +216,6 @@ final class TabbedEditorViewModel {
         } else {
           addTabItem(for: document, afterCurrentTab: true)
         }
-
-/*
-        let oldItem = editorTabItems.remove(at: index)
-        editorTabItems.insert(documentTabItem, at: index)
-        editorTabItemsSubject.value = editorTabItems
-        currentDocumentWillChange(currentDocument)
-        currentTabIndexSubject.value = index
-        currentDocumentDidChange(currentDocument)
-        responder.documentDidClose(oldItem.document)
- */
       }
     }
   }
@@ -249,7 +239,7 @@ final class TabbedEditorViewModel {
     let removedItem = editorTabItems.remove(at: index.item)
 
     if removedItem.document.close() {
-      responder.currentDocumentWillChange(currentDocument)
+      currentDocumentWillChange(currentDocument)
       editorTabItemsSubject.send(editorTabItems)
       if index.item < editorTabItems.endIndex {
         currentTabIndexSubject.value = index.item
@@ -260,7 +250,7 @@ final class TabbedEditorViewModel {
       }
       responder.documentDidClose(removedItem.document)
       stopFileObserving(for: removedItem.document)
-      responder.currentDocumentDidChange(currentDocument)
+      currentDocumentDidChange(currentDocument)
 
       return true
     }
