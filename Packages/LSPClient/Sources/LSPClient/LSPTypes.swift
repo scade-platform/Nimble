@@ -55,26 +55,8 @@ struct LSPDiagnostic: SourceCodeDiagnostic {
   }
 
   func range(`in` text: String) -> Range<Int>? {
-    guard isValid(range: wrapped.range, for: text) else { return nil }
-    return text.range(for: text.range(for: wrapped.range))
-  }
-}
-
-
-fileprivate extension LSPDiagnostic {
-  func isValid(range: Range<Position>, for string: String) -> Bool {
-    
-    func isValid(position: Position) -> Bool {
-      let lineRange: Range<String.Index> = string.lineRange(line: position.line)
-      let startLineIndex = lineRange.lowerBound
-      let endLineIndex = lineRange.upperBound
-      return string.index(startLineIndex, offsetBy: position.utf16index, limitedBy: endLineIndex) != nil
-    }
-    
-    guard isValid(position: range.lowerBound),
-          isValid(position: range.upperBound)
-    else { return false }
-    return true
+    guard let wrappedRange = text.range(for: wrapped.range) else { return nil }
+    return text.range(for: wrappedRange)
   }
 }
 
@@ -95,7 +77,8 @@ struct LSPTextEdit: CodeEditor.TextEdit {
   var newText: String { textEdit.newText }
 
   func range(`in` text: String) -> Range<Int> {
-    text.range(for: text.range(for: textEdit.range))
+    ///TODO: fix unconditional unwrapping of the range
+    text.range(for: text.range(for: textEdit.range)!)
   }
 }
 

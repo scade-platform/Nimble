@@ -79,17 +79,19 @@ public extension String {
 
     return lb..<ub
   }
-  
+
+  /// Line number at index (one-based)
   func lineNumber(at location: Int) -> Int {
     let nsRange = NSRange(location..<location)
     guard let range = Range(nsRange, in: self) else { return 1 }
     return lineNumber(at: range.lowerBound)
   }
 
+  /// Line number at index (one-based).
   func lineNumber(at index: Index) -> Int {
     assert(index <= endIndex)
     
-    var count = 0
+    var count = 1
     var cur = self.startIndex
     while cur < index {
       if CharacterSet.newlines.contains(unicodeScalars[cur]) {
@@ -104,7 +106,8 @@ public extension String {
   func lineRange(at: Index) -> Range<Index> {
     return lineRange(for: at..<at)
   }
-  
+
+  /// Index range of the line at 'lineNumber' (one-based !!!).
   func lineRange(line lineNumber: Int) -> Range<Index> {
     var line = lineRange(at: startIndex)
 

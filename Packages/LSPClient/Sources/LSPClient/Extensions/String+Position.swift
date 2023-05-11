@@ -20,19 +20,27 @@
 import LanguageServerProtocol
 
 public extension String {
-  func index(at pos: Position) -> String.Index {
-    return index(lineRange(line: pos.line).lowerBound, offsetBy: pos.utf16index)
+  func index(at pos: Position) -> String.Index? {
+    // LSP position line is zero-based
+    let lineRange: Range<String.Index> = lineRange(line: pos.line + 1)
+
+    let startLineIndex = lineRange.lowerBound
+    let endLineIndex = lineRange.upperBound
+
+    return index(startLineIndex, offsetBy: pos.utf16index, limitedBy: endLineIndex)
   }
   
-  func range(for posRange: Range<Position>) -> Range<String.Index> {
-    return index(at: posRange.lowerBound)..<index(at: posRange.upperBound)
+  func range(for posRange: Range<Position>) -> Range<String.Index>? {
+    guard let begin = index(at: posRange.lowerBound),
+          let end = index(at: posRange.upperBound) else { return nil }
+    return begin..<end
   }
 
       
   func position(at index: Index) -> Position {
     let line = lineNumber(at: index)
     let range = lineRange(at: index)
-    return Position(line: line, utf16index: utf16.distance(from: range.lowerBound, to: index))
+    return Position(line: line - 1, utf16index: utf16.distance(from: range.lowerBound, to: index))
   }
   
   func position(at offset: Int) -> Position {
