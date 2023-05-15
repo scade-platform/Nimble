@@ -151,7 +151,7 @@ class CodeEditorView: NSViewController {
 
       let color = d.severity == .error ? NSColor.red : NSColor.yellow
 
-      let line = text.lineNumber(at: range.lowerBound) + 1
+      let line = text.lineNumber(at: range.lowerBound)
       if line != lastLine {
         if !diagnosticsOnLine.isEmpty {
           addDiagnosticsView(diagnosticsOnLine: diagnosticsOnLine, lastLine: lastLine)
