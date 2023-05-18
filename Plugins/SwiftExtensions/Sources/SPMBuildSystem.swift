@@ -40,22 +40,22 @@ class SPMBuildSystem: BuildSystem {
   func collectTargets(from workbench: Workbench) -> [Target] {
     guard let folders = workbench.project?.folders else { return [] }
 
-    let targets = folders.filter{canHandle(folder: $0)}.map{
+    let targets = folders.filter{ canHandle(folder: $0) }.map{
       SPMTarget(folder: $0, workbench: workbench, buildSystem: self)
     }
 
-    targets.forEach{
-      // creating default Mac variant
-      $0.variants.append(MacVariant(target: $0))
-
-      // creating variants for all android platforms
-      $0.variants += makeAndroidVariants(target: $0)
-
-      // creating variants for all user defined platforms
-      for toolchain in SwiftExtensions.Settings.shared.platforms {
-        $0.variants.append(UserDefinedToolchainVariant(target: $0, toolchain: toolchain))
-      }
-    }
+//    targets.forEach{
+//      // creating default Mac variant
+//      $0.variants.append(MacVariant(target: $0))
+//
+//      // creating variants for all android platforms
+//      $0.variants += makeAndroidVariants(target: $0)
+//
+//      // creating variants for all user defined platforms
+//      for toolchain in SwiftExtensions.Settings.shared.platforms {
+//        $0.variants.append(UserDefinedToolchainVariant(target: $0, toolchain: toolchain))
+//      }
+//    }
     return targets
   }
   
@@ -133,7 +133,7 @@ class SPMBuildSystem: BuildSystem {
 private extension SPMBuildSystem {
   func canHandle(folder: Folder) -> Bool {
     guard let files = try? folder.files() else { return false }
-    if files.contains(where: {$0.name.lowercased() == "package.swift"}) {
+    if files.contains(where: { $0.name.lowercased() == "package.swift" }) {
       return true
     }
     return false
@@ -141,6 +141,12 @@ private extension SPMBuildSystem {
 }
 
 class SPMTarget: Target {
+  enum VariantsGroups: String, CaseIterable {
+    case allProducts = "All Products"
+    case packages = "Packages"
+    case targets = "Targets"
+  }
+
   var name: String {
     folder.name
   }
@@ -154,7 +160,15 @@ class SPMTarget: Target {
     return nil
   }()
 
-  var variants: [Variant] = []
+  lazy var variants: [Variant] = {
+    buildModel.createVariants(for: self)
+  }()
+
+  private var buildModel: BuildSystemModel {
+    modelFactory.createBuildSystemModel()
+  }
+
+  lazy var variantsGroups: [String] = VariantsGroups.allCases.map { $0.rawValue }
 
   var buildSystem: BuildSystem { spmBuildSystem }
 
@@ -164,14 +178,33 @@ class SPMTarget: Target {
 
   weak var spmBuildSystem: SPMBuildSystem!
 
+  private let modelFactory: SPMTargetModelFactory
+
   init(folder: Folder, workbench: Workbench, buildSystem: SPMBuildSystem) {
     self.folder = folder
     self.workbench = workbench
     self.spmBuildSystem = buildSystem
+    self.modelFactory = SPMTargetModelFactory(folder: folder.url)
   }
 
   func contains(folder: Folder) -> Bool {
     return self.folder == folder
+  }
+
+  func group(for variant: Variant) -> UInt? {
+    guard let buildSystemModelVariant = variant as? BuildSystemModelVariant else {
+      return nil
+    }
+    switch buildSystemModelVariant.buildModel {
+    case is SPMPackageBuildableModel:
+      return 0
+    case is SPMProductBuildableModel:
+      return 1
+    case is SPMTargetBuildableModel:
+      return 2
+    default:
+      return nil
+    }
   }
 }
 
@@ -369,7 +402,73 @@ fileprivate class UserDefinedToolchainVariant: SPMVariant, SwiftVariant {
                       "--destination", descPath.string]
     return proc
   }
+}
 
+class BuildSystemModelVariant: SPMVariant, SwiftVariant {
+  var toolchain: SwiftExtensions.SwiftToolchain? {
+    nil
+  }
+
+  var icon: Icon? {
+    BuildSystemIcons.mac
+  }
+
+  let buildModel: SwiftBuildableModel
+  private let commonCompilerArgument = ["-Xswiftc", "-Xfrontend", "-Xswiftc", "-color-diagnostics"]
+
+  init(target: SPMTarget, model: SwiftBuildableModel) {
+    self.buildModel = model
+    super.init(target: target, name: model.title)
+  }
+
+  override func createProcess(source: Folder) -> Process {
+    let proc = Process()
+    proc.currentDirectoryURL = source.url
+    proc.environment = ["PATH": "/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"]
+
+    let toolchain = SwiftExtensions.Settings.shared.swiftToolchain
+    if !toolchain.isEmpty {
+      proc.executableURL = URL(fileURLWithPath: "\(toolchain)/usr/bin/swift")
+      if !FileManager.default.fileExists(atPath: proc.executableURL!.path) {
+        proc.executableURL = URL(fileURLWithPath: "\(toolchain)/bin/swift")
+      }
+    } else {
+      proc.executableURL = URL(fileURLWithPath: "/usr/bin/swift")
+    }
+    return proc
+  }
+
+  override func createBuildProcess(source: Folder) -> Process {
+    let proc = createProcess(source: source)
+    proc.arguments = buildModel.buildCommandArguments + commonCompilerArgument
+    return proc
+  }
+}
+
+// MARK: - MacVariant - Run task
+extension BuildSystemModelVariant {
+  func run() throws -> WorkbenchTask {
+    guard let target = spmTarget else {
+      throw VariantError.targetRequired
+    }
+
+    let process = createRunProcess(source: target.folder)
+    let task = BuildSystemTask(process)
+
+    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: "\(target.name) - SPM", title: "\(target.name) - SPM", in: workbench) {
+      task.output(to: console) { console in
+        console.stopReadingFromBuffer()
+      }
+    }
+
+    return task
+  }
+
+  func createRunProcess(source: Folder) -> Process {
+    let proc = createProcess(source: source)
+    proc.arguments = ["run", "--skip-build"]
+    return proc
+  }
 }
 
 

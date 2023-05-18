@@ -45,4 +45,20 @@ public extension Process {
     return String(data: data, encoding: String.Encoding.utf8)?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
   }
 
+  func exec() throws -> String? {
+    let pipe = Pipe()
+    self.standardOutput = pipe
+
+    try self.run()
+    self.waitUntilExit()
+
+    if (self.terminationStatus != 0) {
+      throw ExecError.exitCodeError(self.terminationStatus)
+    }
+
+    let data = pipe.fileHandleForReading.readDataToEndOfFile()
+    return String(data: data, encoding: String.Encoding.utf8)?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+  }
 }
+
+
