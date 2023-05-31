@@ -1,6 +1,6 @@
 
 add_executable(Nimble MACOSX_BUNDLE)
-target_compile_options(Nimble PRIVATE -fmodules)
+#target_compile_options(Nimble PRIVATE -fmodules)
 
 # Add Nimble sources
 include(Sources/CMakeLists.txt)
@@ -13,6 +13,13 @@ source_group(TREE "${CMAKE_CURRENT_LIST_DIR}" FILES ${Nimble_SOURCES})
 get_target_property(Nimble_RESOURCES Nimble SOURCES)
 list(FILTER Nimble_RESOURCES INCLUDE REGEX "^[^.]+\\.xib")
 
+target_link_libraries(Nimble PRIVATE NimbleCore)
+
+swift_add_spm(SCOPE Nimble
+              URLS "https://github.com/FLORG1/Ansi.git#branch=master"
+                   "https://github.com/apple/swift-collections#version=1.0.0")
+target_link_libraries(Nimble PRIVATE Nimble::Ansi)
+
 # Set properties
 set_target_properties(Nimble PROPERTIES
   MACOSX_BUNDLE_BUNDLE_NAME "Nimble"
@@ -22,7 +29,7 @@ set_target_properties(Nimble PROPERTIES
   MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_LIST_DIR}/Nimble/Info.plist.cmake.in  
   RESOURCE "${Nimble_RESOURCES}"
   INSTALL_RPATH "@executable_path;@executable_path/../Frameworks;@loader_path/../Frameworks"
-  BUILD_WITH_INSTALL_RPATH TRUE
+#  BUILD_WITH_INSTALL_RPATH TRUE
 )
 
 

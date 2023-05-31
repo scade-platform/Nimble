@@ -10,7 +10,7 @@ function(add_nimble_application name)
     )
 
     add_executable(${name} ${ARG_UNPARSED_ARGUMENTS} ${ARG_RESOURCES})
-    target_compile_options(${name} PRIVATE -fmodules)
+#    target_compile_options(${name} PRIVATE -fmodules)
     
     if(ARG_INFO_PLIST)
         set_property(TARGET ${name} PROPERTY MACOSX_BUNDLE_INFO_PLIST ${ARG_INFO_PLIST})

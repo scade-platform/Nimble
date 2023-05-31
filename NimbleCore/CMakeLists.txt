@@ -16,7 +16,7 @@ set_target_properties(NimbleCore PROPERTIES
   MACOSX_BUNDLE_BUNDLE_VERSION "${NIMBLE_VERSION}"
   MACOSX_BUNDLE_COPYRIGHT "${NIMBLE_COPYRIGHT}"
   INSTALL_RPATH "@executable_path;@executable_path/../Frameworks;@loader_path/../Frameworks"
-  BUILD_WITH_INSTALL_RPATH TRUE
+  BUILD_WITH_INSTALL_RPATH TRUE 
 )
 
 # External dependencies
@@ -33,7 +33,10 @@ set_property(TARGET CYaml PROPERTY FOLDER "NimbleCore/Dependencies")
 
 # SPM dependencies
 
-swift_add_spm("${CMAKE_CURRENT_SOURCE_DIR}/SPM")
+swift_add_spm(SCOPE NimbleCore
+              URLS "https://github.com/mxcl/Path.swift.git#version=0.16.3"
+                   "https://github.com/gr-markin/SwiftSVG#branch=master"
+                   "https://github.com/1024jp/WFColorCode.git#version=2.8.0")
 
 #swift_add_spm_url("https://github.com/mxcl/Path.swift.git" "1.4.0")
 #swift_add_spm_url("https://github.com/gr-markin/SwiftSVG")
@@ -41,4 +44,4 @@ swift_add_spm("${CMAKE_CURRENT_SOURCE_DIR}/SPM")
 #set_property(TARGET ColorCode-spm PROPERTY FOLDER "NimbleCore/Dependencies")
 
 target_link_libraries(NimbleCore PUBLIC Yams)
-target_link_libraries(NimbleCore PUBLIC NimbleCore::NimbleCore-deps)
+target_link_libraries(NimbleCore PUBLIC NimbleCore::Path NimbleCore::ColorCode NimbleCore::SwiftSVG)
