@@ -28,4 +28,5 @@ foreach(source ${package_sources})
                    ${CMAKE_CURRENT_SOURCE_DIR}/../../Packages/SwiftExtensions/Sources/SwiftExtensions/${source})
 endforeach()
 
+target_link_libraries(SwiftExtensions PUBLIC NimbleCoreLSP::_SourceKitLSP)
 target_link_libraries(SwiftExtensions PUBLIC NimbleCore LSPClient)

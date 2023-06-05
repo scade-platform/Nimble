@@ -39,8 +39,6 @@ foreach(source ${plugin_sources})
   target_sources(LSPClient PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/Sources/${source})
 endforeach()
 
-swift_add_spm(SCOPE LSPClientSPM
-              URLS "git@github.com:FLORG1/sourcekit-lsp.git#branch=release/5.8")
 
-target_link_libraries(LSPClient PRIVATE LSPClientSPM::_SourceKitLSP)
+target_link_libraries(LSPClient PUBLIC NimbleCoreLSP::_SourceKitLSP)
 target_link_libraries(LSPClient PUBLIC NimbleCore BuildSystem CodeEditorPlugin)

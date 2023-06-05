@@ -26,7 +26,7 @@ endforeach()
 swift_add_spm(SCOPE CodeEditorSPM
               URLS "git@github.com:FLORG1/oniguruma.git#branch=master")
 
-target_link_libraries(CodeEditor PRIVATE NimbleCore CodeEditorSPM::Oniguruma)
+target_link_libraries(CodeEditor PUBLIC NimbleCore CodeEditorSPM::Oniguruma)
 
 
 add_library(CodeEditorPlugin SHARED)
