@@ -100,12 +100,12 @@ private func androidABI(for target: AndroidBuildTarget) -> AndroidABI {
                       sysrootArch: "x86",
                       includeArch: "i686-linux-android",
                       stlArch: "x86")
-  case .arm:
+  case .arm64:
     return AndroidABI(triple: "aarch64-none-linux-android",
                       sysrootArch: "arm64",
                       includeArch: "aarch64-linux-android",
                       stlArch: "arm64-v8a")
-  case .arm64:
+  case .arm:
     return AndroidABI(triple: "armv7-none-linux-androideabi",
                       sysrootArch: "arm",
                       includeArch: "arm-linux-androideabi",
