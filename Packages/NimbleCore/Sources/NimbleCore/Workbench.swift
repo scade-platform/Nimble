@@ -286,6 +286,11 @@ extension WorkbenchProcess: WorkbenchTask {
   public func stop() { process.terminate() }
   public func run() throws {
     do {
+      if let url = process.executableURL {
+        let argsString = process.arguments?.map{"\"\($0)\""}.joined(separator: " ") ?? ""
+        console?.writeLine(string: url.path + " " + argsString)
+      }
+
       try process.run()
     } catch {
       let nsError = error as NSError
