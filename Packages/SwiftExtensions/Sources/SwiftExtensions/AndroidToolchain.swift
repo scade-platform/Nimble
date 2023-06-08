@@ -80,7 +80,8 @@ public func makeAndroidSwiftToolchain(for target: AndroidBuildTarget, compiler: 
                                     "-lswiftFoundationNetworking"
                                  ],
                                  target: props.triple,
-                                 sdkRoot: ndk + "/platforms/android-21/arch-" + props.sysrootArch)
+                                 sdkRoot: ndk + "/platforms/android-21/arch-" + props.sysrootArch,
+                                 environment: ["AR": ndk + "/toolchains/llvm/prebuilt/darwin-x86_64/bin/llvm-ar"])
 
   _toolchains[tuple] = toolchain
   return toolchain
