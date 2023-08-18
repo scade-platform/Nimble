@@ -20,7 +20,7 @@
 import Cocoa
 
 
-public protocol Console {
+public protocol Console: AnyObject {
 
   var title: String { get }
   

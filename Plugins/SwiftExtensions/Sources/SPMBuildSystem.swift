@@ -318,7 +318,8 @@ fileprivate class MacVariant: SPMVariant, SwiftVariant {
 
   override func createBuildProcess(source: Folder) -> Process {
     let proc = createProcess(source: source)
-    proc.arguments = ["build", "-Xswiftc", "-Xfrontend", "-Xswiftc", "-color-diagnostics"]
+    proc.arguments = ["build", "-Xswiftc", "-Xfrontend", "-Xswiftc", "-color-diagnostics",
+                      "--disable-build-manifest-caching"]
     return proc
   }
 }
@@ -399,7 +400,22 @@ fileprivate class UserDefinedToolchainVariant: SPMVariant, SwiftVariant {
 
     let proc = createProcess(source: source)
     proc.arguments = ["build", "-Xswiftc", "-Xfrontend", "-Xswiftc", "-color-diagnostics",
+                      "--disable-build-manifest-caching",
                       "--destination", descPath.string]
+
+    // setting build process environment if set is toolchain
+    print("BEFORE ENV")
+    if let toolchainEnvironment = _toolchain.environment {
+      print("ENV DEFINED")
+      var procEnvironment = ProcessInfo.processInfo.environment
+      for (key, val) in toolchainEnvironment {
+        print("ENV: \(key) = \(val)")
+        procEnvironment[key] = val
+      }
+
+      proc.environment = procEnvironment
+    }
+
     return proc
   }
 }

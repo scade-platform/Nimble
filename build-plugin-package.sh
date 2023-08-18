@@ -28,10 +28,15 @@ fi
 echo "Building for architectures: ${ARCHS}"
 for arch in ${ARCHS}; do    
     swift build \
-        --configuration $CONFIGURATION \
+       --configuration $CONFIGURATION \
         --cache-path $PACKAGES_CACHE_DIR \
         --scratch-path $PACKAGE_BUILD_DIR \
         --triple ${arch}-apple-macosx
+    if [ $? -ne 0 ]
+    then
+        echo "Build failed"
+        exit 1
+    fi
 done
 
 

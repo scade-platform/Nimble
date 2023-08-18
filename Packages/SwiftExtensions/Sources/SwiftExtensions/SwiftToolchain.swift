@@ -27,11 +27,19 @@ public struct SwiftToolchain: Codable, Equatable {
   public var target: String?
   public var sdkRoot: String?
 
-  public init(name: String, compiler: String, compilerFlags: [String], target: String? = nil, sdkRoot: String? = nil) {
+  public var environment: [String: String]? = nil
+
+  public init(name: String,
+              compiler: String,
+              compilerFlags: [String],
+              target: String? = nil,
+              sdkRoot: String? = nil,
+              environment: [String: String]? = nil) {
     self.name = name
     self.compiler = compiler
     self.target = target
     self.sdkRoot = sdkRoot
     self.compilerFlags = compilerFlags
+    self.environment = environment
   }
 }
