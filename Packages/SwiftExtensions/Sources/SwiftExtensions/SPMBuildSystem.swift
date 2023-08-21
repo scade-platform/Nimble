@@ -22,12 +22,14 @@ import Foundation
 
 import NimbleCore
 import BuildSystem
-import SwiftExtensions
 
 
-class SPMBuildSystem: BuildSystem {  
-  var name: String {
+public class SPMBuildSystem: BuildSystem {  
+  public var name: String {
     return "Swift Package"
+  }
+
+  public init() {
   }
 
   private func makeAndroidVariants(target: SPMTarget) -> [Variant] {
@@ -37,7 +39,7 @@ class SPMBuildSystem: BuildSystem {
     }
   }
   
-  func collectTargets(from workbench: Workbench) -> [Target] {
+  public func collectTargets(from workbench: Workbench) -> [Target] {
     guard let folders = workbench.project?.folders else { return [] }
 
     let targets = folders.filter{ canHandle(folder: $0) }.map{
@@ -59,7 +61,7 @@ class SPMBuildSystem: BuildSystem {
     return targets
   }
   
-  func run(_ variant: Variant) {
+  public func run(_ variant: Variant) {
     guard let workbench = variant.target?.workbench else { return }
     do {
       let buildTask = try variant.build()
@@ -96,7 +98,7 @@ class SPMBuildSystem: BuildSystem {
     }
   }
   
-  func build(_ variant: Variant) {
+  public func build(_ variant: Variant) {
     guard let workbench = variant.target?.workbench else { return }
     do {
       let buildTask = try variant.build()
@@ -112,7 +114,7 @@ class SPMBuildSystem: BuildSystem {
     }
   }
   
-  func clean(_ variant: Variant) {
+  public func clean(_ variant: Variant) {
     guard let workbench = variant.target?.workbench else { return }
     do {
       let cleanTask = try variant.clean()

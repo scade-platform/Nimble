@@ -22,15 +22,17 @@ import Foundation
 
 import NimbleCore
 import BuildSystem
-import SwiftExtensions
 
 
-class SwiftBuildSystem: BuildSystem {
-  var name: String {
+public class SwiftBuildSystem: BuildSystem {
+  public var name: String {
     return "Swift File"
   }
+
+  public init() {
+  }
   
-  func collectTargets(from workbench: Workbench) -> [Target] {
+  public func collectTargets(from workbench: Workbench) -> [Target] {
     guard let document = workbench.currentDocument, canHandle(document: document) else { return [] }
     
     //Workaround to prevent allow compile single swift file in SPM package
@@ -48,7 +50,7 @@ class SwiftBuildSystem: BuildSystem {
     return [target]
   }
   
-  func run(_ variant: Variant) {
+  public func run(_ variant: Variant) {
     guard let workbench = variant.target?.workbench else { return }
     do {
       let buildTask = try variant.build()
@@ -85,7 +87,7 @@ class SwiftBuildSystem: BuildSystem {
     }
   }
   
-  func build(_ variant: Variant) {
+  public func build(_ variant: Variant) {
     guard let workbench = variant.target?.workbench else { return }
     do {
       let buildTask = try variant.build()
@@ -101,7 +103,7 @@ class SwiftBuildSystem: BuildSystem {
     }
   }
   
-  func clean(_ variant: Variant) {
+  public func clean(_ variant: Variant) {
     guard let workbench = variant.target?.workbench else { return }
     do {
       let cleanTask = try variant.clean()

@@ -8,11 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0CB6F12224FFE0DD00960EDA /* SPMWizardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CB6F12124FFE0DD00960EDA /* SPMWizardView.xib */; };
-		4C7527A82A12BC4600588823 /* BuildSystemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7527A72A12BC4600588823 /* BuildSystemModel.swift */; };
-		4C7527AA2A12CA0300588823 /* BuildSystemModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C7527A92A12CA0300588823 /* BuildSystemModelFactory.swift */; };
 		D73E894827333F6200EA473C /* SPMWizard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6F11D24FFDA4000960EDA /* SPMWizard.swift */; };
-		D73E894927333F6900EA473C /* SwiftBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D766FF26247D6727003646B0 /* SwiftBuildSystem.swift */; };
-		D73E894A27333F6E00EA473C /* SPMBuildSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = D766FF28247D6728003646B0 /* SPMBuildSystem.swift */; };
 		D73E894B27333F7400EA473C /* SPMWizardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6F12324FFE10100960EDA /* SPMWizardView.swift */; };
 		D7BEC81722B915D100A8F48B /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BEC81622B915D100A8F48B /* Plugin.swift */; };
 		D7D4BD4E23FCAFEC0063BD8F /* package.yml in Resources */ = {isa = PBXBuildFile; fileRef = D7D4BD4D23FCAFEC0063BD8F /* package.yml */; };
@@ -22,11 +18,7 @@
 		0CB6F11D24FFDA4000960EDA /* SPMWizard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPMWizard.swift; sourceTree = "<group>"; };
 		0CB6F12124FFE0DD00960EDA /* SPMWizardView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SPMWizardView.xib; sourceTree = "<group>"; };
 		0CB6F12324FFE10100960EDA /* SPMWizardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPMWizardView.swift; sourceTree = "<group>"; };
-		4C7527A72A12BC4600588823 /* BuildSystemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildSystemModel.swift; sourceTree = "<group>"; };
-		4C7527A92A12CA0300588823 /* BuildSystemModelFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildSystemModelFactory.swift; sourceTree = "<group>"; };
 		D721390A26AB254A00AD426E /* lib_InternalSwiftSyntaxParser.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = lib_InternalSwiftSyntaxParser.dylib; path = Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/lib_InternalSwiftSyntaxParser.dylib; sourceTree = DEVELOPER_DIR; };
-		D766FF26247D6727003646B0 /* SwiftBuildSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftBuildSystem.swift; sourceTree = "<group>"; };
-		D766FF28247D6728003646B0 /* SPMBuildSystem.swift */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.swift; path = SPMBuildSystem.swift; sourceTree = "<group>"; tabWidth = 2; };
 		D77F337923A4619500E3AFC8 /* bin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bin; sourceTree = "<group>"; };
 		D791747F26F7C4E500935C9F /* build.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = build.xcconfig; sourceTree = "<group>"; };
 		D7BEC80C22B9158B00A8F48B /* SwiftExtensions.plugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftExtensions.plugin; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -49,8 +41,6 @@
 		4C7527A62A12BBC900588823 /* BuildSystemModel */ = {
 			isa = PBXGroup;
 			children = (
-				4C7527A72A12BC4600588823 /* BuildSystemModel.swift */,
-				4C7527A92A12CA0300588823 /* BuildSystemModelFactory.swift */,
 			);
 			path = BuildSystemModel;
 			sourceTree = "<group>";
@@ -89,10 +79,8 @@
 			children = (
 				4C7527A62A12BBC900588823 /* BuildSystemModel */,
 				D7BEC81622B915D100A8F48B /* Plugin.swift */,
-				D766FF28247D6728003646B0 /* SPMBuildSystem.swift */,
 				0CB6F11D24FFDA4000960EDA /* SPMWizard.swift */,
 				0CB6F12324FFE10100960EDA /* SPMWizardView.swift */,
-				D766FF26247D6727003646B0 /* SwiftBuildSystem.swift */,
 				0CB6F12124FFE0DD00960EDA /* SPMWizardView.xib */,
 			);
 			path = Sources;
@@ -201,13 +189,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4C7527A82A12BC4600588823 /* BuildSystemModel.swift in Sources */,
-				D73E894A27333F6E00EA473C /* SPMBuildSystem.swift in Sources */,
 				D7BEC81722B915D100A8F48B /* Plugin.swift in Sources */,
 				D73E894B27333F7400EA473C /* SPMWizardView.swift in Sources */,
-				4C7527AA2A12CA0300588823 /* BuildSystemModelFactory.swift in Sources */,
 				D73E894827333F6200EA473C /* SPMWizard.swift in Sources */,
-				D73E894927333F6900EA473C /* SwiftBuildSystem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
