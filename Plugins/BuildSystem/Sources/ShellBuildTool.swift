@@ -28,9 +28,9 @@ class ShellBuildSystem: BuildSystem {
     return "Shell"
   }
   
-  func collectTargets(from workbench: Workbench) -> [Target] {
+  func collectTargets(workbench: Workbench) -> TargetGroup {
     //TODO: add get Targets logic
-    return []
+    return TargetGroup(buildSystem: self, name: "Shell")
   }
 
   

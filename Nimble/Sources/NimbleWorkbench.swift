@@ -401,7 +401,7 @@ extension NimbleWorkbench: TabbedEditorResponder {
 // MARK: - WorkbenchTaskObserver
 
 extension NimbleWorkbench: WorkbenchTaskObserver {
-  public func taskDidFinish(_ task: WorkbenchTask) {    
+  public func taskDidFinish(_ task: WorkbenchTask, result: Bool) {    
     task.observers.remove(observer: self)
     if let (_, onComplete) = tasksDictionary[task.id] {
       onComplete?(task)

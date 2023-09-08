@@ -31,5 +31,5 @@ public class BuildSystemIcons {
 }
 
 public extension BuildSystemIcons {
-  public static let mac = icon(name: "macIcon")
+  static let mac = icon(name: "macIcon")
 }

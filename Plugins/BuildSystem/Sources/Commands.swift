@@ -34,8 +34,8 @@ class BuildSystemCommand: Command {
                alignment: .right(orderPriority: orderPriority))
   }
 
-  func currentTask(in workbench: Workbench) -> BuildTask? {
-    return workbench.tasks.first { $0 is BuildTask } as? BuildTask
+  func currentTask(in workbench: Workbench) -> BuildSystemTask? {
+    return workbench.tasks.first { $0 is BuildSystemTask } as? BuildSystemTask
   }
 }
 
@@ -49,15 +49,14 @@ final class Run: BuildSystemCommand {
   }
 
   override func run(in workbench: Workbench) {
-    ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
-    guard let variant = workbench.selectedVariant else {
-      return
-    }
-    BuildSystemsManager.shared.activeBuildSystem?.run(variant)
+    guard let variant = workbench.selectedVariant else { return }
+    BuildSystemsManager.shared.run(variant: variant)
+
   }
   
   override func validate(in workbench: Workbench) -> State {
-    return currentTask(in: workbench) == nil ? [.enabled] : []
+    guard let variant = workbench.selectedVariant else { return [] }
+    return (variant.canRun() && currentTask(in: workbench) == nil) ? [.enabled] : []
   }
 }
 
@@ -71,11 +70,9 @@ final class Stop: BuildSystemCommand {
 
   override func run(in workbench: Workbench) {
     guard let task = currentTask(in: workbench) else { return }
-
     if task.isRunning {
       task.stop()
     }
-    ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
   }
 
   override func validate(in workbench: Workbench) -> State {
@@ -93,10 +90,8 @@ final class Build: BuildSystemCommand {
 
   override func run(in workbench: Workbench) {
     ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
-    guard let variant = workbench.selectedVariant else {
-      return
-    }
-    BuildSystemsManager.shared.activeBuildSystem?.build(variant)
+    guard let variant = workbench.selectedVariant else { return }
+    BuildSystemsManager.shared.build(variant: variant)
   }
 
   override func validate(in workbench: Workbench) -> State {
@@ -113,11 +108,8 @@ final class Clean: BuildSystemCommand {
   }
 
   override func run(in workbench: Workbench) {
-    ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
-    guard let variant = workbench.selectedVariant else {
-      return
-    }
-    BuildSystemsManager.shared.activeBuildSystem?.clean(variant)
+    guard let variant = workbench.selectedVariant else { return }
+    BuildSystemsManager.shared.clean(variant: variant)
   }
 
   override func validate(in workbench: Workbench) -> State {
@@ -136,10 +128,11 @@ final class CleanAll: BuildSystemCommand {
     guard let buildSystem = workbench.selectedVariant?.buildSystem else {
       return
     }
-    let targets = buildSystem.targets(in: workbench)
-    targets.forEach{ target in
-      target.variants.forEach{ variant in
-        buildSystem.clean(variant)
+
+    let targets = BuildSystemsManager.shared.allTargets(workbench: workbench, buildSystem: buildSystem)
+    for target in targets {
+      for variant in target.variants.allVariants() {
+        BuildSystemsManager.shared.clean(variant: variant)
       }
     }
   }

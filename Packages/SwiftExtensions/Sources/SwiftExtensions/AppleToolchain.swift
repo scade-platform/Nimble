@@ -77,7 +77,11 @@ private func appleSwiftABI(for platform: AppleBuildPlatform) -> AppleABI {
 
   switch platform {
   case .macos:
+#if arch(arm64)
+    return abi(with: "arm64-apple-macos\(xcrun("show-sdk-version"))")
+#else
     return abi(with: "x86_64-apple-macos\(xcrun("show-sdk-version"))")
+#endif
 
   case .iphone:
     return abi(with: "arm64-apple-ios\(xcrun("show-sdk-version"))")

@@ -46,22 +46,14 @@ final class BuildSystemPlugin: Plugin {
   }
 
   func encodeRestorableState(in workbench: Workbench, coder: NSCoder) -> Void {
-    guard let variant = workbench.selectedVariant,
-          let target = variant.target else { return }
-
-    coder.encode(target.name, forKey: "ActiveTarget")
-    coder.encode(variant.name, forKey: "ActiveVariant")
-    coder.encode(target.buildSystem.name, forKey: "ActiveBuildSystem")
+    guard let variant = workbench.selectedVariant else { return }
+    coder.encode(variant.id, forKey: "ActiveVariantId")
   }
 
   func restoreState(in workbench: Workbench, coder: NSCoder) -> Void {
-    guard let targetName = coder.decodeObject(forKey: "ActiveTarget") as? String,
-          let variantName = coder.decodeObject(forKey: "ActiveVariant") as? String,
-          let systemName = coder.decodeObject(forKey: "ActiveBuildSystem") as? String,
-          let variant = BuildSystemsManager.shared.find(
-            variant: (variantName, targetName, systemName), in: workbench) else { return }
-
-      workbench.selectedVariant = variant
+    guard let variantId = coder.decodeObject(forKey: "ActiveVariantId") as? String else { return }
+    guard let variant = BuildSystemsManager.shared.findVariant(workbench: workbench, id: variantId) else { return }
+    workbench.selectedVariant = variant
   }
 
   private func setupMainMenu() {

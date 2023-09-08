@@ -24,7 +24,8 @@ import NimbleCore
 import BuildSystem
 
 
-public class SwiftBuildSystem: BuildSystem {
+public class SwiftSingleFileBuildSystem: BuildSystem {
+
   public var name: String {
     return "Swift File"
   }
@@ -32,91 +33,26 @@ public class SwiftBuildSystem: BuildSystem {
   public init() {
   }
   
-  public func collectTargets(from workbench: Workbench) -> [Target] {
-    guard let document = workbench.currentDocument, canHandle(document: document) else { return [] }
+  public func collectTargets(workbench: Workbench) -> TargetGroup {
+    let group = TargetGroup(buildSystem: self, name: "Swift")
+
+    guard let document = workbench.currentDocument, canHandle(document: document) else { return group }
     
     //Workaround to prevent allow compile single swift file in SPM package
     if BuildSystemsManager.shared.activeBuildSystem is Automatic {
-      if let spmBuildSystem = BuildSystemsManager.shared.buildSystems.first(where: {$0 is SPMBuildSystem}) {
-        let spmTargets = spmBuildSystem.targets(in: workbench).compactMap{$0 as? SPMTarget}
-        if  !spmTargets.isEmpty, spmTargets.containsSwiftFile(document: document) {
-          return []
+      let spmTargets =  BuildSystemsManager.shared.allTargets(workbench: workbench).compactMap{$0 as? SPMTarget}
+      let spmProjects = spmTargets.map{$0.project}
+      for proj in spmProjects {
+        if proj.containsSourceFile(document: document) {
+          return group
         }
       }
     }
     
-    let target = SwiftTarget(document: document, workbench: workbench, buildSystem: self)
-    target.variants.append(SingleDocumentVariant(target: target))
-    return [target]
-  }
-  
-  public func run(_ variant: Variant) {
-    guard let workbench = variant.target?.workbench else { return }
-    do {
-      let buildTask = try variant.build()
-      workbench.publish(task: buildTask) { task in
-        guard let workbenchProcess = task as? BuildSystemTask,
-          let console = workbenchProcess.console else {
-            return
-        }
-        
-        DispatchQueue.main.async {
-          //show console with build result
-          ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
-        }
-        
-        //If build without error
-        if !console.contents.lowercased().contains("error:") {
-          if let runTask = try? variant.run() {
-            
-            workbench.publish(task: runTask) { _ in
-              DispatchQueue.main.async {
-                //show console with run result
-                ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
-              }
-            }
-            
-            //then run
-            try? runTask.run()
-          }
-        }
-      }
-      try buildTask.run()
-    } catch {
-      print(error)
-    }
-  }
-  
-  public func build(_ variant: Variant) {
-    guard let workbench = variant.target?.workbench else { return }
-    do {
-      let buildTask = try variant.build()
-      workbench.publish(task: buildTask) { _ in
-        DispatchQueue.main.async {
-          //show console with result
-          ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
-        }
-      }
-      try buildTask.run()
-    } catch {
-      print(error)
-    }
-  }
-  
-  public func clean(_ variant: Variant) {
-    guard let workbench = variant.target?.workbench else { return }
-    do {
-      let cleanTask = try variant.clean()
-      workbench.publish(task: cleanTask) { _ in
-        DispatchQueue.main.async {
-          //show console with result
-          ConsoleUtils.showConsoleTillFirstEscPress(in: workbench)
-        }
-      }
-      try cleanTask.run()
-    } catch {
-      print(error)
-    }
+    let target = SwiftSingleFileTarget(workbench: workbench, buildSystem: self, document: document)
+    target.variants.add(item: SwiftSingleFileMacVariant(target: target))
+    group.add(item: target)
+    return group
   }
   
   func canHandle(document: Document) -> Bool {
@@ -129,31 +65,17 @@ public class SwiftBuildSystem: BuildSystem {
   
 }
 
-fileprivate class SwiftTarget: Target {
-  var name: String {
-    document.title
-  }
-  
-  lazy var icon: Icon? = {
-    IconsManager.shared.icon(for: document.fileURL?.file)
-  }()
+fileprivate class SwiftSingleFileTarget: Target {
+  var document: Document
 
-  var variants: [Variant] = []
-
-  var buildSystem: BuildSystem { swiftBuildSystem }
-
-  let document: Document
-
-  weak var workbench: Workbench?
-  weak var swiftBuildSystem: SwiftBuildSystem!
-
-  init(document: Document, workbench: Workbench, buildSystem: SwiftBuildSystem) {
+  init(workbench: Workbench, buildSystem: SwiftSingleFileBuildSystem, document: Document) {
     self.document = document
-    self.workbench = workbench
-    self.swiftBuildSystem = buildSystem
+
+    super.init(workbench: workbench, buildSystem: buildSystem, name: document.title)
+    self.icon = IconsManager.shared.icon(for: document.fileURL?.file)
   }
   
-  func contains(file: File) -> Bool {
+  override public func contains(file: File) -> Bool {
     if document.fileURL == file.url {
       return true
     }
@@ -161,25 +83,22 @@ fileprivate class SwiftTarget: Target {
   }
 
   /// Corresponds to the working directory
-  func contains(folder: Folder) -> Bool {
+  override public func contains(folder: Folder) -> Bool {
     return document.fileURL?.deletingLastPathComponent() == folder.url
   }
 }
 
 
-fileprivate class SingleDocumentVariant: Variant {
-  var target: Target? {
-    swiftTarget
+fileprivate class SwiftSingleFileMacVariant: Variant {
+  public init(target: SwiftSingleFileTarget) {
+    let id = "Swift - \(target.name) - Mac"
+    super.init(target: target, id: id, name: "Mac")
+    self.icon = BuildSystemIcons.mac
   }
-  
-  weak var swiftTarget : SwiftTarget!
-  
-  var icon: Icon? {
-    BuildSystemIcons.mac
-  }
-  
-  var name: String {
-    "Mac"
+
+  // Returns single file target for this variant
+  public override var target: SwiftSingleFileTarget {
+    return super.target as! SwiftSingleFileTarget
   }
 
   lazy var sdkPath: String? = {
@@ -193,47 +112,14 @@ fileprivate class SingleDocumentVariant: Variant {
     }
     return macSdkDirPath.string
   }()
-  
-  init(target: SwiftTarget) {
-    self.swiftTarget = target
-  }
-}
 
-extension SingleDocumentVariant {
-  enum SwiftFileError: Error {
-    case URLRequired(Document)
-  }
-}
-
-//MARK: - SingleDocumentVariant - Build task
-extension SingleDocumentVariant {
-  func build() throws -> WorkbenchTask {
-    guard let target = swiftTarget else {
-      throw VariantError.targetRequired
-    }
-    
-    target.workbench?.currentDocument?.save(nil)
-    
-    let process = try createBuildProcess(document: target.document)
-    
-    let task = BuildSystemTask(process)
-    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: "\(target.name) - Swift File", title: "\(target.name) - Swift File", in: workbench) {
-      let taskConsole = task.output(to: console) {  [weak self] console in
-        guard let self = self else { return }
-        console.writeLine(string: "Finished Building \(target.name) - \(self.name)")
-        console.stopReadingFromBuffer()
-      }
-      taskConsole?.writeLine(string: "Building: \(target.name) - \(self.name)")
-    }
-    
-    return task
+  public override func build(output: Console) -> BuildSystemTask {
+    fatalError("Not Yet Implemented")
   }
   
   func createBuildProcess(document: Document) throws -> Process {
-    guard let documentURL = document.fileURL else {
-      throw SwiftFileError.URLRequired(document)
-    }
-    
+    let documentURL = target.document.fileURL!
+
     let proc = Process()
     proc.currentDirectoryURL = documentURL.deletingLastPathComponent()
     
@@ -247,39 +133,24 @@ extension SingleDocumentVariant {
     }
     return proc
   }
-}
 
-//MARK: - SingleDocumentVariant - Clean task
-extension SingleDocumentVariant {
-  func clean() throws -> WorkbenchTask {
-    guard let target = swiftTarget else {
-      throw VariantError.targetRequired
-    }
-    
+  public override func clean(output: Console) -> BuildSystemTask {
     return SwiftCleanTask(target)
   }
   
-  class SwiftCleanTask: WorkbenchTask {
+  class SwiftCleanTask: BuildSystemTask {
     var observers = ObserverSet<WorkbenchTaskObserver>()
     var isRunning: Bool = true
-    let target: SwiftTarget
+    let target: SwiftSingleFileTarget
     
     func stop() {
       //do nothing
     }
     
     func run() throws {
-      guard let workbench = target.workbench else {
-        isRunning = false
-        return
-      }
+      let documentURL = target.document.fileURL!
       
-      guard let documentURL = target.document.fileURL else {
-        isRunning = false
-        return
-      }
-      
-      let console = ConsoleUtils.openConsole(key: "\(target.name) - Swift File", title: "\(target.name) - Swift File", in: workbench)
+      let console = ConsoleUtils.openConsole(key: "\(target.name) - Swift File", title: "\(target.name) - Swift File", in: target.workbench)
       
       guard let file = File(url: documentURL.deletingPathExtension()), file.exists else {
         console?.startReadingFromBuffer()
@@ -294,39 +165,24 @@ extension SingleDocumentVariant {
       console?.writeLine(string: "File deleted: \(documentURL.deletingPathExtension().path)")
       console?.stopReadingFromBuffer()
       isRunning = false
-      self.observers.notify{$0.taskDidFinish(self)}
+      self.observers.notify{$0.taskDidFinish(self, result: true)}
     }
     
-    init(_ target: SwiftTarget) {
+    init(_ target: SwiftSingleFileTarget) {
       self.target = target
     }
+
+    public var result: Bool {
+      return true
+    }
   }
-}
 
-//MARK: - SingleDocumentVariant - Clean task
-extension SingleDocumentVariant {
-  func run() throws -> WorkbenchTask {
-    guard let target = swiftTarget else {
-      throw VariantError.targetRequired
-    }
-
-    let process = try createRunProcess(document: target.document)
-    let task = BuildSystemTask(process)
-    
-    if let workbench = target.workbench, let console = ConsoleUtils.openConsole(key: "\(target.name) - Swift File", title: "\(target.name) - Swift File", in: workbench) {
-      task.output(to: console) {console in
-        console.stopReadingFromBuffer()
-      }
-    }
-    
-    return task
+  override func run(output: Console) -> BuildSystemTask {
+    fatalError("Not Yet Implemented")
   }
   
   func createRunProcess(document: Document) throws -> Process {
-    guard let documentURL = document.fileURL else {
-      throw SwiftFileError.URLRequired(document)
-    }
-    
+    let documentURL = document.fileURL!
     let proc = Process()
     proc.currentDirectoryURL = documentURL.deletingLastPathComponent()
     proc.executableURL = URL(fileURLWithPath: "\(documentURL.deletingPathExtension())")

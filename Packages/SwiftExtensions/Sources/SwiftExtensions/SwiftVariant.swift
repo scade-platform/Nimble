@@ -23,4 +23,3 @@ import BuildSystem
 public protocol SwiftVariant: Variant {
   var toolchain: SwiftToolchain? { get }    
 }
-

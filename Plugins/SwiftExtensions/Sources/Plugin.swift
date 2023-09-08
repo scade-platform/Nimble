@@ -36,7 +36,7 @@ final class SwiftExtensionsPlugin: Plugin {
       LSPServerManager.shared.registerProvider(SKLocalServerProvider(), override: false)
     }
 
-    BuildSystemsManager.shared.register(buildSystem: SwiftBuildSystem())
+    BuildSystemsManager.shared.register(buildSystem: SwiftSingleFileBuildSystem())
     BuildSystemsManager.shared.register(buildSystem: SPMBuildSystem())
 
     WizardsManager.shared.register(wizard: SPMWizard())

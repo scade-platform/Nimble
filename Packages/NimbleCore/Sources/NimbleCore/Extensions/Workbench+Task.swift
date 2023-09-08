@@ -79,7 +79,7 @@ public class SequenceTask: WorkbenchTask {
       self.isRunning = false
       DispatchQueue.main.async { [weak self] in
         guard let self = self else { return }
-        self.observers.notify{$0.taskDidFinish(self)}
+        self.observers.notify{$0.taskDidFinish(self, result: true)}
       }
     }
   }

@@ -60,11 +60,11 @@ class ToolbarTargetControl : NSControl, CommandControl {
   }
   private var variantsMenu: NSMenu?
 
-  private var _activeVariant: VariantRef?
+  private weak var _activeVariant: Variant?
   var activeVariant: Variant? {
-    get { _activeVariant?.value  }
+    get { _activeVariant }
     set {
-      if let newValue = newValue, newValue !== _activeVariant?.value {
+      if let newValue = newValue, newValue !== _activeVariant {
         select(variant: newValue)
       }
 
@@ -72,7 +72,7 @@ class ToolbarTargetControl : NSControl, CommandControl {
         variantsMenu = createVariantsMenu(newValue)
       }
 
-      _activeVariant = newValue?.ref
+      _activeVariant = newValue
     }
   }
 
@@ -263,9 +263,10 @@ class ToolbarTargetControl : NSControl, CommandControl {
     guard let workbench = self.workbench else { return nil }
     let menu = NSMenu()
 
-    for (name, targets) in BuildSystemsManager.shared.targetsGroupedByName(in: workbench) {
-      guard targets.count > 1 else {
-        addMenuItem(target: targets.first!, to: menu)
+    for (name, items) in BuildSystemsManager.shared.rootTargets(workbench: workbench) {
+      guard items.count > 1 else {
+        // don't add submenu with build system name if entry has single item
+        menu.addItem(createMenuItem(targetItem: items.first!))
         continue
       }
 
@@ -273,15 +274,14 @@ class ToolbarTargetControl : NSControl, CommandControl {
                                   action: #selector(itemDidSelect(_:)), keyEquivalent: "")
       targetItem.target = self
       targetItem.representedObject = name
+      targetItem.image = NSImage(systemSymbolName: "square.on.square", accessibilityDescription: nil)
 
       let bsSubmenu = NSMenu()
-      targets.forEach {
-        let bsItem = NSMenuItem(title: $0.buildSystem.name,
-                                action: #selector(itemDidSelect(_:)), keyEquivalent: "")
-
+      for item in items {
+        let bsItem = createMenuItem(targetItem: item)
+        bsItem.title = item.buildSystem.name
         bsItem.target = self
-        bsItem.representedObject = $0
-        bsItem.submenu = createSubmenus(for: $0)
+        bsItem.representedObject = item
 
         bsSubmenu.addItem(bsItem)
       }
@@ -295,100 +295,97 @@ class ToolbarTargetControl : NSControl, CommandControl {
   }
 
   private func createVariantsMenu(_ variant: Variant?) -> NSMenu? {
-    guard let target = variant?.target,
-          let menu = createSubmenus(for: target) else { return nil}
+    guard let variant = variant else { return nil }
 
+    let target = variant.target
+    let menu = createSubmenu(variantGroup: target.variants)
     menu.delegate = self
-
-    guard !menu.items.isEmpty else { return nil }
     return menu
   }
 
-  private func addMenuItem(target: Target, to menu: NSMenu) {
-    let item = NSMenuItem(title: target.name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
+  // Creates menu item for variant
+  private func createMenuItem(variant: Variant) -> NSMenuItem {
+    let item = NSMenuItem(title: variant.name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
     item.target = self
-    item.representedObject = target
-    item.submenu = createSubmenus(for: target)
-    menu.addItem(item)
+    item.representedObject = variant
+    item.image = variant.icon?.image
+    return item
   }
-  
-  private func createSubmenus(for target: Target) -> NSMenu? {
-    guard !target.variants.isEmpty else { return nil }
 
+  // Creates menu item for variant group
+  private func createMenuItem(variantGroup: VariantGroup) -> NSMenuItem {
+    let item = NSMenuItem(title: variantGroup.name, action: nil, keyEquivalent: "")
+    item.target = self
+    item.representedObject = variantGroup
+    item.image = variantGroup.icon?.image
+    item.submenu = createSubmenu(variantGroup: variantGroup)
+    return item
+  }
+
+  // Creates submenu for variant group
+  private func createSubmenu(variantGroup: VariantGroup) -> NSMenu {
     let menu = NSMenu()
-    let groups = target.variantsGroups
-
-    if groups.count > 0 {
-      // Split groups into groups and subgroups
-      var groupItems: [NSMenuItem] = []
-      var subgroupItems: [(UInt, NSMenuItem)] = []
-
-      let allGroupItems: [NSMenuItem] = groups.map {
-        let item = createGroupItem(for: $0)
-        if let parent = target.group(for: $0) {
-          subgroupItems.append((parent, item))
-        } else {
-          groupItems.append(item)
-        }
-        return item
-      }
-
-      func appendItem(_ item: NSMenuItem, at index: UInt?) {
-        guard let index = index, index < allGroupItems.count else { return }
-        allGroupItems[Int(index)].submenu?.items.append(item)
-      }
-
-      func appendSeparator(at index: UInt?) {
-        guard let index = index,
-              index < allGroupItems.count,
-              var items = allGroupItems[Int(index)].submenu?.items,
-              items.count > 0 else { return }
-
-        items.append(.separator())
-        allGroupItems[Int(index)].submenu?.items = items
-      }
-
-      // Add variants into groups
-      var prevVariant: Variant?
-      target.variants.forEach {
-        let index = target.group(for: $0)
-        if let prevVariant = prevVariant, type(of: prevVariant) != type(of: $0) {
-          appendSeparator(at: index)
-        }
-        appendItem(createItem(for: $0), at: index)
-        prevVariant = $0
-      }
-
-      var splittedGroups: Set<UInt> = []
-      subgroupItems.forEach {
-        if !splittedGroups.contains($0.0) {
-          appendSeparator(at: $0.0)
-          splittedGroups.insert($0.0)
-        }
-        appendItem($0.1, at: $0.0)
-      }
-      menu.items = groupItems
-
-    } else {
-      menu.items = target.variants.map { createItem(for: $0) }
+    for item in variantGroup.items {
+      menu.items.append(createMenuItem(variantItem: item))
     }
 
     return menu
   }
 
-  private func createItem(for variant: Variant) -> NSMenuItem {
-    let item = NSMenuItem(title: variant.name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
+  // Creates menu item for variant tree item
+  private func createMenuItem(variantItem: VariantTreeItem) -> NSMenuItem {
+    if let _ = variantItem as? VariantSeparator {
+      return .separator()
+    } else if let variant = variantItem as? Variant {
+      return createMenuItem(variant: variant)
+    } else if let group = variantItem as? VariantGroup {
+      return createMenuItem(variantGroup: group)
+    } else {
+      fatalError("Unknown variant tree item type")
+    }
+  }
+
+  // Creates menu item for target
+  private func createMenuItem(target: Target) -> NSMenuItem {
+    let item = NSMenuItem(title: target.name, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
     item.target = self
-    item.representedObject = variant
+    item.representedObject = target
+    item.image = target.icon?.image
+    item.submenu = createSubmenu(variantGroup: target.variants)
     return item
   }
 
-  private func createGroupItem(for group: String) -> NSMenuItem {
-    let item = NSMenuItem(title: group, action: #selector(itemDidSelect(_:)), keyEquivalent: "")
+  // Creates menu item for target group
+  private func createMenuItem(targetGroup: TargetGroup) -> NSMenuItem {
+    let item = NSMenuItem(title: targetGroup.name, action: nil, keyEquivalent: "")
     item.target = self
-    item.submenu = NSMenu()
-    item.representedObject = VariantsGroupMenuItem(title: group)
+    item.representedObject = targetGroup
+    item.image = targetGroup.icon?.image
+    item.submenu = createSubmenu(targetGroup: targetGroup)
     return item
+  }
+
+  // Creates submenu for target group
+  private func createSubmenu(targetGroup: TargetGroup) -> NSMenu {
+    let menu = NSMenu()
+    for item in targetGroup.items {
+      menu.items.append(createMenuItem(targetItem: item))
+    }
+
+    return menu
+  } 
+
+  // Creates menu item for target tree item
+  private func createMenuItem(targetItem: TargetTreeItem) -> NSMenuItem {
+    if let _ = targetItem as? TargetSeparator {
+      return .separator()
+    } else if let target = targetItem as? Target {
+      return createMenuItem(target: target)
+    } else if let group = targetItem as? TargetGroup {
+      return createMenuItem(targetGroup: group)
+    } else {
+      fatalError("Unknown target tree item type")
+    }
   }
 
   @IBAction func leftButtonDidClick(_ sender: Any) {
@@ -437,13 +434,13 @@ class ToolbarTargetControl : NSControl, CommandControl {
 
   private func select(variant: Variant) {
     // Target visuals
-    if let targetIcon = variant.target?.icon {
+    if let targetIcon = variant.target.icon {
       leftImage?.isHidden = false
       leftImage?.image = targetIcon.image
     } else {
       leftImage?.isHidden = true
     }
-    leftLable?.stringValue = variant.target?.name ?? ""
+    leftLable?.stringValue = variant.target.name
 
     // Variant visuals
     if let variantIcon = variant.icon {

@@ -21,51 +21,160 @@
 import Foundation
 import NimbleCore
 
-public protocol Target: AnyObject {
-  var name: String { get }
 
-  var icon: Icon? { get }
+// Represents single item in the tree of targets
+open class TargetTreeItem {
+  // Parent group
+  public private(set) weak var group: TargetGroup?
 
-  var variants: [Variant] { get }
+  // Item build system
+  public private(set) weak var buildSystemRef: BuildSystem?
 
-  var variantsGroups: [String] { get }
+  // Item name
+  public private(set) var name: String
 
-  var buildSystem: BuildSystem { get }
+  // Optional item for tree item
+  public var icon: Icon? = nil
 
-  var workbench: Workbench? { get }
+  // Initiazes target tree item with specified name and parent group
+  public init(buildSystem: BuildSystem, name: String) {
+    self.buildSystemRef = buildSystem
+    self.name = name
+  }
 
-  func contains(file: File) -> Bool
+  // Returns reference to buildsystem for target
+  public var buildSystem: BuildSystem {
+    return buildSystemRef!
+  }
 
-  func contains(folder: Folder) -> Bool
+  // Sets group for target
+  fileprivate func setGroup(group: TargetGroup) {
+    if self.group != nil {
+      fatalError("Build target is already in group")
+    }
 
-  // Group for a variant
-  func group(for: Variant) -> UInt?
-
-  // Group for another group. Nil is the top group
-  func group(for: String) -> UInt?
+    self.group = group
+  }
 }
 
-public struct TargetRef {
-  public private(set) weak var value: Target?
-  public init(value: Target) { self.value = value }
+// Separator int target tree
+public class TargetSeparator: TargetTreeItem {
+  // Initializes separator item
+  public init(buildSystem: BuildSystem) {
+    super.init(buildSystem: buildSystem, name: "")
+  }
 }
 
-public extension Target {
-  var ref: TargetRef { TargetRef(value: self) }
+// Represents target group in the tree of targets
+public class TargetGroup: TargetTreeItem {
+  // Array of nested items
+  public private(set) var items: [TargetTreeItem] = []
+
+  // Initializes target group with specified name and optional parent group
+  public override init(buildSystem: BuildSystem, name: String) {
+    super.init(buildSystem: buildSystem, name: name)
+  }
+
+  // Returns true if group is empty
+  public var isEmpty: Bool {
+    return items.isEmpty
+  }
+
+  // Returns number of elements in group
+  public var count: Int {
+    return items.count
+  }
+
+  // Returns array of all targets
+  public func allTargets() -> [Target] {
+    var result: [Target] = []
+
+    for item in items {
+      if let variant = item as? Target {
+        result.append(variant)
+      } else if let group = item as? TargetGroup {
+        result += group.allTargets()
+      }
+    }
+
+    return result
+  }
+
+  // Adds item into group
+  public func add(item: TargetTreeItem) {
+    items.append(item)
+    item.setGroup(group: self)
+  }
+
+  // Adds separator into group
+  public func addSeparator() {
+    items.append(TargetSeparator(buildSystem: buildSystem))
+  }
+
+  // Searches for variant with specified ID
+  public func findVariant(id: String) -> Variant? {
+    for item in items {
+      if let target = item as? Target {
+        return target.variants.find(id: id)
+      } else if let group = item as? TargetGroup {
+        if let variant = group.findVariant(id: id) {
+          return variant
+        }
+      }
+    }
+
+    return nil
+  }
+
+  // Returns first variant in the list of variants
+  public var firstVariant: Variant? {
+    for item in items {
+      if let target = item as? Target {
+        if let variant = target.variants.first {
+          return variant
+        }
+      } else if let group = item as? TargetGroup {
+        if let variant = group.firstVariant {
+          return variant
+        }
+      }
+    }
+
+    return nil
+  }
 }
 
-public extension Target {
-  var icon: Icon? { nil }
+open class Target: TargetTreeItem {
+  // Weak reference to target workbench
+  private weak var workbenchRef: Workbench?
 
-  var variantsGroups: [String] { [] }
+  // Root group of variants for the target
+  public var variants: VariantGroup
 
-  var id: ObjectIdentifier { ObjectIdentifier(self) }
-  
-  func contains(file: File) -> Bool { return false }
+  // Initializes target with specified workbench, build system and target name
+  public init(workbench: Workbench, buildSystem: BuildSystem, name: String) {
+    self.workbenchRef = workbench
+    self.variants = VariantGroup(name: name)
+    super.init(buildSystem: buildSystem, name: name)
+  }
 
-  func contains(folder: Folder) -> Bool { return false }
+  // Returns reference to workbench for target
+  public var workbench: Workbench {
+    return workbenchRef!
+  }
 
-  func contains(url: URL) -> Bool {
+  // Returns true if target contains specified file. Default implementation always returns false.
+  open func contains(file: File) -> Bool {
+    return false
+  }
+
+  // Returns true if target contains directory. Default implementation always returns false.
+  open func contains(folder: Folder) -> Bool {
+    return false
+  }
+
+  // Returns true if target contains file or folder located at specified URL
+  public func contains(url: URL) -> Bool {
     guard url.isFileURL else { return false }
     if let folder = Folder(url: url) {
       return contains(folder: folder)
@@ -75,65 +184,8 @@ public extension Target {
     return false
   }
 
-  // Group variants into groups
-  func group(for: Variant) -> UInt? { return nil }
-
-  // Group another groups into sub-groups
-  func group(for: String) -> UInt? { return nil }
-}
-
-
-
-public protocol Variant: AnyObject {
-  var name: String { get }
-  var icon: Icon? { get }
-  var target: Target? { get }
-  
-  func run() throws -> WorkbenchTask
-  func build() throws -> WorkbenchTask
-  func clean() throws -> WorkbenchTask
-}
-
-public struct VariantRef {
-  public private(set) weak var value: Variant?
-  public init(value: Variant) { self.value = value }
-}
-
-
-public extension Variant {
-  //Default value for optional properties
-  var icon: Icon? { nil }
-  var target: Target? { nil }
-
-  //Default implementation
-  func run() throws -> WorkbenchTask {
-    throw VariantError.operationNotSupported
+  // Searches for variant with specified ID
+  public func findVariant(id: String) -> Variant? {
+    return variants.find(id: id)
   }
-  
-  func build() throws -> WorkbenchTask {
-    throw VariantError.operationNotSupported
-  }
-  
-  func clean() throws -> WorkbenchTask {
-    throw VariantError.operationNotSupported
-  }
-
-  var ref: VariantRef { VariantRef(value: self) }
-
-  var fqn: (name: String, target: String, system: String)? {
-    guard let target = self.target?.name,
-          let system = self.target?.buildSystem.name else { return nil }
-
-    return (name, target, system)
-  }
-}
-
-
-public extension Variant {
-  var buildSystem: BuildSystem? { target?.buildSystem }
-}
-
-public enum VariantError: Error {
-  case operationNotSupported
-  case targetRequired
 }

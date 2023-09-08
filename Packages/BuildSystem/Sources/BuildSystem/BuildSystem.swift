@@ -21,68 +21,78 @@
 import Cocoa
 import NimbleCore
 
-// MARK: - BuildSystem base protocol
 
+public protocol BuildSystemTask: WorkbenchTask {
+  // Build task result
+  var result: Bool { get }
+}
+
+extension WorkbenchProcess: BuildSystemTask {
+  // Returns true if process is terminated with exit code 0
+  public var result: Bool {
+    return terminationStatus == 0
+  }
+}
+
+// Represents abstract build system registered in build system manager
 public protocol BuildSystem: AnyObject {
+  // Build system name
   var name: String { get }
 
-  func run(_ variant: Variant)
-  func build(_ variant: Variant)
-  func clean(_ variant: Variant)
-
-  func collectTargets(from workbench: Workbench) -> [Target]
+  // Collects and returns targets for workbench
+  func collectTargets(workbench: Workbench) -> TargetGroup
 }
 
-extension BuildSystem {
+fileprivate extension BuildSystem {
   var id: ObjectIdentifier { ObjectIdentifier(self) }
-
-  public func targets(in workbench: Workbench) -> [Target] {
-    return BuildSystemsManager.shared.targets(in: workbench, from: self)
-  }
 }
 
-// MARK: - BuildSystemTask
-
-public protocol BuildTask: WorkbenchTask {}
-
-public class BuildSystemTask: WorkbenchProcess, BuildTask {}
-
-
-
-// MARK: - BuildSystemsManager
-
-public class BuildSystemsManager {
+// Build system manager
+public class BuildSystemsManager: WorkbenchTaskObserver {
   public struct WorkbenchTargets {
-    var all: [Target] { byBuildSystem.values.flatMap{$0} }
+    // All targets grouped by build system
+    var targets: [ObjectIdentifier: TargetGroup] = [:]
 
-    var byBuildSystem: [ObjectIdentifier: [Target]] = [:]
+    // Root target tree items from all build systems grouped by target name
+    var rootTargets: [String: [TargetTreeItem]] = [:]
 
-    var groupedByName: [(String, [Target])] {
-      var groups: [String: [Target]] = [:]
-
-      // Group targets by name
-      all.forEach {
-        var targets = groups[$0.name] ?? []
-        targets.append($0)
-        groups.updateValue(targets, forKey: $0.name)
+    // Searches for variant with specified ID
+    public func findVariant(id: String) -> Variant? {
+      for (_, group) in targets {
+        if let variant = group.findVariant(id: id) {
+          return variant
+        }
       }
 
-      return groups
-        .map{($0.key, $0.value.sorted(by: { t1, t2 in t1.buildSystem.name.lowercased() < t2.buildSystem.name.lowercased()}))}
-        .sorted{$0.0.lowercased() < $1.0.lowercased()}
+      return nil
     }
 
-    fileprivate mutating func append(_ target: Target) {
-      var targets = byBuildSystem[target.buildSystem.id, default: []]
-      targets.append(target)
-      byBuildSystem[target.buildSystem.id] = targets
+    // Returns first variant in the list of all variants
+    public var firstVariant: Variant? {
+      for (_, group) in targets {
+        if let variant = group.firstVariant {
+          return variant
+        }
+      }
+
+      return nil
     }
 
-    func find(variant: (name: String, target: String, system: String)) -> Variant? {
-      let target = all.filter{$0.name == variant.target && $0.buildSystem.name == variant.system}.first
-      return target?.variants.first{ $0.name == variant.name }
+    // Add targets for build system
+    public mutating func addTargets(buildSystemId: ObjectIdentifier, targets: TargetGroup) {
+      self.targets[buildSystemId] = targets
+
+      // collecting root targets and adding them into the rootTargets dictionary
+      for targ in targets.items {
+        var newItems: [TargetTreeItem] = rootTargets[targ.name] ?? []
+        newItems.append(targ)
+        newItems.sort(by: { $0.buildSystem.name.lowercased() < $1.buildSystem.name.lowercased() })
+        rootTargets[targ.name] = newItems
+      }
     }
   }
+
+  public typealias TerminationHandler = (Bool) -> Void
 
   public static let shared = BuildSystemsManager()
 
@@ -99,31 +109,35 @@ public class BuildSystemsManager {
     }
   }
 
+  private var currentTask: BuildSystemTask? = nil
+  private var currentTaskTerminationHandler: TerminationHandler? = nil
+
   private init() {}
 
-  private func selectVariant(_ fqn: (String, String, String)?, in workbench: Workbench) {
-    guard let targets = workbenchTargets[workbench.id]?.groupedByName else { return }
-
-    if let fqn = fqn, let variant = workbenchTargets[workbench.id]?.find(variant: fqn) {
+  private func selectVariant(id: String?, in workbench: Workbench) {
+    if let id = id, let variant = workbenchTargets[workbench.id]?.findVariant(id: id) {
       workbench.selectedVariant = variant
     } else {
-      workbench.selectedVariant = targets.first?.1.first?.variants.first
+      workbench.selectedVariant = workbenchTargets[workbench.id]?.firstVariant
     }
   }
 
   private func updateTargets(in workbench: Workbench) {
     // Store selected variant's "fqn"
-    let selectedFQN = workbench.selectedVariant?.fqn
+    let selectedId = workbench.selectedVariant?.id
 
-    // Load targets
+    // Collect targets fro all build systems
     var targets = WorkbenchTargets()
-    activeBuildSystem?.collectTargets(from: workbench).forEach {
-      targets.append($0)
+
+    for buildSystem in buildSystems {
+      let bsTargets = buildSystem.collectTargets(workbench: workbench)
+      targets.addTargets(buildSystemId: buildSystem.id, targets: bsTargets)
     }
+
     workbenchTargets[workbench.id] = targets
 
-    // Update selection using stored "fqn"
-    selectVariant(selectedFQN, in: workbench)
+    // Update selection using previously selected variant ID
+    selectVariant(id: selectedId, in: workbench)
 
     observers.notify{ $0.availableTargetsDidChange(workbench) }
   }
@@ -146,22 +160,105 @@ public class BuildSystemsManager {
     observers.notify{ $0.buildSystemDidRegister(buildSystem) }
   }
 
-  public func find(variant: (name: String, target: String, system: String), in workbench: Workbench) -> Variant? {
-    return workbenchTargets[workbench.id]?.find(variant: variant)
+  // Searches for variant with specified ID
+  public func findVariant(workbench: Workbench, id: String) -> Variant? {
+    return workbenchTargets[workbench.id]?.findVariant(id: id)
   }
 
-  public func targets(in workbench: Workbench) -> [Target] {
-    return workbenchTargets[workbench.id]?.all ?? []
+  // Returns dictionary of root targets grouped by name
+  public func rootTargets(workbench: Workbench) -> [String: [TargetTreeItem]] {
+    return workbenchTargets[workbench.id]?.rootTargets ?? [:]
   }
 
-  public func targetsGroupedByName(in workbench: Workbench) -> [(String, [Target])] {
-    return workbenchTargets[workbench.id]?.groupedByName ?? []
+  // Returns all targets for build system
+  public func allTargets(workbench: Workbench, buildSystem: BuildSystem) -> [Target] {
+    return workbenchTargets[workbench.id]?.targets[buildSystem.id]?.allTargets() ?? []
   }
 
-  fileprivate func targets(in workbench: Workbench, from buildSystem: BuildSystem) -> [Target] {
-    return workbenchTargets[workbench.id]?.byBuildSystem[buildSystem.id] ?? []
+  // Returns all targets for all build systems
+  public func allTargets(workbench: Workbench) -> [Target] {
+    guard let workbenchTargets = workbenchTargets[workbench.id] else { return [] }
+
+    var result: [Target] = []
+    for (_, group) in workbenchTargets.targets {
+      result += group.allTargets()
+    }
+
+    return result
   }
 
+  // Starts building specified variant
+  public func build(variant: Variant, terminationHandler: TerminationHandler? = nil) {
+    // saving current document
+    // TODO: do we really need it here?
+    variant.target.workbench.currentDocument?.save(nil)
+
+    startBuildTask(variant: variant,
+                   actionName: "Build",
+                   createTask: { return variant.build(output: $0) },
+                   terminationHandler: terminationHandler)
+  }
+
+  // Launches specified variant
+  public func run(variant: Variant, terminationHandler: TerminationHandler? = nil) {
+    // building variant before launching
+    build(variant: variant) { result in
+      if result {
+        self.startBuildTask(variant: variant,
+                            actionName: "Run",
+                            createTask: { return variant.run(output: $0) },
+                            terminationHandler: terminationHandler)
+      }
+    }
+  }
+
+  // Cleans specified variant
+  public func clean(variant: Variant, terminationHandler: TerminationHandler? = nil) {
+    startBuildTask(variant: variant,
+                   actionName: "Clean",
+                   createTask: { return variant.clean(output: $0) },
+                   terminationHandler: terminationHandler)
+  }
+
+  // Starts build task (build, run, clean)
+  private func startBuildTask(variant: Variant,
+                              actionName: String,
+                              createTask: (Console) -> BuildSystemTask,
+                              terminationHandler: TerminationHandler? = nil) {
+    assert(currentTask == nil)
+ 
+    // opening console for build task
+    let consoleName = "\(actionName): \(variant.id)"
+    let console = ConsoleUtils.openConsole(key: consoleName, title: consoleName, in: variant.target.workbench)!
+    console.writeLine(string: "\(actionName): \(variant.id)")
+
+    // creating build task
+    let task = createTask(console)
+
+    do {
+      // publishing task
+      variant.target.workbench.publish(task: task)
+
+      // saving current task and termination handler
+      currentTask = task
+      currentTaskTerminationHandler = terminationHandler
+
+      // observing task to execute termination handler
+      task.observers.add(observer: self)
+
+      // starting task
+      try task.run()
+    }
+    catch {
+      console.writeLine(string: "Can't start build task: \(error)")
+    }
+  }
+
+  public func taskDidFinish(_ task: WorkbenchTask, result: Bool) {
+    assert(currentTask === task, "invalid current build task")
+    currentTask = nil
+    currentTaskTerminationHandler?(result)
+  }
 }
 
 
