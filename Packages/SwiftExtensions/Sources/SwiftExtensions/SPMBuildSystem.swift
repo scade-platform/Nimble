@@ -117,7 +117,7 @@ public class SPMBuildSystem: BuildSystem {
 
 
 // Represents single SPM projects for targets/variants
-class SPMProject {
+public class SPMProject {
   // Project workbench
   public private(set) var workbench: Workbench
 
@@ -144,7 +144,7 @@ class SPMProject {
 
 
 // Base class for all SPM targets
-class SPMTarget: Target {
+public class SPMTarget: Target {
   public private(set) var project: SPMProject
 
   // Initializes SPM target
@@ -161,7 +161,7 @@ class SPMTarget: Target {
 
 
 // Represents build target corresponding to SPM target
-class SPMTargetTarget: SPMTarget {
+public class SPMTargetTarget: SPMTarget {
   // Initializes target with specified name
   public override init(workbench: Workbench, buildSystem: SPMBuildSystem, name: String, project: SPMProject) {
     super.init(workbench: workbench, buildSystem: buildSystem, name: name, project: project)
@@ -176,7 +176,7 @@ class SPMTargetTarget: SPMTarget {
 
 
 // Represents build target corresponding to SPM product
-class SPMProductTarget: SPMTarget {
+public class SPMProductTarget: SPMTarget {
   public private(set) var isExecutable: Bool
 
   // Initializes target with specified name
@@ -198,7 +198,7 @@ class SPMProductTarget: SPMTarget {
 
 
 // Represents build target corresponding to all products in SPM package
-class SPMAllTarget: SPMTarget {
+public class SPMAllTarget: SPMTarget {
   // Initializes all target for all products
   public init(workbench: Workbench, buildSystem: SPMBuildSystem, project: SPMProject) {
     super.init(workbench: workbench, buildSystem: buildSystem, name: "All Products", project: project)
@@ -213,7 +213,7 @@ class SPMAllTarget: SPMTarget {
 
 
 // Base class for all SPM variants
-class SPMVariant: Variant {
+open class SPMVariant: Variant {
   // Initializes variant with specified SPM target and name
   public init(target: SPMTarget, name: String) {
     let id = "SPM - \(target.project.name) - \(target.typeAndName) - \(name)"
@@ -223,6 +223,29 @@ class SPMVariant: Variant {
   // Returns reference to SPM target
   public override var target: SPMTarget {
     return super.target as! SPMTarget
+  }
+
+  public override func clean(output: Console) -> BuildSystemTask {
+    let task = WorkbenchProcess(executablePath: getSwiftToolPath(),
+                                currentDirectory: target.project.folder.path,
+                                arguments: ["package", "clean"])
+    task.redirectOutput(to: output)
+    return task
+  }
+
+  // Returns path to swift tool
+  func getSwiftToolPath() -> Path {
+    let toolchain = SwiftExtensions.Settings.shared.swiftToolchain
+    if !toolchain.isEmpty {
+      var path = Path("\(toolchain)/usr/bin/swift")!
+      if !FileManager.default.fileExists(atPath: path.string) {
+        path = Path("\(toolchain)/bin/swift")!
+      }
+
+      return path
+    } else {
+      return Path("/usr/bin/swift")!
+    }
   }
 }
 
@@ -265,28 +288,5 @@ class SPMMacVariant: SPMVariant {
                                 arguments: ["run", "--skip-build", "\(target.name)"])
     task.redirectOutput(to: output)
     return task
-  }
-
-  public override func clean(output: Console) -> BuildSystemTask {
-    let task = WorkbenchProcess(executablePath: getSwiftToolPath(),
-                                currentDirectory: target.project.folder.path,
-                                arguments: ["package", "clean"])
-    task.redirectOutput(to: output)
-    return task
-  }
-
-  // Returns path to swift tool
-  private func getSwiftToolPath() -> Path {
-    let toolchain = SwiftExtensions.Settings.shared.swiftToolchain
-    if !toolchain.isEmpty {
-      var path = Path("\(toolchain)/usr/bin/swift")!
-      if !FileManager.default.fileExists(atPath: path.string) {
-        path = Path("\(toolchain)/bin/swift")!
-      }
-
-      return path
-    } else {
-      return Path("/usr/bin/swift")!
-    }
   }
 }

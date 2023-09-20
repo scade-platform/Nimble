@@ -41,6 +41,13 @@ public protocol BuildSystem: AnyObject {
 
   // Collects and returns targets for workbench
   func collectTargets(workbench: Workbench) -> TargetGroup
+
+  // Postprocess targets collected from other build systems
+  func postprocessTargets(group: TargetGroup)
+}
+
+public extension BuildSystem {
+  func postprocessTargets(group: TargetGroup) {}
 }
 
 fileprivate extension BuildSystem {
@@ -126,12 +133,19 @@ public class BuildSystemsManager: WorkbenchTaskObserver {
     // Store selected variant's "fqn"
     let selectedId = workbench.selectedVariant?.id
 
-    // Collect targets fro all build systems
     var targets = WorkbenchTargets()
 
+    // collecting targets for all build systems
     for buildSystem in buildSystems {
       let bsTargets = buildSystem.collectTargets(workbench: workbench)
       targets.addTargets(buildSystemId: buildSystem.id, targets: bsTargets)
+    }
+
+    // postprocessing targets for all build systems
+    for (_, targets) in targets.targets {
+      for buildSystem in buildSystems {
+        buildSystem.postprocessTargets(group: targets)
+      }
     }
 
     workbenchTargets[workbench.id] = targets
