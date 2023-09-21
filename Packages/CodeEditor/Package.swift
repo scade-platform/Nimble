@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.3
 
 import PackageDescription
 
@@ -15,6 +15,12 @@ let package = Package(
       .package(url: "https://github.com/FLORG1/oniguruma.git", .branch("master"))
     ],
     targets: [
-      .target(name: "CodeEditor", dependencies: ["Oniguruma", "NimbleCore"])
+      .target(
+        name: "CodeEditor",
+        dependencies: [
+          .product(name: "Oniguruma", package: "oniguruma"),
+          "NimbleCore"
+        ]
+      )
     ]
 )

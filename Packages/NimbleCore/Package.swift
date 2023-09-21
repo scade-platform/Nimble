@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.3
 
 import PackageDescription
 
@@ -20,7 +20,13 @@ let package = Package(
   targets: [
     .target(
       name: "NimbleCore",
-      dependencies: ["Path", "Yams", "SwiftSVG", "ColorCode", .product(name: "Collections", package: "swift-collections")]
+      dependencies: [
+        .product(name: "Path", package: "Path.swift"),
+        .product(name: "Yams", package: "Yams"),
+        .product(name: "SwiftSVG", package: "SwiftSVG"),
+        .product(name: "ColorCode", package: "WFColorCode"),
+        .product(name: "Collections", package: "swift-collections")
+      ]
     )
   ]
 )
