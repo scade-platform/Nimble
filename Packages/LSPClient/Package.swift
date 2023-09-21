@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "LSPClient",
     platforms: [
-        .macOS("10.15.4"),
+        .macOS(.v11),
     ],
     products: [        
         .library(name: "LSPClient", type: .dynamic, targets: ["LSPClient"]),

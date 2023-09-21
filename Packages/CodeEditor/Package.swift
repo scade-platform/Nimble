@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "CodeEditor",    
     platforms: [
-      .macOS(.v10_15),
+      .macOS(.v11),
     ],
     products: [        
       .library(name: "CodeEditor", type: .dynamic, targets: ["CodeEditor"]),

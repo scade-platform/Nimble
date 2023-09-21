@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "ImageViewer",
     platforms: [
-        .macOS(.v10_15),
+        .macOS(.v11),
     ],
     products: [
         // Make it dynamic if you want to share code with other plugins

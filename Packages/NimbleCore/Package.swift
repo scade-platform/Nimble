@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
   name: "NimbleCore",
   platforms: [
-    .macOS(.v10_15)
+    .macOS(.v11)
   ],
   products: [
     .library(name: "NimbleCore", type: .dynamic, targets: ["NimbleCore"]),
