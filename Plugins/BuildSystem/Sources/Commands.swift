@@ -85,7 +85,7 @@ final class Stop: BuildSystemCommand {
 
 final class Build: BuildSystemCommand {
   init() {
-    super.init(name: "Build", keyEquivalent: "cmd+b")
+    super.init(name: "Build", keyEquivalent: "cmd+b", toolbarIcon: IconsManager.Icons.build.image, orderPriority: 15)
   }
 
   override func run(in workbench: Workbench) {
@@ -95,7 +95,7 @@ final class Build: BuildSystemCommand {
   }
 
   override func validate(in workbench: Workbench) -> State {
-    return currentTask(in: workbench) == nil ? [.enabled] : []
+    return ((workbench.selectedVariant != nil) && currentTask(in: workbench) == nil) ? [.enabled] : []
   }
 }
 

@@ -227,6 +227,7 @@ public extension IconsManager {
     public static var rootFolder = icon(name: "root-folder")
     public static var rootFolderOpened = icon(name: "root-folder-opened")
 
+    public static var build = Icon(image: NSImage(systemSymbolName: "hammer.fill", accessibilityDescription: nil)!, tint: buttonIconColor)
     public static var run = icon(name: "run", tint: buttonIconColor)
     public static var stop = icon(name: "stop", tint: buttonIconColor)
 
