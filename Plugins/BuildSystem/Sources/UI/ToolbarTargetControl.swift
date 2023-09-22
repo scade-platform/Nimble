@@ -274,7 +274,7 @@ class ToolbarTargetControl : NSControl, CommandControl {
                                   action: #selector(itemDidSelect(_:)), keyEquivalent: "")
       targetItem.target = self
       targetItem.representedObject = name
-      targetItem.image = NSImage(systemSymbolName: "square.on.square", accessibilityDescription: nil)
+      targetItem.image = IconsManager.icon(systemSymbolName: "square.on.square").image
 
       let bsSubmenu = NSMenu()
       for item in items {

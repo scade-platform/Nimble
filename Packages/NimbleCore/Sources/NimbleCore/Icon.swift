@@ -203,7 +203,7 @@ public extension Document {
 // MARK: - Standard icons
 
 public extension IconsManager {
-  private static func icon(name: String, tint: IconTint? = nil) -> Icon {
+  static func icon(name: String, tint: IconTint? = nil) -> Icon {
     let image = SVGImage(svg: Bundle.main.resources/"Icons/\(name).svg")
     let urlLight = Bundle.main.resources/"Icons/\(name)-light.svg"
 
@@ -214,7 +214,11 @@ public extension IconsManager {
     }
   }
 
-  private static let buttonIconColor = IconTint(named: "ButtonIconColor")
+  static func icon(systemSymbolName: String, tint: IconTint = buttonIconColor) -> Icon {
+    return Icon(image: NSImage(systemSymbolName: systemSymbolName, accessibilityDescription: nil)!, tint: tint)
+  }
+
+  static let buttonIconColor = IconTint(named: "ButtonIconColor")
 
   enum Icons {
     public static var cancel = icon(name: "cancel")
@@ -227,7 +231,7 @@ public extension IconsManager {
     public static var rootFolder = icon(name: "root-folder")
     public static var rootFolderOpened = icon(name: "root-folder-opened")
 
-    public static var build = Icon(image: NSImage(systemSymbolName: "hammer.fill", accessibilityDescription: nil)!, tint: buttonIconColor)
+    public static var build = icon(systemSymbolName: "hammer.fill")
     public static var run = icon(name: "run", tint: buttonIconColor)
     public static var stop = icon(name: "stop", tint: buttonIconColor)
 

@@ -63,7 +63,7 @@ public class SPMBuildSystem: BuildSystem {
 
       // creating group for project
       let projectGroup = TargetGroup(buildSystem: self, name: project.name)
-      projectGroup.icon = Icon(image: NSImage(systemSymbolName: "swift", accessibilityDescription: nil)!)
+      projectGroup.icon = IconsManager.icon(systemSymbolName: "swift")
 
       // creating target and variant for all products
       let allProducts = SPMAllTarget(workbench: workbench, buildSystem: self, project: project)
@@ -165,7 +165,7 @@ public class SPMTargetTarget: SPMTarget {
   // Initializes target with specified name
   public override init(workbench: Workbench, buildSystem: SPMBuildSystem, name: String, project: SPMProject) {
     super.init(workbench: workbench, buildSystem: buildSystem, name: name, project: project)
-    self.icon = Icon(image: NSImage(systemSymbolName: "cube", accessibilityDescription: nil)!)
+    self.icon = IconsManager.icon(systemSymbolName: "cube")
   }
 
   // Returns string representation of type of target
@@ -187,7 +187,7 @@ public class SPMProductTarget: SPMTarget {
               project: SPMProject) {
     self.isExecutable = isExecutable
     super.init(workbench: workbench, buildSystem: buildSystem, name: name, project: project)
-    self.icon = Icon(image: NSImage(systemSymbolName: "cube.fill", accessibilityDescription: nil)!)
+    self.icon = IconsManager.icon(systemSymbolName: "cube.fill")
   }
 
   // Returns string representation of type of target
@@ -202,7 +202,7 @@ public class SPMAllTarget: SPMTarget {
   // Initializes all target for all products
   public init(workbench: Workbench, buildSystem: SPMBuildSystem, project: SPMProject) {
     super.init(workbench: workbench, buildSystem: buildSystem, name: "All Products", project: project)
-    self.icon = Icon(image: NSImage(systemSymbolName: "suitcase", accessibilityDescription: nil)!)
+    self.icon = IconsManager.icon(systemSymbolName: "suitcase")
   }
 
   // Returns string representation of type of target
@@ -255,7 +255,7 @@ class SPMMacVariant: SPMVariant {
   // Initializes SPM variant for MacOS for specified target. Adds variant into target
   public init(target: SPMTarget) {
     super.init(target: target, name: "MacOS")
-    self.icon = Icon(image: NSImage(systemSymbolName: "desktopcomputer", accessibilityDescription: nil)!)
+    self.icon = IconsManager.icon(systemSymbolName: "desktopcomputer")
   }
 
   public override func build(output: Console) -> BuildSystemTask {
