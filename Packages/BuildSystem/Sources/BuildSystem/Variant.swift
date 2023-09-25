@@ -23,9 +23,6 @@ import NimbleCore
 
 // Represents single item in the tree of variants for a target
 open class VariantTreeItem {
-  // Parent group
-  public private(set) weak var group: VariantGroup?
-
   // Item name
   public private(set) var name: String
 
@@ -35,15 +32,6 @@ open class VariantTreeItem {
   // Initiazes variant tree item with specified name and parent group
   public init(name: String) {
     self.name = name
-  }
-
-  // Sets group for variant
-  fileprivate func setGroup(group: VariantGroup) {
-    if self.group != nil {
-      fatalError("Build variant is already in group")
-    }
-
-    self.group = group
   }
 }
 
@@ -122,7 +110,6 @@ public class VariantGroup: VariantTreeItem {
   // Adds variant into group
   public func add(item: VariantTreeItem) {
     items.append(item)
-    item.setGroup(group: self)
   }
 
   // Adds separator into group

@@ -24,9 +24,6 @@ import NimbleCore
 
 // Represents single item in the tree of targets
 open class TargetTreeItem {
-  // Parent group
-  public private(set) weak var group: TargetGroup?
-
   // Item build system
   public private(set) weak var buildSystemRef: BuildSystem?
 
@@ -45,15 +42,6 @@ open class TargetTreeItem {
   // Returns reference to buildsystem for target
   public var buildSystem: BuildSystem {
     return buildSystemRef!
-  }
-
-  // Sets group for target
-  fileprivate func setGroup(group: TargetGroup) {
-    if self.group != nil {
-      fatalError("Build target is already in group")
-    }
-
-    self.group = group
   }
 }
 
@@ -103,7 +91,6 @@ public class TargetGroup: TargetTreeItem {
   // Adds item into group
   public func add(item: TargetTreeItem) {
     items.append(item)
-    item.setGroup(group: self)
   }
 
   // Adds separator into group
