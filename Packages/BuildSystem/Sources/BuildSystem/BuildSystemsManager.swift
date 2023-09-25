@@ -37,17 +37,29 @@ public class BuildSystemsManager: WorkbenchTaskObserver, WorkbenchObserver, Proj
 
   public private(set) var buildSystems : [BuildSystem] = []
 
-  public var activeBuildSystem: BuildSystem? = AutomaticBuildSystem.shared {
-    didSet {
-      observers.notify{
-        $0.activeBuildSystemDidChange(activeBuildSystem, deactivatedBuildSystem: oldValue)}
-    }
-  }
-
+  private var activeBuildSystems: [ObjectIdentifier: BuildSystem] = [:]
   private var currentTask: BuildSystemTask? = nil
   private var currentTaskTerminationHandler: TerminationHandler? = nil
 
   private init() {}
+
+  // Sets active build system in workbench
+  public func setActiveBuildSystem(in workbench: Workbench, buildSystem: BuildSystem) {
+    let oldBuildSystem = activeBuildSystems[workbench.id]
+    activeBuildSystems[workbench.id] = buildSystem
+
+    // notifying observers
+    observers.notify{
+      $0.activeBuildSystemDidChange(buildSystem, deactivatedBuildSystem: oldBuildSystem)}
+
+    // updating targets
+    updateTargets(in: workbench)
+  }
+
+  // Returns active build system for workbench
+  public func activeBuildSystem(in workbench: Workbench) -> BuildSystem {
+    return activeBuildSystems[workbench.id] ?? AutomaticBuildSystem.shared
+  }
 
   private func selectVariant(id: String?, in workbench: Workbench) {
     if let id = id, let variant = workbenchTargets[workbench.id]?.findVariant(id: id) {
@@ -62,7 +74,7 @@ public class BuildSystemsManager: WorkbenchTaskObserver, WorkbenchObserver, Proj
     let selectedId = workbench.selectedVariant?.id
 
     // collecting targets for active build system
-    let group = activeBuildSystem!.collectTargets(workbench: workbench)
+    let group = activeBuildSystem(in: workbench).collectTargets(workbench: workbench)
 
     // postprocessing collected target tree with all build systems
     for buildSystem in buildSystems {

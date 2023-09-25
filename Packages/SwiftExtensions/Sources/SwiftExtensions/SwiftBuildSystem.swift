@@ -39,7 +39,7 @@ public class SwiftSingleFileBuildSystem: BuildSystem {
     guard let document = workbench.currentDocument, canHandle(document: document) else { return group }
     
     //Workaround to prevent allow compile single swift file in SPM package
-    if BuildSystemsManager.shared.activeBuildSystem is AutomaticBuildSystem {
+    if BuildSystemsManager.shared.activeBuildSystem(in: workbench) is AutomaticBuildSystem {
       let spmTargets =  BuildSystemsManager.shared.allTargets(workbench: workbench).compactMap{$0 as? SPMTarget}
       let spmProjects = spmTargets.map{$0.project}
       for proj in spmProjects {

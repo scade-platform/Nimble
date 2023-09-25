@@ -95,15 +95,19 @@ final class BuildSystemPlugin: Plugin {
   }
   
   @objc func validateMenuItem(_ item: NSMenuItem?) -> Bool {
-    guard let item = item else {return true}
+    guard let item = item else { return true }
+    guard let workbench = NSApp.currentWorkbench else { return false }
+
     let itemTool = item.representedObject as AnyObject?
-    let currentTool = BuildSystemsManager.shared.activeBuildSystem as AnyObject?
+    let currentTool = BuildSystemsManager.shared.activeBuildSystem(in: workbench) as AnyObject?
     item.state = (itemTool === currentTool) ? .on : .off
     return true
   }
   
   @objc func switchBuildSystem(_ item: NSMenuItem?) {
-    BuildSystemsManager.shared.activeBuildSystem = item?.representedObject as? BuildSystem
+    guard let workbench = NSApp.currentWorkbench else { return }
+    let buildSystem = item?.representedObject as! BuildSystem
+    BuildSystemsManager.shared.setActiveBuildSystem(in: workbench, buildSystem: buildSystem)
   }
 }
 

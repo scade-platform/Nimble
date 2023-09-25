@@ -27,7 +27,7 @@ public class AutomaticBuildSystem: BuildSystem {
   private init() {}
   
   public var name: String {
-    return "AutomaticBuildSystem"
+    return "Automatic"
   }
 
   public func collectTargets(workbench: Workbench) -> TargetGroup {
