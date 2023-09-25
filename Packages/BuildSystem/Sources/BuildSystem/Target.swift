@@ -28,7 +28,7 @@ open class TargetTreeItem {
   public private(set) weak var buildSystemRef: BuildSystem?
 
   // Item name
-  public private(set) var name: String
+  public var name: String
 
   // Optional item for tree item
   public var icon: Icon? = nil
@@ -114,14 +114,14 @@ public class TargetGroup: TargetTreeItem {
   }
 
   // Returns first variant in the list of variants
-  public var firstVariant: Variant? {
+  public func firstVariant() -> Variant? {
     for item in items {
       if let target = item as? Target {
         if let variant = target.variants.first {
           return variant
         }
       } else if let group = item as? TargetGroup {
-        if let variant = group.firstVariant {
+        if let variant = group.firstVariant() {
           return variant
         }
       }

@@ -261,37 +261,12 @@ class ToolbarTargetControl : NSControl, CommandControl {
 
   private func createTargetsMenu() -> NSMenu? {
     guard let workbench = self.workbench else { return nil }
-    let menu = NSMenu()
-
-    for (name, items) in BuildSystemsManager.shared.rootTargets(workbench: workbench) {
-      guard items.count > 1 else {
-        // don't add submenu with build system name if entry has single item
-        menu.addItem(createMenuItem(targetItem: items.first!))
-        continue
-      }
-
-      let targetItem = NSMenuItem(title: name,
-                                  action: #selector(itemDidSelect(_:)), keyEquivalent: "")
-      targetItem.target = self
-      targetItem.representedObject = name
-      targetItem.image = IconsManager.icon(systemSymbolName: "square.on.square").image
-
-      let bsSubmenu = NSMenu()
-      for item in items {
-        let bsItem = createMenuItem(targetItem: item)
-        bsItem.title = item.buildSystem.name
-        bsItem.target = self
-        bsItem.representedObject = item
-
-        bsSubmenu.addItem(bsItem)
-      }
-
-      targetItem.submenu = bsSubmenu
-      menu.addItem(targetItem)
+    let targets = BuildSystemsManager.shared.targets(workbench: workbench)
+    if targets.items.isEmpty {
+      return nil
     }
 
-    guard !menu.items.isEmpty else { return nil }
-    return menu
+    return createSubmenu(targetGroup: targets)
   }
 
   private func createVariantsMenu(_ variant: Variant?) -> NSMenu? {
