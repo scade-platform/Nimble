@@ -27,62 +27,11 @@ fileprivate extension BuildSystem {
 
 // Build systems manager
 public class BuildSystemsManager: WorkbenchTaskObserver, WorkbenchObserver, ProjectObserver {
-  public struct WorkbenchTargets {
-    // Tree of targets
-    public private(set) var targets = TargetGroup(buildSystem: AutomaticBuildSystem.shared, name: "Empty")
-
-    // Searches for variant with specified ID
-    public func findVariant(id: String) -> Variant? {
-      return targets.findVariant(id: id)
-    }
-
-    // Returns first variant in the list of all variants
-    public func firstVariant() -> Variant? {
-      return targets.firstVariant()
-    }
-
-    // Sets targets for all build systems. Processes targets trees and merges
-    // items with same name into single nodes
-    public mutating func addTargets(groups: [TargetGroup]) {
-      // collecting all root items into dictionary
-      var rootItems: [String: [TargetTreeItem]] = [:]
-      for group in groups {
-        for item in group.items {
-          rootItems[item.name] = (rootItems[item.name] ?? []) + [item]
-        }
-      }
-
-      // creating new root group for targets tree
-      targets = TargetGroup(buildSystem: AutomaticBuildSystem.shared, name: "Merged Tree")
-
-      // adding items into root group
-      for (name, items) in rootItems {
-        if items.count > 1 {
-          // creating group for items
-          let itemsGroup = TargetGroup(buildSystem: AutomaticBuildSystem.shared, name: name)
-          itemsGroup.icon = IconsManager.icon(systemSymbolName: "square.on.square")
-
-          // adding items for each build system sorting by build system name
-          for item in items.sorted(by: {$0.buildSystem.name < $1.buildSystem.name }) {
-            item.name = item.buildSystem.name
-            itemsGroup.add(item: item)
-          }
-
-          // adding group into the root group
-          targets.add(item: itemsGroup)
-        } else {
-          // no merging required
-          targets.add(item: items[0])
-        }
-      }
-    }
-  }
-
   public typealias TerminationHandler = (Bool) -> Void
 
   public static let shared = BuildSystemsManager()
 
-  private var workbenchTargets: [ObjectIdentifier: WorkbenchTargets]  = [:]
+  private var workbenchTargets: [ObjectIdentifier: TargetGroup]  = [:]
 
   public var observers = ObserverSet<BuildSystemsObserver>()
 
@@ -109,25 +58,20 @@ public class BuildSystemsManager: WorkbenchTaskObserver, WorkbenchObserver, Proj
   }
 
   private func updateTargets(in workbench: Workbench) {
-    // Store selected variant's "fqn"
+    // saving id of selected variant
     let selectedId = workbench.selectedVariant?.id
 
-    // collecting targets for all build systems
-    let groups = buildSystems.map{ $0.collectTargets(workbench: workbench) }
+    // collecting targets for active build system
+    let group = activeBuildSystem!.collectTargets(workbench: workbench)
 
-    // postprocessing targets for all build systems
-    for group in groups {
-      for buildSystem in buildSystems {
-        buildSystem.postprocessTargets(group: group)
-      }
+    // postprocessing collected target tree with all build systems
+    for buildSystem in buildSystems {
+      buildSystem.postprocessTargets(group: group)
     }
 
-    // adding targets
-    var wbTargets = WorkbenchTargets()
-    wbTargets.addTargets(groups: groups)
-    workbenchTargets[workbench.id] = wbTargets
-
-    // Update selection using previously selected variant ID
+    workbenchTargets[workbench.id] = group
+  
+    // selecting variant using previously selected variant ID
     selectVariant(id: selectedId, in: workbench)
 
     observers.notify{ $0.availableTargetsDidChange(workbench) }
@@ -158,7 +102,7 @@ public class BuildSystemsManager: WorkbenchTaskObserver, WorkbenchObserver, Proj
 
   // Returns target tree for specified workbench
   public func targets(workbench: Workbench) -> TargetGroup {
-    if let targets = workbenchTargets[workbench.id]?.targets {
+    if let targets = workbenchTargets[workbench.id] {
       return targets
     }
 
@@ -172,7 +116,7 @@ public class BuildSystemsManager: WorkbenchTaskObserver, WorkbenchObserver, Proj
 
   // Returns all targets for all build systems in work bench
   public func allTargets(workbench: Workbench) -> [Target] {
-    return workbenchTargets[workbench.id]?.targets.allTargets() ?? []
+    return workbenchTargets[workbench.id]?.allTargets() ?? []
   }
 
   // Starts building specified variant

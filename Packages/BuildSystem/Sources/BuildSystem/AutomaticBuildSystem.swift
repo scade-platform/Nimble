@@ -30,9 +30,43 @@ public class AutomaticBuildSystem: BuildSystem {
     return "AutomaticBuildSystem"
   }
 
-  public func collectTargets(workbench: Workbench) -> TargetGroup {    
-    // TODO
-    return TargetGroup(buildSystem: self, name: "Automatic")
+  public func collectTargets(workbench: Workbench) -> TargetGroup {
+    // collecting targets for all build systems
+    let groups = BuildSystemsManager.shared.buildSystems.map{ $0.collectTargets(workbench: workbench) }
+
+    // collecting all root items into dictionary
+    var rootItems: [String: [TargetTreeItem]] = [:]
+    for group in groups {
+      for item in group.items {
+        rootItems[item.name] = (rootItems[item.name] ?? []) + [item]
+      }
+    }
+
+    // creating root group for targets tree
+    let rootGroup = TargetGroup(buildSystem: AutomaticBuildSystem.shared, name: "Automatic")
+
+    // adding items into root group
+    for (name, items) in rootItems {
+      if items.count > 1 {
+        // creating group for items
+        let itemsGroup = TargetGroup(buildSystem: AutomaticBuildSystem.shared, name: name)
+        itemsGroup.icon = IconsManager.icon(systemSymbolName: "square.on.square")
+
+        // adding items for each build system sorting by build system name
+        for item in items.sorted(by: {$0.buildSystem.name < $1.buildSystem.name }) {
+          item.name = item.buildSystem.name
+          itemsGroup.add(item: item)
+        }
+
+        // adding group into the root group
+        rootGroup.add(item: itemsGroup)
+      } else {
+        // no merging required
+        rootGroup.add(item: items[0])
+      }
+    }
+
+    return rootGroup
   }
 }
 
