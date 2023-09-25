@@ -415,7 +415,7 @@ class ToolbarTargetControl : NSControl, CommandControl {
     } else {
       leftImage?.isHidden = true
     }
-    leftLable?.stringValue = variant.target.name
+    leftLable?.stringValue = variant.target.selectedName
 
     // Variant visuals
     if let variantIcon = variant.icon {

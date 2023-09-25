@@ -203,6 +203,7 @@ public class SPMAllTarget: SPMTarget {
   public init(workbench: Workbench, buildSystem: SPMBuildSystem, project: SPMProject) {
     super.init(workbench: workbench, buildSystem: buildSystem, name: "All Products", project: project)
     self.icon = IconsManager.icon(systemSymbolName: "suitcase")
+    self.selectedName = "\(project.name) - \(name)"
   }
 
   // Returns string representation of type of target

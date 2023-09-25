@@ -30,6 +30,9 @@ open class TargetTreeItem {
   // Item name
   public var name: String
 
+  // Optional name which is displayed in selection control when target is selected
+  public var selectedName: String
+
   // Optional item for tree item
   public var icon: Icon? = nil
 
@@ -37,6 +40,7 @@ open class TargetTreeItem {
   public init(buildSystem: BuildSystem, name: String) {
     self.buildSystemRef = buildSystem
     self.name = name
+    self.selectedName = name
   }
 
   // Returns reference to buildsystem for target
