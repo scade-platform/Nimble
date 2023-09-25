@@ -68,7 +68,7 @@ final class BuildSystemPlugin: Plugin {
 
     let autoItem = NSMenuItem(title: "Automatic", action: #selector(switchBuildSystem(_:)), keyEquivalent: "")
     autoItem.target = self
-    autoItem.representedObject = Automatic.shared
+    autoItem.representedObject = AutomaticBuildSystem.shared
     buildSystemMenu.addItem(autoItem)
     buildSystemMenu.addItem(.separator())
 

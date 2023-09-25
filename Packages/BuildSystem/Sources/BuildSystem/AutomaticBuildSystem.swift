@@ -1,5 +1,5 @@
 //
-//  Automatic.swift
+//  AutomaticBuildSystem.swift
 //  BuildSystem
 //
 //  Copyright © 2021 SCADE Inc. All rights reserved.
@@ -21,13 +21,13 @@
 import Foundation
 import NimbleCore
 
-public class Automatic: BuildSystem {
-  public static let shared = Automatic()
+public class AutomaticBuildSystem: BuildSystem {
+  public static let shared = AutomaticBuildSystem()
   
   private init() {}
   
   public var name: String {
-    return "Automatic"
+    return "AutomaticBuildSystem"
   }
 
   public func collectTargets(workbench: Workbench) -> TargetGroup {    

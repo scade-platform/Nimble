@@ -109,7 +109,7 @@ public class BuildSystemsManager: WorkbenchTaskObserver {
 
   public private(set) var buildSystems : [BuildSystem] = []
 
-  public var activeBuildSystem: BuildSystem? = Automatic.shared {
+  public var activeBuildSystem: BuildSystem? = AutomaticBuildSystem.shared {
     didSet {
       observers.notify{
         $0.activeBuildSystemDidChange(activeBuildSystem, deactivatedBuildSystem: oldValue)}
