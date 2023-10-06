@@ -235,7 +235,7 @@
     },
     {
         "name": "database",
-        "fileExtensions": ["pdb", "sql", "pks", "pkb", "accdb", "mdb", "sqlite", "pgsql", "postgres", "psql"]
+        "fileExtensions": ["pdb", "sql", "pks", "pkb", "accdb", "mdb", "sqlite", "pgsql", "postgres", "psql", "prql"]
     },
     {
         "name": "csharp",
