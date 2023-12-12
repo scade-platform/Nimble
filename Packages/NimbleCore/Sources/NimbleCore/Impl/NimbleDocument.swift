@@ -61,6 +61,13 @@ open class NimbleDocument: NSDocument {
     savePanel.isExtensionHidden = false
     return true
   }
+
+  // Saves document if it was changed
+  public func saveIfChanged(_ sender: Any?) {
+    if self.isDocumentEdited {
+      self.save(sender)
+    }
+  }
   
   open override func save(to url: URL,
                           ofType typeName: String,

@@ -608,8 +608,8 @@ extension NimbleWorkbench {
     currentDocument?.saveAs(sender)
   }
   
-  @IBAction func saveAll(_ sender: Any?) {
-    documents.forEach{$0.save(sender)}
+  @IBAction public func saveAll(_ sender: Any?) {
+    documents.forEach{($0 as! NimbleDocument).saveIfChanged(sender)}
   }
   
   @IBAction func close(_ sender: Any?) {

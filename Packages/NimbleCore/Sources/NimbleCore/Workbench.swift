@@ -53,6 +53,8 @@ public protocol Workbench: AnyObject {
   
   @discardableResult
   func close(_ doc: Document) -> Bool
+
+  func saveAll(_ sender: Any?)
   
   func createConsole(title: String, show: Bool, startReading: Bool) -> Console?
 

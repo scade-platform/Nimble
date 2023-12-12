@@ -135,7 +135,7 @@ public class BuildSystemsManager: WorkbenchTaskObserver, WorkbenchObserver, Proj
   public func build(variant: Variant, terminationHandler: TerminationHandler? = nil) {
     // saving current document
     // TODO: do we really need it here?
-    variant.target.workbench.currentDocument?.save(nil)
+    variant.target.workbench.saveAll(nil)
 
     startBuildTask(variant: variant,
                    actionName: "Build",
