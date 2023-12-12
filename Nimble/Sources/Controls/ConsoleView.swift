@@ -58,8 +58,14 @@ class ConsoleView: NSViewController, WorkbenchViewController {
         if console.title != strongSelf.currentConsole?.title {
           strongSelf.open(console: console.title)
         } else {
+          // scrolling to the end only if console view is scrolled to the end before appending text
+          let doScroll = (NSMaxY(strongSelf.textView.visibleRect) == NSMaxY(strongSelf.textView.bounds));
+
           strongSelf.textView.textStorage?.append(strongSelf.convertToAttributedString(string))
-          strongSelf.textView.scrollToEndOfDocument(nil)
+
+          if doScroll {
+            strongSelf.textView.scrollToEndOfDocument(nil)
+          }
         }
       }
     }
