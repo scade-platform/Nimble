@@ -19,43 +19,68 @@
 
 import Foundation
 
-public extension String {
+
+// MARK: Extended ranges for BidirectionalCollection
+
+public protocol ExtendedBidirectionalCollection: BidirectionalCollection { }
+
+public extension ExtendedBidirectionalCollection {
   var range: Range<Index> {
     return startIndex..<endIndex
   }
-  
+
   var nsRange: NSRange {
-    return  NSRange(location: 0, length: (self as NSString).length)
+    return nsRange(for: range)
   }
-  
+
+  subscript(value: Int) -> Element {
+    return self[self.index(at: value)]
+  }
+
+  subscript(value: Range<Int>) -> SubSequence {
+    return self[self.index(at: value.lowerBound)..<self.index(at: value.upperBound)]
+  }
+
+  func index(at offset: Int) -> Index {
+    return index(startIndex, offsetBy: offset)
+  }
+
+  func offset(at index: Index) -> Int {
+    return distance(from: startIndex, to: index)
+  }
+
+  func range(for range: NSRange) -> Range<Index> {
+    return index(at: range.lowerBound)..<index(at: range.upperBound)
+  }
+
+  func nsRange(for range: Range<Index>) -> NSRange {
+    return NSRange(location: offset(at: range.lowerBound),
+                   length: distance(from: range.lowerBound, to: range.upperBound))
+  }
+
+  func range(for range: Range<Index>) -> Range<Int> {
+    return offset(at: range.lowerBound)..<offset(at: range.upperBound)
+  }
+}
+
+
+// MARK: String extensions
+
+extension String: ExtendedBidirectionalCollection {}
+
+public extension String {
+
   var numberOfLines: Int {
     return self.lineNumber(at: self.index(before: self.endIndex))
   }
-  
-  subscript(value: Int) -> Character {
-    return self[index(at: value)]
-  }
-    
-  subscript(value: Range<Int>) -> Substring {
-    return self[self.index(at: value.lowerBound)..<self.index(at: value.upperBound)]
-  }
-  
+
   subscript(range: NSRange) -> Substring? {
     guard let range = Range(range, in: self) else { return nil }
     return self[range]
   }
-  
-  func index(at offset: Int) -> Index {
-    return index(startIndex, offsetBy: offset)
-  }
-  
-  func offset(at index: Index) -> Int {
-    return distance(from: startIndex, to: index)
-  }
-  
-  func range(for range: Range<Index>) -> Range<Int> {
-    return offset(at: range.lowerBound)..<offset(at: range.upperBound)
-  }
+
+
+
 
   func lines(from range: Range<Index>) -> [Range<Index>] {
     var line = lineRange(at: range.lowerBound)
@@ -71,6 +96,10 @@ public extension String {
     return lines
   }
 
+  func lines(from range: NSRange) -> [Range<Index>] {
+    return lines(from: self.range(for: range))
+  }
+
   func linesRange(from range: Range<Index>) -> Range<Index> {
     let lines = self.lines(from: range)
 
@@ -79,6 +108,12 @@ public extension String {
 
     return lb..<ub
   }
+
+  func linesRange(from range: NSRange) -> Range<Index> {
+    return linesRange(from: self.range(for: range))
+  }
+
+
 
   /// Line number at index (one-based)
   func lineNumber(at location: Int) -> Int {
@@ -123,43 +158,64 @@ public extension String {
     return self.offset(at: range.lowerBound)..<self.offset(at: range.upperBound)
   }
 
-  
+}
+
+
+// MARK: - UTF-8 String extensions
+
+public extension String {
   func utf8(at offset: Int) -> Int {
     return utf8(at: self.index(at: offset))
   }
-  
+
   func utf8(at offset: Index) -> Int {
     return utf8.offset(at: offset)
   }
-  
+
   func utf8(`in` range: Range<Index>) -> Range<Int> {
     let from = utf8(at: range.lowerBound)
     let to = utf8(at: range.upperBound)
     return from..<to
   }
-  
+
   func utf8(`in` range: Range<Int>) -> Range<Int> {
     let from = utf8(at: range.lowerBound)
     let to = utf8(at: range.upperBound)
     return from..<to
   }
-  
+
   func chars(utf8 range: Range<Int>) -> Range<Int> {
     let from = offset(at: utf8.index(at: range.lowerBound))
     let to = offset(at: utf8.index(at: range.upperBound))
     return from..<to
   }
-  
-  
-  
+}
+
+
+
+// MARK: - UTF-16 String extensions
+
+public extension String {
   func utf16(at offset: Int) -> Int {
     return utf16(at: self.index(at: offset))
   }
-  
+
   func utf16(at offset: Index) -> Int {
     return utf16.offset(at: offset)
   }
-  
+
+  func utf16(`in` range: Range<Index>) -> Range<Int> {
+    let from = utf16(at: range.lowerBound)
+    let to = utf16(at: range.upperBound)
+    return from..<to
+  }
+
+  func utf16(`in` range: Range<Int>) -> Range<Int> {
+    let from = utf16(at: range.lowerBound)
+    let to = utf16(at: range.upperBound)
+    return from..<to
+  }
+
   func chars(utf16 range: Range<Int>) -> Range<Int> {
     let from = offset(at: utf16.index(at: range.lowerBound))
     let to = offset(at: utf16.index(at: range.upperBound))
@@ -167,49 +223,41 @@ public extension String {
   }
 }
 
-// MARK: - UTF-8
 
-public extension String.UTF8View {
-  subscript(value: Int) -> UTF8.CodeUnit {
-    return self[self.index(at: value)]
-  }
-  
-  subscript(value: Range<Int>) -> String.UTF8View.SubSequence {
-    return self[self.index(at: value.lowerBound)..<self.index(at: value.upperBound)]
-  }
-  
-  func index(at offset: Int) -> String.UTF8View.Index {
-    return index(startIndex, offsetBy: offset)
-  }
-  
-  func offset(at index: Index) -> Int {
-    return distance(from: startIndex, to: index)
-  }
-  
+// MARK: - Generic UTF extensions
+
+public protocol UTFGenericView: ExtendedBidirectionalCollection where Element == CodeUnit {
+  associatedtype CodeUnit
+
+  func unicodeScalar(at index: Int) -> UnicodeScalar?
+}
+
+
+extension UTFGenericView {
   func lines(from range: Range<Int>) -> [Range<Int>] {
     var line = lineRange(at: range.lowerBound)
     var lines: [Range<Int>] = []
-    
+
     while(line.lowerBound < range.upperBound){
       lines.append(line)
       line = lineRange(at: line.upperBound)
     }
-    
+
     return lines
   }
-  
+
 
   func lineRange(for range: Range<Int>) -> Range<Int> {
     return lineStart(for: range)..<lineEnd(for: range)
   }
-  
+
   func lineRange(at pos: Int) -> Range<Int> {
     return lineRange(for: pos..<pos)
   }
-  
+
   func lineStart(for range: Range<Int>) -> Int {
     assert(range.lowerBound >= 0, "The value exceeds the bounds of the receiver")
-    
+
     var begin = range.lowerBound
     while(begin > 0 && begin < count) {
       if isLineEnd(at: begin) || isLineEnd(at: begin - 1) {
@@ -218,18 +266,25 @@ public extension String.UTF8View {
         begin -= 1
       }
     }
-    
+
     return begin
   }
-  
+
   func lineStart(at pos: Int) -> Int {
     return lineStart(for: pos..<pos)
   }
-  
-  
+
+
   func lineEnd(for range: Range<Int>) -> Int {
+    let c = self.count
+    let ub = range.upperBound
+
+    if ub > c {
+      print("The value exceeds the bounds of the receiver: \(ub) > \(c)")
+    }
+
     assert(range.upperBound <= count, "The value exceeds the bounds of the receiver")
-    
+
     var end = range.upperBound
     while(end >= 0 && end < count) {
       if isLineEnd(at: end) {
@@ -239,50 +294,42 @@ public extension String.UTF8View {
         end += 1
       }
     }
-    
+
     return end
   }
-  
+
   func lineEnd(at pos: Int) -> Int {
     return lineEnd(for: pos..<pos)
   }
-  
 
   private func isLineEnd(at index: Int) -> Bool {
-///TBD: Support all following delimiters
-//     U+2028 Unicode Character 'LINE SEPARATOR'
-//     U+2029 Unicode Character 'PARAGRAPH SEPARATOR'
-//     \r\n 'CRLN'
-    return CharacterSet.newlines.contains(UnicodeScalar(self[index]))
+    // TBD: Support all following delimiters
+    // U+2028 Unicode Character 'LINE SEPARATOR'
+    // U+2029 Unicode Character 'PARAGRAPH SEPARATOR'
+    // \r\n 'CRLN'
+    guard let scalar = self.unicodeScalar(at: index) else { return false }
+    return CharacterSet.newlines.contains(scalar)
+  }
+}
+
+
+// MARK: - UTF-8
+
+extension String.UTF8View: UTFGenericView {
+  public typealias CodeUnit = UTF8.CodeUnit
+
+  public func unicodeScalar(at index: Int) -> UnicodeScalar? {
+    return UnicodeScalar(self[index])
   }
 }
 
 
 // MARK: - UTF-16
 
-public extension String.UTF16View {
-  subscript(value: Int) -> UTF16.CodeUnit {
-    return self[self.index(at: value)]
-  }
-  
-  subscript(value: Range<Int>) -> String.UTF16View.SubSequence {
-    return self[self.index(at: value.lowerBound)..<self.index(at: value.upperBound)]
-  }
-  
-  func index(at offset: Int) -> String.UTF16View.Index {
-    return index(startIndex, offsetBy: offset)
-  }
-  
-  func offset(at index: Index) -> Int {
-    return distance(from: startIndex, to: index)
-  }
-  
-  func range(for nsRange: NSRange) -> Range<Index> {
-    return index(at: nsRange.lowerBound)..<index(at: nsRange.upperBound)
-  }
+extension String.UTF16View: UTFGenericView {
+  public typealias CodeUnit = UTF16.CodeUnit
 
-  func nsRange(for range: Range<Index>) -> NSRange {
-    return NSRange(location: self.offset(at: range.lowerBound), length:
-      self.distance(from: range.lowerBound, to: range.upperBound))
+  public func unicodeScalar(at index: Int) -> UnicodeScalar? {
+    return UnicodeScalar(self[index])
   }
 }

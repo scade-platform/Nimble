@@ -270,8 +270,8 @@ extension CodeEditorTextView {
     
     var offset = 0
     
-    string.lines(from: string.utf16.range(for: range)).forEach {
-      let range = NSRange(location: string.utf16.offset(at: $0.lowerBound) + offset, length: 0)
+    string.lines(from: range).forEach {
+      let range = NSRange(location: string.offset(at: $0.lowerBound) + offset, length: 0)
       super.insertText(indentString, replacementRange: range)
       offset += indentString.count
     }
@@ -287,13 +287,13 @@ extension CodeEditorTextView {
   private func unindent(_ range: NSRange, using indentString: String, updateSelection: Bool = true) -> Bool {
     guard let string = textStorage?.string else { return false }
     
-    let lines = string.lines(from: string.utf16.range(for: range))
+    let lines = string.lines(from: range)
     guard lines.allSatisfy({ string[$0].starts(with: indentString)}) else { return false }
     
     var offset = 0
     
     lines.forEach {
-      let range = NSRange(location: string.utf16.offset(at: $0.lowerBound) - offset, length: indentString.count)
+      let range = NSRange(location: string.offset(at: $0.lowerBound) - offset, length: indentString.count)
       super.insertText("", replacementRange: range)
       offset += indentString.count
     }
@@ -314,7 +314,7 @@ extension CodeEditorTextView {
     
     var offset = 0
     
-    string.lines(from: string.utf16.range(for: range)).forEach {
+    string.lines(from: range).forEach {
       var length = 0
       while length < indentLength {
         if string[string.index($0.lowerBound, offsetBy: length)] == indentChar {
@@ -324,7 +324,7 @@ extension CodeEditorTextView {
         }
       }
       
-      let range = NSRange(location: string.utf16.offset(at: $0.lowerBound) - offset, length: length)
+      let range = NSRange(location: string.offset(at: $0.lowerBound) - offset, length: length)
       super.insertText("", replacementRange: range)
       offset += length
     }
@@ -338,7 +338,7 @@ extension CodeEditorTextView {
     
     var selection = selectedRange()
     
-    let selectedRange = string.utf16.range(for: selection)
+    let selectedRange = string.range(for: selection)
     var shiftRange = string.linesRange(from: selectedRange)
     
     let selectionOffset = string.distance(from: shiftRange.lowerBound, to: selectedRange.lowerBound)
@@ -357,8 +357,8 @@ extension CodeEditorTextView {
         shiftRange = prevLineEnd..<shiftRange.upperBound
       }
       
-      super.insertText("", replacementRange: string.utf16.nsRange(for: shiftRange))
-      super.insertText(shiftText, replacementRange: string.utf16.nsRange(for: insertPos..<insertPos))
+      super.insertText("", replacementRange: string.nsRange(for: shiftRange))
+      super.insertText(shiftText, replacementRange: string.nsRange(for: insertPos..<insertPos))
       
       setSelectedRange(selection)
     }
@@ -370,7 +370,7 @@ extension CodeEditorTextView {
     
     var selection = selectedRange()
     
-    let selectedRange = string.utf16.range(for: selection)
+    let selectedRange = string.range(for: selection)
     let shiftRange = string.linesRange(from: selectedRange)
     
     let selectionOffset = string.distance(from: shiftRange.lowerBound,
@@ -389,8 +389,8 @@ extension CodeEditorTextView {
         selection.location += 1
       }
       
-      super.insertText(shiftText, replacementRange: string.utf16.nsRange(for: insertPos..<insertPos))
-      super.insertText("", replacementRange: string.utf16.nsRange(for: shiftRange))
+      super.insertText(shiftText, replacementRange: string.nsRange(for: insertPos..<insertPos))
+      super.insertText("", replacementRange: string.nsRange(for: shiftRange))
       
       setSelectedRange(selection)
     }

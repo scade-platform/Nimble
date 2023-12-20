@@ -22,18 +22,6 @@ import Cocoa
 
 extension CodeEditorTextView {
   
-  var visibleRange: NSRange? {
-    guard
-        let layoutManager = self.layoutManager,
-        let textContainer = self.textContainer
-        else { return nil }
-    
-    let visibleRect = self.visibleRect
-    let glyphRange = layoutManager.glyphRange(forBoundingRectWithoutAdditionalLayout: visibleRect, in: textContainer)
-    return layoutManager.characterRange(forGlyphRange: glyphRange, actualGlyphRange: nil)
-  }
-  
-  
   func boundingRect(for range: NSRange) -> NSRect? {
     guard let layoutManager = self.layoutManager,
           let textContainer = self.textContainer else {

@@ -22,11 +22,11 @@ import NimbleCore
 public protocol SourceCodeDocument: Document {
   var text: String { get }
   var languageId: String { get }
-  var languageServices: [LanguageService] { get }
 
   func add(service: LanguageService)
   func remove(service: LanguageService)
-  
+  func service(supporting: LanguageServiceFeature) -> LanguageService?
+
   func replaceText(with newText: String)
 }
 
@@ -37,10 +37,12 @@ public struct SourceCodeDocumentRef {
 
 public protocol SourceCodeDocumentObserver: DocumentObserver {
   func textDidChange(document: SourceCodeDocument, range: Range<Int>, text: String)
+  func languageDidChange(document: SourceCodeDocument, language: Language?)
 }
 
 public extension SourceCodeDocumentObserver {
   func textDidChange(document: SourceCodeDocument, range: Range<Int>, text: String) {}
+  func languageDidChange(document: SourceCodeDocument, language: Language?) {}
 }
 
 

@@ -28,15 +28,18 @@ class CodeEditorView: NSViewController {
   
   weak var document: CodeEditorDocument? = nil {
     didSet {
-      guard isViewLoaded else { return }
-      loadContent()
+      oldValue?.observers.remove(observer: self)
+      self.document?.observers.add(observer: self)
+
+      if isViewLoaded {
+        loadContent()
+      }
     }
   }
   
   var diagnostics: [SourceCodeDiagnostic] = []
   var diagnosticViews: [DiagnosticView] = []
   
-  private weak var highlightProgress: Progress? = nil
   
   private lazy var statusBarView: StatusBarView = {
     let view = StatusBarView.loadFromNib()
@@ -108,32 +111,78 @@ class CodeEditorView: NSViewController {
           let doc = document else { return }
     
     layoutManager.replaceTextStorage(doc.textStorage)
-    doc.textStorage.delegate = self
 
     if let theme = ThemeManager.shared.currentTheme {
       self.textView.font = theme.general.font
-
       textView.apply(theme: theme)
 
-      highlightSyntax()
       invalidateSnippets()
     }
   }
-      
+
+}
+
+
+// MARK: - Language Services
+
+extension CodeEditorView {
+
+  public func supports(_ feature: LanguageServiceFeature) -> Bool {
+    return document?.service(supporting: feature) != nil
+  }
+
+  public func showCompletion(triggered: Bool = false) {
+    guard let doc = document else { return }
+
+    let pos = textView.selectedIndex
+
+    doc.service(supporting: .completion)?.complete(in: doc, at: pos) {[weak self] in
+      guard let string = self?.textView.textStorage?.string,
+            let cursor = self?.textView.selectedIndex, cursor >= $0 else { return }
+
+      self?.completionView.itemsFilter = String(string[$0..<cursor])
+
+      self?.completionView.completionItems = $1
+      self?.completionView.reload()
+
+      if $1.count > 0 {
+        self?.completionView.open(at: string.utf16.offset(at: $0), triggered: triggered)
+      } else if !triggered {
+        // Let it open if it was opened explicitely (not triggered automatically), e.g. by the shortcut
+        self?.completionView.open(at: string.utf16.offset(at: pos), triggered: triggered)
+      } else {
+        self?.completionView.close()
+      }
+    }
+  }
+
+
+  public func formatDocument() {
+    guard let doc = document else { return }
+    doc.service(supporting: .format)?.format(doc: doc)
+  }
+  
+}
+
+
+
+// MARK: - Diagnostics
+
+extension CodeEditorView {
   private func showDiagnostics() {
     guard textView != nil else { return }
     guard let textStorage = document?.textStorage else { return }
-    
+
     let text = textStorage.string
     let wholeRange = text.nsRange
-    
+
     // Clean previous diagnostics
     textStorage.layoutManagers.forEach {
       //$0.removeTemporaryAttribute(.toolTip, forCharacterRange: wholeRange)
       $0.removeTemporaryAttribute(.underlineColor, forCharacterRange: wholeRange)
       $0.removeTemporaryAttribute(.underlineStyle, forCharacterRange: wholeRange)
     }
-    
+
     // Show new diagnostics
     let style = NSNumber(value: NSUnderlineStyle.thick.rawValue)
     var lastLine = -1
@@ -161,11 +210,11 @@ class CodeEditorView: NSViewController {
       } else {
         diagnosticsOnLine.append(d)
       }
-      
+
       let lb = text.utf16(at: range.lowerBound)
       let ub = text.utf16(at: range.upperBound) + 1
       let nsRange = range.isEmpty ? NSRange(lb..<ub) : NSRange(range)
-      
+
       textStorage.layoutManagers.forEach {
         //$0.addTemporaryAttribute(.toolTip, value: d.message, forCharacterRange: nsRange)
         $0.addTemporaryAttribute(.underlineColor, value: color, forCharacterRange: nsRange)
@@ -176,7 +225,7 @@ class CodeEditorView: NSViewController {
       addDiagnosticsView(diagnosticsOnLine: diagnosticsOnLine, lastLine: lastLine)
     }
   }
-  
+
   private func addDiagnosticsView(diagnosticsOnLine: [SourceCodeDiagnostic], lastLine: Int) {
     let diagnosticView = DiagnosticView(textView: textView, line: lastLine)
     diagnosticView.diagnostics = diagnosticsOnLine
@@ -188,68 +237,28 @@ class CodeEditorView: NSViewController {
     diagnosticViews.removeAll()
     textView.textContainer?.exclusionPaths = []
   }
+}
 
-  public func highlightSyntax() {
-    if let doc = document {
-      guard let syntaxParser = doc.syntaxParser else {
-        doc.textStorage.layoutManagers.forEach {
-          $0.removeTemporaryAttribute(.foregroundColor, forCharacterRange: doc.textStorage.range)
-        }
-        return
-      }
-      highlightProgress = syntaxParser.highlightAll()
-    }
-  }
+// MARK: - +SourceCodeDocumentObserver
 
-  // MARK: - Language Services
-
-  public func showCompletion(triggered: Bool = false) {
-    guard let doc = document else { return }
-
-    let pos = textView.selectedIndex
-
-    doc.languageService(for: .completion)?.complete(in: doc, at: pos) {[weak self] in
-      guard let string = self?.textView.textStorage?.string,
-            let cursor = self?.textView.selectedIndex, cursor >= $0 else { return }
-
-      self?.completionView.itemsFilter = String(string[$0..<cursor])
-
-      self?.completionView.completionItems = $1
-      self?.completionView.reload()
-
-      if $1.count > 0 {
-        self?.completionView.open(at: string.utf16.offset(at: $0), triggered: triggered)
-      } else if !triggered {
-        // Let it open if it was opened explicitely (not triggered automatically), e.g. by the shortcut
-        self?.completionView.open(at: string.utf16.offset(at: pos), triggered: triggered)
-      } else {
-        self?.completionView.close()
-      }
-    }
-  }
-
-  public func formatDocument() {
-    guard let doc = document else { return }
-    doc.languageService(for: .format)?.format(doc: doc)
-  }
-
-  public func supports(_ feature: LanguageServiceFeature) -> Bool {
-    return document?.languageService(for: feature) != nil
+extension CodeEditorView: SourceCodeDocumentObserver {
+  func languageDidChange(document: SourceCodeDocument, language: Language?) {
+    statusBarView.updateSelectedSyntax()
   }
 }
 
 
-// MARK: - ColorThemeObserver
+// MARK: - + ThemeObserver
 
 extension CodeEditorView: ThemeObserver {
   func themeDidChanged(_ theme: Theme) {
     textView.apply(theme: theme)
-    highlightSyntax()
+    // document?.updateSyntaxHighlighting()
   }
 }
 
 
-// MARK: - WorkbenchEditor
+// MARK: - + WorkbenchEditor
 
 extension CodeEditorView: WorkbenchEditor {
   static var editorMenu: NSMenu? = {
@@ -300,43 +309,9 @@ extension CodeEditorView: WorkbenchEditor {
       self.diagnostics = diagnostics.compactMap { $0 as? SourceCodeDiagnostic }
       self.showDiagnostics()
     }
-    
-    
-  }
-
-  func languageDidChange(language: Language?) {
-    statusBarView.updateSelectedSyntax()
-  }
-  
-}
-
-
-// MARK: - NSTextStorageDelegate
-
-extension CodeEditorView: NSTextStorageDelegate {
-  func textStorage(_ textStorage: NSTextStorage,
-                   didProcessEditing editedMask: NSTextStorageEditActions,
-                   range editedRange: NSRange,
-                   changeInLength delta: Int) {
-
-    guard editedMask.contains(.editedCharacters) else { return }
-
-    document?.updateChangeCount(.changeDone)
-    
-    // Update highlighting
-    guard let syntaxParser = document?.syntaxParser else { return }
-
-    DispatchQueue.main.async { [weak self] in
-      // highlighProgress refers to the whole text highlighting
-      if let progress = self?.highlightProgress {
-        progress.cancel()
-        self?.highlightProgress = syntaxParser.highlightAll()
-      } else {
-        let _ = syntaxParser.highlightAround(editedRange: editedRange, changeInLength: delta)
-      }
-    }
   }
 }
+
 
 // MARK: - CodeEditorTextViewDelegate
 
@@ -367,19 +342,13 @@ extension CodeEditorView: NSTextViewDelegate {
   }
 
   func textDidChange(_ notification: Notification) {
+    // TODO: check if it's called at all
     invalidateSnippets()
   }
 
   func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {
-    guard let doc = document,
-          let replacementString = replacementString else { return true }
-
-    removeDiagnosticsViews()
-
-    doc.observers.notify(as: SourceCodeDocumentObserver.self) {
-      guard let text = textView.textStorage?.string else { return }            
-      let range = text.range(for: text.utf16.range(for: affectedCharRange))
-      $0.textDidChange(document: doc, range: range, text: replacementString)
+    if replacementString != nil {
+      removeDiagnosticsViews()
     }
     
     return true

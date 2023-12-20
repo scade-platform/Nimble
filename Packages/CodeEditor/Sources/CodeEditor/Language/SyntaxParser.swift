@@ -1,5 +1,5 @@
 //
-//  Parser.swift
+//  SyntaxParser.swift
 //  CodeEditorCore
 //
 //  Copyright © 2021 SCADE Inc. All rights reserved.
@@ -20,26 +20,17 @@
 import AppKit
 import NimbleCore
 
+// MARK: - SyntaxParser
+
 public final class SyntaxParser {
   private let grammar: LanguageGrammar
-  private var syntaxCache: SyntaxNode? = nil
-  private let textStorage: NSTextStorage
-      
-  private lazy var syntaxParseOperationQueue: OperationQueue = {
-    let queue = OperationQueue()
-    queue.name = "com.nimble.codeeditor.core.syntaxParseOperationQueue"
-    return queue
-  }()
-  
-  
-  public init (textStorage: NSTextStorage, grammar: LanguageGrammar) {
+
+  public init (grammar: LanguageGrammar) {
     self.grammar = grammar
-    self.textStorage = textStorage
-    
     self.grammar.preload()
   }
-  
-    
+
+  /*
   public func highlightAll() -> Progress? {
     // Highlight possibly the largest visible part (screen frame) of the document synchronously
     let screenFrame = NSScreen.main!.frame
@@ -61,9 +52,8 @@ public final class SyntaxParser {
     let restRange = NSRange(resRange.upperBound..<textStorage.string.nsRange.upperBound)
     return highlight(str: textStorage.string, in: restRange)
   }
-  
-  
-  
+
+
   public func highlightAround(editedRange: NSRange, changeInLength delta: Int) -> Progress? {
     let dirtyRange = editedRange.lowerBound..<editedRange.upperBound - delta
 
@@ -100,56 +90,9 @@ public final class SyntaxParser {
 
     return highlight(str: textStorage.string, in: editedRange)
   }
-  
-  
-  private func highlight(str: String, in range: NSRange) -> Progress? {
-    guard let op = SyntaxParseOperation(grammar, str: str, range: range) else {return nil }
-    op.qualityOfService = .userInitiated
-    
-    let modified = Atomic(false)
-    weak var modificationObserver: NSObjectProtocol?
-    
-    modificationObserver = NotificationCenter.default.addObserver (
-      forName: NSTextStorage.didProcessEditingNotification,
-      object: self.textStorage, queue: nil) { [weak op] (note) in
-        
-        guard (note.object as! NSTextStorage).editedMask.contains(.editedCharacters) else { return }
-        
-        modified.modify { $0 = true }
-        op?.cancel()
-                                                                          
-        if let observer = modificationObserver {
-          NotificationCenter.default.removeObserver(observer)
-        }
-    }
-    
-    op.completionBlock = { [weak self, weak op] in
-      func cleanup () {
-        if let observer = modificationObserver {
-          NotificationCenter.default.removeObserver(observer)
-        }
-      }
-      
-      guard let op = op, !op.isCancelled else {
-        cleanup()
-        return
-      }
-      
-      DispatchQueue.main.async {
-        defer {
-          cleanup()
-        }
-        
-        guard !modified.value else { return }
-        self?.applyResults(op.result, range: op.range, offsets: op.offsets.value)
-      }
-    }
-    
-    syntaxParseOperationQueue.addOperation(op)
-    return op.progress
-  }
-  
-  
+  */
+
+  /*
   private func applyResults(_ res: TokenizerResult?, range: NSRange, offsets: String.OffsetTable) {
     let resultRange = offsets.at(res?.range.lowerBound ?? 0)..<offsets.at(res?.range.upperBound ?? 0)
     let updateRange = !resultRange.isEmpty ? range.union(NSRange(resultRange)) : range
@@ -195,74 +138,16 @@ public final class SyntaxParser {
       syntaxCache?.replace(subrange: updateRange, with: nodes)
     }
   }
+
+   */
 }
 
+// MARK: - + SyntaxParser + LanguageService
 
+extension SyntaxParser: LanguageService {
+  public var supportedFeatures: [LanguageServiceFeature] { [.tokenize] }
 
-class SyntaxParseOperation: Operation, ProgressReporting {
-  let string: String
-  var offsets: Atomic<String.OffsetTable>
-  
-  let range: NSRange
-  let tokenizer: Tokenizer
-      
-  var result: TokenizerResult? = nil
-  
-  let progress: Progress
-  
-  init?(_ grammar: LanguageGrammar, str: String, range: NSRange) {
-    guard let tokenizer = grammar.tokenizer else { return nil }
-    self.tokenizer = tokenizer
-    
-    self.string = String(utf8String: str.cString(using: .utf8)!)!
-    self.offsets = Atomic<String.OffsetTable>(String.OffsetTable.empty)
-            
-    self.range = range
-    // For now just use one unit for the whole operation
-    self.progress = Progress(totalUnitCount: 1)
-    
-    super.init()
-    
-    self.progress.cancellationHandler = { [weak self] in
-      self?.cancel()
-    }
+  public func tokenize(doc: SourceCodeDocument, range: Range<Int>) -> [SyntaxNode] {    
+    return grammar.tokenizer?.tokenize(doc.text, in: range)?.nodes ?? []
   }
-  
-  override func main () {
-    if isCancelled {
-        return
-    }
-    
-    let offsetsComputed = DispatchSemaphore(value: 0)
-    offsets.asyncModify { [weak self] in
-      defer {
-        offsetsComputed.signal()
-      }
-      guard let table = self?.string.createOffsetTable(from: UTF8.self, to: UTF16.self) else { return }
-      $0 = table
-    }
-    result = parse()
-    let _ = offsetsComputed.wait(timeout: .distantFuture)
-  }
-  
-  func parse() -> TokenizerResult? {
-//    let t1 = mach_absolute_time()
-    let res = tokenizer.tokenize(string, in: range)
-
-//    if let nodes = res?.nodes {
-//      nodes.forEach {
-//        print($0)
-//      }
-//    }
-
-//    let t2 = mach_absolute_time()
-        
-//    for t in res?.nodes ?? [] {
-//      print("\(t)")
-//    }
-//    print("Tokenize time: \( Double(t2 - t1) * 1E-9)")
-    
-    return res
-  }
-  
 }

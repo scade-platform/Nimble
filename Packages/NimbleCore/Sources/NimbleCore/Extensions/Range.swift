@@ -37,6 +37,13 @@ extension Range: RangeSet where Bound: Comparable {
 }
 
 
+extension Range where Bound: Numeric {
+  public func offset(by distance: Bound) -> Range<Bound> {
+    return self.lowerBound + distance..<self.upperBound + distance
+  }
+}
+
+
 public extension Array where Element: RangeSet {
   func union() -> Element? {
     guard let acc = self.first else { return nil }

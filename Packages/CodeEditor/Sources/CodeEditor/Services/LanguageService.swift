@@ -18,11 +18,11 @@
 //  limitations under the License.
 //
 
-import Foundation
+import AppKit
 
 
 public enum LanguageServiceFeature {
-  case completion, format
+  case completion, format, tokenize
 }
 
 public protocol LanguageService: AnyObject {
@@ -33,7 +33,10 @@ public protocol LanguageService: AnyObject {
                 handler: @escaping (String.Index, [CodeEditor.CompletionItem]) -> Void) -> Void
 
   func format(doc: SourceCodeDocument) -> Void
+
+  func tokenize(doc: SourceCodeDocument, range: Range<Int>) -> [SyntaxNode]
 }
+
 
 public struct LanguageServiceRef {
   public private(set) weak var value: LanguageService?
@@ -46,5 +49,7 @@ public extension LanguageService {
                 handler: @escaping (String.Index, [CodeEditor.CompletionItem]) -> Void) -> Void {}
 
   func format(doc: SourceCodeDocument) -> Void { }
+
+  func tokenize(doc: SourceCodeDocument, range: Range<Int>) -> [SyntaxNode] { return [] }
 }
 

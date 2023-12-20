@@ -11,16 +11,18 @@ let package = Package(
       .library(name: "CodeEditor", type: .dynamic, targets: ["CodeEditor"]),
     ],
     dependencies: [
-      .package(path: "../NimbleCore"),
+      .package(name: "NimbleCore", path: "../NimbleCore"),
       .package(url: "https://github.com/FLORG1/oniguruma.git", .branch("master"))
     ],
     targets: [
       .target(
         name: "CodeEditor",
         dependencies: [
-          .product(name: "Oniguruma", package: "oniguruma"),
+          .product(name: "Oniguruma", package: "Oniguruma"),
           "NimbleCore"
-        ]
-      )
+        ]),
+      .testTarget(
+          name: "CodeEditorTests",
+          dependencies: ["CodeEditor"]),
     ]
 )

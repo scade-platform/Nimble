@@ -23,39 +23,35 @@ import NimbleCore
 import CodeEditor
 
 public final class CodeEditorDocument: NimbleDocument {
-  lazy var textStorage = {
-    return NSTextStorage()
-  }()
-  
-  public var language: Language? {
-    willSet(lang) {
-      guard lang != self.language else { return }
-      guard let grammar = lang?.grammar else {
-        self.syntaxParser = nil
-        return
-      }
-      self.syntaxParser = SyntaxParser(textStorage: textStorage, grammar: grammar)
-    }
+  private var parser: CodeEditorParser? = nil
 
-    didSet(lang) {
-      guard lang != self.language else { return }
-      codeEditor.languageDidChange(language: lang)
-    }
-  }
+  private var parserTask: Task<(), Never>? = nil
 
-  public var syntaxParser: SyntaxParser? {
-    didSet {
-      codeEditor.highlightSyntax()
-    }
-  }
-  
+  private var services: [LanguageServiceRef] = []
+
   private lazy var codeEditor: CodeEditorView = {
     let controller = CodeEditorView.loadFromNib()
     controller.document = self
     return controller
   }()
-    
-  
+
+  lazy var textStorage = {
+    let storage = NSTextStorage()
+    storage.delegate = self
+
+    return storage
+  }()
+
+
+  public var directory: URL? = nil
+
+  public var language: Language? {
+    didSet {
+      guard self.language != oldValue else { return }
+      self.languageDidChange()
+    }
+  }
+
   public override var fileURL: URL? {
     get { return super.fileURL }
     set {
@@ -63,23 +59,53 @@ public final class CodeEditorDocument: NimbleDocument {
       self.language = fileURL?.file?.language
     }
   }
-  
-  public var directory: URL? = nil
 
-  private var _languageServices: [LanguageServiceRef] = []
-  
-  public func languageService(for feature: LanguageServiceFeature) -> LanguageService? {
-    return _languageServices.first{$0.value?.supportedFeatures.contains(feature) ?? false}?.value
+  private func createDocumentParser() -> CodeEditorParser? {
+    var tokenizers = [CodeEditorParser.Tokenizer]()
+
+    if let grammar = self.language?.grammar {
+      let syntaxParser = SyntaxParser(grammar: grammar)
+
+      tokenizers.append({
+        return syntaxParser.tokenize(doc: $0, range: $1)
+      })
+    }
+
+
+    return !tokenizers.isEmpty ? CodeEditorParser(document: self, tokenizers: tokenizers) : nil
+  }
+
+  private func languageDidChange() {
+    self.parserTask?.cancel()
+    self.parserTask = nil
+
+    if let parser = createDocumentParser() {
+      self.parser = parser
+
+      //self.invalidateDocument()
+
+      self.parserTask = Task.detached {
+        for await (range, nodes) in await parser.results {
+          Swift.print("Update highlighting")
+          await self.updateSyntaxHighlighting(in: range, with: nodes)
+        }
+      }
+    }
+
+    self.observers.notify(as: SourceCodeDocumentObserver.self) {
+      $0.languageDidChange(document: self, language: self.language)
+    }
   }
 
 
-//  public override func save(withDelegate delegate: Any?,
-//                            didSave didSaveSelector: Selector?,
-//                            contextInfo: UnsafeMutableRawPointer?) {
-//
-//    super.save(withDelegate: delegate, didSave: didSaveSelector, contextInfo: contextInfo)
-//    self.language = fileURL?.file?.language
-//  }
+  //  public override func save(withDelegate delegate: Any?,
+  //                            didSave didSaveSelector: Selector?,
+  //                            contextInfo: UnsafeMutableRawPointer?) {
+  //
+  //    super.save(withDelegate: delegate, didSave: didSaveSelector, contextInfo: contextInfo)
+  //    self.language = fileURL?.file?.language
+  //  }
+
 
   public override func presentedItemDidChange() {
     guard let url = self.fileURL, let type = self.fileType  else { return }
@@ -113,21 +139,31 @@ public final class CodeEditorDocument: NimbleDocument {
   }
 }
 
+// MARK: - + Document
 
 extension CodeEditorDocument: Document {
   public static var typeIdentifiers: [String] {
-    ["public.text", "public.data", "public.svg-image"]
+    [
+      "public.text",
+      "public.data",
+      "public.svg-image"]
   }
   
   public static var usupportedTypes: [String] {
-    //all these UTIs in the most cases conforms to public.data
-    [ "public.archive", "public.executable", "public.audiovisual-​content",
-      "com.microsoft.excel.xls", "com.microsoft.word.doc", "com.microsoft.powerpoint.​ppt"]
+    //all these UTIs in the most cases conforms to "public.data" but we don't support them
+    [
+      "public.archive",
+      "public.executable",
+      "public.audiovisual-​content",
+      "com.microsoft.excel.xls",
+      "com.microsoft.word.doc",
+      "com.microsoft.powerpoint.​ppt"]
   }
 
   public var editor: WorkbenchEditor? { codeEditor }
 }
 
+// MARK: - + SourceCodeDocument
 
 extension CodeEditorDocument: SourceCodeDocument {
   public var text: String {
@@ -147,16 +183,20 @@ extension CodeEditorDocument: SourceCodeDocument {
     return id
   }
 
-  public var languageServices: [LanguageService] {
-    return _languageServices.compactMap{$0.value}
+  public func service(supporting feature: LanguageServiceFeature) -> LanguageService? {
+    return services.first{$0.value?.supportedFeatures.contains(feature) ?? false}?.value
   }
 
   public func add(service: LanguageService) {
-    _languageServices.append(LanguageServiceRef(value: service))
+    //TODO: check if parsers need to be restarted
+
+    services.append(LanguageServiceRef(value: service))
   }
 
   public func remove(service: LanguageService) {
-    _languageServices.removeAll{
+    //TODO: check if parsers need to be restarted
+
+    services.removeAll{
       guard let val = $0.value else { return true }
       return ObjectIdentifier(val) == ObjectIdentifier(service)
     }
@@ -169,6 +209,9 @@ extension CodeEditorDocument: SourceCodeDocument {
   }
 }
 
+
+// MARK: - CreatableDocument
+
 extension CodeEditorDocument: CreatableDocument {
   public static let newMenuTitle: String = "File"
 
@@ -180,5 +223,95 @@ extension CodeEditorDocument: CreatableDocument {
     }
     doc.directory = url
     return doc
+  }
+}
+
+
+// MARK: - + NSTextStorageDelegate
+
+extension CodeEditorDocument: NSTextStorageDelegate {
+  public func textStorage(_ textStorage: NSTextStorage,
+                          didProcessEditing editedMask: NSTextStorageEditActions,
+                          range editedRange: NSRange,
+                          changeInLength delta: Int) {
+
+    guard editedMask.contains(.editedCharacters) else { return }
+    //self.updateChangeCount(.changeDone)
+
+
+    Task.detached {
+      await self.parser?.invalidate(range: editedRange.lowerBound..<editedRange.upperBound,
+                                    changeInLength: delta)
+    }
+
+    // Notify observers
+    if !self.observers.isEmpty {
+      let text = String(textStorage.string[editedRange] ?? "")
+      let range = editedRange.lowerBound..<editedRange.upperBound - delta
+
+      self.observers.notify(as: SourceCodeDocumentObserver.self) {
+        $0.textDidChange(document: self, range: range, text: text)
+      }
+    }
+  }
+}
+
+
+// MARK: - Text changes processing
+
+extension CodeEditorDocument {
+  private var textRange: Range<Int> {
+    textStorage.range.lowerBound..<textStorage.range.upperBound
+  }
+
+  private func invalidateDocument() {
+    /*
+    if let screenFrame = NSScreen.main?.frame,
+       let screenRange = textStorage.layoutManagers.first?.firstTextView?.range(for: screenFrame) {
+
+    }
+    */
+    /*
+    Task {
+      await self.parser?.invalidate(range: self.textRange ,changeInLength: 0)
+    }
+     */
+  }
+}
+
+
+// MARK: - Syntax highlighting
+
+extension CodeEditorDocument {
+  func updateSyntaxHighlighting(in range: Range<Int>, with nodes: [SyntaxNode]) {
+    let nsRange = NSRange(range)
+
+    textStorage.layoutManagers.forEach {
+      $0.removeTemporaryAttribute(.foregroundColor, forCharacterRange: nsRange)
+    }
+
+    let theme = ThemeManager.shared.currentTheme
+
+    nodes.forEach {
+      guard let scope = $0.data,
+            let setting = theme?.setting(for: scope) else { return }
+
+      let nodeRange = NSRange($0.range)
+
+//      Swift.print("\(nodeRange.lowerBound)..<\(nodeRange.upperBound) -- \(scope.value)")
+
+      if let color = setting.foreground {
+        textStorage.layoutManagers.forEach {
+          $0.addTemporaryAttribute(.foregroundColor, value: color, forCharacterRange: nodeRange)
+        }
+      }
+
+      if let fontStyle = setting.fontStyle, !fontStyle.isEmpty,
+         let themeFont = theme?.general.font {
+
+        let font = NSFontManager.shared.convert(themeFont, toHaveTrait: fontStyle)
+        textStorage.addAttribute(.font, value: font, range: nodeRange)
+      }
+    }
   }
 }

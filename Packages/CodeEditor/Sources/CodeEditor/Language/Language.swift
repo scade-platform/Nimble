@@ -129,7 +129,7 @@ public final class LanguageGrammar: Decodable, TokenizerRepository {
   public let scopeName: String
   public var path: Path
   
-  private static let decoders: [String: GrammarDecoder.Type]  = [
+  private static let decoders: [String: TMGrammarDecoder.Type]  = [
     ".tmLanguage": PropertyListDecoder.self,
     ".tmGrammar.json": JSONDecoder.self,
     ".tmLanguage.json": JSONDecoder.self
@@ -137,7 +137,7 @@ public final class LanguageGrammar: Decodable, TokenizerRepository {
   
   private lazy var repository = grammar?.buildRepository(with: self)
   
-  private lazy var grammar: Grammar? = {
+  private lazy var grammar: TMGrammar? = {
     guard let decoder = LanguageGrammar.decoders.first(
       where: {self.path.basename().hasSuffix($0.key)})?.value else { return nil}    
     return decoder.decode(from: path)

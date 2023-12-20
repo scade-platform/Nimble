@@ -54,7 +54,7 @@ extension EditorSettingDiagnostic: SourceCodeDiagnostic {
     case .key(let key):
       guard let range: Range<String.Index> = content.range(of: key) else {
         return nil
-      }
+      }      
       return content.range(for: range)
 
     case .mark(let line, let column):

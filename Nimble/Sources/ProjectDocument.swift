@@ -64,7 +64,9 @@ class ProjectDocument: NSDocument {
         }
       }
     }
-    workbench?.restoreState(with: coder)
+
+    // Disable as it should be already restored through the system's call to restore the window state
+    // workbench?.restoreState(with: coder)
   }
   
   // MARK: - User Interface

@@ -25,7 +25,7 @@ import AppKit
 
 // MARK: Grammar
 
-public final class Grammar: PatternsList {
+public final class TMGrammar: PatternsList {
   private enum CodingKeys: String, CodingKey {
     case scopeName, fileTypes, foldingStartMarker, foldingEndMarker, firstLineMatch
   }
@@ -54,7 +54,7 @@ public final class Grammar: PatternsList {
 
 // MARK: Grammar rule consisting of the set of patterns
 
-public class GrammarRule: Decodable {
+public class TMGrammarRule: Decodable {
   private enum CodingKeys: String, CodingKey {
     case comment, repository
   }
@@ -107,7 +107,7 @@ public enum Pattern: Decodable {
 
 // MARK: -
 
-public class PatternsList: GrammarRule {
+public class PatternsList: TMGrammarRule {
   private enum CodingKeys: String, CodingKey {
     case patterns
   }
@@ -124,7 +124,7 @@ public class PatternsList: GrammarRule {
   
 // MARK: -
 
-public class PatternRule: GrammarRule {
+public class PatternRule: TMGrammarRule {
   private enum CodingKeys: String, CodingKey {
     case disabled
   }
@@ -287,12 +287,12 @@ public struct MatchRegex: Decodable {
     var regex = [Regex?](repeating: nil, count: values.count)
     
     if !MatchRegex.onig_initialized {
-      Oniguruma.initialize()
+      Oniguruma.initialize(with: .utf16LittleEndian)
       MatchRegex.onig_initialized = true
     }
     
     for (i, v) in values.enumerated() {
-      regex[i] = Oniguruma.Regex(v)
+      regex[i] = Oniguruma.Regex(v, encoding: .utf16LittleEndian)
     }
     
     self.regex = regex
@@ -416,16 +416,16 @@ public enum GrammarRef {
 
 // MARK: Decoders
 
-protocol GrammarDecoder {
-  static func decode(from: Path) -> Grammar?
+protocol TMGrammarDecoder {
+  static func decode(from: Path) -> TMGrammar?
 }
 
 
-extension YAMLDecoder: GrammarDecoder {
-  static func decode(from file: Path) -> Grammar? {
+extension YAMLDecoder: TMGrammarDecoder {
+  static func decode(from file: Path) -> TMGrammar? {
     guard let content = try? String(contentsOf: file) else { return nil }
     do {
-      return try YAMLDecoder().decode(Grammar.self, from: content)
+      return try YAMLDecoder().decode(TMGrammar.self, from: content)
     } catch let error as DecodingError {
       print(error)
       return nil
@@ -435,12 +435,12 @@ extension YAMLDecoder: GrammarDecoder {
   }
 }
 
-extension PropertyListDecoder: GrammarDecoder {
-  static func decode(from file: Path) -> Grammar? {
+extension PropertyListDecoder: TMGrammarDecoder {
+  static func decode(from file: Path) -> TMGrammar? {
     guard let content = try? Data(contentsOf: file) else { return nil }
     
     do {
-      return try PropertyListDecoder().decode(Grammar.self, from: content)
+      return try PropertyListDecoder().decode(TMGrammar.self, from: content)
     } catch let error as DecodingError {
       print(error)
       return nil
@@ -450,12 +450,12 @@ extension PropertyListDecoder: GrammarDecoder {
   }
 }
 
-extension JSONDecoder: GrammarDecoder {
-  static func decode(from file: Path) -> Grammar? {
+extension JSONDecoder: TMGrammarDecoder {
+  static func decode(from file: Path) -> TMGrammar? {
     guard let content = try? Data(contentsOf: file) else { return nil }
     
     do {
-      return try JSONDecoder().decode(Grammar.self, from: content)
+      return try JSONDecoder().decode(TMGrammar.self, from: content)
     } catch let error as DecodingError {
       print(error)
       return nil
