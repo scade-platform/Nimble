@@ -12,7 +12,7 @@ let package = Package(
     ],
     dependencies: [
       .package(path: "../NimbleCore"),
-      .package(url: "https://github.com/FLORG1/oniguruma.git", .branch("master"))
+      .package(url: "https://github.com/FLORG1/oniguruma.git", .revision("f8d6744efe50eb9aeb59d59e46d58979acf831d6"))
     ],
     targets: [
       .target(
