@@ -18,7 +18,7 @@ let package = Package(
       .package(path: "../BuildSystem"),
       .package(path: "../LSPClient"),
       
-      .package(name: "SourceKitLSP", url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("release/5.8")),
+      .package(name: "SourceKitLSP", url: "https://github.com/FLORG1/sourcekit-lsp.git", .branch("release/5.9")),
     ],
 
     targets: [

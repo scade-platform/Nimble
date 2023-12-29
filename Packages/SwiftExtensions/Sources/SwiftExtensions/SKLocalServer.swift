@@ -21,6 +21,7 @@ import os.log
 
 import Foundation
 
+import Basics
 import LSPClient
 import NimbleCore
 import BuildSystem
