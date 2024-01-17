@@ -22,6 +22,7 @@ import Cocoa
 import NimbleCore
 import BuildSystem
 import os.log
+import SwiftSVG
 
 class ToolbarTargetControl : NSControl, CommandControl {
   fileprivate struct VariantsGroupMenuItem {
