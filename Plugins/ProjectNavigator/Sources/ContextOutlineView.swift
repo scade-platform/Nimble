@@ -168,16 +168,20 @@ extension ContextOutlineView : ContextMenuProvider {
       return
     }
     //TODO: to check the cause if it could not be deleted
-    try? fileSystemElement.path.delete()
-    if fileSystemElement is Folder, !fileSystemElement.exists {
-      //if deleted element is folder try to remove from project
-      //if a folder isn't root folder this operation will do nothing
-      removeAction(sender)
+
+    if fileSystemElement is Folder {
+      try? fileSystemElement.path.delete()
+      if !fileSystemElement.exists {
+        //if deleted element is folder try to remove from project
+        //if a folder isn't root folder this operation will do nothing
+        removeAction(sender)
+      }
     }
-    if fileSystemElement is File, !fileSystemElement.exists {
-      let fileCoordinator = NSFileCoordinator(filePresenter: nil)
-      fileCoordinator.coordinate(writingItemAt: fileSystemElement.url, options: NSFileCoordinator.WritingOptions.forDeleting, error: nil) { _ in
+    if fileSystemElement is File {
+      let fileCoordinator = NSFileCoordinator()
+      fileCoordinator.coordinate(writingItemAt: fileSystemElement.url, options: .forDeleting, error: nil) { _ in
         //Triger NSFilePresenter
+        try? fileSystemElement.path.delete()
       }
     }
     self.reloadSelected()
